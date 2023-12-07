@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LaB Media</title>
+    <title>LaB Mediaaaa</title>
     <style>
         body {
             background-color: #000; /* Black background */
@@ -16,6 +16,11 @@
         header {
             text-align: center;
             padding: 20px;
+        }
+
+        header img {
+            max-width: 100%; /* Ensure the image doesn't exceed its container's width */
+            height: auto; /* Maintain aspect ratio */
         }
 
         footer {
@@ -31,13 +36,6 @@
             margin: 0; /* Remove default margin for the paragraph */
         }
 
-        footer a {
-            color: #fff; /* White text for the link */
-            text-decoration: underline;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
         /* Style for the contact form */
         #contactForm {
             display: none;
@@ -45,8 +43,7 @@
             padding: 20px;
             position: fixed;
             bottom: -400px; /* Initially off-screen */
-            left: 50%;
-            transform: translateX(-50%);
+            right: 0;
             width: 300px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -61,19 +58,26 @@
             cursor: pointer;
             color: #fff;
         }
+
+        /* Style for form inputs and labels */
+        #contactForm label, #contactForm input, #contactForm textarea {
+            display: block;
+            margin-bottom: 10px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
 
     <header>
+        <img src="/LaBMediaGroup/Main/LaBMediaLogo.PNG" alt="LaB Media Logo">
         <h1>LaB Media</h1>
-        <!-- Replace the above line with an image tag if you have a logo -->
     </header>
 
     <!-- Content of your website goes here -->
 
     <footer>
-        <p>Let us cook<a href="#" id="contactLink">Contact Us</a></p>
+        <p>Let us cook <a href="#" id="contactLink">Contact Us</a></p>
     </footer>
 
     <!-- Contact Form -->
@@ -82,13 +86,10 @@
         <form action="mailto:Bobby@labmedia.work" method="post" enctype="text/plain">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
-            <br>
             <label for="email">E-Mail:</label>
             <input type="email" id="email" name="email" required>
-            <br>
             <label for="comment">Comment:</label>
             <textarea id="comment" name="comment" required></textarea>
-            <br>
             <input type="submit" value="Submit">
         </form>
     </div>
