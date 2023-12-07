@@ -6,7 +6,7 @@
     <title>LaB Media</title>
     <style>
         body {
-            background-color: #333; /* Dark charcoal background */
+            background-color: #000; /* Black background */
             color: #fff; /* White text */
             font-family: Arial, sans-serif;
             margin: 0;
@@ -24,6 +24,11 @@
             position: fixed;
             bottom: 0;
             width: 100%;
+            background-color: #000; /* Black background */
+        }
+
+        footer p {
+            margin: 0; /* Remove default margin for the paragraph */
         }
     </style>
 </head>
