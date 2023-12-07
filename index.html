@@ -19,36 +19,70 @@
         }
 
         header img {
-            max-width: 100%; /* Ensure the image doesn't exceed its container's width */
+            max-width: 50%; /* Adjust the percentage to your preference */
             height: auto; /* Maintain aspect ratio */
+            display: block;
+            margin: 0 auto; /* Center the image */
         }
 
         footer {
             text-align: center;
             padding: 20px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+            position: relative; /* Relative positioning for child elements */
             background-color: #000; /* Black background */
         }
 
         footer p {
             margin: 0; /* Remove default margin for the paragraph */
         }
+
+        #returnToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-decoration: none;
+            display: none; /* Initially hidden */
+        }
+
+        #returnToTop:hover {
+            background-color: #555;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Content of your website goes here -->
+
+    <footer>
+        <p>Let us cookkkk</p>
+        <a href="#" id="returnToTop">Return to Top</a>
+    </footer>
 
     <header>
         <img src="LaBMediaGroup/Main/LaBMediaLogo.PNG" alt="LaB Media text with a logo of a beaker above it">
         <h1>LaB Media</h1>
     </header>
 
-    <!-- Content of your website goes here -->
+    <script>
+        // Show/hide "Return to Top" link based on scroll position
+        window.addEventListener('scroll', function() {
+            var returnToTop = document.getElementById('returnToTop');
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                returnToTop.style.display = 'block';
+            } else {
+                returnToTop.style.display = 'none';
+            }
+        });
 
-    <footer>
-        <p>Let us cookkkk</p>
-    </footer>
+        // Scroll to top when the link is clicked
+        document.getElementById('returnToTop').addEventListener('click', function() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        });
+    </script>
 
 </body>
 </html>
