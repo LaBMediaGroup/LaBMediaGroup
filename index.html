@@ -35,36 +35,6 @@
         footer p {
             margin: 0; /* Remove default margin for the paragraph */
         }
-
-        /* Style for the contact form */
-        #contactForm {
-            display: none;
-            background-color: #333;
-            padding: 20px;
-            position: fixed;
-            bottom: -400px; /* Initially off-screen */
-            right: 0;
-            width: 300px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            transition: bottom 0.5s ease-in-out; /* Animation transition */
-        }
-
-        /* Style for the close button in the contact form */
-        #closeBtn {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            cursor: pointer;
-            color: #fff;
-        }
-
-        /* Style for form inputs and labels */
-        #contactForm label, #contactForm input, #contactForm textarea {
-            display: block;
-            margin-bottom: 10px;
-            width: 100%;
-        }
     </style>
 </head>
 <body>
@@ -77,35 +47,8 @@
     <!-- Content of your website goes here -->
 
     <footer>
-        <p>Let us cook <a href="#" id="contactLink">Contact Us</a></p>
+        <p>Let us cook</p>
     </footer>
-
-    <!-- Contact Form -->
-    <div id="contactForm">
-        <div id="closeBtn" onclick="closeForm()">X</div>
-        <form action="mailto:Bobby@labmedia.work" method="post" enctype="text/plain">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="email">E-Mail:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="comment">Comment:</label>
-            <textarea id="comment" name="comment" required></textarea>
-            <input type="submit" value="Submit">
-        </form>
-    </div>
-
-    <script>
-        function openForm() {
-            document.getElementById("contactForm").style.display = "block";
-            document.getElementById("contactForm").style.bottom = "0";
-        }
-
-        function closeForm() {
-            document.getElementById("contactForm").style.bottom = "-400px";
-        }
-
-        document.getElementById("contactLink").addEventListener("click", openForm);
-    </script>
 
 </body>
 </html>
