@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LaB Media3</title>
+    <title>LaB Mediatest</title>
     <style>
         body {
             background-color: #000; /* Black background */
@@ -53,6 +53,19 @@
         #returnToTop:hover {
             background-color: #555;
         }
+
+        #letUsCookButton {
+            background-color: #555;
+            color: #fff;
+            padding: 10px;
+            text-decoration: none;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        #letUsCookButton:hover {
+            background-color: #777;
+        }
     </style>
 </head>
 <body>
@@ -66,6 +79,7 @@
     </header>
 
     <footer>
+        <a href="#" id="letUsCookButton" onclick="redirectToTestPage()">Let us cook</a>
         <p>Let us cookkkk</p>
         <a href="#" id="returnToTop">Return to Top</a>
     </footer>
@@ -95,6 +109,11 @@
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         });
+
+        // Redirect to the test page when the button is clicked
+        function redirectToTestPage() {
+            window.location.href = "/Main/TestPage.html";
+        }
     </script>
 
 </body>
