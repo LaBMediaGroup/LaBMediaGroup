@@ -27,12 +27,12 @@
             max-width: 100px; /* Set the maximum width to your preferred size */
             height: auto; /* Maintain aspect ratio */
             display: block;
-            margin: 20px auto 0; /* Center the image and add some top margin */
+            margin: 10px auto 0; /* Center the image and add some top margin */
         }
 
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 40px 20px; /* Added more padding */
             background-color: #000; /* Black background */
             width: 100%;
         }
@@ -85,22 +85,24 @@
     </footer>
 
     <script>
-        // Show/hide "Return to Top" link based on scroll position
-        window.addEventListener('scroll', function() {
+        // Function to check if the page has been scrolled
+        function checkScroll() {
             var returnToTop = document.getElementById('returnToTop');
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 returnToTop.style.display = 'block';
             } else {
                 returnToTop.style.display = 'none';
             }
-        });
+        }
+
+        // Show/hide "Return to Top" link based on scroll position
+        window.addEventListener('scroll', checkScroll);
 
         // Show "Return to Top" link on touch start for mobile devices
         window.addEventListener('touchstart', function() {
-            var returnToTop = document.getElementById('returnToTop');
-            returnToTop.style.display = 'block';
+            checkScroll(); // Call the checkScroll function
             setTimeout(function() {
-                returnToTop.style.display = 'none';
+                document.getElementById('returnToTop').style.display = 'none';
             }, 2000); // Adjust the timeout duration as needed
         });
 
@@ -112,7 +114,7 @@
 
         // Redirect to the test page when the button is clicked
         function redirectToTestPage() {
-            window.location.href = src="/Main/TestPage.html";
+            window.location.href = "/Main/TestPage.html";
         }
     </script>
 
