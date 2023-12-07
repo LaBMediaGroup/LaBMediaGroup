@@ -1,112 +1,101 @@
-HTML
 <!DOCTYPE html>
-
-<html
- 
-lang="en">
-
+<html lang="en">
 <head>
-  <meta
- 
-charset="UTF-8">
-  <meta
- 
-name="viewport"
- 
-content="width=device-width, initial-scale=1.0">
-  <title>LaB Media1</title>
-  <style>
-    body {
-      background-color: #000; /* Black background */
-      color: #fff; /* White text */
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaB Media3</title>
+    <style>
+        body {
+            background-color: #000; /* Black background */
+            color: #fff; /* White text */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+        }
 
-    header {
-      text-align: center;
-      padding: 20px;
-    }
+        header {
+            text-align: center;
+            padding: 20px;
+        }
 
-    header img {
-      width: 50px; /* Adjusted width (50 pixels) */
-      height: auto; /* Maintain aspect ratio */
-      margin-bottom: 20px; /* Added bottom margin to position above "Let us cook" */
-      display: block;
-      margin: auto;
-    }
+        header img {
+            max-width: 100px; /* Set the maximum width to your preferred size */
+            height: auto; /* Maintain aspect ratio */
+            display: block;
+            margin: 20px auto 0; /* Center the image and add some top margin */
+        }
 
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #000; /* Black background */
-      width: 100%;
-    }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #000; /* Black background */
+            width: 100%;
+        }
 
-    footer p {
-      margin: 0; /* Remove default margin for the paragraph */
-    }
+        footer p {
+            margin: 0; /* Remove default margin for the paragraph */
+        }
 
-    #returnToTop {
-      background-color: #333;
-      color: #fff;
-      padding: 10px;
-      text-decoration: none;
-      display: none; /* Initially hidden */
-      margin-top: 20px;
-    }
+        #returnToTop {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-decoration: none;
+            display: none; /* Initially hidden */
+            margin-top: 20px;
+        }
 
-    #returnToTop:hover {
-      background-color: #555;
-    }
-  </style>
+        #returnToTop:hover {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
-  <header>
+    <header>
+        <!-- Content of your website goes here -->
         <h1>LaB Media</h1>
-  </header>
-   
-  <header>
-    <img src="/Main/LaBMediaLogo.PNG" alt="LaB Media text with a logo of a beaker above it">
-  </header>
+    </header>
+    
+    <header>
+        <img src="/Main/LaBMediaLogo.PNG" alt="LaB Media text with a logo of a beaker above it">
+    </header>
 
-  <footer>
-    <p>Let us cook</p>
-    <a href="#" id="returnToTop">Return to Top</a>
-  </footer>
+    <footer>
+        <p>Let us cookkkk</p>
+        <a href="#" id="returnToTop">Return to Top</a>
+    </footer>
 
-  <script>
-    // Show/hide "Return to Top" link based on scroll position
-    window.addEventListener('scroll', function() {
-      var returnToTop = document.getElementById('returnToTop');
-      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        returnToTop.style.display = 'block';
-      } else {
-        returnToTop.style.display = 'none';
-      }
-    });
+    <script>
+        // Show/hide "Return to Top" link based on scroll position
+        window.addEventListener('scroll', function() {
+            var returnToTop = document.getElementById('returnToTop');
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                returnToTop.style.display = 'block';
+            } else {
+                returnToTop.style.display = 'none';
+            }
+        });
 
-    // Show "Return to Top" link on touch start for mobile devices
-    window.addEventListener('touchstart', function() {
-      var returnToTop = document.getElementById('returnToTop');
-      returnToTop.style.display = 'block';
-      setTimeout(function() {
-        returnToTop.style.display = 'none';
-      }, 2000); // Adjust the timeout duration as needed
-    });
+        // Show "Return to Top" link on touch start for mobile devices
+        window.addEventListener('touchstart', function() {
+            var returnToTop = document.getElementById('returnToTop');
+            returnToTop.style.display = 'block';
+            setTimeout(function() {
+                returnToTop.style.display = 'none';
+            }, 2000); // Adjust the timeout duration as needed
+        });
 
-    // Scroll to top when the link is clicked
-    document.getElementById('returnToTop').addEventListener('click', function() {
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
-    });
-  </script>
+        // Scroll to top when the link is clicked
+        document.getElementById('returnToTop').addEventListener('click', function() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        });
+    </script>
 
 </body>
 </html>
