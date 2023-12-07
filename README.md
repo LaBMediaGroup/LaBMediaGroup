@@ -1,16 +1,44 @@
-### Hi there 👋
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaB Media</title>
+    <style>
+        body {
+            background-color: #333; /* Dark charcoal background */
+            color: #fff; /* White text */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-<!--
-**LaBMediaGroup/LaBMediaGroup** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+        header {
+            text-align: center;
+            padding: 20px;
+        }
 
-Here are some ideas to get you started:
+        footer {
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+    <header>
+        <h1>LaB Media</h1>
+        <!-- Replace the above line with an image tag if you have a logo -->
+    </header>
+
+    <!-- Content of your website goes here -->
+
+    <footer>
+        <p>Let us cook</p>
+    </footer>
+
+</body>
+</html>
