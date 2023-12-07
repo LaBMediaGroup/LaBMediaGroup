@@ -24,9 +24,8 @@
         }
 
         iframe {
-            max-width: 100%; /* Set the maximum width */
-            width: 320px; /* Double the width */
-            height: 180px; /* Maintain aspect ratio */
+            max-width: 100%; /* Set the maximum width to 100% for responsiveness */
+            height: auto; /* Maintain aspect ratio */
             display: block;
             margin: 0 auto 10px; /* Center the video and add some bottom margin */
         }
@@ -103,22 +102,4 @@
 
     // Show "Return to Top" link on touch start for mobile devices
     window.addEventListener('touchstart', function() {
-        checkScroll(); // Call the checkScroll function
-        setTimeout(function() {
-            document.getElementById('returnToTop').style.display = 'none';
-        }, 2000); // Adjust the timeout duration as needed
-    });
-
-    // Scroll to top when the link is clicked
-    document.getElementById('returnToTop').addEventListener('click', function() {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-    });
-
-    // Redirect to the test page when the "Let us cook" button is clicked
-    function redirectToTestPage() {
-        window.location.href = "/Main/TestPage.HTML";
-    }
-    </script>
-</body>
-</html>
+        checkScroll(); // Call the check
