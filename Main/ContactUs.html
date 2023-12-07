@@ -58,25 +58,16 @@
             width: 100%;
         }
 
-        .contactInfoBox {
-            background-color: #333;
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
             border: 1px solid #555;
-            border-radius: 5px;
             padding: 10px;
-            margin: 5px;
-            width: 250px;
-        }
-
-        #contactInfoBox {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        #contactInfoBoxRight {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
+            text-align: left;
         }
 
         #backToMain {
@@ -130,16 +121,25 @@
         <input type="submit" id="submitButton" value="Submit">
     </form>
 
+    <table>
+        <tr>
+            <th>Contact Information</th>
+            <th>Contact Information</th>
+        </tr>
+        <tr>
+            <td class="contactInfo">
+                <p>Bobby</p>
+                <p>Bobby@LaBMedia.work</p>
+                <a href="http://www.youtube.com/@Bob.tastiC" target="_blank">YouTube Channel</a>
+            </td>
+            <td class="contactInfo">
+                <p>Larry</p>
+                <p>Larry@LaBMedia.work</p>
+            </td>
+        </tr>
+    </table>
+
     <footer>
-        <div id="contactInfoBox" class="contactInfo">
-            <p>Bobby</p>
-            <p>Bobby@LaBMedia.work</p>
-            <a href="http://www.youtube.com/@Bob.tastiC" target="_blank">YouTube Channel</a>
-        </div>
-        <div id="contactInfoBoxRight" class="contactInfo">
-            <p>Larry</p>
-            <p>Larry@LaBMedia.work</p>
-        </div>
         <p id="labMediaLink" onclick="redirectToIndex()">LaB Media</p>
     </footer>
 
