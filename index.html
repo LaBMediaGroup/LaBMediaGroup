@@ -19,7 +19,7 @@
         }
 
         header img {
-            max-width: 50%; /* Adjust the percentage to your preference */
+            max-width: 30%; /* Adjust the percentage to your preference */
             height: auto; /* Maintain aspect ratio */
             display: block;
             margin: 0 auto; /* Center the image */
@@ -57,12 +57,12 @@
     <!-- Content of your website goes here -->
 
     <footer>
-        <p>Let us cookkkkkk</p>
+        <p>Let us cookkkk</p>
         <a href="#" id="returnToTop">Return to Top</a>
     </footer>
 
     <header>
-        <img src="/Main/LaBMediaLogo.PNG" alt="LaB Media text with a logo of a beaker above it">
+        <img src="LaBMediaGroup/Main/LaBMediaLogo.PNG" alt="LaB Media text with a logo of a beaker above it">
         <h1>LaB Media</h1>
     </header>
 
@@ -75,6 +75,15 @@
             } else {
                 returnToTop.style.display = 'none';
             }
+        });
+
+        // Show "Return to Top" link on touch start for mobile devices
+        window.addEventListener('touchstart', function() {
+            var returnToTop = document.getElementById('returnToTop');
+            returnToTop.style.display = 'block';
+            setTimeout(function() {
+                returnToTop.style.display = 'none';
+            }, 2000); // Adjust the timeout duration as needed
         });
 
         // Scroll to top when the link is clicked
