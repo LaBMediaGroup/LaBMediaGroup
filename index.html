@@ -86,38 +86,38 @@
     </footer>
 
     <script>
-        // Function to check if the page has been scrolled
-        function checkScroll() {
-            var returnToTop = document.getElementById('returnToTop');
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                returnToTop.style.display = 'block';
-            } else {
-                returnToTop.style.display = 'none';
-            }
+    // Function to check if the page has been scrolled
+    function checkScroll() {
+        var returnToTop = document.getElementById('returnToTop');
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            returnToTop.style.display = 'block';
+        } else {
+            returnToTop.style.display = 'none';
         }
+    }
 
-        // Show/hide "Return to Top" link based on scroll position
-        window.addEventListener('scroll', checkScroll);
+    // Show/hide "Return to Top" link based on scroll position
+    window.addEventListener('scroll', checkScroll);
 
-        // Show "Return to Top" link on touch start for mobile devices
-        window.addEventListener('touchstart', function() {
-            checkScroll(); // Call the checkScroll function
-            setTimeout(function() {
-                document.getElementById('returnToTop').style.display = 'none';
-            }, 2000); // Adjust the timeout duration as needed
-        });
+    // Show "Return to Top" link on touch start for mobile devices
+    window.addEventListener('touchstart', function() {
+        checkScroll(); // Call the checkScroll function
+        setTimeout(function() {
+            document.getElementById('returnToTop').style.display = 'none';
+        }, 2000); // Adjust the timeout duration as needed
+    });
 
-        // Scroll to top when the link is clicked
-        document.getElementById('returnToTop').addEventListener('click', function() {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        });
+    // Scroll to top when the link is clicked
+    document.getElementById('returnToTop').addEventListener('click', function() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    });
 
-        // Redirect to the test page when the "Let us cook" button is clicked
-        function redirectToTestPage() {
-            window.location.href = "/Main/TestPage.HTML";
-        }
-    </script>
+    // Improve the behavior on desktop by adding a wheel event
+    window.addEventListener('wheel', function() {
+        checkScroll();
+    });
+</script>
 
 </body>
 </html>
