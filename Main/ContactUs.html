@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,7 +34,8 @@
             margin: 20px;
         }
 
-        input, textarea {
+        input,
+        textarea {
             margin-bottom: 10px;
             padding: 10px;
             width: 300px;
@@ -51,6 +53,21 @@
             text-align: center;
             font-size: 12px;
             padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        #contactInfoBox {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        #contactInfoBoxRight {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
         }
 
         #backToMain {
@@ -75,18 +92,23 @@
         #labMediaLink:hover {
             color: #777;
         }
+
+        .contactInfo {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
+
 <body>
     <a href="/index.html" id="backToMain">&#9665;</a>
-    
+
     <header>
         <h1>Contact Us</h1>
     </header>
 
     <form action="mailto:Bobby@labmedia@work" method="post" enctype="text/plain">
         <input type="hidden" name="subject" value="LaB Media Consultation">
-        
+
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
 
@@ -100,6 +122,13 @@
     </form>
 
     <footer>
+        <div id="contactInfoBox" class="contactInfo">
+            <p>Bobby - Bobby@LaBMedia.work</p>
+            <a href="http://www.youtube.com/@Bob.tastiC" target="_blank">YouTube Channel</a>
+        </div>
+        <div id="contactInfoBoxRight" class="contactInfo">
+            <p>Larry - Larry@LaBMedia.work</p>
+        </div>
         <p id="labMediaLink" onclick="redirectToIndex()">LaB Media</p>
     </footer>
 
@@ -109,4 +138,5 @@
         }
     </script>
 </body>
+
 </html>
