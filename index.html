@@ -1,14 +1,13 @@
-User
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - LaB Media</title>
+    <title>LaB Media</title>
     <style>
         body {
-            background-color: #000;
-            color: #fff;
+            background-color: #000; /* Black background */
+            color: #fff; /* White text */
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -24,55 +23,100 @@ User
             padding: 20px;
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 20px;
-        }
-
-        input, textarea {
-            margin-bottom: 10px;
-            padding: 10px;
-            width: 300px;
-        }
-
-        #submitButton {
-            background-color: #555;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
+        header img {
+            max-width: 100px; /* Set the maximum width to your preferred size */
+            height: auto; /* Maintain aspect ratio */
+            display: block;
+            margin: 0 auto 10px; /* Center the image and add some bottom margin */
         }
 
         footer {
             text-align: center;
-            font-size: 12px;
-            padding: 20px;
+            padding: 40px 20px; /* Added more padding */
+            background-color: #000; /* Black background */
+            width: 100%;
+        }
+
+        footer p {
+            margin: 0; /* Remove default margin for the paragraph */
+        }
+
+        #returnToTop {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-decoration: none;
+            display: none; /* Initially hidden */
+            margin-top: 20px;
+        }
+
+        #returnToTop:hover {
+            background-color: #555;
+        }
+
+        #letUsCookButton {
+            background-color: #555;
+            color: #fff;
+            padding: 15px 30px; /* Adjust padding to make the button larger */
+            text-decoration: none;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 18px; /* Adjust font size for better visibility */
+        }
+
+        #letUsCookButton:hover {
+            background-color: #777;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Contact Us</h1>
+        <!-- Content of your website goes here -->
+        <h1>LaB Media</h1>
+    </header>
+    
+    <header>
+        <img src="/Main/LaBMediaLogo.PNG" alt="LaB Media text with a logo of a beaker above it">
     </header>
 
-    <form action="mailto:Bobby@labmedia@work" method="post" enctype="text/plain">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-
-        <label for="email">E-Mail:</label>
-        <input type="email" id="email" name="email" required>
-
-        <label for="comments">Comments:</label>
-        <textarea id="comments" name="comments" rows="4" required></textarea>
-
-        <input type="submit" id="submitButton" value="Submit">
-    </form>
-
     <footer>
-        <p>LaB Media</p>
+        <a href="#" id="letUsCookButton" onclick="redirectToTestPage()">Let us cook</a>
+        <a href="#" id="returnToTop">Return to Top</a>
     </footer>
+
+    <script>
+        // Function to check if the page has been scrolled
+        function checkScroll() {
+            var returnToTop = document.getElementById('returnToTop');
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                returnToTop.style.display = 'block';
+            } else {
+                returnToTop.style.display = 'none';
+            }
+        }
+
+        // Show/hide "Return to Top" link based on scroll position
+        window.addEventListener('scroll', checkScroll);
+
+        // Show "Return to Top" link on touch start for mobile devices
+        window.addEventListener('touchstart', function() {
+            checkScroll(); // Call the checkScroll function
+            setTimeout(function() {
+                document.getElementById('returnToTop').style.display = 'none';
+            }, 2000); // Adjust the timeout duration as needed
+        });
+
+        // Scroll to top when the link is clicked
+        document.getElementById('returnToTop').addEventListener('click', function() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        });
+
+        // Redirect to the test page when the button is clicked
+        function redirectToTestPage() {
+            window.location.href = "TestPage.HTML";
+        }
+    </script>
+
 </body>
 </html>
