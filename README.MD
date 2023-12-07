@@ -1,1 +1,1 @@
-LaB Media Group Website
+LaB Media Group
