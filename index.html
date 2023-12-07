@@ -58,12 +58,13 @@
         #contactUsButton {
             background-color: #555;
             color: #fff;
-            padding: 15px 30px; /* Adjust padding to make the button larger */
+            padding: 15px; /* Adjust padding to make the button larger */
             text-decoration: none;
             margin-top: 20px;
             cursor: pointer;
             font-size: 18px; /* Adjust font size for better visibility */
             display: block; /* Display as block to stack them vertically */
+            width: max-content; /* Set the width to the length of the longest word */
         }
 
         #letUsCookButton:hover,
@@ -78,7 +79,7 @@
         <h1>LaB Media</h1>
     </header>
     
-    <iframe width="1920" height="1080" src="https://www.youtube.com/embed/sQ3rfok4RsY?si=UiOzNgqS-DrdwC4P" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <iframe width="640" height="360" src="https://www.youtube.com/embed/sQ3rfok4RsY?si=UiOzNgqS-DrdwC4P" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
     <footer>
         <a href="/Main/ContactUs.html" id="contactUsButton">Contact Us</a>
@@ -102,4 +103,22 @@
 
     // Show "Return to Top" link on touch start for mobile devices
     window.addEventListener('touchstart', function() {
-        checkScroll(); // Call the check
+        checkScroll(); // Call the checkScroll function
+        setTimeout(function() {
+            document.getElementById('returnToTop').style.display = 'none';
+        }, 2000); // Adjust the timeout duration as needed
+    });
+
+    // Scroll to top when the link is clicked
+    document.getElementById('returnToTop').addEventListener('click', function() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    });
+
+    // Redirect to the test page when the "Let us cook" button is clicked
+    function redirectToTestPage() {
+        window.location.href = "/Main/TestPage.HTML";
+    }
+    </script>
+</body>
+</html>
