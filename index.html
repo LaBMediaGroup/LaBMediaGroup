@@ -54,7 +54,8 @@
             background-color: #555;
         }
 
-        #letUsCookButton {
+        #letUsCookButton,
+        #contactUsButton {
             background-color: #555;
             color: #fff;
             padding: 15px 30px; /* Adjust padding to make the button larger */
@@ -64,7 +65,8 @@
             font-size: 18px; /* Adjust font size for better visibility */
         }
 
-        #letUsCookButton:hover {
+        #letUsCookButton:hover,
+        #contactUsButton:hover {
             background-color: #777;
         }
     </style>
@@ -81,6 +83,7 @@
 
     <footer>
         <a href="#" id="letUsCookButton" onclick="redirectToTestPage()">Let us cook</a>
+        <a href="ContactUs.html" id="contactUsButton">Contact Us</a>
         <a href="#" id="returnToTop">Return to Top</a>
     </footer>
 
@@ -112,7 +115,7 @@
             document.documentElement.scrollTop = 0;
         });
 
-        // Redirect to the test page when the button is clicked
+        // Redirect to the test page when the "Let us cook" button is clicked
         function redirectToTestPage() {
             window.location.href = "TestPage.HTML";
         }
