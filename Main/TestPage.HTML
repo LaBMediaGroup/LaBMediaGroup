@@ -7,29 +7,29 @@
     <title>Sizzle!</title>
     <style>
         body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('/Main/1234.png') center/cover fixed; /* Use the background property here */
-            opacity: 0.1; /* Adjust the opacity for the desired darkening effect */
-            z-index: -1; /* Place the pseudo-element behind the content */
-        }
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000; /* Dark background color */
+    opacity: 0.1; /* Adjust the opacity for the desired darkening effect */
+    z-index: -1; /* Place the pseudo-element behind the content */
+}
 
-        body {
-            background: none; /* Remove the background property here */
-            color: #fff;
-            font-family: Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
+body {
+    background: url('/Main/1234.png') center/cover fixed;
+    color: #fff;
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
 
         h1 {
             font-size: 2em;
