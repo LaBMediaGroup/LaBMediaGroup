@@ -23,12 +23,12 @@
         h1 {
             font-size: 2em;
             margin-top: 20px;
+            display: flex;
+            align-items: center; /* Align items horizontally */
         }
 
         #logo {
-            position: absolute;
-            top: 10px;
-            left: 20px; /* Added padding from the left */
+            margin-right: 10px; /* Add some space between the logo and text */
             width: 50px; /* Adjust the size as needed */
             height: auto; /* Maintain aspect ratio */
         }
@@ -36,9 +36,10 @@
 </head>
 
 <body>
-    <img id="logo" src="/Main/logo.png" alt="LaB Media Logo">
-
-    <h1>LaB Media</h1>
+    <h1>
+        <img id="logo" src="/Main/logo.png" alt="LaB Media Logo">
+        LaB Media
+    </h1>
 
     <!-- Your page content goes here -->
 
