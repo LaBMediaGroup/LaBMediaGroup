@@ -32,12 +32,19 @@
             width: 50px; /* Adjust the size as needed */
             height: auto; /* Maintain aspect ratio */
         }
+
+        #logo-link {
+            text-decoration: none; /* Remove default underline on anchor */
+            color: inherit; /* Inherit text color from the parent */
+        }
     </style>
 </head>
 
 <body>
     <h1>
-        <img id="logo" src="/Main/logo.png" alt="LaB Media Logo">
+        <a id="logo-link" href="/index.html">
+            <img id="logo" src="/Main/logo.png" alt="LaB Media Logo">
+        </a>
         LaB Media
     </h1>
 
