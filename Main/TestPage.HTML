@@ -83,6 +83,20 @@
         #stuffButton:hover {
             background-color: #333; /* Darker color on hover */
         }
+
+        #logoContainer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        #logo {
+            width: 50px; /* Adjust the size as needed */
+            height: auto; /* Maintain aspect ratio */
+            margin-right: 10px; /* Add space between the logo and text */
+        }
     </style>
 </head>
 
@@ -97,6 +111,12 @@
     <footer>
         <a href="/index.html" id="labMediaLink">Lab Media</a>
     </footer>
+
+    <!-- Logo and text at the top right corner -->
+    <div id="logoContainer">
+        <img id="logo" src="/Main/logo.png" alt="LaB Media Logo">
+        <span>LaB Media</span>
+    </div>
 
 </body>
 
