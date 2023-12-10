@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sizzle!</title>
     <style>
-        /* Your existing styles remain unchanged */
         body::before {
             content: "";
             position: fixed;
@@ -14,9 +13,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #000;
-            opacity: 0.1;
-            z-index: -1;
+            background: #000; /* Dark background color */
+            opacity: 0.1; /* Adjust the opacity for the desired darkening effect */
+            z-index: -1; /* Place the pseudo-element behind the content */
         }
 
         body {
@@ -30,6 +29,7 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            position: relative; /* To position the button */
         }
 
         h1 {
@@ -70,17 +70,18 @@
 
         #stuffButton {
             text-decoration: none;
-            background-color: #007BFF;
+            background-color: #000;
             color: #fff;
             padding: 10px 20px;
             font-size: 1em;
             border: none;
             cursor: pointer;
-            margin-top: 20px;
+            position: absolute;
+            bottom: 50px;
         }
 
         #stuffButton:hover {
-            background-color: #0056b3;
+            background-color: #333; /* Darker color on hover */
         }
     </style>
 </head>
@@ -88,14 +89,15 @@
 <body>
     <a href="/index.html" id="backToIndex">&#9665;</a>
 
+    <!-- New button linking to stuff.html -->
+    <a href="/Main/stuff.html" id="stuffButton">Stuff</a>
+
     <h1>Sizzle, Sizzle</h1>
 
     <footer>
         <a href="/index.html" id="labMediaLink">Lab Media</a>
     </footer>
 
-    <!-- New button linking to stuff.html -->
-    <a href="/Main/stuff.html" id="stuffButton">Stuff</a>
 </body>
 
 </html>
