@@ -208,7 +208,7 @@ input, select, textarea {
 }
 
 #header .logo img {
-    max-width: 100%;
+    max-width: 500%;
     height: auto;
     width: auto;
 }
