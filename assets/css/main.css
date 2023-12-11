@@ -192,7 +192,9 @@ input, select, textarea {
 			margin: 0 0 2rem 0;
 		}
 
+
 /* Header styles */
+
 #header {
     background: #333;
     color: #fff;
@@ -205,13 +207,15 @@ input, select, textarea {
 }
 
 #header .logo img {
-    max-width: 100%; /* Make sure the logo doesn't exceed its container */
-    height: auto; /* Maintain the aspect ratio */
+    max-width: 100%;
+    height: auto;
+    width: auto; /* Added this line to maintain aspect ratio */
 }
 
 #header h1 {
     margin: 0;
     font-size: 1.5em;
+    flex: 1; /* Added this line to make the title take up the remaining space */
 }
 
 #header nav ul {
