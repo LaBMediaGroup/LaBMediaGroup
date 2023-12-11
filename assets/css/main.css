@@ -208,9 +208,10 @@ input, select, textarea {
 }
 
 #header .logo img {
-    max-width:100%;
+    display: block; /* Ensures the image is treated as a block element */
+    margin: 0 auto; /* Centers the image horizontally */
+    max-width: 100%;
     height: auto;
-    width: auto;
 }
 
 #header h1 {
