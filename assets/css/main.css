@@ -198,7 +198,8 @@ input, select, textarea {
 #header {
     background: #333;
     color: #fff;
-    padding: 1em 0;
+    padding: 2em 0; /* Adjust the top and bottom padding as needed */
+    overflow: hidden; /* Added to contain floated elements */
 }
 
 #header .logo {
@@ -207,13 +208,15 @@ input, select, textarea {
 }
 
 #header .logo img {
-    max-width: 100%; /* Make sure the logo doesn't exceed its container */
-    height: auto; /* Maintain the aspect ratio */
+    max-width: 100%;
+    height: auto;
+    width: auto;
 }
 
 #header h1 {
     margin: 0;
     font-size: 1.5em;
+    flex: 1;
 }
 
 #header nav ul {
