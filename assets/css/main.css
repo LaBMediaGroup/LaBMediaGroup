@@ -214,7 +214,7 @@ input, select, textarea {
 
 #header h1 {
     margin: 0;
-    font-size: 1.5em;
+    font-size: .5em;
     flex: 1; /* Added this line to make the title take up the remaining space */
 }
 
