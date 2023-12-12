@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LaB Media</title>
+    <title>Your Website Title</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background-color: #000; /* Initial background color (black) */
+            background: #000; /* Initial background color (black) */
             color: #fff; /* Default text color */
             font-family: 'Arial', sans-serif;
             overflow-x: hidden; /* Hide horizontal scrollbar */
         }
 
-        /* Style for the background image */
         #bg {
             position: fixed;
             top: 0;
@@ -26,7 +25,6 @@
             transition: opacity 3s ease; /* Transition effect for opacity */
         }
 
-        /* Style for the logo and connecting lines */
         #logo-container {
             position: absolute;
             top: 50%;
@@ -36,35 +34,15 @@
         }
 
         #logo {
-            width: 100px; /* Adjust the size of your logo */
+            width: 150px; /* Adjust the size of your logo */
             border-radius: 50%; /* Make the logo circular */
             border: 2px solid #fff; /* White border around the logo */
+            margin-right: 10px; /* Space between logo and text */
         }
 
-        #line-vertical {
-            display: block;
-            position: absolute;
-            background-color: #fff; /* White color for the line */
-            width: 2px; /* Width of the line */
-            height: 100px; /* Length of the vertical line */
-            top: calc(50% + 50px); /* Adjust the position of the line */
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        #line-horizontal {
-            display: block;
-            position: absolute;
-            background-color: #fff; /* White color for the line */
-            width: 100%; /* Full width of the line */
-            height: 2px; /* Height of the horizontal line */
-            top: calc(50% + 100px); /* Adjust the position of the line */
-        }
-
-        /* Style for the content section */
-        #content {
-            text-align: center;
-            padding: 20px;
+        #logo-text {
+            display: inline-block;
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -72,19 +50,13 @@
     <!-- Background image -->
     <img id="bg" src="/Images/bg.jpg" alt="Background Image">
 
-    <!-- Logo and connecting lines -->
+    <!-- Logo and text -->
     <div id="logo-container">
         <img id="logo" src="/Images/logo.png" alt="Logo">
-        <div id="line-vertical"></div>
-        <div id="line-horizontal"></div>
+        <span id="logo-text">LaB Media</span>
     </div>
 
-    <!-- Content section -->
-    <div id="content">
-        <h1>Welcome to Your Website</h1>
-        <p>LaB Media</p>
-        <!-- Add your additional content here -->
-    </div>
+    <!-- Additional content can be added here -->
 
     <script>
         // JavaScript to fade in the background image after the page loads
