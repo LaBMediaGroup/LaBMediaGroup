@@ -26,6 +26,7 @@
         }
 
         #logo-container {
+            display: none; /* Initially hide the logo container */
             position: absolute;
             top: 50%;
             left: 50%;
@@ -35,11 +36,8 @@
 
         #logo {
             width: 150px; /* Adjust the size of your logo */
-        }
-
-        #logo-text {
-            display: inline-block;
-            vertical-align: middle;
+            opacity: 0; /* Initially set opacity to 0 for fade-in effect */
+            transition: opacity 3s ease 5s; /* Transition effect for opacity, delay for 5 seconds */
         }
     </style>
 </head>
@@ -47,10 +45,9 @@
     <!-- Background image -->
     <img id="bg" src="/Images/bg.jpg" alt="Background Image">
 
-    <!-- Logo and text -->
+    <!-- Logo -->
     <div id="logo-container">
         <img id="logo" src="/Images/logo.png" alt="Logo">
-        <span id="logo-text">LaB Media</span>
     </div>
 
     <!-- Additional content can be added here -->
@@ -59,6 +56,11 @@
         // JavaScript to fade in the background image after the page loads
         window.onload = function() {
             document.getElementById('bg').style.opacity = '1';
+            // Show and fade in the logo container after 5 seconds
+            setTimeout(function() {
+                document.getElementById('logo-container').style.display = 'block';
+                document.getElementById('logo').style.opacity = '1';
+            }, 5000);
         };
     </script>
 </body>
