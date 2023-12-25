@@ -8,59 +8,55 @@
         body {
             margin: 0;
             padding: 0;
-            background: #000; /* Initial background color (black) */
+            background: #000; /* Black background color */
             color: #fff; /* Default text color */
             font-family: 'Arial', sans-serif;
             overflow-x: hidden; /* Hide horizontal scrollbar */
         }
 
-        #bg {
+        #logo-container {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
             opacity: 0; /* Initially set opacity to 0 for fade-in effect */
-            transition: opacity 3s ease; /* Transition effect for opacity */
-        }
-
-        #logo-container {
-            display: none; /* Initially hide the logo container */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
+            transition: opacity 2s ease; /* Transition effect for opacity */
         }
 
         #logo {
-            width: 150px; /* Adjust the size of your logo */
-            opacity: 0; /* Initially set opacity to 0 for fade-in effect */
-            transition: opacity 3s ease 5s; /* Transition effect for opacity, delay for 5 seconds */
+            width: 50px; /* Adjust the size of your logo */
+        }
+
+        #header {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 100%;
+            padding: 20px 0;
+            font-size: 24px;
         }
     </style>
 </head>
 <body>
-    <!-- Background image -->
-    <img id="bg" src="/Images/bg.jpg" alt="Background Image">
-
     <!-- Logo -->
     <div id="logo-container">
         <img id="logo" src="/Images/logo.png" alt="Logo">
     </div>
 
+    <!-- Header -->
+    <div id="header">
+        LaB Media
+    </div>
+
     <!-- Additional content can be added here -->
 
     <script>
-        // JavaScript to fade in the background image after the page loads
+        // JavaScript to fade in the logo after 2 seconds
         window.onload = function() {
-            document.getElementById('bg').style.opacity = '1';
-            // Show and fade in the logo container after 5 seconds
             setTimeout(function() {
-                document.getElementById('logo-container').style.display = 'block';
-                document.getElementById('logo').style.opacity = '1';
-            }, 5000);
+                document.getElementById('logo-container').style.opacity = '1';
+            }, 2000);
         };
     </script>
 </body>
