@@ -14,19 +14,7 @@
             overflow-x: hidden; /* Hide horizontal scrollbar */
         }
 
-        #logo-container {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            opacity: 0; /* Initially set opacity to 0 for fade-in effect */
-            transition: opacity 2s ease; /* Transition effect for opacity */
-        }
-
-        #logo {
-            width: 30px; /* Adjust the size of your logo */
-        }
-
-        #header {
+        #header-container {
             position: fixed;
             top: 0;
             left: 50%;
@@ -34,29 +22,32 @@
             text-align: center;
             width: 100%;
             padding: 20px 0;
-            font-size: 28px;
+            font-size: 24px;
+            opacity: 0; /* Initially set opacity to 0 for fade-in effect */
+            transition: opacity 2s ease; /* Transition effect for opacity */
+        }
+
+        #logo {
+            width: 30px; /* Adjust the size of your logo */
+            margin-left: 10px; /* Adjust the space between the logo and text */
         }
     </style>
 </head>
 <body>
-    <!-- Logo -->
-    <div id="logo-container">
+    <!-- Header and Logo -->
+    <div id="header-container">
+        <span id="header">LaB Media</span>
         <img id="logo" src="/Images/logo.png" alt="Logo">
-    </div>
-
-    <!-- Header -->
-    <div id="header">
-        LaB Media
     </div>
 
     <!-- Additional content can be added here -->
 
     <script>
-        // JavaScript to fade in the logo after 2 seconds
+        // JavaScript to fade in the header and logo after 3 seconds
         window.onload = function() {
             setTimeout(function() {
-                document.getElementById('logo-container').style.opacity = '1';
-            }, 2000);
+                document.getElementById('header-container').style.opacity = '1';
+            }, 3000);
         };
     </script>
 </body>
