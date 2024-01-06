@@ -31,6 +31,25 @@
             width: 30px; /* Adjust the size of your logo */
             margin-left: 10px; /* Adjust the space between the logo and text */
         }
+
+        #button-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 100%;
+        }
+
+        #john-asmar-button {
+            background-color: #3498db; /* Button background color */
+            color: #fff; /* Button text color */
+            padding: 10px 20px; /* Adjust padding as needed */
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -42,12 +61,17 @@
 
     <!-- Additional content can be added here -->
 
+    <!-- Button -->
+    <div id="button-container">
+        <button id="john-asmar-button">John Asmar Drummer Extraordinar</button>
+    </div>
+
     <script>
-        // JavaScript to fade in the header and logo after 3 seconds
+        // JavaScript to fade in the header and logo after 2 seconds
         window.onload = function() {
             setTimeout(function() {
                 document.getElementById('header-container').style.opacity = '1';
-            }, 3000);
+            }, 2000);
         };
     </script>
 </body>
