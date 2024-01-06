@@ -6,69 +6,97 @@
     <title>LaB Media</title>
     <style>
         body {
+            background-color: #000; /* Black background */
+            color: #fff; /* White text */
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: #000; /* Black background color */
-            color: #fff; /* Default text color */
-            font-family: 'Arial', sans-serif;
-            overflow-x: hidden; /* Hide horizontal scrollbar */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
         }
 
-        #header-container {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
+        header {
             text-align: center;
-            width: 100%;
-            padding: 20px 0;
-            font-size: 24px;
-            opacity: 0; /* Initially set opacity to 0 for fade-in effect */
-            transition: opacity 2s ease; /* Transition effect for opacity */
+            padding: 20px;
         }
 
-        #logo {
-            width: 30px; /* Adjust the size of your logo */
-            margin-left: 10px; /* Adjust the space between the logo and text */
+        iframe {
+            max-width: 100%; /* Make the video responsive */
+            height: auto; /* Maintain aspect ratio */
+            display: block;
+            margin: 0 auto 10px; /* Center the video and add some bottom margin */
         }
 
-        #link-container {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+        footer {
             text-align: center;
+            padding: 40px 20px; /* Added more padding */
+            background-color: #000; /* Black background */
             width: 100%;
         }
 
-        #contact-link {
-            color: #3498db; /* Link text color */
-            font-size: 18px;
+        footer p {
+            margin: 0; /* Remove default margin for the paragraph */
+        }
+
+        #returnToTop {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
             text-decoration: none;
+            display: none; /* Initially hidden */
+            margin-top: 20px;
+        }
+
+        #returnToTop:hover {
+            background-color: #555;
+        }
+
+        #letUsCookButton,
+        #contactUsButton {
+            background-color: #555;
+            color: #fff;
+            padding: 15px 30px; /* Adjust padding to make the button larger */
+            text-decoration: none;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 18px; /* Adjust font size for better visibility */
+        }
+
+        #letUsCookButton:hover,
+        #contactUsButton:hover {
+            background-color: #777;
         }
     </style>
 </head>
 <body>
-    <!-- Header and Logo -->
-    <div id="header-container">
-        <span id="header">LaB Media</span>
-        <img id="logo" src="/Images/logo.png" alt="Logo">
-    </div>
+    <header>
+        <!-- Content of your website goes here -->
+        <h1>LaB Media</h1>
+    </header>
+    
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/sQ3rfok4RsY?si=UiOzNgqS-DrdwC4P" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-    <!-- Additional content can be added here -->
-
-    <!-- Link to Contact Page -->
-    <div id="link-container">
-        <a id="contact-link" href="/contactus.html">John Asmar Drummer Extraordinar</a>
-    </div>
+    <footer>
+        <a href="#" id="letUsCookButton" onclick="redirectToTestPage()">Let us cook</a>
+        <a href="/Main/ContactUs.html" id="contactUsButton">Contact Us</a>
+        <a href="#" id="returnToTop">Return to Top</a>
+    </footer>
 
     <script>
-        // JavaScript to fade in the header and logo after 2 seconds
-        window.onload = function() {
-            setTimeout(function() {
-                document.getElementById('header-container').style.opacity = '1';
-            }, 2000);
-        };
+        // Function to check if the page has been scrolled
+        function checkScroll() {
+            var returnToTop = document.getElementById('returnToTop');
+            if (condition) {
+                // Code to be executed if the condition is true
+            }
+                returnToTop.style.display = 'block';
+            } else {
+                returnToTop.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
