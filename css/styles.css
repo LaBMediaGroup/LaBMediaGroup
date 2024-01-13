@@ -99,7 +99,7 @@ blockquote p.name { font-style:normal; color:#555; letter-spacing:0; font-weight
 .button {  border-radius:30px; background:rgba(0,0,0,0.05); padding:10px 25px 14px; line-height:1; font-size:14px; display:inline-block; margin-bottom:10px; }
 .button:hover { background:rgba(0,0,0,0.1);}
 
-.signature { background:url(../images/signature.png) center no-repeat; background-size:185px 35px; width:185px; height:35px; position:relative; display:inline-block; margin-bottom:10px; }
+.signature { background:url(../images/signature1.png) center no-repeat; background-size:185px 35px; width:185px; height:35px; position:relative; display:inline-block; margin-bottom:10px; }
 /* End Typography
 --------------------------------------------------------------------------------------------------------*/
 
