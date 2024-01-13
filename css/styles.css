@@ -107,7 +107,7 @@ blockquote p.name { font-style:normal; color:#555; letter-spacing:0; font-weight
 /* =4. Headings
 --------------------------------------------------------------------------------------------------------*/
 h1#logo { display:block; position:relative; margin:0; margin-top:40px; margin-bottom:0px; text-align:center; font-size:0; }
-h1#logo a { display:inline-block; background:url(../images/bg-logo@2x.png) center no-repeat; background-size:250px 59px; width:250px; height:59px; text-indent:-9999px; }
+h1#logo a { display:inline-block; background:url(../images/LaBBeakerLogo.png) center no-repeat; background-size:250px 59px; width:250px; height:59px; text-indent:-9999px; }
 .tagline { text-align:center; margin-bottom:20px; margin-top:-5px; position:relative;  }
 .tagline p.small { font-size:12px !important; padding:0 15px; display:inline-block; text-transform:none; }
 .tagline p.small span { background:#000; z-index:1; position:relative; padding:0 5px 0 7px; }
