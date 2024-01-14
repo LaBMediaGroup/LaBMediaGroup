@@ -31,7 +31,7 @@ class TwitterProxy {
 	 *	@param	string	$screen_name				Twitter handle
 	 *	@param	string	$count						The number of tweets to pull out
 	 */
-	public function __construct($oauth_access_token, $oauth_access_token_secret, $consumer_key, $consumer_secret, $user_id, $screen_name, $count = 5) {
+	public function __construct('1745880372565401600-Bvj1JzWv9hlaMzif8KhWvVhlXvXBxx', '3m3Ty3PgntOcmub8mPtFkbtQoblAZN11Ojarsphp8z77F', 'oI46f0JE2fRBrwuoNV3srySDT', 'dNn9kYmgD0BR0j2Sv4P3Z602VVPpuWbw7E5OGtubcZ6mQ1dhcM', 'labmedia.work', 'LaB Media, $count = 5) {
 
 		$this->config = array_merge($this->config, compact('oauth_access_token', 'oauth_access_token_secret', 'consumer_key', 'consumer_secret', 'user_id', 'screen_name', 'count'));
 
