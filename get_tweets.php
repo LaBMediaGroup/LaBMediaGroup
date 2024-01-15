@@ -14,7 +14,7 @@ $count = 1;
 $twitter_url = 'statuses/user_timeline.json';
 $twitter_url .= '?user_id=' . $user_id;
 $twitter_url .= '&screen_name=' . $screen_name;
-$twitter_url .= '&count=' . $count;
+$twitter_url .= '1' . $count;
 
 // Create a Twitter Proxy object from our twitter_proxy.php class
 $twitter_proxy = new TwitterProxy(
