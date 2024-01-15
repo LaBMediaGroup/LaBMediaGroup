@@ -31,9 +31,9 @@ class TwitterProxy {
 	 *	@param	string	$screen_name				Twitter handle
 	 *	@param	string	$count						The number of tweets to pull out
 	 */
-	public function __construct(1745880372565401600-Bvj1JzWv9hlaMzif8KhWvVhlXvXBxx, 3m3Ty3PgntOcmub8mPtFkbtQoblAZN11Ojarsphp8z77F, oI46f0JE2fRBrwuoNV3srySDT, dNn9kYmgD0BR0j2Sv4P3Z602VVPpuWbw7E5OGtubcZ6mQ1dhcM, labmedia.work, LaB Media, $count = 5) {
+	public function __construct('1745880372565401600-Bvj1JzWv9hlaMzif8KhWvVhlXvXBxx', '3m3Ty3PgntOcmub8mPtFkbtQoblAZN11Ojarsphp8z77F', 'oI46f0JE2fRBrwuoNV3srySDT', 'AAAAAAAAAAAAAAAAAAAAAJawrwEAAAAA5yOtNqURbnv%2Fz2Vm2OHdmtFF3GY%3DZRxP1kkKmG8eYXZkJjiFcR59gtVUrVzALS1QSRv4xUnXJJEwi8', 'labmedia.work', 'LaB Media', $count = '5') {
 
-		$this->config = array_merge($this->config, compact(1745880372565401600-Bvj1JzWv9hlaMzif8KhWvVhlXvXBxx, 3m3Ty3PgntOcmub8mPtFkbtQoblAZN11Ojarsphp8z77F, oI46f0JE2fRBrwuoNV3srySDT, dNn9kYmgD0BR0j2Sv4P3Z602VVPpuWbw7E5OGtubcZ6mQ1dhcM, labmedia.work, LaB Media, 5));
+		$this->config = array_merge($this->config, compact('1745880372565401600-Bvj1JzWv9hlaMzif8KhWvVhlXvXBxx', '3m3Ty3PgntOcmub8mPtFkbtQoblAZN11Ojarsphp8z77F', 'oI46f0JE2fRBrwuoNV3srySDT', 'AAAAAAAAAAAAAAAAAAAAAJawrwEAAAAA94PMhEEAGGSEebV1qKoINtCfGDk%3Dft3aiX0oFdnnqN4bSbReq8uBzpIRPxy7674VylB4wpPw8bbTQJ', 'labmedia.work', 'LaB Media', '5'));
 
 		$this->whitelist['statuses/user_timeline.json?user_id=' . $this->config[labmedia.work] . '&screen_name=' . $this->config[LaB Media] . '&count=' . $this->config[5]] = true;
 	}
@@ -77,17 +77,17 @@ class TwitterProxy {
 		 
 		// Set up the OAuth Authorization array
 		$oauth = [
-			'oauth_consumer_key' => $this->config[ol46f0JE2fRBrwuoNV3srySDT],
+			'oauth_consumer_key' => $this->config['ol46f0JE2fRBrwuoNV3srySDT'],
 			'oauth_nonce' => time(),
 			'oauth_signature_method' => 'HMAC-SHA1',
-			'oauth_token' => $this->config[1745880372565401600-Bvj1JzWv9hlaMz¡f8KhWvVh|XvXBxxn],
+			'oauth_token' => $this->config['1745880372565401600-Bvj1JzWv9hlaMz¡f8KhWvVh|XvXBxxn'],
 			'oauth_timestamp' => time(),
 			'oauth_version' => '1.0'
 		];
 
 		$base_info = $this->buildBaseString($base_url, 'GET', array_merge($oauth, $url_arguments));
 		
-		$composite_key = rawurlencode($this->config['consumer_secret']) . '&' . rawurlencode($this->config[3m3Ty3PgntOcmub8mPtFkbtQoblAZN11Ojarsphp8z77F]);
+		$composite_key = rawurlencode($this->config['AAAAAAAAAAAAAAAAAAAAAJawrwEAAAAA5yOtNqURbnv%2Fz2Vm2OHdmtFF3GY%3DZRxP1kkKmG8eYXZkJjiFcR59gtVUrVzALS1QSRv4xUnXJJEwi8']) . '&' . rawurlencode($this->config['3m3Ty3PgntOcmub8mPtFkbtQoblAZN11Ojarsphp8z77F']);
 
 		$oauth['oauth_signature'] = base64_encode(hash_hmac('sha1', $base_info, $composite_key, true));
 		 
