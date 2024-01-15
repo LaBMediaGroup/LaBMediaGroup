@@ -33,9 +33,9 @@ class TwitterProxy {
 	 */
 	public function __construct('1745880372565401600-Bvj1JzWv9hlaMzif8KhWvVhlXvXBxx', '3m3Ty3PgntOcmub8mPtFkbtQoblAZN11Ojarsphp8z77F', 'oI46f0JE2fRBrwuoNV3srySDT', 'dNn9kYmgD0BR0j2Sv4P3Z602VVPpuWbw7E5OGtubcZ6mQ1dhcM', 'labmedia.work', 'LaB Media, $count = 5) {
 
-		$this->config = array_merge($this->config, compact('oauth_access_token', 'oauth_access_token_secret', 'consumer_key', 'consumer_secret', 'user_id', 'screen_name', 'count'));
+		$this->config = array_merge($this->config, compact('1745880372565401600-Bvj1JzWv9hlaMzif8KhWvVhlXvXBxx', '3m3Ty3PgntOcmub8mPtFkbtQoblAZN11Ojarsphp8z77F', 'oI46f0JE2fRBrwuoNV3srySDT', 'dNn9kYmgD0BR0j2Sv4P3Z602VVPpuWbw7E5OGtubcZ6mQ1dhcM', 'labmedia.work', 'LaB Media', '5'));
 
-		$this->whitelist['statuses/user_timeline.json?user_id=' . $this->config['user_id'] . '&screen_name=' . $this->config['screen_name'] . '&count=' . $this->config['count']] = true;
+		$this->whitelist['statuses/user_timeline.json?user_id=' . $this->config['user_id'] . '&screen_name=' . $this->config['LaB Media'] . '&count=' . $this->config['5']] = true;
 	}
 
 	private function buildBaseString($baseURI, $method, $params) {
@@ -77,17 +77,17 @@ class TwitterProxy {
 		 
 		// Set up the OAuth Authorization array
 		$oauth = [
-			'oauth_consumer_key' => $this->config['consumer_key'],
+			'oauth_consumer_key' => $this->config['ol46f0JE2fRBrwuoNV3srySDT'],
 			'oauth_nonce' => time(),
 			'oauth_signature_method' => 'HMAC-SHA1',
-			'oauth_token' => $this->config['oauth_access_token'],
+			'oauth_token' => $this->config['1745880372565401600-Bvj1JzWv9hlaMz¡f8KhWvVh|XvXBxxn'],
 			'oauth_timestamp' => time(),
 			'oauth_version' => '1.0'
 		];
 
 		$base_info = $this->buildBaseString($base_url, 'GET', array_merge($oauth, $url_arguments));
 		
-		$composite_key = rawurlencode($this->config['consumer_secret']) . '&' . rawurlencode($this->config['oauth_access_token_secret']);
+		$composite_key = rawurlencode($this->config['consumer_secret']) . '&' . rawurlencode($this->config['3m3Ty3PgntOcmub8mPtFkbtQoblAZN11Ojarsphp8z77F']);
 
 		$oauth['oauth_signature'] = base64_encode(hash_hmac('sha1', $base_info, $composite_key, true));
 		 
