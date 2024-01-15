@@ -16,6 +16,9 @@
 <link href="css/responsive.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="http://fonts.googleapis.com/css?family=Oswald:400,600,700" rel="stylesheet" type="text/css" />
 <link href="http://fonts.googleapis.com/css?family=Lora:400,400italic,600" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="path/to/jquery.fancybox.min.css">
+<script src="path/to/jquery.min.js"></script>
+<script src="path/to/jquery.fancybox.min.js"></script>
 <script src="js/modernizr.js" type="text/javascript"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 </head>
@@ -427,8 +430,8 @@
           </div>
           <div class="element clearfix rectangle col2-2 home portfolio The-Pandys">
         <div class="padding-wrapper">
-          <a href="https://youtu.be/vbjzUKmENOM?si=s1pKXChfdo7Av20j" data-title="Poetry II" class="video-popup">
-            <figure class="images background-image8"></figure>
+              <a href="https://youtu.be/vbjzUKmENOM?si=s1pKXChfdo7Av20j" data-title="Poetry II" class="video-popup">
+          <figure class="images background-image8"></figure>
       <div class="image-caption"><i class="fa fa-video-camera"></i> Video</div>
       <div class="left-corner"></div>
       <div class="right-corner"></div>
@@ -442,6 +445,28 @@
               <div class="clear"></div>
               <h4><span class="underline">Poetry II</span></h4>
             </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add the actual content of the YouTube video here -->
+      <div style="display: none;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/vbjzUKmENOM" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </a>
+  </div>
+</div>
+
+<script>
+  // Initialize Fancybox for the video link
+  $(document).ready(function() {
+    $(".video-popup").fancybox({
+      type: 'iframe', // Specify that this is an iframe (YouTube video)
+      iframe: {
+        preload: false // Disable preloading for better performance
+      }
+    });
+  });
+</script>
                   </div>
                 </div>
               </div>
