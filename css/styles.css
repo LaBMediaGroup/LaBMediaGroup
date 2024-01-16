@@ -301,7 +301,7 @@ a:hover .images { opacity:0.6; }
 .images.alignleft { width:40%; margin:7px 30px 17px 0; z-index:1; position:relative }
  ==
 ]
- .video th:1140px; height:650px; border:0;}
+ .video th:570px; height:325px; border:0;}
 .videoWrapper { position:relative; padding-bottom:56.25%; /* 16:9 */ height:0; }
 .videoWrapper iframe { position:absolute; top:0; left:0; width:100%; height:100%; }
 
