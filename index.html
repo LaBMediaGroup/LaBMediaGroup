@@ -1,571 +1,498 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en">
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>LaB Media</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="author" content="labmedia">
-<meta name="Description" content="LaB Media Group" />
-<link href="css/reset.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-<link href="css/contact.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="css/styles.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="css/flexslider.css" rel="stylesheet" type="text/css" media="screen">
-<link href="css/jquery.fancybox.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="css/responsive.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700" rel="stylesheet" type="text/css" />
-<link href="https://fonts.googleapis.com/css?family=Lora:400,400italic,600" rel="stylesheet" type="text/css" />
-<script src="js/modernizr.js" type="text/javascript"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LaB Media is a creative studio in Shelby Township, Michigan, specializing in professional film, music, and photography production. We bring your stories to life.">
+  <title>LaB Media - Creative Studio | Shelby Township, MI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom animations */
+    .fade-up { 
+      opacity: 0; 
+      transform: translateY(30px); 
+      transition: all 0.8s ease-out; 
+    }
+    .fade-up.show { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+    
+    /* Smooth scrolling */
+    html { scroll-behavior: smooth; }
+    
+    /* Custom gradient */
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    /* Hover effects */
+    .service-card:hover {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    }
+    
+    /* Navigation */
+    .nav-blur {
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Mobile Menu */
+    #mobile-nav {
+      transition: transform 0.3s ease-in-out;
+      transform: translateX(100%);
+    }
+    #mobile-nav.open {
+      transform: translateX(0);
+    }
+
+    /* Social icons */
+    .social-icon-svg {
+      transition: all 0.3s ease;
+      fill: #a0aec0; /* Tailwind's gray-400 */
+    }
+    .social-icon-svg:hover {
+      transform: scale(1.1);
+      fill: #FFFFFF; /* Tailwind's white */
+    }
+    .social-icon-svg.youtube:hover {
+      fill: #FF0000;
+    }
+    .social-icon-svg.instagram:hover {
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
 </head>
-<body>
-<!-- insert Preloader here -->
-<div id="preloader">
-  <div id="status">
-    <div class="parent">
-      <div class="child">
-        <p class="small">Contemplating..</p>
+<body class="bg-black text-white font-sans overflow-x-hidden">
+
+  <nav class="fixed top-0 w-full z-50 nav-blur transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-6 py-4">
+      <div class="flex justify-between items-center">
+        <div class="text-2xl font-bold gradient-text">LaB Media</div>
+        <div class="hidden md:flex space-x-8">
+          <a href="#home" class="hover:text-indigo-400 transition">Home</a>
+          <a href="#services" class="hover:text-indigo-400 transition">Services</a>
+          <a href="#portfolio" class="hover:text-indigo-400 transition">Portfolio</a>
+          <a href="#contact" class="hover:text-indigo-400 transition">Contact</a>
+        </div>
+        <button id="mobile-menu-open" class="md:hidden" aria-label="Open mobile menu">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
       </div>
+    </div>
+  </nav>
+
+  <div id="mobile-nav" class="fixed inset-y-0 right-0 w-64 bg-gray-900 z-50 transform translate-x-full md:hidden">
+    <div class="flex justify-end p-6">
+      <button id="mobile-menu-close" aria-label="Close mobile menu">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="flex flex-col items-center space-y-8 py-8">
+      <a href="#home" class="text-xl hover:text-indigo-400 transition" onclick="closeMobileMenu()">Home</a>
+      <a href="#services" class="text-xl hover:text-indigo-400 transition" onclick="closeMobileMenu()">Services</a>
+      <a href="#portfolio" class="text-xl hover:text-indigo-400 transition" onclick="closeMobileMenu()">Portfolio</a>
+      <a href="#contact" class="text-xl hover:text-indigo-400 transition" onclick="closeMobileMenu()">Contact</a>
     </div>
   </div>
-</div>
-<div id="wrap">
-  <header id="header" class="clearfix">
-    <div class="container clearfix">
-      <ul class="social-list clearfix alignright">
-       <li> <a href="https://www.facebook.com/profile.php?id=61555316293187" target="_blank"><i class="fa fa-facebook"></i></a> </li>
-       <li> <a href="https://www.youtube.com/@LaBMediaWork" target="_blank"><i class="fa fa-youtube"></i></a> </li>
-       <li> <a href="https://twitter.com/LaBMediawork" target="_blank"><i class="fa fa-twitter"></i></a> </li>
-       <li> <a href="https://www.instagram.com/lab_media_group" target="_blank"><i class="fa fa-instagram"></i></a> </li>
 
-      </ul>
-      <div id="menu-button">
-        <div id="nav-button"> <span class="nav-bar"></span> <span class="nav-bar"></span> <span class="nav-bar"></span> </div>
-      </div>
-      
-  <!-- start main nav -->
-      <nav id="main-nav">
-        <ul id="options" class="option-set clearfix" data-option-key="filter">
-          <li> <a href="#home" class="splink">Home</a> </li>
-          <li> <a href="#about" class="splink">About</a> </li>
-          <li> <a href="#services" class="splink">Services</a> </li>
-          <li> <a href="#" class="sub-nav-toggle">Portfolio</a>
-            <ul class="sub-nav hidden">
-              <li> <a href="#The_Pandys" class="splink">The_Pandys</a> </li>
-              <li> <a href="#The_Crew" class="splink">The_Crew</a> </li>
-              <li> <a href="#Stuff" class="splink">Artist Spotlight</a> </li>
-              <li> <a href="#portfolio" class="splink">Show All</a> </li>
-            </ul>
-          </li>
-          <li> <a href="#contact" class="splink">Contact</a> </li>
-          <li> <a href="#" class="sub-nav-toggle">Shop</a>
-            <ul class="sub-nav hidden">
-              <li> <a href="shop.html">Etsy Shop</a> </li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-      <!-- end main nav --> 
+  <section id="home" class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-20 left-10 w-32 h-32 bg-indigo-600 rounded-full blur-xl animate-pulse"></div>
+      <div class="absolute bottom-20 right-10 w-48 h-48 bg-purple-600 rounded-full blur-xl animate-pulse delay-200"></div>
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-600 rounded-full blur-2xl opacity-30 animate-pulse delay-400"></div>
     </div>
-  </header>
-  <!-- end header -->
+    
+    <div class="relative z-10 max-w-4xl mx-auto">
+      <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 fade-up">
+        <span class="gradient-text">LaB Media</span>
+      </h1>
+      <p class="text-lg md:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto mb-8 fade-up leading-relaxed">
+        Creative studio bringing stories to life through film, music, and photography in Shelby Township, Michigan.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center fade-up">
+        <a href="#portfolio" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 px-8 py-4 rounded-full font-semibold shadow-lg transform hover:scale-105 transition-all duration-300">
+          View Our Work
+        </a>
+        <a href="#contact" class="border border-indigo-400 text-indigo-400 hover:bg-indigo-400 hover:text-black px-8 py-4 rounded-full font-semibold transition-all duration-300">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </section>
 
-  <div class="content-wrapper">
-    <div id="content">
-      <div class="container clearfix">
-        <h1 id="logo"><a href="index.html">LaB Media</a></h1>
-        <div class="tagline">
-          <p class="small"style="margin-top: 10px;"><span>Est. 2023</span></p>
+  <section id="services" class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 fade-up">
+        What We <span class="gradient-text">Create</span>
+      </h2>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="service-card p-8 rounded-2xl border border-gray-800 hover:border-indigo-500 transition-all duration-300 fade-up">
+          <div class="text-5xl mb-4">🎬</div>
+          <h3 class="text-2xl font-bold mb-4">Short Films</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Professional short film production with cinematic storytelling, high-quality editing, and compelling narratives that captivate audiences.
+          </p>
         </div>
-        <div id="container" class="clearfix">
-          <div class="element  clearfix rectangle col1-1 services">
-            <div class="padding-wrapper">
-              <div class="grey-bg full-height">
-                <div class="box-parent">
-                  <div class="child">
-                    <div class="icons big movie"></div>
-                    <h3 class="header">Short Film</h3>
-                    <div class="break"></div>
-                    <p class="small">Includes</p>
-                    <ul class="unordered-list">
-                      <li><i>Filming</i></li>
-                      <li><i>Editing and Revisions</i></li>
-                      <li><i>A good time</i></li>
-                    </ul>
-                    <p class="price"><span>from $</span>???<span class="recurrance">/Film</span></p>
-                  </div>
-                </div>
-              </div>
+        
+        <div class="service-card p-8 rounded-2xl border border-gray-800 hover:border-purple-500 transition-all duration-300 fade-up">
+          <div class="text-5xl mb-4">🎶</div>
+          <h3 class="text-2xl font-bold mb-4">Music Videos</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Creative visuals crafted to showcase your music, combining powerful audio with striking imagery and dynamic storytelling.
+          </p>
+        </div>
+        
+        <div class="service-card p-8 rounded-2xl border border-gray-800 hover:border-blue-500 transition-all duration-300 fade-up">
+          <div class="text-5xl mb-4">📸</div>
+          <h3 class="text-2xl font-bold mb-4">Photography</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Studio and on-location photography services, from portraits to promotional shoots, capturing moments with artistic excellence.
+          </p>
+        </div>
+        
+        <div class="service-card p-8 rounded-2xl border border-gray-800 hover:border-green-500 transition-all duration-300 fade-up">
+          <div class="text-5xl mb-4">🎙️</div>
+          <h3 class="text-2xl font-bold mb-4">Audio Recording</h3>
+          <p class="text-gray-300 leading-relaxed">
+            High-quality recording and mixing sessions at our Shelby Township studio with professional-grade equipment.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="portfolio" class="py-20 bg-gray-900/50 px-6">
+    <div class="max-w-7xl mx-auto">
+      <h3 class="text-4xl md:text-5xl font-bold text-center mb-16 fade-up">
+        Our <span class="gradient-text">Portfolio</span>
+      </h3>
+      
+      <div class="grid gap-8 lg:grid-cols-2">
+        <div class="group rounded-2xl overflow-hidden bg-gray-800 hover:bg-gray-700 transition-all duration-300 fade-up">
+          <div class="aspect-video">
+            <iframe 
+              src="https://www.youtube.com/embed/ZXYtZmIRiRI" 
+              title="The Pandys Music Recording Session"
+              class="w-full h-full rounded-t-2xl"
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="p-6">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-purple-600 text-white px-2 py-1 rounded-full text-xs font-semibold">MUSIC VIDEO</span>
             </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 contact">
-            <div class="padding-wrapper">
-              <div class="grey-bg full-height">
-                <div class="box-parent">
-                  <div class="child">
-                    <h3 class="header">Shelby Twp Studio</h3>
-                    <div class="break"></div>
-                    <p class="small">Address</p>
-                    <p> somewhere in <br />
-                      Shelby Twp, MI </p>
-                    <p class="small">Phone or Text</p>
-                    <p>(313)799-3344</p>
-                    <div class="break"></div>
-                    <div class="icons home"></div>
-                    <p><a href="http://maps.google.com" data-title="" target="_blank">Get Directions</a></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 contact">
-            <div class="padding-wrapper">
-              <div class="grey-bg full-height">
-                <div class="box-parent">
-                  <div class="child">
-                    <h3 class="header">Roseville Studio</h3>
-                    <div class="break"></div>
-                    <p class="small">Address</p>
-                    <p> somewhere in <br />
-                      Roseville, MI </p>
-                    <p class="small">Phone or Text</p>
-                    <p>(313)799-3344</p>
-                    <div class="break"></div>
-                    <div class="icons building"></div>
-                    <p><a href="http://maps.google.com" data-title="" target="_blank">Get Directions</a></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="element  clearfix rectangle col2-2 home portfolio The_Pandys">
-            <div class="padding-wrapper"><a href="https://www.youtube.com/embed/ZXYtZmIRiRI?rel=0&autoplay=1&width=560&height=315" data-title="Live Recording" class="popup" data-fancybox-group="group1">
-              <figure class="images background-image1"></figure>
-              <div class="image-caption"><i class="fa fa-video-camera"></i> Video</div>
-              <div class="left-corner"></div>
-              <div class="right-corner"></div>
-              <div class="left-corner bottom"></div>
-              <div class="right-corner bottom"></div>
-              <div class="covering-image">
-                <div class="info-box-content">
-                  <div class="parent">
-                    <div class="child">
-                      <p class="small">The_Pandys</p>
-                      <div class="clear"></div>
-                      <h4><span class="underline">Live Recording</span></h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a> </div>
-          </div>
-          <div class="element  clearfix rectangle col-half home ">
-            <div class="padding-wrapper">
-              <div class="grey-bg full-height">
-                <div class="box-parent">
-                  <div class="child">
-                    <div class="icons winner"></div>
-                    <h5 class="header"> 2nd Annual Nothing's getting better Award</h5>
-                    <p>Winner in <i>Being Fine</i><br />
-                      2023</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 home portfolio The_Crew services">
-            <div class="padding-wrapper"><a href="images/photo01b.jpg" data-title="Stuff" class="popup" data-fancybox-group="group1">
-              <figure class="images background-image3"></figure>
-              <div class="left-corner"></div>
-              <div class="right-corner"></div>
-              <div class="left-corner bottom"></div>
-              <div class="right-corner bottom"></div>
-              <div class="covering-image">
-                <div class="info-box-content">
-                  <div class="parent">
-                    <div class="child">
-                      <p class="small">The_Crew</p>
-                      <h4><span class="underline">Burn</span></h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a> </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 home contact portfolio The_Crew">
-            <div class="padding-wrapper"><a href="images/fullscreen14.jpg" data-title="us" class="popup" data-fancybox-group="group1">
-              <figure class="images background-image2"></figure>
-              <div class="left-corner"></div>
-              <div class="right-corner"></div>
-              <div class="left-corner bottom"></div>
-              <div class="right-corner bottom"></div>
-              <div class="covering-image">
-                <div class="info-box-content">
-                  <div class="parent">
-                    <div class="child">
-                      <p class="small">The_Crew</p>
-                      <div class="clear"></div>
-                      <h4><span class="underline">us</span></h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a> </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 home The_Crew">
-            <div class="padding-wrapper"><a href="gallery.html" title="">
-              <figure class="images background-image5"></figure>
-              <div class="image-caption"><i class="fa fa-folder-open"></i> 8 Images</div>
-              <div class="left-corner"></div>
-              <div class="right-corner"></div>
-              <div class="left-corner bottom"></div>
-              <div class="right-corner bottom"></div>
-              <div class="covering-image">
-                <div class="info-box-content">
-                  <div class="parent">
-                    <div class="child">
-                      <p class="small">The_Crew</p>
-                      <div class="clear"></div>
-                      <h4><span class="underline">ello</span></h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a> </div>
-          </div>
-          <div class="element  clearfix rectangle col-half home">
-            <div class="padding-wrapper">
-              <div class="grey-bg full-height">
-                <div class="box-parent">
-                  <div class="child">
-                     <div class="fa-brands fa-youtube">
-                    <p><h5 class="header">9+ Subscribers on YouTube</h5></div>
-                    <p>Follow Us Too?<br />
-                      <a href="https://www.youtube.com/@LaBMediaWork"</a></p> 
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 home about auto-mobile">
-            <div class="padding-wrapper">
-              <div class="grey-bg full-height">
-                <div class="box-parent">
-                  <div class="child">
-                    <div class="tweet-icon"><i class="fa fa-instagram"></i></div>
-                    <div class="tweets-container"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="element  clearfix rectangle col2-2 home portfolio The_Crew">
-            <div class="padding-wrapper"><a href="images/photo08b.jpg" data-title="Anthony Brass" class="popup" data-fancybox-group="group1">
-              <figure class="images background-image4"></figure>
-              <div class="left-corner"></div>
-              <div class="right-corner"></div>
-              <div class="left-corner bottom"></div>
-              <div class="right-corner bottom"></div>
-              <div class="covering-image">
-                <div class="info-box-content">
-                  <div class="parent">
-                    <div class="child">
-                      <p class="small">The_Crew</p>
-                      <div class="clear"></div>
-                      <h4><span class="underline">Artist Spotlight Shoot</span></h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a> </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 home portfolio Stuff">
-            <div class="padding-wrapper"><a href="images/photo05.jpg" data-title="Ring Light" class="popup" data-fancybox-group="group1">
-              <figure class="images background-image7"></figure>
-              <div class="left-corner"></div>
-              <div class="right-corner"></div>
-              <div class="left-corner bottom"></div>
-              <div class="right-corner bottom"></div>
-              <div class="covering-image">
-                <div class="info-box-content">
-                  <div class="parent">
-                    <div class="child">
-                      <p class="small">Artist Spotlight</p>
-                      <div class="clear"></div>
-                      <h4><span class="underline">Ring Light</span></h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a> </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 home portfolio The_Pandys">
-            <div class="padding-wrapper"><a href="images/photo10b.jpg" data-title="Sessions" class="popup" data-fancybox-group="group1">
-              <figure class="images background-image10"></figure>
-              <div class="left-corner"></div>
-              <div class="right-corner"></div>
-              <div class="left-corner bottom"></div>
-              <div class="right-corner bottom"></div>
-              <div class="covering-image">
-                <div class="info-box-content">
-                  <div class="parent">
-                    <div class="child">
-                      <p class="small">The_Pandys</p>
-                      <div class="clear"></div>
-                      <h4><span class="underline">Sessions</span></h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a> </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 home portfolio The_Crew">
-            <div class="padding-wrapper"><a href="images/photo07b.jpg" data-title="us" class="popup" data-fancybox-group="group1">
-              <figure class="images background-image9"></figure>
-              <div class="left-corner"></div>
-              <div class="right-corner"></div>
-              <div class="left-corner bottom"></div>
-              <div class="right-corner bottom"></div>
-              <div class="covering-image">
-                <div class="info-box-content">
-                  <div class="parent">
-                    <div class="child">
-                      <p class="small">The_Crew</p>
-                      <div class="clear"></div>
-                      <h4><span class="underline">us</span></h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a> </div>
-          </div>
-          <div class="element  clearfix rectangle col-half home">
-            <div class="padding-wrapper">
-              <div class="grey-bg full-height">
-                <div class="box-parent">
-                  <div class="child">
-                    <div class="icons camera"></div>
-                    <h5 class="header">Request a Quote</h5>
-                    <p>Interested in our services?<br />
-                      <a href="#contact" title="" class="splink">Contact Us!</a></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="element  clearfix rectangle col2-2 about">
-            <div class="padding-wrapper">
-              <figure class="images background-image13"></figure>
-            </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 about teaser">
-            <div class="padding-wrapper">
-              <div class="grey-bg full-height">
-                <div class="box-parent">
-                  <div class="child">
-                    <div class="signature"></div>
-                    <p>We're just a couple o dudes, trying to help people out.</p>
-                    <p>Hope you're doing well.</p>
-                    <p></p>
-                    <p><a href="mailto:Bobby@LabMediadot.com" title="">Bobby@LaBMediadot.com</a></p>
-                    <p><a href="mailto:Larry@LabMediadot.com" title="">Larry@LaBMediadot.com</a></p>
-                  </div>
-                </div>
-              </div>
-              <div class="stats">
-                <p class="alignleft"><i>Let's be Social</i></p>
-                <ul class="social-list clearfix alignright">
-                  <li> <a href="https://www.facebook.com/labmedia.work" target="_blank"><i class="fa fa-facebook"></i></a> </li>
-                  <li> <a href="https://www.youtube.com/@LaBMediaWork" target="_blank"><i class="fa fa-youtube"></i></a> </li>
-                   <li> <a href="https://twitter.com/LaBMediawork" target="_blank"><i class="fa fa-twitter"></i></a> </li>
-                  <li> <a href="https://www.instagram.com/lab_media_group" target="_blank"><i class="fa fa-instagram"></i></a> </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 services">
-            <div class="padding-wrapper">
-              <div class="grey-bg full-height">
-                <div class="box-parent">
-                  <div class="child">
-                    <div class="icons big design"></div>
-                    <h3 class="header">Standard Music Video</h3>
-                    <div class="break"></div>
-                    <p class="small">Includes</p>
-                    <ul class="unordered-list">
-                      <li><i>Filming</i></li>
-                      <li><i>Editing and Revisions</i></li>
-                      <li><i>Inquire for more</i></li>
-                    </ul>
-                    <p class="price"><span>from ~$</span>???<span class="recurrance">/Video</span></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="element  clearfix rectangle col2-2 home portfolio The_Pandys">
-            <div class="padding-wrapper"><a href="https://www.youtube.com/embed/vbjzUKmENOM?rel=0&autoplay=1&width=560&height=315" data-title="Poetry II" class="video">
-              <figure class="images background-image8"></figure>
-              <div class="image-caption"><i class="fa fa-video-camera"></i> Video</div>
-              <div class="left-corner"></div>
-              <div class="right-corner"></div>
-              <div class="left-corner bottom"></div>
-              <div class="right-corner bottom"></div>
-              <div class="covering-image">
-                <div class="info-box-content">
-                  <div class="parent">
-                    <div class="child">
-                      <p class="small">The_Pandys</p>
-                      <div class="clear"></div>
-                      <h4><span class="underline">Poetry II</span></h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a> </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 home portfolio Stuff">
-            <div class="padding-wrapper"><a href="images/photo14b.jpg" data-title="What a View" class="popup" data-fancybox-group="group1">
-              <figure class="images background-image14"></figure>
-              <div class="left-corner"></div>
-              <div class="right-corner"></div>
-              <div class="left-corner bottom"></div>
-              <div class="right-corner bottom"></div>
-              <div class="covering-image">
-                <div class="info-box-content">
-                  <div class="parent">
-                    <div class="child">
-                      <p class="small">Artist Spotlight</p>
-                      <div class="clear"></div>
-                      <h4><span class="underline">and Things</span></h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a> </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 services">
-            <div class="padding-wrapper">
-              <div class="grey-bg full-height">
-                <div class="box-parent">
-                  <div class="child">
-                    <div class="icons camera-tripod"></div>
-                    <h3 class="header">Inquire for more info & options</h3>
-                    <div class="break"></div>
-                    <p class="small">We're a start up, we get it</p>
-                    <ul class="unordered-list">
-                      <li><i>Filming and Content Creation</i></li>
-                      <li><i>Photography Bundles & Audio Recording</i></li>
-                      <li><i>Let us know what you are looking for and a budget and maybe we can work something out</i></li>
-                    </ul>
-                    <p class="price"><span>$</span>???<span class="recurrance">/Thing</span></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="element  clearfix rectangle col-half home">
-            <div class="padding-wrapper">
-              <div class="grey-bg full-height">
-                <div class="box-parent">
-                  <div class="child">
-                    <div class="icons register"></div>
-                    <h5 class="header">30% Off on Music Videos</h5>
-                    <p>For a limited time only, you can get up to <a href="#shop" class="splink" title="">30% off</a>!</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 contact">
-            <div class="padding-wrapper">
-              <div class="grey-bg full-height">
-                <div class="box-parent">
-                  <div class="child">
-                    <form class="form-part" method="post" action="contact.php" name="contactform" id="contactform" autocomplete="off">
-                      <input name="name" type="text" id="name" size="30" title="Name" />
-                      <input name="email" type="text" id="email" size="30" title="Email" />
-                      <textarea name="comments" cols="40" rows="3" id="comments" title="Your Message"></textarea>
-                      <div class="input-wrapper clearfix">
-                        <input type="submit" class="send-btn" value="Send" id="submit" name="Submit" />
-                        <span id="message"></span></div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="element  clearfix rectangle col2-2 shop">
-            <div class="padding-wrapper"><a href="shop-item.html" data-title="">
-              <figure class="images background-image1"></figure>
-              <div class="image-caption">Sale!</div>
-              <div class="left-corner"></div>
-              <div class="right-corner"></div>
-              <div class="left-corner bottom"></div>
-              <div class="right-corner bottom"></div>
-              <div class="covering-image">
-                <div class="info-box-content">
-                  <div class="parent">
-                    <div class="child">
-                      <h4><span class="underline">Live Recording</span></h4>
-                      <p><span class="line-through small">$100</span> $89.50</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a> </div>
-          </div>
-          <div class="element  clearfix rectangle col1-1 shop">
-            <div class="padding-wrapper"><a href="shop-item.html" data-title="">
-              <figure class="images background-image10"></figure>
-              <div class="left-corner"></div>
-              <div class="right-corner"></div>
-              <div class="left-corner bottom"></div>
-              <div class="right-corner bottom"></div>
-              <div class="covering-image">
-                <div class="info-box-content">
-                  <div class="parent">
-                    <div class="child">
-                      <h4><span class="underline">Sessions</span></h4>
-                      <p>$65 - $90</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a> </div>
+            <h4 class="font-bold text-xl mb-2">The Pandys Music Recording Session</h4>
+            <p class="text-gray-400">Dynamic music video showcasing the creative process and energy of a live recording session.</p>
           </div>
         </div>
-        <!-- end #container --> 
+
+        <div class="group rounded-2xl overflow-hidden bg-gray-800 hover:bg-gray-700 transition-all duration-300 fade-up">
+          <div class="aspect-video">
+            <iframe 
+              src="https://www.youtube.com/embed/CPvxM8GrCg8" 
+              title="Anthony Brass - Artist Story"
+              class="w-full h-full rounded-t-2xl"
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="p-6">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-indigo-600 text-white px-2 py-1 rounded-full text-xs font-semibold">BRAND STORY</span>
+            </div>
+            <h4 class="font-bold text-xl mb-2">Anthony Brass - The Painter</h4>
+            <p class="text-gray-400">Compelling artist documentary showcasing Anthony's creative journey and artistic process.</p>
+          </div>
+        </div>
+
+        <div class="group rounded-2xl overflow-hidden bg-gray-800 hover:bg-gray-700 transition-all duration-300 fade-up relative">
+          <div class="aspect-video">
+            <iframe 
+              src="https://www.youtube.com/embed/HtF4L9RpkaU" 
+              title="MOZ Interiors - Interior Design Showcase"
+              class="w-full h-full rounded-t-2xl"
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="p-6">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-semibold">COMMERCIAL</span>
+            </div>
+            <h4 class="font-bold text-xl mb-2">MOZ Interiors - Design Showcase</h4>
+            <p class="text-gray-400">Professional interior design showcase highlighting sophisticated spaces and design expertise.</p>
+            <a href="https://www.youtube.com/watch?v=11YzdPTPT60" target="_blank" 
+               class="inline-flex items-center gap-2 mt-4 text-sm text-green-400 hover:text-green-300 font-semibold transition-all duration-300">
+              <span>🎤</span> View Commentary Version →
+            </a>
+          </div>
+        </div>
+
+        <div class="group rounded-2xl overflow-hidden bg-gray-800 hover:bg-gray-700 transition-all duration-300 fade-up">
+          <div class="aspect-video">
+            <iframe 
+              src="https://www.youtube.com/embed/G0zfFWwQuZA" 
+              title="The Comedy Roll - Film Festival"
+              class="w-full h-full rounded-t-2xl"
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="p-6">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-red-600 text-white px-2 py-1 rounded-full text-xs font-semibold">SHORT FILM</span>
+            </div>
+            <h4 class="font-bold text-xl mb-2">The Comedy Roll - Film Festival</h4>
+            <p class="text-gray-400">Original short film showcasing narrative storytelling and comedic timing with professional production values.</p>
+          </div>
+        </div>
       </div>
-      
-      <!-- end .container --> 
+
+      <div class="mt-16 text-center fade-up">
+        <div class="inline-flex items-center gap-4 bg-gray-800/50 rounded-full px-6 py-3 border border-gray-700 hover:border-indigo-500 transition-all duration-300 group cursor-pointer" onclick="toggleDroneSection()">
+          <span class="text-2xl group-hover:animate-pulse">🚁</span>
+          <span class="text-sm text-gray-400 group-hover:text-indigo-400">Aerial Perspectives</span>
+        </div>
+        
+        <div id="drone-section" class="hidden mt-8 bg-gray-800/30 rounded-2xl p-8 max-w-4xl mx-auto border border-gray-700">
+          <h4 class="text-2xl font-bold mb-4 gradient-text">Drone Videography</h4>
+          <p class="text-gray-300 mb-6">Exploring aerial cinematography and unique perspectives. Currently building our drone portfolio.</p>
+          
+          <div class="flex items-center justify-center gap-4 mt-4">
+            <a href="https://www.youtube.com/@BobtastiCFPV" target="_blank" aria-label="YouTube Channel">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 social-icon-svg youtube" viewBox="0 0 24 24"><path d="M19.615 3.184c-1.142-.332-2.385-.567-3.69-.652-3.14-.206-6.852-.206-9.993 0C5.772 2.617 4.529 2.852 3.387 3.184A3.504 3.504 0 0 0 .918 5.65c-.242 1.455-.42 3.48-.415 5.253.004 1.773.182 3.798.424 5.253a3.504 3.504 0 0 0 2.469 2.466c1.142.332 2.385.567 3.69.652 3.14.206 6.852.206 9.993 0 1.305-.085 2.548-.32 3.69-.652a3.504 3.504 0 0 0 2.469-2.466c.242-1.455.42-3.48.415-5.253-.004-1.773-.182-3.798-.424-5.253A3.504 3.504 0 0 0 19.615 3.184zM9.545 15.394V8.606L15.4 12l-5.855 3.394z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/bob.tastic/" target="_blank" aria-label="Instagram Profile">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 social-icon-svg instagram" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07c3.252.148 4.675 1.624 4.823 4.823.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.148 3.252-1.624 4.675-4.823 4.823-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.675-1.624-4.823-4.823-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.148-3.252 1.624-4.675 4.823-4.823 1.266-.058 1.646-.07 4.85-.07zM12 4.163c-3.09 0-3.475.01-4.706.068-2.61.119-3.743 1.233-3.864 3.864-.058 1.231-.068 1.616-.068 4.706s.01 3.475.068 4.706c.121 2.631 1.254 3.744 3.864 3.864 1.231.058 1.616.068 4.706.068s3.475-.01 4.706-.068c2.61-.121 3.743-1.233 3.864-3.864.058-1.231.068-1.616.068-4.706s-.01-3.475-.068-4.706c-.121-2.631-1.254-3.744-3.864-3.864-1.231-.058-1.616-.068-4.706-.068zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm6.5-.5a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- end content --> 
-  </div>
-  <!-- end content-wrapper --> 
-</div>
-<!-- end wrap -->
-<footer id="footer">
-  <div class="container clearfix">
-    <p>© 2023, LaB Media<br />
-      <i class="fa-solid fa-flask"></i></a>.</p>
-  </div>
-</footer>
-<script src="js/jquery-1.11.2.min.js" type="text/javascript"></script> 
-<script src="js/jquery-easing-1.3.js" type="text/javascript"></script> 
-<script src="js/jquery.touchSwipe.min.js" type="text/javascript"></script> 
-<script src="js/jquery.isotope2.min.js" type="text/javascript"></script> 
-<script src="js/jquery.ba-bbq.min.js" type="text/javascript"></script> 
-<script src="js/packery-mode.pkgd.min.js" type="text/javascript"></script> 
-<script src="js/jquery.isotope.load.js" type="text/javascript"></script> 
-<script src="js/main2.js" type="text/javascript"></script> 
-<script src="js/jquery.form.js" type="text/javascript"></script> 
-<script src="js/input.fields.js" type="text/javascript"></script> 
-<script src="js/preloader.js" type="text/javascript"></script> 
-<script src="js/jquery.fancybox.pack.js" type="text/javascript"></script> 
-<script src="js/bootstrap.min.js" type="text/javascript"></script> 
-<script src="js/twitterfetch.js" type="text/javascript"></script> 
-<script src="js/tweets.js" type="text/javascript"></script>
-<script src="https://kit.fontawesome.com/84f8aece5c.js" crossorigin="anonymous"></script>
+  </section>
+
+  <section id="contact" class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <h3 class="text-4xl md:text-5xl font-bold text-center mb-16 fade-up">
+        Let's <span class="gradient-text">Create Together</span>
+      </h3>
+      
+      <div class="grid lg:grid-cols-2 gap-12">
+        <div class="fade-up">
+          <form id="contact-form" class="bg-gray-900/50 rounded-2xl p-8 border border-gray-800 space-y-6">
+            <div>
+              <label for="name" class="block text-sm font-medium mb-2">Name</label>
+              <input type="text" id="name" placeholder="Your name" class="w-full border border-gray-700 bg-black/50 text-white rounded-lg px-4 py-3 focus:border-indigo-500 focus:outline-none transition" required>
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium mb-2">Email</label>
+              <input type="email" id="email" placeholder="your.email@example.com" class="w-full border border-gray-700 bg-black/50 text-white rounded-lg px-4 py-3 focus:border-indigo-500 focus:outline-none transition" required>
+            </div>
+            <div>
+              <label for="project-type" class="block text-sm font-medium mb-2">Project Type</label>
+              <select id="project-type" class="w-full border border-gray-700 bg-black/50 text-white rounded-lg px-4 py-3 focus:border-indigo-500 focus:outline-none transition" required>
+                <option value="">Select a project type...</option>
+                <option value="short-film">Short Film</option>
+                <option value="music-video">Music Video</option>
+                <option value="photography">Photography</option>
+                <option value="audio-recording">Audio Recording</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label for="message" class="block text-sm font-medium mb-2">Message</label>
+              <textarea id="message" rows="4" placeholder="Tell us about your project..." class="w-full border border-gray-700 bg-black/50 text-white rounded-lg px-4 py-3 focus:border-indigo-500 focus:outline-none transition" required></textarea>
+            </div>
+            <button type="submit" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-8 py-3 rounded-lg font-semibold w-full transform hover:scale-105 transition-all duration-300">
+              Send Message
+            </button>
+          </form>
+        </div>
+        
+        <div class="flex flex-col justify-center space-y-8 fade-up">
+          <div>
+            <h4 class="text-2xl font-bold mb-4 gradient-text">Get In Touch</h4>
+            <p class="text-gray-300 mb-6 leading-relaxed">
+              Ready to bring your creative vision to life? We're based in Shelby Township and work with clients throughout Michigan and beyond.
+            </p>
+          </div>
+          
+          <div class="space-y-4">
+            <div class="flex items-center space-x-4">
+              <div class="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
+                <span class="text-xl">📍</span>
+              </div>
+              <div>
+                <p class="font-semibold">Location</p>
+                <p class="text-gray-400">Shelby Township, Michigan</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+              <div class="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
+                <span class="text-xl">✉️</span>
+              </div>
+              <div>
+                <p class="font-semibold">Email</p>
+                <a href="mailto:Bobby@LaBmediadot.com" class="text-indigo-400 hover:text-indigo-300 transition">Bobby@LaBmediadot.com</a>
+              </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+              <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span class="text-xl">📞</span>
+              </div>
+              <div>
+                <p class="font-semibold">Phone</p>
+                <a href="tel:3139237444" class="text-indigo-400 hover:text-indigo-300 transition">(313) 923-7444</a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="pt-6 border-t border-gray-800">
+            <p class="text-sm text-gray-500">
+              Response time: We typically respond within 24 hours
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-black/50 border-t border-gray-800 py-8">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex flex-col sm:flex-row justify-between items-center text-center sm:text-left space-y-4 sm:space-y-0">
+        <div class="text-gray-400">© 2025 LaB Media. All rights reserved.</div>
+        <div class="flex space-x-4">
+          <a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" aria-label="YouTube Channel">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 social-icon-svg youtube" viewBox="0 0 24 24"><path d="M19.615 3.184c-1.142-.332-2.385-.567-3.69-.652-3.14-.206-6.852-.206-9.993 0C5.772 2.617 4.529 2.852 3.387 3.184A3.504 3.504 0 0 0 .918 5.65c-.242 1.455-.42 3.48-.415 5.253.004 1.773.182 3.798.424 5.253a3.504 3.504 0 0 0 2.469 2.466c1.142.332 2.385.567 3.69.652 3.14.206 6.852.206 9.993 0 1.305-.085 2.548-.32 3.69-.652a3.504 3.504 0 0 0 2.469-2.466c.242-1.455.42-3.48.415-5.253-.004-1.773-.182-3.798-.424-5.253A3.504 3.504 0 0 0 19.615 3.184zM9.545 15.394V8.606L15.4 12l-5.855 3.394z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/thisislabmedia/" target="_blank" aria-label="Instagram Profile">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 social-icon-svg instagram" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07c3.252.148 4.675 1.624 4.823 4.823.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.148 3.252-1.624 4.675-4.823 4.823-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.675-1.624-4.823-4.823-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.148-3.252 1.624-4.675 4.823-4.823 1.266-.058 1.646-.07 4.85-.07zM12 4.163c-3.09 0-3.475.01-4.706.068-2.61.119-3.743 1.233-3.864 3.864-.058 1.231-.068 1.616-.068 4.706s.01 3.475.068 4.706c.121 2.631 1.254 3.744 3.864 3.864 1.231.058 1.616.068 4.706.068s3.475-.01 4.706-.068c2.61-.121 3.743-1.233 3.864-3.864.058-1.231.068-1.616.068-4.706s-.01-3.475-.068-4.706c-.121-2.631-1.254-3.744-3.864-3.864-1.231-.058-1.616-.068-4.706-.068zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm6.5-.5a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Intersection Observer for fade-up animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-up').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Mobile menu functionality
+    const mobileMenuOpenBtn = document.getElementById('mobile-menu-open');
+    const mobileMenuCloseBtn = document.getElementById('mobile-menu-close');
+    const mobileNav = document.getElementById('mobile-nav');
+
+    mobileMenuOpenBtn.addEventListener('click', () => {
+      mobileNav.classList.add('open');
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
+    });
+
+    mobileMenuCloseBtn.addEventListener('click', () => {
+      closeMobileMenu();
+    });
+    
+    function closeMobileMenu() {
+      mobileNav.classList.remove('open');
+      document.body.style.overflow = ''; // Restore scrolling
+    }
+
+    // Toggle drone section
+    function toggleDroneSection() {
+      const droneSection = document.getElementById('drone-section');
+      droneSection.classList.toggle('hidden');
+    }
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Add scroll effect to navigation
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 100) {
+        nav.classList.add('shadow-lg');
+      } else {
+        nav.classList.remove('shadow-lg');
+      }
+    });
+
+    // Contact form validation (client-side)
+    const contactForm = document.getElementById('contact-form');
+    contactForm.addEventListener('submit', function(event) {
+      const nameInput = document.getElementById('name');
+      const emailInput = document.getElementById('email');
+      const projectTypeInput = document.getElementById('project-type');
+      const messageInput = document.getElementById('message');
+      
+      let isValid = true;
+      
+      // Basic validation checks
+      if (nameInput.value.trim() === '') {
+        alert('Please enter your name.');
+        isValid = false;
+      } else if (!emailInput.value.includes('@') || !emailInput.value.includes('.')) {
+        alert('Please enter a valid email address.');
+        isValid = false;
+      } else if (projectTypeInput.value === '') {
+        alert('Please select a project type.');
+        isValid = false;
+      } else if (messageInput.value.trim() === '') {
+        alert('Please enter a message about your project.');
+        isValid = false;
+      }
+
+      if (!isValid) {
+        event.preventDefault(); // Prevent form submission if not valid
+      } else {
+        alert('Form submitted successfully!'); // Placeholder for a real backend submission
+        // In a real application, you would send the data to a server here.
+      }
+    });
+  </script>
+
 </body>
 </html>
