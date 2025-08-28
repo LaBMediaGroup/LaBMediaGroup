@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="LaB Media is a creative studio in Shelby Township, Michigan, specializing in professional film and photography production. We bring your stories to life.">
+  <meta name="description" content="LaB Media is a creative studio in Shelby Township, Michigan, specializing in professional film, music, and photography production. We bring your stories to life.">
   <title>LaB Media - Creative Studio | Shelby Township, MI</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -27,7 +27,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: gradient-shift 10s ease-in-out infinite;
+      animation: gradient-shift 15s ease-in-out infinite;
       background-size: 200% 200%;
     }
     
@@ -61,6 +61,48 @@
     }
     #mobile-nav.open {
       transform: translateX(0);
+    }
+    
+    /* Animated Gradient Border Button */
+    .animated-border-btn {
+      position: relative;
+      background-color: transparent;
+      transition: transform 0.3s ease-in-out;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .animated-border-btn:hover {
+      transform: scale(1.05);
+    }
+    .animated-border-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      padding: 3px;
+      background: linear-gradient(45deg, #667eea, #764ba2, #667eea, #764ba2);
+      background-size: 400% 400%;
+      border-radius: 9999px;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: border-swirl 8s linear infinite;
+      z-index: -1;
+    }
+    @keyframes border-swirl {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    /* Smooth Drone Section Toggle */
+    #drone-section {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-out;
+    }
+    #drone-section.open {
+        max-height: 1000px; /* Adjust based on content size */
+        transition: max-height 0.8s ease-in;
     }
 
     /* Social icons */
@@ -113,7 +155,7 @@
 <body class="bg-black text-white font-sans overflow-x-hidden">
 
   <div id="loading-screen" class="loading-screen">
-    <p class="text-white text-xs md:text-sm loading-text">Contemplating...</p>
+    <p id="loading-message" class="text-white text-xs md:text-sm loading-text">Loading...</p>
   </div>
 
   <div id="main-content" class="opacity-0 transition-opacity duration-1000">
@@ -167,13 +209,13 @@
           <span class="gradient-text">LaB Media</span>
         </h1>
         <p class="text-lg md:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto mb-8 fade-up leading-relaxed">
-          Creative studio bringing stories to life through film & photography in Shelby Township, Michigan.
+          Creative studio bringing stories to life through film, music, and photography in Shelby Township, Michigan.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center fade-up">
           <a href="#portfolio" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 px-8 py-4 rounded-full font-semibold shadow-lg transform hover:scale-105 transition-all duration-300">
             View Our Work
           </a>
-          <a href="#contact" class="border border-indigo-400 text-indigo-400 hover:bg-indigo-400 hover:text-black px-8 py-4 rounded-full font-semibold transition-all duration-300">
+          <a href="#contact" class="animated-border-btn px-8 py-4 rounded-full font-semibold transition-all duration-300">
             Get in Touch
           </a>
         </div>
@@ -215,13 +257,34 @@
             <div class="text-5xl mb-4">🎙️</div>
             <h3 class="text-2xl font-bold mb-4">Audio Recording</h3>
             <p class="text-gray-300 leading-relaxed">
-              High-quality recording & Interviewing sessions with professional-grade equipment.
+              High-quality recording and mixing sessions at our Shelby Township studio with professional-grade equipment.
             </p>
           </div>
         </div>
       </div>
     </section>
 
+    <div class="text-center mt-16 fade-up">
+        <div class="bg-gradient-to-r from-gray-800 to-gray-700 rounded-2xl p-8 max-w-2xl mx-auto">
+          <h4 class="text-2xl font-bold mb-4">Ready to Create Your Story?</h4>
+          <p class="text-gray-300 mb-6">From music videos to brand stories, we bring your vision to life with professional quality and creative storytelling.</p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="#contact" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-8 py-3 rounded-full font-semibold inline-flex items-center gap-2 transform hover:scale-105 transition-all duration-300">
+              Start Your Project
+              <span>→</span>
+            </a>
+            <div class="flex items-center justify-center gap-4">
+              <a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" aria-label="YouTube Channel">
+                <img src="images/youtube-color-svgrepo-com.svg" alt="YouTube" class="w-8 h-8 transition hover:scale-110">
+              </a>
+              <a href="https://www.instagram.com/thisislabmedia/" target="_blank" aria-label="Instagram Profile">
+                <img src="images/instagram-1-svgrepo-com.svg" alt="Instagram" class="w-8 h-8 transition hover:scale-110">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    
     <section id="portfolio" class="py-20 bg-gray-900/50 px-6">
       <div class="max-w-7xl mx-auto">
         <h3 class="text-4xl md:text-5xl font-bold text-center mb-16 fade-up">
@@ -245,7 +308,7 @@
                 <span class="bg-purple-600 text-white px-2 py-1 rounded-full text-xs font-semibold">MUSIC VIDEO</span>
               </div>
               <h4 class="font-bold text-xl mb-2">The Pandys Music Recording Session</h4>
-              <p class="text-gray-400">Dynamic music video showcasing the creative process and energy of a practice session.</p>
+              <p class="text-gray-400">Dynamic music video showcasing the creative process and energy of a live recording session.</p>
             </div>
           </div>
 
@@ -316,7 +379,7 @@
 
         <div class="mt-16 text-center fade-up">
           <div class="inline-flex items-center gap-4 bg-gray-800/50 rounded-full px-6 py-3 border border-gray-700 hover:border-indigo-500 transition-all duration-300 group cursor-pointer" onclick="toggleDroneSection()">
-            <span class="2xl group-hover:animate-pulse">🚁</span>
+            <img src="images/drone-svgrepo-com.svg" alt="Drone Icon" class="w-8 h-8 transition hover:scale-110">
             <span class="text-sm text-gray-400 group-hover:text-indigo-400">Aerial Perspectives</span>
           </div>
           
@@ -345,26 +408,6 @@
           </div>
         </div>
         
-        <div class="text-center mt-16 fade-up">
-          <div class="bg-gradient-to-r from-gray-800 to-gray-700 rounded-2xl p-8 max-w-2xl mx-auto">
-            <h4 class="2xl font-bold mb-4">Ready to Create Your Story?</h4>
-            <p class="text-gray-300 mb-6">From music videos to brand stories, we bring your vision to life with professional quality and creative storytelling.</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a href="#contact" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-8 py-3 rounded-full font-semibold inline-flex items-center gap-2 transform hover:scale-105 transition-all duration-300">
-                Start Your Project
-                <span>→</span>
-              </a>
-              <div class="flex items-center justify-center gap-4">
-                <a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" aria-label="YouTube Channel">
-                  <img src="images/youtube-color-svgrepo-com.svg" alt="YouTube" class="w-8 h-8 transition hover:scale-110">
-                </a>
-                <a href="https://www.instagram.com/thisislabmedia/" target="_blank" aria-label="Instagram Profile">
-                  <img src="images/instagram-1-svgrepo-com.svg" alt="Instagram" class="w-8 h-8 transition hover:scale-110">
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
 
       <section id="contact" class="py-20 px-6">
@@ -406,8 +449,8 @@
             </div>
             
             <div class="flex flex-col justify-center space-y-8 fade-up">
-              <div class="flex justify-end fade-up">
-                <img src="images/TheLaBVertTop.png" alt="The LaB Logo" class="w-32 h-auto mt-2" />
+              <div class="flex justify-end pr-12 mt-2">
+                <img src="images/TheLaBVertTop.png" alt="The LaB Logo" class="w-48 h-auto" />
               </div>
               <div>
                 <h4 class="text-2xl font-bold mb-4 gradient-text">Get In Touch</h4>
@@ -477,9 +520,23 @@
   
   <script>
     // Fades out the loading screen and shows the main content
+    const loadingMessages = [
+        'Adjusting lenses...',
+        'Tuning audio...',
+        'Directing vibes...'
+    ];
+    let messageIndex = 0;
+    const loadingMessageElement = document.getElementById('loading-message');
+    const messageInterval = setInterval(() => {
+        messageIndex = (messageIndex + 1) % loadingMessages.length;
+        loadingMessageElement.textContent = loadingMessages[messageIndex];
+    }, 1500); // Change message every 1.5 seconds
+
     window.addEventListener('load', () => {
       const loadingScreen = document.getElementById('loading-screen');
       const mainContent = document.getElementById('main-content');
+      
+      clearInterval(messageInterval);
       
       // Add 'hidden' class to trigger the fade-out
       loadingScreen.classList.add('hidden');
