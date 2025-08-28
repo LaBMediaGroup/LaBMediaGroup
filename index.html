@@ -590,33 +590,12 @@
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
-        const startPosition = window.pageYOffset;
-        const targetPosition = target.getBoundingClientRect().top + startPosition;
-        const distance = targetPosition - startPosition;
-        const duration = 1500; // 1500 milliseconds for a slower scroll
-        let start = null;
-
-        function step(timestamp) {
-            if (!start) start = timestamp;
-            const progress = timestamp - start;
-            window.scrollTo(0, easeInOutCubic(progress, startPosition, distance, duration));
-            if (progress < duration) {
-                window.requestAnimationFrame(step);
-            }
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
         }
-        
-        // Easing function for a smoother, non-linear scroll
-        function easeInOutCubic(t, b, c, d) {
-            t /= d / 2;
-            if (t < 1) return c / 2 * t * t * t + b;
-            t -= 2;
-            return c / 2 * (t * t * t + 2) + b;
-        };
-
-        window.requestAnimationFrame(step);
-        
-        // Close mobile menu if open
-        closeMobileMenu();
       });
     });
 
