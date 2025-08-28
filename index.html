@@ -8,10 +8,27 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* Custom cursor */
-    body, a, button {
-      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"><circle cx="6" cy="6" r="4" fill="%23FFFFFF" stroke="%23667eea" stroke-width="1"/></svg>') 6 6, auto;
+    body {
+      cursor: none;
     }
-    
+    .custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #ffffff;
+      pointer-events: none;
+      transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+    }
+    .hover-dot {
+        background: rgba(102, 126, 234, 0.5);
+        transform: translate(-50%, -50%) scale(1.5);
+    }
+
     /* Custom animations */
     .fade-up { 
       opacity: 0; 
@@ -53,6 +70,10 @@
       background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
       transform: translateY(-8px);
     }
+
+    .service-card {
+        transition: all 0.3s ease-in-out;
+    }
     
     /* Navigation */
     .nav-blur {
@@ -64,6 +85,8 @@
     #mobile-nav {
       transition: transform 0.3s ease-in-out;
       transform: translateX(100%);
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(12px);
     }
     #mobile-nav.open {
       transform: translateX(0);
@@ -110,7 +133,7 @@
         max-height: 1000px; /* Adjust based on content size */
         transition: max-height 0.8s ease-in;
     }
-    
+
     /* Back to top button */
     #back-to-top {
         transition: opacity 0.3s ease-in-out;
@@ -149,6 +172,8 @@
   </style>
 </head>
 <body class="bg-black text-white font-sans overflow-x-hidden">
+
+  <div class="custom-cursor"></div>
 
   <div id="loading-screen" class="loading-screen">
     <p id="loading-message" class="text-white text-xs md:text-sm loading-text">Contemplating...</p>
@@ -551,6 +576,8 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('show');
+        } else {
+          entry.target.classList.remove('show');
         }
       });
     }, observerOptions);
