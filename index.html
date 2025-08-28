@@ -46,6 +46,7 @@
     /* Hover effects */
     .service-card:hover {
       background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      transform: translateY(-8px);
     }
     
     /* Navigation */
@@ -104,6 +105,15 @@
         max-height: 1000px; /* Adjust based on content size */
         transition: max-height 0.8s ease-in;
     }
+    
+    /* Back to top button */
+    #back-to-top {
+        transition: opacity 0.3s ease-in-out;
+        opacity: 0;
+    }
+    #back-to-top.show {
+        opacity: 1;
+    }
 
     /* Loading screen */
     .loading-screen {
@@ -136,8 +146,14 @@
 <body class="bg-black text-white font-sans overflow-x-hidden">
 
   <div id="loading-screen" class="loading-screen">
-    <p id="loading-message" class="text-white text-xs md:text-sm loading-text">Contemplating...</p>
+    <p id="loading-message" class="text-white text-xs md:text-sm loading-text">Loading...</p>
   </div>
+
+  <a id="back-to-top" href="#home" class="fixed bottom-6 right-6 z-40 p-4 rounded-full bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700 text-indigo-400 transition-all duration-300 transform hover:scale-110">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+    </svg>
+  </a>
 
   <div id="main-content" class="opacity-0 transition-opacity duration-1000">
   
@@ -476,7 +492,7 @@
       <footer class="bg-black/50 border-t border-gray-800 py-8">
         <div class="max-w-6xl mx-auto px-6">
           <div class="flex flex-col sm:flex-row justify-between items-center text-center sm:text-left space-y-4 sm:space-y-0">
-            <p class="text-gray-400">Made with ❤️ in Shelby Twp, MI</p>
+            <p class="text-gray-400">Made with ❤️ in Shelby Twp</p>
             <div class="flex space-x-4">
               <a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" aria-label="YouTube Channel">
                 <img src="images/youtube-color-svgrepo-com.svg" alt="YouTube" class="w-6 h-6 transition hover:scale-110">
@@ -586,6 +602,16 @@
       } else {
         nav.classList.remove('shadow-lg');
       }
+    });
+
+    // Back to top button visibility
+    window.addEventListener('scroll', () => {
+        const backToTopBtn = document.getElementById('back-to-top');
+        if (window.scrollY > 400) { // Show after 400px
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
     });
 
     // Contact form validation (client-side)
