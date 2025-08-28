@@ -551,9 +551,6 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('show');
-        } else {
-          // This is the new part for the iOS-like jiggle
-          entry.target.classList.remove('show');
         }
       });
     }, observerOptions);
