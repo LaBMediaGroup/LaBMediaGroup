@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaB Media - Project Planner TEST</title>
+    <style>
+        body {
+            background: #000;
+            color: #fff;
+            font-family: sans-serif;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>LaB Media Project Planner - Loading Test</h1>
+    <p>If you see this, the HTML is loading correctly.</p>
+    <p>Testing image path:</p>
+    <img src="images/BlackBeaker.png" alt="Test" style="width: 50px;" onerror="this.style.display='none'; document.getElementById('error').innerHTML='❌ Image not found at images/BlackBeaker.png'">
+    <p id="error"></p>
+    
+    <h2>Testing React:</h2>
+    <div id="root"></div>
+    
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script type="text/babel">
+        const { useState } = React;
+        
+        function TestApp() {
+            const [count, setCount] = useState(0);
+            return (
+                <div>
+                    <h3>✅ React is working!</h3>
+                    <button onClick={() => setCount(count + 1)} style={{padding: '10px', cursor: 'pointer'}}>
+                        Clicked {count} times
+                    </button>
+                </div>
+            );
+        }
+        
+        ReactDOM.render(<TestApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>
