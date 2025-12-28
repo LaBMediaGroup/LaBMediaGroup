@@ -302,7 +302,7 @@
           </div>
         </div>
 
-        <!-- process strip (keeps it premium without adding “content”) -->
+        <!-- process strip -->
         <div class="mt-12 fade-up">
           <div class="mx-auto max-w-4xl rounded-2xl border border-gray-800 bg-gray-900/30 p-6 text-center">
             <p class="text-sm text-gray-400 mb-3">Simple process</p>
@@ -317,7 +317,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </section>
 
@@ -444,7 +443,8 @@
             <span class="text-sm text-gray-400 group-hover:text-indigo-400">Aerial Perspectives</span>
           </button>
 
-          <div id="drone-section" class="mt-8 bg-gray-800/30 rounded-2xl p-8 max-w-4xl mx-auto border border-gray-700">
+          <!-- ✅ STARTS HIDDEN so “Drone Videography” isn't visible until expanded -->
+          <div id="drone-section" class="hidden mt-8 bg-gray-800/30 rounded-2xl p-8 max-w-4xl mx-auto border border-gray-700">
             <h4 class="text-2xl font-bold mb-4 gradient-text">Drone Videography</h4>
             <div class="aspect-video rounded-lg overflow-hidden mb-6">
               <iframe
@@ -610,11 +610,9 @@
 
   </div><!-- /main-content -->
 
-
   <!-- ✅ ElevenLabs Agent (load ONCE, near end of body) -->
   <elevenlabs-convai agent-id="agent_7801kdhgsr5kf0x912w7wdxrm532"></elevenlabs-convai>
   <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
-
 
   <script>
     // ========= Loading Screen =========
@@ -714,13 +712,31 @@
       else backToTopBtn.classList.remove('show');
     });
 
-    // ========= Drone section toggle (now actually animates) =========
+    // ========= Drone section toggle (HIDDEN when closed + smooth expand) =========
     const droneToggle = document.getElementById('drone-toggle');
     const droneSection = document.getElementById('drone-section');
 
     droneToggle.addEventListener('click', () => {
-      const isOpen = droneSection.classList.toggle('open');
-      droneToggle.setAttribute('aria-expanded', String(isOpen));
+      const isHidden = droneSection.classList.contains('hidden');
+
+      if (isHidden) {
+        // OPEN
+        droneSection.classList.remove('hidden');
+
+        // iOS Safari: force reflow so transition triggers
+        void droneSection.offsetHeight;
+
+        droneSection.classList.add('open');
+        droneToggle.setAttribute('aria-expanded', 'true');
+      } else {
+        // CLOSE
+        droneSection.classList.remove('open');
+        droneToggle.setAttribute('aria-expanded', 'false');
+
+        setTimeout(() => {
+          droneSection.classList.add('hidden');
+        }, 800); // match CSS transition duration
+      }
     });
 
     // ========= Custom cursor (desktop only) =========
@@ -736,7 +752,6 @@
         cursorEl.style.top = `${e.clientY}px`;
       });
 
-      // Slight scale on click = satisfying
       document.addEventListener('mousedown', () => cursorEl.style.transform = 'translate(-50%, -50%) scale(0.85)');
       document.addEventListener('mouseup', () => cursorEl.style.transform = 'translate(-50%, -50%) scale(1)');
     }
@@ -770,7 +785,6 @@
         event.preventDefault();
         return;
       }
-      // Otherwise, let Formspree handle the submission.
     });
   </script>
 
