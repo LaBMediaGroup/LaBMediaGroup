@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Plan your video project with LaB Media - Get started with our interactive project planner." />
+  <title>Plan Your Project | LaB Media</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html { scroll-behavior: smooth; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #000;
+      color: #ffffff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    .bebas {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 0.05em;
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a0f2e 50%, #0a0a0a 100%);
+      position: relative;
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #7c73ff 0%, #b18cff 60%, #7c73ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: gradient-shift 16s ease-in-out infinite;
+    }
+    
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .glow-text {
+      text-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+    }
+    
+    .card {
+      background: rgba(26, 15, 46, 0.4);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.1);
+    }
+    
+    input, textarea, select {
+      background: rgba(10, 10, 10, 0.6);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 12px 16px;
+      width: 100%;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: rgba(139, 92, 246, 0.6);
+      box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+    }
+    
+    input::placeholder, textarea::placeholder {
+      color: rgba(156, 163, 175, 0.5);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+      font-size: 16px;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+    }
+    
+    .btn-secondary {
+      background: rgba(99, 102, 241, 0.1);
+      color: #a78bfa;
+      padding: 10px 24px;
+      border-radius: 8px;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(99, 102, 241, 0.2);
+      border-color: rgba(139, 92, 246, 0.5);
+    }
+    
+    .progress-bar {
+      height: 4px;
+      background: rgba(99, 102, 241, 0.2);
+      border-radius: 2px;
+      overflow: hidden;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #6366f1, #8b5cf6);
+      transition: width 0.4s ease;
+      box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+    }
+    
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(99, 102, 241, 0.1);
+      border: 2px solid rgba(99, 102, 241, 0.3);
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+    
+    .step-indicator.active {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-color: transparent;
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+    }
+    
+    .step-indicator.completed {
+      background: rgba(99, 102, 241, 0.2);
+      border-color: rgba(99, 102, 241, 0.5);
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(10, 10, 10, 0.4);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .checkbox-wrapper:hover {
+      background: rgba(99, 102, 241, 0.05);
+      border-color: rgba(99, 102, 241, 0.4);
+    }
+    
+    .checkbox-wrapper input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #8b5cf6;
+    }
+
+    .nav-blur {
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.72);
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="gradient-bg">
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="fixed top-0 w-full z-50 nav-blur transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-6 py-4">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="transition hover:opacity-80" aria-label="LaB Media Home">
+          <img src="images/WhiteBeakerLogo.png" alt="LaB Media Logo" class="w-10 h-auto" />
+        </a>
+        <a href="index.html" class="text-sm text-white/80 hover:text-white transition">
+          ← Back to Home
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    function VideoProjectPlanner() {
+      const [currentStep, setCurrentStep] = useState(1);
+      const [isSubmitting, setIsSubmitting] = useState(false);
+      const [formData, setFormData] = useState({
+        // Step 1: Project Basics
+        projectType: '',
+        projectName: '',
+        description: '',
+        
+        // Step 2: Vision & Style
+        visualStyle: [],
+        mood: '',
+        references: '',
+        
+        // Step 3: Logistics
+        shootLocation: '',
+        shootDate: '',
+        duration: '',
+        budget: '',
+        
+        // Step 4: Deliverables
+        deliverables: [],
+        formats: [],
+        timeline: '',
+        
+        // Step 5: Contact
+        name: '',
+        email: '',
+        phone: '',
+        company: '',
+        additionalNotes: ''
+      });
+
+      const totalSteps = 5;
+
+      useEffect(() => {
+        const progress = (currentStep / totalSteps) * 100;
+        document.getElementById('progressFill').style.width = `${progress}%`;
+      }, [currentStep]);
+
+      const handleInputChange = (field, value) => {
+        setFormData(prev => ({
+          ...prev,
+          [field]: value
+        }));
+      };
+
+      const handleArrayToggle = (field, value) => {
+        setFormData(prev => ({
+          ...prev,
+          [field]: prev[field].includes(value)
+            ? prev[field].filter(item => item !== value)
+            : [...prev[field], value]
+        }));
+      };
+
+      const nextStep = () => {
+        if (currentStep < totalSteps) {
+          setCurrentStep(prev => prev + 1);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      };
+
+      const prevStep = () => {
+        if (currentStep > 1) {
+          setCurrentStep(prev => prev - 1);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      };
+
+      const handleSubmit = async () => {
+        // Validate required fields
+        if (!formData.name || !formData.email) {
+          alert('Please fill in your name and email to continue.');
+          return;
+        }
+
+        setIsSubmitting(true);
+
+        // Format the data for Formspree
+        const formattedData = {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || 'Not provided',
+          company: formData.company || 'Not provided',
+          projectType: formData.projectType,
+          projectName: formData.projectName || 'Not specified',
+          description: formData.description,
+          visualStyle: formData.visualStyle.join(', ') || 'Not specified',
+          mood: formData.mood || 'Not specified',
+          references: formData.references || 'None provided',
+          shootLocation: formData.shootLocation || 'TBD',
+          shootDate: formData.shootDate || 'Flexible',
+          duration: formData.duration || 'Not specified',
+          budget: formData.budget || 'Not specified',
+          deliverables: formData.deliverables.join(', ') || 'To be discussed',
+          formats: formData.formats.join(', ') || 'To be discussed',
+          timeline: formData.timeline || 'Flexible',
+          additionalNotes: formData.additionalNotes || 'None'
+        };
+
+        try {
+          // Send to Formspree (same endpoint as your contact form)
+          const response = await fetch('https://formspree.io/f/mkgvggge', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              ...formattedData,
+              _subject: `New Project Plan: ${formattedData.projectType} - ${formattedData.name}`
+            })
+          });
+
+          if (response.ok) {
+            alert('Project plan submitted successfully! We\'ll review your details and reach out within 1-2 business days.');
+            // Reset form
+            window.location.href = 'index.html#contact';
+          } else {
+            throw new Error('Submission failed');
+          }
+        } catch (error) {
+          alert('There was an issue submitting your project plan. Please try again or contact us directly at Bobby@LaBmediadot.com');
+        } finally {
+          setIsSubmitting(false);
+        }
+      };
+
+      const projectTypes = [
+        'Commercial / Brand Video',
+        'Music Video',
+        'Event Coverage',
+        'Documentary',
+        'Product Photography',
+        'Corporate / Training',
+        'Social Media Content',
+        'Other'
+      ];
+
+      const visualStyles = [
+        'Cinematic',
+        'Documentary',
+        'Minimalist',
+        'Energetic / Fast-paced',
+        'Moody / Dark',
+        'Bright / Airy',
+        'Vintage / Film',
+        'Modern / Tech'
+      ];
+
+      const deliverableOptions = [
+        'Full-length video (2-5 min)',
+        'Short-form edits (30-60s)',
+        'Social media cuts (15-30s)',
+        'Behind-the-scenes content',
+        'Raw footage',
+        'Photography stills',
+        'Promotional graphics'
+      ];
+
+      const formatOptions = [
+        '16:9 (YouTube, Web)',
+        '9:16 (Instagram Stories, TikTok)',
+        '1:1 (Instagram Feed)',
+        '4:5 (Instagram Portrait)',
+        'Custom aspect ratio'
+      ];
+
+      return (
+        <div className="min-h-screen py-24 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-12 fade-in">
+              <h1 className="bebas text-6xl mb-4 glow-text">
+                Plan Your Project
+              </h1>
+              <p className="text-gray-400 text-lg">
+                Let's bring your story to life—clean, cinematic, and intentional.
+              </p>
+            </div>
+
+            {/* Step Indicators */}
+            <div className="flex justify-center items-center gap-4 mb-12">
+              {[1, 2, 3, 4, 5].map((step) => (
+                <div key={step} className="flex items-center">
+                  <div className={`step-indicator ${currentStep === step ? 'active' : ''} ${currentStep > step ? 'completed' : ''}`}>
+                    {step}
+                  </div>
+                  {step < 5 && (
+                    <div className={`w-12 h-0.5 mx-2 ${currentStep > step ? 'bg-indigo-500' : 'bg-gray-700'}`} />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Form Steps */}
+            <div className="card p-8 mb-8 fade-in">
+              {currentStep === 1 && (
+                <div>
+                  <h2 className="bebas text-3xl mb-6 text-indigo-300">Project Basics</h2>
+                  
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        What type of project is this?
+                      </label>
+                      <select
+                        value={formData.projectType}
+                        onChange={(e) => handleInputChange('projectType', e.target.value)}
+                      >
+                        <option value="">Select a project type</option>
+                        {projectTypes.map(type => (
+                          <option key={type} value={type}>{type}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Project name (if you have one)
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.projectName}
+                        onChange={(e) => handleInputChange('projectName', e.target.value)}
+                        placeholder="e.g., Summer Collection Launch, Artist EP Release"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Tell us about your project
+                      </label>
+                      <textarea
+                        value={formData.description}
+                        onChange={(e) => handleInputChange('description', e.target.value)}
+                        rows="5"
+                        placeholder="What's the story? What message do you want to convey? Who's the audience?"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {currentStep === 2 && (
+                <div>
+                  <h2 className="bebas text-3xl mb-6 text-indigo-300">Vision & Style</h2>
+                  
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-3">
+                        Visual style (select all that apply)
+                      </label>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {visualStyles.map(style => (
+                          <label key={style} className="checkbox-wrapper">
+                            <input
+                              type="checkbox"
+                              checked={formData.visualStyle.includes(style)}
+                              onChange={() => handleArrayToggle('visualStyle', style)}
+                            />
+                            <span className="text-gray-300">{style}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Mood in three words
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.mood}
+                        onChange={(e) => handleInputChange('mood', e.target.value)}
+                        placeholder="e.g., Bold, intimate, energetic"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Visual references or inspiration
+                      </label>
+                      <textarea
+                        value={formData.references}
+                        onChange={(e) => handleInputChange('references', e.target.value)}
+                        rows="4"
+                        placeholder="Links to videos, images, or descriptions of work you admire"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {currentStep === 3 && (
+                <div>
+                  <h2 className="bebas text-3xl mb-6 text-indigo-300">Logistics</h2>
+                  
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Shoot location
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.shootLocation}
+                        onChange={(e) => handleInputChange('shootLocation', e.target.value)}
+                        placeholder="City, venue, or general area"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Ideal shoot date
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.shootDate}
+                        onChange={(e) => handleInputChange('shootDate', e.target.value)}
+                        placeholder="Specific date or timeframe (e.g., early March 2025)"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Expected duration of shoot
+                      </label>
+                      <select
+                        value={formData.duration}
+                        onChange={(e) => handleInputChange('duration', e.target.value)}
+                      >
+                        <option value="">Select duration</option>
+                        <option value="Half day (4 hours)">Half day (4 hours)</option>
+                        <option value="Full day (8 hours)">Full day (8 hours)</option>
+                        <option value="Multi-day">Multi-day</option>
+                        <option value="Not sure">Not sure</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Budget range
+                      </label>
+                      <select
+                        value={formData.budget}
+                        onChange={(e) => handleInputChange('budget', e.target.value)}
+                      >
+                        <option value="">Select budget range</option>
+                        <option value="Under $2,500">Under $2,500</option>
+                        <option value="$2,500 - $5,000">$2,500 - $5,000</option>
+                        <option value="$5,000 - $10,000">$5,000 - $10,000</option>
+                        <option value="$10,000 - $25,000">$10,000 - $25,000</option>
+                        <option value="$25,000+">$25,000+</option>
+                        <option value="Flexible / Need guidance">Flexible / Need guidance</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {currentStep === 4 && (
+                <div>
+                  <h2 className="bebas text-3xl mb-6 text-indigo-300">Deliverables</h2>
+                  
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-3">
+                        What do you need? (select all that apply)
+                      </label>
+                      <div className="grid grid-cols-1 gap-3">
+                        {deliverableOptions.map(option => (
+                          <label key={option} className="checkbox-wrapper">
+                            <input
+                              type="checkbox"
+                              checked={formData.deliverables.includes(option)}
+                              onChange={() => handleArrayToggle('deliverables', option)}
+                            />
+                            <span className="text-gray-300">{option}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-3">
+                        Output formats needed
+                      </label>
+                      <div className="grid grid-cols-1 gap-3">
+                        {formatOptions.map(format => (
+                          <label key={format} className="checkbox-wrapper">
+                            <input
+                              type="checkbox"
+                              checked={formData.formats.includes(format)}
+                              onChange={() => handleArrayToggle('formats', format)}
+                            />
+                            <span className="text-gray-300">{format}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        When do you need this completed?
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.timeline}
+                        onChange={(e) => handleInputChange('timeline', e.target.value)}
+                        placeholder="e.g., 2 weeks after shoot, by April 15th, flexible"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {currentStep === 5 && (
+                <div>
+                  <h2 className="bebas text-3xl mb-6 text-indigo-300">Let's Connect</h2>
+                  
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Your name *
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
+                        placeholder="Full name"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        placeholder="your@email.com"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Phone number
+                      </label>
+                      <input
+                        type="tel"
+                        value={formData.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        placeholder="(123) 456-7890"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Company or organization
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.company}
+                        onChange={(e) => handleInputChange('company', e.target.value)}
+                        placeholder="Optional"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Anything else we should know?
+                      </label>
+                      <textarea
+                        value={formData.additionalNotes}
+                        onChange={(e) => handleInputChange('additionalNotes', e.target.value)}
+                        rows="4"
+                        placeholder="Special requests, concerns, or additional context"
+                      />
+                    </div>
+
+                    <div className="bg-indigo-900 bg-opacity-20 border border-indigo-500 border-opacity-30 rounded-lg p-4 mt-6">
+                      <p className="text-sm text-gray-300">
+                        By submitting this plan, you'll receive a personalized consultation from our team. We'll review your details and reach out within 1-2 business days to discuss next steps.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="flex justify-between items-center">
+              <button
+                onClick={prevStep}
+                className={`btn-secondary ${currentStep === 1 ? 'invisible' : ''}`}
+                disabled={isSubmitting}
+              >
+                ← Previous
+              </button>
+
+              {currentStep < totalSteps ? (
+                <button onClick={nextStep} className="btn-primary">
+                  Continue →
+                </button>
+              ) : (
+                <button 
+                  onClick={handleSubmit} 
+                  className="btn-primary"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Submitting...' : 'Submit Project Plan'}
+                </button>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="text-center mt-12 text-gray-500 text-sm">
+              <p>LaB Media | Shelby Township, Michigan</p>
+              <p className="mt-1">Questions? <a href="mailto:Bobby@LaBmediadot.com" className="text-indigo-400 hover:text-indigo-300">We're here to help</a>.</p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<VideoProjectPlanner />, document.getElementById('root'));
+  </script>
+</body>
+</html>
