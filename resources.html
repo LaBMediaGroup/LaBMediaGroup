@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources - LaB Media</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Bebas Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            letter-spacing: 0.5px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo-image {
+            width: 60px;
+            height: 60px;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+        }
+
+        h1 {
+            font-size: 4rem;
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+        }
+
+        .description {
+            font-size: 1rem;
+            color: #6b7280;
+        }
+
+        /* Filter Pills */
+        .filter-container {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 1rem;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .filter-pill {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            color: #9ca3af;
+        }
+
+        .filter-pill:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.4);
+            color: #ffffff;
+        }
+
+        .filter-pill.active {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-color: transparent;
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Resources Grid */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .resource-card {
+            background: rgba(15, 15, 25, 0.95);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .resource-card:hover {
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .resource-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .resource-icon {
+            font-size: 2rem;
+            min-width: 40px;
+        }
+
+        .resource-info {
+            flex: 1;
+        }
+
+        .resource-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-weight: bold;
+        }
+
+        .badge.free {
+            background: #10b981;
+            color: white;
+        }
+
+        .badge.paid {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .resource-description {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+        }
+
+        .resource-tip {
+            font-size: 0.85rem;
+            color: #f59e0b;
+            padding: 0.5rem;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 0.5rem;
+            border-left: 3px solid #f59e0b;
+            margin-bottom: 0.75rem;
+        }
+
+        .resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6366f1;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .resource-link:hover {
+            color: #8b5cf6;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.1);
+            margin-top: 4rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo img {
+            width: 32px;
+            height: 32px;
+            filter: brightness(0) invert(1);
+            opacity: 0.7;
+        }
+
+        .footer-logo-text {
+            font-size: 1.5rem;
+        }
+
+        /* Hidden state */
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-container {
+                padding: 1rem;
+            }
+
+            .filter-pill {
+                font-size: 0.9rem;
+                padding: 0.6rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-section">
+                <img src="BlackBeaker.png" alt="LaB Media" class="logo-image" onerror="this.style.display='none'">
+                <h1>LaB MEDIA</h1>
+            </div>
+            <p class="subtitle">Production Resources</p>
+            <p class="description">Curated tools & websites for video production</p>
+        </header>
+
+        <!-- Category Filters -->
+        <div class="filter-container">
+            <button class="filter-pill active" data-category="all">All</button>
+            <button class="filter-pill" data-category="music">🎵 Music</button>
+            <button class="filter-pill" data-category="soundfx">🔊 Sound FX</button>
+            <button class="filter-pill" data-category="equipment">📷 Equipment</button>
+            <button class="filter-pill" data-category="insurance">🛡️ Insurance</button>
+            <button class="filter-pill" data-category="ai">✨ AI Tools</button>
+            <button class="filter-pill" data-category="stock">🎬 Stock Footage</button>
+            <button class="filter-pill" data-category="vectors">🎨 Graphics</button>
+            <button class="filter-pill" data-category="fonts">✍️ Fonts</button>
+            <button class="filter-pill" data-category="color">🌈 Color Grading</button>
+            <button class="filter-pill" data-category="tutorials">📚 Tutorials</button>
+            <button class="filter-pill" data-category="software">💻 Software</button>
+        </div>
+
+        <!-- Resources Grid -->
+        <div class="resources-grid" id="resourcesGrid"></div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-logo">
+                <img src="BlackBeaker.png" alt="LaB Media" onerror="this.style.display='none'">
+                <span class="footer-logo-text">LaB MEDIA</span>
+            </div>
+            <p>Shelby Township, Michigan</p>
+            <p style="margin-top: 0.5rem;">Clean, cinematic, and intentional</p>
+        </footer>
+    </div>
+
+    <script>
+        const resources = [
+            // Music
+            {
+                name: "Epidemic Sound",
+                category: "music",
+                description: "High-quality royalty-free music library for content creators",
+                url: "https://www.epidemicsound.com",
+                isPaid: true,
+                tip: "Great for YouTube - license covers commercial use",
+                icon: "🎵"
+            },
+            {
+                name: "Artlist",
+                category: "music",
+                description: "Unlimited music & SFX downloads with simple licensing",
+                url: "https://artlist.io",
+                isPaid: true,
+                tip: "Perpetual license - keep using songs even after subscription ends",
+                icon: "🎵"
+            },
+            {
+                name: "Audiio",
+                category: "music",
+                description: "Royalty-free music and SFX with lifetime license options",
+                url: "https://audiio.com",
+                isPaid: true,
+                tip: "Watch for lifetime license promos to lock in long-term value",
+                icon: "🎵"
+            },
+            {
+                name: "Lickd",
+                category: "music",
+                description: "Licensed mainstream tracks for social content",
+                url: "https://www.lickd.co",
+                isPaid: true,
+                tip: "Ideal when you need recognizable mainstream songs without claims",
+                icon: "🎵"
+            },
+            {
+                name: "Track Club",
+                category: "music",
+                description: "Curated music library by Marmoset with MixLab stems",
+                url: "https://trackclub.com",
+                isPaid: true,
+                tip: "Use MixLab to fine-tune energy and instrumentation to your edit",
+                icon: "🎵"
+            },
+            {
+                name: "Splice",
+                category: "music",
+                description: "Samples, loops, and plugins for music creation",
+                url: "https://splice.com",
+                isPaid: true,
+                tip: "Build unique cues for your edits with custom loops and stems",
+                icon: "🎵"
+            },
+            {
+                name: "Free Music Archive",
+                category: "music",
+                description: "Large collection of free, legal music downloads",
+                url: "https://freemusicarchive.org",
+                isPaid: false,
+                tip: "Check individual track licenses carefully",
+                icon: "🎵"
+            },
+            {
+                name: "Pexels Music",
+                category: "music",
+                description: "Free royalty-free music tracks",
+                url: "https://www.pexels.com/music/",
+                isPaid: false,
+                tip: "Great for quick, no-cost background beds",
+                icon: "🎵"
+            },
+            {
+                name: "Pixabay Music",
+                category: "music",
+                description: "Free royalty-free music",
+                url: "https://pixabay.com/music/",
+                isPaid: false,
+                tip: "Filter by mood and duration to fit your edit",
+                icon: "🎵"
+            },
+
+            // Sound Effects
+            {
+                name: "Freesound",
+                category: "soundfx",
+                description: "Collaborative database of Creative Commons licensed sounds",
+                url: "https://freesound.org",
+                isPaid: false,
+                tip: "Quality varies - great for unique sounds",
+                icon: "🔊"
+            },
+            {
+                name: "Zapsplat",
+                category: "soundfx",
+                description: "Free sound effects library for video production",
+                url: "https://www.zapsplat.com",
+                isPaid: false,
+                tip: "Free for commercial use with attribution",
+                icon: "🔊"
+            },
+            {
+                name: "Krotos Studio",
+                category: "soundfx",
+                description: "AI-assisted sound design and voice tools",
+                url: "https://www.krotosaudio.com/krotos-studio/",
+                isPaid: true,
+                tip: "Leverage presets, then tweak parameters for originality",
+                icon: "🔊"
+            },
+            {
+                name: "Pexels Sound FX",
+                category: "soundfx",
+                description: "Free sound effects collection",
+                url: "https://www.pexels.com/search/sound%20effect/",
+                isPaid: false,
+                tip: "Double-check quality and noise levels before final mix",
+                icon: "🔊"
+            },
+            {
+                name: "Pixabay Sound FX",
+                category: "soundfx",
+                description: "Free sound effects",
+                url: "https://pixabay.com/sound-effects/",
+                isPaid: false,
+                tip: "Check sample rate/bit depth for your delivery specs",
+                icon: "🔊"
+            },
+
+            // Equipment Rental
+            {
+                name: "LensRentals",
+                category: "equipment",
+                description: "Camera & lens rental service with insurance included",
+                url: "https://www.lensrentals.com",
+                isPaid: true,
+                tip: "Check out their guides - incredibly helpful!",
+                icon: "📷"
+            },
+            {
+                name: "ShareGrid",
+                category: "equipment",
+                description: "Peer-to-peer camera gear rental marketplace",
+                url: "https://www.sharegrid.com",
+                isPaid: true,
+                tip: "Often cheaper than traditional rental houses",
+                icon: "📷"
+            },
+            {
+                name: "BorrowLenses",
+                category: "equipment",
+                description: "Professional camera equipment rental delivered to your door",
+                url: "https://www.borrowlenses.com",
+                isPaid: true,
+                tip: "Try before you buy - great for testing gear",
+                icon: "📷"
+            },
+
+            // Insurance
+            {
+                name: "Full Frame Insurance",
+                category: "insurance",
+                description: "Short-term and annual production insurance",
+                url: "https://www.fullframeinsurance.com",
+                isPaid: true,
+                tip: "Compare COI requirements from clients before purchasing",
+                icon: "🛡️"
+            },
+
+            // AI Tools
+            {
+                name: "Runway ML",
+                category: "ai",
+                description: "AI-powered video editing and generation tools",
+                url: "https://runwayml.com",
+                isPaid: true,
+                tip: "Incredible for background removal and motion tracking",
+                icon: "✨"
+            },
+            {
+                name: "Descript",
+                category: "ai",
+                description: "AI-powered audio/video editing with transcription",
+                url: "https://www.descript.com",
+                isPaid: true,
+                tip: "Edit video by editing text - game changer for interviews",
+                icon: "✨"
+            },
+            {
+                name: "Adobe Firefly",
+                category: "ai",
+                description: "AI image generation and editing tools",
+                url: "https://firefly.adobe.com",
+                isPaid: true,
+                tip: "Great for creating custom graphics and assets",
+                icon: "✨"
+            },
+            {
+                name: "Krotos Audio",
+                category: "ai",
+                description: "Sound design software and plugins for film, TV, and games",
+                url: "https://www.krotosaudio.com",
+                isPaid: true,
+                tip: "Explore bundles to save if you need multiple plugins",
+                icon: "✨"
+            },
+
+            // Stock Footage
+            {
+                name: "Pexels",
+                category: "stock",
+                description: "Free stock photos and videos",
+                url: "https://www.pexels.com",
+                isPaid: false,
+                tip: "Use filters to find 4K footage and cinematic compositions",
+                icon: "🎬"
+            },
+            {
+                name: "Artgrid",
+                category: "stock",
+                description: "Premium stock footage subscription (by Artlist)",
+                url: "https://artgrid.io",
+                isPaid: true,
+                tip: "Higher quality than most free alternatives",
+                icon: "🎬"
+            },
+            {
+                name: "Pixabay",
+                category: "stock",
+                description: "Free stock videos, photos, music, and graphics",
+                url: "https://pixabay.com",
+                isPaid: false,
+                tip: "Great for quick filler shots and graphic elements",
+                icon: "🎬"
+            },
+
+            // Vectors & Graphics
+            {
+                name: "Pexels Graphics",
+                category: "vectors",
+                description: "Free graphics and design assets",
+                url: "https://www.pexels.com/search/illustration/",
+                isPaid: false,
+                tip: "Use to mock up concepts quickly without budget",
+                icon: "🎨"
+            },
+            {
+                name: "Pixabay Vectors",
+                category: "vectors",
+                description: "Free vectors and illustrations",
+                url: "https://pixabay.com/vectors/",
+                isPaid: false,
+                tip: "Great for icons and simple UI elements",
+                icon: "🎨"
+            },
+
+            // Fonts
+            {
+                name: "DaFont",
+                category: "fonts",
+                description: "Large archive of free fonts for personal projects",
+                url: "https://www.dafont.com",
+                isPaid: false,
+                tip: "Always review the font's license before client work",
+                icon: "✍️"
+            },
+
+            // Color Grading
+            {
+                name: "Color Grading Central",
+                category: "color",
+                description: "Free LUTs and color grading resources",
+                url: "https://www.colorgradingcentral.com",
+                isPaid: false,
+                tip: "Great starting point for learning color theory",
+                icon: "🌈"
+            },
+            {
+                name: "Lutify.me",
+                category: "color",
+                description: "Professional film emulation LUTs",
+                url: "https://lutify.me",
+                isPaid: true,
+                tip: "Some of the best film emulation LUTs available",
+                icon: "🌈"
+            },
+
+            // Tutorials
+            {
+                name: "Film Riot",
+                category: "tutorials",
+                description: "YouTube channel with filmmaking tutorials",
+                url: "https://www.youtube.com/user/filmriot",
+                isPaid: false,
+                tip: "Weekly videos covering all aspects of production",
+                icon: "📚"
+            },
+            {
+                name: "Peter McKinnon",
+                category: "tutorials",
+                description: "Photography & videography tutorials",
+                url: "https://www.youtube.com/c/PeterMcKinnon",
+                isPaid: false,
+                tip: "Great for camera techniques and creative inspiration",
+                icon: "📚"
+            },
+            {
+                name: "Skillshare",
+                category: "tutorials",
+                description: "Online learning platform with video production courses",
+                url: "https://www.skillshare.com",
+                isPaid: true,
+                tip: "Free trial available - excellent course variety",
+                icon: "📚"
+            },
+
+            // Software
+            {
+                name: "Frame.io",
+                category: "software",
+                description: "Video review and collaboration platform",
+                url: "https://frame.io",
+                isPaid: true,
+                tip: "Essential for client feedback and team collaboration",
+                icon: "💻"
+            },
+            {
+                name: "DaVinci Resolve",
+                category: "software",
+                description: "Professional video editing and color grading software",
+                url: "https://www.blackmagicdesign.com/products/davinciresolve",
+                isPaid: false,
+                tip: "Free version is incredibly powerful - industry standard for color",
+                icon: "💻"
+            }
+        ];
+
+        // Render resources
+        function renderResources(category = 'all') {
+            const grid = document.getElementById('resourcesGrid');
+            const filtered = category === 'all' 
+                ? resources 
+                : resources.filter(r => r.category === category);
+
+            grid.innerHTML = filtered.map(resource => `
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <div class="resource-icon">${resource.icon}</div>
+                        <div class="resource-info">
+                            <div class="resource-title">
+                                <span>${resource.name}</span>
+                                <span class="badge ${resource.isPaid ? 'paid' : 'free'}">
+                                    ${resource.isPaid ? 'PAID' : 'FREE'}
+                                </span>
+                            </div>
+                            <p class="resource-description">${resource.description}</p>
+                            ${resource.tip ? `<div class="resource-tip">💡 ${resource.tip}</div>` : ''}
+                            <a href="${resource.url}" target="_blank" rel="noopener noreferrer" class="resource-link">
+                                Visit Website →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter functionality
+        document.querySelectorAll('.filter-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                renderResources(pill.dataset.category);
+            });
+        });
+
+        // Initial render
+        renderResources();
+    </script>
+</body>
+</html>
