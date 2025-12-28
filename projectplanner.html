@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaB Media - Project Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .logo-font {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        .glow {
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        }
+
+        .tile-glow {
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15);
+        }
+
+        .tile-glow:hover {
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.25);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+        }
+
+        input, textarea, select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        select option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .pdf-preview {
+            background: white;
+            color: #1a1a2e;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function ProjectPlanner() {
+            const [projectData, setProjectData] = useState({
+                projectName: '',
+                projectType: '',
+                description: '',
+                duration: '',
+                deliverableCount: '',
+                style: '',
+                audience: '',
+                message: '',
+                budget: '',
+                deadline: '',
+                shootDate: '',
+                location: '',
+                shootDays: '',
+                deliverables: '',
+                specialRequirements: '',
+                references: '',
+                clientName: '',
+                clientEmail: '',
+                clientPhone: ''
+            });
+
+            const [completedSections, setCompletedSections] = useState({
+                basics: false,
+                scope: false,
+                logistics: false,
+                additional: false
+            });
+
+            const [showPdfPreview, setShowPdfPreview] = useState(false);
+
+            const updateField = (field, value) => {
+                setProjectData(prev => ({ ...prev, [field]: value }));
+            };
+
+            useEffect(() => {
+                setCompletedSections({
+                    basics: projectData.projectName && projectData.projectType && projectData.description,
+                    scope: projectData.duration && projectData.style && projectData.audience,
+                    logistics: projectData.budget && projectData.deadline,
+                    additional: projectData.clientName && projectData.clientEmail
+                });
+            }, [projectData]);
+
+            const totalProgress = Object.values(completedSections).filter(Boolean).length;
+            const progressPercent = (totalProgress / 4) * 100;
+
+            const generatePDF = () => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const margin = 20;
+                let yPosition = 20;
+
+                // Logo/Header
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(32);
+                doc.text('LaB MEDIA', margin, yPosition);
+                
+                yPosition += 15;
+                doc.setFontSize(20);
+                doc.setTextColor(100, 100, 100);
+                doc.text('PROJECT PLAN QUOTE', margin, yPosition);
+                
+                doc.setFontSize(10);
+                yPosition += 10;
+                doc.text(`Generated: ${new Date().toLocaleDateString()}`, margin, yPosition);
+                
+                // Line separator
+                yPosition += 5;
+                doc.setDrawColor(99, 102, 241);
+                doc.line(margin, yPosition, pageWidth - margin, yPosition);
+                
+                yPosition += 15;
+
+                // Helper function to add sections
+                const addSection = (title, fields) => {
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(14);
+                    doc.text(title, margin, yPosition);
+                    yPosition += 8;
+                    
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(10);
+                    
+                    fields.forEach(([label, value]) => {
+                        if (value) {
+                            doc.setTextColor(99, 102, 241);
+                            doc.text(label + ':', margin, yPosition);
+                            doc.setTextColor(0, 0, 0);
+                            const splitText = doc.splitTextToSize(value, pageWidth - margin * 2 - 40);
+                            doc.text(splitText, margin + 40, yPosition);
+                            yPosition += 6 * splitText.length;
+                        }
+                    });
+                    
+                    yPosition += 8;
+                };
+
+                // Add all sections
+                addSection('PROJECT OVERVIEW', [
+                    ['Project Name', projectData.projectName],
+                    ['Type', projectData.projectType],
+                    ['Description', projectData.description]
+                ]);
+
+                addSection('SCOPE & REQUIREMENTS', [
+                    ['Duration', projectData.duration],
+                    ['Deliverables', projectData.deliverableCount],
+                    ['Style/Tone', projectData.style],
+                    ['Target Audience', projectData.audience],
+                    ['Key Message', projectData.message]
+                ]);
+
+                addSection('TIMELINE & LOGISTICS', [
+                    ['Budget Range', projectData.budget],
+                    ['Deadline', projectData.deadline],
+                    ['Preferred Shoot Date', projectData.shootDate],
+                    ['Location', projectData.location],
+                    ['Shooting Days', projectData.shootDays]
+                ]);
+
+                addSection('DELIVERABLES & REQUIREMENTS', [
+                    ['Specific Deliverables', projectData.deliverables],
+                    ['Special Requirements', projectData.specialRequirements],
+                    ['References', projectData.references]
+                ]);
+
+                addSection('CONTACT INFORMATION', [
+                    ['Name', projectData.clientName],
+                    ['Email', projectData.clientEmail],
+                    ['Phone', projectData.clientPhone]
+                ]);
+
+                // Footer
+                const footerY = doc.internal.pageSize.getHeight() - 20;
+                doc.setFontSize(9);
+                doc.setTextColor(100, 100, 100);
+                doc.text('LaB Media | Shelby Township, Michigan', pageWidth / 2, footerY, { align: 'center' });
+
+                doc.save(`${projectData.projectName || 'Project'}_Plan_Quote.pdf`);
+            };
+
+            return (
+                <div className="min-h-screen p-4 md:p-8">
+                    <div className="max-w-6xl mx-auto">
+                        {/* Header */}
+                        <header className="text-center mb-12 fade-in">
+                            <h1 className="logo-font text-6xl md:text-8xl glow mb-4">LaB MEDIA</h1>
+                            <p className="text-xl md:text-2xl text-gray-300">Video Project Planner</p>
+                            <p className="text-sm text-gray-400 mt-2">Build your vision, one tile at a time</p>
+                        </header>
+
+                        {/* Progress Bar */}
+                        <div className="mb-8 fade-in">
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-sm text-gray-400">Progress</span>
+                                <span className="text-sm text-indigo-400">{totalProgress}/4 sections complete</span>
+                            </div>
+                            <div className="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div 
+                                    className="progress-bar h-full transition-all duration-500 ease-out"
+                                    style={{ width: `${progressPercent}%` }}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Section 1: Project Basics */}
+                        <section className="mb-8">
+                            <h2 className="text-2xl font-semibold mb-4 text-indigo-400">Project Basics</h2>
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <input
+                                    type="text"
+                                    placeholder="Project Name"
+                                    className="p-4 rounded-lg"
+                                    value={projectData.projectName}
+                                    onChange={(e) => updateField('projectName', e.target.value)}
+                                />
+                                <select
+                                    className="p-4 rounded-lg"
+                                    value={projectData.projectType}
+                                    onChange={(e) => updateField('projectType', e.target.value)}
+                                >
+                                    <option value="">Select Project Type</option>
+                                    <option value="Commercial">Commercial</option>
+                                    <option value="Music Video">Music Video</option>
+                                    <option value="Documentary">Documentary</option>
+                                    <option value="Social Media Content">Social Media Content</option>
+                                    <option value="Brand Story">Brand Story</option>
+                                    <option value="Event Coverage">Event Coverage</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <textarea
+                                    placeholder="Brief project description"
+                                    className="p-4 rounded-lg md:col-span-2 h-24"
+                                    value={projectData.description}
+                                    onChange={(e) => updateField('description', e.target.value)}
+                                />
+                            </div>
+                            
+                            {completedSections.basics && (
+                                <div className="mt-4 p-6 bg-gradient-to-br from-indigo-900/30 to-purple-900/30 rounded-xl tile-glow fade-in">
+                                    <h3 className="text-xl font-semibold mb-2">{projectData.projectName}</h3>
+                                    <p className="text-indigo-300 text-sm mb-2">{projectData.projectType}</p>
+                                    <p className="text-gray-300 text-sm">{projectData.description}</p>
+                                </div>
+                            )}
+                        </section>
+
+                        {/* Section 2: Scope & Requirements */}
+                        <section className="mb-8">
+                            <h2 className="text-2xl font-semibold mb-4 text-indigo-400">Scope & Requirements</h2>
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <input
+                                    type="text"
+                                    placeholder="Video Duration (e.g., 30 seconds, 2 minutes)"
+                                    className="p-4 rounded-lg"
+                                    value={projectData.duration}
+                                    onChange={(e) => updateField('duration', e.target.value)}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Number of Deliverables"
+                                    className="p-4 rounded-lg"
+                                    value={projectData.deliverableCount}
+                                    onChange={(e) => updateField('deliverableCount', e.target.value)}
+                                />
+                                <select
+                                    className="p-4 rounded-lg"
+                                    value={projectData.style}
+                                    onChange={(e) => updateField('style', e.target.value)}
+                                >
+                                    <option value="">Video Style/Tone</option>
+                                    <option value="Cinematic">Cinematic</option>
+                                    <option value="Energetic">Energetic</option>
+                                    <option value="Minimal">Minimal</option>
+                                    <option value="Storytelling">Storytelling</option>
+                                    <option value="Documentary">Documentary</option>
+                                    <option value="Fast-Paced">Fast-Paced</option>
+                                </select>
+                                <input
+                                    type="text"
+                                    placeholder="Target Audience"
+                                    className="p-4 rounded-lg"
+                                    value={projectData.audience}
+                                    onChange={(e) => updateField('audience', e.target.value)}
+                                />
+                                <textarea
+                                    placeholder="Key message or story angle"
+                                    className="p-4 rounded-lg md:col-span-2 h-24"
+                                    value={projectData.message}
+                                    onChange={(e) => updateField('message', e.target.value)}
+                                />
+                            </div>
+                            
+                            {completedSections.scope && (
+                                <div className="mt-4 grid md:grid-cols-3 gap-4 fade-in">
+                                    <div className="p-4 bg-gradient-to-br from-indigo-900/30 to-purple-900/30 rounded-xl tile-glow">
+                                        <p className="text-xs text-gray-400 mb-1">Duration</p>
+                                        <p className="text-lg font-semibold">{projectData.duration}</p>
+                                    </div>
+                                    <div className="p-4 bg-gradient-to-br from-indigo-900/30 to-purple-900/30 rounded-xl tile-glow">
+                                        <p className="text-xs text-gray-400 mb-1">Style</p>
+                                        <p className="text-lg font-semibold">{projectData.style}</p>
+                                    </div>
+                                    <div className="p-4 bg-gradient-to-br from-indigo-900/30 to-purple-900/30 rounded-xl tile-glow">
+                                        <p className="text-xs text-gray-400 mb-1">Audience</p>
+                                        <p className="text-lg font-semibold">{projectData.audience}</p>
+                                    </div>
+                                </div>
+                            )}
+                        </section>
+
+                        {/* Section 3: Timeline & Logistics */}
+                        <section className="mb-8">
+                            <h2 className="text-2xl font-semibold mb-4 text-indigo-400">Timeline & Logistics</h2>
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <select
+                                    className="p-4 rounded-lg"
+                                    value={projectData.budget}
+                                    onChange={(e) => updateField('budget', e.target.value)}
+                                >
+                                    <option value="">Budget Range</option>
+                                    <option value="Under $5,000">Under $5,000</option>
+                                    <option value="$5,000 - $15,000">$5,000 - $15,000</option>
+                                    <option value="$15,000 - $30,000">$15,000 - $30,000</option>
+                                    <option value="$30,000+">$30,000+</option>
+                                </select>
+                                <input
+                                    type="date"
+                                    className="p-4 rounded-lg"
+                                    value={projectData.deadline}
+                                    onChange={(e) => updateField('deadline', e.target.value)}
+                                />
+                                <input
+                                    type="date"
+                                    placeholder="Preferred Shoot Date"
+                                    className="p-4 rounded-lg"
+                                    value={projectData.shootDate}
+                                    onChange={(e) => updateField('shootDate', e.target.value)}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Location(s)"
+                                    className="p-4 rounded-lg"
+                                    value={projectData.location}
+                                    onChange={(e) => updateField('location', e.target.value)}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Number of Shooting Days"
+                                    className="p-4 rounded-lg"
+                                    value={projectData.shootDays}
+                                    onChange={(e) => updateField('shootDays', e.target.value)}
+                                />
+                            </div>
+                            
+                            {completedSections.logistics && (
+                                <div className="mt-4 p-6 bg-gradient-to-br from-indigo-900/30 to-purple-900/30 rounded-xl tile-glow fade-in">
+                                    <div className="grid md:grid-cols-2 gap-4">
+                                        <div>
+                                            <p className="text-xs text-gray-400 mb-1">Budget</p>
+                                            <p className="text-lg font-semibold text-indigo-300">{projectData.budget}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-gray-400 mb-1">Deadline</p>
+                                            <p className="text-lg font-semibold text-indigo-300">{projectData.deadline}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </section>
+
+                        {/* Section 4: Additional Details */}
+                        <section className="mb-8">
+                            <h2 className="text-2xl font-semibold mb-4 text-indigo-400">Additional Details</h2>
+                            <div className="grid gap-4">
+                                <textarea
+                                    placeholder="Specific deliverables (Instagram reels, YouTube video, etc.)"
+                                    className="p-4 rounded-lg h-24"
+                                    value={projectData.deliverables}
+                                    onChange={(e) => updateField('deliverables', e.target.value)}
+                                />
+                                <textarea
+                                    placeholder="Special requirements (drone, interviews, motion graphics, etc.)"
+                                    className="p-4 rounded-lg h-24"
+                                    value={projectData.specialRequirements}
+                                    onChange={(e) => updateField('specialRequirements', e.target.value)}
+                                />
+                                <input
+                                    type="url"
+                                    placeholder="Reference videos (optional URLs)"
+                                    className="p-4 rounded-lg"
+                                    value={projectData.references}
+                                    onChange={(e) => updateField('references', e.target.value)}
+                                />
+                                
+                                <div className="border-t border-gray-700 pt-4 mt-4">
+                                    <h3 className="text-lg font-semibold mb-4 text-gray-300">Your Contact Info</h3>
+                                    <div className="grid md:grid-cols-3 gap-4">
+                                        <input
+                                            type="text"
+                                            placeholder="Your Name"
+                                            className="p-4 rounded-lg"
+                                            value={projectData.clientName}
+                                            onChange={(e) => updateField('clientName', e.target.value)}
+                                        />
+                                        <input
+                                            type="email"
+                                            placeholder="Email"
+                                            className="p-4 rounded-lg"
+                                            value={projectData.clientEmail}
+                                            onChange={(e) => updateField('clientEmail', e.target.value)}
+                                        />
+                                        <input
+                                            type="tel"
+                                            placeholder="Phone (optional)"
+                                            className="p-4 rounded-lg"
+                                            value={projectData.clientPhone}
+                                            onChange={(e) => updateField('clientPhone', e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Completion Section */}
+                        {totalProgress === 4 && (
+                            <div className="text-center fade-in mb-8">
+                                <div className="p-8 bg-gradient-to-br from-indigo-600/40 to-purple-600/40 rounded-2xl tile-glow mb-6">
+                                    <h3 className="text-3xl font-bold mb-2">🎬 Project Plan Complete!</h3>
+                                    <p className="text-gray-300">Your vision is ready to bring to life</p>
+                                </div>
+                                
+                                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                    <button
+                                        onClick={generatePDF}
+                                        className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all transform hover:scale-105"
+                                    >
+                                        📥 Download Plan Quote
+                                    </button>
+                                    <button
+                                        onClick={() => window.print()}
+                                        className="px-8 py-4 bg-gray-700 rounded-lg font-semibold hover:bg-gray-600 transition-all"
+                                    >
+                                        🖨️ Print Plan
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Footer */}
+                        <footer className="text-center text-gray-500 text-sm mt-16 pb-8">
+                            <p className="logo-font text-2xl mb-2">LaB MEDIA</p>
+                            <p>Shelby Township, Michigan</p>
+                            <p className="mt-2">Film, music video, photography, and brand content</p>
+                        </footer>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<ProjectPlanner />, document.getElementById('root'));
+    </script>
+</body>
+</html>
