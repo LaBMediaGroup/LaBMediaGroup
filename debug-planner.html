@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaB Media - Project Planner DEBUG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            color: white;
+            font-family: sans-serif;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .status {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="status">
+        <h1>🔍 LaB Media Project Planner - Debug Mode</h1>
+        <p id="status">⏳ Initializing...</p>
+    </div>
+    
+    <div id="root"></div>
+    
+    <script>
+        console.log('✅ 1. HTML loaded');
+        document.getElementById('status').innerHTML = '✅ HTML loaded, checking React...';
+        
+        window.addEventListener('error', function(e) {
+            document.getElementById('status').innerHTML = '❌ JavaScript Error: ' + e.message;
+            console.error('Error:', e);
+        });
+    </script>
+    
+    <script type="text/babel">
+        console.log('✅ 2. Babel script started');
+        document.getElementById('status').innerHTML = '✅ Babel processing...';
+        
+        const { useState } = React;
+        
+        function ProjectPlanner() {
+            const [message, setMessage] = useState('✅ React is working!');
+            
+            return (
+                <div className="p-8 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg">
+                    <h2 className="text-3xl font-bold mb-4">{message}</h2>
+                    <button 
+                        onClick={() => setMessage('✅ React interactions work!')}
+                        className="px-6 py-3 bg-white text-black rounded-lg cursor-pointer hover:bg-gray-100"
+                    >
+                        Test Click
+                    </button>
+                    <p className="mt-4 text-sm opacity-75">If you see this, React is rendering correctly.</p>
+                    <p className="mt-2 text-sm opacity-75">The issue with the full planner is likely file size or a syntax error.</p>
+                </div>
+            );
+        }
+        
+        console.log('✅ 3. Component defined');
+        document.getElementById('status').innerHTML = '✅ Rendering React component...';
+        
+        try {
+            ReactDOM.render(<ProjectPlanner />, document.getElementById('root'));
+            console.log('✅ 4. React rendered successfully');
+            document.getElementById('status').innerHTML = '✅ React rendered! Check below:';
+        } catch(err) {
+            console.error('❌ Render error:', err);
+            document.getElementById('status').innerHTML = '❌ Render failed: ' + err.message;
+        }
+    </script>
+</body>
+</html>
