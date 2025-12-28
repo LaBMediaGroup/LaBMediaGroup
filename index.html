@@ -3,67 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="LaB Media is a creative studio in Shelby Township, Michigan, specializing in professional film, music, and photography production. We bring your stories to life." />
+  <meta name="description" content="LaB Media is a creative studio in Shelby Township, Michigan, specializing in professional film, music, and photography production." />
   <title>LaB Media - Creative Studio | Shelby Township, MI</title>
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Optional: clean font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     html { scroll-behavior: smooth; }
-    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
 
-    /* ===== Background vibe: subtle “cinematic lab” glow ===== */
-    .bg-lab {
-      background:
-        radial-gradient(800px 500px at 15% 10%, rgba(99,102,241,0.20), transparent 60%),
-        radial-gradient(700px 500px at 85% 25%, rgba(168,85,247,0.18), transparent 55%),
-        radial-gradient(900px 650px at 55% 90%, rgba(59,130,246,0.12), transparent 60%),
-        linear-gradient(to bottom, #000 0%, #05060b 40%, #000 100%);
-    }
-    .noise:before{
-      content:"";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.06;
-      background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
-      mix-blend-mode: overlay;
-      z-index: 0;
-    }
-
-    /* ===== Custom cursor (desktop only via JS) ===== */
+    /* Desktop-only custom cursor */
     body.cursor-hidden { cursor: none; }
     .custom-cursor {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 12px;
-      height: 12px;
+      top: 0; left: 0;
+      width: 10px; height: 10px;
       border-radius: 9999px;
-      background: #ffffff;
+      background: rgba(255,255,255,0.9);
       pointer-events: none;
-      transition: transform 0.12s ease-out, opacity 0.2s ease-in-out;
       z-index: 9999;
       transform: translate(-50%, -50%);
       opacity: 0;
+      transition: opacity .15s ease, transform .12s ease;
     }
     .custom-cursor.show { opacity: 1; }
 
-    /* ===== Gradient text (your signature) ===== */
+    /* Fade-up */
+    .fade-up { opacity: 0; transform: translateY(18px); transition: all 700ms ease; }
+    .fade-up.show { opacity: 1; transform: translateY(0); }
+
+    /* Minimal signature gradient text */
     .gradient-text {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #7c73ff 0%, #b18cff 60%, #7c73ff 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       background-size: 200% 200%;
-      animation: gradient-shift 15s ease-in-out infinite;
+      animation: gradient-shift 16s ease-in-out infinite;
     }
     @keyframes gradient-shift {
       0% { background-position: 0% 50%; }
@@ -71,166 +46,91 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* ===== Fade-up ===== */
-    .fade-up { opacity: 0; transform: translateY(26px); transition: all 0.8s ease-out; }
-    .fade-up.show { opacity: 1; transform: translateY(0); }
+    /* Nav blur */
+    .nav-blur { backdrop-filter: blur(10px); background: rgba(0, 0, 0, 0.72); }
 
-    /* ===== Nav blur ===== */
-    .nav-blur { backdrop-filter: blur(12px); background: rgba(0,0,0,0.62); }
-
-    /* ===== Mobile menu ===== */
+    /* Mobile menu */
     #mobile-nav {
-      transition: transform 0.3s ease-in-out;
+      transition: transform 0.25s ease-in-out;
       transform: translateX(100%);
-      background: rgba(2, 6, 23, 0.88);
-      backdrop-filter: blur(14px);
+      background: rgba(10, 10, 12, 0.92);
+      backdrop-filter: blur(12px);
     }
     #mobile-nav.open { transform: translateX(0); }
 
-    /* ===== Loading screen ===== */
+    /* Service cards: minimal, not “loud” */
+    .service-card {
+      transition: transform .25s ease, border-color .25s ease, background .25s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(124,115,255,0.45);
+      background: rgba(255,255,255,0.02);
+    }
+
+    /* Loading screen */
     .loading-screen {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: #000;
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 9999;
+      z-index: 99999;
       opacity: 1;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.45s ease;
     }
     .loading-screen.hidden { opacity: 0; pointer-events: none; }
-    .loading-text { font-weight: 300; letter-spacing: 0.22em; }
+    .loading-text { font-weight: 300; letter-spacing: .22em; }
 
-    /* ===== Back to top ===== */
-    #back-to-top { opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.2s ease; }
+    /* Back to top */
+    #back-to-top {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+    }
     #back-to-top.show { opacity: 1; pointer-events: auto; }
 
-    /* ===== “Bento” card feel ===== */
-    .glass-card {
-      background: rgba(17, 24, 39, 0.40);
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      box-shadow: 0 18px 60px rgba(0,0,0,0.45);
-      backdrop-filter: blur(12px);
-      transform: translateY(0);
-      transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
-    }
-    .glass-card:hover {
-      border-color: rgba(99, 102, 241, 0.45);
-      transform: translateY(-6px);
-      background: rgba(17, 24, 39, 0.46);
-    }
-
-    /* Give the ElevenLabs bubble a little breathing room from bottom UI */
-    .bottom-safe-pad { padding-bottom: 110px; }
-
-    /* ===== Drone collapsible (fully hidden when closed) ===== */
+    /* Drone section: starts FULLY hidden (no ghost title) */
     #drone-section {
       max-height: 0;
       opacity: 0;
-      transform: translateY(10px);
       overflow: hidden;
+      transform: translateY(10px);
       pointer-events: none;
-      transition: max-height 0.8s ease, opacity 0.25s ease, transform 0.25s ease, margin-top 0.25s ease;
       margin-top: 0;
+      transition: max-height .65s ease, opacity .18s ease, transform .18s ease, margin-top .18s ease;
     }
     #drone-section.open {
       max-height: 1400px;
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
-      margin-top: 2rem;
+      margin-top: 1.75rem;
     }
 
-    /* ===== Beaker hero animation + tilt ===== */
-    .tilt-wrap { perspective: 900px; }
-    .tilt-inner {
-      transform-style: preserve-3d;
-      transition: transform 160ms ease-out;
-      will-change: transform;
-    }
-    .beaker-glow {
-      position: relative;
-    }
-    .beaker-glow:before {
-      content: "";
-      position: absolute;
-      inset: -28px;
-      background:
-        radial-gradient(closest-side, rgba(99,102,241,0.35), transparent 70%),
-        radial-gradient(closest-side, rgba(168,85,247,0.28), transparent 70%);
-      filter: blur(10px);
-      opacity: 0.9;
-      z-index: 0;
-      pointer-events: none;
-      transition: opacity 200ms ease;
-    }
-    .tilt-wrap:hover .beaker-glow:before { opacity: 1; }
-
-    /* Liquid waves */
-    @keyframes waveMove {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-70px); }
-    }
-    .wave {
-      animation: waveMove 2.6s linear infinite;
-      opacity: 0.9;
-    }
-    .wave.wave2 {
-      animation-duration: 3.6s;
-      opacity: 0.55;
-    }
-
-    /* Bubbles */
-    @keyframes bubbleUp {
-      0% { transform: translateY(0); opacity: 0; }
-      10% { opacity: 0.7; }
-      80% { opacity: 0.7; }
-      100% { transform: translateY(-80px); opacity: 0; }
-    }
-    .bubble {
-      animation: bubbleUp 2.8s ease-in infinite;
-      opacity: 0;
-    }
-    .b1 { animation-delay: 0.1s; }
-    .b2 { animation-delay: 0.7s; }
-    .b3 { animation-delay: 1.2s; }
-    .b4 { animation-delay: 1.9s; }
-
-    /* Subtle “liquid level breathing” */
-    @keyframes levelBreath {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(3px); }
-      100% { transform: translateY(0); }
-    }
-    .liquid-group { animation: levelBreath 3.8s ease-in-out infinite; }
-
-    /* Reduced motion */
+    /* Respect reduced motion */
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .fade-up { transition: none; transform: none; opacity: 1; }
       .gradient-text { animation: none; }
-      .tilt-inner { transition: none; }
-      .wave, .bubble, .liquid-group { animation: none; }
+      #drone-section { transition: none; }
+      .service-card:hover { transform: none; }
     }
   </style>
 </head>
 
-<body class="bg-lab noise text-white overflow-x-hidden">
+<body class="bg-black text-white font-sans overflow-x-hidden">
 
   <div class="custom-cursor" aria-hidden="true"></div>
 
   <!-- Loading screen -->
   <div id="loading-screen" class="loading-screen">
-    <div class="text-center">
-      <p id="loading-message" class="text-white text-xs md:text-sm loading-text">Contemplating...</p>
-      <p class="mt-4 text-[10px] tracking-[0.3em] text-gray-500">THIS IS LaB MEDIA</p>
-    </div>
+    <p id="loading-message" class="text-white text-xs md:text-sm loading-text">Contemplating...</p>
   </div>
 
   <!-- Back to top -->
   <a id="back-to-top" href="#home"
-     class="fixed bottom-6 right-6 z-40 p-4 rounded-full bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700 text-indigo-300 transition-all duration-300 transform hover:scale-110"
+     class="fixed bottom-6 right-6 z-40 p-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white/80 transition-all duration-300 transform hover:scale-105"
      aria-label="Back to top">
     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -239,7 +139,7 @@
   </a>
 
   <!-- Main content -->
-  <div id="main-content" class="opacity-0 transition-opacity duration-1000 bottom-safe-pad relative z-10">
+  <div id="main-content" class="opacity-0 transition-opacity duration-1000">
 
     <!-- NAV -->
     <nav class="fixed top-0 w-full z-50 nav-blur transition-all duration-300">
@@ -249,11 +149,11 @@
             <img src="images/WhiteBeakerLogo.png" alt="LaB Media Logo" class="w-10 h-auto" />
           </a>
 
-          <div class="hidden md:flex space-x-8 text-sm">
-            <a href="#home" class="hover:text-indigo-300 transition">Home</a>
-            <a href="#services" class="hover:text-indigo-300 transition">Services</a>
-            <a href="#portfolio" class="hover:text-indigo-300 transition">Portfolio</a>
-            <a href="#contact" class="hover:text-indigo-300 transition">Contact</a>
+          <div class="hidden md:flex space-x-8 text-sm text-white/80">
+            <a href="#home" class="hover:text-white transition">Home</a>
+            <a href="#services" class="hover:text-white transition">Services</a>
+            <a href="#portfolio" class="hover:text-white transition">Portfolio</a>
+            <a href="#contact" class="hover:text-white transition">Contact</a>
           </div>
 
           <button id="mobile-menu-open" class="md:hidden" aria-label="Open mobile menu">
@@ -267,7 +167,7 @@
     </nav>
 
     <!-- Mobile nav -->
-    <div id="mobile-nav" class="fixed inset-y-0 right-0 w-72 z-50 transform translate-x-full md:hidden"
+    <div id="mobile-nav" class="fixed inset-y-0 right-0 w-64 z-50 md:hidden"
          role="dialog" aria-modal="true" aria-label="Mobile navigation">
       <div class="flex justify-end p-6">
         <button id="mobile-menu-close" aria-label="Close mobile menu">
@@ -277,444 +177,213 @@
           </svg>
         </button>
       </div>
-      <div class="flex flex-col items-start px-8 space-y-6 py-4">
-        <a href="#home" class="text-xl hover:text-indigo-300 transition" data-close-mobile>Home</a>
-        <a href="#services" class="text-xl hover:text-indigo-300 transition" data-close-mobile>Services</a>
-        <a href="#portfolio" class="text-xl hover:text-indigo-300 transition" data-close-mobile>Portfolio</a>
-        <a href="#contact" class="text-xl hover:text-indigo-300 transition" data-close-mobile>Contact</a>
-        <div class="pt-6 text-xs text-gray-400 border-t border-gray-800 w-full">
-          Shelby Township, Michigan
-        </div>
+      <div class="flex flex-col items-center space-y-8 py-8">
+        <a href="#home" class="text-xl text-white/90 hover:text-white transition" data-close-mobile>Home</a>
+        <a href="#services" class="text-xl text-white/90 hover:text-white transition" data-close-mobile>Services</a>
+        <a href="#portfolio" class="text-xl text-white/90 hover:text-white transition" data-close-mobile>Portfolio</a>
+        <a href="#contact" class="text-xl text-white/90 hover:text-white transition" data-close-mobile>Contact</a>
       </div>
     </div>
 
-    <!-- HERO -->
-    <section id="home" class="min-h-screen flex items-center px-6 pt-28">
-      <div class="max-w-6xl mx-auto w-full grid lg:grid-cols-12 gap-10 items-center">
-        <!-- Copy -->
-        <div class="lg:col-span-7">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-gray-800 bg-black/30 text-xs text-gray-300 fade-up">
-            <span class="text-indigo-300">●</span> Film • Music • Photo • Brand Content
-          </div>
+    <!-- HERO: minimal, centered, breathable -->
+    <section id="home" class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative overflow-hidden">
+      <!-- subtle glow only -->
+      <div class="absolute inset-0 opacity-10" aria-hidden="true">
+        <div class="absolute top-24 left-12 w-40 h-40 bg-indigo-500 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-24 right-12 w-56 h-56 bg-purple-500 rounded-full blur-3xl"></div>
+      </div>
 
-          <h1 class="mt-6 text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[0.95] fade-up">
-            We turn ideas into
-            <span class="gradient-text">cinematic reality</span>.
-          </h1>
-
-          <p class="mt-6 text-lg md:text-xl text-gray-300 leading-relaxed max-w-2xl fade-up">
-            LaB Media is a creative studio based in Shelby Township, Michigan — focused on film, music videos, photography,
-            and brand storytelling that feels modern, intentional, and sharp.
-          </p>
-
-          <div class="mt-8 flex flex-col sm:flex-row gap-4 items-start sm:items-center fade-up">
-            <a href="#portfolio"
-               class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-8 py-4 rounded-full font-semibold shadow-lg transform hover:scale-[1.03] transition-all duration-300">
-              View Work
-            </a>
-            <a href="#contact"
-               class="px-8 py-4 rounded-full font-semibold border border-gray-700 hover:border-indigo-400 bg-black/20 hover:bg-black/30 transition-all duration-300">
-              Start a Project
-            </a>
-          </div>
-
-          <div class="mt-10 grid sm:grid-cols-3 gap-3 max-w-2xl fade-up">
-            <div class="glass-card rounded-2xl p-4">
-              <p class="text-xs text-gray-400">Vibe</p>
-              <p class="mt-1 font-semibold">Clean + cinematic</p>
-            </div>
-            <div class="glass-card rounded-2xl p-4">
-              <p class="text-xs text-gray-400">Turnaround</p>
-              <p class="mt-1 font-semibold">Fast + intentional</p>
-            </div>
-            <div class="glass-card rounded-2xl p-4">
-              <p class="text-xs text-gray-400">Region</p>
-              <p class="mt-1 font-semibold">Michigan + beyond</p>
-            </div>
-          </div>
+      <div class="relative z-10 max-w-4xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs text-white/70 fade-up">
+          Film • Music • Photo • Brand Content
         </div>
 
-        <!-- Hero object: SVG beaker + liquid + tilt -->
-        <div class="lg:col-span-5">
-          <div class="glass-card rounded-3xl p-8 md:p-10 relative overflow-hidden fade-up">
-            <div class="absolute inset-0 opacity-60 pointer-events-none">
-              <div class="absolute -top-24 -left-20 w-72 h-72 rounded-full blur-3xl bg-indigo-600/30"></div>
-              <div class="absolute -bottom-24 -right-20 w-72 h-72 rounded-full blur-3xl bg-purple-600/25"></div>
-            </div>
+        <h1 class="mt-6 text-5xl md:text-7xl font-extrabold tracking-tight mb-6 fade-up">
+          <span class="gradient-text">LaB Media</span>
+        </h1>
 
-            <div class="relative">
-              <p class="text-xs tracking-[0.22em] text-gray-400">THE LaB</p>
-              <p class="mt-3 text-2xl font-bold">One signature thing.</p>
-              <p class="mt-2 text-gray-300 leading-relaxed">
-                A clean site… with a little personality. That’s the beaker’s job.
-              </p>
+        <p class="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-10 fade-up leading-relaxed">
+          A small creative studio in Shelby Township, Michigan — making clean, intentional visuals that don’t look like everyone else’s.
+        </p>
 
-              <div class="mt-8 flex justify-center tilt-wrap" id="beaker-tilt">
-                <div class="tilt-inner beaker-glow" id="beaker-inner">
-                  <!-- Inline SVG (original) -->
-                  <svg width="210" height="260" viewBox="0 0 210 260" fill="none" xmlns="http://www.w3.org/2000/svg"
-                       aria-label="LaB beaker animation" role="img" style="position:relative; z-index:1;">
-                    <defs>
-                      <!-- Beaker silhouette for clipping liquid -->
-                      <clipPath id="beakerClip">
-                        <!-- Erlenmeyer-ish flask -->
-                        <path d="M92 18
-                                 C92 14 95 11 99 11
-                                 H111
-                                 C115 11 118 14 118 18
-                                 V64
-                                 C118 69 120 73 124 78
-                                 L162 140
-                                 C169 152 173 165 173 180
-                                 V196
-                                 C173 214 159 228 141 228
-                                 H69
-                                 C51 228 37 214 37 196
-                                 V180
-                                 C37 165 41 152 48 140
-                                 L86 78
-                                 C90 73 92 69 92 64
-                                 V18 Z" />
-                      </clipPath>
-
-                      <!-- Liquid gradient -->
-                      <linearGradient id="liq" x1="60" y1="120" x2="150" y2="220" gradientUnits="userSpaceOnUse">
-                        <stop offset="0" stop-color="#6366F1" stop-opacity="0.95"/>
-                        <stop offset="1" stop-color="#A855F7" stop-opacity="0.85"/>
-                      </linearGradient>
-
-                      <!-- Glass shine -->
-                      <linearGradient id="glass" x1="45" y1="30" x2="165" y2="230" gradientUnits="userSpaceOnUse">
-                        <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.10"/>
-                        <stop offset="0.35" stop-color="#FFFFFF" stop-opacity="0.04"/>
-                        <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.00"/>
-                      </linearGradient>
-                    </defs>
-
-                    <!-- Glow behind beaker -->
-                    <ellipse cx="105" cy="215" rx="56" ry="14" fill="#000" opacity="0.28"/>
-                    <ellipse cx="105" cy="215" rx="62" ry="18" fill="#6366F1" opacity="0.12"/>
-                    <ellipse cx="105" cy="215" rx="62" ry="18" fill="#A855F7" opacity="0.08"/>
-
-                    <!-- Liquid (clipped) -->
-                    <g clip-path="url(#beakerClip)" class="liquid-group">
-                      <!-- base liquid -->
-                      <rect x="20" y="132" width="170" height="140" fill="url(#liq)" opacity="0.95"/>
-
-                      <!-- wave 1 -->
-                      <g class="wave" style="transform-origin:center;">
-                        <path d="M-10 138
-                                 C 10 130, 30 146, 50 138
-                                 C 70 130, 90 146, 110 138
-                                 C 130 130, 150 146, 170 138
-                                 C 190 130, 210 146, 230 138
-                                 V260 H-10 Z"
-                              fill="#8B5CF6" opacity="0.28"/>
-                      </g>
-
-                      <!-- wave 2 -->
-                      <g class="wave wave2">
-                        <path d="M-10 142
-                                 C 10 135, 30 150, 50 142
-                                 C 70 135, 90 150, 110 142
-                                 C 130 135, 150 150, 170 142
-                                 C 190 135, 210 150, 230 142
-                                 V260 H-10 Z"
-                              fill="#60A5FA" opacity="0.22"/>
-                      </g>
-
-                      <!-- bubbles -->
-                      <circle class="bubble b1" cx="78" cy="205" r="4" fill="#E0E7FF" opacity="0.7"/>
-                      <circle class="bubble b2" cx="118" cy="210" r="3" fill="#E0E7FF" opacity="0.6"/>
-                      <circle class="bubble b3" cx="98" cy="216" r="2.6" fill="#E0E7FF" opacity="0.55"/>
-                      <circle class="bubble b4" cx="136" cy="208" r="2.2" fill="#E0E7FF" opacity="0.55"/>
-                    </g>
-
-                    <!-- Beaker glass body (stroke) -->
-                    <path d="M92 18
-                             C92 14 95 11 99 11
-                             H111
-                             C115 11 118 14 118 18
-                             V64
-                             C118 69 120 73 124 78
-                             L162 140
-                             C169 152 173 165 173 180
-                             V196
-                             C173 214 159 228 141 228
-                             H69
-                             C51 228 37 214 37 196
-                             V180
-                             C37 165 41 152 48 140
-                             L86 78
-                             C90 73 92 69 92 64
-                             V18 Z"
-                          stroke="#FFFFFF" stroke-opacity="0.92" stroke-width="3" stroke-linejoin="round"/>
-
-                    <!-- Neck accent line -->
-                    <path d="M92 36 H118" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="2" stroke-linecap="round"/>
-
-                    <!-- Glass shine overlay -->
-                    <path d="M64 72
-                             C58 95 52 112 44 126
-                             C38 138 33 152 33 176
-                             V198
-                             C33 218 48 236 69 236
-                             H84
-                             C63 225 57 214 57 198
-                             V176
-                             C57 156 63 143 69 131
-                             C77 115 85 96 90 72
-                             C92 62 92 54 92 48
-                             V18
-                             C92 14 95 11 99 11
-                             H105
-                             C99 11 96 14 96 18
-                             V46
-                             C96 55 95 63 94 70
-                             C93 76 92 82 91 87
-                             C88 102 80 118 72 132
-                             C66 142 61 152 61 176
-                             V198
-                             C61 210 65 220 84 232
-                             H69
-                             C51 232 37 216 37 196
-                             V180
-                             C37 165 41 152 48 140
-                             L86 78
-                             C90 73 92 69 92 64
-                             V48
-                             C92 56 92 64 90 74 Z"
-                          fill="url(#glass)" opacity="0.85"/>
-                  </svg>
-                </div>
-              </div>
-
-              <div class="mt-8 text-sm text-gray-400">
-                Need help? Use the assistant bubble — or just scroll like a normal human.
-              </div>
-            </div>
-          </div>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center fade-up">
+          <a href="#portfolio"
+             class="px-8 py-4 rounded-full font-semibold bg-white text-black hover:bg-white/90 transition">
+            View Work
+          </a>
+          <a href="#contact"
+             class="px-8 py-4 rounded-full font-semibold border border-white/15 bg-white/5 hover:bg-white/10 transition">
+            Contact
+          </a>
         </div>
-
       </div>
     </section>
 
-    <!-- SERVICES (BENTO) -->
+    <!-- SERVICES -->
     <section id="services" class="py-20 px-6">
       <div class="max-w-6xl mx-auto">
-        <div class="text-center max-w-2xl mx-auto">
-          <h2 class="text-4xl md:text-5xl font-bold fade-up">
-            What We <span class="gradient-text">Create</span>
-          </h2>
-          <p class="mt-5 text-gray-300 leading-relaxed fade-up">
-            A focused set of services… presented like a premium menu, not a Craigslist list.
-          </p>
-        </div>
+        <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 fade-up">
+          What We <span class="gradient-text">Create</span>
+        </h2>
 
-        <div class="mt-12 grid lg:grid-cols-12 gap-6">
-          <div class="glass-card rounded-3xl p-8 lg:col-span-7 fade-up">
-            <div class="text-5xl">🎬</div>
-            <h3 class="mt-4 text-2xl font-bold">Short Films</h3>
-            <p class="mt-3 text-gray-300 leading-relaxed">
-              Narrative-driven production with modern editing, strong pacing, and cinematic storytelling.
-            </p>
-            <div class="mt-6 flex flex-wrap gap-2 text-xs">
-              <span class="px-3 py-1 rounded-full border border-gray-700 bg-black/30 text-gray-300">Story</span>
-              <span class="px-3 py-1 rounded-full border border-gray-700 bg-black/30 text-gray-300">Cameras</span>
-              <span class="px-3 py-1 rounded-full border border-gray-700 bg-black/30 text-gray-300">Edit</span>
-            </div>
-          </div>
-
-          <div class="glass-card rounded-3xl p-8 lg:col-span-5 fade-up">
-            <div class="text-5xl">🎶</div>
-            <h3 class="mt-4 text-2xl font-bold">Music Videos</h3>
-            <p class="mt-3 text-gray-300 leading-relaxed">
-              Visuals that match the track—clean shots, intentional motion, and vibe-first storytelling.
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="service-card p-8 rounded-2xl border border-white/10 bg-white/[0.02] fade-up">
+            <div class="text-5xl mb-4">🎬</div>
+            <h3 class="text-2xl font-bold mb-3">Short Films</h3>
+            <p class="text-white/70 leading-relaxed">
+              Narrative-forward shorts with clean cinematography, thoughtful editing, and real pacing (not just “fast cuts”).
             </p>
           </div>
 
-          <div class="glass-card rounded-3xl p-8 lg:col-span-5 fade-up">
-            <div class="text-5xl">📸</div>
-            <h3 class="mt-4 text-2xl font-bold">Photography</h3>
-            <p class="mt-3 text-gray-300 leading-relaxed">
-              Studio or on-location—portraits, promo, and clean brand imagery.
+          <div class="service-card p-8 rounded-2xl border border-white/10 bg-white/[0.02] fade-up">
+            <div class="text-5xl mb-4">🎶</div>
+            <h3 class="text-2xl font-bold mb-3">Music Videos</h3>
+            <p class="text-white/70 leading-relaxed">
+              Visuals that match the track — energy, texture, and movement — without feeling over-produced.
             </p>
           </div>
 
-          <div class="glass-card rounded-3xl p-8 lg:col-span-7 fade-up">
-            <div class="text-5xl">💼</div>
-            <h3 class="mt-4 text-2xl font-bold">Commercial &amp; Brand Videos</h3>
-            <p class="mt-3 text-gray-300 leading-relaxed">
-              Brand stories, product showcases, and content that looks like you actually care about quality (because you do).
+          <div class="service-card p-8 rounded-2xl border border-white/10 bg-white/[0.02] fade-up">
+            <div class="text-5xl mb-4">📸</div>
+            <h3 class="text-2xl font-bold mb-3">Photography</h3>
+            <p class="text-white/70 leading-relaxed">
+              Studio or on-location portraits and promo shoots with a clean look and consistent color.
             </p>
-            <div class="mt-6 grid sm:grid-cols-3 gap-3 text-sm">
-              <div class="rounded-2xl border border-gray-800 bg-black/20 p-4">
-                <p class="text-xs text-gray-400">Pre-production</p>
-                <p class="mt-1 font-semibold">Plan</p>
-              </div>
-              <div class="rounded-2xl border border-gray-800 bg-black/20 p-4">
-                <p class="text-xs text-gray-400">Production</p>
-                <p class="mt-1 font-semibold">Shoot</p>
-              </div>
-              <div class="rounded-2xl border border-gray-800 bg-black/20 p-4">
-                <p class="text-xs text-gray-400">Post</p>
-                <p class="mt-1 font-semibold">Edit + Deliver</p>
-              </div>
-            </div>
+          </div>
+
+          <div class="service-card p-8 rounded-2xl border border-white/10 bg-white/[0.02] fade-up">
+            <div class="text-5xl mb-4">💼</div>
+            <h3 class="text-2xl font-bold mb-3">Commercial &amp; Brand</h3>
+            <p class="text-white/70 leading-relaxed">
+              Brand stories, product features, and clean social content that feels modern and intentional.
+            </p>
           </div>
         </div>
-
       </div>
     </section>
 
     <!-- PORTFOLIO -->
-    <section id="portfolio" class="py-20 px-6">
+    <section id="portfolio" class="py-20 bg-white/[0.02] px-6 border-t border-white/5">
       <div class="max-w-7xl mx-auto">
-        <div class="text-center mb-14 fade-up">
-          <h3 class="text-4xl md:text-5xl font-bold">
-            Selected <span class="gradient-text">Work</span>
-          </h3>
-          <p class="mt-5 text-gray-300 max-w-2xl mx-auto">
-            A few projects that show range: documentary-style, commercial, music, and narrative.
+        <div class="text-center mb-16 fade-up">
+          <h4 class="text-2xl font-bold mb-4">Selected Work</h4>
+          <p class="text-white/70 mb-8">
+            A few highlights — more coming as we build the next chapter.
           </p>
+          <a href="#contact"
+             class="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-white text-black hover:bg-white/90 transition font-semibold">
+            Start a Project <span>→</span>
+          </a>
         </div>
 
         <div class="grid gap-8 lg:grid-cols-2">
-          <!-- 1 -->
-          <div class="glass-card rounded-3xl overflow-hidden fade-up">
-            <div class="aspect-video bg-black/30">
-              <iframe
-                src="https://www.youtube.com/embed/ZXYtZmIRiRI"
-                title="The Pandys Music Recording Session"
-                class="w-full h-full"
-                frameborder="0"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
+          <div class="rounded-2xl overflow-hidden border border-white/10 bg-black/30 fade-up">
+            <div class="aspect-video">
+              <iframe src="https://www.youtube.com/embed/ZXYtZmIRiRI"
+                      title="The Pandys Music Recording Session"
+                      class="w-full h-full"
+                      frameborder="0"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen></iframe>
             </div>
-            <div class="p-7">
-              <div class="flex items-center gap-2 mb-3">
-                <span class="bg-purple-600/90 text-white px-2 py-1 rounded-full text-xs font-semibold">MUSIC VIDEO</span>
-                <span class="text-xs text-gray-400">• session energy</span>
-              </div>
-              <h4 class="font-bold text-xl">The Pandys Music Recording Session</h4>
-              <p class="mt-2 text-gray-300">Dynamic visuals showcasing the creative process and live recording vibe.</p>
+            <div class="p-6">
+              <p class="text-xs text-white/50 tracking-wider">MUSIC VIDEO</p>
+              <h4 class="font-bold text-xl mt-2">The Pandys Music Recording Session</h4>
+              <p class="text-white/60 mt-2">Live-session energy with a clean, cinematic look.</p>
             </div>
           </div>
 
-          <!-- 2 -->
-          <div class="glass-card rounded-3xl overflow-hidden fade-up">
-            <div class="aspect-video bg-black/30">
-              <iframe
-                src="https://www.youtube.com/embed/CPvxM8GrCg8"
-                title="Anthony Brass - Artist Story"
-                class="w-full h-full"
-                frameborder="0"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
+          <div class="rounded-2xl overflow-hidden border border-white/10 bg-black/30 fade-up">
+            <div class="aspect-video">
+              <iframe src="https://www.youtube.com/embed/CPvxM8GrCg8"
+                      title="Anthony Brass - Artist Story"
+                      class="w-full h-full"
+                      frameborder="0"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen></iframe>
             </div>
-            <div class="p-7">
-              <div class="flex items-center gap-2 mb-3">
-                <span class="bg-indigo-600/90 text-white px-2 py-1 rounded-full text-xs font-semibold">BRAND STORY</span>
-                <span class="text-xs text-gray-400">• documentary tone</span>
-              </div>
-              <h4 class="font-bold text-xl">Anthony Brass — The Painter</h4>
-              <p class="mt-2 text-gray-300">A compelling artist feature focused on process, craft, and personality.</p>
+            <div class="p-6">
+              <p class="text-xs text-white/50 tracking-wider">BRAND STORY</p>
+              <h4 class="font-bold text-xl mt-2">Anthony Brass — The Painter</h4>
+              <p class="text-white/60 mt-2">A focused doc-style story about the craft.</p>
             </div>
           </div>
 
-          <!-- 3 -->
-          <div class="glass-card rounded-3xl overflow-hidden fade-up">
-            <div class="aspect-video bg-black/30">
-              <iframe
-                src="https://www.youtube.com/embed/HtF4L9RpkaU"
-                title="MOZ Interiors - Interior Design Showcase"
-                class="w-full h-full"
-                frameborder="0"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
+          <div class="rounded-2xl overflow-hidden border border-white/10 bg-black/30 fade-up">
+            <div class="aspect-video">
+              <iframe src="https://www.youtube.com/embed/HtF4L9RpkaU"
+                      title="MOZ Interiors - Interior Design Showcase"
+                      class="w-full h-full"
+                      frameborder="0"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen></iframe>
             </div>
-            <div class="p-7">
-              <div class="flex items-center gap-2 mb-3">
-                <span class="bg-blue-600/90 text-white px-2 py-1 rounded-full text-xs font-semibold">COMMERCIAL</span>
-                <span class="text-xs text-gray-400">• spaces + detail</span>
-              </div>
-              <h4 class="font-bold text-xl">MOZ Interiors — Design Showcase</h4>
-              <p class="mt-2 text-gray-300">Interior design visuals highlighting sophisticated spaces and texture.</p>
+            <div class="p-6">
+              <p class="text-xs text-white/50 tracking-wider">COMMERCIAL</p>
+              <h4 class="font-bold text-xl mt-2">MOZ Interiors — Design Showcase</h4>
+              <p class="text-white/60 mt-2">Clean framing and pacing for a premium feel.</p>
               <a href="https://www.youtube.com/watch?v=11YzdPTPT60" target="_blank" rel="noreferrer"
-                 class="inline-flex items-center gap-2 mt-4 text-sm text-green-300 hover:text-green-200 font-semibold transition">
-                <span>🎤</span> View Commentary Version →
+                 class="inline-flex items-center gap-2 mt-4 text-sm text-white/80 hover:text-white transition">
+                🎤 Commentary Version →
               </a>
             </div>
           </div>
 
-          <!-- 4 -->
-          <div class="glass-card rounded-3xl overflow-hidden fade-up">
-            <div class="aspect-video bg-black/30">
-              <iframe
-                src="https://www.youtube.com/embed/G0zfFWwQuZA"
-                title="The Comedy Roll - Film Festival"
-                class="w-full h-full"
-                frameborder="0"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
+          <div class="rounded-2xl overflow-hidden border border-white/10 bg-black/30 fade-up">
+            <div class="aspect-video">
+              <iframe src="https://www.youtube.com/embed/G0zfFWwQuZA"
+                      title="The Comedy Roll - Film Festival"
+                      class="w-full h-full"
+                      frameborder="0"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen></iframe>
             </div>
-            <div class="p-7">
-              <div class="flex items-center gap-2 mb-3">
-                <span class="bg-red-600/90 text-white px-2 py-1 rounded-full text-xs font-semibold">SHORT FILM</span>
-                <span class="text-xs text-gray-400">• narrative</span>
-              </div>
-              <h4 class="font-bold text-xl">The Comedy Roll — Film Festival</h4>
-              <p class="mt-2 text-gray-300">Original short film with comedic timing and polished production.</p>
+            <div class="p-6">
+              <p class="text-xs text-white/50 tracking-wider">SHORT FILM</p>
+              <h4 class="font-bold text-xl mt-2">The Comedy Roll — Film Festival</h4>
+              <p class="text-white/60 mt-2">Storytelling with comedic timing and polish.</p>
             </div>
           </div>
         </div>
 
         <!-- Drone toggle -->
-        <div class="mt-14 text-center fade-up">
-          <button
-            id="drone-toggle"
-            type="button"
-            class="inline-flex items-center gap-4 bg-black/25 rounded-full px-6 py-3 border border-gray-700 hover:border-indigo-500 transition-all duration-300 group"
-            aria-expanded="false"
-            aria-controls="drone-section"
-          >
-            <img src="images/drone-svgrepo-com.svg" alt="" class="w-8 h-8 transition group-hover:scale-110" />
-            <span class="text-sm text-gray-300 group-hover:text-indigo-300">Aerial Perspectives</span>
+        <div class="mt-16 text-center fade-up">
+          <button id="drone-toggle" type="button"
+                  class="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition"
+                  aria-expanded="false" aria-controls="drone-section">
+            <img src="images/drone-svgrepo-com.svg" alt="" class="w-6 h-6 opacity-80" />
+            <span class="text-sm text-white/70">Aerial Perspectives</span>
           </button>
 
-          <!-- Collapsible (starts CLOSED + truly hidden) -->
-          <div id="drone-section" aria-hidden="true">
-            <div class="glass-card rounded-3xl p-8 max-w-4xl mx-auto border border-gray-700">
-              <h4 class="text-2xl font-bold mb-4 gradient-text">Drone Videography</h4>
+          <div id="drone-section" class="max-w-4xl mx-auto rounded-2xl border border-white/10 bg-black/30 p-8" aria-hidden="true">
+            <h4 class="text-2xl font-bold mb-4 gradient-text">Drone Videography</h4>
 
-              <div class="aspect-video rounded-2xl overflow-hidden mb-6 bg-black/30 border border-gray-800">
-                <iframe
-                  src="https://www.youtube.com/embed/HFx98zQnOlo"
-                  title="Aerial Footage of Michigan"
-                  class="w-full h-full"
-                  frameborder="0"
-                  loading="lazy"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen></iframe>
-              </div>
+            <div class="aspect-video rounded-xl overflow-hidden mb-6 border border-white/10">
+              <iframe src="https://www.youtube.com/embed/HFx98zQnOlo"
+                      title="Aerial Footage of Michigan"
+                      class="w-full h-full"
+                      frameborder="0"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen></iframe>
+            </div>
 
-              <p class="text-gray-300 mb-6">
-                Exploring aerial cinematography and unique perspectives with a focus on people's hobbies, architecture &amp; landscapes across Michigan.
-              </p>
+            <p class="text-white/70 mb-6">
+              Exploring aerial cinematography and unique perspectives across Michigan — hobbies, architecture, and landscapes.
+            </p>
 
-              <div class="flex items-center justify-center gap-4 mt-4">
-                <span class="text-sm text-gray-400">Follow our FPV Journey @</span>
-                <a href="https://www.youtube.com/@BobtastiCFPV" target="_blank" rel="noreferrer" aria-label="YouTube Channel">
-                  <img src="images/youtube-color-svgrepo-com.svg" alt="YouTube" class="w-8 h-8 transition hover:scale-110" />
-                </a>
-                <a href="https://www.instagram.com/bob.tastic/" target="_blank" rel="noreferrer" aria-label="Instagram Profile">
-                  <img src="images/instagram-1-svgrepo-com.svg" alt="Instagram" class="w-8 h-8 transition hover:scale-110" />
-                </a>
-              </div>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+              <span class="text-sm text-white/50">Follow our FPV journey:</span>
+              <a href="https://www.youtube.com/@BobtastiCFPV" target="_blank" rel="noreferrer" aria-label="YouTube">
+                <img src="images/youtube-color-svgrepo-com.svg" alt="YouTube" class="w-7 h-7 transition hover:scale-110" />
+              </a>
+              <a href="https://www.instagram.com/bob.tastic/" target="_blank" rel="noreferrer" aria-label="Instagram">
+                <img src="images/instagram-1-svgrepo-com.svg" alt="Instagram" class="w-7 h-7 transition hover:scale-110" />
+              </a>
             </div>
           </div>
         </div>
@@ -725,40 +394,33 @@
     <!-- CONTACT -->
     <section id="contact" class="py-20 px-6">
       <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-14 fade-up">
-          <h3 class="text-4xl md:text-5xl font-bold">
-            Let’s <span class="gradient-text">Create Together</span>
-          </h3>
-          <p class="mt-5 text-gray-300 max-w-2xl mx-auto">
-            Tell us what you’re building. If you’re not sure how to describe it… that’s literally our job.
-          </p>
-        </div>
+        <h3 class="text-4xl md:text-5xl font-bold text-center mb-16 fade-up">
+          Let's <span class="gradient-text">Create Together</span>
+        </h3>
 
         <div class="grid lg:grid-cols-2 gap-12">
           <div class="fade-up">
-            <form id="contact-form"
-                  action="https://formspree.io/f/mkgvggge"
-                  method="POST"
-                  class="glass-card rounded-3xl p-8 border border-gray-800 space-y-6">
+            <form id="contact-form" action="https://formspree.io/f/mkgvggge" method="POST"
+                  class="rounded-2xl p-8 border border-white/10 bg-white/[0.02] space-y-6">
 
               <div>
-                <label for="name" class="block text-sm font-medium mb-2">Name</label>
+                <label for="name" class="block text-sm font-medium mb-2 text-white/80">Name</label>
                 <input type="text" id="name" name="name" placeholder="Your name"
-                       class="w-full border border-gray-700 bg-black/40 text-white rounded-xl px-4 py-3 focus:border-indigo-500 focus:outline-none transition"
+                       class="w-full border border-white/10 bg-black/40 text-white rounded-xl px-4 py-3 focus:border-white/30 focus:outline-none transition"
                        required />
               </div>
 
               <div>
-                <label for="email" class="block text-sm font-medium mb-2">Email</label>
-                <input type="email" id="email" name="email" placeholder="your dot email at example dot com"
-                       class="w-full border border-gray-700 bg-black/40 text-white rounded-xl px-4 py-3 focus:border-indigo-500 focus:outline-none transition"
+                <label for="email" class="block text-sm font-medium mb-2 text-white/80">Email</label>
+                <input type="email" id="email" name="email" placeholder="your.email@example.com"
+                       class="w-full border border-white/10 bg-black/40 text-white rounded-xl px-4 py-3 focus:border-white/30 focus:outline-none transition"
                        required />
               </div>
 
               <div>
-                <label for="project-type" class="block text-sm font-medium mb-2">Project Type</label>
+                <label for="project-type" class="block text-sm font-medium mb-2 text-white/80">Project Type</label>
                 <select id="project-type" name="project-type"
-                        class="w-full border border-gray-700 bg-black/40 text-white rounded-xl px-4 py-3 focus:border-indigo-500 focus:outline-none transition"
+                        class="w-full border border-white/10 bg-black/40 text-white rounded-xl px-4 py-3 focus:border-white/30 focus:outline-none transition"
                         required>
                   <option value="">Select a project type...</option>
                   <option value="short-film">Short Film</option>
@@ -770,90 +432,89 @@
               </div>
 
               <div>
-                <label for="message" class="block text-sm font-medium mb-2">Message</label>
+                <label for="message" class="block text-sm font-medium mb-2 text-white/80">Message</label>
                 <textarea id="message" name="message" rows="4" placeholder="Tell us about your project..."
-                          class="w-full border border-gray-700 bg-black/40 text-white rounded-xl px-4 py-3 focus:border-indigo-500 focus:outline-none transition"
+                          class="w-full border border-white/10 bg-black/40 text-white rounded-xl px-4 py-3 focus:border-white/30 focus:outline-none transition"
                           required></textarea>
               </div>
 
               <button type="submit"
-                      class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-8 py-3 rounded-xl font-semibold w-full transform hover:scale-[1.01] transition-all duration-300">
+                      class="w-full px-8 py-3 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition">
                 Send Message
               </button>
 
-              <p class="text-xs text-gray-500 pt-2">
-                Tip: use the assistant bubble for quick questions or scheduling direction.
+              <p class="text-xs text-white/40 pt-1">
+                You can also use the assistant bubble for questions or scheduling.
               </p>
             </form>
           </div>
 
           <div class="flex flex-col justify-center space-y-8 fade-up">
-            <div class="flex justify-end pr-2 md:pr-12">
-              <img src="images/THELABLOGO.png" alt="The LaB Logo" class="w-56 md:w-64 h-auto opacity-95" />
+            <div class="flex justify-end">
+              <img src="images/THELABLOGO.png" alt="The LaB Logo" class="w-64 h-auto opacity-90" />
             </div>
 
-            <div class="glass-card rounded-3xl p-8 border border-gray-800">
+            <div>
               <h4 class="text-2xl font-bold mb-4 gradient-text">Get In Touch</h4>
-              <p class="text-gray-300 mb-6 leading-relaxed">
-                Based in Shelby Township. Working across Michigan and beyond.
+              <p class="text-white/70 leading-relaxed">
+                Based in Shelby Township — working across Michigan and beyond.
               </p>
+            </div>
 
-              <div class="space-y-4">
-                <div class="flex items-center space-x-4">
-                  <div class="w-12 h-12 bg-indigo-600/90 rounded-xl flex items-center justify-center">
-                    <span class="text-xl">📍</span>
-                  </div>
-                  <div>
-                    <p class="font-semibold">Location</p>
-                    <p class="text-gray-400">Shelby Township, Michigan</p>
-                  </div>
+            <div class="space-y-4">
+              <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
+                  <span class="text-xl">📍</span>
                 </div>
-
-                <div class="flex items-center space-x-4">
-                  <div class="w-12 h-12 bg-purple-600/90 rounded-xl flex items-center justify-center">
-                    <span class="text-xl">✉️</span>
-                  </div>
-                  <div>
-                    <p class="font-semibold">Email</p>
-                    <a href="mailto:Bobby@LaBmediadot.com" class="text-indigo-300 hover:text-indigo-200 transition">
-                      Bobby@LaBmediadot.com
-                    </a>
-                  </div>
-                </div>
-
-                <div class="flex items-center space-x-4">
-                  <div class="w-12 h-12 bg-blue-600/90 rounded-xl flex items-center justify-center">
-                    <span class="text-xl">📞</span>
-                  </div>
-                  <div>
-                    <p class="font-semibold">Phone</p>
-                    <a href="tel:3139237444" class="text-indigo-300 hover:text-indigo-200 transition">
-                      (313) 923-7444
-                    </a>
-                  </div>
+                <div>
+                  <p class="font-semibold">Location</p>
+                  <p class="text-white/60">Shelby Township, Michigan</p>
                 </div>
               </div>
 
-              <div class="pt-6 mt-6 border-t border-gray-800">
-                <p class="text-sm text-gray-500">Response time: typically within 24 hours</p>
+              <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
+                  <span class="text-xl">✉️</span>
+                </div>
+                <div>
+                  <p class="font-semibold">Email</p>
+                  <a href="mailto:Bobby@LaBmediadot.com" class="text-white/80 hover:text-white transition">
+                    Bobby@LaBmediadot.com
+                  </a>
+                </div>
+              </div>
+
+              <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
+                  <span class="text-xl">📞</span>
+                </div>
+                <div>
+                  <p class="font-semibold">Phone</p>
+                  <a href="tel:3139237444" class="text-white/80 hover:text-white transition">
+                    (313) 923-7444
+                  </a>
+                </div>
               </div>
             </div>
 
+            <div class="pt-6 border-t border-white/10">
+              <p class="text-sm text-white/50">Response time: typically within 24 hours</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="border-t border-gray-800 py-8">
+    <footer class="border-t border-white/5 py-8">
       <div class="max-w-6xl mx-auto px-6">
         <div class="flex flex-col sm:flex-row justify-between items-center text-center sm:text-left space-y-4 sm:space-y-0">
-          <p class="text-gray-400">Made with ❤️ in Shelby Twp, MI</p>
+          <p class="text-white/50">Made with ❤️ in Shelby Twp, MI</p>
           <div class="flex space-x-4">
-            <a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" rel="noreferrer" aria-label="YouTube Channel">
+            <a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" rel="noreferrer" aria-label="YouTube">
               <img src="images/youtube-color-svgrepo-com.svg" alt="YouTube" class="w-6 h-6 transition hover:scale-110" />
             </a>
-            <a href="https://www.instagram.com/thisislabmedia/" target="_blank" rel="noreferrer" aria-label="Instagram Profile">
+            <a href="https://www.instagram.com/thisislabmedia/" target="_blank" rel="noreferrer" aria-label="Instagram">
               <img src="images/instagram-1-svgrepo-com.svg" alt="Instagram" class="w-6 h-6 transition hover:scale-110" />
             </a>
           </div>
@@ -863,12 +524,12 @@
 
   </div><!-- /main-content -->
 
-  <!-- ✅ ElevenLabs Agent (load ONCE, near end of body) -->
+  <!-- ElevenLabs Agent -->
   <elevenlabs-convai agent-id="agent_7801kdhgsr5kf0x912w7wdxrm532"></elevenlabs-convai>
   <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
   <script>
-    // ========= Loading Screen =========
+    // Loading Screen
     const loadingMessages = [
       'Contemplating...',
       'Focusing...',
@@ -878,7 +539,6 @@
       'Tuning audio...',
       'Directing vibes...'
     ];
-
     let messageIndex = 0;
     const loadingMessageElement = document.getElementById('loading-message');
 
@@ -888,23 +548,15 @@
     }, 1500);
 
     window.addEventListener('load', () => {
-      const loadingScreen = document.getElementById('loading-screen');
-      const mainContent = document.getElementById('main-content');
-
       clearInterval(messageInterval);
-
-      loadingScreen.classList.add('hidden');
-      mainContent.style.opacity = '1';
-
-      setTimeout(() => {
-        loadingScreen.style.display = 'none';
-      }, 500);
+      document.getElementById('loading-screen').classList.add('hidden');
+      document.getElementById('main-content').style.opacity = '1';
+      setTimeout(() => document.getElementById('loading-screen').style.display = 'none', 500);
     });
 
-    // ========= Reduced motion check =========
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // ========= Fade-up animations (once) =========
+    // Fade-up once (no flicker)
     if (!prefersReducedMotion) {
       const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
@@ -914,13 +566,12 @@
           }
         });
       }, { threshold: 0.12 });
-
       document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
     } else {
       document.querySelectorAll('.fade-up').forEach(el => el.classList.add('show'));
     }
 
-    // ========= Mobile menu =========
+    // Mobile menu
     const mobileMenuOpenBtn = document.getElementById('mobile-menu-open');
     const mobileMenuCloseBtn = document.getElementById('mobile-menu-close');
     const mobileNav = document.getElementById('mobile-nav');
@@ -934,18 +585,13 @@
       mobileNav.classList.add('open');
       document.body.style.overflow = 'hidden';
     });
-
     mobileMenuCloseBtn.addEventListener('click', closeMobileMenu);
+    document.querySelectorAll('[data-close-mobile]').forEach(link => link.addEventListener('click', closeMobileMenu));
 
-    document.querySelectorAll('[data-close-mobile]').forEach(link => {
-      link.addEventListener('click', closeMobileMenu);
-    });
-
-    // ========= Smooth scrolling =========
+    // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        const target = document.querySelector(href);
+        const target = document.querySelector(this.getAttribute('href'));
         if (target) {
           e.preventDefault();
           target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
@@ -953,10 +599,9 @@
       });
     });
 
-    // ========= Nav shadow + Back-to-top =========
+    // Nav shadow + back to top
     const nav = document.querySelector('nav');
     const backToTopBtn = document.getElementById('back-to-top');
-
     window.addEventListener('scroll', () => {
       if (window.scrollY > 100) nav.classList.add('shadow-lg');
       else nav.classList.remove('shadow-lg');
@@ -965,11 +610,9 @@
       else backToTopBtn.classList.remove('show');
     });
 
-    // ========= Drone section toggle (fixed) =========
+    // Drone toggle (FIX: starts closed, nothing visible)
     const droneToggle = document.getElementById('drone-toggle');
     const droneSection = document.getElementById('drone-section');
-
-    // Ensure starts closed
     droneSection.classList.remove('open');
     droneSection.setAttribute('aria-hidden', 'true');
     droneToggle.setAttribute('aria-expanded', 'false');
@@ -980,48 +623,21 @@
       droneSection.setAttribute('aria-hidden', String(!isOpen));
     });
 
-    // ========= Custom cursor (desktop only) =========
+    // Custom cursor (desktop only)
     const isTouch = window.matchMedia('(hover: none)').matches || navigator.maxTouchPoints > 0;
     const cursorEl = document.querySelector('.custom-cursor');
-
     if (!isTouch && !prefersReducedMotion) {
       document.body.classList.add('cursor-hidden');
-
       document.addEventListener('mousemove', (e) => {
         cursorEl.classList.add('show');
         cursorEl.style.left = `${e.clientX}px`;
         cursorEl.style.top = `${e.clientY}px`;
       });
-
       document.addEventListener('mousedown', () => cursorEl.style.transform = 'translate(-50%, -50%) scale(0.85)');
       document.addEventListener('mouseup', () => cursorEl.style.transform = 'translate(-50%, -50%) scale(1)');
     }
 
-    // ========= Beaker parallax tilt (desktop only) =========
-    const tiltWrap = document.getElementById('beaker-tilt');
-    const tiltInner = document.getElementById('beaker-inner');
-
-    if (tiltWrap && tiltInner && !isTouch && !prefersReducedMotion) {
-      const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
-
-      tiltWrap.addEventListener('mousemove', (e) => {
-        const rect = tiltWrap.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width;  // 0..1
-        const y = (e.clientY - rect.top) / rect.height;  // 0..1
-
-        // tilt angles
-        const rotY = clamp((x - 0.5) * 16, -10, 10);
-        const rotX = clamp((0.5 - y) * 16, -10, 10);
-
-        tiltInner.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(18px)`;
-      });
-
-      tiltWrap.addEventListener('mouseleave', () => {
-        tiltInner.style.transform = `rotateX(0deg) rotateY(0deg) translateZ(0px)`;
-      });
-    }
-
-    // ========= Contact form client-side validation =========
+    // Contact form validation
     const contactForm = document.getElementById('contact-form');
     contactForm.addEventListener('submit', function(event) {
       const nameInput = document.getElementById('name');
@@ -1029,27 +645,11 @@
       const projectTypeInput = document.getElementById('project-type');
       const messageInput = document.getElementById('message');
 
-      if (nameInput.value.trim() === '') {
-        alert('Please enter your name.');
-        event.preventDefault();
-        return;
-      }
+      if (nameInput.value.trim() === '') { alert('Please enter your name.'); event.preventDefault(); return; }
       const email = emailInput.value.trim();
-      if (!email.includes('@') || !email.includes('.')) {
-        alert('Please enter a valid email address.');
-        event.preventDefault();
-        return;
-      }
-      if (projectTypeInput.value === '') {
-        alert('Please select a project type.');
-        event.preventDefault();
-        return;
-      }
-      if (messageInput.value.trim() === '') {
-        alert('Please enter a message about your project.');
-        event.preventDefault();
-        return;
-      }
+      if (!email.includes('@') || !email.includes('.')) { alert('Please enter a valid email address.'); event.preventDefault(); return; }
+      if (projectTypeInput.value === '') { alert('Please select a project type.'); event.preventDefault(); return; }
+      if (messageInput.value.trim() === '') { alert('Please enter a message about your project.'); event.preventDefault(); return; }
     });
   </script>
 
