@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Your Project | LaB Media</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-light: #A0A0A0;
+            --gray-dark: #404040;
+            --accent: #6366F1;
+            --accent-pink: #EC4899;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--black);
+            color: var(--gray-light);
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .nav-logo {
+            height: 32px;
+            width: auto;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-logo:hover {
+            opacity: 0.7;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--white);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 6rem 2rem 4rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            min-height: 100vh;
+        }
+        
+        /* Left Side - Interactive Form */
+        .form-side {
+            padding: 2rem 0;
+        }
+        
+        .form-header {
+            margin-bottom: 3rem;
+        }
+        
+        .form-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+        
+        .form-header p {
+            font-size: 1.1rem;
+            color: var(--gray-light);
+        }
+        
+        /* Question Cards */
+        .question-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideIn 0.5s ease forwards;
+        }
+        
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .question-card:nth-child(1) { animation-delay: 0.1s; }
+        .question-card:nth-child(2) { animation-delay: 0.2s; }
+        .question-card:nth-child(3) { animation-delay: 0.3s; }
+        .question-card:nth-child(4) { animation-delay: 0.4s; }
+        .question-card:nth-child(5) { animation-delay: 0.5s; }
+        .question-card:nth-child(6) { animation-delay: 0.6s; }
+        
+        .question-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .question-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            color: var(--white);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .question-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.05);
+        }
+        
+        .question-input::placeholder {
+            color: var(--gray-dark);
+        }
+        
+        select.question-input {
+            cursor: pointer;
+        }
+        
+        select.question-input option {
+            background: var(--black);
+            color: var(--white);
+        }
+        
+        textarea.question-input {
+            min-height: 100px;
+            resize: vertical;
+            font-size: 1rem;
+        }
+        
+        /* Right Side - Live Poster Preview */
+        .poster-side {
+            position: sticky;
+            top: 6rem;
+            height: fit-content;
+            padding: 2rem;
+        }
+        
+        .poster-preview {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .poster-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.03) 49%, rgba(255,255,255,0.03) 51%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, rgba(255,255,255,0.03) 49%, rgba(255,255,255,0.03) 51%, transparent 52%);
+            background-size: 30px 30px;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        .poster-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .poster-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+            line-height: 0.9;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .poster-title.empty {
+            opacity: 0.3;
+        }
+        
+        .poster-type {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--white);
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+        }
+        
+        .poster-type.empty {
+            opacity: 0;
+        }
+        
+        .poster-details {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .poster-detail {
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--accent);
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.3s ease;
+        }
+        
+        .poster-detail.filled {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .poster-detail-label {
+            font-size: 0.7rem;
+            color: var(--gray-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.25rem;
+        }
+        
+        .poster-detail-value {
+            font-size: 1.1rem;
+            color: var(--white);
+            font-weight: 500;
+        }
+        
+        /* Action Buttons */
+        .actions {
+            margin-top: 3rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+        
+        .btn-primary {
+            background: var(--white);
+            color: var(--black);
+            flex: 1;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .poster-side {
+                position: relative;
+                top: 0;
+                order: -1;
+            }
+            
+            .poster-title {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .form-header h1 {
+                font-size: 3rem;
+            }
+            
+            .poster-preview {
+                padding: 2rem;
+            }
+            
+            .poster-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB Media" class="nav-logo">
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html#work">Work</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="plan-your-project.html">Plan Project</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <!-- Left: Interactive Form -->
+        <div class="form-side">
+            <div class="form-header">
+                <h1>Build Your Vision</h1>
+                <p>Watch your project come to life as you answer</p>
+            </div>
+            
+            <form id="projectForm">
+                <div class="question-card">
+                    <label class="question-label">01 — What's it called?</label>
+                    <input type="text" class="question-input" id="projectName" name="projectName" placeholder="Your Project Title" required>
+                </div>
+                
+                <div class="question-card">
+                    <label class="question-label">02 — What type of project?</label>
+                    <select class="question-input" id="projectType" name="projectType" required>
+                        <option value="">Choose type...</option>
+                        <option value="Commercial">Commercial</option>
+                        <option value="Music Video">Music Video</option>
+                        <option value="Short Film">Short Film</option>
+                        <option value="Documentary">Documentary</option>
+                        <option value="Brand Content">Brand Content</option>
+                        <option value="Photography">Photography</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="question-card">
+                    <label class="question-label">03 — What's the vibe?</label>
+                    <select class="question-input" id="style" name="style" required>
+                        <option value="">Select style...</option>
+                        <option value="Cinematic">Cinematic</option>
+                        <option value="Clean & Minimal">Clean & Minimal</option>
+                        <option value="Energetic">Energetic</option>
+                        <option value="Documentary">Documentary</option>
+                        <option value="Moody">Moody</option>
+                        <option value="Bright & Colorful">Bright & Colorful</option>
+                    </select>
+                </div>
+                
+                <div class="question-card">
+                    <label class="question-label">04 — How long?</label>
+                    <input type="text" class="question-input" id="duration" name="duration" placeholder="e.g., 30 seconds, 2 minutes" required>
+                </div>
+                
+                <div class="question-card">
+                    <label class="question-label">05 — Budget range?</label>
+                    <select class="question-input" id="budget" name="budget" required>
+                        <option value="">Select range...</option>
+                        <option value="Under $5,000">Under $5,000</option>
+                        <option value="$5,000 - $15,000">$5,000 - $15,000</option>
+                        <option value="$15,000 - $30,000">$15,000 - $30,000</option>
+                        <option value="$30,000+">$30,000+</option>
+                    </select>
+                </div>
+                
+                <div class="question-card">
+                    <label class="question-label">06 — When do you need it?</label>
+                    <input type="date" class="question-input" id="deadline" name="deadline" required>
+                </div>
+                
+                <div class="question-card">
+                    <label class="question-label">07 — Tell us more</label>
+                    <textarea class="question-input" id="description" name="description" placeholder="What's the story? What makes this project special?" required></textarea>
+                </div>
+                
+                <div class="question-card">
+                    <label class="question-label">08 — Your name</label>
+                    <input type="text" class="question-input" id="name" name="name" placeholder="Your name" required>
+                </div>
+                
+                <div class="question-card">
+                    <label class="question-label">09 — Your email</label>
+                    <input type="email" class="question-input" id="email" name="email" placeholder="your@email.com" required>
+                </div>
+                
+                <div class="actions">
+                    <button type="button" class="btn btn-secondary" onclick="generatePDF()">Download PDF</button>
+                    <button type="submit" class="btn btn-primary">Send to LaB Media</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Right: Live Poster Preview -->
+        <div class="poster-side">
+            <div class="poster-preview">
+                <div class="poster-content">
+                    <div class="poster-title empty" id="previewTitle">Untitled Project</div>
+                    <div class="poster-type empty" id="previewType">Type</div>
+                    
+                    <div class="poster-details">
+                        <div class="poster-detail" id="detailStyle">
+                            <div class="poster-detail-label">Style</div>
+                            <div class="poster-detail-value">—</div>
+                        </div>
+                        <div class="poster-detail" id="detailDuration">
+                            <div class="poster-detail-label">Duration</div>
+                            <div class="poster-detail-value">—</div>
+                        </div>
+                        <div class="poster-detail" id="detailBudget">
+                            <div class="poster-detail-label">Budget</div>
+                            <div class="poster-detail-value">—</div>
+                        </div>
+                        <div class="poster-detail" id="detailDeadline">
+                            <div class="poster-detail-label">Deadline</div>
+                            <div class="poster-detail-value">—</div>
+                        </div>
+                        <div class="poster-detail" id="detailDirector">
+                            <div class="poster-detail-label">Director</div>
+                            <div class="poster-detail-value">LaB Media</div>
+                        </div>
+                        <div class="poster-detail" id="detailClient">
+                            <div class="poster-detail-label">Client</div>
+                            <div class="poster-detail-value">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Live preview updates
+        const form = document.getElementById('projectForm');
+        const previewTitle = document.getElementById('previewTitle');
+        const previewType = document.getElementById('previewType');
+        
+        // Update preview as user types/selects
+        document.getElementById('projectName').addEventListener('input', (e) => {
+            const value = e.target.value.trim();
+            previewTitle.textContent = value || 'Untitled Project';
+            previewTitle.classList.toggle('empty', !value);
+        });
+        
+        document.getElementById('projectType').addEventListener('change', (e) => {
+            const value = e.target.value;
+            previewType.textContent = value || 'Type';
+            previewType.classList.toggle('empty', !value);
+        });
+        
+        document.getElementById('style').addEventListener('change', (e) => {
+            const detail = document.getElementById('detailStyle');
+            const valueEl = detail.querySelector('.poster-detail-value');
+            valueEl.textContent = e.target.value || '—';
+            detail.classList.toggle('filled', !!e.target.value);
+        });
+        
+        document.getElementById('duration').addEventListener('input', (e) => {
+            const detail = document.getElementById('detailDuration');
+            const valueEl = detail.querySelector('.poster-detail-value');
+            valueEl.textContent = e.target.value || '—';
+            detail.classList.toggle('filled', !!e.target.value);
+        });
+        
+        document.getElementById('budget').addEventListener('change', (e) => {
+            const detail = document.getElementById('detailBudget');
+            const valueEl = detail.querySelector('.poster-detail-value');
+            valueEl.textContent = e.target.value || '—';
+            detail.classList.toggle('filled', !!e.target.value);
+        });
+        
+        document.getElementById('deadline').addEventListener('change', (e) => {
+            const detail = document.getElementById('detailDeadline');
+            const valueEl = detail.querySelector('.poster-detail-value');
+            if (e.target.value) {
+                const date = new Date(e.target.value);
+                valueEl.textContent = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                detail.classList.toggle('filled', true);
+            } else {
+                valueEl.textContent = '—';
+                detail.classList.toggle('filled', false);
+            }
+        });
+        
+        document.getElementById('name').addEventListener('input', (e) => {
+            const detail = document.getElementById('detailClient');
+            const valueEl = detail.querySelector('.poster-detail-value');
+            valueEl.textContent = e.target.value || '—';
+            detail.classList.toggle('filled', !!e.target.value);
+        });
+        
+        // Auto-fill director detail
+        document.getElementById('detailDirector').classList.add('filled');
+        
+        // PDF Generation
+        function generatePDF() {
+            const data = new FormData(form);
+            const formData = Object.fromEntries(data.entries());
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const margin = 20;
+            let y = 25;
+            
+            // Header
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(28);
+            doc.text('LAB MEDIA', pageWidth / 2, y, { align: 'center' });
+            
+            y += 8;
+            doc.setFontSize(12);
+            doc.setTextColor(100);
+            doc.text('PROJECT PLAN', pageWidth / 2, y, { align: 'center' });
+            
+            y += 10;
+            doc.setDrawColor(0);
+            doc.setLineWidth(0.5);
+            doc.line(margin, y, pageWidth - margin, y);
+            y += 15;
+            
+            // Project Title
+            doc.setTextColor(0);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(20);
+            const titleText = formData.projectName || 'Untitled Project';
+            doc.text(titleText, pageWidth / 2, y, { align: 'center' });
+            y += 12;
+            
+            // Project Type
+            if (formData.projectType) {
+                doc.setFontSize(10);
+                doc.setTextColor(99, 102, 241);
+                doc.text(formData.projectType.toUpperCase(), pageWidth / 2, y, { align: 'center' });
+                y += 15;
+            }
+            
+            // Details
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            doc.setTextColor(0);
+            
+            const details = [
+                ['Style', formData.style],
+                ['Duration', formData.duration],
+                ['Budget', formData.budget],
+                ['Deadline', formData.deadline],
+                ['Description', formData.description],
+                ['Client', formData.name],
+                ['Email', formData.email]
+            ];
+            
+            details.forEach(([label, value]) => {
+                if (value) {
+                    doc.setTextColor(100);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(label.toUpperCase(), margin, y);
+                    
+                    doc.setTextColor(0);
+                    doc.setFont('helvetica', 'normal');
+                    const splitText = doc.splitTextToSize(value, pageWidth - margin * 2 - 40);
+                    doc.text(splitText, margin + 40, y);
+                    y += 6 * splitText.length + 2;
+                }
+            });
+            
+            // Footer
+            const footerY = doc.internal.pageSize.getHeight() - 15;
+            doc.setFontSize(8);
+            doc.setTextColor(100);
+            doc.text('LaB Media | Shelby Township, Michigan | labmedia.work', pageWidth / 2, footerY, { align: 'center' });
+            
+            doc.save(`${formData.projectName || 'Project'}_Plan.pdf`);
+        }
+        
+        // Form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = new FormData(form);
+            const formData = Object.fromEntries(data.entries());
+            
+            const emailBody = `
+NEW PROJECT SUBMISSION
+
+PROJECT: ${formData.projectName}
+TYPE: ${formData.projectType}
+STYLE: ${formData.style}
+DURATION: ${formData.duration}
+BUDGET: ${formData.budget}
+DEADLINE: ${formData.deadline}
+
+DESCRIPTION:
+${formData.description}
+
+CLIENT:
+Name: ${formData.name}
+Email: ${formData.email}
+
+---
+Submitted: ${new Date().toLocaleString()}
+            `.trim();
+            
+            try {
+                const response = await fetch('https://formspree.io/f/mkgvggge', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: emailBody,
+                        email: formData.email,
+                        name: formData.name
+                    })
+                });
+                
+                if (response.ok) {
+                    alert('🎬 Project sent! We\'ll be in touch soon.');
+                    form.reset();
+                    // Reset preview
+                    previewTitle.textContent = 'Untitled Project';
+                    previewTitle.classList.add('empty');
+                    previewType.textContent = 'Type';
+                    previewType.classList.add('empty');
+                    document.querySelectorAll('.poster-detail').forEach(d => {
+                        d.classList.remove('filled');
+                        d.querySelector('.poster-detail-value').textContent = '—';
+                    });
+                    document.getElementById('detailDirector').classList.add('filled');
+                    document.getElementById('detailDirector').querySelector('.poster-detail-value').textContent = 'LaB Media';
+                } else {
+                    alert('Something went wrong. Try downloading the PDF and emailing it to us!');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Something went wrong. Try downloading the PDF and emailing it to us!');
+            }
+        });
+    </script>
+</body>
+</html>
