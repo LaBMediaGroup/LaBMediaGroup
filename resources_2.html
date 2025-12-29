@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources | LaB Media</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-light: #A0A0A0;
+            --gray-dark: #404040;
+            --accent: #6366F1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--black);
+            color: var(--gray-light);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .nav-logo {
+            height: 32px;
+            width: auto;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-logo:hover {
+            opacity: 0.7;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--white);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            color: var(--white);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Categories */
+        .categories {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 4rem;
+        }
+        
+        .category-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            color: var(--gray-light);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-btn:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+        }
+        
+        .category-btn.active {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+        }
+        
+        /* Resources Grid */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+        }
+        
+        .resource-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .resource-card:nth-child(1) { animation-delay: 0.05s; }
+        .resource-card:nth-child(2) { animation-delay: 0.1s; }
+        .resource-card:nth-child(3) { animation-delay: 0.15s; }
+        .resource-card:nth-child(4) { animation-delay: 0.2s; }
+        .resource-card:nth-child(5) { animation-delay: 0.25s; }
+        .resource-card:nth-child(6) { animation-delay: 0.3s; }
+        
+        .resource-card:hover {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.05);
+            transform: translateY(-4px);
+        }
+        
+        .resource-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+        
+        .resource-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--white);
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+        
+        .badge {
+            padding: 0.4rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        
+        .badge-free {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22C55E;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        .badge-paid {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--accent);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .resource-description {
+            color: var(--gray-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+        
+        .resource-pricing {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .pricing-label {
+            font-size: 0.7rem;
+            color: var(--gray-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .pricing-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .pricing-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        
+        .pricing-option span:first-child {
+            color: var(--gray-light);
+        }
+        
+        .pricing-option span:last-child {
+            color: var(--white);
+            font-weight: 600;
+        }
+        
+        .resource-features {
+            margin-bottom: 1.5rem;
+        }
+        
+        .features-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .features-list li {
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.85rem;
+            color: var(--gray-light);
+        }
+        
+        .features-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 700;
+        }
+        
+        .resource-link {
+            display: inline-block;
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+        
+        .resource-link:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: translateX(4px);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--gray-dark);
+            text-align: center;
+            color: var(--gray-dark);
+            font-size: 0.85rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-logo {
+            margin-bottom: 1rem;
+        }
+        
+        footer a {
+            color: var(--gray-dark);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        footer a:hover {
+            color: var(--accent);
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .container {
+                padding: 6rem 1.5rem 3rem;
+            }
+            
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .categories {
+                gap: 0.5rem;
+            }
+            
+            .category-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB Media" class="nav-logo">
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html#work">Work</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="plan-your-project.html">Plan Project</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Production Resources</h1>
+            <p>Tools and services we use and recommend for professional video production.</p>
+        </div>
+        
+        <!-- Categories -->
+        <div class="categories">
+            <button class="category-btn" data-category="music">Music</button>
+            <button class="category-btn" data-category="soundfx">Sound FX</button>
+            <button class="category-btn" data-category="stock">Stock Footage</button>
+            <button class="category-btn" data-category="equipment">Equipment</button>
+            <button class="category-btn" data-category="software">Software</button>
+            <button class="category-btn" data-category="ai">AI Tools</button>
+            <button class="category-btn active" data-category="all">All</button>
+        </div>
+        
+        <!-- Resources Grid -->
+        <div class="resources-grid" id="resourcesGrid"></div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB Media" style="height: 48px; width: auto; opacity: 0.8;">
+        </div>
+        <div>Made with ❤️ in Shelby Township, Michigan</div>
+    </footer>
+    
+    <script>
+        const resources = [
+            // Music
+            { 
+                name: 'Epidemic Sound', 
+                category: 'music', 
+                description: 'Comprehensive royalty-free music and SFX library designed specifically for content creators. Over 40,000 tracks across all genres. Covers you for YouTube, podcasts, social media, and commercial use. Simple licensing that protects you from copyright claims.', 
+                url: 'https://www.epidemicsound.com', 
+                paid: true,
+                pricing: [
+                    { plan: 'Personal', price: '$15/mo' },
+                    { plan: 'Commercial', price: '$49/mo' }
+                ],
+                features: ['40,000+ tracks', 'YouTube safe', 'Unlimited downloads', 'Stem files included']
+            },
+            { 
+                name: 'Artlist', 
+                category: 'music', 
+                description: 'Premium music licensing platform for filmmakers and content creators. Perpetual licenses mean you keep rights to the music forever, even after your subscription ends. High-quality, curated music catalog. Also offers Artlist SFX and stock footage through Artgrid.', 
+                url: 'https://artlist.io', 
+                paid: true,
+                pricing: [
+                    { plan: 'Creator', price: '$14.99/mo' },
+                    { plan: 'Pro', price: '$25/mo' },
+                    { plan: 'Yearly', price: '$299/yr' }
+                ],
+                features: ['Perpetual licenses', 'Commercial use', 'Curated catalog', 'Stem tracks available']
+            },
+            { 
+                name: 'Audiio', 
+                category: 'music', 
+                description: 'Flexible music licensing with both subscription and lifetime deals. Great for independent creators who want to own their music library. Quality tracks across multiple genres. Frequently offers lifetime access promotions.', 
+                url: 'https://audiio.com', 
+                paid: true,
+                pricing: [
+                    { plan: 'Monthly', price: '$19/mo' },
+                    { plan: 'Yearly', price: '$149/yr' },
+                    { plan: 'Lifetime', price: '$199 (promo)' }
+                ],
+                features: ['Lifetime deals available', 'Unlimited downloads', 'Commercial license', 'New tracks weekly']
+            },
+            { 
+                name: 'Free Music Archive', 
+                category: 'music', 
+                description: 'Community-driven library of free, legal audio downloads. Curated by WFMU radio. Offers Creative Commons and public domain music across all genres. Perfect for independent projects with tight budgets. Always verify the specific license for each track.', 
+                url: 'https://freemusicarchive.org', 
+                paid: false,
+                pricing: [
+                    { plan: 'Free', price: '$0' }
+                ],
+                features: ['Creative Commons', 'Multiple genres', 'Community curated', 'Check licenses per track']
+            },
+            
+            // Sound FX
+            { 
+                name: 'Freesound', 
+                category: 'soundfx', 
+                description: 'Collaborative database of Creative Commons licensed sounds uploaded by a worldwide community. Over 600,000 sound effects. Best for finding unique, specific sounds you can\'t find elsewhere. Attribution usually required - check individual licenses.', 
+                url: 'https://freesound.org', 
+                paid: false,
+                pricing: [
+                    { plan: 'Free', price: '$0' }
+                ],
+                features: ['600,000+ sounds', 'User contributions', 'Unique sounds', 'CC licenses']
+            },
+            { 
+                name: 'Zapsplat', 
+                category: 'soundfx', 
+                description: 'Free sound effects library for video editors, filmmakers, and game developers. High-quality professional SFX. Over 100,000 free sounds. Attribution required for free plan. Upgrade to Pro to remove attribution and get early access to new sounds.', 
+                url: 'https://www.zapsplat.com', 
+                paid: false,
+                pricing: [
+                    { plan: 'Free', price: '$0 (attribution)' },
+                    { plan: 'Gold', price: '$9/mo' }
+                ],
+                features: ['100,000+ sounds', 'Pro SFX quality', 'Category browsing', 'Download packs']
+            },
+            { 
+                name: 'Krotos Studio', 
+                category: 'soundfx', 
+                description: 'AI-powered sound design plugin that generates real-time sound effects. Perfect for foley and creature sounds. Records and analyzes your voice to create custom SFX. Game-changer for sound designers working on tight deadlines.', 
+                url: 'https://www.krotosaudio.com', 
+                paid: true,
+                pricing: [
+                    { plan: 'License', price: '$399' },
+                    { plan: 'Subscription', price: '$19.99/mo' }
+                ],
+                features: ['AI sound generation', 'Real-time processing', 'Voice-to-SFX', 'DAW plugin']
+            },
+            
+            // Stock Footage
+            { 
+                name: 'Pexels', 
+                category: 'stock', 
+                description: 'Completely free stock videos and photos for commercial and personal use. No attribution required. Curated high-quality content. Great for B-roll, backgrounds, and establishing shots. 4K footage available with filters.', 
+                url: 'https://www.pexels.com', 
+                paid: false,
+                pricing: [
+                    { plan: 'Free', price: '$0' }
+                ],
+                features: ['No attribution needed', '4K available', 'Curated content', 'Safe for commercial']
+            },
+            { 
+                name: 'Artgrid', 
+                category: 'stock', 
+                description: 'Premium stock footage subscription from the makers of Artlist. Cinematic 4K and 5K footage shot by professional cinematographers. Perpetual licenses like Artlist music. Smaller library but exceptional quality. Best for high-end productions.', 
+                url: 'https://artgrid.io', 
+                paid: true,
+                pricing: [
+                    { plan: 'Footage Creator', price: '$29/mo' },
+                    { plan: 'Yearly', price: '$348/yr' }
+                ],
+                features: ['4K/5K footage', 'Perpetual licenses', 'Cinematic quality', 'Pro cinematography']
+            },
+            { 
+                name: 'Pixabay', 
+                category: 'stock', 
+                description: 'Free stock videos, photos, music, and sound effects. Over 4.5 million media files. No attribution required. Generous Creative Commons-inspired license. Great all-in-one resource for indie creators.', 
+                url: 'https://pixabay.com', 
+                paid: false,
+                pricing: [
+                    { plan: 'Free', price: '$0' }
+                ],
+                features: ['Multi-media library', 'No attribution', '4.5M+ files', 'Music included']
+            },
+            
+            // Equipment
+            { 
+                name: 'LensRentals', 
+                category: 'equipment', 
+                description: 'Industry-standard camera and lens rental service trusted by professionals. Insurance included in rental price. Rigorous testing and maintenance of all gear. Expert customer support. Ships nationwide. Great for trying equipment before buying or for one-off shoots.', 
+                url: 'https://www.lensrentals.com', 
+                paid: true,
+                pricing: [
+                    { plan: 'Daily', price: 'Varies by gear' },
+                    { plan: 'Weekly', price: '3x daily rate' }
+                ],
+                features: ['Insurance included', 'Tested gear', 'Expert support', 'Nationwide shipping']
+            },
+            { 
+                name: 'ShareGrid', 
+                category: 'equipment', 
+                description: 'Peer-to-peer camera gear rental marketplace. Rent from local filmmakers and owners. Often 40-60% cheaper than traditional rental houses. Every rental includes damage protection. Browse by location to find gear nearby.', 
+                url: 'https://www.sharegrid.com', 
+                paid: true,
+                pricing: [
+                    { plan: 'Daily', price: 'Set by owner' },
+                    { plan: 'Insurance', price: 'Included' }
+                ],
+                features: ['40-60% cheaper', 'Local rentals', 'Damage protection', 'Filmmaker community']
+            },
+            { 
+                name: 'BorrowLenses', 
+                category: 'equipment', 
+                description: 'Try-before-you-buy camera gear rental service. Rent high-end cameras, lenses, and lighting to test before purchasing. Great selection of cinema cameras and pro photo gear. Apply rental fees toward purchase.', 
+                url: 'https://www.borrowlenses.com', 
+                paid: true,
+                pricing: [
+                    { plan: 'Weekly', price: 'Varies by gear' },
+                    { plan: 'Try before buy', price: 'Credit toward purchase' }
+                ],
+                features: ['Try before buying', 'Cinema cameras', 'Purchase credits', 'Pro lighting']
+            },
+            
+            // Software
+            { 
+                name: 'DaVinci Resolve', 
+                category: 'software', 
+                description: 'Professional editing, color grading, VFX, and audio post-production in one application. Free version is incredibly powerful - used on Hollywood films. Includes Fairlight audio tools and Fusion VFX. Studio version adds collaboration, 3D tools, and advanced features.', 
+                url: 'https://www.blackmagicdesign.com/products/davinciresolve', 
+                paid: false,
+                pricing: [
+                    { plan: 'Free', price: '$0' },
+                    { plan: 'Studio', price: '$295 (lifetime)' }
+                ],
+                features: ['Edit, color, VFX, audio', 'Hollywood-grade tools', 'Free = powerful', 'One-time Studio purchase']
+            },
+            { 
+                name: 'Frame.io', 
+                category: 'software', 
+                description: 'Cloud-based video review and collaboration platform. Essential for client feedback and team collaboration. Time-stamped comments directly on video. Integrates with Premiere, Final Cut, and DaVinci Resolve. Streamlines revision process.', 
+                url: 'https://frame.io', 
+                paid: true,
+                pricing: [
+                    { plan: 'Pro', price: '$15/mo' },
+                    { plan: 'Team', price: '$30/user/mo' },
+                    { plan: 'Enterprise', price: 'Custom' }
+                ],
+                features: ['Cloud collaboration', 'Time-stamped comments', 'NLE integration', 'Version control']
+            },
+            
+            // AI Tools
+            { 
+                name: 'Runway ML', 
+                category: 'ai', 
+                description: 'AI-powered video editing and generation platform. Industry-leading AI tools for video editors. Green screen removal, object removal, frame interpolation, and AI video generation. Magic Tools for rotoscoping and masking. Used by major studios.', 
+                url: 'https://runwayml.com', 
+                paid: true,
+                pricing: [
+                    { plan: 'Basic', price: 'Free (limited)' },
+                    { plan: 'Standard', price: '$15/mo' },
+                    { plan: 'Pro', price: '$35/mo' }
+                ],
+                features: ['AI video generation', 'Background removal', 'Object removal', 'Frame interpolation']
+            },
+            { 
+                name: 'Descript', 
+                category: 'ai', 
+                description: 'Revolutionary video editor that lets you edit video by editing text transcript. Perfect for interviews, podcasts, and talking-head content. Automatic transcription, filler word removal, and AI voices. Studio Sound removes background noise. Game changer for workflow speed.', 
+                url: 'https://www.descript.com', 
+                paid: true,
+                pricing: [
+                    { plan: 'Free', price: '$0 (1hr/mo)' },
+                    { plan: 'Creator', price: '$24/mo' },
+                    { plan: 'Pro', price: '$40/mo' }
+                ],
+                features: ['Edit video as text', 'Auto transcription', 'Studio Sound', 'Filler word removal']
+            },
+            { 
+                name: 'Adobe Firefly', 
+                category: 'ai', 
+                description: 'Adobe\'s AI image and text effects generator. Create custom graphics, textures, and assets from text prompts. Trained on licensed Adobe Stock content - commercially safe. Integrates with Photoshop, Illustrator, and Express.', 
+                url: 'https://firefly.adobe.com', 
+                paid: true,
+                pricing: [
+                    { plan: 'Free', price: '$0 (25 credits/mo)' },
+                    { plan: 'Premium', price: '$4.99/mo' },
+                    { plan: 'Creative Cloud', price: 'Included' }
+                ],
+                features: ['AI image generation', 'Commercially safe', 'Adobe integration', 'Text effects']
+            }
+        ];
+        
+        const grid = document.getElementById('resourcesGrid');
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        
+        function renderResources(category = 'all') {
+            const filtered = category === 'all' ? resources : resources.filter(r => r.category === category);
+            
+            grid.innerHTML = filtered.map((resource, index) => `
+                <div class="resource-card" style="animation-delay: ${index * 0.05}s">
+                    <div class="resource-header">
+                        <div class="resource-name">${resource.name}</div>
+                        <span class="badge ${resource.paid ? 'badge-paid' : 'badge-free'}">
+                            ${resource.paid ? 'Paid' : 'Free'}
+                        </span>
+                    </div>
+                    <p class="resource-description">${resource.description}</p>
+                    
+                    <div class="resource-pricing">
+                        <div class="pricing-label">Pricing</div>
+                        <div class="pricing-options">
+                            ${resource.pricing.map(p => `
+                                <div class="pricing-option">
+                                    <span>${p.plan}</span>
+                                    <span>${p.price}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    ${resource.features ? `
+                        <div class="resource-features">
+                            <ul class="features-list">
+                                ${resource.features.map(f => `<li>${f}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                    
+                    <a href="${resource.url}" target="_blank" rel="noopener noreferrer" class="resource-link">
+                        Visit Website →
+                    </a>
+                </div>
+            `).join('');
+        }
+        
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderResources(btn.dataset.category);
+            });
+        });
+        
+        // Initial render
+        renderResources();
+    </script>
+</body>
+</html>
