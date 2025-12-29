@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaB Media | Shelby Township Creative Studio</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-light: #A0A0A0;
+            --gray-dark: #404040;
+            --accent: #6366F1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--black);
+            color: var(--gray-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.95), transparent);
+        }
+        
+        .nav-logo {
+            height: 40px;
+            width: auto;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-logo:hover {
+            opacity: 0.8;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--white);
+        }
+        
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 15vw, 18rem);
+            color: var(--white);
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            animation: fadeInUp 1.2s ease-out;
+            text-shadow: 0 0 80px rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        
+        /* Fast subtle jitter effect */
+        .jitter {
+            display: inline-block;
+            animation: jitter 0.8s ease-in-out infinite;
+        }
+        
+        @keyframes jitter {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            10% {
+                transform: translate(-1px, 1px);
+            }
+            20% {
+                transform: translate(1px, -1px);
+            }
+            30% {
+                transform: translate(-1px, -1px);
+            }
+            40% {
+                transform: translate(1px, 0);
+            }
+            50% {
+                transform: translate(-1px, 0);
+            }
+            60% {
+                transform: translate(0, 1px);
+            }
+            70% {
+                transform: translate(1px, 1px);
+            }
+            80% {
+                transform: translate(0, -1px);
+            }
+            90% {
+                transform: translate(-1px, 1px);
+            }
+        }
+        
+        /* Capture flash effect */
+        .capture {
+            display: inline-block;
+            animation: capture 2s ease-in-out infinite;
+        }
+        
+        @keyframes capture {
+            0%, 80%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            84% {
+                opacity: 0.3;
+                transform: scale(0.95);
+            }
+            88% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            92% {
+                opacity: 0.4;
+                transform: scale(0.98);
+            }
+            96% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* Story reveal effect - like text being written */
+        .story {
+            display: inline-block;
+            position: relative;
+            color: var(--white);
+            font-weight: 700;
+        }
+        
+        .story::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #EC4899);
+            animation: storyReveal 3s ease-in-out infinite;
+            transform-origin: left;
+        }
+        
+        @keyframes storyReveal {
+            0%, 100% {
+                transform: scaleX(0);
+            }
+            40% {
+                transform: scaleX(1);
+            }
+            60% {
+                transform: scaleX(1);
+            }
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray-light);
+            max-width: 600px;
+            margin-top: 2rem;
+            animation: fadeIn 1s ease-out 0.5s both;
+            font-weight: 400;
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            color: var(--gray-dark);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: fadeIn 1s ease-out 1s both;
+            font-weight: 500;
+        }
+        
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            margin: 1rem auto 0;
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes scrollPulse {
+            0%, 100% { transform: scaleY(1); opacity: 0.3; }
+            50% { transform: scaleY(1.5); opacity: 1; }
+        }
+        
+        /* About Section */
+        .about {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            padding: 8rem 4rem;
+            gap: 6rem;
+        }
+        
+        .about-text h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            color: var(--white);
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+        
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+        
+        .about-services {
+            display: grid;
+            gap: 3rem;
+        }
+        
+        .service {
+            border-left: 2px solid var(--gray-dark);
+            padding-left: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .service:hover {
+            border-left-color: var(--accent);
+        }
+        
+        .service h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+        
+        .service p {
+            color: var(--gray-light);
+            font-weight: 400;
+        }
+        
+        /* Make "Bold" actually bold and eye-catching */
+        .service p .bold-word {
+            font-weight: 700;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--accent), #EC4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Work Section */
+        .work {
+            padding: 8rem 4rem;
+            background: linear-gradient(180deg, transparent, rgba(99, 102, 241, 0.02), transparent);
+        }
+        
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 6rem;
+            color: var(--white);
+            margin-bottom: 4rem;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .portfolio-item {
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease;
+        }
+        
+        .portfolio-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.15);
+        }
+        
+        .portfolio-item:last-child {
+            grid-column: 1 / -1;
+            max-width: 700px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: var(--black);
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .portfolio-info {
+            padding: 2rem;
+        }
+        
+        .portfolio-info h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+        
+        .portfolio-info p {
+            color: var(--gray-light);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+        
+        /* Contact Section */
+        .contact {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1), transparent);
+            pointer-events: none;
+        }
+        
+        .contact h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            color: var(--white);
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+        }
+        
+        .contact p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 3rem;
+            font-weight: 400;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: var(--white);
+            color: var(--black);
+            text-decoration: none;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .cta-button:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+        
+        .contact-info {
+            margin-top: 4rem;
+            display: flex;
+            gap: 4rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .contact-info strong {
+            font-weight: 700;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 3rem 4rem;
+            border-top: 1px solid var(--gray-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            color: var(--gray-dark);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+        
+        .footer-logo {
+            margin-bottom: 0.5rem;
+        }
+        
+        footer a {
+            color: var(--gray-dark);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+        
+        footer a:hover {
+            color: var(--accent);
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.8rem;
+            }
+            
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .about {
+                grid-template-columns: 1fr;
+                padding: 4rem 2rem;
+                gap: 3rem;
+            }
+            
+            .work {
+                padding: 4rem 2rem;
+            }
+            
+            .section-title {
+                font-size: 3rem;
+            }
+            
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .contact {
+                padding: 4rem 2rem;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 2rem;
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB Media" class="nav-logo">
+        </a>
+        <ul class="nav-links">
+            <li><a href="#work">Work</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="plan-your-project.html">Plan Project</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="hero-title">LESS <span class="jitter">NOISE</span><br>MORE STORY</h1>
+        <p class="hero-subtitle">Clean, cinematic storytelling through film, music videos, and brand content.</p>
+        <div class="scroll-indicator">
+            Scroll
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-text">
+            <h2>We Make Things<br>Worth Watching</h2>
+            <p>LaB Media is a creative studio in Shelby Township, Michigan. We create film, music videos, photography, and brand content with clean aesthetics and sharp storytelling.</p>
+        </div>
+        <div class="about-services">
+            <div class="service">
+                <h3>Film Production</h3>
+                <p>Commercial work, brand films, and narrative content that serves the <span class="story">story</span>.</p>
+            </div>
+            <div class="service">
+                <h3>Music Videos</h3>
+                <p><span class="bold-word">Bold</span> visuals that match the energy of your sound.</p>
+            </div>
+            <div class="service">
+                <h3>Photography</h3>
+                <p>Cinematic stills that <span class="capture">capture</span> the moment.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Work Section -->
+    <section class="work" id="work">
+        <h2 class="section-title">Our Work</h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-item">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/HtF4L9RpkaU" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                </div>
+                <div class="portfolio-info">
+                    <h3>MOZ Interiors — Designer Spotlight</h3>
+                    <p>Featured in Vanity Fair, Hour Detroit, The World of Interiors, and Architecture Digest.</p>
+                </div>
+            </div>
+            
+            <div class="portfolio-item">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/CPvxM8GrCg8" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                </div>
+                <div class="portfolio-info">
+                    <h3>Anthony R Brass — Artist Spotlight</h3>
+                    <p>An artist's journey through paint, place, and passion—intimate storytelling in his home studio.</p>
+                </div>
+            </div>
+            
+            <div class="portfolio-item">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/ZXYtZmIRiRI" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                </div>
+                <div class="portfolio-info">
+                    <h3>The Pandys — Band Practice</h3>
+                    <p>Raw band practice energy captured live. "Old Guy" from Nothing's Getting Better, It's Going to Be Fine.</p>
+                </div>
+            </div>
+            
+            <div class="portfolio-item">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/rtEs8chuDlM" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                </div>
+                <div class="portfolio-info">
+                    <h3>Trail Dead — Short Horror</h3>
+                    <p>Won Best Editing at 2025 Horror Film Roulette. Invisible terror in the woods.</p>
+                </div>
+            </div>
+            
+            <div class="portfolio-item">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/G0zfFWwQuZA" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                </div>
+                <div class="portfolio-info">
+                    <h3>Lookout — Short Comedy</h3>
+                    <p>Top 25 at 2025 Comedy Roll Film Festival. Sharp timing, clean execution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2>Start a Project</h2>
+        <p>Got a story to tell? We're here to help you tell it right.</p>
+        <a href="mailto:hello@labmedia.work" class="cta-button">Get In Touch</a>
+        <div class="contact-info">
+            <div>
+                <strong>Email</strong><br>
+                hello@labmedia.work
+            </div>
+            <div>
+                <strong>Location</strong><br>
+                Shelby Township, MI
+            </div>
+            <div>
+                <strong>Phone</strong><br>
+                (586) 555-0100
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB Media" style="height: 48px; width: auto; opacity: 0.8;">
+        </div>
+        <div>Made with ❤️ in Shelby Township, Michigan</div>
+        <div style="margin-top: 0.5rem;">
+            <a href="https://www.instagram.com/bob.tastic/" target="_blank" rel="noopener noreferrer">Instagram</a> · 
+            <a href="https://www.youtube.com/@BobtastiCFPV" target="_blank" rel="noopener noreferrer">YouTube</a>
+        </div>
+    </footer>
+</body>
+</html>
