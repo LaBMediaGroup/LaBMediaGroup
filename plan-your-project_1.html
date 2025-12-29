@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Your Project | LaB Media</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-light: #A0A0A0;
+            --gray-dark: #404040;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Lora', serif;
+            background: var(--black);
+            color: var(--gray-light);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(0,0,0,0.7));
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo-link {
+            display: block;
+        }
+        
+        .nav-logo {
+            height: 40px;
+            width: auto;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-logo:hover {
+            opacity: 0.8;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--white);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            color: var(--white);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        /* Form Section */
+        .form-section {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+        
+        .form-section h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--gray-light);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            color: var(--white);
+            font-family: 'Lora', serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: var(--gray-dark);
+        }
+        
+        select {
+            cursor: pointer;
+        }
+        
+        select option {
+            background: var(--black);
+            color: var(--white);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        /* Summary Section */
+        .summary {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .summary h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .summary-item {
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .summary-label {
+            font-size: 0.75rem;
+            color: var(--gray-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary-value {
+            font-size: 1.1rem;
+            color: var(--white);
+        }
+        
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2.5rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: var(--white);
+            color: var(--black);
+        }
+        
+        .btn-primary:hover {
+            background: var(--gray-light);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--gray-dark);
+            text-align: center;
+            color: var(--gray-dark);
+            font-size: 0.85rem;
+        }
+        
+        .footer-logo {
+            margin-bottom: 1rem;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.8rem;
+            }
+            
+            .container {
+                padding: 6rem 1.5rem 3rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html" class="logo-link">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB Media" class="nav-logo">
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html#work">Work</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="plan-your-project.html">Plan Project</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Plan Your Project</h1>
+            <p>Tell us about your vision. We'll help you bring it to life.</p>
+        </div>
+        
+        <!-- Form -->
+        <form id="projectForm">
+            <div class="form-grid">
+                <!-- Left Column -->
+                <div>
+                    <div class="form-section">
+                        <h2>Project Basics</h2>
+                        <div class="form-group">
+                            <label for="projectName">Project Name</label>
+                            <input type="text" id="projectName" name="projectName" placeholder="What's it called?" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectType">Project Type</label>
+                            <select id="projectType" name="projectType" required>
+                                <option value="">Select type...</option>
+                                <option value="Commercial">Commercial</option>
+                                <option value="Music Video">Music Video</option>
+                                <option value="Short Film">Short Film</option>
+                                <option value="Documentary">Documentary</option>
+                                <option value="Brand Content">Brand Content</option>
+                                <option value="Photography">Photography</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea id="description" name="description" placeholder="What's the story?" required></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Timeline & Budget</h2>
+                        <div class="form-group">
+                            <label for="budget">Budget Range</label>
+                            <select id="budget" name="budget" required>
+                                <option value="">Select range...</option>
+                                <option value="Under $5,000">Under $5,000</option>
+                                <option value="$5,000 - $15,000">$5,000 - $15,000</option>
+                                <option value="$15,000 - $30,000">$15,000 - $30,000</option>
+                                <option value="$30,000+">$30,000+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="deadline">Deadline</label>
+                            <input type="date" id="deadline" name="deadline" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="shootDate">Preferred Shoot Date (Optional)</label>
+                            <input type="date" id="shootDate" name="shootDate">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div>
+                    <div class="form-section">
+                        <h2>Creative Details</h2>
+                        <div class="form-group">
+                            <label for="style">Style/Vibe</label>
+                            <select id="style" name="style" required>
+                                <option value="">Select style...</option>
+                                <option value="Cinematic">Cinematic</option>
+                                <option value="Clean & Minimal">Clean & Minimal</option>
+                                <option value="Energetic">Energetic</option>
+                                <option value="Documentary">Documentary</option>
+                                <option value="Moody">Moody</option>
+                                <option value="Bright & Colorful">Bright & Colorful</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="duration">Duration</label>
+                            <input type="text" id="duration" name="duration" placeholder="e.g., 30 seconds, 2 minutes" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="deliverables">Deliverables</label>
+                            <textarea id="deliverables" name="deliverables" placeholder="What formats do you need? (Instagram, YouTube, etc.)"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Your Info</h2>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone (Optional)</label>
+                            <input type="tel" id="phone" name="phone" placeholder="(555) 555-5555">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Summary -->
+            <div class="summary" id="summary" style="display: none;">
+                <h2>Project Summary</h2>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="summary-label">Project</div>
+                        <div class="summary-value" id="summaryProject">—</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Type</div>
+                        <div class="summary-value" id="summaryType">—</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Budget</div>
+                        <div class="summary-value" id="summaryBudget">—</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Duration</div>
+                        <div class="summary-value" id="summaryDuration">—</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Style</div>
+                        <div class="summary-value" id="summaryStyle">—</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Deadline</div>
+                        <div class="summary-value" id="summaryDeadline">—</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="actions">
+                <button type="button" class="btn btn-secondary" onclick="generatePDF()">Download PDF</button>
+                <button type="submit" class="btn btn-primary">Send to LaB Media</button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB Media" style="height: 48px; width: auto; opacity: 0.8;">
+        </div>
+        <div>Made with ❤️ in Shelby Township, Michigan</div>
+    </footer>
+    
+    <script>
+        const form = document.getElementById('projectForm');
+        const summary = document.getElementById('summary');
+        
+        // Update summary as form fills out
+        const formInputs = form.querySelectorAll('input, select, textarea');
+        formInputs.forEach(input => {
+            input.addEventListener('input', updateSummary);
+            input.addEventListener('change', updateSummary);
+        });
+        
+        function updateSummary() {
+            const data = getFormData();
+            
+            // Check if key fields are filled
+            const keyFieldsFilled = data.projectName && data.projectType && data.budget && data.duration && data.style && data.deadline;
+            
+            if (keyFieldsFilled) {
+                summary.style.display = 'block';
+                document.getElementById('summaryProject').textContent = data.projectName || '—';
+                document.getElementById('summaryType').textContent = data.projectType || '—';
+                document.getElementById('summaryBudget').textContent = data.budget || '—';
+                document.getElementById('summaryDuration').textContent = data.duration || '—';
+                document.getElementById('summaryStyle').textContent = data.style || '—';
+                document.getElementById('summaryDeadline').textContent = data.deadline ? new Date(data.deadline).toLocaleDateString() : '—';
+            }
+        }
+        
+        function getFormData() {
+            const formData = new FormData(form);
+            return Object.fromEntries(formData.entries());
+        }
+        
+        // PDF Generation
+        function generatePDF() {
+            const data = getFormData();
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const margin = 20;
+            let y = 25;
+            
+            // Header
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(24);
+            doc.text('LAB MEDIA', pageWidth / 2, y, { align: 'center' });
+            
+            y += 10;
+            doc.setFontSize(14);
+            doc.setTextColor(100);
+            doc.text('Project Plan', pageWidth / 2, y, { align: 'center' });
+            
+            y += 5;
+            doc.setFontSize(9);
+            doc.text(new Date().toLocaleDateString(), pageWidth / 2, y, { align: 'center' });
+            
+            y += 10;
+            doc.setDrawColor(0);
+            doc.setLineWidth(0.5);
+            doc.line(margin, y, pageWidth - margin, y);
+            y += 15;
+            
+            // Helper function for sections
+            function addSection(title, fields) {
+                doc.setTextColor(0);
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(12);
+                doc.text(title, margin, y);
+                y += 8;
+                
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(10);
+                doc.setTextColor(0);
+                
+                fields.forEach(([label, value]) => {
+                    if (value) {
+                        doc.setTextColor(100);
+                        doc.text(label + ':', margin, y);
+                        doc.setTextColor(0);
+                        const splitText = doc.splitTextToSize(value, pageWidth - margin * 2 - 40);
+                        doc.text(splitText, margin + 40, y);
+                        y += 6 * splitText.length;
+                    }
+                });
+                y += 8;
+            }
+            
+            addSection('PROJECT OVERVIEW', [
+                ['Project Name', data.projectName],
+                ['Type', data.projectType],
+                ['Description', data.description]
+            ]);
+            
+            addSection('CREATIVE DETAILS', [
+                ['Style', data.style],
+                ['Duration', data.duration],
+                ['Deliverables', data.deliverables]
+            ]);
+            
+            addSection('TIMELINE & BUDGET', [
+                ['Budget Range', data.budget],
+                ['Deadline', data.deadline],
+                ['Shoot Date', data.shootDate]
+            ]);
+            
+            addSection('CONTACT', [
+                ['Name', data.name],
+                ['Email', data.email],
+                ['Phone', data.phone]
+            ]);
+            
+            // Footer
+            const footerY = doc.internal.pageSize.getHeight() - 15;
+            doc.setFontSize(8);
+            doc.setTextColor(100);
+            doc.text('LaB Media | Shelby Township, Michigan', pageWidth / 2, footerY, { align: 'center' });
+            
+            doc.save(`${data.projectName || 'Project'}_Plan.pdf`);
+        }
+        
+        // Form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = getFormData();
+            
+            const emailBody = `
+NEW PROJECT SUBMISSION
+
+PROJECT: ${data.projectName}
+TYPE: ${data.projectType}
+DESCRIPTION: ${data.description}
+
+CREATIVE:
+Style: ${data.style}
+Duration: ${data.duration}
+Deliverables: ${data.deliverables}
+
+TIMELINE & BUDGET:
+Budget: ${data.budget}
+Deadline: ${data.deadline}
+Shoot Date: ${data.shootDate || 'TBD'}
+
+CONTACT:
+Name: ${data.name}
+Email: ${data.email}
+Phone: ${data.phone || 'N/A'}
+
+---
+Submitted: ${new Date().toLocaleString()}
+            `.trim();
+            
+            try {
+                const response = await fetch('https://formspree.io/f/mkgvggge', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: emailBody,
+                        email: data.email,
+                        name: data.name
+                    })
+                });
+                
+                if (response.ok) {
+                    alert('Project plan sent! We\'ll be in touch soon.');
+                    form.reset();
+                    summary.style.display = 'none';
+                } else {
+                    alert('There was an issue. Please try downloading the PDF and emailing it to us.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('There was an issue. Please try downloading the PDF and emailing it to us.');
+            }
+        });
+    </script>
+</body>
+</html>
