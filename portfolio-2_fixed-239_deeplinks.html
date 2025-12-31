@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | LaB Media</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --white: #fafafa;
+            --gray-100: #e5e5e5;
+            --gray-200: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-600: #525252;
+            --gray-800: #262626;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        
+        /* Smooth bounce scroll behavior */
+        @media (prefers-reduced-motion: no-preference) {
+            html {
+                scroll-behavior: auto;
+            }
+            
+            html.smooth-scrolling {
+                scroll-behavior: smooth;
+            }
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--black);
+            color: var(--gray-400);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Navigation - Enhanced */
+        /* Anchor jump offset (fixed nav) */
+        section[id] {
+            scroll-margin-top: 140px;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0);
+            backdrop-filter: blur(0px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        nav.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+        
+        .nav-logo {
+            height: 28px;
+            width: auto;
+            transition: all 0.6s ease;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+        }
+        
+        .nav-logo:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .nav-back {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+        
+        .nav-back:hover {
+            opacity: 1;
+            transform: translateX(-4px);
+        }
+        
+        /* Project Counter - Enhanced */
+        .project-counter {
+            position: fixed;
+            right: 4rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            font-weight: 500;
+            transition: all 0.4s ease;
+        }
+        
+        .counter-current {
+            font-size: 2rem;
+            color: var(--white);
+            display: block;
+            margin-bottom: 0.25rem;
+            font-weight: 300;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Progress Indicator */
+        .scroll-progress {
+            position: fixed;
+            right: 4rem;
+            bottom: 4rem;
+            width: 60px;
+            height: 60px;
+            z-index: 999;
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            stroke: rgba(255, 255, 255, 0.1);
+            fill: transparent;
+            stroke-width: 2;
+        }
+        
+        .progress-ring-progress {
+            stroke: var(--white);
+            fill: transparent;
+            stroke-width: 2;
+            stroke-dasharray: 157;
+            stroke-dashoffset: 157;
+            transition: stroke-dashoffset 0.3s ease;
+            stroke-linecap: round;
+        }
+        
+        /* Base Section Styles - Clean snap points */
+        section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem;
+            position: relative;
+            scroll-snap-align: start;
+            opacity: 1;
+        }
+        
+        /* Section background transitions */
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+        
+        section.in-view::before {
+            opacity: 1;
+        }
+        
+        .section-inner {
+            max-width: 1600px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Video Side - Enhanced entrance */
+        .video-side {
+            position: relative;
+            transform: translateZ(0);
+            will-change: transform, opacity;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: #000;
+            border-radius: 4px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: translateY(60px) scale(0.95);
+            opacity: 0;
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        section.in-view .video-container {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Info Side - Staggered entrance */
+        .info-side {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .info-side > * {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        section.in-view .info-side > *:nth-child(1) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.2s;
+        }
+        
+        section.in-view .info-side > *:nth-child(2) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.4s;
+        }
+        
+        section.in-view .info-side > *:nth-child(3) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.6s;
+        }
+        
+        .project-number {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            letter-spacing: 3px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .project-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 300;
+            color: var(--white);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .project-subtitle {
+            font-size: 1.125rem;
+            color: var(--gray-400);
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+        
+        .project-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .detail-row {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 2rem;
+        }
+        
+        .detail-label {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            font-size: 0.875rem;
+            color: var(--gray-400);
+            line-height: 1.6;
+        }
+        
+        .awards {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            font-size: 0.75rem;
+            color: var(--white);
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+        
+        .awards::before {
+            content: '★';
+            color: #fbbf24;
+        }
+        
+        /* Section-specific styling */
+        
+        /* Anthony Brass - Warm, artistic */
+        #artist::before {
+            background: linear-gradient(135deg, #1a1410 0%, #2d2419 100%);
+        }
+        
+        #artist .project-title {
+            color: #f5e6d3;
+        }
+        
+        #artist .project-subtitle {
+            color: #d4c5b0;
+            font-style: italic;
+        }
+        
+        #artist .detail-value {
+            color: #c9b896;
+        }
+        
+        /* MOZ Interiors - Clean, minimal */
+        #moz::before {
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+        }
+        
+        #moz .project-number,
+        #moz .detail-label {
+            color: #a3a3a3;
+        }
+        
+        #moz .project-title {
+            color: #0a0a0a;
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+        }
+        
+        #moz .project-subtitle,
+        #moz .detail-value {
+            color: #525252;
+        }
+        
+        #moz .project-details {
+            border-top-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        #moz .featured-in {
+            background: white;
+            padding: 1.5rem;
+            border-left: 3px solid #0a0a0a;
+            margin-top: 1rem;
+        }
+        
+        #moz .featured-label {
+            font-size: 0.75rem;
+            color: #a3a3a3;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+        
+        #moz .featured-list {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: #0a0a0a;
+            font-weight: 600;
+            line-height: 1.8;
+        }
+        
+        #moz .awards {
+            background: #0a0a0a;
+            border-color: #0a0a0a;
+            color: white;
+        }
+        
+        /* The Pandys - Bold but refined */
+        #pandys::before {
+            background: linear-gradient(135deg, #1a0f1f 0%, #2d1b3d 100%);
+        }
+        
+        #pandys .project-title {
+            color: #e9d5ff;
+            font-weight: 400;
+        }
+        
+        #pandys .project-subtitle {
+            color: #c4b5fd;
+        }
+        
+        #pandys .detail-value {
+            color: #d8b4fe;
+        }
+        
+        /* Trail Dead - Dark, moody */
+        #horror::before {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);
+        }
+        
+        #horror .project-title {
+            color: #fee;
+        }
+        
+        #horror .project-subtitle {
+            color: #ccc;
+        }
+        
+        #horror .detail-value {
+            color: #bbb;
+        }
+        
+        #horror .video-container {
+            box-shadow: 
+                0 0 40px rgba(220, 38, 38, 0.2),
+                0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            padding-bottom: 41.84%; /* 1 / 2.39 = 0.4184 */
+        }
+/* Lookout - Bright, clean */
+        #comedy::before {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+        
+        #comedy .project-number,
+        #comedy .detail-label {
+            color: #92400e;
+        }
+        
+        #comedy .project-title {
+            color: #78350f;
+            font-weight: 400;
+        }
+        
+        #comedy .project-subtitle,
+        #comedy .detail-value {
+            color: #92400e;
+        }
+        
+        #comedy .project-details {
+            border-top-color: rgba(120, 53, 15, 0.2);
+        }
+        
+        #comedy .awards {
+            background: #78350f;
+            border-color: #78350f;
+            color: #fef3c7;
+        }
+        
+        /* Reversed layout for alternating sections */
+        .reversed .section-inner {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .reversed .video-side {
+            order: 2;
+        }
+        
+        .reversed .info-side {
+            order: 1;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            html {
+                scroll-snap-type: y proximity;
+            }
+            
+            nav {
+                padding: 1.5rem 2rem;
+            }
+            
+            .project-counter,
+            .scroll-progress {
+                right: 2rem;
+            }
+            
+            section {
+                padding: 6rem 2rem;
+            }
+            
+            .section-inner {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .reversed .video-side,
+            .reversed .info-side {
+                order: unset;
+            }
+            
+            .project-title {
+                font-size: 2.5rem;
+            }
+            
+            .detail-row {
+                grid-template-columns: 100px 1fr;
+                gap: 1rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+            
+            .project-counter,
+            .scroll-progress {
+                display: none;
+            }
+            
+            section {
+                padding: 5rem 1.5rem;
+            }
+            
+            .section-inner {
+                gap: 2rem;
+            }
+            
+            .info-side {
+                gap: 1.5rem;
+            }
+            
+            .project-title {
+                font-size: 2rem;
+            }
+            
+            .detail-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            html {
+                scroll-behavior: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="mainNav">
+        <a href="index.html">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB Media" class="nav-logo">
+        </a>
+        <a href="index.html" class="nav-back">← Back to Home</a>
+    </nav>
+    
+    <!-- Project Counter -->
+    <div class="project-counter">
+        <span class="counter-current">01</span>
+        <span class="counter-total">/ 05</span>
+    </div>
+    
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress">
+        <svg class="progress-ring" width="60" height="60">
+            <circle class="progress-ring-circle" stroke-width="2" fill="transparent" r="25" cx="30" cy="30"/>
+            <circle class="progress-ring-progress" stroke-width="2" fill="transparent" r="25" cx="30" cy="30"/>
+        </svg>
+    </div>
+    
+    <!-- SECTION 1: ANTHONY R BRASS -->
+    <section id="artist" data-index="1">
+        <div class="section-inner">
+            <div class="video-side">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/CPvxM8GrCg8" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="info-side">
+                <div class="project-number">Project 01</div>
+                <div>
+                    <h2 class="project-title">Anthony R Brass</h2>
+                    <p class="project-subtitle">An artist's journey through paint, place, and passion. Intimate storytelling captured in his home studio where creativity meets authenticity.</p>
+                </div>
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Artist Spotlight / Documentary</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2024</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Approach</div>
+                        <div class="detail-value">Natural light, minimal crew, authentic moments captured in the artist's creative environment</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- SECTION 2: MOZ INTERIORS -->
+    <section id="moz" class="reversed" data-index="2">
+        <div class="section-inner">
+            <div class="video-side">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/HtF4L9RpkaU" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="info-side">
+                <div class="project-number">Project 02</div>
+                <div>
+                    <h2 class="project-title">MOZ Interiors</h2>
+                    <p class="project-subtitle">A designer spotlight showcasing the refined vision behind award-winning interior design. Clean cinematography meets sophisticated storytelling.</p>
+                </div>
+                
+                <div class="featured-in">
+                    <div class="featured-label">Featured In</div>
+                    <div class="featured-list">Vanity Fair · Architecture Digest<br>Hour Detroit · The World of Interiors</div>
+                </div>
+                
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Commercial / Designer Spotlight</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2024</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Recognition</div>
+                        <div class="detail-value">
+                            <span class="awards">Industry Press</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- SECTION 3: THE PANDYS -->
+    <section id="pandys" data-index="3">
+        <div class="section-inner">
+            <div class="video-side">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/ZXYtZmIRiRI" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="info-side">
+                <div class="project-number">Project 03</div>
+                <div>
+                    <h2 class="project-title">The Pandys</h2>
+                    <p class="project-subtitle">Raw band practice energy captured live. Authentic performance from Nothing's Getting Better, It's Going to Be Fine sessions.</p>
+                </div>
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Music Video / Live Session</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2024</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Track</div>
+                        <div class="detail-value">"Old Guy" from Nothing's Getting Better, It's Going to Be Fine</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- SECTION 4: TRAIL DEAD -->
+    <section id="horror" class="reversed" data-index="4">
+        <div class="section-inner">
+            <div class="video-side">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/rtEs8chuDlM" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="info-side">
+                <div class="project-number">Project 04</div>
+                <div>
+                    <h2 class="project-title">Trail Dead</h2>
+                    <p class="project-subtitle">A horror short exploring tension and atmosphere. Invisible threat, visible dread.</p>
+                </div>
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Short Film / Horror</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2025</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Recognition</div>
+                        <div class="detail-value">
+                            <span class="awards">Best Editing - Horror Film Roulette 2025</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- SECTION 5: LOOKOUT -->
+    <section id="comedy" data-index="5">
+        <div class="section-inner">
+            <div class="video-side">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/G0zfFWwQuZA" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="info-side">
+                <div class="project-number">Project 05</div>
+                <div>
+                    <h2 class="project-title">Lookout</h2>
+                    <p class="project-subtitle">A comedy short that landed in the Top 25 at the 2025 Comedy Roll Film Festival. Smart writing meets sharp timing.</p>
+                </div>
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Short Film / Comedy</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2025</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Recognition</div>
+                        <div class="detail-value">
+                            <span class="awards">Top 25 - Comedy Roll Film Festival 2025</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        // Smooth bounce scroll system
+        const sections = document.querySelectorAll('section');
+        const counterCurrent = document.querySelector('.counter-current');
+        const nav = document.getElementById('mainNav');
+        const progressCircle = document.querySelector('.progress-ring-progress');
+        
+        // Smooth bounce scroll function
+        function smoothBounceScroll(targetPosition, duration = 1800) {
+            const startPosition = window.pageYOffset;
+            const distance = targetPosition - startPosition;
+            let startTime = null;
+            
+            // Gentle ease with tiny settle (custom easing)
+            function gentleEaseWithSettle(t) {
+                // Slow ease out for most of the journey
+                const easeOut = 1 - Math.pow(1 - t, 3);
+                
+                // Add a tiny oscillation only at the very end (last 15% of animation)
+                if (t > 0.85) {
+                    const settlePhase = (t - 0.85) / 0.15; // 0 to 1 for the last 15%
+                    const tinyBounce = Math.sin(settlePhase * Math.PI * 2) * 0.015 * (1 - settlePhase);
+                    return easeOut + tinyBounce;
+                }
+                
+                return easeOut;
+            }
+            
+            function animation(currentTime) {
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const progress = Math.min(timeElapsed / duration, 1);
+                
+                // Apply easing
+                const ease = gentleEaseWithSettle(progress);
+                window.scrollTo(0, startPosition + (distance * ease));
+                
+                if (timeElapsed < duration) {
+                    requestAnimationFrame(animation);
+                }
+            }
+            
+            requestAnimationFrame(animation);
+        }
+        
+        // Auto-snap to nearest section after scroll stops
+        let scrollTimeout;
+        let isAutoScrolling = false;
+        
+        window.addEventListener('scroll', () => {
+            if (isAutoScrolling) return;
+            
+            clearTimeout(scrollTimeout);
+            
+            // Wait for scroll to stop, then gently snap to nearest section
+            scrollTimeout = setTimeout(() => {
+                const viewportCenter = window.pageYOffset + (window.innerHeight / 2);
+                let closestSection = sections[0];
+                let closestDistance = Infinity;
+                
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    const sectionCenter = rect.top + window.pageYOffset + (rect.height / 2);
+                    const distance = Math.abs(viewportCenter - sectionCenter);
+                    
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                        closestSection = section;
+                    }
+                });
+                
+                // Only snap if we're not already close to aligned
+                const rect = closestSection.getBoundingClientRect();
+                if (Math.abs(rect.top) > 10) {
+                    isAutoScrolling = true;
+                    const targetPosition = closestSection.offsetTop;
+                    smoothBounceScroll(targetPosition, 1800);
+                    
+                    // Reset flag after animation completes
+                    setTimeout(() => {
+                        isAutoScrolling = false;
+                    }, 1900);
+                }
+            }, 100);
+        }, { passive: true });
+        
+        // Intersection Observer for reveals and counter
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Remove in-view from all sections
+                    sections.forEach(s => s.classList.remove('in-view'));
+                    
+                    // Add to current section
+                    entry.target.classList.add('in-view');
+                    
+                    // Update counter
+                    const index = entry.target.dataset.index;
+                    if (index && counterCurrent) {
+                        counterCurrent.style.transform = 'translateY(-10px)';
+                        counterCurrent.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            counterCurrent.textContent = index.padStart(2, '0');
+                            counterCurrent.style.transform = 'translateY(0)';
+                            counterCurrent.style.opacity = '1';
+                        }, 200);
+                    }
+                }
+            });
+        }, observerOptions);
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Trigger first section on load
+        setTimeout(() => {
+            if (sections.length > 0) {
+                sections[0].classList.add('in-view');
+            }
+        }, 100);
+        
+        // Scroll progress indicator
+        function updateScrollProgress() {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            
+            const circumference = 2 * Math.PI * 25;
+            const offset = circumference - (scrollPercent / 100) * circumference;
+            
+            if (progressCircle) {
+                progressCircle.style.strokeDashoffset = offset;
+            }
+        }
+        
+        // Nav scroll behavior
+        function updateNav() {
+            const scrollY = window.pageYOffset;
+            
+            if (scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        }
+        
+        // Smooth scroll with RAF
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    updateScrollProgress();
+                    updateNav();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+        
+        // Initial calls
+        updateScrollProgress();
+        updateNav();
+    </script>
+</body>
+</html>
