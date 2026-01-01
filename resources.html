@@ -713,6 +713,33 @@
         
         let currentCategory = 'collaborators';
         let searchQuery = '';
+
+        function normalizeValue(value) {
+            return (value || '')
+                .toString()
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, ' ')
+                .replace(/\/+$/, '');
+        }
+
+        function getResourceKey(resource) {
+            if (resource.id) return `id:${normalizeValue(resource.id)}`;
+            if (resource.slug) return `slug:${normalizeValue(resource.slug)}`;
+            const nameKey = normalizeValue(resource.name);
+            const urlKey = normalizeValue(resource.url || resource.websiteUrl || resource.website);
+            return `fallback:${nameKey}|${urlKey}`;
+        }
+
+        function dedupeResources(resourceList) {
+            const seen = new Set();
+            return resourceList.filter(resource => {
+                const key = getResourceKey(resource);
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+        }
         
         function resourceInCategory(resource, category) {
             if (category === 'all') return true;
@@ -739,9 +766,10 @@
         }
         
         function getFilteredResources() {
-            return resources.filter(r => 
+            const filtered = resources.filter(r =>
                 resourceInCategory(r, currentCategory) && matchesSearch(r, searchQuery)
             );
+            return dedupeResources(filtered);
         }
         
         function renderResources(animate = false) {
@@ -782,8 +810,6 @@
                     '<span class="badge badge-' + badge + '">' + badge + '</span>'
                 ).join('');
 
-                const filmfreewayHTML = r.filmfreeway ? '<a class="card-cta" href="' + r.filmfreeway + '" target="_blank" rel="noopener noreferrer">FilmFreeway <span>→</span></a>' : '';
-
                 let cardClass = 'resource-card';
                 if (isCollaborator) cardClass += ' is-collaborator';
                 if (isCommunity) cardClass += ' is-community';
@@ -796,7 +822,6 @@
                     '<h3 class="card-name">' + r.name + '</h3>' +
                     '<div class="card-badges">' + badgeHTML + '</div>' +
                     '<p class="card-description">' + r.shortDesc + '</p>' +
-                    filmfreewayHTML +
                     '<span class="card-arrow">→</span>' +
                 '</div>';
             }).join('');
@@ -808,11 +833,6 @@
                 });
             });
 
-            document.querySelectorAll('.card-cta').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                });
-            });
         }
         
         function animateCount(target) {
@@ -878,18 +898,12 @@
                     ).join('') + '</div></div>';
             }
 
-            let ctaText = 'Visit Site';
-            if (isCollaborator) ctaText = 'Visit Their Site';
-            if (isCommunity) ctaText = 'Learn More';
-            if (isFilmFestival) ctaText = 'Festival Site';
-            if (isInspiration) ctaText = 'Watch Channel';
-
             const ctas = [];
-            if (r.filmfreeway) {
-                ctas.push('<a href="' + r.filmfreeway + '" target="_blank" rel="noopener noreferrer" class="modal-cta secondary">FilmFreeway <span>→</span></a>');
-            }
             if (r.url) {
-                ctas.push('<a href="' + r.url + '" target="_blank" rel="noopener noreferrer" class="modal-cta">' + ctaText + ' <span>→</span></a>');
+                ctas.push('<a href="' + r.url + '" target="_blank" rel="noopener noreferrer" class="modal-cta">Website <span>→</span></a>');
+            }
+            if (r.filmFreewayUrl) {
+                ctas.push('<a href="' + r.filmFreewayUrl + '" target="_blank" rel="noopener noreferrer" class="modal-cta secondary">FilmFreeway <span>→</span></a>');
             }
 
             const ctaHTML = ctas.length ? '<div class="cta-row">' + ctas.join('') + '</div>' : '';
