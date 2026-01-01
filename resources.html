@@ -561,38 +561,56 @@
         .key-info-label { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: #F59E0B; letter-spacing: 1px; text-transform: uppercase; }
 
         .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
-        .modal-cta.secondary { background: transparent; color: var(--white); border: 1px solid var(--gray-700); }
-        .modal-cta.secondary:hover { background: rgba(255, 255, 255, 0.08); color: var(--white); }
 
-        .card-cta { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.75rem; font-family: 'Space Mono', monospace; font-size: 0.75rem; color: #F59E0B; text-decoration: none; letter-spacing: 0.5px; }
-        .card-cta span { transition: transform 0.2s ease; }
-        .card-cta:hover span { transform: translateX(3px); }
-        
-        .modal-cta {
+        .resource-link {
             display: inline-flex;
             align-items: center;
             gap: 1rem;
             padding: 1rem 2rem;
-            background: var(--white);
-            color: var(--black);
             text-decoration: none;
             font-family: 'Space Mono', monospace;
             font-size: 0.75rem;
             letter-spacing: 1px;
             transition: all 0.3s ease;
-            margin-top: 1rem;
+            border-radius: 8px;
         }
+
+        .resource-link span { transition: transform 0.3s ease; }
+        .resource-link:hover span { transform: translateX(3px); }
+
+        .resource-link--website {
+            background: var(--white);
+            color: var(--black);
+        }
+
+        .resource-link--website:hover { background: var(--gray-400); transform: translateX(5px); }
+
+        .modal-content.is-collaborator .resource-link--website { background: var(--lab-orange); color: var(--white); }
+        .modal-content.is-collaborator .resource-link--website:hover { background: #ea580c; }
+        .modal-content.is-community .resource-link--website { background: var(--lab-green); color: var(--white); }
+        .modal-content.is-community .resource-link--website:hover { background: #16a34a; }
+        .modal-content.is-film-festival .resource-link--website { background: #F59E0B; color: var(--black); }
+        .modal-content.is-film-festival .resource-link--website:hover { background: #d97706; color: var(--black); }
+        .modal-content.is-inspiration .resource-link--website { background: var(--lab-purple); color: var(--white); }
+        .modal-content.is-inspiration .resource-link--website:hover { background: #9333ea; }
+
+        .resource-link--filmfreeway {
+            background: transparent;
+            color: var(--lab-purple);
+            border: 1px solid var(--lab-purple);
+            box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.2);
+        }
+
+        .resource-link--filmfreeway:hover {
+            background: rgba(168, 85, 247, 0.15);
+            box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.4), 0 10px 30px rgba(168, 85, 247, 0.15);
+            transform: translateX(5px);
+        }
+
+        .card-cta { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.75rem; font-family: 'Space Mono', monospace; font-size: 0.75rem; color: #F59E0B; text-decoration: none; letter-spacing: 0.5px; }
+        .card-cta span { transition: transform 0.2s ease; }
+        .card-cta:hover span { transform: translateX(3px); }
         
-        .modal-cta:hover { background: var(--gray-400); transform: translateX(5px); }
-        
-        .modal-content.is-collaborator .modal-cta { background: var(--lab-orange); color: var(--white); }
-        .modal-content.is-collaborator .modal-cta:hover { background: #ea580c; }
-        .modal-content.is-community .modal-cta { background: var(--lab-green); color: var(--white); }
-        .modal-content.is-community .modal-cta:hover { background: #16a34a; }
-        .modal-content.is-film-festival .modal-cta { background: #F59E0B; color: var(--black); }
-        .modal-content.is-film-festival .modal-cta:hover { background: #d97706; color: var(--black); }
-        .modal-content.is-inspiration .modal-cta { background: var(--lab-purple); color: var(--white); }
-        .modal-content.is-inspiration .modal-cta:hover { background: #9333ea; }
         
         /* Footer */
         footer {
