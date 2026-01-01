@@ -782,6 +782,8 @@
                     '<span class="badge badge-' + badge + '">' + badge + '</span>'
                 ).join('');
 
+                const filmfreewayHTML = r.filmfreeway ? '<a class="card-cta" href="' + r.filmfreeway + '" target="_blank" rel="noopener noreferrer">FilmFreeway <span>→</span></a>' : '';
+
                 let cardClass = 'resource-card';
                 if (isCollaborator) cardClass += ' is-collaborator';
                 if (isCommunity) cardClass += ' is-community';
@@ -794,6 +796,7 @@
                     '<h3 class="card-name">' + r.name + '</h3>' +
                     '<div class="card-badges">' + badgeHTML + '</div>' +
                     '<p class="card-description">' + r.shortDesc + '</p>' +
+                    filmfreewayHTML +
                     '<span class="card-arrow">→</span>' +
                 '</div>';
             }).join('');
@@ -805,6 +808,11 @@
                 });
             });
 
+            document.querySelectorAll('.card-cta').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            });
         }
         
         function animateCount(target) {
@@ -878,7 +886,7 @@
 
             const ctas = [];
             if (r.filmfreeway) {
-                ctas.push('<a href="' + r.filmfreeway + '" target="_blank" rel="noopener noreferrer" class="modal-cta secondary">Submit on FilmFreeway <span>→</span></a>');
+                ctas.push('<a href="' + r.filmfreeway + '" target="_blank" rel="noopener noreferrer" class="modal-cta secondary">FilmFreeway <span>→</span></a>');
             }
             if (r.url) {
                 ctas.push('<a href="' + r.url + '" target="_blank" rel="noopener noreferrer" class="modal-cta">' + ctaText + ' <span>→</span></a>');
