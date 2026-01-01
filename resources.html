@@ -782,7 +782,7 @@
                     '<span class="badge badge-' + badge + '">' + badge + '</span>'
                 ).join('');
 
-                const filmfreewayHTML = r.filmfreeway ? '<a class="card-cta" href="' + r.filmfreeway + '" target="_blank" rel="noopener noreferrer">Submit on FilmFreeway <span>→</span></a>' : '';
+                const filmfreewayHTML = r.filmfreeway ? '<a class="card-cta" href="' + r.filmfreeway + '" target="_blank" rel="noopener noreferrer">FilmFreeway <span>→</span></a>' : '';
 
                 let cardClass = 'resource-card';
                 if (isCollaborator) cardClass += ' is-collaborator';
@@ -886,7 +886,7 @@
 
             const ctas = [];
             if (r.filmfreeway) {
-                ctas.push('<a href="' + r.filmfreeway + '" target="_blank" rel="noopener noreferrer" class="modal-cta secondary">Submit on FilmFreeway <span>→</span></a>');
+                ctas.push('<a href="' + r.filmfreeway + '" target="_blank" rel="noopener noreferrer" class="modal-cta secondary">FilmFreeway <span>→</span></a>');
             }
             if (r.url) {
                 ctas.push('<a href="' + r.url + '" target="_blank" rel="noopener noreferrer" class="modal-cta">' + ctaText + ' <span>→</span></a>');
