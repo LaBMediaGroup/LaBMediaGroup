@@ -182,12 +182,17 @@
         .filter-btn[data-category="collaborators"]:hover { background: rgba(249, 115, 22, 0.1); }
         .filter-btn[data-category="collaborators"].active { background: var(--lab-orange); border-color: var(--lab-orange); color: var(--black); }
         .filter-btn[data-category="collaborators"].active::before { background: var(--lab-orange); }
-        
+
         .filter-btn[data-category="community"] { border-color: var(--lab-green); color: var(--lab-green); }
         .filter-btn[data-category="community"]:hover { background: rgba(34, 197, 94, 0.1); }
         .filter-btn[data-category="community"].active { background: var(--lab-green); border-color: var(--lab-green); color: var(--black); }
         .filter-btn[data-category="community"].active::before { background: var(--lab-green); }
-        
+
+        .filter-btn[data-category="film-festivals"] { border-color: #F59E0B; color: #F59E0B; }
+        .filter-btn[data-category="film-festivals"]:hover { background: rgba(245, 158, 11, 0.08); }
+        .filter-btn[data-category="film-festivals"].active { background: #F59E0B; border-color: #F59E0B; color: var(--black); }
+        .filter-btn[data-category="film-festivals"].active::before { background: #F59E0B; }
+
         .filter-btn[data-category="inspiration"] { border-color: var(--lab-purple); color: var(--lab-purple); }
         .filter-btn[data-category="inspiration"]:hover { background: rgba(168, 85, 247, 0.1); }
         .filter-btn[data-category="inspiration"].active { background: var(--lab-purple); border-color: var(--lab-purple); color: var(--white); }
@@ -264,7 +269,14 @@
         }
         .resource-card.is-community::before { background: var(--lab-green); }
         .resource-card.is-community:hover { background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, var(--gray-900) 100%); }
-        
+
+        .resource-card.is-film-festival {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.03) 0%, var(--black) 100%);
+            border-left: 2px solid #F59E0B;
+        }
+        .resource-card.is-film-festival::before { background: #F59E0B; }
+        .resource-card.is-film-festival:hover { background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, var(--gray-900) 100%); }
+
         .resource-card.is-inspiration {
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.03) 0%, var(--black) 100%);
             border-left: 2px solid var(--lab-purple);
@@ -433,6 +445,7 @@
         
         .modal-content.is-collaborator { border-color: var(--lab-orange); border-width: 2px; }
         .modal-content.is-community { border-color: var(--lab-green); border-width: 2px; }
+        .modal-content.is-film-festival { border-color: #F59E0B; border-width: 2px; }
         .modal-content.is-inspiration { border-color: var(--lab-purple); border-width: 2px; }
         .modal-content.is-lab-pick { border-color: var(--white); border-width: 2px; }
         
@@ -540,8 +553,20 @@
             line-height: 1.6;
             color: var(--gray-400);
         }
-        
+
         .feature-bullet { font-family: 'Space Mono', monospace; color: var(--gray-600); font-size: 0.7rem; }
+
+        .key-info { display: flex; flex-direction: column; gap: 0.65rem; }
+        .key-info-item { display: flex; gap: 0.75rem; align-items: flex-start; font-size: 0.9rem; line-height: 1.6; color: var(--gray-300); }
+        .key-info-label { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: #F59E0B; letter-spacing: 1px; text-transform: uppercase; }
+
+        .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+        .modal-cta.secondary { background: transparent; color: var(--white); border: 1px solid var(--gray-700); }
+        .modal-cta.secondary:hover { background: rgba(255, 255, 255, 0.08); color: var(--white); }
+
+        .card-cta { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.75rem; font-family: 'Space Mono', monospace; font-size: 0.75rem; color: #F59E0B; text-decoration: none; letter-spacing: 0.5px; }
+        .card-cta span { transition: transform 0.2s ease; }
+        .card-cta:hover span { transform: translateX(3px); }
         
         .modal-cta {
             display: inline-flex;
@@ -564,6 +589,8 @@
         .modal-content.is-collaborator .modal-cta:hover { background: #ea580c; }
         .modal-content.is-community .modal-cta { background: var(--lab-green); color: var(--white); }
         .modal-content.is-community .modal-cta:hover { background: #16a34a; }
+        .modal-content.is-film-festival .modal-cta { background: #F59E0B; color: var(--black); }
+        .modal-content.is-film-festival .modal-cta:hover { background: #d97706; color: var(--black); }
         .modal-content.is-inspiration .modal-cta { background: var(--lab-purple); color: var(--white); }
         .modal-content.is-inspiration .modal-cta:hover { background: #9333ea; }
         
@@ -640,6 +667,7 @@
         <div class="filter-row">
             <button class="filter-btn active" data-category="collaborators">Collaborators</button>
             <button class="filter-btn" data-category="community">Community</button>
+            <button class="filter-btn" data-category="film-festivals">Film Festivals</button>
             <button class="filter-btn" data-category="inspiration">Inspiration</button>
             <button class="filter-btn" data-category="music">Music</button>
             <button class="filter-btn" data-category="soundfx">Sound FX</button>
@@ -746,19 +774,21 @@
                 const primaryCat = getPrimaryCategory(r);
                 const isCollaborator = primaryCat === 'collaborators';
                 const isCommunity = primaryCat === 'community';
+                const isFilmFestival = primaryCat === 'film-festivals';
                 const isInspiration = primaryCat === 'inspiration';
                 const isLabPick = r.labPick === true;
-                
-                const badgeHTML = r.badges.slice(0, 4).map(badge => 
+
+                const badgeHTML = r.badges.slice(0, 4).map(badge =>
                     '<span class="badge badge-' + badge + '">' + badge + '</span>'
                 ).join('');
-                
+
                 let cardClass = 'resource-card';
                 if (isCollaborator) cardClass += ' is-collaborator';
                 if (isCommunity) cardClass += ' is-community';
+                if (isFilmFestival) cardClass += ' is-film-festival';
                 if (isInspiration) cardClass += ' is-inspiration';
                 if (isLabPick) cardClass += ' is-lab-pick';
-                
+
                 return '<div class="' + cardClass + '" data-id="' + r.id + '" style="animation-delay: ' + (i * 0.03) + 's">' +
                     '<span class="card-index">' + String(i + 1).padStart(3, '0') + '</span>' +
                     '<h3 class="card-name">' + r.name + '</h3>' +
@@ -767,13 +797,14 @@
                     '<span class="card-arrow">→</span>' +
                 '</div>';
             }).join('');
-            
+
             document.querySelectorAll('.resource-card').forEach(card => {
                 card.addEventListener('click', () => {
                     const resource = resources.find(r => r.id === card.dataset.id);
                     openModal(resource);
                 });
             });
+
         }
         
         function animateCount(target) {
@@ -797,12 +828,14 @@
             const primaryCat = getPrimaryCategory(r);
             const isCollaborator = primaryCat === 'collaborators';
             const isCommunity = primaryCat === 'community';
+            const isFilmFestival = primaryCat === 'film-festivals';
             const isInspiration = primaryCat === 'inspiration';
             const isLabPick = r.labPick === true;
-            
-            modalContent.classList.remove('is-collaborator', 'is-community', 'is-inspiration', 'is-lab-pick');
+
+            modalContent.classList.remove('is-collaborator', 'is-community', 'is-film-festival', 'is-inspiration', 'is-lab-pick');
             if (isCollaborator) modalContent.classList.add('is-collaborator');
             else if (isCommunity) modalContent.classList.add('is-community');
+            else if (isFilmFestival) modalContent.classList.add('is-film-festival');
             else if (isInspiration) modalContent.classList.add('is-inspiration');
             if (isLabPick) modalContent.classList.add('is-lab-pick');
             
@@ -816,30 +849,49 @@
             let pricingHTML = '';
             if (r.pricing) {
                 pricingHTML = '<div class="modal-section"><h3 class="section-title">Pricing</h3>' +
-                    r.pricing.map(p => 
+                    r.pricing.map(p =>
                         '<div class="pricing-row"><span class="pricing-plan">' + p.plan + '</span><span class="pricing-amount">' + p.price + '</span></div>'
                     ).join('') + '</div>';
             }
-            
+
+            let keyInfoHTML = '';
+            if (r.keyInfo) {
+                keyInfoHTML = '<div class="modal-section"><h3 class="section-title">Key Info</h3><div class="key-info">' +
+                    r.keyInfo.map(item =>
+                        '<div class="key-info-item"><span class="key-info-label">' + item.label + '</span><span>' + item.detail + '</span></div>'
+                    ).join('') + '</div></div>';
+            }
+
             let featuresHTML = '';
             if (r.features) {
                 featuresHTML = '<div class="modal-section"><h3 class="section-title">Features</h3><div class="feature-list">' +
-                    r.features.map(f => 
+                    r.features.map(f =>
                         '<div class="feature-item"><span class="feature-bullet">→</span><span>' + f + '</span></div>'
                     ).join('') + '</div></div>';
             }
-            
+
             let ctaText = 'Visit Site';
             if (isCollaborator) ctaText = 'Visit Their Site';
             if (isCommunity) ctaText = 'Learn More';
+            if (isFilmFestival) ctaText = 'Festival Site';
             if (isInspiration) ctaText = 'Watch Channel';
-            
-            document.getElementById('modalBody').innerHTML = 
+
+            const ctas = [];
+            if (r.filmfreeway) {
+                ctas.push('<a href="' + r.filmfreeway + '" target="_blank" rel="noopener noreferrer" class="modal-cta secondary">Submit on FilmFreeway <span>→</span></a>');
+            }
+            if (r.url) {
+                ctas.push('<a href="' + r.url + '" target="_blank" rel="noopener noreferrer" class="modal-cta">' + ctaText + ' <span>→</span></a>');
+            }
+
+            const ctaHTML = ctas.length ? '<div class="cta-row">' + ctas.join('') + '</div>' : '';
+
+            document.getElementById('modalBody').innerHTML =
                 '<p class="modal-description">' + r.fullDesc + '</p>' +
+                keyInfoHTML +
                 pricingHTML +
                 featuresHTML +
-                '<a href="' + r.url + '" target="_blank" rel="noopener noreferrer" class="modal-cta">' +
-                    ctaText + ' <span>→</span></a>';
+                ctaHTML;
             
             modal.classList.remove('closing');
             modal.classList.add('active');
