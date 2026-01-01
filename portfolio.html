@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work | LaB Media</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --white: #fafafa;
+            --gray-400: #a3a3a3;
+            --gray-600: #525252;
+            --gray-800: #262626;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--black);
+            color: var(--gray-400);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+        
+        .nav-logo {
+            height: 22px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-logo:hover {
+            opacity: 0.6;
+        }
+        
+        .nav-back {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-back:hover {
+            opacity: 0.5;
+        }
+        
+        /* Project Counter */
+        .project-counter {
+            position: fixed;
+            right: 3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+            font-family: 'Space Mono', monospace;
+            mix-blend-mode: difference;
+        }
+        
+        .counter-current {
+            font-size: 2.5rem;
+            color: var(--white);
+            display: block;
+            font-weight: 400;
+            line-height: 1;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .counter-total {
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+        }
+        
+        /* Base Section */
+        section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 4rem;
+            position: relative;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            transition: background 1s ease;
+        }
+        
+        .section-inner {
+            max-width: 1500px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+        
+        .reversed .section-inner {
+            grid-template-columns: 1fr 1.2fr;
+        }
+        
+        .reversed .video-side {
+            order: 2;
+        }
+        
+        .reversed .info-side {
+            order: 1;
+        }
+        
+        /* Video Side */
+        .video-side {
+            position: relative;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Info Side - Default hidden state for animation */
+        .info-side {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .info-side > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Animated in-view state */
+        section.in-view .info-side > *:nth-child(1) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.15s;
+        }
+        
+        section.in-view .info-side > *:nth-child(2) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.25s;
+        }
+        
+        section.in-view .info-side > *:nth-child(3) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.35s;
+        }
+        
+        section.in-view .info-side > *:nth-child(4) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.45s;
+        }
+        
+        section.in-view .info-side > *:nth-child(5) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.55s;
+        }
+        
+        .project-index {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+        }
+        
+        .project-title {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            color: var(--white);
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+        }
+        
+        .project-subtitle {
+            font-size: 0.95rem;
+            color: var(--gray-400);
+            line-height: 1.7;
+            max-width: 450px;
+        }
+        
+        .project-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-800);
+        }
+        
+        .detail-row {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 1.5rem;
+            align-items: baseline;
+        }
+        
+        .detail-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .detail-value {
+            font-size: 0.85rem;
+            color: var(--gray-400);
+            line-height: 1.5;
+        }
+        
+        .award-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--white);
+            letter-spacing: 0.5px;
+        }
+        
+        .award-badge::before {
+            content: '★';
+            color: #fbbf24;
+        }
+        
+        /* ============================================
+           SECTION 1: ANTHONY BRASS - Vibrant Nature Art
+           Inspired by his actual site: soft pinks, coral,
+           organic shapes, nature colors, rounded corners
+        ============================================ */
+        #artist {
+            background: linear-gradient(180deg, #f5e6dd 0%, #f9ede6 50%, #fdf4ef 100%);
+        }
+        
+        #artist .section-inner {
+            gap: 4rem;
+        }
+        
+        #artist .video-container {
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(180, 100, 80, 0.15);
+        }
+        
+        #artist .project-index {
+            color: #c96b5a;
+        }
+        
+        #artist .project-title {
+            color: #8b3a2f;
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            font-style: normal;
+            letter-spacing: -1px;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+        }
+        
+        #artist .project-subtitle {
+            color: #a85d4d;
+            font-style: italic;
+        }
+        
+        #artist .detail-label {
+            color: #c4907f;
+        }
+        
+        #artist .detail-value {
+            color: #8b5a4a;
+        }
+        
+        #artist .project-details {
+            border-top-color: rgba(200, 120, 100, 0.25);
+        }
+        
+        /* ============================================
+           SECTION 2: MOZ INTERIORS - Clean, Editorial
+           Warm whites, cognac accents, sophisticated
+        ============================================ */
+        #moz {
+            background: #fefefe;
+        }
+        
+        #moz .video-container {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+        }
+        
+        #moz .project-index,
+        #moz .detail-label {
+            color: #b8a68e;
+        }
+        
+        #moz .project-title {
+            color: #2d2a26;
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        }
+        
+        #moz .project-subtitle {
+            color: #6b6560;
+        }
+        
+        #moz .detail-value {
+            color: #4a4540;
+        }
+        
+        #moz .project-details {
+            border-top-color: rgba(180, 160, 140, 0.3);
+        }
+        
+        /* Featured Publications - Editorial Style */
+        #moz .featured-block {
+            background: #faf8f5;
+            padding: 1.5rem 2rem;
+            border-left: 2px solid #b8a68e;
+            margin-top: 0.5rem;
+        }
+        
+        #moz .featured-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.5rem;
+            color: #b8a68e;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+        
+        #moz .featured-list {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: #4a4540;
+            line-height: 1.8;
+            font-style: italic;
+        }
+        
+        #moz .award-badge {
+            background: #2d2a26;
+            border-color: #2d2a26;
+            color: #faf8f5;
+        }
+        
+        /* ============================================
+           SECTION 3: THE PANDYS - Raw, Purple Energy
+        ============================================ */
+        #pandys {
+            background: linear-gradient(135deg, #1a0f1f 0%, #0d0710 100%);
+        }
+        
+        #pandys .project-title {
+            color: #e9d5ff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        #pandys .project-subtitle {
+            color: #a78bfa;
+        }
+        
+        #pandys .detail-value {
+            color: #c4b5fd;
+        }
+        
+        #pandys .project-details {
+            border-top-color: rgba(167, 139, 250, 0.2);
+        }
+        
+        /* ============================================
+           SECTION 4: TRAIL DEAD - Horror Treatment
+        ============================================ */
+        #horror {
+            background: #000;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Subtle noise texture */
+        #horror::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+        
+        /* Red accent line */
+        #horror::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #dc2626, transparent);
+            opacity: 0.5;
+        }
+        
+        #horror .project-index {
+            color: #7f1d1d;
+        }
+        
+        #horror .project-title {
+            color: #fecaca;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+        
+        #horror .project-subtitle {
+            color: #a3a3a3;
+            font-style: italic;
+        }
+        
+        #horror .detail-label {
+            color: #7f1d1d;
+        }
+        
+        #horror .detail-value {
+            color: #a3a3a3;
+        }
+        
+        #horror .project-details {
+            border-top-color: rgba(220, 38, 38, 0.2);
+        }
+        
+        #horror .video-container {
+            box-shadow: 0 0 60px rgba(220, 38, 38, 0.15);
+            padding-bottom: 41.84%; /* 2.39:1 cinemascope aspect ratio */
+        }
+        
+        #horror .award-badge {
+            background: rgba(220, 38, 38, 0.1);
+            border-color: rgba(220, 38, 38, 0.3);
+            color: #fecaca;
+        }
+        
+        #horror .award-badge::before {
+            color: #dc2626;
+        }
+        
+        /* Creepy detail */
+        #horror .horror-note {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: #7f1d1d;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 1rem;
+            opacity: 0.7;
+        }
+        
+        /* ============================================
+           SECTION 5: LOOKOUT - Comedy, Bright Energy
+        ============================================ */
+        #comedy {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            position: relative;
+        }
+        
+        #comedy .project-index {
+            color: #92400e;
+        }
+        
+        #comedy .project-title {
+            color: #78350f;
+            position: relative;
+        }
+        
+        /* Fun underline accent */
+        #comedy .project-title::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: #f59e0b;
+            border-radius: 2px;
+        }
+        
+        #comedy .project-subtitle {
+            color: #92400e;
+        }
+        
+        #comedy .detail-label {
+            color: #b45309;
+        }
+        
+        #comedy .detail-value {
+            color: #78350f;
+        }
+        
+        #comedy .project-details {
+            border-top-color: rgba(120, 53, 15, 0.2);
+        }
+        
+        #comedy .award-badge {
+            background: #78350f;
+            border-color: #78350f;
+            color: #fef3c7;
+        }
+        
+        #comedy .award-badge::before {
+            color: #fde68a;
+        }
+        
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 1024px) {
+            html {
+                scroll-snap-type: y proximity;
+            }
+            
+            nav {
+                padding: 1.5rem 2rem;
+            }
+            
+            .project-counter {
+                right: 2rem;
+            }
+            
+            section {
+                padding: 5rem 2rem;
+            }
+            
+            .section-inner {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .reversed .section-inner {
+                grid-template-columns: 1fr;
+            }
+            
+            .reversed .video-side,
+            .reversed .info-side {
+                order: unset;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+            
+            .project-counter {
+                display: none;
+            }
+            
+            section {
+                padding: 4rem 1.5rem;
+            }
+            
+            .detail-row {
+                grid-template-columns: 80px 1fr;
+                gap: 1rem;
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            html {
+                scroll-behavior: auto;
+                scroll-snap-type: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB Media" class="nav-logo">
+        </a>
+        <a href="index.html" class="nav-back">← Back</a>
+    </nav>
+    
+    <!-- Project Counter -->
+    <div class="project-counter">
+        <span class="counter-current">01</span>
+        <span class="counter-total">/ 05</span>
+    </div>
+    
+    <!-- SECTION 1: ANTHONY BRASS -->
+    <section id="artist" data-index="1">
+        <div class="section-inner">
+            <div class="video-side">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/CPvxM8GrCg8" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="info-side">
+                <div class="project-index">001</div>
+                <div>
+                    <h2 class="project-title">Anthony Brass</h2>
+                    <p class="project-subtitle">An artist's journey through paint, place, and passion. Intimate storytelling captured in his home studio.</p>
+                </div>
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Artist Spotlight</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2024</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Approach</div>
+                        <div class="detail-value">Natural light, minimal crew, authentic moments</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- SECTION 2: MOZ INTERIORS -->
+    <section id="moz" class="reversed" data-index="2">
+        <div class="section-inner">
+            <div class="video-side">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/HtF4L9RpkaU" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="info-side">
+                <div class="project-index">002</div>
+                <div>
+                    <h2 class="project-title">MOZ Interiors</h2>
+                    <p class="project-subtitle">Designer spotlight showcasing the refined vision behind award-winning interior design.</p>
+                </div>
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Commercial</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2024</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Recognition</div>
+                        <div class="detail-value">
+                            <span class="award-badge">Industry Press</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="featured-block">
+                    <div class="featured-label">Featured In</div>
+                    <div class="featured-list">Vanity Fair · Architectural Digest · Hour Detroit · The World of Interiors</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- SECTION 3: THE PANDYS -->
+    <section id="pandys" data-index="3">
+        <div class="section-inner">
+            <div class="video-side">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/ZXYtZmIRiRI" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="info-side">
+                <div class="project-index">003</div>
+                <div>
+                    <h2 class="project-title">The Pandys</h2>
+                    <p class="project-subtitle">Raw band practice energy captured live. Authentic performance from the studio sessions.</p>
+                </div>
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Music Video / Live Session</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2024</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Track</div>
+                        <div class="detail-value">"Old Guy" from Nothing's Getting Better, It's Going to Be Fine</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- SECTION 4: TRAIL DEAD -->
+    <section id="horror" class="reversed" data-index="4">
+        <div class="section-inner">
+            <div class="video-side">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/rtEs8chuDlM" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="info-side">
+                <div class="project-index">004</div>
+                <div>
+                    <h2 class="project-title">Trail Dead</h2>
+                    <p class="project-subtitle">Invisible threat. Visible dread. A horror short exploring tension and atmosphere.</p>
+                </div>
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Short Film / Horror</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2025</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Recognition</div>
+                        <div class="detail-value">
+                            <span class="award-badge">Best Editing — Horror Film Roulette 2025</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="horror-note">Don't watch alone.</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- SECTION 5: LOOKOUT -->
+    <section id="comedy" data-index="5">
+        <div class="section-inner">
+            <div class="video-side">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/G0zfFWwQuZA" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="info-side">
+                <div class="project-index">005</div>
+                <div>
+                    <h2 class="project-title">Lookout</h2>
+                    <p class="project-subtitle">Smart writing meets sharp timing. A comedy short that proves funny is hard.</p>
+                </div>
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Short Film / Comedy</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2025</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Recognition</div>
+                        <div class="detail-value">
+                            <span class="award-badge">Top 25 — Comedy Roll Film Festival 2025</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        const sections = document.querySelectorAll('section');
+        const counterCurrent = document.querySelector('.counter-current');
+        
+        // Intersection Observer for section reveals
+        const observerOptions = {
+            threshold: 0.4,
+            rootMargin: '0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Add in-view class
+                    entry.target.classList.add('in-view');
+                    
+                    // Update counter with smoother animation
+                    const index = entry.target.dataset.index;
+                    if (index && counterCurrent) {
+                        // Fade out
+                        counterCurrent.style.opacity = '0';
+                        counterCurrent.style.transform = 'translateY(-8px)';
+                        
+                        // Update and fade in after smooth delay
+                        setTimeout(() => {
+                            counterCurrent.textContent = index.padStart(2, '0');
+                            counterCurrent.style.opacity = '1';
+                            counterCurrent.style.transform = 'translateY(0)';
+                        }, 250);
+                    }
+                }
+            });
+        }, observerOptions);
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Trigger first section immediately
+        setTimeout(() => {
+            if (sections.length > 0) {
+                sections[0].classList.add('in-view');
+            }
+        }, 100);
+        
+        // Smooth scroll snap enhancement
+        let isScrolling = false;
+        let scrollTimeout;
+        
+        window.addEventListener('scroll', () => {
+            if (isScrolling) return;
+            
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                // Find nearest section
+                const viewportCenter = window.scrollY + (window.innerHeight / 2);
+                let nearest = sections[0];
+                let nearestDist = Infinity;
+                
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    const sectionCenter = rect.top + window.scrollY + (rect.height / 2);
+                    const dist = Math.abs(viewportCenter - sectionCenter);
+                    
+                    if (dist < nearestDist) {
+                        nearestDist = dist;
+                        nearest = section;
+                    }
+                });
+                
+                // Snap if not aligned
+                const rect = nearest.getBoundingClientRect();
+                if (Math.abs(rect.top) > 50) {
+                    isScrolling = true;
+                    nearest.scrollIntoView({ behavior: 'smooth' });
+                    setTimeout(() => { isScrolling = false; }, 1000);
+                }
+            }, 150);
+        }, { passive: true });
+    </script>
+</body>
+</html>
