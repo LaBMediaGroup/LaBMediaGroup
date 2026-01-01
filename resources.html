@@ -562,6 +562,51 @@
 
         .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
 
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            text-transform: uppercase;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--white);
+        }
+
+        .btn:focus-visible {
+            outline: 2px solid var(--white);
+            outline-offset: 2px;
+        }
+
+        .btn span { transition: transform 0.2s ease; }
+        .btn:hover span { transform: translateX(2px); }
+
+        .btn--outline { background: transparent; }
+
+        .btn--outline-white {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .btn--outline-white:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn--outline-purple {
+            border-color: var(--lab-purple);
+            color: var(--lab-purple);
+        }
+
+        .btn--outline-purple:hover {
+            background: rgba(168, 85, 247, 0.12);
+        }
+
         .resource-link {
             display: inline-flex;
             align-items: center;
@@ -741,6 +786,13 @@
                 .replace(/\/+$/, '');
         }
 
+        function getCategoryList(resource) {
+            const categories = Array.isArray(resource.category) ? resource.category : [resource.category];
+            return categories
+                .map(normalizeValue)
+                .filter(Boolean);
+        }
+
         function getResourceKey(resource) {
             if (resource.id) return `id:${normalizeValue(resource.id)}`;
             if (resource.slug) return `slug:${normalizeValue(resource.slug)}`;
@@ -761,12 +813,13 @@
         
         function resourceInCategory(resource, category) {
             if (category === 'all') return true;
-            const cats = Array.isArray(resource.category) ? resource.category : [resource.category];
-            return cats.includes(category);
+            const normalizedCategory = normalizeValue(category);
+            const cats = getCategoryList(resource);
+            return cats.includes(normalizedCategory);
         }
-        
+
         function getPrimaryCategory(resource) {
-            const cats = Array.isArray(resource.category) ? resource.category : [resource.category];
+            const cats = getCategoryList(resource);
             return cats[0];
         }
         
@@ -778,7 +831,7 @@
                 resource.shortDesc,
                 resource.fullDesc,
                 ...resource.badges,
-                ...(Array.isArray(resource.category) ? resource.category : [resource.category])
+                ...getCategoryList(resource)
             ].join(' ').toLowerCase();
             return searchFields.includes(q);
         }
@@ -918,10 +971,10 @@
 
             const ctas = [];
             if (r.url) {
-                ctas.push('<a href="' + r.url + '" target="_blank" rel="noopener noreferrer" class="modal-cta">Website <span>→</span></a>');
+                ctas.push('<a href="' + r.url + '" target="_blank" rel="noopener noreferrer" class="btn btn--outline btn--outline-white">Website</a>');
             }
             if (r.filmFreewayUrl) {
-                ctas.push('<a href="' + r.filmFreewayUrl + '" target="_blank" rel="noopener noreferrer" class="modal-cta secondary">FilmFreeway <span>→</span></a>');
+                ctas.push('<a href="' + r.filmFreewayUrl + '" target="_blank" rel="noopener noreferrer" class="btn btn--outline btn--outline-purple">FilmFreeway</a>');
             }
 
             const ctaHTML = ctas.length ? '<div class="cta-row">' + ctas.join('') + '</div>' : '';
