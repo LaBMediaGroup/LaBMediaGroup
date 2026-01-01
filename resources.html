@@ -918,10 +918,10 @@
 
             const ctas = [];
             if (r.url) {
-                ctas.push('<a href="' + r.url + '" target="_blank" rel="noopener noreferrer" class="resource-link resource-link--website">Website <span>→</span></a>');
+                ctas.push('<a href="' + r.url + '" target="_blank" rel="noopener noreferrer" class="modal-cta">Website <span>→</span></a>');
             }
             if (r.filmFreewayUrl) {
-                ctas.push('<a href="' + r.filmFreewayUrl + '" target="_blank" rel="noopener noreferrer" class="resource-link resource-link--filmfreeway">FilmFreeway <span>→</span></a>');
+                ctas.push('<a href="' + r.filmFreewayUrl + '" target="_blank" rel="noopener noreferrer" class="modal-cta secondary">FilmFreeway <span>→</span></a>');
             }
 
             const ctaHTML = ctas.length ? '<div class="cta-row">' + ctas.join('') + '</div>' : '';
