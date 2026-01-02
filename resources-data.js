@@ -9,44 +9,115 @@ const resources = [
     {
         name: 'Anthony R Brass',
         category: 'collaborators',
-        desc: 'Fine artist known for vibrant, nature-driven work that leans into color and mood.',
-        fullDesc: 'Anthony R Brass is a fine artist whose paintings explore nature, memory, and emotion through saturated color and bold composition. His work often balances organic forms with an intuitive, expressive energy—built for close looking and slow living.',
-        url: 'https://anthonyrbrass.com',
-        features: ['Fine Art', 'Nature-Inspired', 'Documentary Subject', 'Studio Work']
+        desc: 'Detroit-based contemporary artist with vibrant, nature-inspired work. LaB Media collaborator.',
+        fullDesc: 'Anthony R Brass is a Detroit-based fine artist whose work explores nature, color, and emotion through bold brushwork and organic palettes. LaB Media collaborated with Anthony on an intimate artist spotlight documentary filmed in-studio, capturing authentic process and lived-in craft.',
+        url: 'https://www.anthonybrass.com',
+        keyInfo: [
+            { label: 'Instagram', value: 'https://www.instagram.com/anthonyrbrass/' },
+            { label: 'YouTube', value: 'https://www.youtube.com/channel/UChBFLCl5yzjO_vZj15_pqhw' },
+            { label: 'Facebook', value: 'https://www.facebook.com/anthonyRbrass/' }
+        ],
+        features: [
+            'Contemporary Fine Art',
+            'Nature-Inspired',
+            'Detroit-Based Artist',
+            'Studio Practice',
+            'Documentary Subject',
+            'LaB Media Collaborator'
+        ]
     },
     {
         name: 'MOZ Interiors',
         category: 'collaborators',
-        desc: 'Luxury interior design studio with press features including Vanity Fair, AD, and Hour Detroit.',
-        fullDesc: 'MOZ Interiors is a luxury interior design studio focused on refined spaces with strong architectural lines and elevated material choices. Their work has been featured in outlets including Vanity Fair, Architectural Digest, Hour Detroit, and The World of Interiors—design that reads clean, confident, and lived-in.',
-        url: 'https://mozinteriors.com',
-        features: ['Interior Design', 'Press Featured', 'Commercial Partner', 'Luxury Brand']
+        desc: 'Award-winning interior design studio featured in Vanity Fair, Architectural Digest, and Hour Detroit.',
+        fullDesc: 'MOZ Interiors is a Michigan-based interior design studio specializing in high-end residential and commercial spaces. Their work has been recognized by Vanity Fair, Architectural Digest, Hour Detroit, and The World of Interiors. LaB Media partnered with MOZ on a designer spotlight film, capturing refined vision through clean, confident cinematography.',
+        url: 'https://www.mozinteriors.com',
+        keyInfo: [
+            { label: 'Instagram', value: 'https://www.instagram.com/moz_interiors/' },
+            { label: 'Facebook', value: 'https://www.facebook.com/mozinterior' }
+        ],
+        features: [
+            'Interior Design',
+            'Press Featured',
+            'Residential & Commercial',
+            'Luxury Brand',
+            'Metro Detroit',
+            'LaB Media Collaborator'
+        ]
     },
     {
         name: 'Joe Garofalo Music',
         category: 'collaborators',
-        desc: 'Composer and producer creating original scores and custom music across genres.',
-        fullDesc: 'Joe Garofalo is a composer and musician crafting original scores and custom music built to support story and atmosphere. His work moves comfortably between cinematic textures, modern electronic palettes, and stripped-back instrumentation—adaptable, detailed, and mix-ready.',
-        url: null,
-        features: ['Original Scores', 'Music Production', 'Composer', 'Multi-Genre']
+        desc: 'Michigan-based composer and musician creating original music for film and media.',
+        fullDesc: 'Joe Garofalo is a professional composer and musician based in Michigan, specializing in original music and scoring for film, video, and media projects. His work spans cinematic underscore, ambient textures, and modern electronic composition.',
+        url: 'https://www.joegarofalomusic.com',
+        keyInfo: [
+            { label: 'Instagram', value: 'https://www.instagram.com/_joegmusic_/' },
+            { label: 'Spotify', value: 'https://open.spotify.com/artist/3w9fELcZkbxwfto7bZOajz' }
+        ],
+        features: [
+            'Original Scores',
+            'Music Production',
+            'Composer',
+            'Multi-Genre',
+            'Michigan-Based',
+            'Custom Project Work'
+        ]
+    },
+    {
+        name: 'Sideways Studios',
+        category: 'collaborators',
+        desc: 'Animation and motion design studio specializing in bold, stylized visual work.',
+        fullDesc: 'Sideways Studios is a motion design and animation studio creating bold, stylized visual work across animation, branding, and short-form content. Their approach emphasizes strong graphic language, movement, and visual clarity—built for design-forward collaborations.',
+        url: 'https://sidewaysstudio.net',
+        keyInfo: [
+            { label: 'Instagram', value: 'https://www.instagram.com/sideways_animation/?hl=en' }
+        ],
+        features: [
+            'Motion Design',
+            'Animation Studio',
+            'Stylized Visuals',
+            'Design-Forward Work',
+            'Branding & Content',
+            'Collaborator'
+        ]
     },
     {
         name: 'The Pandys',
         category: 'collaborators',
-        desc: 'Band with a raw, live-forward sound built for tight rooms and loud singalongs.',
-        fullDesc: 'The Pandys are a band rooted in high-energy performances and a lived-in, no-frills sound. Whether in rehearsal or onstage, they lean into momentum and honesty—songs that feel immediate, like they’re happening right now.',
+        desc: 'Detroit band featured in LaB Media live session music videos.',
+        fullDesc: 'The Pandys bring raw, high-energy performances with a lived-in, no-frills feel. LaB Media captured authentic rehearsal and live-session energy with minimal production interference—momentum first, always.',
         url: null,
-        features: ['Music Video', 'Live Sessions', 'Band', 'Authentic Performance']
+        keyInfo: [
+            { label: 'Instagram', value: 'https://www.instagram.com/thepandys/?hl=en' },
+            { label: 'Facebook', value: 'https://www.facebook.com/thepandys/' }
+        ],
+        features: [
+            'Music Video',
+            'Live Sessions',
+            'Band',
+            'Authentic Performance',
+            'Detroit Music Scene'
+        ]
     },
 
     // ============================================
     // COMMUNITY & NETWORKING
     // ============================================
     {
+        name: 'Michigan Film & Digital Media Office',
+        category: 'community',
+        desc: 'State resource for film incentives, locations, and crew.',
+        fullDesc: 'The Michigan Film & Digital Media Office supports production in the state with location scouting assistance, crew databases, and information about tax incentives. Essential resource for local productions.',
+        url: 'https://www.michiganfilmoffice.org',
+        paid: false,
+        features: ['Crew Database', 'Location Scouting', 'Tax Incentives', 'State Support']
+    },
+    {
         name: 'Royal Starr Arts Institute',
         category: 'community',
         desc: 'Michigan nonprofit building filmmaker community through mixers, events, and festival programming.',
-        fullDesc: 'Royal Starr Arts Institute serves Michigan\'s creative community through networking, education, and events—anchored by Royal Starr Film Festival and recurring filmmaker mixers in Metro Detroit.',
+        fullDesc: 'Royal Starr Arts Institute serves Michigan’s creative community through networking, education, and events—anchored by Royal Starr Film Festival and recurring filmmaker mixers.',
         url: 'https://www.royalstarr.org',
         paid: false,
         keyInfo: [
@@ -67,11 +138,11 @@ const resources = [
     {
         name: 'Campfire Film Cooperative',
         category: 'community',
-        desc: 'Community for filmmakers and creators—events, meetups, and crew connection.',
+        desc: 'Filmmaker community focused on connection, meetups, and project momentum.',
         fullDesc: 'Campfire Film Cooperative is a community built around connection and craft: share work, find collaborators, and show up for events designed to spark momentum and keep projects moving.',
         url: 'https://campfirefilm.org',
         paid: false,
-        features: ['Community', 'Events', 'Find Your Crew', 'Work Sharing']
+        features: ['Community', 'Events', 'Collaboration', 'Work Sharing']
     },
     {
         name: 'Mograph Mondays Detroit',
@@ -186,7 +257,7 @@ const resources = [
         name: 'Creepy Cheapy',
         category: 'film-festivals',
         desc: 'Michigan micro-budget horror fest for DIY, cult, and underground genre work.',
-        fullDesc: 'Creepy Cheapy is a Michigan-based horror festival built for scrappy, micro-budget filmmaking—cult energy, practical effects, underground voices, and regional community screenings. A strong fit for filmmakers making weird, lean, and fearless genre work without the “competition sprint” structure of time-boxed challenges.',
+        fullDesc: 'Creepy Cheapy is a Michigan-based horror festival built for scrappy, micro-budget filmmaking—cult energy, practical effects, underground voices, and regional community screenings. A strong fit for weird, lean, fearless genre work that isn’t built around a time-boxed challenge format.',
         url: 'https://www.creepycheapy.com',
         filmFreewayUrl: 'https://filmfreeway.com/CreepyCheapy',
         paid: true,
@@ -207,53 +278,124 @@ const resources = [
     // INSPIRATION
     // ============================================
     {
-        name: 'Art of the Title',
+        name: 'Hillier Smith',
         category: 'inspiration',
-        desc: 'Archive of title sequence design and motion graphics.',
-        fullDesc: 'Art of the Title documents the art and craft of title sequence design. Detailed breakdowns with designer interviews. Essential reference for understanding motion graphics in film and television.',
-        url: 'https://www.artofthetitle.com',
+        desc: 'Cinematic filmmaking, lighting, and camera movement studies.',
+        fullDesc: 'Thoughtful breakdowns on cinematography, camera movement, and visual storytelling with a strong emphasis on mood and restraint.',
+        url: 'https://www.youtube.com/@HillierSmith',
         paid: false,
-        features: ['Title Sequences', 'Designer Interviews', 'Breakdowns', 'Free Archive']
+        features: ['Cinematography', 'Lighting', 'Camera Movement', 'Filmmaking']
     },
     {
-        name: 'Criterion Channel',
+        name: 'Gawx Art',
         category: 'inspiration',
-        desc: 'Curated streaming of classic and contemporary cinema.',
-        fullDesc: 'The Criterion Channel offers a curated streaming library of classic, contemporary, and rare films. Thematic programming, director spotlights, and supplementary features make it essential for film education.',
-        url: 'https://www.criterionchannel.com',
-        paid: true,
-        pricing: [
-            { plan: 'Monthly', price: '$10.99/mo' },
-            { plan: 'Annual', price: '$99.99/yr' }
+        desc: 'Experimental digital artist blending illustration, animation, and texture.',
+        fullDesc: 'Expressive digital illustration through animation, texture, and surreal motion—great reference for stylized visual language.',
+        url: 'https://www.youtube.com/@GawxArt',
+        paid: false,
+        features: ['Digital Art', 'Animation', 'Experimental Visuals', 'Creative Process']
+    },
+    {
+        name: 'Dodford',
+        category: 'inspiration',
+        desc: 'Visual storytelling experiments with a creator-first, process-forward approach.',
+        fullDesc: 'A channel built around creative experimentation—useful for seeing how simple ideas evolve into polished visual narratives.',
+        url: 'https://www.youtube.com/@DodfordYT',
+        paid: false,
+        features: ['Creative Process', 'Visual Storytelling', 'Experimentation']
+    },
+    {
+        name: 'Chuck Lee MBM',
+        category: 'inspiration',
+        desc: 'Creative filmmaking and craft-focused storytelling references.',
+        fullDesc: 'Practical creative inspiration centered on making, refining, and finishing work—good fuel for momentum.',
+        url: 'https://www.youtube.com/@ChuckLeeMBM',
+        paid: false,
+        features: ['Filmmaking', 'Creative Process', 'Storytelling', 'Craft']
+    },
+    {
+        name: 'Joris Hermans',
+        category: 'inspiration',
+        desc: 'Design-forward filmmaking and visual craft inspiration.',
+        fullDesc: 'A clean, intentional approach to visuals—useful reference for composition, pacing, and taste.',
+        url: 'https://www.youtube.com/@JorisHermans',
+        paid: false,
+        features: ['Visual Craft', 'Composition', 'Pacing', 'Taste']
+    },
+    {
+        name: 'ALTER',
+        category: 'inspiration',
+        desc: 'Award-winning short horror films and genre storytelling.',
+        fullDesc: 'Curated horror shorts from filmmakers around the world—a consistent reference for pacing, atmosphere, and short-form genre execution.',
+        url: 'https://www.youtube.com/WatchALTER',
+        paid: false,
+        features: ['Horror Shorts', 'Genre Storytelling', 'Atmosphere', 'Short Form']
+    },
+    {
+        name: 'Veritas Games',
+        category: 'inspiration',
+        desc: 'Gaming and interactive storytelling with strong pacing and format discipline.',
+        fullDesc: 'A solid reference for structure and audience retention—how to hold attention, build stakes, and land beats cleanly.',
+        url: 'https://www.youtube.com/@VeritasGames',
+        paid: false,
+        features: ['Pacing', 'Structure', 'Audience Retention', 'Format']
+    },
+    {
+        name: 'paul_et',
+        category: 'inspiration',
+        desc: 'Design, motion, and digital craft inspiration with a modern aesthetic.',
+        fullDesc: 'A modern visual sensibility—useful reference for minimal, clean design decisions and motion-forward thinking.',
+        url: 'https://www.youtube.com/@paul_et',
+        paid: false,
+        features: ['Design', 'Motion', 'Modern Aesthetic', 'Digital Craft']
+    },
+    {
+        name: 'Sean Kitching',
+        category: 'inspiration',
+        desc: 'Creator workflow and filmmaking momentum inspiration.',
+        fullDesc: 'A reference point for staying consistent—workflow, output, and pushing projects over the finish line.',
+        url: 'https://www.youtube.com/@seankitching',
+        paid: false,
+        features: ['Workflow', 'Consistency', 'Filmmaking', 'Output']
+    },
+    {
+        name: 'Casey Neistat',
+        category: 'inspiration',
+        desc: 'High-energy personal filmmaking and creative momentum.',
+        fullDesc: 'A reference for rhythm, structure, and creative confidence—motion-first storytelling with editorial instinct.',
+        url: 'https://www.youtube.com/@casey',
+        paid: false,
+        features: ['Personal Filmmaking', 'Editing Rhythm', 'Creative Process']
+    },
+    {
+        name: 'Lofi Girl',
+        category: 'inspiration',
+        desc: 'Iconic lo-fi music channel with strong visual identity.',
+        fullDesc: 'A reference point for branding, tone, and ambient storytelling through consistent visual language.',
+        url: 'https://www.youtube.com/@LofiGirl',
+        paid: false,
+        features: ['Music Channel', 'Visual Identity', 'Brand Consistency']
+    },
+    {
+        name: 'Viva La Dirt League',
+        category: 'inspiration',
+        desc: 'Narrative comedy sketches rooted in gaming and pop culture.',
+        fullDesc: 'High-output narrative comedy with strong character consistency and efficient production workflows.',
+        url: 'https://www.youtube.com/@VivaLaDirtLeague',
+        paid: false,
+        features: ['Comedy', 'Sketch Writing', 'Narrative Shorts', 'High Output']
+    },
+    {
+        name: 'PandaHouse',
+        category: 'inspiration',
+        desc: 'Detroit-based music project blending indie, alternative, and expressive songwriting.',
+        fullDesc: 'Mood-driven songwriting with an atmospheric edge—useful inspiration for music-led visual tone and emotional pacing.',
+        url: 'https://www.pandahousedetroit.com',
+        paid: false,
+        keyInfo: [
+            { label: 'Spotify', value: 'https://open.spotify.com/artist/0HuGjGGYSPTGINTZpc6ziy' }
         ],
-        features: ['Curated Library', 'Director Spotlights', 'Supplementary Content', 'Rare Films']
-    },
-    {
-        name: 'Vimeo Staff Picks',
-        category: 'inspiration',
-        desc: 'Curated selection of outstanding short-form video work.',
-        fullDesc: 'Vimeo Staff Picks highlights exceptional video work across narrative, documentary, music video, and experimental categories. A daily source of inspiration for technique and storytelling.',
-        url: 'https://vimeo.com/channels/staffpicks',
-        paid: false,
-        features: ['Daily Picks', 'Multiple Categories', 'High Quality', 'Free Access']
-    },
-    {
-        name: 'One Perfect Shot',
-        category: 'inspiration',
-        desc: 'Cinematography appreciation and frame analysis.',
-        fullDesc: 'One Perfect Shot celebrates cinematography through iconic frame analysis, cinematographer interviews, and visual breakdowns. Understanding why certain shots work is fundamental to growth.',
-        url: 'https://oneperfectshot.com',
-        paid: false,
-        features: ['Frame Analysis', 'Cinematography', 'Interviews', 'Free Content']
-    },
-    {
-        name: 'In Depth Cine',
-        category: 'inspiration',
-        desc: 'YouTube channel with in-depth cinematography analysis.',
-        fullDesc: 'In Depth Cine provides detailed video essays analyzing cinematography techniques, color grading choices, and visual storytelling in contemporary films. Great for understanding modern cinema language.',
-        url: 'https://www.youtube.com/@InDepthCine',
-        paid: false,
-        features: ['Video Essays', 'Technical Analysis', 'Color Grading', 'Free YouTube']
+        features: ['Indie Music', 'Detroit Artist', 'Mood-Driven Sound', 'Atmospheric Tone']
     },
 
     // ============================================
