@@ -13,7 +13,6 @@ const resources = [
         fullDesc: 'Anthony R Brass is a fine artist whose paintings explore nature, memory, and emotion through saturated color and bold composition. His work often balances organic forms with an intuitive, expressive energy—built for close looking and slow living.',
         url: 'https://anthonyrbrass.com',
         paid: false,
-        labPick: false,
         features: ['Fine Art', 'Nature-Inspired', 'Documentary Subject', 'Studio Work']
     },
     {
@@ -23,7 +22,6 @@ const resources = [
         fullDesc: 'MOZ Interiors is a luxury interior design studio focused on refined spaces with strong architectural lines and elevated material choices. Their work has been featured in outlets including Vanity Fair, Architectural Digest, Hour Detroit, and The World of Interiors—design that reads clean, confident, and lived-in.',
         url: 'https://mozinteriors.com',
         paid: false,
-        labPick: false,
         features: ['Interior Design', 'Press Featured', 'Commercial Partner', 'Luxury Brand']
     },
     {
@@ -33,7 +31,6 @@ const resources = [
         fullDesc: 'Joe Garofalo is a composer and musician crafting original scores and custom music built to support story and atmosphere. His work moves comfortably between cinematic textures, modern electronic palettes, and stripped-back instrumentation—adaptable, detailed, and mix-ready.',
         url: null,
         paid: false,
-        labPick: false,
         features: ['Original Scores', 'Music Production', 'Composer', 'Multi-Genre']
     },
     {
@@ -43,7 +40,6 @@ const resources = [
         fullDesc: 'The Pandys are a band rooted in high-energy performances and a lived-in, no-frills sound. Whether in rehearsal or onstage, they lean into momentum and honesty—songs that feel immediate, like they’re happening right now.',
         url: null,
         paid: false,
-        labPick: false,
         features: ['Music Video', 'Live Sessions', 'Band', 'Authentic Performance']
     },
 
@@ -280,7 +276,6 @@ const resources = [
         fullDesc: 'Perpetual licenses mean rights remain even after subscription ends. High-quality curated catalog. Also offers Artlist SFX and stock footage through Artgrid.',
         url: 'https://artlist.io',
         paid: true,
-        labPick: false,
         pricing: [
             { plan: 'Music & SFX', price: '$14.99/mo' },
             { plan: 'Max', price: '$25/mo' },
@@ -483,7 +478,6 @@ const resources = [
         fullDesc: 'Cinematic quality shot by pros. Perpetual licenses like Artlist music. Smaller library but exceptional quality. Best for high-end productions.',
         url: 'https://artgrid.io',
         paid: true,
-        labPick: false,
         pricing: [
             { plan: 'Creator', price: '$29/mo' },
             { plan: 'Yearly', price: '$348/yr' }
@@ -684,7 +678,6 @@ const resources = [
         fullDesc: 'Free version used on Hollywood films. Includes Fairlight audio and Fusion VFX. Studio version adds collaboration, 3D tools, and advanced features.',
         url: 'https://www.blackmagicdesign.com/products/davinciresolve',
         paid: false,
-        labPick: false,
         pricing: [
             { plan: 'Free', price: '$0' },
             { plan: 'Studio', price: '$295 (lifetime)' }
