@@ -33,8 +33,8 @@ const resources = [
     {
         name: 'The Pandys',
         category: 'collaborators',
-        desc: 'Band with a raw, live-forward sound built for tight rooms and loud singalongs.',
-        fullDesc: 'The Pandys are a band rooted in high-energy performances and a lived-in, no-frills sound. Whether in rehearsal or onstage, they lean into momentum and honesty—songs that feel immediate, like they’re happening right now.',
+        desc: 'Detroit band featured in LaB Media live session music videos.',
+        fullDesc: 'The Pandys bring raw, high-energy performances with a lived-in, no-frills feel. LaB Media captured authentic rehearsal and live-session energy with minimal production interference—momentum first, always.',
         url: null,
         features: ['Music Video', 'Live Sessions', 'Band', 'Authentic Performance']
     },
@@ -207,53 +207,124 @@ const resources = [
     // INSPIRATION
     // ============================================
     {
-        name: 'Art of the Title',
+        name: 'Hillier Smith',
         category: 'inspiration',
         desc: 'Archive of title sequence design and motion graphics.',
         fullDesc: 'Art of the Title documents the art and craft of title sequence design. Detailed breakdowns with designer interviews. Essential reference for understanding motion graphics in film and television.',
         url: 'https://www.artofthetitle.com',
         paid: false,
-        features: ['Title Sequences', 'Designer Interviews', 'Breakdowns', 'Free Archive']
+        features: ['Cinematography', 'Lighting', 'Camera Movement', 'Filmmaking']
     },
     {
-        name: 'Criterion Channel',
+        name: 'Gawx Art',
         category: 'inspiration',
-        desc: 'Curated streaming of classic and contemporary cinema.',
-        fullDesc: 'The Criterion Channel offers a curated streaming library of classic, contemporary, and rare films. Thematic programming, director spotlights, and supplementary features make it essential for film education.',
-        url: 'https://www.criterionchannel.com',
-        paid: true,
-        pricing: [
-            { plan: 'Monthly', price: '$10.99/mo' },
-            { plan: 'Annual', price: '$99.99/yr' }
+        desc: 'Experimental digital artist blending illustration, animation, and texture.',
+        fullDesc: 'Expressive digital illustration through animation, texture, and surreal motion—great reference for stylized visual language.',
+        url: 'https://www.youtube.com/@GawxArt',
+        paid: false,
+        features: ['Digital Art', 'Animation', 'Experimental Visuals', 'Creative Process']
+    },
+    {
+        name: 'Dodford',
+        category: 'inspiration',
+        desc: 'Visual storytelling experiments with a creator-first, process-forward approach.',
+        fullDesc: 'A channel built around creative experimentation—useful for seeing how simple ideas evolve into polished visual narratives.',
+        url: 'https://www.youtube.com/@DodfordYT',
+        paid: false,
+        features: ['Creative Process', 'Visual Storytelling', 'Experimentation']
+    },
+    {
+        name: 'Chuck Lee MBM',
+        category: 'inspiration',
+        desc: 'Creative filmmaking and craft-focused storytelling references.',
+        fullDesc: 'Practical creative inspiration centered on making, refining, and finishing work—good fuel for momentum.',
+        url: 'https://www.youtube.com/@ChuckLeeMBM',
+        paid: false,
+        features: ['Filmmaking', 'Creative Process', 'Storytelling', 'Craft']
+    },
+    {
+        name: 'Joris Hermans',
+        category: 'inspiration',
+        desc: 'Design-forward filmmaking and visual craft inspiration.',
+        fullDesc: 'A clean, intentional approach to visuals—useful reference for composition, pacing, and taste.',
+        url: 'https://www.youtube.com/@JorisHermans',
+        paid: false,
+        features: ['Visual Craft', 'Composition', 'Pacing', 'Taste']
+    },
+    {
+        name: 'ALTER',
+        category: 'inspiration',
+        desc: 'Award-winning short horror films and genre storytelling.',
+        fullDesc: 'Curated horror shorts from filmmakers around the world—a consistent reference for pacing, atmosphere, and short-form genre execution.',
+        url: 'https://www.youtube.com/WatchALTER',
+        paid: false,
+        features: ['Horror Shorts', 'Genre Storytelling', 'Atmosphere', 'Short Form']
+    },
+    {
+        name: 'Veritas Games',
+        category: 'inspiration',
+        desc: 'Gaming and interactive storytelling with strong pacing and format discipline.',
+        fullDesc: 'A solid reference for structure and audience retention—how to hold attention, build stakes, and land beats cleanly.',
+        url: 'https://www.youtube.com/@VeritasGames',
+        paid: false,
+        features: ['Pacing', 'Structure', 'Audience Retention', 'Format']
+    },
+    {
+        name: 'paul_et',
+        category: 'inspiration',
+        desc: 'Design, motion, and digital craft inspiration with a modern aesthetic.',
+        fullDesc: 'A modern visual sensibility—useful reference for minimal, clean design decisions and motion-forward thinking.',
+        url: 'https://www.youtube.com/@paul_et',
+        paid: false,
+        features: ['Design', 'Motion', 'Modern Aesthetic', 'Digital Craft']
+    },
+    {
+        name: 'Sean Kitching',
+        category: 'inspiration',
+        desc: 'Creator workflow and filmmaking momentum inspiration.',
+        fullDesc: 'A reference point for staying consistent—workflow, output, and pushing projects over the finish line.',
+        url: 'https://www.youtube.com/@seankitching',
+        paid: false,
+        features: ['Workflow', 'Consistency', 'Filmmaking', 'Output']
+    },
+    {
+        name: 'Casey Neistat',
+        category: 'inspiration',
+        desc: 'High-energy personal filmmaking and creative momentum.',
+        fullDesc: 'A reference for rhythm, structure, and creative confidence—motion-first storytelling with editorial instinct.',
+        url: 'https://www.youtube.com/@casey',
+        paid: false,
+        features: ['Personal Filmmaking', 'Editing Rhythm', 'Creative Process']
+    },
+    {
+        name: 'Lofi Girl',
+        category: 'inspiration',
+        desc: 'Iconic lo-fi music channel with strong visual identity.',
+        fullDesc: 'A reference point for branding, tone, and ambient storytelling through consistent visual language.',
+        url: 'https://www.youtube.com/@LofiGirl',
+        paid: false,
+        features: ['Music Channel', 'Visual Identity', 'Brand Consistency']
+    },
+    {
+        name: 'Viva La Dirt League',
+        category: 'inspiration',
+        desc: 'Narrative comedy sketches rooted in gaming and pop culture.',
+        fullDesc: 'High-output narrative comedy with strong character consistency and efficient production workflows.',
+        url: 'https://www.youtube.com/@VivaLaDirtLeague',
+        paid: false,
+        features: ['Comedy', 'Sketch Writing', 'Narrative Shorts', 'High Output']
+    },
+    {
+        name: 'PandaHouse',
+        category: 'inspiration',
+        desc: 'Detroit-based music project blending indie, alternative, and expressive songwriting.',
+        fullDesc: 'Mood-driven songwriting with an atmospheric edge—useful inspiration for music-led visual tone and emotional pacing.',
+        url: 'https://www.pandahousedetroit.com',
+        paid: false,
+        keyInfo: [
+            { label: 'Spotify', value: 'https://open.spotify.com/artist/0HuGjGGYSPTGINTZpc6ziy' }
         ],
-        features: ['Curated Library', 'Director Spotlights', 'Supplementary Content', 'Rare Films']
-    },
-    {
-        name: 'Vimeo Staff Picks',
-        category: 'inspiration',
-        desc: 'Curated selection of outstanding short-form video work.',
-        fullDesc: 'Vimeo Staff Picks highlights exceptional video work across narrative, documentary, music video, and experimental categories. A daily source of inspiration for technique and storytelling.',
-        url: 'https://vimeo.com/channels/staffpicks',
-        paid: false,
-        features: ['Daily Picks', 'Multiple Categories', 'High Quality', 'Free Access']
-    },
-    {
-        name: 'One Perfect Shot',
-        category: 'inspiration',
-        desc: 'Cinematography appreciation and frame analysis.',
-        fullDesc: 'One Perfect Shot celebrates cinematography through iconic frame analysis, cinematographer interviews, and visual breakdowns. Understanding why certain shots work is fundamental to growth.',
-        url: 'https://oneperfectshot.com',
-        paid: false,
-        features: ['Frame Analysis', 'Cinematography', 'Interviews', 'Free Content']
-    },
-    {
-        name: 'In Depth Cine',
-        category: 'inspiration',
-        desc: 'YouTube channel with in-depth cinematography analysis.',
-        fullDesc: 'In Depth Cine provides detailed video essays analyzing cinematography techniques, color grading choices, and visual storytelling in contemporary films. Great for understanding modern cinema language.',
-        url: 'https://www.youtube.com/@InDepthCine',
-        paid: false,
-        features: ['Video Essays', 'Technical Analysis', 'Color Grading', 'Free YouTube']
+        features: ['Indie Music', 'Detroit Artist', 'Mood-Driven Sound', 'Atmospheric Tone']
     },
 
     // ============================================
