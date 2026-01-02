@@ -208,6 +208,7 @@ const resources = [
         desc: 'Archive of title sequence design and motion graphics.',
         fullDesc: 'Art of the Title documents the art and craft of title sequence design. Detailed breakdowns with designer interviews. Essential reference for understanding motion graphics in film and television.',
         url: 'https://www.artofthetitle.com',
+        labPick: false,
         paid: false,
         features: ['Title Sequences', 'Designer Interviews', 'Breakdowns', 'Free Archive']
     },
