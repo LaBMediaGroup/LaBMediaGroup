@@ -53,6 +53,7 @@ const resources = [
             { label: 'FilmFreeway', value: 'https://filmfreeway.com/RoyalStarrFilmFestival' },
             { label: 'Instagram', value: 'https://www.instagram.com/royalstarrff/?hl=en' }
         ],
+        hideKeyInfo: true,
         features: ['Michigan Community', 'Networking', 'Events', 'Festival Hub']
     },
     {
@@ -70,6 +71,9 @@ const resources = [
         desc: 'Community for filmmakers and creators—events, meetups, and crew connection.',
         fullDesc: 'Campfire Film Cooperative is a community built around connection and craft: share work, find collaborators, and show up for events designed to spark momentum and keep projects moving.',
         url: 'https://campfirefilm.org',
+        youtubeUrl: 'https://www.youtube.com/@campfirefilmcoop',
+        facebookUrl: 'https://www.facebook.com/campfirefilm',
+        instagramUrl: 'https://www.instagram.com/campfirefilm',
         paid: false,
         features: ['Community', 'Events', 'Find Your Crew', 'Work Sharing']
     },
@@ -79,8 +83,28 @@ const resources = [
         desc: 'Monthly Detroit meetup for motion designers, animators, and CG artists.',
         fullDesc: 'Mograph Mondays Detroit is a recurring meetup for motion designers, animators, CG artists, and adjacent creatives—an easy on-ramp to post, VFX, and design collaborators.',
         url: 'https://www.mographmondays.com/det',
+        instagramUrl: 'https://www.instagram.com/mographmondaysdetroit',
+        facebookUrl: 'https://www.facebook.com/groups/mographmondays/',
         paid: false,
         features: ['Meetup', 'Motion Design', 'Animation', 'Networking']
+    },
+    {
+        name: 'Michigan Crew Calls',
+        category: 'community',
+        desc: 'Facebook group for Michigan crew opportunities and on-set needs.',
+        fullDesc: 'Michigan Crew Calls is a Facebook community built for posting and finding crew gigs, last-minute hires, and on-set opportunities across the state.',
+        url: 'https://www.facebook.com/groups/micrewcalls/',
+        paid: false,
+        features: ['Facebook Group', 'Crew Calls', 'Hiring', 'Local Production']
+    },
+    {
+        name: 'Michigan Talent Casting',
+        category: 'community',
+        desc: 'Facebook group dedicated to casting calls for Michigan talent.',
+        fullDesc: 'Michigan Talent Casting connects producers and directors with Michigan actors and performers—centralized casting posts and opportunities.',
+        url: 'https://www.facebook.com/groups/micasting/',
+        paid: false,
+        features: ['Facebook Group', 'Casting', 'Actors', 'Michigan Talent']
     },
 
     // ============================================
@@ -209,11 +233,11 @@ const resources = [
     {
         name: 'Hillier Smith',
         category: 'inspiration',
-        desc: 'Archive of title sequence design and motion graphics.',
-        fullDesc: 'Art of the Title documents the art and craft of title sequence design. Detailed breakdowns with designer interviews. Essential reference for understanding motion graphics in film and television.',
-        url: 'https://www.artofthetitle.com',
+        desc: 'High-level breakdowns on editing momentum for YouTube storytelling.',
+        fullDesc: 'Film editor Hillier Smith dissects pacing, structure, and storytelling choices for creator-led projects—practical, advanced insight for cutting modern YouTube narratives.',
+        url: 'https://www.youtube.com/@HillierSmith',
         paid: false,
-        features: ['Cinematography', 'Lighting', 'Camera Movement', 'Filmmaking']
+        features: ['Editing', 'Pacing', 'Story Structure', 'YouTube Craft']
     },
     {
         name: 'Gawx Art',
@@ -313,6 +337,15 @@ const resources = [
         url: 'https://www.youtube.com/@VivaLaDirtLeague',
         paid: false,
         features: ['Comedy', 'Sketch Writing', 'Narrative Shorts', 'High Output']
+    },
+    {
+        name: 'Joshua Bardwell',
+        category: 'inspiration',
+        desc: 'FPV drone tutorials and gear deep-dives with clear visual demos.',
+        fullDesc: 'Technical yet accessible breakdowns of FPV drone builds, tuning, and flight footage—useful reference for aerial storytelling, diagnostics, and on-set troubleshooting.',
+        url: 'https://www.youtube.com/@JoshuaBardwell',
+        paid: false,
+        features: ['FPV Drones', 'Tutorials', 'Gear Reviews', 'Practical Demos']
     },
     {
         name: 'PandaHouse',

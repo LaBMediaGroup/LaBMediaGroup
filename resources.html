@@ -964,6 +964,15 @@
             background: rgba(228, 64, 95, 0.12);
         }
 
+        .btn--outline-facebook {
+            border-color: #316FF6;
+            color: #316FF6;
+        }
+
+        .btn--outline-facebook:hover {
+            background: rgba(49, 111, 246, 0.12);
+        }
+
         .resource-link {
             display: inline-flex;
             align-items: center;
@@ -1278,6 +1287,10 @@
             return /youtube\.com|youtu\.be/.test(url || '');
         }
 
+        function isFacebookLink(url) {
+            return /facebook\.com/.test(url || '');
+        }
+
         function getKeyInfoLink(resource, label) {
             if (!resource.keyInfo) return null;
             const matchLabel = normalizeValue(label);
@@ -1573,7 +1586,7 @@
             }
 
             let keyInfoHTML = '';
-            if (r.keyInfo) {
+            if (r.keyInfo && !r.hideKeyInfo) {
                 keyInfoHTML = '<div class="modal-section"><h3 class="section-title">Key Info</h3><div class="key-info">' +
                     r.keyInfo.map(item =>
                         '<div class="key-info-item"><span class="key-info-label">' + item.label + '</span><span>' + (item.detail || item.value) + '</span></div>'
@@ -1589,22 +1602,33 @@
             }
 
             const ctas = [];
+            const addedLinks = new Set();
             const filmFreewayLink = r.filmFreewayUrl || getKeyInfoLink(r, 'filmfreeway');
-            const instagramLink = getKeyInfoLink(r, 'instagram');
-            const isYouTube = isYouTubeLink(r.url);
+            const instagramLink = r.instagramUrl || getKeyInfoLink(r, 'instagram');
+            const facebookLink = r.facebookUrl;
+            const youtubeLink = r.youtubeUrl;
 
-            if (r.url) {
-                const label = (isInspiration || isYouTube) ? 'Watch on YouTube' : 'Website';
-                const variant = (isInspiration || isYouTube) ? 'btn--outline-youtube' : 'btn--outline-white';
-                const icon = (isInspiration || isYouTube) ? 'images/youtube-color-svgrepo-com.svg' : '';
-                ctas.push(buildCtaButton(r.url, label, variant, icon));
+            const primaryUrl = r.url;
+            if (primaryUrl) {
+                const isYouTube = isYouTubeLink(primaryUrl) || isInspiration;
+                const isFacebook = isFacebookLink(primaryUrl);
+                const label = isYouTube ? 'Watch on YouTube' : isFacebook ? 'Facebook' : 'Website';
+                const variant = isYouTube ? 'btn--outline-youtube' : isFacebook ? 'btn--outline-facebook' : 'btn--outline-white';
+                const icon = isYouTube ? 'images/youtube-color-svgrepo-com.svg' : isFacebook ? 'images/Facebook_Logo_Primary.png' : '';
+                ctas.push(buildCtaButton(primaryUrl, label, variant, icon));
+                addedLinks.add(primaryUrl);
             }
-            if (filmFreewayLink) {
-                ctas.push(buildCtaButton(filmFreewayLink, 'FilmFreeway', 'btn--outline-purple'));
+
+            function addCtaLink(link, label, variant, icon = '') {
+                if (!link || addedLinks.has(link)) return;
+                ctas.push(buildCtaButton(link, label, variant, icon));
+                addedLinks.add(link);
             }
-            if (instagramLink) {
-                ctas.push(buildCtaButton(instagramLink, 'Instagram', 'btn--outline-instagram', 'images/instagram-1-svgrepo-com.svg'));
-            }
+
+            addCtaLink(filmFreewayLink, 'FilmFreeway', 'btn--outline-purple');
+            addCtaLink(instagramLink, 'Instagram', 'btn--outline-instagram', 'images/instagram-1-svgrepo-com.svg');
+            addCtaLink(youtubeLink, 'YouTube', 'btn--outline-youtube', 'images/youtube-color-svgrepo-com.svg');
+            addCtaLink(facebookLink, 'Facebook', 'btn--outline-facebook', 'images/Facebook_Logo_Primary.png');
 
             const ctaHTML = ctas.length ? '<div class="cta-row">' + ctas.join('') + '</div>' : '';
 
