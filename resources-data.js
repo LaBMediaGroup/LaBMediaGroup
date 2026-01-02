@@ -12,7 +12,6 @@ const resources = [
         desc: 'Fine artist known for vibrant, nature-driven work that leans into color and mood.',
         fullDesc: 'Anthony R Brass is a fine artist whose paintings explore nature, memory, and emotion through saturated color and bold composition. His work often balances organic forms with an intuitive, expressive energy—built for close looking and slow living.',
         url: 'https://anthonyrbrass.com',
-        paid: false,
         features: ['Fine Art', 'Nature-Inspired', 'Documentary Subject', 'Studio Work']
     },
     {
@@ -21,7 +20,6 @@ const resources = [
         desc: 'Luxury interior design studio with press features including Vanity Fair, AD, and Hour Detroit.',
         fullDesc: 'MOZ Interiors is a luxury interior design studio focused on refined spaces with strong architectural lines and elevated material choices. Their work has been featured in outlets including Vanity Fair, Architectural Digest, Hour Detroit, and The World of Interiors—design that reads clean, confident, and lived-in.',
         url: 'https://mozinteriors.com',
-        paid: false,
         features: ['Interior Design', 'Press Featured', 'Commercial Partner', 'Luxury Brand']
     },
     {
@@ -30,7 +28,6 @@ const resources = [
         desc: 'Composer and producer creating original scores and custom music across genres.',
         fullDesc: 'Joe Garofalo is a composer and musician crafting original scores and custom music built to support story and atmosphere. His work moves comfortably between cinematic textures, modern electronic palettes, and stripped-back instrumentation—adaptable, detailed, and mix-ready.',
         url: null,
-        paid: false,
         features: ['Original Scores', 'Music Production', 'Composer', 'Multi-Genre']
     },
     {
@@ -39,7 +36,6 @@ const resources = [
         desc: 'Band with a raw, live-forward sound built for tight rooms and loud singalongs.',
         fullDesc: 'The Pandys are a band rooted in high-energy performances and a lived-in, no-frills sound. Whether in rehearsal or onstage, they lean into momentum and honesty—songs that feel immediate, like they’re happening right now.',
         url: null,
-        paid: false,
         features: ['Music Video', 'Live Sessions', 'Band', 'Authentic Performance']
     },
 
@@ -47,56 +43,44 @@ const resources = [
     // COMMUNITY & NETWORKING
     // ============================================
     {
-        name: 'Michigan Film & Digital Media Office',
+        name: 'Royal Starr Arts Institute',
         category: 'community',
-        desc: 'State resource for film incentives, locations, and crew.',
-        fullDesc: 'The Michigan Film & Digital Media Office supports production in the state with location scouting assistance, crew databases, and information about tax incentives. Essential resource for local productions.',
-        url: 'https://www.michiganfilmoffice.org',
+        desc: 'Michigan nonprofit building filmmaker community through mixers, events, and festival programming.',
+        fullDesc: 'Royal Starr Arts Institute serves Michigan\'s creative community through networking, education, and events—anchored by Royal Starr Film Festival and recurring filmmaker mixers in Metro Detroit.',
+        url: 'https://www.royalstarr.org',
         paid: false,
-        features: ['Crew Database', 'Location Scouting', 'Tax Incentives', 'State Support']
-    },
-    {
-        name: 'Detroit Creative Corridor',
-        category: 'community',
-        desc: 'Creative industry hub connecting Detroit-area makers.',
-        fullDesc: 'Detroit Creative Corridor Center (DC3) connects creative professionals across Southeast Michigan. Events, resources, and networking opportunities for filmmakers, designers, and content creators.',
-        url: 'https://detroitcreativecorridor.org',
-        paid: false,
-        features: ['Networking', 'Events', 'Creative Community', 'Local Resources']
-    },
-    {
-        name: 'Film Independent',
-        category: 'community',
-        desc: 'Nonprofit supporting independent filmmakers worldwide.',
-        fullDesc: 'Film Independent champions creative independence in visual storytelling. Known for the Spirit Awards, LA Film Festival, and extensive filmmaker labs. Membership provides education, networking, and screening access.',
-        url: 'https://www.filmindependent.org',
-        paid: true,
-        pricing: [
-            { plan: 'General', price: '$95/yr' },
-            { plan: 'Arts Circle', price: '$250+/yr' }
+        keyInfo: [
+            { label: 'FilmFreeway', value: 'https://filmfreeway.com/RoyalStarrFilmFestival' },
+            { label: 'Instagram', value: 'https://www.instagram.com/royalstarrff/?hl=en' }
         ],
-        features: ['Spirit Awards', 'Filmmaker Labs', 'Screenings', 'Networking']
+        features: ['Michigan Community', 'Networking', 'Events', 'Festival Hub']
     },
     {
-        name: 'IFP (Independent Filmmaker Project)',
+        name: 'Michigan Filmmaker Community (Facebook Group)',
         category: 'community',
-        desc: 'Oldest indie film organization supporting emerging voices.',
-        fullDesc: 'IFP supports independent storytellers from development through distribution. Programs include the IFP Week marketplace, documentary lab, and narrative lab. Critical resource for career development.',
-        url: 'https://www.ifp.org',
-        paid: true,
-        pricing: [
-            { plan: 'Membership', price: '$95/yr' }
-        ],
-        features: ['IFP Week', 'Doc Lab', 'Narrative Lab', 'Distribution Support']
-    },
-    {
-        name: 'No Film School',
-        category: 'community',
-        desc: 'Filmmaker education and industry news community.',
-        fullDesc: 'No Film School provides daily articles, tutorials, and industry insights for filmmakers at all levels. From gear reviews to career advice, covering narrative, documentary, and commercial work.',
-        url: 'https://nofilmschool.com',
+        desc: 'Facebook networking group for Michigan filmmakers, cast, and crew.',
+        fullDesc: 'Active Facebook group for connecting Michigan filmmakers with actors, crew, and collaborators. Useful for posting gigs, staffing up, sharing resources, and finding local production support.',
+        url: 'https://www.facebook.com/groups/mifilmcommunity',
         paid: false,
-        features: ['Tutorials', 'Industry News', 'Gear Reviews', 'Free Content']
+        features: ['Facebook Group', 'Networking', 'Casting & Crew', 'Local Community']
+    },
+    {
+        name: 'Campfire Film Cooperative',
+        category: 'community',
+        desc: 'Community for filmmakers and creators—events, meetups, and crew connection.',
+        fullDesc: 'Campfire Film Cooperative is a community built around connection and craft: share work, find collaborators, and show up for events designed to spark momentum and keep projects moving.',
+        url: 'https://campfirefilm.org',
+        paid: false,
+        features: ['Community', 'Events', 'Find Your Crew', 'Work Sharing']
+    },
+    {
+        name: 'Mograph Mondays Detroit',
+        category: 'community',
+        desc: 'Monthly Detroit meetup for motion designers, animators, and CG artists.',
+        fullDesc: 'Mograph Mondays Detroit is a recurring meetup for motion designers, animators, CG artists, and adjacent creatives—an easy on-ramp to post, VFX, and design collaborators.',
+        url: 'https://www.mographmondays.com/det',
+        paid: false,
+        features: ['Meetup', 'Motion Design', 'Animation', 'Networking']
     },
 
     // ============================================
@@ -198,6 +182,26 @@ const resources = [
         ],
         features: ['Comedy Genre', 'Competition', 'Short Films', 'Multiple Styles']
     },
+    {
+        name: 'Creepy Cheapy',
+        category: 'film-festivals',
+        desc: 'Michigan micro-budget horror fest for DIY, cult, and underground genre work.',
+        fullDesc: 'Creepy Cheapy is a Michigan-based horror festival built for scrappy, micro-budget filmmaking—cult energy, practical effects, underground voices, and regional community screenings. A strong fit for filmmakers making weird, lean, and fearless genre work without the “competition sprint” structure of time-boxed challenges.',
+        url: 'https://www.creepycheapy.com',
+        filmFreewayUrl: 'https://filmfreeway.com/CreepyCheapy',
+        paid: true,
+        pricing: [
+            { plan: 'Shorts & Features', price: '$10–30' }
+        ],
+        features: [
+            'Micro-Budget Friendly',
+            'Regional Michigan',
+            'Cult Horror',
+            'Underground & DIY',
+            'Practical FX Vibes',
+            'Community Screenings'
+        ]
+    },
 
     // ============================================
     // INSPIRATION
@@ -208,7 +212,6 @@ const resources = [
         desc: 'Archive of title sequence design and motion graphics.',
         fullDesc: 'Art of the Title documents the art and craft of title sequence design. Detailed breakdowns with designer interviews. Essential reference for understanding motion graphics in film and television.',
         url: 'https://www.artofthetitle.com',
-        labPick: false,
         paid: false,
         features: ['Title Sequences', 'Designer Interviews', 'Breakdowns', 'Free Archive']
     },
