@@ -13,7 +13,6 @@ const resources = [
         fullDesc: 'Anthony R Brass is a fine artist whose paintings explore nature, memory, and emotion through saturated color and bold composition. His work often balances organic forms with an intuitive, expressive energy—built for close looking and slow living.',
         url: 'https://anthonyrbrass.com',
         paid: false,
-        labPick: true,
         features: ['Fine Art', 'Nature-Inspired', 'Documentary Subject', 'Studio Work']
     },
     {
@@ -23,7 +22,6 @@ const resources = [
         fullDesc: 'MOZ Interiors is a luxury interior design studio focused on refined spaces with strong architectural lines and elevated material choices. Their work has been featured in outlets including Vanity Fair, Architectural Digest, Hour Detroit, and The World of Interiors—design that reads clean, confident, and lived-in.',
         url: 'https://mozinteriors.com',
         paid: false,
-        labPick: true,
         features: ['Interior Design', 'Press Featured', 'Commercial Partner', 'Luxury Brand']
     },
     {
@@ -33,7 +31,6 @@ const resources = [
         fullDesc: 'Joe Garofalo is a composer and musician crafting original scores and custom music built to support story and atmosphere. His work moves comfortably between cinematic textures, modern electronic palettes, and stripped-back instrumentation—adaptable, detailed, and mix-ready.',
         url: null,
         paid: false,
-        labPick: true,
         features: ['Original Scores', 'Music Production', 'Composer', 'Multi-Genre']
     },
     {
@@ -43,7 +40,6 @@ const resources = [
         fullDesc: 'The Pandys are a band rooted in high-energy performances and a lived-in, no-frills sound. Whether in rehearsal or onstage, they lean into momentum and honesty—songs that feel immediate, like they’re happening right now.',
         url: null,
         paid: false,
-        labPick: true,
         features: ['Music Video', 'Live Sessions', 'Band', 'Authentic Performance']
     },
 
@@ -107,62 +103,6 @@ const resources = [
     // FILM FESTIVALS
     // ============================================
     {
-        name: 'Sundance Film Festival',
-        category: 'film-festivals',
-        desc: 'Premier independent film festival. Jan 23 - Feb 2, 2025.',
-        fullDesc: 'Sundance remains the premier launchpad for independent cinema. Competition categories include U.S. Dramatic, U.S. Documentary, World Cinema, and NEXT. Early submission deadlines offer reduced fees.',
-        url: 'https://www.sundance.org/festivals/sundance-film-festival',
-        filmFreewayUrl: 'https://filmfreeway.com/SundanceFilmFestival',
-        paid: true,
-        pricing: [
-            { plan: 'Early Bird', price: '$60-75' },
-            { plan: 'Regular', price: '$75-95' },
-            { plan: 'Late', price: '$95-125' }
-        ],
-        keyInfo: [
-            { label: 'Dates', value: 'Jan 23 - Feb 2, 2025' },
-            { label: 'Location', value: 'Park City, Utah' },
-            { label: 'Deadline', value: 'August (Early)' }
-        ],
-        features: ['World Premiere Preferred', 'Industry Access', 'Dramatic & Doc', 'Labs & Mentorship']
-    },
-    {
-        name: 'Tribeca Film Festival',
-        category: 'film-festivals',
-        desc: 'NYC festival for narrative, documentary, and immersive storytelling.',
-        fullDesc: 'Founded by Robert De Niro, Tribeca showcases a diverse slate of films, TV, and immersive experiences. Strong industry presence and audience awards. Growing focus on episodic and digital content.',
-        url: 'https://tribecafilm.com/festival',
-        filmFreewayUrl: 'https://filmfreeway.com/TribecaFilmFestival',
-        paid: true,
-        pricing: [
-            { plan: 'Features', price: '$75-100' },
-            { plan: 'Shorts', price: '$45-65' }
-        ],
-        keyInfo: [
-            { label: 'Dates', value: 'June 2025' },
-            { label: 'Location', value: 'New York City' }
-        ],
-        features: ['NYC Premiere', 'Industry Market', 'Episodic Section', 'Immersive']
-    },
-    {
-        name: 'SXSW Film & TV Festival',
-        category: 'film-festivals',
-        desc: 'Convergence festival blending film, music, and interactive media.',
-        fullDesc: 'SXSW offers unique convergence of film, music, and interactive industries. Known for launching breakout genre films and documentaries. Strong audience engagement and networking opportunities across creative sectors.',
-        url: 'https://www.sxsw.com/film/',
-        filmFreewayUrl: 'https://filmfreeway.com/SXSW',
-        paid: true,
-        pricing: [
-            { plan: 'Features', price: '$50-75' },
-            { plan: 'Shorts', price: '$40-60' }
-        ],
-        keyInfo: [
-            { label: 'Dates', value: 'March 2025' },
-            { label: 'Location', value: 'Austin, Texas' }
-        ],
-        features: ['Genre-Friendly', 'Music Crossover', 'Tech Industry', 'Audience Awards']
-    },
-    {
         name: 'Traverse City Film Festival',
         category: 'film-festivals',
         desc: 'Michael Moore\'s Michigan festival celebrating great movies.',
@@ -178,7 +118,6 @@ const resources = [
             { label: 'Dates', value: 'July-August 2025' },
             { label: 'Location', value: 'Traverse City, MI' }
         ],
-        labPick: false,
         features: ['Michigan Festival', 'Community Focus', 'Filmmaker Q&As', 'Repertory']
     },
     {
@@ -196,7 +135,6 @@ const resources = [
             { label: 'Dates', value: 'April 2025' },
             { label: 'Location', value: 'Detroit, MI' }
         ],
-        labPick: true,
         features: ['Documentary Only', 'Detroit-Based', 'Journalism Focus', 'Community']
     },
     {
@@ -230,7 +168,6 @@ const resources = [
         keyInfo: [
             { label: 'Location', value: 'Flint, MI' }
         ],
-        labPick: false,
         features: ['Michigan Focus', 'Diverse Voices', 'Community Stories', 'Regional']
     },
     {
@@ -241,10 +178,10 @@ const resources = [
         url: null,
         filmFreewayUrl: 'https://filmfreeway.com/HorrorFilmRoulette',
         paid: true,
+        labPick: true,
         pricing: [
             { plan: 'Entry', price: '$15-35' }
         ],
-        labPick: true,
         features: ['Horror Genre', 'Competition Format', 'Short Films', 'Quick Turnaround']
     },
     {
@@ -255,10 +192,10 @@ const resources = [
         url: null,
         filmFreewayUrl: 'https://filmfreeway.com/ComedyRollFilmFestival',
         paid: true,
+        labPick: true,
         pricing: [
             { plan: 'Entry', price: '$15-35' }
         ],
-        labPick: true,
         features: ['Comedy Genre', 'Competition', 'Short Films', 'Multiple Styles']
     },
 
@@ -338,7 +275,6 @@ const resources = [
         fullDesc: 'Perpetual licenses mean rights remain even after subscription ends. High-quality curated catalog. Also offers Artlist SFX and stock footage through Artgrid.',
         url: 'https://artlist.io',
         paid: true,
-        labPick: true,
         pricing: [
             { plan: 'Music & SFX', price: '$14.99/mo' },
             { plan: 'Max', price: '$25/mo' },
@@ -367,6 +303,7 @@ const resources = [
         fullDesc: 'Great for indie creators wanting to own their library. Quality tracks across genres. Frequently offers lifetime access promotions at competitive prices.',
         url: 'https://audiio.com',
         paid: true,
+        labPick: true,
         pricing: [
             { plan: 'Monthly', price: '$19/mo' },
             { plan: 'Yearly', price: '$149/yr' },
@@ -445,7 +382,6 @@ const resources = [
         fullDesc: 'Industry-leading AI tools. Green screen removal, object removal, frame interpolation, and AI video generation. Magic Tools for rotoscoping. Used by major studios.',
         url: 'https://runwayml.com',
         paid: true,
-        labPick: true,
         pricing: [
             { plan: 'Basic', price: 'Free (limited)' },
             { plan: 'Standard', price: '$15/mo' },
@@ -460,7 +396,6 @@ const resources = [
         fullDesc: 'Perfect for interviews, podcasts, talking-heads. Auto transcription, filler word removal, AI voices. Studio Sound removes background noise. Workflow game changer.',
         url: 'https://www.descript.com',
         paid: true,
-        labPick: true,
         pricing: [
             { plan: 'Free', price: '$0 (1hr/mo)' },
             { plan: 'Creator', price: '$24/mo' },
@@ -501,7 +436,6 @@ const resources = [
         fullDesc: 'ElevenLabs offers natural-sounding AI voices for narration, character work, and multilingual localization. Supports voice cloning and API workflows, with controls for tone and delivery that help match performance to picture.',
         url: 'https://elevenlabs.io',
         paid: true,
-        labPick: true,
         pricing: [
             { plan: 'Free', price: '$0 (10k chars/mo)' },
             { plan: 'Starter', price: '$5/mo' },
@@ -543,7 +477,6 @@ const resources = [
         fullDesc: 'Cinematic quality shot by pros. Perpetual licenses like Artlist music. Smaller library but exceptional quality. Best for high-end productions.',
         url: 'https://artgrid.io',
         paid: true,
-        labPick: true,
         pricing: [
             { plan: 'Creator', price: '$29/mo' },
             { plan: 'Yearly', price: '$348/yr' }
@@ -644,7 +577,6 @@ const resources = [
         fullDesc: 'Industry-competitive 3D modeling, animation, and rendering. Active community with extensive tutorials. Cycles and Eevee renderers. VFX, motion tracking, and compositing included.',
         url: 'https://www.blender.org',
         paid: false,
-        labPick: true,
         features: ['Completely Free', 'Full 3D Suite', 'Active Community', 'VFX Capable']
     },
     {
@@ -745,7 +677,6 @@ const resources = [
         fullDesc: 'Free version used on Hollywood films. Includes Fairlight audio and Fusion VFX. Studio version adds collaboration, 3D tools, and advanced features.',
         url: 'https://www.blackmagicdesign.com/products/davinciresolve',
         paid: false,
-        labPick: true,
         pricing: [
             { plan: 'Free', price: '$0' },
             { plan: 'Studio', price: '$295 (lifetime)' }
