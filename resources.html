@@ -919,6 +919,13 @@
         .btn span { transition: transform 0.2s ease; }
         .btn:hover span { transform: translateX(2px); }
 
+        .btn-icon {
+            width: 16px;
+            height: 16px;
+            display: block;
+            object-fit: contain;
+        }
+
         .btn--outline { background: transparent; }
 
         .btn--outline-white {
@@ -937,6 +944,24 @@
 
         .btn--outline-purple:hover {
             background: rgba(168, 85, 247, 0.12);
+        }
+
+        .btn--outline-youtube {
+            border-color: #ff4d4d;
+            color: #ff4d4d;
+        }
+
+        .btn--outline-youtube:hover {
+            background: rgba(255, 77, 77, 0.12);
+        }
+
+        .btn--outline-instagram {
+            border-color: #e4405f;
+            color: #e4405f;
+        }
+
+        .btn--outline-instagram:hover {
+            background: rgba(228, 64, 95, 0.12);
         }
 
         .resource-link {
@@ -1248,6 +1273,25 @@
             if (cat && cat !== 'other' && !badges.includes(cat)) badges.push(cat);
             return badges;
         }
+
+        function isYouTubeLink(url) {
+            return /youtube\.com|youtu\.be/.test(url || '');
+        }
+
+        function getKeyInfoLink(resource, label) {
+            if (!resource.keyInfo) return null;
+            const matchLabel = normalizeValue(label);
+            const match = resource.keyInfo.find(item => normalizeValue(item.label) === matchLabel);
+            return match ? match.value : null;
+        }
+
+        function buildCtaButton(href, label, variant = 'btn--outline-white', icon = '') {
+            const iconHTML = icon ? '<img class="btn-icon" src="' + icon + '" alt="">' : '';
+            return '<a href="' + href + '" target="_blank" rel="noopener noreferrer" class="btn btn--outline ' + variant + '">' +
+                iconHTML +
+                '<span class="btn-text">' + label + '</span>' +
+            '</a>';
+        }
         
         function matchesSearch(resource, query) {
             if (!query) return true;
@@ -1545,11 +1589,21 @@
             }
 
             const ctas = [];
+            const filmFreewayLink = r.filmFreewayUrl || getKeyInfoLink(r, 'filmfreeway');
+            const instagramLink = getKeyInfoLink(r, 'instagram');
+            const isYouTube = isYouTubeLink(r.url);
+
             if (r.url) {
-                ctas.push('<a href="' + r.url + '" target="_blank" rel="noopener noreferrer" class="btn btn--outline btn--outline-white">Website</a>');
+                const label = (isInspiration || isYouTube) ? 'Watch on YouTube' : 'Website';
+                const variant = (isInspiration || isYouTube) ? 'btn--outline-youtube' : 'btn--outline-white';
+                const icon = (isInspiration || isYouTube) ? 'images/youtube-color-svgrepo-com.svg' : '';
+                ctas.push(buildCtaButton(r.url, label, variant, icon));
             }
-            if (r.filmFreewayUrl) {
-                ctas.push('<a href="' + r.filmFreewayUrl + '" target="_blank" rel="noopener noreferrer" class="btn btn--outline btn--outline-purple">FilmFreeway</a>');
+            if (filmFreewayLink) {
+                ctas.push(buildCtaButton(filmFreewayLink, 'FilmFreeway', 'btn--outline-purple'));
+            }
+            if (instagramLink) {
+                ctas.push(buildCtaButton(instagramLink, 'Instagram', 'btn--outline-instagram', 'images/instagram-1-svgrepo-com.svg'));
             }
 
             const ctaHTML = ctas.length ? '<div class="cta-row">' + ctas.join('') + '</div>' : '';
