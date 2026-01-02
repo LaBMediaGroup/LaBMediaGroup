@@ -178,7 +178,7 @@ const resources = [
             { label: 'Dates', value: 'July-August 2025' },
             { label: 'Location', value: 'Traverse City, MI' }
         ],
-        labPick: true,
+        labPick: false,
         features: ['Michigan Festival', 'Community Focus', 'Filmmaker Q&As', 'Repertory']
     },
     {
@@ -230,6 +230,7 @@ const resources = [
         keyInfo: [
             { label: 'Location', value: 'Flint, MI' }
         ],
+        labPick: false,
         features: ['Michigan Focus', 'Diverse Voices', 'Community Stories', 'Regional']
     },
     {
