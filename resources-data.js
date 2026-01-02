@@ -9,8 +9,8 @@ const resources = [
     {
         name: 'Anthony R Brass',
         category: 'collaborators',
-        desc: 'Fine artist with vibrant, nature-inspired aesthetic. LaB Media collaborator.',
-        fullDesc: 'Anthony R Brass is a fine artist whose work explores the intersection of nature, color, and emotion. His vibrant aesthetic has been featured in LaB Media artist spotlight documentaries, capturing authentic creative process in intimate studio settings.',
+        desc: 'Fine artist known for vibrant, nature-driven work that leans into color and mood.',
+        fullDesc: 'Anthony R Brass is a fine artist whose paintings explore nature, memory, and emotion through saturated color and bold composition. His work often balances organic forms with an intuitive, expressive energy—built for close looking and slow living.',
         url: 'https://anthonyrbrass.com',
         paid: false,
         labPick: true,
@@ -19,8 +19,8 @@ const resources = [
     {
         name: 'MOZ Interiors',
         category: 'collaborators',
-        desc: 'Award-winning interior design featured in Vanity Fair, AD, Hour Detroit.',
-        fullDesc: 'MOZ Interiors brings refined vision to luxury interior design. Featured in Vanity Fair, Architecture Digest, Hour Detroit, and The World of Interiors. LaB Media created their designer spotlight showcasing sophisticated storytelling through clean cinematography.',
+        desc: 'Luxury interior design studio with press features including Vanity Fair, AD, and Hour Detroit.',
+        fullDesc: 'MOZ Interiors is a luxury interior design studio focused on refined spaces with strong architectural lines and elevated material choices. Their work has been featured in outlets including Vanity Fair, Architectural Digest, Hour Detroit, and The World of Interiors—design that reads clean, confident, and lived-in.',
         url: 'https://mozinteriors.com',
         paid: false,
         labPick: true,
@@ -29,8 +29,8 @@ const resources = [
     {
         name: 'Joe Garofalo Music',
         category: 'collaborators',
-        desc: 'Composer and musician. Original scores and music production.',
-        fullDesc: 'Joe Garofalo brings musical depth to LaB Media productions with original compositions and scoring. Versatile across genres from cinematic orchestral to modern electronic.',
+        desc: 'Composer and producer creating original scores and custom music across genres.',
+        fullDesc: 'Joe Garofalo is a composer and musician crafting original scores and custom music built to support story and atmosphere. His work moves comfortably between cinematic textures, modern electronic palettes, and stripped-back instrumentation—adaptable, detailed, and mix-ready.',
         url: null,
         paid: false,
         labPick: true,
@@ -39,8 +39,8 @@ const resources = [
     {
         name: 'The Pandys',
         category: 'collaborators',
-        desc: 'Band featured in LaB Media live session music videos.',
-        fullDesc: 'The Pandys bring raw energy to their performances. LaB Media captured their authentic band practice sessions for "Nothing\'s Getting Better, It\'s Going to Be Fine" with minimal production interference.',
+        desc: 'Band with a raw, live-forward sound built for tight rooms and loud singalongs.',
+        fullDesc: 'The Pandys are a band rooted in high-energy performances and a lived-in, no-frills sound. Whether in rehearsal or onstage, they lean into momentum and honesty—songs that feel immediate, like they’re happening right now.',
         url: null,
         paid: false,
         labPick: true,
@@ -178,7 +178,7 @@ const resources = [
             { label: 'Dates', value: 'July-August 2025' },
             { label: 'Location', value: 'Traverse City, MI' }
         ],
-        labPick: true,
+        labPick: false,
         features: ['Michigan Festival', 'Community Focus', 'Filmmaker Q&As', 'Repertory']
     },
     {
@@ -230,6 +230,7 @@ const resources = [
         keyInfo: [
             { label: 'Location', value: 'Flint, MI' }
         ],
+        labPick: false,
         features: ['Michigan Focus', 'Diverse Voices', 'Community Stories', 'Regional']
     },
     {
@@ -496,8 +497,8 @@ const resources = [
     {
         name: 'ElevenLabs',
         category: 'ai',
-        desc: 'AI voice synthesis and cloning platform.',
-        fullDesc: 'Natural-sounding AI voices for narration, characters, and localization. Voice cloning capability. Used for LaB Media\'s conversational AI widget.',
+        desc: 'AI voice synthesis and cloning platform for narration, characters, and localization.',
+        fullDesc: 'ElevenLabs offers natural-sounding AI voices for narration, character work, and multilingual localization. Supports voice cloning and API workflows, with controls for tone and delivery that help match performance to picture.',
         url: 'https://elevenlabs.io',
         paid: true,
         labPick: true,
