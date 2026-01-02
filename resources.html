@@ -1239,10 +1239,12 @@
         // Generate badges from resource properties if badges array not present
         function generateBadges(r) {
             const badges = [];
-            if (r.paid === false) badges.push('free');
-            else if (r.paid === true) badges.push('paid');
-            if (r.labPick === true) badges.push('lab-pick');
             const cat = getPrimaryCategory(r);
+            if (cat !== 'collaborators') {
+                if (r.paid === false) badges.push('free');
+                else if (r.paid === true) badges.push('paid');
+            }
+            if (r.labPick === true) badges.push('lab-pick');
             if (cat && cat !== 'other' && !badges.includes(cat)) badges.push(cat);
             return badges;
         }
