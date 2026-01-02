@@ -67,7 +67,8 @@
             list-style: none;
         }
         
-        .nav-links a {
+        .nav-links a,
+        .nav-links button {
             color: var(--white);
             text-decoration: none;
             font-family: 'Space Mono', monospace;
@@ -75,9 +76,14 @@
             letter-spacing: 1px;
             text-transform: uppercase;
             transition: opacity 0.3s ease;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
         }
-        
-        .nav-links a:hover {
+
+        .nav-links a:hover,
+        .nav-links button:hover {
             opacity: 0.5;
         }
         
@@ -609,13 +615,30 @@
             justify-content: space-between;
             align-items: center;
             border-top: 1px solid var(--gray-800);
+            gap: 1.5rem;
+            flex-wrap: wrap;
         }
-        
+
         .footer-copy {
             font-family: 'Space Mono', monospace;
             font-size: 0.6rem;
             color: var(--gray-600);
             letter-spacing: 1px;
+        }
+
+        .footer-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gray-400);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: color 0.3s ease, opacity 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--white);
+            opacity: 0.8;
         }
 
         .footer-cta {
@@ -660,14 +683,89 @@
         }
 
         /* ============================================
-           ELEVENLABS WIDGET POSITIONING
-           Move widget higher to avoid footer overlap
+           VOICE AGENT MODAL
         ============================================ */
-        elevenlabs-convai {
-            position: fixed !important;
-            bottom: 90px !important;
-            right: 20px !important;
-            z-index: 999 !important;
+        .voice-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 1200;
+        }
+
+        .voice-modal-backdrop.is-open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .voice-modal {
+            width: min(720px, 100%);
+            max-height: 70vh;
+            background: #050505;
+            border: 1px solid var(--gray-800);
+            border-radius: 12px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            opacity: 0;
+            transform-origin: center;
+            outline: none;
+        }
+
+        .voice-modal-header {
+            padding: 1rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .voice-modal-kicker {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            color: var(--gray-400);
+            text-transform: uppercase;
+        }
+
+        .voice-modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .voice-modal-close {
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--white);
+            border-radius: 999px;
+            padding: 0.4rem 0.65rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .voice-modal-close:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--white);
+        }
+
+        .voice-modal-body {
+            padding: 1rem 1.25rem 1.25rem;
+            overflow: auto;
+            flex: 1;
+        }
+
+        .voice-widget-mount {
+            width: 100%;
+            min-height: 420px;
         }
 
         /* ============================================
@@ -750,21 +848,42 @@
             .resources-desc {
                 max-width: 100%;
             }
-            
+
+            .voice-modal {
+                max-width: calc(100% - 3rem);
+            }
+
             .hero-tagline {
                 display: none;
             }
         }
-        
+
         @media (max-width: 640px) {
             nav, .work {
                 padding-left: 1.5rem;
                 padding-right: 1.5rem;
             }
-            
+
             .hero-line.left { left: 1.5rem; }
             .hero-line.right { right: 1.5rem; }
-            
+
+            .voice-modal-backdrop {
+                padding: 0;
+            }
+
+            .voice-modal {
+                width: 100%;
+                height: 100vh;
+                max-height: 100vh;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+
+            .voice-modal-body {
+                padding: 1rem;
+            }
+
             footer {
                 flex-direction: column;
                 gap: 1.5rem;
@@ -774,11 +893,6 @@
 
             .scroll-indicator {
                 right: 1.5rem;
-            }
-
-            /* Move widget up more on mobile */
-            elevenlabs-convai {
-                bottom: 80px !important;
             }
         }
         
@@ -808,6 +922,7 @@
             <li><a href="plan-your-project.html">Project</a></li>
             <li><a href="resources.html">Tools</a></li>
             <li><a href="#contact">Contact</a></li>
+            <li><button type="button" id="voiceAgentButton">Voice Agent</button></li>
         </ul>
     </nav>
     
@@ -931,20 +1046,33 @@
             </a>
         </div>
     </section>
-    
+
+    <!-- Voice Agent Modal -->
+    <div class="voice-modal-backdrop" id="voiceModalBackdrop" aria-hidden="true">
+        <div class="voice-modal" id="voiceModalDialog" role="dialog" aria-modal="true" aria-labelledby="voiceModalTitle" tabindex="-1">
+            <div class="voice-modal-header">
+                <div>
+                    <div class="voice-modal-kicker">Voice Agent</div>
+                    <h3 class="voice-modal-title" id="voiceModalTitle">Chat with LaB Media</h3>
+                </div>
+                <button class="voice-modal-close" id="voiceModalClose" type="button" aria-label="Close Voice Agent">×</button>
+            </div>
+            <div class="voice-modal-body">
+                <div class="voice-widget-mount" id="voiceWidgetMount" role="document" aria-live="polite"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <div class="footer-copy">© 2025 LaB Media</div>
+        <a href="#" class="footer-link" id="voiceAgentFooterLink">Voice Agent</a>
         <a href="plan-your-project.html" class="footer-cta">
             <span class="footer-cta-text">Start Project</span>
             <span class="footer-cta-arrow">→</span>
         </a>
     </footer>
-    
-    <!-- ElevenLabs Widget -->
-    <elevenlabs-convai agent-id="agent_7801kdhgsr5kf0x912w7wdxrm532"></elevenlabs-convai>
-    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
-    
+
     <script>
         // Register GSAP plugins
         gsap.registerPlugin(ScrollTrigger);
@@ -972,7 +1100,7 @@
         menuToggle.addEventListener('touchend', toggleMenu);
         
         // Close menu when clicking a link
-        navLinks.querySelectorAll('a').forEach(link => {
+        navLinks.querySelectorAll('a, button').forEach(link => {
             link.addEventListener('click', () => {
                 menuToggle.classList.remove('active');
                 navLinks.classList.remove('active');
@@ -1097,7 +1225,145 @@
             ease: 'power2.out',
             immediateRender: false
         });
-        
+
+        // ============================================
+        // VOICE AGENT MODAL & WIDGET
+        // ============================================
+        const voiceAgentButton = document.getElementById('voiceAgentButton');
+        const voiceAgentFooterLink = document.getElementById('voiceAgentFooterLink');
+        const voiceModalBackdrop = document.getElementById('voiceModalBackdrop');
+        const voiceModalDialog = document.getElementById('voiceModalDialog');
+        const voiceModalClose = document.getElementById('voiceModalClose');
+        const voiceWidgetMount = document.getElementById('voiceWidgetMount');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const focusableSelectors = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+        let voiceScriptPromise = null;
+        let lastFocusedElement = null;
+
+        function injectVoiceWidget() {
+            if (voiceWidgetMount.querySelector('elevenlabs-convai')) return;
+            const widget = document.createElement('elevenlabs-convai');
+            widget.setAttribute('agent-id', 'agent_7801kdhgsr5kf0x912w7wdxrm532');
+            voiceWidgetMount.appendChild(widget);
+        }
+
+        function loadVoiceWidgetScript() {
+            if (voiceScriptPromise) return voiceScriptPromise;
+
+            voiceScriptPromise = new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
+                script.async = true;
+                script.type = 'text/javascript';
+                script.onload = () => {
+                    injectVoiceWidget();
+                    resolve();
+                };
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+
+            return voiceScriptPromise;
+        }
+
+        function trapFocus(event) {
+            if (event.key !== 'Tab') return;
+            const focusable = voiceModalDialog.querySelectorAll(focusableSelectors);
+            if (!focusable.length) return;
+
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        }
+
+        function openVoiceModal(trigger) {
+            lastFocusedElement = trigger || document.activeElement;
+            voiceModalBackdrop.classList.add('is-open');
+            voiceModalBackdrop.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+
+            if (!prefersReducedMotion.matches) {
+                gsap.set(voiceModalDialog, { opacity: 0, scale: 0.98 });
+                gsap.to(voiceModalBackdrop, { opacity: 1, duration: 0.2, ease: 'power1.out' });
+                gsap.to(voiceModalDialog, { opacity: 1, scale: 1, duration: 0.25, ease: 'power2.out' });
+            } else {
+                voiceModalBackdrop.style.opacity = 1;
+                voiceModalDialog.style.opacity = 1;
+            }
+
+            document.addEventListener('keydown', handleVoiceModalKeydown);
+            voiceModalDialog.addEventListener('keydown', trapFocus);
+
+            loadVoiceWidgetScript().catch(() => {});
+
+            requestAnimationFrame(() => {
+                (voiceModalClose || voiceModalDialog).focus({ preventScroll: true });
+            });
+        }
+
+        function closeVoiceModal() {
+            const finishClose = () => {
+                voiceModalBackdrop.classList.remove('is-open');
+                voiceModalBackdrop.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+                document.removeEventListener('keydown', handleVoiceModalKeydown);
+                voiceModalDialog.removeEventListener('keydown', trapFocus);
+                voiceModalDialog.style.opacity = '';
+                voiceModalDialog.style.transform = '';
+                voiceModalBackdrop.style.opacity = '';
+
+                if (lastFocusedElement) {
+                    lastFocusedElement.focus({ preventScroll: true });
+                }
+            };
+
+            if (!prefersReducedMotion.matches) {
+                gsap.timeline({ onComplete: finishClose })
+                    .to(voiceModalDialog, { opacity: 0, scale: 0.98, duration: 0.2, ease: 'power2.inOut' })
+                    .to(voiceModalBackdrop, { opacity: 0, duration: 0.2, ease: 'power1.in' }, 0);
+            } else {
+                finishClose();
+            }
+        }
+
+        function handleVoiceModalKeydown(event) {
+            if (event.key === 'Escape') {
+                closeVoiceModal();
+            }
+        }
+
+        function attachModalTrigger(trigger) {
+            if (!trigger) return;
+            trigger.addEventListener('click', (event) => {
+                event.preventDefault();
+                if (navLinks.classList.contains('active')) {
+                    menuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+                openVoiceModal(trigger);
+            });
+        }
+
+        attachModalTrigger(voiceAgentButton);
+        attachModalTrigger(voiceAgentFooterLink);
+
+        voiceModalClose.addEventListener('click', closeVoiceModal);
+
+        voiceModalBackdrop.addEventListener('click', (event) => {
+            if (event.target === voiceModalBackdrop) {
+                closeVoiceModal();
+            }
+        });
+
         // ============================================
         // SMOOTH SCROLL FOR ANCHOR LINKS
         // ============================================
