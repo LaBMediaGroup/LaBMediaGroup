@@ -211,6 +211,19 @@ const resources = [
         features: ['Documentary Only', 'Detroit-Based', 'Journalism Focus', 'Community']
     },
     {
+        name: 'Detroit Filmmaker Awards',
+        category: 'film-festivals',
+        desc: 'Detroit-based festival and awards program spotlighting independent filmmakers.',
+        fullDesc: 'Detroit Filmmaker Awards is an annual Detroit festival and awards program that highlights independent filmmaking with screenings, networking, and celebration awards across multiple categories.',
+        url: 'https://detroitfilmmakerawards.com/',
+        filmFreewayUrl: 'https://filmfreeway.com/DetroitFilmmakerAwards',
+        paid: true,
+        keyInfo: [
+            { label: 'Location', value: 'Detroit, MI' }
+        ],
+        features: ['Awards Program', 'Detroit-Based', 'Independent Film', 'FilmFreeway Submissions']
+    },
+    {
         name: 'Cinetopia Film Festival',
         category: 'film-festivals',
         desc: 'Ann Arbor festival showcasing independent cinema.',
