@@ -11,7 +11,10 @@ const resources = [
         category: 'collaborators',
         desc: 'Fine artist known for vibrant, nature-driven work that leans into color and mood.',
         fullDesc: 'Anthony R Brass is a fine artist whose paintings explore nature, memory, and emotion through saturated color and bold composition. His work often balances organic forms with an intuitive, expressive energy—built for close looking and slow living.',
-        url: 'https://anthonyrbrass.com',
+        url: 'https://www.anthonybrass.com',
+        instagramUrl: 'https://www.instagram.com/anthonyrbrass/',
+        youtubeUrl: 'https://www.youtube.com/channel/UChBFLCl5yzjO_vZj15_pqhw',
+        facebookUrl: 'https://www.facebook.com/anthonyRbrass/',
         features: ['Fine Art', 'Nature-Inspired', 'Documentary Subject', 'Studio Work']
     },
     {
@@ -19,7 +22,9 @@ const resources = [
         category: 'collaborators',
         desc: 'Luxury interior design studio with press features including Vanity Fair, AD, and Hour Detroit.',
         fullDesc: 'MOZ Interiors is a luxury interior design studio focused on refined spaces with strong architectural lines and elevated material choices. Their work has been featured in outlets including Vanity Fair, Architectural Digest, Hour Detroit, and The World of Interiors—design that reads clean, confident, and lived-in.',
-        url: 'https://mozinteriors.com',
+        url: 'https://www.mozinteriors.com',
+        instagramUrl: 'https://www.instagram.com/moz_interiors/',
+        facebookUrl: 'https://www.facebook.com/mozinterior',
         features: ['Interior Design', 'Press Featured', 'Commercial Partner', 'Luxury Brand']
     },
     {
@@ -27,7 +32,9 @@ const resources = [
         category: 'collaborators',
         desc: 'Composer and producer creating original scores and custom music across genres.',
         fullDesc: 'Joe Garofalo is a composer and musician crafting original scores and custom music built to support story and atmosphere. His work moves comfortably between cinematic textures, modern electronic palettes, and stripped-back instrumentation—adaptable, detailed, and mix-ready.',
-        url: null,
+        url: 'https://www.joegarofalomusic.com',
+        instagramUrl: 'https://www.instagram.com/_joegmusic_/',
+        spotifyUrl: 'https://open.spotify.com/artist/3w9fELcZkbxwfto7bZOajz',
         features: ['Original Scores', 'Music Production', 'Composer', 'Multi-Genre']
     },
     {
@@ -36,7 +43,28 @@ const resources = [
         desc: 'Detroit band featured in LaB Media live session music videos.',
         fullDesc: 'The Pandys bring raw, high-energy performances with a lived-in, no-frills feel. LaB Media captured authentic rehearsal and live-session energy with minimal production interference—momentum first, always.',
         url: null,
+        instagramUrl: 'https://www.instagram.com/thepandys/',
+        facebookUrl: 'https://www.facebook.com/thepandys/',
         features: ['Music Video', 'Live Sessions', 'Band', 'Authentic Performance']
+    },
+    {
+        name: 'PandaHouse',
+        id: 'pandahouse-collaborator',
+        category: 'collaborators',
+        desc: 'Detroit-based music project blending indie, alternative, and expressive songwriting.',
+        fullDesc: 'Atmospheric, mood-forward songwriting from Anthony Brass and collaborators. A go-to partner for emotive soundscapes, performance visuals, and music-led storytelling.',
+        url: 'https://www.pandahousedetroit.com',
+        spotifyUrl: 'https://open.spotify.com/artist/0HuGjGGYSPTGINTZpc6ziy',
+        features: ['Indie Music', 'Detroit Artist', 'Mood-Driven Sound', 'Visual Collaborator']
+    },
+    {
+        name: 'Sideways Studio',
+        category: 'collaborators',
+        desc: 'Animation and motion partner crafting expressive character-led work.',
+        fullDesc: 'Sideways Studio delivers animation and motion design with a playful, character-forward aesthetic—ideal for narrative explainers, title sequences, and stylized visual storytelling.',
+        url: 'https://sidewaysstudio.net',
+        instagramUrl: 'https://www.instagram.com/sideways_animation/',
+        features: ['Animation', 'Motion Design', 'Character Work', 'Title Design']
     },
 
     // ============================================
@@ -48,12 +76,9 @@ const resources = [
         desc: 'Michigan nonprofit building filmmaker community through mixers, events, and festival programming.',
         fullDesc: 'Royal Starr Arts Institute serves Michigan\'s creative community through networking, education, and events—anchored by Royal Starr Film Festival and recurring filmmaker mixers in Metro Detroit.',
         url: 'https://www.royalstarr.org',
+        filmFreewayUrl: 'https://filmfreeway.com/RoyalStarrFilmFestival',
+        instagramUrl: 'https://www.instagram.com/royalstarrff/?hl=en',
         paid: false,
-        keyInfo: [
-            { label: 'FilmFreeway', value: 'https://filmfreeway.com/RoyalStarrFilmFestival' },
-            { label: 'Instagram', value: 'https://www.instagram.com/royalstarrff/?hl=en' }
-        ],
-        hideKeyInfo: true,
         features: ['Michigan Community', 'Networking', 'Events', 'Festival Hub']
     },
     {
@@ -62,6 +87,21 @@ const resources = [
         desc: 'Facebook networking group for Michigan filmmakers, cast, and crew.',
         fullDesc: 'Active Facebook group for connecting Michigan filmmakers with actors, crew, and collaborators. Useful for posting gigs, staffing up, sharing resources, and finding local production support.',
         url: 'https://www.facebook.com/groups/mifilmcommunity',
+        facebookUrl: 'https://www.facebook.com/groups/mifilmcommunity',
+        additionalLinks: [
+            {
+                label: 'Michigan Crew Calls',
+                url: 'https://www.facebook.com/groups/micrewcalls/',
+                type: 'facebook',
+                description: 'Subgroup dedicated to on-set crew opportunities and urgent hires.'
+            },
+            {
+                label: 'Michigan Talent Casting',
+                url: 'https://www.facebook.com/groups/micasting/',
+                type: 'facebook',
+                description: 'Focused casting posts for Michigan-based actors and performers.'
+            }
+        ],
         paid: false,
         features: ['Facebook Group', 'Networking', 'Casting & Crew', 'Local Community']
     },
@@ -353,10 +393,8 @@ const resources = [
         desc: 'Detroit-based music project blending indie, alternative, and expressive songwriting.',
         fullDesc: 'Mood-driven songwriting with an atmospheric edge—useful inspiration for music-led visual tone and emotional pacing.',
         url: 'https://www.pandahousedetroit.com',
+        spotifyUrl: 'https://open.spotify.com/artist/0HuGjGGYSPTGINTZpc6ziy',
         paid: false,
-        keyInfo: [
-            { label: 'Spotify', value: 'https://open.spotify.com/artist/0HuGjGGYSPTGINTZpc6ziy' }
-        ],
         features: ['Indie Music', 'Detroit Artist', 'Mood-Driven Sound', 'Atmospheric Tone']
     },
 
