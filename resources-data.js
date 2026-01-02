@@ -12,7 +12,6 @@ const resources = [
         desc: 'Fine artist known for vibrant, nature-driven work that leans into color and mood.',
         fullDesc: 'Anthony R Brass is a fine artist whose paintings explore nature, memory, and emotion through saturated color and bold composition. His work often balances organic forms with an intuitive, expressive energy—built for close looking and slow living.',
         url: 'https://anthonyrbrass.com',
-        paid: false,
         features: ['Fine Art', 'Nature-Inspired', 'Documentary Subject', 'Studio Work']
     },
     {
@@ -21,7 +20,6 @@ const resources = [
         desc: 'Luxury interior design studio with press features including Vanity Fair, AD, and Hour Detroit.',
         fullDesc: 'MOZ Interiors is a luxury interior design studio focused on refined spaces with strong architectural lines and elevated material choices. Their work has been featured in outlets including Vanity Fair, Architectural Digest, Hour Detroit, and The World of Interiors—design that reads clean, confident, and lived-in.',
         url: 'https://mozinteriors.com',
-        paid: false,
         features: ['Interior Design', 'Press Featured', 'Commercial Partner', 'Luxury Brand']
     },
     {
@@ -30,7 +28,6 @@ const resources = [
         desc: 'Composer and producer creating original scores and custom music across genres.',
         fullDesc: 'Joe Garofalo is a composer and musician crafting original scores and custom music built to support story and atmosphere. His work moves comfortably between cinematic textures, modern electronic palettes, and stripped-back instrumentation—adaptable, detailed, and mix-ready.',
         url: null,
-        paid: false,
         features: ['Original Scores', 'Music Production', 'Composer', 'Multi-Genre']
     },
     {
@@ -39,7 +36,6 @@ const resources = [
         desc: 'Band with a raw, live-forward sound built for tight rooms and loud singalongs.',
         fullDesc: 'The Pandys are a band rooted in high-energy performances and a lived-in, no-frills sound. Whether in rehearsal or onstage, they lean into momentum and honesty—songs that feel immediate, like they’re happening right now.',
         url: null,
-        paid: false,
         features: ['Music Video', 'Live Sessions', 'Band', 'Authentic Performance']
     },
 
@@ -185,6 +181,26 @@ const resources = [
             { plan: 'Entry', price: '$15-35' }
         ],
         features: ['Comedy Genre', 'Competition', 'Short Films', 'Multiple Styles']
+    },
+    {
+        name: 'Creepy Cheapy',
+        category: 'film-festivals',
+        desc: 'Michigan micro-budget horror fest for DIY, cult, and underground genre work.',
+        fullDesc: 'Creepy Cheapy is a Michigan-based horror festival built for scrappy, micro-budget filmmaking—cult energy, practical effects, underground voices, and regional community screenings. A strong fit for filmmakers making weird, lean, and fearless genre work without the “competition sprint” structure of time-boxed challenges.',
+        url: 'https://www.creepycheapy.com',
+        filmFreewayUrl: 'https://filmfreeway.com/CreepyCheapy',
+        paid: true,
+        pricing: [
+            { plan: 'Shorts & Features', price: '$10–30' }
+        ],
+        features: [
+            'Micro-Budget Friendly',
+            'Regional Michigan',
+            'Cult Horror',
+            'Underground & DIY',
+            'Practical FX Vibes',
+            'Community Screenings'
+        ]
     },
 
     // ============================================
