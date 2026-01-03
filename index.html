@@ -540,7 +540,7 @@
             grid-template-columns: 1fr 1fr;
             position: relative;
         }
-        
+
         .contact-main {
             background: var(--black);
             display: flex;
@@ -548,6 +548,7 @@
             justify-content: center;
             padding: 4rem;
             position: relative;
+            overflow: hidden;
         }
         
         .contact-main::after {
@@ -1180,6 +1181,12 @@
             <div class="section-line horizontal bottom"></div>
         </div>
         <div class="contact-main">
+            <div class="contact-lines" aria-hidden="true">
+                <div class="section-line vertical left"></div>
+                <div class="section-line vertical right"></div>
+                <div class="section-line horizontal top"></div>
+                <div class="section-line horizontal bottom"></div>
+            </div>
             <div class="contact-label">Get in touch</div>
             <a href="mailto:Bobby@labmediadot.com" class="contact-email">Bobby@labmediadot.com</a>
             <a href="plan-your-project.html" class="contact-cta">Start a project →</a>
@@ -1356,7 +1363,7 @@
             ease: 'power2.out'
         });
         
-        gsap.from('.section-line', {
+        gsap.from('.section-header .section-line', {
             scrollTrigger: {
                 trigger: '.work',
                 start: 'top 80%'
