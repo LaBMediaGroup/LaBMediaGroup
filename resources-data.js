@@ -176,41 +176,6 @@ const resources = [
     // FILM FESTIVALS
     // ============================================
     {
-        name: 'Traverse City Film Festival',
-        category: 'film-festivals',
-        desc: 'Michael Moore\'s Michigan festival celebrating great movies.',
-        fullDesc: 'Founded by Michael Moore, TCFF brings world-class cinema to Northern Michigan. Mix of premieres and repertory screenings with filmmaker Q&As. Strong community engagement and beautiful lakeside setting.',
-        url: 'https://www.traversecityfilmfest.org',
-        filmFreewayUrl: 'https://filmfreeway.com/TraverseCityFilmFestival',
-        paid: true,
-        pricing: [
-            { plan: 'Feature', price: '$35-55' },
-            { plan: 'Short', price: '$25-45' }
-        ],
-        keyInfo: [
-            { label: 'Dates', value: 'July-August 2025' },
-            { label: 'Location', value: 'Traverse City, MI' }
-        ],
-        features: ['Michigan Festival', 'Community Focus', 'Filmmaker Q&As', 'Repertory']
-    },
-    {
-        name: 'Freep Film Festival',
-        category: 'film-festivals',
-        desc: 'Detroit Free Press documentary festival celebrating nonfiction.',
-        fullDesc: 'Freep Film Festival focuses exclusively on documentary work, presented by the Detroit Free Press. Strong local journalism angle with community screenings and filmmaker discussions throughout metro Detroit.',
-        url: 'https://freepfilmfestival.com',
-        filmFreewayUrl: 'https://filmfreeway.com/FreepFilmFestival',
-        paid: true,
-        pricing: [
-            { plan: 'Documentary', price: '$30-50' }
-        ],
-        keyInfo: [
-            { label: 'Dates', value: 'April 2025' },
-            { label: 'Location', value: 'Detroit, MI' }
-        ],
-        features: ['Documentary Only', 'Detroit-Based', 'Journalism Focus', 'Community']
-    },
-    {
         name: 'Detroit Filmmaker Awards',
         category: 'film-festivals',
         desc: 'Detroit-based festival and awards program spotlighting independent filmmakers.',
@@ -239,22 +204,6 @@ const resources = [
             { label: 'Location', value: 'Ann Arbor, MI' }
         ],
         features: ['Ann Arbor', 'Curated Selection', 'Indie Focus', 'University Town']
-    },
-    {
-        name: 'Flint Film Festival',
-        category: 'film-festivals',
-        desc: 'Celebrating diverse voices in Michigan filmmaking.',
-        fullDesc: 'Flint Film Festival highlights diverse voices and stories, with particular focus on Michigan filmmakers and stories relevant to the Flint community. Growing platform for regional talent.',
-        url: 'https://flintfilmfestival.com',
-        filmFreewayUrl: 'https://filmfreeway.com/FlintFilmFestival',
-        paid: true,
-        pricing: [
-            { plan: 'General', price: '$25-40' }
-        ],
-        keyInfo: [
-            { label: 'Location', value: 'Flint, MI' }
-        ],
-        features: ['Michigan Focus', 'Diverse Voices', 'Community Stories', 'Regional']
     },
     {
         name: 'Horror Film Roulette',
@@ -309,6 +258,30 @@ const resources = [
             'Practical FX Vibes',
             'Community Screenings'
         ]
+    },
+    {
+        name: 'Farmington Film Festival',
+        category: 'film-festivals',
+        desc: 'Metro Detroit festival pairing community screenings with filmmaker networking.',
+        fullDesc: 'Farmington Film Festival showcases indie shorts and features with a focus on community connection in Metro Detroit. Programming blends local voices with visiting filmmakers and pairs screenings with live Q&As and mixer-style events.',
+        url: 'https://kickstartfarmington.org/film/',
+        filmFreewayUrl: 'https://filmfreeway.com/FFF26',
+        instagramUrl: 'https://www.instagram.com/kickstart_farmington',
+        facebookUrl: 'https://www.facebook.com/KickstartFarmington',
+        paid: true,
+        keyInfo: [
+            { label: 'Location', value: 'Farmington, MI' }
+        ],
+        features: ['Community Screenings', 'Q&A Sessions', 'Metro Detroit', 'FilmFreeway Submissions']
+    },
+    {
+        name: 'Short Film Block Party',
+        category: 'film-festivals',
+        desc: 'Dedicated shorts showcase built around filmmaker-friendly blocks.',
+        fullDesc: 'Short Film Block Party curates themed blocks of short films with an emphasis on discoverability and audience engagement. Filmmakers get networking time between screenings plus a straightforward FilmFreeway submission path.',
+        filmFreewayUrl: 'https://filmfreeway.com/ShortFilmBlockParty',
+        paid: true,
+        features: ['Short Films Only', 'Themed Blocks', 'Networking Time', 'FilmFreeway Submissions']
     },
 
     // ============================================
@@ -367,15 +340,6 @@ const resources = [
         url: 'https://www.youtube.com/WatchALTER',
         paid: false,
         features: ['Horror Shorts', 'Genre Storytelling', 'Atmosphere', 'Short Form']
-    },
-    {
-        name: 'Veritas Games',
-        category: 'inspiration',
-        desc: 'Gaming and interactive storytelling with strong pacing and format discipline.',
-        fullDesc: 'A solid reference for structure and audience retention—how to hold attention, build stakes, and land beats cleanly.',
-        url: 'https://www.youtube.com/@VeritasGames',
-        paid: false,
-        features: ['Pacing', 'Structure', 'Audience Retention', 'Format']
     },
     {
         name: 'paul_et',
@@ -511,6 +475,122 @@ const resources = [
         paid: false,
         features: ['Creative Commons', 'Multiple Genres', 'Community Curated', 'Check Licenses']
     },
+    {
+        name: 'Soundstripe',
+        category: 'music',
+        desc: 'Subscription music and SFX with pre-cleared licenses for creators.',
+        fullDesc: 'Soundstripe offers a deep library of music and sound effects cleared for YouTube, client work, and broadcast. Straightforward licensing covers multiple platforms with unlimited downloads while subscribed.',
+        url: 'https://app.soundstripe.com/',
+        paid: true,
+        pricing: [
+            { plan: 'Creator', price: '$12.50/mo (annual)' },
+            { plan: 'Pro', price: '$19/mo (annual)' }
+        ],
+        features: ['Unlimited Downloads', 'YouTube Safe', 'Music & SFX', 'Simple Licensing']
+    },
+    {
+        name: 'Bensound',
+        category: 'music',
+        desc: 'Royalty-free tracks with both free and paid licenses.',
+        fullDesc: 'Bensound delivers genre-spanning tracks with free options that require attribution and paid licenses for commercial use without credit. Useful for quick temp music or budget-friendly client projects.',
+        url: 'https://www.bensound.com',
+        paid: true,
+        pricing: [
+            { plan: 'Free', price: '$0 (with credit)' },
+            { plan: 'Standard', price: '$34/license' },
+            { plan: 'Subscription', price: '$139/yr' }
+        ],
+        features: ['Attribution-Free Paid Licenses', 'Genre Variety', 'Quick Downloads', 'Budget Friendly']
+    },
+    {
+        name: 'ENDE.app',
+        category: 'music',
+        desc: 'Free cinematic music catalog with clear usage notes.',
+        fullDesc: 'ENDE.app curates cinematic and ambient tracks released for free creator use. Each track lists allowed usage and attribution guidance—ideal for mood pieces, trailers, and social edits.',
+        url: 'https://ende.app',
+        paid: false,
+        features: ['Cinematic Focus', 'Clear Usage Notes', 'Ambient & Trailer Ready', 'Attribution Guidance']
+    },
+    {
+        name: 'Incompetech',
+        category: 'music',
+        desc: 'Kevin MacLeod’s royalty-free catalog with Creative Commons licensing.',
+        fullDesc: 'Long-running library of instantly recognizable cues plus deep cuts across genres. Most tracks are free with attribution; paid licenses remove the credit requirement for commercial work.',
+        url: 'https://incompetech.com/music/royalty-free/music.html',
+        paid: false,
+        features: ['Creative Commons', 'Attribution Optional (paid)', 'Genre Variety', 'Production Ready']
+    },
+    {
+        name: 'ProductionCrate Music',
+        category: 'music',
+        desc: 'Free and premium music library tied to ProductionCrate assets.',
+        fullDesc: 'ProductionCrate’s music section supplies royalty-free tracks alongside their SFX and VFX assets. Free users get daily downloads; a Pro plan unlocks the full catalog for higher-volume needs.',
+        url: 'https://www.productioncrate.com/sfx/music',
+        paid: false,
+        pricing: [
+            { plan: 'Free', price: '$0 (daily limits)' },
+            { plan: 'Pro', price: '$49/yr' }
+        ],
+        features: ['Pairs with VFX Assets', 'Free Tier', 'Royalty-Free', 'Daily Download Limits']
+    },
+    {
+        name: 'NCS (NoCopyrightSounds)',
+        category: 'music',
+        desc: 'Copyright-free electronic music for creators and streamers.',
+        fullDesc: 'NCS releases EDM, trap, and pop tracks cleared for YouTube and Twitch with attribution. Great for gaming edits, hype reels, and streams needing energetic, claim-free music.',
+        url: 'https://ncs.io',
+        paid: false,
+        features: ['Creator-Friendly', 'EDM Focus', 'YouTube Safe', 'Attribution Required']
+    },
+    {
+        name: 'StreamBeats',
+        category: 'music',
+        desc: 'Royalty-free music packs designed for streaming and content.',
+        fullDesc: 'StreamBeats offers genre playlists (lofi, EDM, rock) engineered to avoid DMCA strikes. Download MP3s or stream via major platforms for background beds, live streams, and vlogs.',
+        url: 'https://streambeats.com/',
+        paid: false,
+        features: ['DMCA Safe', 'Multiple Genres', 'Download or Stream', 'No Cost']
+    },
+    {
+        name: 'Purple Planet Music',
+        category: 'music',
+        desc: 'Royalty-free duo providing cinematic and atmospheric tracks.',
+        fullDesc: 'Purple Planet offers free tracks with attribution plus affordable licenses for projects needing credit-free use. Strong selection of cinematic underscores, ambient beds, and light corporate cues.',
+        url: 'https://www.purple-planet.com/home',
+        paid: false,
+        features: ['Attribution-Friendly', 'Cinematic Beds', 'Affordable Licenses', 'Atmospheric Tracks']
+    },
+    {
+        name: 'IMUNO Library',
+        category: 'music',
+        desc: 'SourceAudio-hosted library of free-to-use tracks for creators.',
+        fullDesc: 'IMUNO provides a curated SourceAudio library intended for creators and nonprofits, with straightforward terms and searchable genres for quick soundtrack finds.',
+        url: 'https://imuno.sourceaudio.com',
+        paid: false,
+        features: ['SourceAudio Library', 'Creator-Friendly', 'Genre Filters', 'Free Access']
+    },
+    {
+        name: 'Uppbeat',
+        category: 'music',
+        desc: 'Creator music with a generous free plan and credit-based downloads.',
+        fullDesc: 'Uppbeat supplies modern tracks across genres; the free tier includes monthly credits and automatic YouTube whitelisting to prevent claims. Paid plans increase credits and unlock stems.',
+        url: 'https://uppbeat.io',
+        paid: false,
+        pricing: [
+            { plan: 'Free', price: '$0 (10 credits/mo)' },
+            { plan: 'Premium', price: '$6.99/mo' }
+        ],
+        features: ['Whitelisted for YouTube', 'Modern Genres', 'Credit System', 'Stems on Paid Plans']
+    },
+    {
+        name: 'NCS SoundCloud Hub',
+        category: 'music',
+        desc: 'SoundCloud stream of NCS no-copyright catalog.',
+        fullDesc: 'Access the NCS catalog directly on SoundCloud for quick streaming and download options. Great for grabbing creator-safe tracks while browsing without leaving the platform.',
+        url: 'https://soundcloud.com/royaltyfreemusic-nocopyrightmusic',
+        paid: false,
+        features: ['SoundCloud Access', 'No-Copyright Music', 'Streaming Friendly', 'Quick Downloads']
+    },
 
     // ============================================
     // SOUND FX
@@ -609,16 +689,49 @@ const resources = [
         features: ['AI Image Generation', 'Commercially Safe', 'Adobe Integration', 'Text Effects']
     },
     {
-        name: 'Topaz Video AI',
+        name: 'Suno',
         category: 'ai',
-        desc: 'AI upscaling, denoising, and frame interpolation.',
-        fullDesc: 'Essential for rescuing footage. Upscale old content to 4K, remove noise, interpolate frames for smooth slow motion. One-time purchase with free updates.',
-        url: 'https://www.topazlabs.com/topaz-video-ai',
+        desc: 'AI music generation for songs, stems, and quick demos.',
+        fullDesc: 'Suno turns text prompts into fully arranged songs with vocals, alternate takes, and exportable stems. Handy for fast pitch tracks, mood sketches, and temp music without clearing hurdles.',
+        url: 'https://suno.com',
         paid: true,
         pricing: [
-            { plan: 'Perpetual', price: '$299' }
+            { plan: 'Free', price: '$0 (limited credits)' },
+            { plan: 'Pro', price: '$10/mo' },
+            { plan: 'Premier', price: '$30/mo' }
         ],
-        features: ['4K Upscaling', 'Noise Removal', 'Frame Interpolation', 'One-Time Purchase']
+        features: ['AI Music', 'Stems Export', 'Vocal Generation', 'Rapid Ideation']
+    },
+    {
+        name: 'Claude.ai',
+        category: 'ai',
+        desc: 'AI assistant tuned for coding help, writing, and research.',
+        fullDesc: 'Claude handles code review, generation, and doc summaries with strong long-context support. Useful for scripting, technical outlines, and brainstorming workflows without leaving the browser.',
+        url: 'https://claude.ai',
+        paid: true,
+        pricing: [
+            { plan: 'Free', price: '$0 (daily messages)' },
+            { plan: 'Pro', price: '$20/mo' }
+        ],
+        features: ['Long Context', 'Coding Help', 'Writing Support', 'Browser-Based']
+    },
+    {
+        name: 'Chat.com',
+        category: 'ai',
+        desc: 'Simple web AI chat for quick prompts and ideation.',
+        fullDesc: 'Chat.com offers a straightforward AI assistant experience—drop in a prompt to brainstorm ideas, rephrase copy, or outline project steps without extra setup or logins.',
+        url: 'https://chat.com',
+        paid: false,
+        features: ['Fast Access', 'No Friction', 'Brainstorming', 'Copy Support']
+    },
+    {
+        name: 'Google AI Studio',
+        category: 'ai',
+        desc: 'Playground for Gemini models with API keys and quick testing.',
+        fullDesc: 'AI Studio makes it easy to prototype with Gemini models—test prompts, generate code snippets, and grab API keys for integrating generative AI into apps or production pipelines.',
+        url: 'https://aistudio.google.com',
+        paid: false,
+        features: ['Gemini Playground', 'API Keys', 'Prompt Testing', 'Code Snippets']
     },
     {
         name: 'ElevenLabs',
@@ -695,6 +808,19 @@ const resources = [
             { plan: 'Yearly', price: '$216/yr' }
         ],
         features: ['Unlimited Downloads', '4K Content', 'Templates', 'AE Projects']
+    },
+    {
+        name: 'Freepik',
+        category: 'stock',
+        desc: 'Massive library of photos, vectors, and mockups for design support.',
+        fullDesc: 'Freepik offers millions of royalty-free images, vectors, PSD mockups, and icons. Great for pitch decks, thumbnails, and design elements that pair with video productions.',
+        url: 'https://www.freepik.com',
+        paid: true,
+        pricing: [
+            { plan: 'Free', price: '$0 (attribution required)' },
+            { plan: 'Premium', price: '$14/mo' }
+        ],
+        features: ['Vectors & PSDs', 'Mockups', 'Photos & Icons', 'Attribution-Free on Premium']
     },
 
     // ============================================
