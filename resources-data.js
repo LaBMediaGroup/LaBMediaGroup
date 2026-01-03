@@ -982,6 +982,68 @@ const resources = [
         ],
         features: ['Concept Art', 'Mood Boards', 'Storyboarding', 'Discord Workflow']
     },
+    {
+        name: 'Opal (Google)',
+        category: 'ai',
+        aiType: 'video',
+        desc: 'Google Opal for fast, high-quality video generation and edits.',
+        fullDesc: 'Opal pairs Google research models with video-forward controls for turning prompts into polished motion quickly. Useful for look previews, motion tests, and stylized transitions.',
+        url: 'https://opal.google/landing/',
+        paid: false,
+        features: ['Video Generation', 'Style Controls', 'Fast Iteration', 'Google Models']
+    },
+    {
+        name: 'Sora by OpenAI',
+        category: 'ai',
+        aiType: 'video',
+        desc: 'Text-to-video generation focused on cinematic, photoreal results.',
+        fullDesc: 'Sora converts prompts into detailed video sequences with realistic motion, camera moves, and environments—great for previz, concept tests, and mood films when paired with clear prompt references.',
+        url: 'https://sora.chatgpt.com',
+        paid: false,
+        features: ['Text-to-Video', 'Cinematic Motion', 'Camera Control', 'Previsualization']
+    },
+    {
+        name: 'Gemini',
+        category: 'ai',
+        aiType: 'chat',
+        desc: 'Google’s multimodal assistant for research, outlining, and coding.',
+        fullDesc: 'Gemini handles chat, code, and image understanding in one workspace—good for script coverage, outline drafts, research pulls, and quick code snippets with Google account sign-in.',
+        url: 'https://gemini.google.com',
+        paid: true,
+        pricing: [
+            { plan: 'Free', price: '$0' },
+            { plan: 'Advanced', price: '$19.99/mo' }
+        ],
+        features: ['Multimodal', 'Research', 'Code Help', 'Outline Drafts']
+    },
+    {
+        name: 'Perplexity',
+        category: 'ai',
+        aiType: 'chat',
+        desc: 'Answer-focused AI with citations and quick reading mode.',
+        fullDesc: 'Perplexity blends web search with AI summaries, returning citations by default—handy for fast fact checks, source gathering, and concise briefs before deeper dives.',
+        url: 'https://www.perplexity.ai',
+        paid: true,
+        pricing: [
+            { plan: 'Free', price: '$0' },
+            { plan: 'Pro', price: '$20/mo' }
+        ],
+        features: ['Cited Answers', 'Web Search', 'Summaries', 'Reading Mode']
+    },
+    {
+        name: 'Krotos Studio (AI)',
+        category: 'ai',
+        aiType: 'voice',
+        desc: 'Voice-driven AI for generating foley and creature sound design.',
+        fullDesc: 'Krotos Studio listens to your voice or controller input and translates it into custom sound effects in real time. Ideal for expressive foley passes, creature vocals, and rapid prototyping directly in DAWs.',
+        url: 'https://www.krotosaudio.com',
+        paid: true,
+        pricing: [
+            { plan: 'License', price: '$399' },
+            { plan: 'Subscription', price: '$19.99/mo' }
+        ],
+        features: ['Voice-to-SFX', 'Real-Time Processing', 'DAW Integration', 'Creature & Foley']
+    },
 
     // ============================================
     // STOCK FOOTAGE
