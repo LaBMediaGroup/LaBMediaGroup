@@ -447,6 +447,46 @@ const resources = [
         features: ['Part 107 Certification', 'Commercial License', 'FAA Official', 'US Required']
     },
     {
+        name: 'King Schools Part 107 Prep',
+        category: 'drone',
+        droneType: 'part-107',
+        desc: 'Self-paced course to pass the FAA Part 107 Remote Pilot knowledge test.',
+        fullDesc: 'King Schools offers a dedicated Part 107 online course with video lessons, practice tests, and scenario-based training to prepare pilots for the FAA Remote Pilot knowledge exam. Designed for clarity and test confidence with mobile-friendly access.',
+        url: 'https://kingschools.com/drone-pilot-license-test-prep-course?srsltid=AfmBOorIQU_gzc5GEq5dsPIDTR0n8Vv3QdQ_cKwGa5E7Emgu4xvp70Yf',
+        additionalLinks: [
+            {
+                label: 'King Schools iLearn',
+                url: 'https://ilearn.kingschools.com/?_gl=1*1766tc6*_gcl_au*ODgyMjE4OTM4LjE3Njc0MjY2NjM.',
+                type: 'website',
+                description: 'Direct access to the King Schools learning portal for course materials.'
+            }
+        ],
+        paid: true,
+        features: ['Part 107 Training', 'Practice Tests', 'Video Lessons', 'Self-Paced']
+    },
+    {
+        name: 'Mike Sytes (Part 107)',
+        category: 'drone',
+        droneType: 'part-107',
+        desc: 'Practical Part 107 study walkthroughs with clear test-taking tips.',
+        fullDesc: 'Mike Sytes provides approachable guidance for passing the Part 107 exam, including regulation breakdowns, aeronautical charts, and practice question reviews. Useful for quick refreshers and applied study sessions.',
+        url: 'https://www.youtube.com/@mikesytes',
+        featuredVideo: 'hRPQlwg-xvc',
+        paid: false,
+        features: ['Part 107 Study', 'Regulation Guides', 'Practice Reviews', 'YouTube Channel']
+    },
+    {
+        name: 'Mr. Migs Classroom (Part 107)',
+        category: 'drone',
+        droneType: 'part-107',
+        desc: 'Classroom-style lessons covering Part 107 knowledge areas.',
+        fullDesc: 'Mr. Migs Classroom delivers organized Part 107 instruction with playlists on airspace, weather, sectional charts, and operating rules—great for structured study and teaching contexts.',
+        url: 'https://www.youtube.com/@MrMigsClassroom',
+        featuredVideo: 'T1ECN0y0Myk',
+        paid: false,
+        features: ['Part 107 Lessons', 'Structured Playlists', 'Regulation Coverage', 'YouTube Channel']
+    },
+    {
         name: 'CAPTAIN DRONE',
         category: 'drone',
         droneType: 'channel',
