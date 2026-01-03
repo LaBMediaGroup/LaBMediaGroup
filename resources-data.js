@@ -452,11 +452,11 @@ const resources = [
         droneType: 'part-107',
         desc: 'Self-paced course to pass the FAA Part 107 Remote Pilot knowledge test.',
         fullDesc: 'King Schools offers a dedicated Part 107 online course with video lessons, practice tests, and scenario-based training to prepare pilots for the FAA Remote Pilot knowledge exam. Designed for clarity and test confidence with mobile-friendly access.',
-        url: 'https://kingschools.com/drone-pilot-license-test-prep-course?srsltid=AfmBOorIQU_gzc5GEq5dsPIDTR0n8Vv3QdQ_cKwGa5E7Emgu4xvp70Yf',
+        url: 'https://kingschools.com/drone-pilot-license-test-prep-course',
         additionalLinks: [
             {
                 label: 'King Schools iLearn',
-                url: 'https://ilearn.kingschools.com/?_gl=1*1766tc6*_gcl_au*ODgyMjE4OTM4LjE3Njc0MjY2NjM.',
+                url: 'https://ilearn.kingschools.com',
                 type: 'website',
                 description: 'Direct access to the King Schools learning portal for course materials.'
             }
@@ -472,6 +472,14 @@ const resources = [
         fullDesc: 'Mike Sytes provides approachable guidance for passing the Part 107 exam, including regulation breakdowns, aeronautical charts, and practice question reviews. Useful for quick refreshers and applied study sessions.',
         url: 'https://www.youtube.com/@mikesytes',
         featuredVideo: 'hRPQlwg-xvc',
+        additionalLinks: [
+            {
+                label: 'Example Video',
+                url: 'https://www.youtube.com/watch?v=hRPQlwg-xvc&t=45s',
+                type: 'video',
+                description: 'Sample Part 107 walkthrough with practical tips.'
+            }
+        ],
         paid: false,
         features: ['Part 107 Study', 'Regulation Guides', 'Practice Reviews', 'YouTube Channel']
     },
@@ -483,6 +491,14 @@ const resources = [
         fullDesc: 'Mr. Migs Classroom delivers organized Part 107 instruction with playlists on airspace, weather, sectional charts, and operating rules—great for structured study and teaching contexts.',
         url: 'https://www.youtube.com/@MrMigsClassroom',
         featuredVideo: 'T1ECN0y0Myk',
+        additionalLinks: [
+            {
+                label: 'Example Lesson',
+                url: 'https://www.youtube.com/watch?v=T1ECN0y0Myk&list=PLGspbs93n4nP5g4SFPOJswZ21Qv3ynl1K',
+                type: 'video',
+                description: 'Sample classroom session covering key Part 107 concepts.'
+            }
+        ],
         paid: false,
         features: ['Part 107 Lessons', 'Structured Playlists', 'Regulation Coverage', 'YouTube Channel']
     },
