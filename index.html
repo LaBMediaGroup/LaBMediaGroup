@@ -19,6 +19,7 @@
             --gray-600: #555555;
             --gray-800: #1A1A1A;
             --gray-900: #0D0D0D;
+            --accent-blue: #4A9EFF;
         }
         
         * {
@@ -230,81 +231,156 @@
            WORK SECTION
         ============================================ */
         .work {
-            padding: 8rem 3rem;
+            padding: clamp(4.5rem, 8vw, 7.5rem) clamp(1.5rem, 4vw, 3.5rem) clamp(3.5rem, 6vw, 5rem);
             position: relative;
+            isolation: isolate;
         }
-        
+
+        .work::before {
+            content: '';
+            position: absolute;
+            inset: 2rem 1.5rem;
+            background-image:
+                linear-gradient(var(--gray-800) 1px, transparent 1px),
+                linear-gradient(90deg, var(--gray-800) 1px, transparent 1px);
+            background-size: 120px 120px;
+            opacity: 0.35;
+            pointer-events: none;
+            mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+        }
+
+        .work::after {
+            content: '';
+            position: absolute;
+            inset: 1.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 18px;
+            pointer-events: none;
+        }
+
         .section-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 4rem;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 3rem;
         }
-        
+
         .section-label {
             font-family: 'Space Mono', monospace;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             color: var(--gray-600);
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
         }
-        
+
+        .section-label::before {
+            content: '';
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, var(--white), var(--accent-blue));
+            box-shadow: 0 0 0 6px rgba(74, 158, 255, 0.08);
+        }
+
         .section-line {
             flex: 1;
             height: 1px;
-            background: var(--gray-800);
-            margin: 0 2rem;
+            background: linear-gradient(90deg, transparent, var(--gray-800), transparent);
+            margin-top: 0.6rem;
         }
-        
+
         .section-count {
             font-family: 'Space Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--gray-600);
+            font-size: 0.7rem;
+            color: var(--gray-400);
+            letter-spacing: 2px;
+            padding: 0.35rem 0.75rem;
+            border: 1px solid var(--gray-800);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.02);
         }
-        
+
         .project-grid {
             display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 1rem;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            gap: clamp(1rem, 1.5vw, 1.75rem);
+            align-items: stretch;
         }
-        
+
         .project {
             position: relative;
             overflow: hidden;
             cursor: pointer;
             text-decoration: none;
-            display: block;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            border: 1px solid var(--gray-800);
+            border-radius: 14px;
+            padding: 1rem 1rem 1.25rem;
+            background: linear-gradient(180deg, rgba(26, 26, 26, 0.65), rgba(13, 13, 13, 0.9));
+            transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
         }
-        
+
         .project:nth-child(1) { grid-column: span 7; }
         .project:nth-child(2) { grid-column: span 5; }
         .project:nth-child(3) { grid-column: span 5; }
         .project:nth-child(4) { grid-column: span 7; }
-        
+
+        .project:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 255, 255, 0.16);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(74, 158, 255, 0.08);
+        }
+
         .project-image-wrapper {
             position: relative;
             overflow: hidden;
+            border-radius: 10px;
+            border: 1px solid var(--gray-800);
+            background: linear-gradient(135deg, rgba(74, 158, 255, 0.08), rgba(255, 255, 255, 0.02));
         }
-        
+
+        .project-image-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(74, 158, 255, 0.25), transparent 40%);
+            mix-blend-mode: screen;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .project:hover .project-image-wrapper::after,
+        .project.in-view .project-image-wrapper::after {
+            opacity: 0.35;
+        }
+
         .project-image {
             width: 100%;
             aspect-ratio: 16/10;
             object-fit: cover;
             filter: grayscale(100%);
             transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            display: block;
+            background: var(--gray-900);
         }
-        
+
         /* Desktop: hover triggers color */
         .project:hover .project-image {
             filter: grayscale(0%);
-            transform: scale(1.03);
+            transform: scale(1.02);
         }
-        
+
         /* Mobile: scroll-triggered color via class */
         .project.in-view .project-image {
             filter: grayscale(0%);
         }
-        
+
         .project-border {
             position: absolute;
             inset: 0;
@@ -312,62 +388,122 @@
             transition: border-color 0.4s ease;
             pointer-events: none;
         }
-        
+
         .project:hover .project-border,
         .project.in-view .project-border {
             border-color: var(--white);
         }
-        
-        .project-info {
+
+        .project-topline {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--gray-800);
+            font-family: 'Space Mono', monospace;
+            letter-spacing: 1px;
+            font-size: 0.65rem;
+            color: var(--gray-400);
         }
-        
+
+        .project-topline .project-index {
+            padding: 0.2rem 0.65rem;
+            border-radius: 999px;
+            border: 1px solid var(--gray-800);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .project-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--gray-800);
+        }
+
+        .project-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
         .project-title {
             font-family: 'Space Mono', monospace;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: var(--white);
             font-weight: 400;
             letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 0.3rem;
         }
-        
-        .project-index {
+
+        .project-subtitle {
+            font-size: 0.8rem;
+            color: var(--gray-400);
+            line-height: 1.4;
+        }
+
+        .project-meta {
+            min-width: 150px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            align-items: flex-end;
+            text-align: right;
             font-family: 'Space Mono', monospace;
-            font-size: 0.6rem;
-            color: var(--gray-600);
-            letter-spacing: 1px;
+            font-size: 0.65rem;
+            color: var(--gray-500);
         }
-        
+
+        .project-meta span {
+            color: var(--gray-400);
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            justify-content: flex-end;
+        }
+
+        .project-tag {
+            padding: 0.25rem 0.6rem;
+            border: 1px solid var(--gray-800);
+            border-radius: 999px;
+            color: var(--gray-400);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
         .view-all {
             display: flex;
             justify-content: flex-end;
-            margin-top: 3rem;
+            margin-top: 2.5rem;
         }
-        
+
         .view-all a {
             font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             color: var(--gray-400);
             text-decoration: none;
             letter-spacing: 1px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 1rem;
-            transition: color 0.3s ease;
+            gap: 0.75rem;
+            padding: 0.6rem 1.1rem;
+            border: 1px solid var(--gray-800);
+            border-radius: 999px;
+            transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
         }
-        
+
         .view-all a:hover {
             color: var(--white);
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.02);
         }
-        
+
         .view-all a::after {
             content: '→';
             transition: transform 0.3s ease;
         }
-        
+
         .view-all a:hover::after {
             transform: translateX(5px);
         }
@@ -376,160 +512,213 @@
            CONTACT
         ============================================ */
         .contact {
-            min-height: 100vh;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
             position: relative;
-        }
-        
-        .contact-main {
-            background: var(--black);
+            padding: clamp(4rem, 7vw, 6rem) clamp(1.5rem, 4vw, 3.5rem) clamp(3.5rem, 6vw, 5rem);
             display: flex;
-            flex-direction: column;
             justify-content: center;
-            padding: 4rem;
-            position: relative;
+            background: radial-gradient(circle at 20% 20%, rgba(74, 158, 255, 0.06), transparent 40%),
+                        radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.04), transparent 45%);
         }
-        
-        .contact-main::after {
+
+        .contact::before {
             content: '';
             position: absolute;
-            right: 0;
-            top: 10%;
-            height: 80%;
-            width: 1px;
-            background: linear-gradient(to bottom, transparent, var(--gray-800), transparent);
+            inset: 0;
+            background-image:
+                linear-gradient(var(--gray-800) 1px, transparent 1px),
+                linear-gradient(90deg, var(--gray-800) 1px, transparent 1px);
+            background-size: 140px 140px;
+            opacity: 0.18;
+            pointer-events: none;
+            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
         }
-        
+
+        .contact-frame {
+            position: relative;
+            width: min(1100px, 92vw);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: clamp(2.5rem, 4vw, 3.25rem);
+            background: linear-gradient(180deg, rgba(26, 26, 26, 0.9), rgba(13, 13, 13, 0.92));
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.04);
+            overflow: hidden;
+        }
+
+        .contact-frame::after {
+            content: '';
+            position: absolute;
+            inset: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            pointer-events: none;
+        }
+
+        .contact-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
         .contact-label {
             font-family: 'Space Mono', monospace;
-            font-size: 0.6rem;
+            font-size: 0.65rem;
             color: var(--gray-600);
             letter-spacing: 3px;
             text-transform: uppercase;
-            margin-bottom: 2rem;
         }
-        
+
+        .contact-topline {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .contact-pill {
+            padding: 0.35rem 0.85rem;
+            border-radius: 999px;
+            border: 1px solid var(--gray-800);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-400);
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .contact-code {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+        }
+
+        .contact-body {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: clamp(1.75rem, 3vw, 2.5rem);
+            padding-top: 2rem;
+        }
+
+        .contact-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
         .contact-email {
             font-family: 'Space Mono', monospace;
-            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-size: clamp(1.3rem, 3vw, 2rem);
             color: var(--white);
             text-decoration: none;
             line-height: 1.4;
             transition: opacity 0.3s ease;
             display: inline-block;
         }
-        
+
         .contact-email:hover {
-            opacity: 0.5;
+            opacity: 0.6;
         }
-        
+
+        .contact-note {
+            color: var(--gray-500);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            max-width: 520px;
+        }
+
         .contact-cta {
-            margin-top: 3rem;
             display: inline-flex;
             align-items: center;
-            gap: 1rem;
-            padding: 1rem 0;
+            gap: 0.85rem;
+            padding: 0.85rem 0;
             border-bottom: 1px solid var(--gray-800);
             font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             color: var(--gray-400);
             text-decoration: none;
             letter-spacing: 1px;
             transition: all 0.3s ease;
+            width: fit-content;
         }
-        
+
         .contact-cta:hover {
             color: var(--white);
             border-color: var(--white);
         }
-        
-        .contact-info {
-            background: var(--gray-900);
+
+        .contact-meta {
+            display: grid;
+            gap: 1.1rem;
+        }
+
+        .contact-meta-row {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding-bottom: 0.9rem;
+            border-bottom: 1px solid var(--gray-800);
         }
-        
-        .info-block {
-            flex: 1;
-            padding: 3rem 4rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            transition: background 0.4s ease;
-        }
-        
-        .info-block:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 4rem;
-            right: 4rem;
-            height: 1px;
-            background: var(--gray-800);
-        }
-        
-        .info-block:hover {
-            background: var(--gray-800);
-        }
-        
+
         .info-label {
             font-family: 'Space Mono', monospace;
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             color: var(--gray-600);
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 1rem;
         }
-        
+
         .info-value {
             font-family: 'Space Mono', monospace;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--white);
             letter-spacing: 0.5px;
         }
-        
+
         .info-value a {
             color: var(--white);
             text-decoration: none;
             transition: opacity 0.3s ease;
         }
-        
+
         .info-value a:hover {
-            opacity: 0.5;
+            opacity: 0.6;
         }
-        
+
         .social-links {
             display: flex;
-            gap: 2rem;
+            gap: 1.25rem;
         }
-        
+
         .social-links a {
             font-family: 'Space Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--white);
+            font-size: 0.8rem;
+            color: var(--gray-400);
             text-decoration: none;
-            position: relative;
-            transition: opacity 0.3s ease;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
         }
-        
-        .social-links a::before {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: var(--white);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+
+        .social-links a:hover {
+            color: var(--white);
         }
-        
-        .social-links a:hover::before {
-            transform: scaleX(1);
+
+        .contact-footer {
+            margin-top: 1.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--gray-800);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.62rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
-        
+
         /* ============================================
            RESOURCES SECTION - FIXED FOR VISIBILITY
         ============================================ */
@@ -803,36 +992,32 @@
             }
             
             .project-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(6, minmax(0, 1fr));
             }
-            
+
             .project:nth-child(1),
             .project:nth-child(2),
             .project:nth-child(3),
             .project:nth-child(4) {
-                grid-column: span 1;
+                grid-column: span 6;
             }
             
             .contact {
+                padding: 3.5rem 1.5rem 3rem;
+            }
+
+            .contact-frame {
+                padding: 2.25rem;
+            }
+
+            .contact-body {
                 grid-template-columns: 1fr;
-                min-height: auto;
             }
-            
-            .contact-main {
-                padding: 6rem 2rem;
-            }
-            
-            .contact-main::after {
-                display: none;
-            }
-            
-            .info-block {
-                padding: 2rem;
-            }
-            
-            .info-block:not(:last-child)::after {
-                left: 2rem;
-                right: 2rem;
+
+            .contact-footer {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: flex-start;
             }
             
             .resources-section {
@@ -862,6 +1047,31 @@
             nav, .work {
                 padding-left: 1.5rem;
                 padding-right: 1.5rem;
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project:nth-child(1),
+            .project:nth-child(2),
+            .project:nth-child(3),
+            .project:nth-child(4) {
+                grid-column: span 1;
+            }
+
+            .project-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .project-meta {
+                align-items: flex-start;
+                text-align: left;
+            }
+
+            .project-tags {
+                justify-content: flex-start;
             }
 
             .hero-line.left { left: 1.5rem; }
@@ -954,46 +1164,98 @@
         
         <div class="project-grid">
             <a href="portfolio.html#moz" class="project">
+                <div class="project-topline">
+                    <span>Commercial / Interiors</span>
+                    <span class="project-index">001</span>
+                </div>
                 <div class="project-image-wrapper">
                     <img src="https://img.youtube.com/vi/HtF4L9RpkaU/maxresdefault.jpg" alt="MOZ Interiors" class="project-image" loading="lazy">
                     <div class="project-border"></div>
                 </div>
                 <div class="project-info">
-                    <span class="project-title">MOZ Interiors</span>
-                    <span class="project-index">001</span>
+                    <div class="project-copy">
+                        <span class="project-title">MOZ Interiors</span>
+                        <span class="project-subtitle">Modern interiors campaign film</span>
+                    </div>
+                    <div class="project-meta">
+                        <span>Format: Brand Film</span>
+                        <div class="project-tags">
+                            <span class="project-tag">Direction</span>
+                            <span class="project-tag">Edit</span>
+                        </div>
+                    </div>
                 </div>
             </a>
-            
+
             <a href="portfolio.html#artist" class="project">
+                <div class="project-topline">
+                    <span>Artist Spotlight</span>
+                    <span class="project-index">002</span>
+                </div>
                 <div class="project-image-wrapper">
-                    <img src="https://img.youtube.com/vi/CPvxM8GrCg8/hqdefault.jpg" alt="Anthony R Brass" class="project-image" loading="lazy">
+                    <img src="https://img.youtube.com/vi/CPvxM8GrCg8/sddefault.jpg" data-fallback="https://img.youtube.com/vi/CPvxM8GrCg8/hqdefault.jpg" alt="Anthony R Brass" class="project-image" loading="lazy">
                     <div class="project-border"></div>
                 </div>
                 <div class="project-info">
-                    <span class="project-title">Anthony R Brass</span>
-                    <span class="project-index">002</span>
+                    <div class="project-copy">
+                        <span class="project-title">Anthony R Brass</span>
+                        <span class="project-subtitle">Artist profile & performance</span>
+                    </div>
+                    <div class="project-meta">
+                        <span>Format: Music Feature</span>
+                        <div class="project-tags">
+                            <span class="project-tag">Story</span>
+                            <span class="project-tag">Color</span>
+                        </div>
+                    </div>
                 </div>
             </a>
-            
+
             <a href="portfolio.html#horror" class="project">
+                <div class="project-topline">
+                    <span>Short Narrative</span>
+                    <span class="project-index">003</span>
+                </div>
                 <div class="project-image-wrapper">
                     <img src="https://img.youtube.com/vi/rtEs8chuDlM/maxresdefault.jpg" alt="Trail Dead" class="project-image" loading="lazy">
                     <div class="project-border"></div>
                 </div>
                 <div class="project-info">
-                    <span class="project-title">Trail Dead</span>
-                    <span class="project-index">003</span>
+                    <div class="project-copy">
+                        <span class="project-title">Trail Dead</span>
+                        <span class="project-subtitle">Thriller vignette in the woods</span>
+                    </div>
+                    <div class="project-meta">
+                        <span>Format: Short Film</span>
+                        <div class="project-tags">
+                            <span class="project-tag">Cinematography</span>
+                            <span class="project-tag">Sound</span>
+                        </div>
+                    </div>
                 </div>
             </a>
-            
+
             <a href="portfolio.html#comedy" class="project">
+                <div class="project-topline">
+                    <span>Series Teaser</span>
+                    <span class="project-index">004</span>
+                </div>
                 <div class="project-image-wrapper">
                     <img src="https://img.youtube.com/vi/G0zfFWwQuZA/maxresdefault.jpg" alt="Lookout" class="project-image" loading="lazy">
                     <div class="project-border"></div>
                 </div>
                 <div class="project-info">
-                    <span class="project-title">Lookout</span>
-                    <span class="project-index">004</span>
+                    <div class="project-copy">
+                        <span class="project-title">Lookout</span>
+                        <span class="project-subtitle">Comedy micro-series preview</span>
+                    </div>
+                    <div class="project-meta">
+                        <span>Format: Episodic</span>
+                        <div class="project-tags">
+                            <span class="project-tag">Concept</span>
+                            <span class="project-tag">Edit</span>
+                        </div>
+                    </div>
                 </div>
             </a>
         </div>
@@ -1005,29 +1267,46 @@
     
     <!-- Contact -->
     <section class="contact" id="contact">
-        <div class="contact-main">
-            <div class="contact-label">Get in touch</div>
-            <a href="mailto:Bobby@labmediadot.com" class="contact-email">Bobby@labmediadot.com</a>
-            <a href="plan-your-project.html" class="contact-cta">Start a project →</a>
-        </div>
-        
-        <div class="contact-info">
-            <div class="info-block">
-                <div class="info-label">Phone</div>
-                <div class="info-value"><a href="tel:3139237444">(313) 923-7444</a></div>
-            </div>
-            
-            <div class="info-block">
-                <div class="info-label">Location</div>
-                <div class="info-value">Shelby Township, MI</div>
-            </div>
-            
-            <div class="info-block">
-                <div class="info-label">Social</div>
-                <div class="social-links">
-                    <a href="https://www.instagram.com/thisislabmedia/" target="_blank">Instagram</a>
-                    <a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank">YouTube</a>
+        <div class="contact-frame">
+            <div class="contact-top">
+                <div class="contact-label">Contact Protocol</div>
+                <div class="contact-topline">
+                    <span class="contact-pill">New Work Ready</span>
+                    <span class="contact-code">Uplink 003</span>
                 </div>
+            </div>
+
+            <div class="contact-body">
+                <div class="contact-column">
+                    <a href="mailto:Bobby@labmediadot.com" class="contact-email">Bobby@labmediadot.com</a>
+                    <p class="contact-note">Selective collaborations, thoughtful storytelling, fast turnarounds. Expect a response within one business day.</p>
+                    <a href="plan-your-project.html" class="contact-cta">Start a project →</a>
+                </div>
+
+                <div class="contact-column contact-meta">
+                    <div class="contact-meta-row">
+                        <div class="info-label">Phone</div>
+                        <div class="info-value"><a href="tel:3139237444">(313) 923-7444</a></div>
+                    </div>
+                    <div class="contact-meta-row">
+                        <div class="info-label">Location</div>
+                        <div class="info-value">Shelby Township, MI</div>
+                    </div>
+                    <div class="contact-meta-row">
+                        <div class="info-label">Social</div>
+                        <div class="info-value">
+                            <div class="social-links">
+                                <a href="https://www.instagram.com/thisislabmedia/" target="_blank">Instagram</a>
+                                <a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank">YouTube</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-footer">
+                <span>Open To Select Partnerships</span>
+                <span>Response Time: &lt; 24hrs</span>
             </div>
         </div>
     </section>
@@ -1077,6 +1356,41 @@
     <script>
         // Register GSAP plugins
         gsap.registerPlugin(ScrollTrigger);
+
+        // ============================================
+        // WORK SECTION SUPPORT
+        // ============================================
+        const placeholderGraphic = 'data:image/svg+xml;utf8,' + encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" fill="none">
+                <rect width="640" height="400" fill="#0d0d0d" />
+                <rect x="16" y="16" width="608" height="368" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="10 6" />
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#888" font-family="'Space Mono', monospace" font-size="18" letter-spacing="2">Preview Unavailable</text>
+            </svg>
+        `);
+
+        function handleImageError(img) {
+            if (img.dataset.fallback && !img.dataset.fallbackUsed) {
+                img.dataset.fallbackUsed = 'true';
+                img.src = img.dataset.fallback;
+                return;
+            }
+
+            if (!img.dataset.placeholderUsed) {
+                img.dataset.placeholderUsed = 'true';
+                img.src = placeholderGraphic;
+            }
+        }
+
+        document.querySelectorAll('.project-image').forEach((img) => {
+            img.addEventListener('error', () => handleImageError(img));
+        });
+
+        const projectCount = document.querySelector('.section-count');
+        const projectCards = document.querySelectorAll('.project-grid .project');
+
+        if (projectCount) {
+            projectCount.textContent = String(projectCards.length).padStart(2, '0');
+        }
 
         // ============================================
         // ELEVENLABS CLIENT TOOL HANDLER
@@ -1225,27 +1539,26 @@
         // ============================================
         // CONTACT SECTION ANIMATIONS
         // ============================================
-        gsap.from('.contact-main > *', {
+        gsap.from('.contact-frame', {
             scrollTrigger: {
                 trigger: '.contact',
-                start: 'top 70%'
+                start: 'top 75%'
             },
             opacity: 0,
-            x: -30,
-            duration: 0.8,
-            stagger: 0.15,
+            y: 40,
+            duration: 1,
             ease: 'power2.out'
         });
-        
-        gsap.from('.info-block', {
+
+        gsap.from(['.contact-label', '.contact-pill', '.contact-code', '.contact-email', '.contact-note', '.contact-cta', '.contact-meta-row', '.contact-footer span'], {
             scrollTrigger: {
                 trigger: '.contact',
-                start: 'top 70%'
+                start: 'top 72%'
             },
             opacity: 0,
-            x: 30,
-            duration: 0.8,
-            stagger: 0.1,
+            y: 18,
+            duration: 0.9,
+            stagger: 0.08,
             ease: 'power2.out'
         });
         
