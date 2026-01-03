@@ -431,7 +431,7 @@ const resources = [
     {
         name: 'FAA Drone Certification',
         category: 'drone',
-        droneType: 'legal',
+        droneType: 'part-107',
         desc: 'Official guide to becoming a certified commercial drone pilot (Part 107).',
         fullDesc: 'The FAA\'s comprehensive resource for obtaining your Remote Pilot Certificate under Part 107. Covers eligibility requirements, application process through IACRA, knowledge testing, and ongoing recertification—essential for anyone operating drones commercially in the United States.',
         url: 'https://www.faa.gov/uas/commercial_operators/become_a_drone_pilot',
@@ -805,6 +805,7 @@ const resources = [
     {
         name: 'Runway ML',
         category: 'ai',
+        aiType: 'video',
         desc: 'AI-powered video editing and generation platform.',
         fullDesc: 'Industry-leading AI tools. Green screen removal, object removal, frame interpolation, and AI video generation. Magic Tools for rotoscoping. Used by major studios.',
         url: 'https://runwayml.com',
@@ -819,6 +820,7 @@ const resources = [
     {
         name: 'Descript',
         category: 'ai',
+        aiType: 'video',
         desc: 'Edit video by editing text transcript.',
         fullDesc: 'Perfect for interviews, podcasts, talking-heads. Auto transcription, filler word removal, AI voices. Studio Sound removes background noise. Workflow game changer.',
         url: 'https://www.descript.com',
@@ -833,6 +835,7 @@ const resources = [
     {
         name: 'Adobe Firefly',
         category: 'ai',
+        aiType: 'image',
         desc: 'Adobe\'s AI image and text effects generator.',
         fullDesc: 'Create custom graphics from text prompts. Trained on licensed Adobe Stock - commercially safe. Integrates with Photoshop, Illustrator, and Express.',
         url: 'https://firefly.adobe.com',
@@ -847,6 +850,7 @@ const resources = [
     {
         name: 'Suno',
         category: 'ai',
+        aiType: 'music',
         desc: 'AI music generation for songs, stems, and quick demos.',
         fullDesc: 'Suno turns text prompts into fully arranged songs with vocals, alternate takes, and exportable stems. Handy for fast pitch tracks, mood sketches, and temp music without clearing hurdles.',
         url: 'https://suno.com',
@@ -861,6 +865,7 @@ const resources = [
     {
         name: 'Claude.ai',
         category: 'ai',
+        aiType: 'chat',
         desc: 'AI assistant tuned for coding help, writing, and research.',
         fullDesc: 'Claude handles code review, generation, and doc summaries with strong long-context support. Useful for scripting, technical outlines, and brainstorming workflows without leaving the browser.',
         url: 'https://claude.ai',
@@ -874,6 +879,7 @@ const resources = [
     {
         name: 'Chat.com',
         category: 'ai',
+        aiType: 'chat',
         desc: 'Simple web AI chat for quick prompts and ideation.',
         fullDesc: 'Chat.com offers a straightforward AI assistant experience—drop in a prompt to brainstorm ideas, rephrase copy, or outline project steps without extra setup or logins.',
         url: 'https://chat.com',
@@ -883,6 +889,7 @@ const resources = [
     {
         name: 'Google AI Studio',
         category: 'ai',
+        aiType: 'chat',
         desc: 'Playground for Gemini models with API keys and quick testing.',
         fullDesc: 'AI Studio makes it easy to prototype with Gemini models—test prompts, generate code snippets, and grab API keys for integrating generative AI into apps or production pipelines.',
         url: 'https://aistudio.google.com',
@@ -892,6 +899,7 @@ const resources = [
     {
         name: 'ElevenLabs',
         category: 'ai',
+        aiType: 'voice',
         desc: 'AI voice synthesis and cloning platform for narration, characters, and localization.',
         fullDesc: 'ElevenLabs offers natural-sounding AI voices for narration, character work, and multilingual localization. Supports voice cloning and API workflows, with controls for tone and delivery that help match performance to picture.',
         url: 'https://elevenlabs.io',
@@ -906,6 +914,7 @@ const resources = [
     {
         name: 'Midjourney',
         category: 'ai',
+        aiType: 'image',
         desc: 'AI image generation for concept art and storyboards.',
         fullDesc: 'Leading AI image generator for creative ideation. Useful for mood boards, concept art, and pre-visualization. Discord-based workflow with growing web interface.',
         url: 'https://www.midjourney.com',
@@ -1120,6 +1129,24 @@ const resources = [
         url: 'https://www.fontsquirrel.com',
         paid: false,
         features: ['Commercial Safe', 'Curated Selection', 'Webfont Generator', 'Free']
+    },
+    {
+        name: 'DaFont',
+        category: 'fonts',
+        desc: 'Massive user-uploaded font library with easy browsing.',
+        fullDesc: 'DaFont hosts thousands of fonts across novelty, display, and practical categories. Quick previews, zip downloads, and tagging make it easy to find unique type for titles and experimental designs.',
+        url: 'https://www.dafont.com/',
+        paid: false,
+        features: ['Large Library', 'Quick Previews', 'Free Downloads', 'Display Fonts']
+    },
+    {
+        name: 'FontSpace',
+        category: 'fonts',
+        desc: 'Designer-uploaded fonts with clear licensing filters.',
+        fullDesc: 'FontSpace offers community-curated fonts with filters for commercial use, styles, and popularity. Each download includes author licensing notes, helping pick safe fonts for client work and personal projects.',
+        url: 'https://www.fontspace.com',
+        paid: false,
+        features: ['Community Fonts', 'License Filters', 'Free Options', 'Commercial-Ready']
     },
     {
         name: 'Fontshare',
