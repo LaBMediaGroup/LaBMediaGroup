@@ -1542,8 +1542,8 @@
         
         <!-- Filter -->
         <div class="filter-row">
-            <button class="filter-btn" data-category="film-festivals">Film Fest's</button>
-            <button class="filter-btn active" data-category="community">Community</button>
+            <button class="filter-btn active" data-category="film-festivals">Film Fest's</button>
+            <button class="filter-btn" data-category="community">Community</button>
             <button class="filter-btn" data-category="music">Music</button>
             <button class="filter-btn" data-category="soundfx">Sound FX</button>
             <button class="filter-btn" data-category="ai">AI</button>
@@ -1673,7 +1673,7 @@
         const droneTypeBar = document.getElementById('droneTypeBar');
         const droneTypeButtons = droneTypeBar.querySelectorAll('.subfilter-btn');
 
-        let currentCategory = 'community';
+        let currentCategory = 'film-festivals';
         let searchQuery = '';
         let musicTier = 'paid';
         let aiType = 'all';
@@ -2283,38 +2283,49 @@
         // FILTER & SEARCH
         // ============================================
         
+        function setCategory(newCategory) {
+            const previousCategory = currentCategory;
+            if (previousCategory === newCategory) {
+                // Ensure the active state matches even if we're reapplying
+                filters.forEach(b => b.classList.toggle('active', b.dataset.category === newCategory));
+                return;
+            }
+
+            filters.forEach(b => b.classList.remove('active'));
+            const targetBtn = Array.from(filters).find(b => b.dataset.category === newCategory);
+            if (targetBtn) targetBtn.classList.add('active');
+            currentCategory = newCategory;
+
+            // When switching to music category, default to paid view
+            if (currentCategory === 'music' && musicTier === 'all') {
+                musicTier = 'paid';
+                musicTierButtons.forEach(b => b.classList.remove('active'));
+                musicTierButtons.forEach(b => {
+                    if (b.dataset.tier === 'paid') b.classList.add('active');
+                });
+            }
+            // When switching away from music, reset to all
+            else if (previousCategory === 'music' && musicTier !== 'all') {
+                musicTier = 'all';
+                musicTierButtons.forEach(b => b.classList.remove('active'));
+                musicTierButtons.forEach(b => {
+                    if (b.dataset.tier === 'all') b.classList.add('active');
+                });
+            }
+
+            // Reset AI view when leaving AI tab
+            if (previousCategory === 'ai' && aiType !== 'all') {
+                aiType = 'all';
+                aiTypeButtons.forEach(b => b.classList.remove('active'));
+                aiTypeButtons.forEach(b => {
+                    if (b.dataset.type === 'all') b.classList.add('active');
+                });
+            }
+        }
+
         filters.forEach(btn => {
             btn.addEventListener('click', () => {
-                if (btn.classList.contains('active')) return;
-                filters.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentCategory = btn.dataset.category;
-
-                // When switching to music category, default to paid view
-                if (currentCategory === 'music' && musicTier === 'all') {
-                    musicTier = 'paid';
-                    musicTierButtons.forEach(b => b.classList.remove('active'));
-                    musicTierButtons.forEach(b => {
-                        if (b.dataset.tier === 'paid') b.classList.add('active');
-                    });
-                }
-                // When switching away from music, reset to all
-                else if (currentCategory !== 'music' && musicTier !== 'all') {
-                    musicTier = 'all';
-                    musicTierButtons.forEach(b => b.classList.remove('active'));
-                    musicTierButtons.forEach(b => {
-                        if (b.dataset.tier === 'all') b.classList.add('active');
-                    });
-                }
-
-                // Reset AI view when leaving AI tab
-                if (currentCategory !== 'ai' && aiType !== 'all') {
-                    aiType = 'all';
-                    aiTypeButtons.forEach(b => b.classList.remove('active'));
-                    aiTypeButtons.forEach(b => {
-                        if (b.dataset.type === 'all') b.classList.add('active');
-                    });
-                }
+                setCategory(btn.dataset.category);
                 renderResources(true);
             });
         });
@@ -2354,6 +2365,9 @@
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
                 searchQuery = e.target.value.trim();
+                if (searchQuery) {
+                    setCategory('all');
+                }
                 renderResources(true);
             }, 150);
         });
