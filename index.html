@@ -477,63 +477,57 @@
         ============================================ */
         .contact-lines {
             position: absolute;
-            top: 0;
-            bottom: 0;
-            left: -6%;
-            width: 88%;
+            inset: 0;
             pointer-events: none;
             overflow: hidden;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.08));
-            mix-blend-mode: screen;
         }
 
-        .contact .section-line {
+        .section-line {
             position: absolute;
-            background: var(--gray-900);
+            background: var(--gray-800);
             overflow: hidden;
-            opacity: 0.35;
         }
 
-        .contact .section-line::before {
+        .section-line::before {
             content: '';
             position: absolute;
             background: linear-gradient(90deg, transparent, var(--white), transparent);
         }
 
-        .contact .section-line.vertical { width: 1px; height: 24vh; }
-        .contact .section-line.horizontal { height: 1px; width: 20vw; }
+        .section-line.vertical { width: 1px; height: 35vh; }
+        .section-line.horizontal { height: 1px; width: 18vw; }
 
-        .contact .section-line.left { left: 6%; top: 12%; height: 30vh; }
-        .contact .section-line.right { left: 40%; top: 54%; height: 20vh; }
-        .contact .section-line.top { top: 34%; left: -3%; width: 24vw; }
-        .contact .section-line.bottom { bottom: 14%; left: 18%; width: 16vw; }
+        .section-line.left { left: 6%; top: 18%; }
+        .section-line.right { right: 8%; bottom: 28%; }
+        .section-line.top { top: 28%; left: 20%; }
+        .section-line.bottom { bottom: 18%; right: 15%; }
 
-        .contact .section-line.left::before {
+        .section-line.left::before {
             width: 100%;
-            height: 18%;
+            height: 20%;
             left: 0;
             animation: shimmer-smooth-vertical 4.2s infinite cubic-bezier(0.4, 0.0, 0.2, 1);
             animation-delay: 0.6s;
         }
 
-        .contact .section-line.right::before {
+        .section-line.right::before {
             width: 100%;
-            height: 18%;
+            height: 20%;
             left: 0;
             animation: shimmer-bounce-vertical 5s infinite cubic-bezier(0.68, -0.55, 0.265, 1.55);
             animation-delay: 2s;
         }
 
-        .contact .section-line.top::before {
-            width: 22%;
+        .section-line.top::before {
+            width: 26%;
             height: 100%;
             top: 0;
             animation: shimmer-ease-in-horizontal 4.5s infinite cubic-bezier(0.55, 0.085, 0.68, 0.53);
             animation-delay: 1.4s;
         }
 
-        .contact .section-line.bottom::before {
-            width: 18%;
+        .section-line.bottom::before {
+            width: 22%;
             height: 100%;
             top: 0;
             animation: shimmer-ease-out-horizontal 3.8s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -1180,6 +1174,12 @@
     
     <!-- Contact -->
     <section class="contact" id="contact">
+        <div class="contact-lines" aria-hidden="true">
+            <div class="section-line vertical left"></div>
+            <div class="section-line vertical right"></div>
+            <div class="section-line horizontal top"></div>
+            <div class="section-line horizontal bottom"></div>
+        </div>
         <div class="contact-main">
             <div class="contact-lines" aria-hidden="true">
                 <div class="section-line vertical left"></div>

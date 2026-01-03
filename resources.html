@@ -183,69 +183,6 @@
             max-width: 640px;
             line-height: 1.6;
         }
-
-        .resources-stage {
-            position: relative;
-            z-index: 1;
-        }
-
-        .list-lines {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .resources-stage > *:not(.list-lines) {
-            position: relative;
-            z-index: 1;
-        }
-
-        .list-lines .accent-line.vertical { height: 68vh; }
-        .list-lines .accent-line.horizontal { width: 20vw; }
-
-        .list-lines .accent-line.left {
-            left: -3%;
-            top: 6rem;
-        }
-
-        .list-lines .accent-line.left::before {
-            width: 100%;
-            height: 24%;
-            animation-duration: 4.6s;
-        }
-
-        .list-lines .accent-line.right {
-            right: -6%;
-            top: 18rem;
-            height: 52vh;
-        }
-
-        .list-lines .accent-line.right::before {
-            width: 100%;
-            height: 26%;
-            animation-duration: 5.4s;
-        }
-
-        .list-lines .accent-line.top {
-            top: 5rem;
-            left: 12%;
-            width: 22vw;
-        }
-
-        .list-lines .accent-line.top::before {
-            width: 28%;
-        }
-
-        .list-lines .accent-line.bottom {
-            bottom: 3.5rem;
-            right: 10%;
-            width: 18vw;
-        }
-
-        .list-lines .accent-line.bottom::before {
-            width: 24%;
-        }
         
         /* Main Container */
         .container {
@@ -1589,13 +1526,29 @@
             <p class="hero-subtitle">Curated references, tools, and collaborators that keep every LaB project moving.</p>
         </div>
         
-        <div class="resources-stage">
-            <div class="list-lines" aria-hidden="true">
-                <div class="accent-line vertical left"></div>
-                <div class="accent-line vertical right"></div>
-                <div class="accent-line horizontal top"></div>
-                <div class="accent-line horizontal bottom"></div>
-            </div>
+        <!-- Search -->
+        <div class="search-row">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search resources..." autocomplete="off">
+        </div>
+        
+        <!-- Filter -->
+        <div class="filter-row">
+            <button class="filter-btn" data-category="film-festivals">Film Fest's</button>
+            <button class="filter-btn active" data-category="community">Community</button>
+            <button class="filter-btn" data-category="music">Music</button>
+            <button class="filter-btn" data-category="soundfx">Sound FX</button>
+            <button class="filter-btn" data-category="ai">AI</button>
+            <button class="filter-btn" data-category="stock">Stock</button>
+            <button class="filter-btn" data-category="equipment">Gear</button>
+            <button class="filter-btn" data-category="3d">3D</button>
+            <button class="filter-btn" data-category="fonts">Fonts</button>
+            <button class="filter-btn" data-category="other">FreeLance</button>
+            <button class="filter-btn" data-category="collaborators">Friends</button>
+            <button class="filter-btn" data-category="drone">Drone</button>
+            <button class="filter-btn" data-category="inspiration">Inspiration</button>
+            <button class="filter-btn" data-category="references">References</button>
+            <button class="filter-btn" data-category="all">All</button>
+        </div>
 
             <!-- Search -->
             <div class="search-row">
