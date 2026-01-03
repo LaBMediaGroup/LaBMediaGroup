@@ -152,7 +152,7 @@
 
         .accent-line.top {
             top: 24%;
-            left: 18%;
+            left: 42%;
         }
 
         .accent-line.top::before {
@@ -1550,63 +1550,39 @@
             <button class="filter-btn" data-category="all">All</button>
         </div>
 
-            <!-- Search -->
-            <div class="search-row">
-                <input type="text" class="search-input" id="searchInput" placeholder="Search resources..." autocomplete="off">
+        <div class="subfilter-row" id="musicTierBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Music view:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn active" data-tier="paid">Paid</button>
+                <button class="subfilter-btn" data-tier="free">Free</button>
+                <button class="subfilter-btn" data-tier="all">All</button>
             </div>
-
-            <!-- Filter -->
-            <div class="filter-row">
-                <button class="filter-btn" data-category="film-festivals">Film Fest's</button>
-                <button class="filter-btn active" data-category="community">Community</button>
-                <button class="filter-btn" data-category="music">Music</button>
-                <button class="filter-btn" data-category="soundfx">Sound FX</button>
-                <button class="filter-btn" data-category="ai">AI</button>
-                <button class="filter-btn" data-category="stock">Stock</button>
-                <button class="filter-btn" data-category="equipment">Gear</button>
-                <button class="filter-btn" data-category="3d">3D</button>
-                <button class="filter-btn" data-category="fonts">Fonts</button>
-                <button class="filter-btn" data-category="other">FreeLance</button>
-                <button class="filter-btn" data-category="collaborators">Friends</button>
-                <button class="filter-btn" data-category="drone">Drone</button>
-                <button class="filter-btn" data-category="inspiration">Inspiration</button>
-                <button class="filter-btn" data-category="references">References</button>
-                <button class="filter-btn" data-category="all">All</button>
-            </div>
-
-            <div class="subfilter-row" id="musicTierBar" aria-live="polite" hidden>
-                <span class="subfilter-label">Music view:</span>
-                <div class="subfilter-buttons">
-                    <button class="subfilter-btn active" data-tier="paid">Paid</button>
-                    <button class="subfilter-btn" data-tier="free">Free</button>
-                    <button class="subfilter-btn" data-tier="all">All</button>
-                </div>
-            </div>
-
-            <div class="subfilter-row" id="aiTypeBar" aria-live="polite" hidden>
-                <span class="subfilter-label">AI view:</span>
-                <div class="subfilter-buttons">
-                    <button class="subfilter-btn" data-type="chat">Chat Bots</button>
-                    <button class="subfilter-btn" data-type="music">Music</button>
-                    <button class="subfilter-btn" data-type="video">Video</button>
-                    <button class="subfilter-btn" data-type="image">Image</button>
-                    <button class="subfilter-btn" data-type="voice">Voice</button>
-                    <button class="subfilter-btn active" data-type="all">All</button>
-                </div>
-            </div>
-
-            <div class="subfilter-row" id="droneTypeBar" aria-live="polite" hidden>
-                <span class="subfilter-label">Drone view:</span>
-                <div class="subfilter-buttons">
-                    <button class="subfilter-btn" data-type="channels">Channels</button>
-                    <button class="subfilter-btn" data-type="shops">Shops</button>
-                    <button class="subfilter-btn" data-type="part-107">Part 107</button>
-                    <button class="subfilter-btn" data-type="all">All</button>
-                </div>
-            </div>
-
-            <div class="resources-grid" id="resourcesGrid"></div>
         </div>
+
+        <div class="subfilter-row" id="aiTypeBar" aria-live="polite" hidden>
+            <span class="subfilter-label">AI view:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn" data-type="chat">Chat Bots</button>
+                <button class="subfilter-btn" data-type="music">Music</button>
+                <button class="subfilter-btn" data-type="video">Video</button>
+                <button class="subfilter-btn" data-type="image">Image</button>
+                <button class="subfilter-btn" data-type="voice">Voice</button>
+                <button class="subfilter-btn active" data-type="all">All</button>
+            </div>
+        </div>
+
+        <div class="subfilter-row" id="droneTypeBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Drone view:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn" data-type="channels">Channels</button>
+                <button class="subfilter-btn" data-type="shops">Shops</button>
+                <button class="subfilter-btn" data-type="part-107">Part 107</button>
+                <button class="subfilter-btn" data-type="all">All</button>
+            </div>
+        </div>
+
+        <div class="resources-grid" id="resourcesGrid"></div>
+    </div>
     </div>
     
     <footer>
