@@ -68,6 +68,184 @@
         }
         
         .nav-back:hover { opacity: 0.5; }
+
+        /* ============================================
+           HERO ACCENT LINES
+        ============================================ */
+        .resources-hero {
+            position: relative;
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .hero-lines {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .accent-line {
+            position: absolute;
+            background: var(--gray-800);
+            overflow: hidden;
+        }
+
+        .accent-line::before {
+            content: '';
+            position: absolute;
+            background: linear-gradient(90deg, transparent, var(--white), transparent);
+        }
+
+        .accent-line.vertical { width: 1px; height: 20vh; }
+        .accent-line.horizontal { height: 1px; width: 14vw; }
+
+        @keyframes accent-vertical-smooth {
+            0%, 100% { top: -25%; opacity: 0; }
+            50% { top: 100%; opacity: 0.4; }
+        }
+
+        @keyframes accent-vertical-bounce {
+            0%, 100% { top: -20%; opacity: 0; }
+            40% { top: 110%; opacity: 0.35; }
+            60% { top: 90%; opacity: 0.45; }
+            80% { top: 100%; opacity: 0.4; }
+        }
+
+        @keyframes accent-horizontal-in {
+            0%, 100% { left: -20%; opacity: 0; }
+            70% { left: 100%; opacity: 0.35; }
+        }
+
+        @keyframes accent-horizontal-out {
+            0%, 100% { left: -20%; opacity: 0; }
+            30% { left: 80%; opacity: 0.4; }
+            50% { left: 100%; opacity: 0.35; }
+        }
+
+        .accent-line.left {
+            left: -6%;
+            top: 10%;
+        }
+
+        .accent-line.left::before {
+            width: 100%;
+            height: 20%;
+            left: 0;
+            animation: accent-vertical-smooth 4.2s infinite cubic-bezier(0.4, 0.0, 0.2, 1);
+            animation-delay: 0.4s;
+        }
+
+        .accent-line.right {
+            right: -8%;
+            bottom: 25%;
+        }
+
+        .accent-line.right::before {
+            width: 100%;
+            height: 20%;
+            left: 0;
+            animation: accent-vertical-bounce 5.1s infinite cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation-delay: 1.8s;
+        }
+
+        .accent-line.top {
+            top: 24%;
+            left: 18%;
+        }
+
+        .accent-line.top::before {
+            width: 25%;
+            height: 100%;
+            top: 0;
+            animation: accent-horizontal-in 4.6s infinite cubic-bezier(0.55, 0.085, 0.68, 0.53);
+            animation-delay: 1s;
+        }
+
+        .accent-line.bottom {
+            bottom: 12%;
+            right: 16%;
+        }
+
+        .accent-line.bottom::before {
+            width: 22%;
+            height: 100%;
+            top: 0;
+            animation: accent-horizontal-out 3.9s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-delay: 2.5s;
+        }
+
+        .hero-subtitle {
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: var(--gray-500, #6b7280);
+            max-width: 640px;
+            line-height: 1.6;
+        }
+
+        .resources-stage {
+            position: relative;
+            z-index: 1;
+        }
+
+        .list-lines {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .resources-stage > *:not(.list-lines) {
+            position: relative;
+            z-index: 1;
+        }
+
+        .list-lines .accent-line.vertical { height: 68vh; }
+        .list-lines .accent-line.horizontal { width: 20vw; }
+
+        .list-lines .accent-line.left {
+            left: -3%;
+            top: 6rem;
+        }
+
+        .list-lines .accent-line.left::before {
+            width: 100%;
+            height: 24%;
+            animation-duration: 4.6s;
+        }
+
+        .list-lines .accent-line.right {
+            right: -6%;
+            top: 18rem;
+            height: 52vh;
+        }
+
+        .list-lines .accent-line.right::before {
+            width: 100%;
+            height: 26%;
+            animation-duration: 5.4s;
+        }
+
+        .list-lines .accent-line.top {
+            top: 5rem;
+            left: 12%;
+            width: 22vw;
+        }
+
+        .list-lines .accent-line.top::before {
+            width: 28%;
+        }
+
+        .list-lines .accent-line.bottom {
+            bottom: 3.5rem;
+            right: 10%;
+            width: 18vw;
+        }
+
+        .list-lines .accent-line.bottom::before {
+            width: 24%;
+        }
         
         /* Main Container */
         .container {
@@ -1395,69 +1573,87 @@
     </nav>
     
     <div class="container">
-        <div class="header">
-            <div class="header-row">
-                <h1>Resources</h1>
-                <span class="header-count" id="resourceCount">000</span>
+        <div class="resources-hero">
+            <div class="hero-lines" aria-hidden="true">
+                <div class="accent-line vertical left"></div>
+                <div class="accent-line vertical right"></div>
+                <div class="accent-line horizontal top"></div>
+                <div class="accent-line horizontal bottom"></div>
             </div>
+            <div class="header">
+                <div class="header-row">
+                    <h1>Resources</h1>
+                    <span class="header-count" id="resourceCount">000</span>
+                </div>
+            </div>
+            <p class="hero-subtitle">Curated references, tools, and collaborators that keep every LaB project moving.</p>
         </div>
         
-        <!-- Search -->
-        <div class="search-row">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search resources..." autocomplete="off">
-        </div>
-        
-        <!-- Filter -->
-        <div class="filter-row">
-            <button class="filter-btn active" data-category="community">Community</button>
-            <button class="filter-btn" data-category="film-festivals">Film Fest's</button>
-            <button class="filter-btn" data-category="music">Music</button>
-            <button class="filter-btn" data-category="soundfx">Sound FX</button>
-            <button class="filter-btn" data-category="ai">AI</button>
-            <button class="filter-btn" data-category="stock">Stock</button>
-            <button class="filter-btn" data-category="equipment">Gear</button>
-            <button class="filter-btn" data-category="3d">3D</button>
-            <button class="filter-btn" data-category="fonts">Fonts</button>
-            <button class="filter-btn" data-category="other">FreeLance</button>
-            <button class="filter-btn" data-category="collaborators">Friends</button>
-            <button class="filter-btn" data-category="drone">Drone</button>
-            <button class="filter-btn" data-category="inspiration">Inspiration</button>
-            <button class="filter-btn" data-category="references">References</button>
-            <button class="filter-btn" data-category="all">All</button>
-        </div>
-
-        <div class="subfilter-row" id="musicTierBar" aria-live="polite" hidden>
-            <span class="subfilter-label">Music view:</span>
-            <div class="subfilter-buttons">
-                <button class="subfilter-btn active" data-tier="paid">Paid</button>
-                <button class="subfilter-btn" data-tier="free">Free</button>
-                <button class="subfilter-btn" data-tier="all">All</button>
+        <div class="resources-stage">
+            <div class="list-lines" aria-hidden="true">
+                <div class="accent-line vertical left"></div>
+                <div class="accent-line vertical right"></div>
+                <div class="accent-line horizontal top"></div>
+                <div class="accent-line horizontal bottom"></div>
             </div>
-        </div>
 
-        <div class="subfilter-row" id="aiTypeBar" aria-live="polite" hidden>
-            <span class="subfilter-label">AI view:</span>
-            <div class="subfilter-buttons">
-                <button class="subfilter-btn" data-type="chat">Chat Bots</button>
-                <button class="subfilter-btn" data-type="music">Music</button>
-                <button class="subfilter-btn" data-type="video">Video</button>
-                <button class="subfilter-btn" data-type="image">Image</button>
-                <button class="subfilter-btn" data-type="voice">Voice</button>
-                <button class="subfilter-btn active" data-type="all">All</button>
+            <!-- Search -->
+            <div class="search-row">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search resources..." autocomplete="off">
             </div>
-        </div>
 
-        <div class="subfilter-row" id="droneTypeBar" aria-live="polite" hidden>
-            <span class="subfilter-label">Drone view:</span>
-            <div class="subfilter-buttons">
-                <button class="subfilter-btn" data-type="channels">Channels</button>
-                <button class="subfilter-btn" data-type="shops">Shops</button>
-                <button class="subfilter-btn" data-type="part-107">Part 107</button>
-                <button class="subfilter-btn" data-type="all">All</button>
+            <!-- Filter -->
+            <div class="filter-row">
+                <button class="filter-btn" data-category="film-festivals">Film Fest's</button>
+                <button class="filter-btn active" data-category="community">Community</button>
+                <button class="filter-btn" data-category="music">Music</button>
+                <button class="filter-btn" data-category="soundfx">Sound FX</button>
+                <button class="filter-btn" data-category="ai">AI</button>
+                <button class="filter-btn" data-category="stock">Stock</button>
+                <button class="filter-btn" data-category="equipment">Gear</button>
+                <button class="filter-btn" data-category="3d">3D</button>
+                <button class="filter-btn" data-category="fonts">Fonts</button>
+                <button class="filter-btn" data-category="other">FreeLance</button>
+                <button class="filter-btn" data-category="collaborators">Friends</button>
+                <button class="filter-btn" data-category="drone">Drone</button>
+                <button class="filter-btn" data-category="inspiration">Inspiration</button>
+                <button class="filter-btn" data-category="references">References</button>
+                <button class="filter-btn" data-category="all">All</button>
             </div>
-        </div>
 
-        <div class="resources-grid" id="resourcesGrid"></div>
+            <div class="subfilter-row" id="musicTierBar" aria-live="polite" hidden>
+                <span class="subfilter-label">Music view:</span>
+                <div class="subfilter-buttons">
+                    <button class="subfilter-btn active" data-tier="paid">Paid</button>
+                    <button class="subfilter-btn" data-tier="free">Free</button>
+                    <button class="subfilter-btn" data-tier="all">All</button>
+                </div>
+            </div>
+
+            <div class="subfilter-row" id="aiTypeBar" aria-live="polite" hidden>
+                <span class="subfilter-label">AI view:</span>
+                <div class="subfilter-buttons">
+                    <button class="subfilter-btn" data-type="chat">Chat Bots</button>
+                    <button class="subfilter-btn" data-type="music">Music</button>
+                    <button class="subfilter-btn" data-type="video">Video</button>
+                    <button class="subfilter-btn" data-type="image">Image</button>
+                    <button class="subfilter-btn" data-type="voice">Voice</button>
+                    <button class="subfilter-btn active" data-type="all">All</button>
+                </div>
+            </div>
+
+            <div class="subfilter-row" id="droneTypeBar" aria-live="polite" hidden>
+                <span class="subfilter-label">Drone view:</span>
+                <div class="subfilter-buttons">
+                    <button class="subfilter-btn" data-type="channels">Channels</button>
+                    <button class="subfilter-btn" data-type="shops">Shops</button>
+                    <button class="subfilter-btn" data-type="part-107">Part 107</button>
+                    <button class="subfilter-btn" data-type="all">All</button>
+                </div>
+            </div>
+
+            <div class="resources-grid" id="resourcesGrid"></div>
+        </div>
     </div>
     
     <footer>

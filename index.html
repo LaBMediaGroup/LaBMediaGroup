@@ -475,13 +475,78 @@
         /* ============================================
            CONTACT
         ============================================ */
+        .contact-lines {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -6%;
+            width: 88%;
+            pointer-events: none;
+            overflow: hidden;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.08));
+            mix-blend-mode: screen;
+        }
+
+        .contact .section-line {
+            position: absolute;
+            background: var(--gray-900);
+            overflow: hidden;
+            opacity: 0.35;
+        }
+
+        .contact .section-line::before {
+            content: '';
+            position: absolute;
+            background: linear-gradient(90deg, transparent, var(--white), transparent);
+        }
+
+        .contact .section-line.vertical { width: 1px; height: 24vh; }
+        .contact .section-line.horizontal { height: 1px; width: 20vw; }
+
+        .contact .section-line.left { left: 6%; top: 12%; height: 30vh; }
+        .contact .section-line.right { left: 40%; top: 54%; height: 20vh; }
+        .contact .section-line.top { top: 34%; left: -3%; width: 24vw; }
+        .contact .section-line.bottom { bottom: 14%; left: 18%; width: 16vw; }
+
+        .contact .section-line.left::before {
+            width: 100%;
+            height: 18%;
+            left: 0;
+            animation: shimmer-smooth-vertical 4.2s infinite cubic-bezier(0.4, 0.0, 0.2, 1);
+            animation-delay: 0.6s;
+        }
+
+        .contact .section-line.right::before {
+            width: 100%;
+            height: 18%;
+            left: 0;
+            animation: shimmer-bounce-vertical 5s infinite cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation-delay: 2s;
+        }
+
+        .contact .section-line.top::before {
+            width: 22%;
+            height: 100%;
+            top: 0;
+            animation: shimmer-ease-in-horizontal 4.5s infinite cubic-bezier(0.55, 0.085, 0.68, 0.53);
+            animation-delay: 1.4s;
+        }
+
+        .contact .section-line.bottom::before {
+            width: 18%;
+            height: 100%;
+            top: 0;
+            animation: shimmer-ease-out-horizontal 3.8s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-delay: 2.6s;
+        }
+
         .contact {
             min-height: 100vh;
             display: grid;
             grid-template-columns: 1fr 1fr;
             position: relative;
         }
-        
+
         .contact-main {
             background: var(--black);
             display: flex;
@@ -489,6 +554,7 @@
             justify-content: center;
             padding: 4rem;
             position: relative;
+            overflow: hidden;
         }
         
         .contact-main::after {
@@ -1115,6 +1181,12 @@
     <!-- Contact -->
     <section class="contact" id="contact">
         <div class="contact-main">
+            <div class="contact-lines" aria-hidden="true">
+                <div class="section-line vertical left"></div>
+                <div class="section-line vertical right"></div>
+                <div class="section-line horizontal top"></div>
+                <div class="section-line horizontal bottom"></div>
+            </div>
             <div class="contact-label">Get in touch</div>
             <a href="mailto:Bobby@labmediadot.com" class="contact-email">Bobby@labmediadot.com</a>
             <a href="plan-your-project.html" class="contact-cta">Start a project →</a>
@@ -1291,7 +1363,7 @@
             ease: 'power2.out'
         });
         
-        gsap.from('.section-line', {
+        gsap.from('.section-header .section-line', {
             scrollTrigger: {
                 trigger: '.work',
                 start: 'top 80%'
