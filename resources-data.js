@@ -452,11 +452,11 @@ const resources = [
         droneType: 'part-107',
         desc: 'Self-paced course to pass the FAA Part 107 Remote Pilot knowledge test.',
         fullDesc: 'King Schools offers a dedicated Part 107 online course with video lessons, practice tests, and scenario-based training to prepare pilots for the FAA Remote Pilot knowledge exam. Designed for clarity and test confidence with mobile-friendly access.',
-        url: 'https://kingschools.com/drone-pilot-license-test-prep-course?srsltid=AfmBOorIQU_gzc5GEq5dsPIDTR0n8Vv3QdQ_cKwGa5E7Emgu4xvp70Yf',
+        url: 'https://kingschools.com/drone-pilot-license-test-prep-course',
         additionalLinks: [
             {
                 label: 'King Schools iLearn',
-                url: 'https://ilearn.kingschools.com/?_gl=1*1766tc6*_gcl_au*ODgyMjE4OTM4LjE3Njc0MjY2NjM.',
+                url: 'https://ilearn.kingschools.com',
                 type: 'website',
                 description: 'Direct access to the King Schools learning portal for course materials.'
             }
@@ -472,6 +472,14 @@ const resources = [
         fullDesc: 'Mike Sytes provides approachable guidance for passing the Part 107 exam, including regulation breakdowns, aeronautical charts, and practice question reviews. Useful for quick refreshers and applied study sessions.',
         url: 'https://www.youtube.com/@mikesytes',
         featuredVideo: 'hRPQlwg-xvc',
+        additionalLinks: [
+            {
+                label: 'Example Video',
+                url: 'https://www.youtube.com/watch?v=hRPQlwg-xvc&t=45s',
+                type: 'video',
+                description: 'Sample Part 107 walkthrough with practical tips.'
+            }
+        ],
         paid: false,
         features: ['Part 107 Study', 'Regulation Guides', 'Practice Reviews', 'YouTube Channel']
     },
@@ -483,6 +491,14 @@ const resources = [
         fullDesc: 'Mr. Migs Classroom delivers organized Part 107 instruction with playlists on airspace, weather, sectional charts, and operating rules—great for structured study and teaching contexts.',
         url: 'https://www.youtube.com/@MrMigsClassroom',
         featuredVideo: 'T1ECN0y0Myk',
+        additionalLinks: [
+            {
+                label: 'Example Lesson',
+                url: 'https://www.youtube.com/watch?v=T1ECN0y0Myk&list=PLGspbs93n4nP5g4SFPOJswZ21Qv3ynl1K',
+                type: 'video',
+                description: 'Sample classroom session covering key Part 107 concepts.'
+            }
+        ],
         paid: false,
         features: ['Part 107 Lessons', 'Structured Playlists', 'Regulation Coverage', 'YouTube Channel']
     },
@@ -965,6 +981,68 @@ const resources = [
             { plan: 'Pro', price: '$60/mo' }
         ],
         features: ['Concept Art', 'Mood Boards', 'Storyboarding', 'Discord Workflow']
+    },
+    {
+        name: 'Opal (Google)',
+        category: 'ai',
+        aiType: 'video',
+        desc: 'Google Opal for fast, high-quality video generation and edits.',
+        fullDesc: 'Opal pairs Google research models with video-forward controls for turning prompts into polished motion quickly. Useful for look previews, motion tests, and stylized transitions.',
+        url: 'https://opal.google/landing/',
+        paid: false,
+        features: ['Video Generation', 'Style Controls', 'Fast Iteration', 'Google Models']
+    },
+    {
+        name: 'Sora by OpenAI',
+        category: 'ai',
+        aiType: 'video',
+        desc: 'Text-to-video generation focused on cinematic, photoreal results.',
+        fullDesc: 'Sora converts prompts into detailed video sequences with realistic motion, camera moves, and environments—great for previz, concept tests, and mood films when paired with clear prompt references.',
+        url: 'https://sora.chatgpt.com',
+        paid: false,
+        features: ['Text-to-Video', 'Cinematic Motion', 'Camera Control', 'Previsualization']
+    },
+    {
+        name: 'Gemini',
+        category: 'ai',
+        aiType: 'chat',
+        desc: 'Google’s multimodal assistant for research, outlining, and coding.',
+        fullDesc: 'Gemini handles chat, code, and image understanding in one workspace—good for script coverage, outline drafts, research pulls, and quick code snippets with Google account sign-in.',
+        url: 'https://gemini.google.com',
+        paid: true,
+        pricing: [
+            { plan: 'Free', price: '$0' },
+            { plan: 'Advanced', price: '$19.99/mo' }
+        ],
+        features: ['Multimodal', 'Research', 'Code Help', 'Outline Drafts']
+    },
+    {
+        name: 'Perplexity',
+        category: 'ai',
+        aiType: 'chat',
+        desc: 'Answer-focused AI with citations and quick reading mode.',
+        fullDesc: 'Perplexity blends web search with AI summaries, returning citations by default—handy for fast fact checks, source gathering, and concise briefs before deeper dives.',
+        url: 'https://www.perplexity.ai',
+        paid: true,
+        pricing: [
+            { plan: 'Free', price: '$0' },
+            { plan: 'Pro', price: '$20/mo' }
+        ],
+        features: ['Cited Answers', 'Web Search', 'Summaries', 'Reading Mode']
+    },
+    {
+        name: 'Krotos Studio (AI)',
+        category: 'ai',
+        aiType: 'voice',
+        desc: 'Voice-driven AI for generating foley and creature sound design.',
+        fullDesc: 'Krotos Studio listens to your voice or controller input and translates it into custom sound effects in real time. Ideal for expressive foley passes, creature vocals, and rapid prototyping directly in DAWs.',
+        url: 'https://www.krotosaudio.com',
+        paid: true,
+        pricing: [
+            { plan: 'License', price: '$399' },
+            { plan: 'Subscription', price: '$19.99/mo' }
+        ],
+        features: ['Voice-to-SFX', 'Real-Time Processing', 'DAW Integration', 'Creature & Foley']
     },
 
     // ============================================

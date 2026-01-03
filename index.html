@@ -475,6 +475,65 @@
         /* ============================================
            CONTACT
         ============================================ */
+        .contact-lines {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .section-line {
+            position: absolute;
+            background: var(--gray-800);
+            overflow: hidden;
+        }
+
+        .section-line::before {
+            content: '';
+            position: absolute;
+            background: linear-gradient(90deg, transparent, var(--white), transparent);
+        }
+
+        .section-line.vertical { width: 1px; height: 26vh; }
+        .section-line.horizontal { height: 1px; width: 22vw; }
+
+        .section-line.left { left: 8%; top: 14%; }
+        .section-line.right { right: 5%; top: 48%; height: 24vh; }
+        .section-line.top { top: 24%; left: 48%; }
+        .section-line.bottom { bottom: 16%; left: 52%; width: 16vw; }
+
+        .section-line.left::before {
+            width: 100%;
+            height: 20%;
+            left: 0;
+            animation: shimmer-smooth-vertical 4.2s infinite cubic-bezier(0.4, 0.0, 0.2, 1);
+            animation-delay: 0.6s;
+        }
+
+        .section-line.right::before {
+            width: 100%;
+            height: 20%;
+            left: 0;
+            animation: shimmer-bounce-vertical 5s infinite cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation-delay: 2s;
+        }
+
+        .section-line.top::before {
+            width: 26%;
+            height: 100%;
+            top: 0;
+            animation: shimmer-ease-in-horizontal 4.5s infinite cubic-bezier(0.55, 0.085, 0.68, 0.53);
+            animation-delay: 1.4s;
+        }
+
+        .section-line.bottom::before {
+            width: 22%;
+            height: 100%;
+            top: 0;
+            animation: shimmer-ease-out-horizontal 3.8s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-delay: 2.6s;
+        }
+
         .contact {
             min-height: 100vh;
             display: grid;
@@ -1114,6 +1173,12 @@
     
     <!-- Contact -->
     <section class="contact" id="contact">
+        <div class="contact-lines" aria-hidden="true">
+            <div class="section-line vertical left"></div>
+            <div class="section-line vertical right"></div>
+            <div class="section-line horizontal top"></div>
+            <div class="section-line horizontal bottom"></div>
+        </div>
         <div class="contact-main">
             <div class="contact-label">Get in touch</div>
             <a href="mailto:Bobby@labmediadot.com" class="contact-email">Bobby@labmediadot.com</a>
