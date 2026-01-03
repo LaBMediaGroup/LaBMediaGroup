@@ -1413,7 +1413,6 @@
             <button class="filter-btn" data-category="film-festivals">Film Fest's</button>
             <button class="filter-btn" data-category="music">Music</button>
             <button class="filter-btn" data-category="soundfx">Sound FX</button>
-            <button class="filter-btn" data-category="drone">Drone</button>
             <button class="filter-btn" data-category="ai">AI</button>
             <button class="filter-btn" data-category="stock">Stock</button>
             <button class="filter-btn" data-category="equipment">Gear</button>
@@ -1421,6 +1420,7 @@
             <button class="filter-btn" data-category="fonts">Fonts</button>
             <button class="filter-btn" data-category="other">FreeLance</button>
             <button class="filter-btn" data-category="collaborators">Friends</button>
+            <button class="filter-btn" data-category="drone">Drone</button>
             <button class="filter-btn" data-category="inspiration">Inspiration</button>
             <button class="filter-btn" data-category="references">References</button>
             <button class="filter-btn" data-category="all">All</button>
@@ -1435,13 +1435,25 @@
             </div>
         </div>
 
+        <div class="subfilter-row" id="aiTypeBar" aria-live="polite" hidden>
+            <span class="subfilter-label">AI view:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn" data-type="chat">Chat Bots</button>
+                <button class="subfilter-btn" data-type="music">Music</button>
+                <button class="subfilter-btn" data-type="video">Video</button>
+                <button class="subfilter-btn" data-type="image">Image</button>
+                <button class="subfilter-btn" data-type="voice">Voice</button>
+                <button class="subfilter-btn active" data-type="all">All</button>
+            </div>
+        </div>
+
         <div class="subfilter-row" id="droneTypeBar" aria-live="polite" hidden>
             <span class="subfilter-label">Drone view:</span>
             <div class="subfilter-buttons">
-                <button class="subfilter-btn active" data-type="channels">Channels</button>
+                <button class="subfilter-btn" data-type="channels">Channels</button>
                 <button class="subfilter-btn" data-type="shops">Shops</button>
-                <button class="subfilter-btn" data-type="legal">Legal</button>
-                <button class="subfilter-btn" data-type="all">All</button>
+                <button class="subfilter-btn" data-type="part-107">Part 107</button>
+                <button class="subfilter-btn active" data-type="all">All</button>
             </div>
         </div>
 
@@ -1522,13 +1534,16 @@
         const searchInput = document.getElementById('searchInput');
         const musicTierBar = document.getElementById('musicTierBar');
         const musicTierButtons = musicTierBar.querySelectorAll('.subfilter-btn');
+        const aiTypeBar = document.getElementById('aiTypeBar');
+        const aiTypeButtons = aiTypeBar.querySelectorAll('.subfilter-btn');
         const droneTypeBar = document.getElementById('droneTypeBar');
         const droneTypeButtons = droneTypeBar.querySelectorAll('.subfilter-btn');
 
         let currentCategory = 'community';
         let searchQuery = '';
         let musicTier = 'paid';
-        let droneType = 'channels';
+        let aiType = 'all';
+        let droneType = 'all';
 
         // ============================================
         // UTILITY FUNCTIONS
@@ -1654,11 +1669,22 @@
                 });
             }
 
+            if (currentCategory === 'ai') {
+                filtered = filtered.filter(r => {
+                    if (aiType === 'chat') return r.aiType === 'chat';
+                    if (aiType === 'music') return r.aiType === 'music';
+                    if (aiType === 'video') return r.aiType === 'video';
+                    if (aiType === 'image') return r.aiType === 'image';
+                    if (aiType === 'voice') return r.aiType === 'voice';
+                    return true;
+                });
+            }
+
             if (currentCategory === 'drone') {
                 filtered = filtered.filter(r => {
                     if (droneType === 'channels') return r.droneType === 'channel';
                     if (droneType === 'shops') return r.droneType === 'shop';
-                    if (droneType === 'legal') return r.droneType === 'legal';
+                    if (droneType === 'part-107') return r.droneType === 'part-107';
                     return true;
                 });
             }
@@ -1747,6 +1773,12 @@
                 musicTierBar.removeAttribute('hidden');
             } else {
                 musicTierBar.setAttribute('hidden', 'true');
+            }
+
+            if (currentCategory === 'ai') {
+                aiTypeBar.removeAttribute('hidden');
+            } else {
+                aiTypeBar.setAttribute('hidden', 'true');
             }
 
             if (currentCategory === 'drone') {
@@ -2123,6 +2155,15 @@
                         if (b.dataset.tier === 'all') b.classList.add('active');
                     });
                 }
+
+                // Reset AI view when leaving AI tab
+                if (currentCategory !== 'ai' && aiType !== 'all') {
+                    aiType = 'all';
+                    aiTypeButtons.forEach(b => b.classList.remove('active'));
+                    aiTypeButtons.forEach(b => {
+                        if (b.dataset.type === 'all') b.classList.add('active');
+                    });
+                }
                 renderResources(true);
             });
         });
@@ -2133,6 +2174,16 @@
                 musicTierButtons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 musicTier = btn.dataset.tier;
+                renderResources(true);
+            });
+        });
+
+        aiTypeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                aiTypeButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                aiType = btn.dataset.type;
                 renderResources(true);
             });
         });
