@@ -136,6 +136,8 @@
             margin-top: 1rem;
             display: flex;
             justify-content: flex-start;
+            flex-direction: column;
+            gap: 0.4rem;
         }
         .suggest-btn {
             border: 1px solid rgba(255,255,255,0.18);
@@ -148,6 +150,11 @@
         }
         .suggest-btn:hover { transform: translateY(-1px); background: rgba(255,255,255,0.06); }
         .suggest-btn:active { transform: translateY(0); }
+
+        .suggest-note {
+            color: var(--gray-400);
+            font-size: 0.9rem;
+        }
 
         /* Layout */
         .view-section {
@@ -252,6 +259,8 @@
             font-size: 0.6rem;
             padding: 0.35rem 0.5rem;
             border: 1px solid;
+            background: transparent;
+            border-radius: 0;
             cursor: pointer;
             transition: all 0.2s ease;
             line-height: 1.2;
@@ -318,6 +327,10 @@
             padding: 0.75rem 1rem;
             border: 1px solid rgba(255,255,255,0.1);
             background: rgba(255,255,255,0.02);
+            color: inherit;
+            text-align: left;
+            width: 100%;
+            border-radius: 0;
         }
 
         .list-row h4 { margin: 0; color: var(--white); }
@@ -340,6 +353,237 @@
             font-family: 'Space Mono', monospace;
             font-size: 0.75rem;
             color: var(--gray-200);
+        }
+
+        /* Event preview modal */
+        .event-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.78);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+            z-index: 1500;
+        }
+
+        .event-modal-backdrop.is-open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .event-modal {
+            width: min(840px, 100%);
+            max-height: 85vh;
+            overflow: auto;
+            background: var(--black);
+            border: 1px solid rgba(255,255,255,0.14);
+            padding: 1.25rem;
+            color: var(--gray-300);
+        }
+
+        .event-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .event-modal-title {
+            margin: 0;
+            font-family: 'Space Mono', monospace;
+            color: var(--white);
+            line-height: 1.2;
+        }
+
+        .event-modal-close {
+            width: 44px;
+            height: 44px;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.04);
+            color: var(--white);
+            cursor: pointer;
+        }
+
+        .event-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .event-meta-item {
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .event-meta-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+        }
+
+        .event-meta-value {
+            color: var(--white);
+            margin-top: 0.35rem;
+        }
+
+        .event-description {
+            line-height: 1.6;
+            color: var(--gray-300);
+            margin-bottom: 1rem;
+        }
+
+        .event-bio {
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.02);
+            padding: 1rem;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .event-bio-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .event-bio-summary {
+            margin: 0;
+            color: var(--gray-300);
+        }
+
+        .event-bio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .event-bio-block {
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 0.65rem 0.75rem;
+            background: rgba(255,255,255,0.01);
+        }
+
+        .event-bio-label {
+            font-family: 'Space Mono', monospace;
+            color: var(--gray-400);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .event-bio-value {
+            color: var(--white);
+            margin-top: 0.35rem;
+        }
+
+        .cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 0.85rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.06);
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            text-decoration: none;
+        }
+
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.55rem;
+            border: 1px solid rgba(255,255,255,0.14);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray-200);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Past events */
+        .past-view {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .past-card {
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.02);
+            padding: 1rem;
+            display: grid;
+            gap: 0.85rem;
+            cursor: pointer;
+            transition: border-color 0.2s ease, transform 0.15s ease;
+        }
+
+        .past-card:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-1px); }
+
+        .past-card h4 {
+            margin: 0;
+            color: var(--white);
+        }
+
+        .past-card-top {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .past-meta-grid {
+            display: grid;
+            gap: 0.35rem;
+        }
+
+        .past-meta-label {
+            font-family: 'Space Mono', monospace;
+            color: var(--gray-400);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .past-card .meta {
+            color: var(--gray-400);
+            font-size: 0.95rem;
+        }
+
+        .past-link {
+            color: var(--lab-orange);
+            text-decoration: underline;
+        }
+
+        .past-note {
+            color: var(--gray-400);
+        }
+
+        .past-card .tag { margin-top: 0.35rem; }
+
+        @media (max-width: 900px) {
+            .event-modal { max-height: 90vh; }
+            .event-modal-header { flex-direction: column; align-items: flex-start; }
+            .past-card-top { grid-template-columns: 1fr; }
         }
 
         /* Suggest modal */
@@ -420,6 +664,7 @@
             .list-row { grid-template-columns: 1fr; gap: 0.35rem; }
             .list-header { display: none; }
             .suggest-modal { max-height: 90vh; }
+            .past-card-top { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -452,6 +697,7 @@
 
             <div class="hero-actions">
                 <button class="suggest-btn proto-text-mono" id="suggestEventBtn" type="button">+ Suggest Event</button>
+                <p class="suggest-note">Not seeing an upcoming Detroit-area event? Send it our way.</p>
             </div>
         </section>
 
@@ -469,6 +715,16 @@
                 </div>
                 <div id="listContainer"></div>
             </div>
+        </section>
+
+        <section class="view-section" id="pastSection" hidden>
+            <div class="list-row list-header">
+                <span>Past Event</span>
+                <span>Date</span>
+                <span>Location</span>
+                <span>Status</span>
+            </div>
+            <div class="past-view" id="pastContainer"></div>
         </section>
     </div>
 
@@ -532,24 +788,73 @@
         </div>
     </div>
 
+    <!-- Event Preview Modal -->
+    <div class="event-modal-backdrop" id="eventModal" aria-hidden="true">
+        <div class="event-modal" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle">
+            <div class="event-modal-header">
+                <div>
+                    <div class="status-chip" id="eventModalType">Event</div>
+                    <h3 class="event-modal-title" id="eventModalTitle"></h3>
+                </div>
+                <button class="event-modal-close" id="eventModalClose" aria-label="Close">×</button>
+            </div>
+            <div class="event-meta-grid" id="eventMeta"></div>
+            <div class="event-description" id="eventDescription"></div>
+            <div class="cta-row" id="eventCtas"></div>
+        </div>
+    </div>
+
     <script src="events-data.js"></script>
     <script>
         const viewButtons = document.querySelectorAll('.view-btn');
         const calendarSection = document.getElementById('calendarSection');
         const listSection = document.getElementById('listSection');
+        const pastSection = document.getElementById('pastSection');
         const calendarGrid = document.getElementById('calendarGrid');
         const listContainer = document.getElementById('listContainer');
+        const pastContainer = document.getElementById('pastContainer');
         const togglePastEventsBtn = document.getElementById('togglePastEvents');
 
-        // Calendar state
+        const eventModal = document.getElementById('eventModal');
+        const eventModalClose = document.getElementById('eventModalClose');
+        const eventModalTitle = document.getElementById('eventModalTitle');
+        const eventModalType = document.getElementById('eventModalType');
+        const eventMeta = document.getElementById('eventMeta');
+        const eventDescription = document.getElementById('eventDescription');
+        const eventCtas = document.getElementById('eventCtas');
+
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
         let showPastEvents = false;
+        let currentView = 'calendar';
+
+        const typeLabels = {
+            meetup: 'Meetup',
+            festival: 'Festival',
+            workshop: 'Workshop',
+            screening: 'Screening',
+            deadline: 'Deadline',
+            other: 'Event'
+        };
 
         function formatDate(dateStr) {
             if (!dateStr) return '';
             const date = new Date(dateStr + 'T00:00:00');
             return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function formatDateRange(event) {
+            if (!event.endDate || event.startDate === event.endDate) {
+                return formatDate(event.startDate);
+            }
+            return `${formatDate(event.startDate)} – ${formatDate(event.endDate)}`;
+        }
+
+        function formatTimeRange(event) {
+            if (!event.startTime) return '';
+            const start = event.startTime;
+            const end = event.endTime ? ` – ${event.endTime}` : '';
+            return `${start}${end}`;
         }
 
         function isEventPast(event) {
@@ -559,26 +864,32 @@
             return eventDate < today;
         }
 
+        function buildEventPill(evt) {
+            const isPast = isEventPast(evt);
+            const pastClass = isPast ? ' is-past' : '';
+            return `
+                <button class="calendar-event-pill type-${evt.type}${pastClass}" data-id="${evt.id}" title="${evt.title}" type="button">
+                    ${evt.title}
+                </button>
+            `;
+        }
+
         function renderCalendar() {
             const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
                                'July', 'August', 'September', 'October', 'November', 'December'];
             const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-            // Get first day of month and number of days
             const firstDay = new Date(currentYear, currentMonth, 1);
             const lastDay = new Date(currentYear, currentMonth + 1, 0);
             const daysInMonth = lastDay.getDate();
             const startingDayOfWeek = firstDay.getDay();
 
-            // Get previous month's trailing days
             const prevMonthLastDay = new Date(currentYear, currentMonth, 0).getDate();
             const leadingDays = startingDayOfWeek;
 
-            // Calculate total cells needed
             const totalCells = Math.ceil((leadingDays + daysInMonth) / 7) * 7;
             const trailingDays = totalCells - (leadingDays + daysInMonth);
 
-            // Build calendar HTML
             let calendarHTML = `
                 <div class="calendar-header">
                     <div class="calendar-month-year">${monthNames[currentMonth]} ${currentYear}</div>
@@ -590,12 +901,10 @@
                 <div class="calendar-month-grid">
             `;
 
-            // Day headers
             dayNames.forEach(day => {
                 calendarHTML += `<div class="calendar-day-header">${day}</div>`;
             });
 
-            // Leading days from previous month
             for (let i = leadingDays - 1; i >= 0; i--) {
                 const dayNum = prevMonthLastDay - i;
                 calendarHTML += `
@@ -605,45 +914,28 @@
                 `;
             }
 
-            // Current month days
             const today = new Date();
+            const visibleEvents = eventsData.filter(evt => !isEventPast(evt));
+
             for (let day = 1; day <= daysInMonth; day++) {
                 const date = new Date(currentYear, currentMonth, day);
                 const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const isToday = date.toDateString() === today.toDateString();
 
-                // Find events for this day
-                const dayEvents = eventsData.filter(evt => {
-                    const matchesDate = evt.startDate === dateStr ||
-                           (evt.endDate && dateStr >= evt.startDate && dateStr <= evt.endDate);
-                    const isPast = isEventPast(evt);
-                    // Show if: matches date AND (showPastEvents is true OR event is not past)
-                    return matchesDate && (showPastEvents || !isPast);
+                const dayEvents = visibleEvents.filter(evt => {
+                    return evt.startDate === dateStr || (evt.endDate && dateStr >= evt.startDate && dateStr <= evt.endDate);
                 });
 
                 calendarHTML += `
                     <div class="calendar-day-cell${isToday ? ' today' : ''}">
                         <div class="calendar-day-number">${day}</div>
                         <div class="calendar-events-list">
-                `;
-
-                dayEvents.forEach(evt => {
-                    const isPast = isEventPast(evt);
-                    const pastClass = isPast ? ' is-past' : '';
-                    calendarHTML += `
-                        <div class="calendar-event-pill type-${evt.type}${pastClass}" title="${evt.title}">
-                            ${evt.title}
-                        </div>
-                    `;
-                });
-
-                calendarHTML += `
+                            ${dayEvents.map(buildEventPill).join('')}
                         </div>
                     </div>
                 `;
             }
 
-            // Trailing days from next month
             for (let day = 1; day <= trailingDays; day++) {
                 calendarHTML += `
                     <div class="calendar-day-cell other-month">
@@ -655,7 +947,6 @@
             calendarHTML += '</div>';
             calendarGrid.innerHTML = calendarHTML;
 
-            // Add month navigation listeners
             document.getElementById('prevMonth')?.addEventListener('click', () => {
                 currentMonth--;
                 if (currentMonth < 0) {
@@ -673,52 +964,197 @@
                 }
                 renderCalendar();
             });
+
+            calendarGrid.querySelectorAll('.calendar-event-pill').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.id;
+                    const evt = eventsData.find(e => e.id === id);
+                    if (evt) openEventModal(evt);
+                });
+            });
         }
 
         function renderList() {
-            const sorted = [...eventsData].sort((a, b) => new Date(a.start) - new Date(b.start));
-            listContainer.innerHTML = sorted.map(ev => `
-                <div class="list-row">
-                    <h4>${ev.name}</h4>
-                    <span>${formatDate(ev.start)}${ev.end ? ' – ' + formatDate(ev.end) : ''}</span>
+            const upcoming = eventsData.filter(evt => !isEventPast(evt)).sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+            listContainer.innerHTML = upcoming.map(ev => `
+                <button class="list-row" data-id="${ev.id}" type="button">
+                    <h4>${ev.title}</h4>
+                    <span>${formatDateRange(ev)}${ev.startTime ? ' · ' + formatTimeRange(ev) : ''}</span>
                     <span>${ev.location || 'TBD'}</span>
-                    <span class="tag">${ev.type}</span>
+                    <span class="tag">${typeLabels[ev.type] || ev.type}</span>
+                </button>
+            `).join('');
+
+            listContainer.querySelectorAll('.list-row').forEach(row => {
+                row.addEventListener('click', () => {
+                    const id = row.dataset.id;
+                    const evt = eventsData.find(e => e.id === id);
+                    if (evt) openEventModal(evt);
+                });
+            });
+        }
+
+        function renderPastList() {
+            const pastEvents = eventsData.filter(isEventPast).sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+            pastContainer.innerHTML = pastEvents.map(ev => `
+                <div class="past-card" data-id="${ev.id}">
+                    <div class="past-card-top">
+                        <div>
+                            <div class="proto-text-mono past-meta-label">Past Event</div>
+                            <h4>${ev.title}</h4>
+                            <div class="tag">${typeLabels[ev.type] || ev.type}</div>
+                        </div>
+                        <div class="meta past-meta-grid">
+                            <div>
+                                <div class="past-meta-label">When</div>
+                                <div>${formatDateRange(ev)}${ev.startTime ? ' · ' + formatTimeRange(ev) : ''}</div>
+                            </div>
+                            <div>
+                                <div class="past-meta-label">Where</div>
+                                <div>${ev.location || 'TBD'}${ev.venue ? ' — ' + ev.venue : ''}</div>
+                            </div>
+                            ${ev.url ? `<div><div class="past-meta-label">Link</div><a class="past-link" href="${ev.url}" target="_blank" rel="noreferrer">Event site</a></div>` : ''}
+                        </div>
+                    </div>
+                    <div class="past-note">${ev.description || ''}</div>
                 </div>
             `).join('');
+
+            pastContainer.querySelectorAll('.past-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const id = card.dataset.id;
+                    const evt = eventsData.find(e => e.id === id);
+                    if (evt) openEventModal(evt);
+                });
+            });
         }
 
         function setView(view) {
+            currentView = view;
             viewButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
-            if (view === 'list') {
-                listSection.hidden = false;
+            updateViewVisibility();
+        }
+
+        function updateViewVisibility() {
+            if (showPastEvents) {
                 calendarSection.hidden = true;
-            } else {
                 listSection.hidden = true;
-                calendarSection.hidden = false;
+                pastSection.hidden = false;
+            } else {
+                pastSection.hidden = true;
+                if (currentView === 'list') {
+                    listSection.hidden = false;
+                    calendarSection.hidden = true;
+                } else {
+                    calendarSection.hidden = false;
+                    listSection.hidden = true;
+                }
             }
         }
 
         viewButtons.forEach(btn => {
             btn.addEventListener('click', () => {
-                // Don't toggle past events button as a view
                 if (btn.id === 'togglePastEvents') return;
                 setView(btn.dataset.view);
             });
         });
 
-        // Toggle past events
         if (togglePastEventsBtn) {
             togglePastEventsBtn.addEventListener('click', () => {
                 showPastEvents = !showPastEvents;
                 togglePastEventsBtn.textContent = showPastEvents ? '🕐 Hide Past' : '🕐 Show Past';
                 togglePastEventsBtn.classList.toggle('active', showPastEvents);
-                renderCalendar();
-                renderList();
+                updateViewVisibility();
             });
         }
 
+        function openEventModal(event) {
+            eventModalType.textContent = typeLabels[event.type] || 'Event';
+            eventModalTitle.textContent = event.title;
+
+            const metaItems = [
+                { label: 'Date', value: formatDateRange(event) },
+                { label: 'Time', value: formatTimeRange(event) || 'See site' },
+                { label: 'Location', value: event.location || 'Michigan' },
+                { label: 'Venue', value: event.venue || 'TBD' }
+            ];
+
+            eventMeta.innerHTML = metaItems.map(item => `
+                <div class="event-meta-item">
+                    <div class="event-meta-label">${item.label}</div>
+                    <div class="event-meta-value">${item.value}</div>
+                </div>
+            `).join('');
+
+            const bioDetails = [
+                {
+                    label: 'When',
+                    value: `${formatDateRange(event)}${formatTimeRange(event) ? ' · ' + formatTimeRange(event) : ''}`
+                },
+                {
+                    label: 'Where',
+                    value: `${event.location || 'Michigan'}${event.venue ? ' — ' + event.venue : ''}`
+                },
+                {
+                    label: 'Category',
+                    value: typeLabels[event.type] || 'Event'
+                },
+                {
+                    label: 'Link',
+                    value: event.url ? `<a class="past-link" href="${event.url}" target="_blank" rel="noreferrer">Event site</a>` : 'Add link coming soon'
+                }
+            ];
+
+            const isPast = isEventPast(event);
+            eventDescription.innerHTML = `
+                <div class="event-bio">
+                    <div class="event-bio-head">
+                        <div class="proto-text-mono" style="opacity:0.7;">Event Preview</div>
+                        ${isPast ? '<span class="status-chip">Past</span>' : ''}
+                    </div>
+                    <p class="event-bio-summary">${event.description || 'Details coming soon.'}</p>
+                    <div class="event-bio-grid">
+                        ${bioDetails.map(detail => `
+                            <div class="event-bio-block">
+                                <div class="event-bio-label">${detail.label}</div>
+                                <div class="event-bio-value">${detail.value}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            const ctas = [];
+            if (event.url) {
+                ctas.push(`<a class="cta-btn" href="${event.url}" target="_blank" rel="noreferrer">Open Link</a>`);
+            }
+
+            eventCtas.innerHTML = ctas.join('');
+
+            eventModal.classList.add('is-open');
+            eventModal.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeEventModal() {
+            eventModal.classList.remove('is-open');
+            eventModal.setAttribute('aria-hidden', 'true');
+        }
+
+        eventModalClose?.addEventListener('click', closeEventModal);
+        eventModal?.addEventListener('click', (e) => {
+            if (e.target === eventModal) closeEventModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && eventModal.classList.contains('is-open')) {
+                closeEventModal();
+            }
+        });
+
         renderCalendar();
         renderList();
+        renderPastList();
+        updateViewVisibility();
 
         // ============================================
         // SUGGEST EVENT MODAL (accessible, lightweight)
