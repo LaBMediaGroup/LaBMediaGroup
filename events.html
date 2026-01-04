@@ -136,6 +136,8 @@
             margin-top: 1rem;
             display: flex;
             justify-content: flex-start;
+            flex-direction: column;
+            gap: 0.4rem;
         }
         .suggest-btn {
             border: 1px solid rgba(255,255,255,0.18);
@@ -148,6 +150,11 @@
         }
         .suggest-btn:hover { transform: translateY(-1px); background: rgba(255,255,255,0.06); }
         .suggest-btn:active { transform: translateY(0); }
+
+        .suggest-note {
+            color: var(--gray-400);
+            font-size: 0.9rem;
+        }
 
         /* Layout */
         .view-section {
@@ -590,6 +597,7 @@
             .list-row { grid-template-columns: 1fr; gap: 0.35rem; }
             .list-header { display: none; }
             .suggest-modal { max-height: 90vh; }
+            .past-card-top { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -622,6 +630,7 @@
 
             <div class="hero-actions">
                 <button class="suggest-btn proto-text-mono" id="suggestEventBtn" type="button">+ Suggest Event</button>
+                <p class="suggest-note">Not seeing an upcoming Detroit-area event? Send it our way.</p>
             </div>
         </section>
 
