@@ -155,7 +155,7 @@
         }
 
         .video-container iframe,
-        .yt-lite {
+        .video-placeholder {
             position: absolute;
             top: 0;
             left: 0;
@@ -163,36 +163,47 @@
             height: 100%;
         }
 
-        .yt-lite{
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.14);
+        .video-placeholder {
+            border: none;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             overflow: hidden;
         }
-        .yt-thumb{
+
+        .video-thumb {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            filter: brightness(0.9);
+            transition: transform 0.2s ease, filter 0.2s ease;
             display: block;
-            opacity: 0.92;
         }
-        .yt-play{
+
+        .video-placeholder:hover .video-thumb {
+            transform: scale(1.01);
+            filter: brightness(1);
+        }
+
+        .video-play {
             position: absolute;
-            inset: 0;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-family: 'Space Mono', monospace;
-            font-size: 2.25rem;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.8);
+            display: grid;
+            place-items: center;
             color: var(--white);
-            background: radial-gradient(circle at center, rgba(0,0,0,0.0), rgba(0,0,0,0.55));
+            background: rgba(0,0,0,0.4);
+            font-size: 1.35rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
-        .yt-lite:focus{
-            outline: 2px solid rgba(255,255,255,0.35);
-            outline-offset: 2px;
+
+        .video-placeholder:hover .video-play {
+            transform: scale(1.05);
+            border-color: var(--white);
         }
         
         /* Info Side - Default hidden state for animation */
@@ -681,10 +692,10 @@
             <div class="section-inner">
             <div class="video-side">
                 <div class="video-container proto-corners">
-                    <div class="yt-lite" data-yt="CPvxM8GrCg8" aria-label="Play Anthony Brass video" role="button" tabindex="0">
-                        <img class="yt-thumb" src="https://img.youtube.com/vi/CPvxM8GrCg8/hqdefault.jpg" alt="Anthony Brass thumbnail" loading="lazy">
-                        <div class="yt-play">▶</div>
-                    </div>
+                    <button class="video-placeholder" type="button" data-video-id="CPvxM8GrCg8" aria-label="Play Anthony Brass video">
+                        <img class="video-thumb" src="https://img.youtube.com/vi/CPvxM8GrCg8/hqdefault.jpg" alt="Anthony Brass thumbnail">
+                        <span class="video-play">▶</span>
+                    </button>
                 </div>
             </div>
             <div class="info-side">
@@ -716,10 +727,10 @@
             <div class="section-inner">
             <div class="video-side">
                 <div class="video-container proto-corners">
-                    <div class="yt-lite" data-yt="HtF4L9RpkaU" aria-label="Play MOZ Interiors video" role="button" tabindex="0">
-                        <img class="yt-thumb" src="https://img.youtube.com/vi/HtF4L9RpkaU/hqdefault.jpg" alt="MOZ Interiors thumbnail" loading="lazy">
-                        <div class="yt-play">▶</div>
-                    </div>
+                    <button class="video-placeholder" type="button" data-video-id="HtF4L9RpkaU" aria-label="Play MOZ Interiors video">
+                        <img class="video-thumb" src="https://img.youtube.com/vi/HtF4L9RpkaU/hqdefault.jpg" alt="MOZ Interiors thumbnail">
+                        <span class="video-play">▶</span>
+                    </button>
                 </div>
             </div>
             <div class="info-side">
@@ -757,10 +768,10 @@
             <div class="section-inner">
             <div class="video-side">
                 <div class="video-container proto-corners">
-                    <div class="yt-lite" data-yt="ZXYtZmIRiRI" aria-label="Play Driven Interiors video" role="button" tabindex="0">
-                        <img class="yt-thumb" src="https://img.youtube.com/vi/ZXYtZmIRiRI/hqdefault.jpg" alt="Driven Interiors thumbnail" loading="lazy">
-                        <div class="yt-play">▶</div>
-                    </div>
+                    <button class="video-placeholder" type="button" data-video-id="ZXYtZmIRiRI" aria-label="Play Driven Interiors video">
+                        <img class="video-thumb" src="https://img.youtube.com/vi/ZXYtZmIRiRI/hqdefault.jpg" alt="Driven Interiors thumbnail">
+                        <span class="video-play">▶</span>
+                    </button>
                 </div>
             </div>
             <div class="info-side">
@@ -792,10 +803,10 @@
             <div class="section-inner">
             <div class="video-side">
                 <div class="video-container proto-corners">
-                    <div class="yt-lite" data-yt="rtEs8chuDlM" aria-label="Play Backyard Sessions video" role="button" tabindex="0">
-                        <img class="yt-thumb" src="https://img.youtube.com/vi/rtEs8chuDlM/hqdefault.jpg" alt="Backyard Sessions thumbnail" loading="lazy">
-                        <div class="yt-play">▶</div>
-                    </div>
+                    <button class="video-placeholder" type="button" data-video-id="rtEs8chuDlM" aria-label="Play Backyard Sessions video">
+                        <img class="video-thumb" src="https://img.youtube.com/vi/rtEs8chuDlM/hqdefault.jpg" alt="Backyard Sessions thumbnail">
+                        <span class="video-play">▶</span>
+                    </button>
                 </div>
             </div>
             <div class="info-side">
@@ -830,10 +841,10 @@
             <div class="section-inner">
             <div class="video-side">
                 <div class="video-container proto-corners">
-                    <div class="yt-lite" data-yt="G0zfFWwQuZA" aria-label="Play Comedy Roll video" role="button" tabindex="0">
-                        <img class="yt-thumb" src="https://img.youtube.com/vi/G0zfFWwQuZA/hqdefault.jpg" alt="Comedy Roll thumbnail" loading="lazy">
-                        <div class="yt-play">▶</div>
-                    </div>
+                    <button class="video-placeholder" type="button" data-video-id="G0zfFWwQuZA" aria-label="Play Comedy Roll video">
+                        <img class="video-thumb" src="https://img.youtube.com/vi/G0zfFWwQuZA/hqdefault.jpg" alt="Comedy Roll thumbnail">
+                        <span class="video-play">▶</span>
+                    </button>
                 </div>
             </div>
             <div class="info-side">
@@ -866,26 +877,22 @@
         const sections = document.querySelectorAll('section');
         const counterCurrent = document.querySelector('.counter-current');
 
-        document.querySelectorAll('.yt-lite').forEach(el => {
-            const id = el.dataset.yt;
-            const img = el.querySelector('.yt-thumb');
-            if (img) img.src = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+        function loadVideo(container, videoId) {
+            if (!videoId) return;
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.allowFullscreen = true;
+            iframe.loading = 'lazy';
+            container.innerHTML = '';
+            container.appendChild(iframe);
+        }
 
-            function activate(){
-                const iframe = document.createElement('iframe');
-                iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
-                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-                iframe.allowFullscreen = true;
-                iframe.style.width = "100%";
-                iframe.style.height = "100%";
-                iframe.style.border = "0";
-                el.replaceWith(iframe);
-            }
-
-            el.addEventListener('click', activate);
-            el.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
-            });
+        document.querySelectorAll('.video-container').forEach(container => {
+            const placeholder = container.querySelector('.video-placeholder');
+            if (!placeholder) return;
+            const videoId = placeholder.dataset.videoId;
+            placeholder.addEventListener('click', () => loadVideo(container, videoId));
         });
 
         // Intersection Observer for section reveals
