@@ -325,7 +325,6 @@
             <div class="view-toggle">
                 <button class="view-btn active" data-view="calendar">📅 Calendar</button>
                 <button class="view-btn" data-view="list">📋 List</button>
-                <button class="view-btn" id="exportIcsBtn" type="button">⬇︎ Export .ics</button>
             </div>
 
             <div class="hero-actions">
@@ -430,20 +429,12 @@
             return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         }
 
-        function getEventStartDate(ev) {
-            return ev.startDate || ev.start || '';
-        }
-
-        function getEventEndDate(ev) {
-            return ev.endDate || ev.end || '';
-        }
-
         function renderCalendar() {
-            const sorted = [...eventsData].sort((a, b) => new Date(getEventStartDate(a)) - new Date(getEventStartDate(b)));
+            const sorted = [...eventsData].sort((a, b) => new Date(a.start) - new Date(b.start));
             calendarGrid.innerHTML = sorted.map(ev => `
                 <article class="event-card">
-                    <div class="event-date">${formatDate(getEventStartDate(ev))}${getEventEndDate(ev) ? ' – ' + formatDate(getEventEndDate(ev)) : ''}</div>
-                    <h3 class="event-name">${ev.name || ev.title}</h3>
+                    <div class="event-date">${formatDate(ev.start)}${ev.end ? ' – ' + formatDate(ev.end) : ''}</div>
+                    <h3 class="event-name">${ev.name}</h3>
                     <div class="event-meta">${ev.location || 'TBD'}</div>
                     <span class="event-type">${ev.type}</span>
                 </article>
@@ -451,11 +442,11 @@
         }
 
         function renderList() {
-            const sorted = [...eventsData].sort((a, b) => new Date(getEventStartDate(a)) - new Date(getEventStartDate(b)));
+            const sorted = [...eventsData].sort((a, b) => new Date(a.start) - new Date(b.start));
             listContainer.innerHTML = sorted.map(ev => `
                 <div class="list-row">
-                    <h4>${ev.name || ev.title}</h4>
-                    <span>${formatDate(getEventStartDate(ev))}${getEventEndDate(ev) ? ' – ' + formatDate(getEventEndDate(ev)) : ''}</span>
+                    <h4>${ev.name}</h4>
+                    <span>${formatDate(ev.start)}${ev.end ? ' – ' + formatDate(ev.end) : ''}</span>
                     <span>${ev.location || 'TBD'}</span>
                     <span class="tag">${ev.type}</span>
                 </div>
@@ -479,102 +470,6 @@
 
         renderCalendar();
         renderList();
-
-        // ============================================
-        // Export iCalendar (.ics)
-        // ============================================
-        function pad2(n){ return String(n).padStart(2,'0'); }
-        function ymdToIcsDate(ymd){
-            const [y,m,d] = ymd.split('-');
-            return `${y}${m}${d}`;
-        }
-        function nextDay(ymd){
-            const dt = new Date(ymd + 'T00:00:00');
-            dt.setDate(dt.getDate() + 1);
-            return `${dt.getFullYear()}-${pad2(dt.getMonth()+1)}-${pad2(dt.getDate())}`;
-        }
-        function escapeIcs(s){
-            return String(s || '')
-                .replace(/\\/g,'\\\\')
-                .replace(/\n/g,'\\n')
-                .replace(/,/g,'\\,')
-                .replace(/;/g,'\\;');
-        }
-
-        function buildIcs() {
-            const tz = 'America/Detroit';
-            const now = new Date();
-            const stamp = `${now.getUTCFullYear()}${pad2(now.getUTCMonth()+1)}${pad2(now.getUTCDate())}T${pad2(now.getUTCHours())}${pad2(now.getUTCMinutes())}${pad2(now.getUTCSeconds())}Z`;
-
-            const lines = [
-                'BEGIN:VCALENDAR',
-                'VERSION:2.0',
-                'PRODID:-//LaB Media//Events//EN',
-                'CALSCALE:GREGORIAN',
-                'METHOD:PUBLISH'
-            ];
-
-            (window.eventsData || eventsData || []).forEach(ev => {
-                const startDate = ev && (ev.startDate || ev.start);
-                if (!ev || !startDate) return;
-                const uid = `${escapeIcs(ev.id || ev.title)}@labmedia.work`;
-
-                const title = ev.title || ev.name || 'Event';
-                const loc = [ev.venue, ev.location].filter(Boolean).join(' — ');
-                const url = ev.url || '';
-                const descParts = [];
-                if (ev.description) descParts.push(ev.description);
-                if (url) descParts.push(url);
-                const desc = descParts.join('\n');
-
-                lines.push('BEGIN:VEVENT');
-                lines.push(`UID:${uid}`);
-                lines.push(`DTSTAMP:${stamp}`);
-                lines.push(`SUMMARY:${escapeIcs(title)}`);
-                if (loc) lines.push(`LOCATION:${escapeIcs(loc)}`);
-                if (desc) lines.push(`DESCRIPTION:${escapeIcs(desc)}`);
-
-                if (ev.startTime) {
-                    const start = ymdToIcsDate(startDate) + 'T' + ev.startTime.replace(':','') + '00';
-                    lines.push(`DTSTART;TZID=${tz}:${start}`);
-
-                    if (ev.endTime) {
-                        const end = ymdToIcsDate(startDate) + 'T' + ev.endTime.replace(':','') + '00';
-                        lines.push(`DTEND;TZID=${tz}:${end}`);
-                    }
-                } else {
-                    const dtStart = ymdToIcsDate(startDate);
-                    const endBase = ev.endDate ? ev.endDate : (ev.end || startDate);
-                    const dtEnd = ymdToIcsDate(nextDay(endBase));
-                    lines.push(`DTSTART;VALUE=DATE:${dtStart}`);
-                    lines.push(`DTEND;VALUE=DATE:${dtEnd}`);
-                }
-
-                lines.push('END:VEVENT');
-            });
-
-            lines.push('END:VCALENDAR');
-            return lines.join('\r\n');
-        }
-
-        function downloadIcs(filename, text) {
-            const blob = new Blob([text], { type: 'text/calendar;charset=utf-8' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            URL.revokeObjectURL(a.href);
-            a.remove();
-        }
-
-        const exportBtn = document.getElementById('exportIcsBtn');
-        if (exportBtn) {
-            exportBtn.addEventListener('click', () => {
-                const ics = buildIcs();
-                downloadIcs('lab-media-events.ics', ics);
-            });
-        }
 
         // ============================================
         // SUGGEST EVENT MODAL (accessible, lightweight)

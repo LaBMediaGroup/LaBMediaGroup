@@ -1640,7 +1640,6 @@
 
         <!-- Quick Filters -->
         <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
-            <button class="quickfilter-btn" type="button" data-qf="saved">Saved</button>
             <button class="quickfilter-btn" type="button" data-qf="labPick">LaB Picks</button>
             <button class="quickfilter-btn" type="button" data-qf="free">Free</button>
             <button class="quickfilter-btn" type="button" data-qf="paid">Paid</button>
@@ -1769,7 +1768,6 @@
         const quickFilterBar = document.getElementById('quickFilterBar');
         const quickFilterButtons = quickFilterBar ? quickFilterBar.querySelectorAll('.quickfilter-btn') : [];
         const quickFilters = {
-            saved: false,
             labPick: false,
             free: false,
             paid: false
@@ -1983,15 +1981,9 @@
             const wantsLabPick = quickFilters.labPick;
             const wantsFree = quickFilters.free;
             const wantsPaid = quickFilters.paid;
-            const wantsSaved = quickFilters.saved;
 
             if (wantsLabPick) {
                 filtered = filtered.filter(r => r.labPick === true);
-            }
-
-            // Saved filter (favorites)
-            if (wantsSaved) {
-                filtered = filtered.filter(r => favorites.has(r.id || normalizeValue(r.name)));
             }
 
             // Free/Paid toggles work across categories when r.paid is present.
