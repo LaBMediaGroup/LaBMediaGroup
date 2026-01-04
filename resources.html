@@ -1621,21 +1621,45 @@
         
         <!-- Filter -->
         <div class="filter-row">
-            <button class="filter-btn active" data-category="film-festivals">Film Fest's</button>
-            <button class="filter-btn" data-category="community">Community</button>
-            <button class="filter-btn" data-category="music">Music</button>
-            <button class="filter-btn" data-category="soundfx">Sound FX</button>
-            <button class="filter-btn" data-category="ai">AI</button>
-            <button class="filter-btn" data-category="stock">Stock</button>
-            <button class="filter-btn" data-category="equipment">Gear</button>
-            <button class="filter-btn" data-category="3d">3D</button>
-            <button class="filter-btn" data-category="fonts">Fonts</button>
-            <button class="filter-btn" data-category="other">FreeLance</button>
-            <button class="filter-btn" data-category="collaborators">Friends</button>
-            <button class="filter-btn" data-category="drone">Drone</button>
-            <button class="filter-btn" data-category="inspiration">Inspiration</button>
-            <button class="filter-btn" data-category="references">References</button>
-            <button class="filter-btn" data-category="all">All</button>
+            <button class="filter-btn active" data-group="film-festivals">Film Festivals</button>
+            <button class="filter-btn" data-group="community">Community</button>
+            <button class="filter-btn" data-group="stock">Stock</button>
+            <button class="filter-btn" data-group="tools">Tools</button>
+            <button class="filter-btn" data-group="collaborators">Friends</button>
+            <button class="filter-btn" data-group="other">FreeLance</button>
+            <button class="filter-btn" data-group="inspiration">Inspiration</button>
+            <button class="filter-btn" data-group="references">References</button>
+            <button class="filter-btn" data-group="all">All</button>
+        </div>
+
+        <!-- Quick Filters -->
+        <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
+            <button class="quickfilter-btn" type="button" data-qf="saved">Saved</button>
+            <button class="quickfilter-btn" type="button" data-qf="labPick">LaB Picks</button>
+            <button class="quickfilter-btn" type="button" data-qf="free">Free</button>
+            <button class="quickfilter-btn" type="button" data-qf="paid">Paid</button>
+        </div>
+
+        <div class="subfilter-row" id="stockGroupBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Stock view:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn active" data-stock="all-stock">All Stock</button>
+                <button class="subfilter-btn" data-stock="music">Music</button>
+                <button class="subfilter-btn" data-stock="soundfx">Sound FX</button>
+                <button class="subfilter-btn" data-stock="stock">Stock</button>
+                <button class="subfilter-btn" data-stock="fonts">Fonts</button>
+                <button class="subfilter-btn" data-stock="3d">3D</button>
+            </div>
+        </div>
+
+        <div class="subfilter-row" id="toolsGroupBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Tools view:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn active" data-tools="all-tools">All Tools</button>
+                <button class="subfilter-btn" data-tools="ai">AI</button>
+                <button class="subfilter-btn" data-tools="gear">Gear</button>
+                <button class="subfilter-btn" data-tools="drone">Drone</button>
+            </div>
         </div>
 
         <!-- Quick Filters -->
@@ -1677,6 +1701,20 @@
         </div>
 
         <div class="resources-grid" id="resourcesGrid"></div>
+
+        <aside class="saved-drawer" id="savedDrawer" aria-label="Saved resources">
+            <div class="saved-header">
+                <h3 class="proto-text-mono">Saved</h3>
+                <div class="saved-actions">
+                    <span class="saved-count" id="savedCount">0</span>
+                    <button class="saved-share" id="shareSavedBtn" type="button">Share Saved</button>
+                </div>
+            </div>
+            <div class="saved-search">
+                <input type="text" id="savedSearch" placeholder="Search saved...">
+            </div>
+            <div class="saved-list" id="savedList" aria-live="polite"></div>
+        </aside>
     </div>
     </div>
     
@@ -1748,6 +1786,8 @@
             </div>
         </div>
     </div>
+
+    <div class="toast" id="shareToast" role="status" aria-live="polite">Link copied</div>
 
     <script src="resources-data.js"></script>
     <script>
@@ -1869,11 +1909,33 @@
             });
         }
         
-        function resourceInCategory(resource, category) {
-            if (category === 'all') return true;
-            const normalizedCategory = normalizeValue(category);
+        function resourceMatchesGroup(resource) {
             const cats = getCategoryList(resource);
-            return cats.includes(normalizedCategory);
+            const primary = cats[0];
+            if (currentGroup === 'all') return true;
+            if (currentGroup === 'film-festivals') return cats.includes('film-festivals');
+            if (currentGroup === 'community') return cats.includes('community');
+            if (currentGroup === 'collaborators') return cats.includes('collaborators');
+            if (currentGroup === 'other') return cats.includes('other');
+            if (currentGroup === 'inspiration') return cats.includes('inspiration');
+            if (currentGroup === 'references') return cats.includes('references');
+
+            if (currentGroup === 'stock') {
+                const stockCats = ['music', 'soundfx', 'stock', 'fonts', '3d'];
+                if (!cats.some(c => stockCats.includes(c))) return false;
+                if (stockSubcategory === 'all-stock') return true;
+                return cats.includes(stockSubcategory);
+            }
+
+            if (currentGroup === 'tools') {
+                const toolCats = ['ai', 'equipment', 'drone'];
+                if (!cats.some(c => toolCats.includes(c))) return false;
+                if (toolsSubcategory === 'all-tools') return true;
+                if (toolsSubcategory === 'gear') return cats.includes('equipment');
+                return cats.includes(toolsSubcategory);
+            }
+
+            return cats.includes(primary);
         }
 
         function getPrimaryCategory(resource) {
@@ -1946,10 +2008,10 @@
         
         function getFilteredResources() {
             let filtered = resources.filter(r =>
-                resourceInCategory(r, currentCategory) && matchesSearch(r, searchQuery)
+                resourceMatchesGroup(r) && matchesSearch(r, searchQuery)
             );
 
-            if (currentCategory === 'music') {
+            if (currentGroup === 'stock' && stockSubcategory === 'music') {
                 filtered = filtered.filter(r => {
                     if (musicTier === 'free') return r.paid === false;
                     if (musicTier === 'paid') return r.paid === true;
@@ -1957,7 +2019,7 @@
                 });
             }
 
-            if (currentCategory === 'ai') {
+            if (currentGroup === 'tools' && toolsSubcategory === 'ai') {
                 filtered = filtered.filter(r => {
                     if (aiType === 'chat') return r.aiType === 'chat';
                     if (aiType === 'music') return r.aiType === 'music';
@@ -1968,7 +2030,7 @@
                 });
             }
 
-            if (currentCategory === 'drone') {
+            if (currentGroup === 'tools' && toolsSubcategory === 'drone') {
                 filtered = filtered.filter(r => {
                     if (droneType === 'channels') return r.droneType === 'channel';
                     if (droneType === 'shops') return r.droneType === 'shop';
@@ -2090,22 +2152,26 @@
         }
 
         function renderResources(animate = false) {
-            if (currentCategory === 'music') {
-                musicTierBar.removeAttribute('hidden');
-            } else {
-                musicTierBar.setAttribute('hidden', 'true');
+            const isStock = currentGroup === 'stock';
+            const isTools = currentGroup === 'tools';
+
+            if (stockGroupBar) {
+                stockGroupBar.toggleAttribute('hidden', !isStock);
+            }
+            if (toolsGroupBar) {
+                toolsGroupBar.toggleAttribute('hidden', !isTools);
             }
 
-            if (currentCategory === 'ai') {
-                aiTypeBar.removeAttribute('hidden');
-            } else {
-                aiTypeBar.setAttribute('hidden', 'true');
+            if (musicTierBar) {
+                musicTierBar.toggleAttribute('hidden', !(isStock && stockSubcategory === 'music'));
             }
 
-            if (currentCategory === 'drone') {
-                droneTypeBar.removeAttribute('hidden');
-            } else {
-                droneTypeBar.setAttribute('hidden', 'true');
+            if (aiTypeBar) {
+                aiTypeBar.toggleAttribute('hidden', !(isTools && toolsSubcategory === 'ai'));
+            }
+
+            if (droneTypeBar) {
+                droneTypeBar.toggleAttribute('hidden', !(isTools && toolsSubcategory === 'drone'));
             }
 
             const filtered = getFilteredResources();
@@ -2495,49 +2561,79 @@
         // FILTER & SEARCH
         // ============================================
         
-        function setCategory(newCategory) {
-            const previousCategory = currentCategory;
-            if (previousCategory === newCategory) {
-                // Ensure the active state matches even if we're reapplying
-                filters.forEach(b => b.classList.toggle('active', b.dataset.category === newCategory));
+        function setGroup(newGroup) {
+            const previousGroup = currentGroup;
+            if (previousGroup === newGroup) {
+                filters.forEach(b => b.classList.toggle('active', b.dataset.group === newGroup));
                 return;
             }
 
             filters.forEach(b => b.classList.remove('active'));
-            const targetBtn = Array.from(filters).find(b => b.dataset.category === newCategory);
+            const targetBtn = Array.from(filters).find(b => b.dataset.group === newGroup);
             if (targetBtn) targetBtn.classList.add('active');
-            currentCategory = newCategory;
+            currentGroup = newGroup;
 
-            // When switching to music category, default to paid view
-            if (currentCategory === 'music' && musicTier === 'all') {
+            if (newGroup !== 'stock') {
+                stockSubcategory = 'all-stock';
+                stockGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.stock === stockSubcategory));
+            }
+            if (newGroup !== 'tools') {
+                toolsSubcategory = 'all-tools';
+                toolsGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.tools === toolsSubcategory));
+            }
+
+            if (!(newGroup === 'stock' && stockSubcategory === 'music') && musicTier !== 'paid') {
                 musicTier = 'paid';
-                musicTierButtons.forEach(b => b.classList.remove('active'));
-                musicTierButtons.forEach(b => {
-                    if (b.dataset.tier === 'paid') b.classList.add('active');
-                });
-            }
-            // When switching away from music, reset to all
-            else if (previousCategory === 'music' && musicTier !== 'all') {
-                musicTier = 'all';
-                musicTierButtons.forEach(b => b.classList.remove('active'));
-                musicTierButtons.forEach(b => {
-                    if (b.dataset.tier === 'all') b.classList.add('active');
-                });
+                musicTierButtons.forEach(b => b.classList.toggle('active', b.dataset.tier === 'paid'));
             }
 
-            // Reset AI view when leaving AI tab
-            if (previousCategory === 'ai' && aiType !== 'all') {
+            if (!(newGroup === 'tools' && toolsSubcategory === 'ai') && aiType !== 'all') {
                 aiType = 'all';
-                aiTypeButtons.forEach(b => b.classList.remove('active'));
-                aiTypeButtons.forEach(b => {
-                    if (b.dataset.type === 'all') b.classList.add('active');
-                });
+                aiTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
+            }
+
+            if (!(newGroup === 'tools' && toolsSubcategory === 'drone') && droneType !== 'channels') {
+                droneType = 'channels';
+                droneTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'channels'));
             }
         }
 
         filters.forEach(btn => {
             btn.addEventListener('click', () => {
-                setCategory(btn.dataset.category);
+                setGroup(btn.dataset.group);
+                renderResources(true);
+            });
+        });
+
+        // Quick filters (multi-toggle)
+        if (quickFilterButtons.length) {
+            quickFilterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const key = btn.dataset.qf;
+                    if (!key || !(key in quickFilters)) return;
+                    quickFilters[key] = !quickFilters[key];
+                    btn.classList.toggle('is-active', quickFilters[key]);
+                    renderResources(true);
+                });
+            });
+        }
+
+        stockGroupButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                stockGroupButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                stockSubcategory = btn.dataset.stock;
+                renderResources(true);
+            });
+        });
+
+        toolsGroupButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                toolsGroupButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                toolsSubcategory = btn.dataset.tools;
                 renderResources(true);
             });
         });
