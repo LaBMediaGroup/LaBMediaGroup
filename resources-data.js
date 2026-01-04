@@ -278,11 +278,12 @@ const resources = [
     },
 
     // ============================================
-    // INSPIRATION
+    // REFERENCES
     // ============================================
     {
         name: 'Hillier Smith',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'editing',
         desc: 'High-level breakdowns on editing momentum for YouTube storytelling.',
         fullDesc: 'Film editor Hillier Smith dissects pacing, structure, and storytelling choices for creator-led projects—practical, advanced insight for cutting modern YouTube narratives.',
         url: 'https://www.youtube.com/@HillierSmith',
@@ -293,7 +294,8 @@ const resources = [
     },
     {
         name: 'Gawx Art',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'art',
         desc: 'Experimental digital artist blending illustration, animation, and texture.',
         fullDesc: 'Expressive digital illustration through animation, texture, and surreal motion—great reference for stylized visual language.',
         url: 'https://www.youtube.com/@GawxArt',
@@ -304,7 +306,8 @@ const resources = [
     },
     {
         name: 'Dodford',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'filming',
         desc: 'Visual storytelling experiments with a creator-first, process-forward approach.',
         fullDesc: 'A channel built around creative experimentation—useful for seeing how simple ideas evolve into polished visual narratives.',
         url: 'https://www.youtube.com/@DodfordYT',
@@ -315,17 +318,19 @@ const resources = [
     },
     {
         name: 'Chuck Lee MBM',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'art',
         desc: 'Creative filmmaking and craft-focused storytelling references.',
         fullDesc: 'Practical creative inspiration centered on making, refining, and finishing work—good fuel for momentum.',
         url: 'https://www.youtube.com/@ChuckLeeMBM',
         paid: false,
         featuredVideo: 'iGTif3RG42U',
-        features: ['Filmmaking', 'Creative Process', 'Storytelling', 'Craft']
+        features: ['Filmmaking', 'Creative Process', 'Storytelling', 'Craft', 'Made in Michigan']
     },
     {
         name: 'Joris Hermans',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'filming',
         desc: 'Design-forward filmmaking and visual craft inspiration.',
         fullDesc: 'A clean, intentional approach to visuals—useful reference for composition, pacing, and taste.',
         url: 'https://www.youtube.com/@JorisHermans',
@@ -336,6 +341,7 @@ const resources = [
     {
         name: 'ALTER',
         category: 'references',
+        refType: 'filming',
         desc: 'Award-winning short horror films and genre storytelling.',
         fullDesc: 'Curated horror shorts from filmmakers around the world—a consistent reference for pacing, atmosphere, and short-form genre execution. Useful for studying structure, tension building, and visual storytelling in tight formats.',
         url: 'https://www.youtube.com/WatchALTER',
@@ -346,7 +352,8 @@ const resources = [
     },
     {
         name: 'paul_et',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'art',
         desc: 'Design, motion, and digital craft inspiration with a modern aesthetic.',
         fullDesc: 'A modern visual sensibility—useful reference for minimal, clean design decisions and motion-forward thinking.',
         url: 'https://www.youtube.com/@paul_et',
@@ -356,7 +363,8 @@ const resources = [
     },
     {
         name: 'Sean Kitching',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'inspiration',
         desc: 'Creator workflow and filmmaking momentum inspiration.',
         fullDesc: 'A reference point for staying consistent—workflow, output, and pushing projects over the finish line.',
         url: 'https://www.youtube.com/@seankitching',
@@ -366,7 +374,8 @@ const resources = [
     },
     {
         name: 'Casey Neistat',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'inspiration',
         desc: 'High-energy personal filmmaking and creative momentum.',
         fullDesc: 'A reference for rhythm, structure, and creative confidence—motion-first storytelling with editorial instinct.',
         url: 'https://www.youtube.com/@casey',
@@ -376,7 +385,8 @@ const resources = [
     },
     {
         name: 'Lofi Girl',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'music',
         desc: 'Iconic lo-fi music channel with strong visual identity.',
         fullDesc: 'A reference point for branding, tone, and ambient storytelling through consistent visual language.',
         url: 'https://www.youtube.com/@LofiGirl',
@@ -386,7 +396,8 @@ const resources = [
     },
     {
         name: 'Viva La Dirt League',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'comedy',
         desc: 'Narrative comedy sketches rooted in gaming and pop culture.',
         fullDesc: 'High-output narrative comedy with strong character consistency and efficient production workflows.',
         url: 'https://www.youtube.com/@VivaLaDirtLeague',
@@ -401,7 +412,8 @@ const resources = [
     {
         name: 'Joshua Bardwell',
         category: 'drone',
-        droneType: 'channel',
+        droneType: 'channels',
+        droneSubType: 'channels',
         desc: 'FPV drone tutorials and gear deep-dives with clear visual demos.',
         fullDesc: 'Technical yet accessible breakdowns of FPV drone builds, tuning, and flight footage—essential resource for FPV learning, diagnostics, and gear selection. Clear explanations for both beginners and advanced pilots.',
         url: 'https://www.youtube.com/@JoshuaBardwell',
@@ -413,7 +425,8 @@ const resources = [
     {
         name: 'DJI',
         category: 'drone',
-        droneType: 'shop',
+        droneType: 'stores',
+        droneSubType: 'stores',
         desc: 'Industry-leading camera drones for aerial photography and cinematography.',
         fullDesc: 'DJI offers the most comprehensive lineup of camera drones, from compact mini drones to professional multi-lens flagship models. Their products enable creators to capture aerial moments with reliability, advanced stabilization, and professional-grade imaging—trusted by filmmakers worldwide.',
         url: 'https://www.dji.com/camera-drones',
@@ -423,7 +436,8 @@ const resources = [
     {
         name: 'BetaFPV',
         category: 'drone',
-        droneType: 'shop',
+        droneType: 'stores',
+        droneSubType: 'stores',
         desc: 'Trailblazer in micro FPV drones and components.',
         fullDesc: 'BetaFPV specializes in micro FPV drones and comprehensive component offerings including ready-to-fly kits, brushless quadcopters, flight controllers, cameras, motors, and accessories. Perfect for both beginner pilots and experienced racers looking for compact, agile systems.',
         url: 'https://betafpv.com',
@@ -434,7 +448,8 @@ const resources = [
     {
         name: 'FAA Drone Certification',
         category: 'drone',
-        droneType: 'part-107',
+        droneType: 'part107',
+        droneSubType: 'part107',
         desc: 'Official guide to becoming a certified commercial drone pilot (Part 107).',
         fullDesc: 'The FAA\'s comprehensive resource for obtaining your Remote Pilot Certificate under Part 107. Covers eligibility requirements, application process through IACRA, knowledge testing, and ongoing recertification—essential for anyone operating drones commercially in the United States.',
         url: 'https://www.faa.gov/uas/commercial_operators/become_a_drone_pilot',
@@ -452,7 +467,8 @@ const resources = [
     {
         name: 'King Schools Part 107 Prep',
         category: 'drone',
-        droneType: 'part-107',
+        droneType: 'part107',
+        droneSubType: 'part107',
         desc: 'Self-paced course to pass the FAA Part 107 Remote Pilot knowledge test.',
         fullDesc: 'King Schools offers a dedicated Part 107 online course with video lessons, practice tests, and scenario-based training to prepare pilots for the FAA Remote Pilot knowledge exam. Designed for clarity and test confidence with mobile-friendly access.',
         url: 'https://kingschools.com/drone-pilot-license-test-prep-course',
@@ -470,7 +486,8 @@ const resources = [
     {
         name: 'Mike Sytes (Part 107)',
         category: 'drone',
-        droneType: 'part-107',
+        droneType: 'part107',
+        droneSubType: 'part107',
         desc: 'Practical Part 107 study walkthroughs with clear test-taking tips.',
         fullDesc: 'Mike Sytes provides approachable guidance for passing the Part 107 exam, including regulation breakdowns, aeronautical charts, and practice question reviews. Useful for quick refreshers and applied study sessions.',
         url: 'https://www.youtube.com/@mikesytes',
@@ -489,7 +506,8 @@ const resources = [
     {
         name: 'Mr. Migs Classroom (Part 107)',
         category: 'drone',
-        droneType: 'part-107',
+        droneType: 'part107',
+        droneSubType: 'part107',
         desc: 'Classroom-style lessons covering Part 107 knowledge areas.',
         fullDesc: 'Mr. Migs Classroom delivers organized Part 107 instruction with playlists on airspace, weather, sectional charts, and operating rules—great for structured study and teaching contexts.',
         url: 'https://www.youtube.com/@MrMigsClassroom',
@@ -508,7 +526,8 @@ const resources = [
     {
         name: 'CAPTAIN DRONE',
         category: 'drone',
-        droneType: 'channel',
+        droneType: 'channels',
+        droneSubType: 'channels',
         desc: 'FPV tutorials, reviews, and flight content.',
         fullDesc: 'YouTube channel focused on FPV drone flying, gear reviews, tutorials, and flight footage. Practical insights for pilots at all levels with an emphasis on real-world flying and equipment recommendations.',
         url: 'https://www.youtube.com/@CAPTAINDRONE798',
@@ -519,7 +538,8 @@ const resources = [
     {
         name: 'GetFPV',
         category: 'drone',
-        droneType: 'shop',
+        droneType: 'stores',
+        droneSubType: 'stores',
         desc: 'Leading FPV drone retailer with extensive components and learning resources.',
         fullDesc: 'GetFPV is a comprehensive FPV drone store offering everything from complete systems to individual components, batteries, and accessories. Their YouTube channel provides tutorials, product reviews, and build guides—solid resource for gear selection and technical knowledge.',
         url: 'https://www.getfpv.com',
@@ -530,7 +550,8 @@ const resources = [
     {
         name: 'RaceDayQuads',
         category: 'drone',
-        droneType: 'shop',
+        droneType: 'stores',
+        droneSubType: 'stores',
         desc: 'FPV racing equipment and components from top brands.',
         fullDesc: 'RaceDayQuads specializes in FPV drone racing equipment with a comprehensive selection of pre-built drones, flight controllers, motors, propellers, batteries, frames, and accessories from leading industry brands. Go-to shop for competitive racing builds.',
         url: 'https://www.racedayquads.com',
@@ -540,7 +561,8 @@ const resources = [
     {
         name: 'Pyrodrone',
         category: 'drone',
-        droneType: 'shop',
+        droneType: 'stores',
+        droneSubType: 'stores',
         desc: 'Top-rated FPV drones and extensive component selection.',
         fullDesc: 'Pyrodrone offers prebuilt FPV drones across micro, digital, analog, and cinewhoop categories, plus extensive individual components including motors, propellers, batteries, frames, and electronics. Well-curated selection for FPV enthusiasts of all skill levels.',
         url: 'https://pyrodrone.com',
@@ -550,7 +572,8 @@ const resources = [
     {
         name: 'Mr Steele',
         category: 'drone',
-        droneType: 'channel',
+        droneType: 'channels',
+        droneSubType: 'channels',
         desc: 'Legendary FPV pilot known for cinematic freestyle and creativity.',
         fullDesc: 'Mr Steele is one of the most influential FPV pilots in the community, known for his smooth cinematic freestyle flying and creative approach to drone content. His videos showcase what\'s possible with FPV—useful inspiration for visual movement and dynamic aerial storytelling.',
         url: 'https://www.youtube.com/@MrSteeleFPV',
@@ -563,7 +586,8 @@ const resources = [
     {
         name: 'BOTGRINDER',
         category: 'drone',
-        droneType: 'channel',
+        droneType: 'channels',
+        droneSubType: 'channels',
         desc: 'High-energy FPV freestyle and creative drone cinematography.',
         fullDesc: 'BOTGRINDER delivers aggressive, technical FPV freestyle with creative cinematography and unique locations. Known for pushing the limits of FPV movement and visual storytelling—great reference for dynamic aerial work and bold flying.',
         url: 'https://www.youtube.com/@BOTGRINDER',
@@ -574,7 +598,8 @@ const resources = [
     {
         name: 'BobtatsiC',
         category: 'drone',
-        droneType: 'channel',
+        droneType: 'channels',
+        droneSubType: 'channels',
         desc: 'FPV drone flights and channel updates from BobtatsiC.',
         fullDesc: 'BobtatsiC shares FPV flight footage and channel updates with a focus on hands-on piloting. Useful reference for real-world freestyle runs and progress tracking.',
         url: 'https://www.youtube.com/@BobtastiCFPV',
@@ -598,6 +623,7 @@ const resources = [
     {
         name: 'Crypt TV',
         category: 'references',
+        refType: 'filming',
         desc: 'Short horror films and monster-driven genre content.',
         fullDesc: 'Crypt TV produces short horror films and episodic monster content with recurring creatures and interconnected lore. Their work focuses on practical creature effects, atmospheric horror, and building tension in short formats—useful reference for genre filmmaking and franchise-building storytelling.',
         url: 'https://www.youtube.com/@Crypttv/videos',
@@ -607,7 +633,8 @@ const resources = [
     },
     {
         name: 'PandaHouse',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'music',
         desc: 'Detroit-based music project blending indie, alternative, and expressive songwriting.',
         fullDesc: 'Mood-driven songwriting with an atmospheric edge—useful inspiration for music-led visual tone and emotional pacing. Features Anthony Brass (collaborator) on drums alongside emotive indie arrangements.',
         url: 'https://www.pandahousedetroit.com',
@@ -620,7 +647,8 @@ const resources = [
     },
     {
         name: 'TenHundred',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'art',
         desc: 'Multidisciplinary artist working across painting, murals, illustration, and YouTube.',
         fullDesc: 'TenHundred is a creative based in Southwest Michigan whose work spans painting, murals, illustration, and design. Their YouTube channel documents the creative process, offering insights into making work with momentum and intention—useful inspiration for project-driven creativity.',
         url: 'https://tenhundredart.com',
@@ -633,6 +661,7 @@ const resources = [
     {
         name: 'Omeleto',
         category: 'references',
+        refType: 'filming',
         desc: 'Award-winning short films across all genres—drama, comedy, sci-fi, thriller.',
         fullDesc: 'Omeleto curates and showcases the best short films from festivals and independent filmmakers worldwide. Their catalog spans every genre with consistently high production values and compelling storytelling—essential reference for studying narrative structure, pacing, and cinematic craft in 5-20 minute formats.',
         url: 'https://www.youtube.com/@Omeleto',
@@ -644,6 +673,7 @@ const resources = [
     {
         name: 'Short of the Week',
         category: 'references',
+        refType: 'references',
         desc: 'Curated short film platform highlighting the best in independent short cinema.',
         fullDesc: 'Short of the Week is a tastemaker platform that hand-picks exceptional short films across narrative, documentary, animation, and experimental formats. Each film is thoughtfully curated and includes editorial insights—ideal for discovering cutting-edge storytelling and unique visual approaches.',
         url: 'https://www.shortoftheweek.com',
@@ -656,6 +686,7 @@ const resources = [
     {
         name: 'Film Shortage',
         category: 'references',
+        refType: 'art',
         desc: 'International short films with a focus on narrative and experimental cinema.',
         fullDesc: 'Film Shortage showcases boundary-pushing short films from around the world, often highlighting experimental techniques and bold narrative choices. Their selection leans artistic and unconventional—great for studying non-traditional storytelling and visual risk-taking.',
         url: 'https://www.youtube.com/@FilmShortage',
