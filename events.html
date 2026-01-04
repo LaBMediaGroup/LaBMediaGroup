@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events | LaB Media</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Prototype Design System -->
+    <link rel="stylesheet" href="prototype-theme.css">
+
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-200: #C5C5C5;
+            --gray-300: #B0B0B0;
+            --gray-400: #888888;
+            --gray-600: #555555;
+            --gray-800: #1A1A1A;
+            --gray-900: #0D0D0D;
+            --lab-orange: #F97316;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--black);
+            color: var(--gray-300);
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .page-shell {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 3rem 4rem;
+        }
+
+        /* Navigation to match index.html */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+
+        .nav-logo {
+            height: 22px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.5;
+        }
+
+        .hero {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .hero h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--white);
+            font-weight: 400;
+            letter-spacing: -1px;
+            line-height: 1;
+            margin: 0 0 1rem;
+        }
+
+        .hero p {
+            margin: 0 0 1.5rem;
+            color: var(--gray-400);
+            max-width: 720px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .view-toggle {
+            margin-top: 1.25rem;
+            display: inline-flex;
+            gap: 0.5rem;
+        }
+
+        .view-btn {
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.03);
+            color: var(--gray-300);
+            padding: 0.5rem 0.85rem;
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+            transition: transform 0.1s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+        }
+
+        .view-btn:hover { transform: translateY(-1px); color: var(--white); }
+        .view-btn.active {
+            border-color: rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.06);
+            color: var(--white);
+        }
+
+        /* Suggest Event */
+        .hero-actions {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: flex-start;
+        }
+        .suggest-btn {
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.04);
+            color: var(--white);
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: transform 0.12s ease, background 0.2s ease, border-color 0.2s ease;
+            font-family: 'Space Mono', monospace;
+        }
+        .suggest-btn:hover { transform: translateY(-1px); background: rgba(255,255,255,0.06); }
+        .suggest-btn:active { transform: translateY(0); }
+
+        /* Layout */
+        .view-section {
+            margin-top: 2rem;
+        }
+
+        .calendar-grid {
+            margin-bottom: 3rem;
+        }
+
+        .calendar-grid[hidden] {
+            display: none;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .calendar-month-year {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--white);
+            letter-spacing: 1px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .calendar-nav button {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-nav button:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .calendar-month-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: var(--gray-800);
+            border: 1px solid var(--gray-800);
+        }
+
+        .calendar-day-header {
+            background: var(--black);
+            padding: 1rem;
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .calendar-day-cell {
+            background: var(--black);
+            min-height: 120px;
+            padding: 0.75rem;
+            position: relative;
+        }
+
+        .calendar-day-cell.other-month {
+            opacity: 0.3;
+        }
+
+        .calendar-day-number {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+        }
+
+        .calendar-day-cell.today .calendar-day-number {
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        .calendar-events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .calendar-event-pill {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            padding: 0.35rem 0.5rem;
+            border: 1px solid;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .calendar-event-pill:hover {
+            transform: translateX(2px);
+        }
+
+        .calendar-event-pill.type-meetup {
+            border-color: rgba(34, 197, 94, 0.4);
+            color: #22C55E;
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .calendar-event-pill.type-deadline {
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #EF4444;
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .calendar-event-pill.type-festival {
+            border-color: rgba(245, 158, 11, 0.4);
+            color: #F59E0B;
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .calendar-event-pill.type-workshop {
+            border-color: rgba(59, 130, 246, 0.4);
+            color: #3B82F6;
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .calendar-event-pill.type-screening {
+            border-color: rgba(168, 85, 247, 0.4);
+            color: #A855F7;
+            background: rgba(168, 85, 247, 0.05);
+        }
+
+        /* Past events styling */
+        .calendar-event-pill.is-past {
+            opacity: 0.5;
+            text-decoration: line-through;
+            border-style: dashed;
+        }
+
+        .list-row.is-past {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+
+        .list-view {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .list-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 0.8fr;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .list-row h4 { margin: 0; color: var(--white); }
+        .list-row span { color: var(--gray-400); font-size: 0.95rem; }
+
+        .list-header {
+            font-family: 'Space Mono', monospace;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-color: rgba(255,255,255,0.18);
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid rgba(255,255,255,0.14);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray-200);
+        }
+
+        /* Suggest modal */
+        .suggest-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.68);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            z-index: 1400;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+        .suggest-backdrop.is-open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .suggest-modal {
+            width: min(720px, 100%);
+            max-height: 80vh;
+            overflow: auto;
+            background: var(--black);
+            border: 1px solid rgba(255,255,255,0.14);
+            padding: 1rem;
+        }
+        .suggest-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .suggest-title { color: var(--white); font-family: 'Space Mono', monospace; }
+        .suggest-close {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.04);
+            color: var(--white);
+            cursor: pointer;
+        }
+        .suggest-form {
+            display: grid;
+            gap: 0.75rem;
+        }
+        .suggest-form label {
+            font-family: 'Space Mono', monospace;
+            color: var(--gray-300);
+            font-size: 0.85rem;
+            display: grid;
+            gap: 0.35rem;
+        }
+        .suggest-form input,
+        .suggest-form select,
+        .suggest-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.03);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+        }
+        .suggest-form textarea { min-height: 110px; resize: vertical; }
+        .suggest-submit {
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.06);
+            color: var(--white);
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+        }
+        @media (max-width: 768px) {
+            .list-row { grid-template-columns: 1fr; gap: 0.35rem; }
+            .list-header { display: none; }
+            .suggest-modal { max-height: 90vh; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB" class="nav-logo">
+        </a>
+        <ul class="nav-links">
+            <li><a href="portfolio.html">Work</a></li>
+            <li><a href="plan-your-project.html">Project</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-shell">
+
+        <section class="hero">
+            <h1>Events</h1>
+            <p>Deadlines, screenings, meetups, and festivals that keep the LaB community connected. Toggle views to browse.</p>
+
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="calendar">📅 Calendar</button>
+                <button class="view-btn" data-view="list">📋 List</button>
+                <button class="view-btn" id="togglePastEvents" data-show="false">🕐 Show Past</button>
+            </div>
+
+            <div class="hero-actions">
+                <button class="suggest-btn proto-text-mono" id="suggestEventBtn" type="button">+ Suggest Event</button>
+            </div>
+        </section>
+
+        <section class="view-section" id="calendarSection">
+            <div class="calendar-grid" id="calendarGrid" aria-live="polite"></div>
+        </section>
+
+        <section class="view-section" id="listSection" hidden>
+            <div class="list-view">
+                <div class="list-row list-header">
+                    <span>Event</span>
+                    <span>Date</span>
+                    <span>Location</span>
+                    <span>Type</span>
+                </div>
+                <div id="listContainer"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Suggest Event Modal -->
+    <div class="suggest-backdrop" id="suggestBackdrop" aria-hidden="true">
+        <div class="suggest-modal" id="suggestDialog" role="dialog" aria-modal="true" aria-labelledby="suggestTitle" tabindex="-1">
+            <div class="suggest-header">
+                <div>
+                    <div class="proto-text-mono" style="opacity:0.7;">Community Contribution</div>
+                    <h3 class="suggest-title" id="suggestTitle">Suggest an Event</h3>
+                </div>
+                <button class="suggest-close" id="suggestClose" type="button" aria-label="Close">×</button>
+            </div>
+
+            <form class="suggest-form" action="https://formspree.io/f/mkgvggge" method="POST">
+                <input type="hidden" name="source" value="events-page">
+                <label>
+                    Event name
+                    <input name="event_name" required>
+                </label>
+
+                <label>
+                    Type
+                    <select name="event_type" required>
+                        <option value="festival">Festival</option>
+                        <option value="meetup">Meetup</option>
+                        <option value="deadline">Deadline</option>
+                        <option value="screening">Screening</option>
+                        <option value="workshop">Workshop</option>
+                        <option value="other">Other</option>
+                    </select>
+                </label>
+
+                <label>
+                    Start date
+                    <input type="date" name="start_date" required>
+                </label>
+
+                <label>
+                    End date (optional)
+                    <input type="date" name="end_date">
+                </label>
+
+                <label>
+                    Location (city/state)
+                    <input name="location">
+                </label>
+
+                <label>
+                    Link (optional)
+                    <input name="url" placeholder="https://">
+                </label>
+
+                <label>
+                    Notes (optional)
+                    <textarea name="notes" placeholder="Any details, deadlines, FilmFreeway link, etc."></textarea>
+                </label>
+
+                <button class="suggest-submit" type="submit">Send Suggestion</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="events-data.js"></script>
+    <script>
+        const viewButtons = document.querySelectorAll('.view-btn');
+        const calendarSection = document.getElementById('calendarSection');
+        const listSection = document.getElementById('listSection');
+        const calendarGrid = document.getElementById('calendarGrid');
+        const listContainer = document.getElementById('listContainer');
+        const togglePastEventsBtn = document.getElementById('togglePastEvents');
+
+        // Calendar state
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        let showPastEvents = false;
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr + 'T00:00:00');
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function isEventPast(event) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const eventDate = new Date(event.endDate || event.startDate);
+            return eventDate < today;
+        }
+
+        function renderCalendar() {
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                               'July', 'August', 'September', 'October', 'November', 'December'];
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+            // Get first day of month and number of days
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = firstDay.getDay();
+
+            // Get previous month's trailing days
+            const prevMonthLastDay = new Date(currentYear, currentMonth, 0).getDate();
+            const leadingDays = startingDayOfWeek;
+
+            // Calculate total cells needed
+            const totalCells = Math.ceil((leadingDays + daysInMonth) / 7) * 7;
+            const trailingDays = totalCells - (leadingDays + daysInMonth);
+
+            // Build calendar HTML
+            let calendarHTML = `
+                <div class="calendar-header">
+                    <div class="calendar-month-year">${monthNames[currentMonth]} ${currentYear}</div>
+                    <div class="calendar-nav">
+                        <button id="prevMonth">← Prev</button>
+                        <button id="nextMonth">Next →</button>
+                    </div>
+                </div>
+                <div class="calendar-month-grid">
+            `;
+
+            // Day headers
+            dayNames.forEach(day => {
+                calendarHTML += `<div class="calendar-day-header">${day}</div>`;
+            });
+
+            // Leading days from previous month
+            for (let i = leadingDays - 1; i >= 0; i--) {
+                const dayNum = prevMonthLastDay - i;
+                calendarHTML += `
+                    <div class="calendar-day-cell other-month">
+                        <div class="calendar-day-number">${dayNum}</div>
+                    </div>
+                `;
+            }
+
+            // Current month days
+            const today = new Date();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(currentYear, currentMonth, day);
+                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const isToday = date.toDateString() === today.toDateString();
+
+                // Find events for this day
+                const dayEvents = eventsData.filter(evt => {
+                    const matchesDate = evt.startDate === dateStr ||
+                           (evt.endDate && dateStr >= evt.startDate && dateStr <= evt.endDate);
+                    const isPast = isEventPast(evt);
+                    // Show if: matches date AND (showPastEvents is true OR event is not past)
+                    return matchesDate && (showPastEvents || !isPast);
+                });
+
+                calendarHTML += `
+                    <div class="calendar-day-cell${isToday ? ' today' : ''}">
+                        <div class="calendar-day-number">${day}</div>
+                        <div class="calendar-events-list">
+                `;
+
+                dayEvents.forEach(evt => {
+                    const isPast = isEventPast(evt);
+                    const pastClass = isPast ? ' is-past' : '';
+                    calendarHTML += `
+                        <div class="calendar-event-pill type-${evt.type}${pastClass}" title="${evt.title}">
+                            ${evt.title}
+                        </div>
+                    `;
+                });
+
+                calendarHTML += `
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Trailing days from next month
+            for (let day = 1; day <= trailingDays; day++) {
+                calendarHTML += `
+                    <div class="calendar-day-cell other-month">
+                        <div class="calendar-day-number">${day}</div>
+                    </div>
+                `;
+            }
+
+            calendarHTML += '</div>';
+            calendarGrid.innerHTML = calendarHTML;
+
+            // Add month navigation listeners
+            document.getElementById('prevMonth')?.addEventListener('click', () => {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                renderCalendar();
+            });
+
+            document.getElementById('nextMonth')?.addEventListener('click', () => {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                renderCalendar();
+            });
+        }
+
+        function renderList() {
+            const sorted = [...eventsData].sort((a, b) => new Date(a.start) - new Date(b.start));
+            listContainer.innerHTML = sorted.map(ev => `
+                <div class="list-row">
+                    <h4>${ev.name}</h4>
+                    <span>${formatDate(ev.start)}${ev.end ? ' – ' + formatDate(ev.end) : ''}</span>
+                    <span>${ev.location || 'TBD'}</span>
+                    <span class="tag">${ev.type}</span>
+                </div>
+            `).join('');
+        }
+
+        function setView(view) {
+            viewButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+            if (view === 'list') {
+                listSection.hidden = false;
+                calendarSection.hidden = true;
+            } else {
+                listSection.hidden = true;
+                calendarSection.hidden = false;
+            }
+        }
+
+        viewButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Don't toggle past events button as a view
+                if (btn.id === 'togglePastEvents') return;
+                setView(btn.dataset.view);
+            });
+        });
+
+        // Toggle past events
+        if (togglePastEventsBtn) {
+            togglePastEventsBtn.addEventListener('click', () => {
+                showPastEvents = !showPastEvents;
+                togglePastEventsBtn.textContent = showPastEvents ? '🕐 Hide Past' : '🕐 Show Past';
+                togglePastEventsBtn.classList.toggle('active', showPastEvents);
+                renderCalendar();
+                renderList();
+            });
+        }
+
+        renderCalendar();
+        renderList();
+
+        // ============================================
+        // SUGGEST EVENT MODAL (accessible, lightweight)
+        // ============================================
+        const suggestEventBtn = document.getElementById('suggestEventBtn');
+        const suggestBackdrop = document.getElementById('suggestBackdrop');
+        const suggestDialog = document.getElementById('suggestDialog');
+        const suggestClose = document.getElementById('suggestClose');
+
+        const focusableSel = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+        let lastFocusEl = null;
+
+        function openSuggestModal() {
+            if (!suggestBackdrop) return;
+            lastFocusEl = document.activeElement;
+            suggestBackdrop.classList.add('is-open');
+            suggestBackdrop.setAttribute('aria-hidden', 'false');
+            const first = suggestDialog.querySelector('input, select, textarea, button');
+            (first || suggestDialog).focus();
+        }
+
+        function closeSuggestModal() {
+            if (!suggestBackdrop) return;
+            suggestBackdrop.classList.remove('is-open');
+            suggestBackdrop.setAttribute('aria-hidden', 'true');
+            if (lastFocusEl && lastFocusEl.focus) lastFocusEl.focus();
+        }
+
+        function trapFocus(e) {
+            if (!suggestBackdrop.classList.contains('is-open')) return;
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeSuggestModal();
+                return;
+            }
+            if (e.key !== 'Tab') return;
+
+            const focusables = Array.from(suggestDialog.querySelectorAll(focusableSel)).filter(el => el.offsetParent !== null);
+            if (!focusables.length) return;
+
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        }
+
+        if (suggestEventBtn) suggestEventBtn.addEventListener('click', openSuggestModal);
+        if (suggestClose) suggestClose.addEventListener('click', closeSuggestModal);
+        if (suggestBackdrop) {
+            suggestBackdrop.addEventListener('click', (e) => {
+                if (e.target === suggestBackdrop) closeSuggestModal();
+            });
+        }
+        document.addEventListener('keydown', trapFocus);
+    </script>
+</body>
+</html>
