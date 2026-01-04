@@ -119,15 +119,15 @@ const eventsData = [
     description: '2025 Royal Starr Film Festival run (past).'
   },
   {
-    id: 'comedy-roll-kickoff-2025',
-    title: 'The Comedy Roll Kickoff 2025',
-    type: 'festival',
+    id: 'comedy-roll-2025',
+    title: 'The Comedy Roll — Entry Night',
+    type: 'screening',
     startDate: '2025-04-01',
     startTime: '19:00',
     endTime: '22:00',
     location: 'Hazel Park, MI',
     venue: 'Eastern Palace Club',
     url: 'https://thecomedyroll.com',
-    description: 'Opening-night kickoff for The Comedy Roll: live pitches, performer lineup reveal, and on-site signups for the 2025 run.'
+    description: 'Comedy Roll 2025 entry show at Eastern Palace Club.'
   }
 ];
