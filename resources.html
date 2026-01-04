@@ -1669,37 +1669,34 @@
             <button class="quickfilter-btn" type="button" data-qf="paid">Paid</button>
         </div>
 
-        <div class="subfilter-row" id="musicTierBar" aria-live="polite" hidden>
-            <span class="subfilter-label">Music view:</span>
-            <div class="subfilter-buttons">
-                <button class="subfilter-btn active" data-tier="paid">Paid</button>
-                <button class="subfilter-btn" data-tier="free">Free</button>
-                <button class="subfilter-btn" data-tier="all">All</button>
-            </div>
+        <!-- Subcategory bars (hidden unless Stock/Tools group is active) -->
+        <div class="subfilter-row" id="stockHubBar" aria-live="polite" hidden>
+            <span class="subfilter-label proto-text-mono">Stock:</span>
+            <button class="subfilter-btn active" data-sub="all">All Stock</button>
+            <button class="subfilter-btn" data-sub="music">Music</button>
+            <button class="subfilter-btn" data-sub="soundfx">Sound FX</button>
+            <button class="subfilter-btn" data-sub="stock">Stock</button>
+            <button class="subfilter-btn" data-sub="fonts">Fonts</button>
+            <button class="subfilter-btn" data-sub="3d">3D</button>
         </div>
 
-        <div class="subfilter-row" id="aiTypeBar" aria-live="polite" hidden>
-            <span class="subfilter-label">AI view:</span>
-            <div class="subfilter-buttons">
-                <button class="subfilter-btn" data-type="chat">Chat Bots</button>
-                <button class="subfilter-btn" data-type="music">Music</button>
-                <button class="subfilter-btn" data-type="video">Video</button>
-                <button class="subfilter-btn" data-type="image">Image</button>
-                <button class="subfilter-btn" data-type="voice">Voice</button>
-                <button class="subfilter-btn active" data-type="all">All</button>
-            </div>
+        <div class="subfilter-row" id="toolsHubBar" aria-live="polite" hidden>
+            <span class="subfilter-label proto-text-mono">Tools:</span>
+            <button class="subfilter-btn active" data-sub="all">All Tools</button>
+            <button class="subfilter-btn" data-sub="ai">AI</button>
+            <button class="subfilter-btn" data-sub="equipment">Gear</button>
+            <button class="subfilter-btn" data-sub="drone">Drone</button>
         </div>
 
-        <div class="subfilter-row" id="droneTypeBar" aria-live="polite" hidden>
-            <span class="subfilter-label">Drone view:</span>
-            <div class="subfilter-buttons">
-                <button class="subfilter-btn" data-type="channels">Channels</button>
-                <button class="subfilter-btn" data-type="shops">Shops</button>
-                <button class="subfilter-btn" data-type="part-107">Part 107</button>
-                <button class="subfilter-btn" data-type="all">All</button>
-            </div>
+        <!-- Quick actions row (Favorites + share). Keep your existing quickfilter row if present; add these buttons to it. -->
+        <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
+            <button class="quickfilter-btn" type="button" data-qf="saved">Saved</button>
+            <button class="quickfilter-btn" type="button" id="openSavedDrawer">Saved List</button>
+            <button class="quickfilter-btn" type="button" id="shareSavedBtn">Share Saved</button>
+            <button class="quickfilter-btn" type="button" data-qf="labPick">LaB Picks</button>
+            <button class="quickfilter-btn" type="button" data-qf="free">Free</button>
+            <button class="quickfilter-btn" type="button" data-qf="paid">Paid</button>
         </div>
-
         <div class="resources-grid" id="resourcesGrid"></div>
 
         <aside class="saved-drawer" id="savedDrawer" aria-label="Saved resources">
@@ -1795,7 +1792,6 @@
         const modal = document.getElementById('modal');
         const modalContent = document.getElementById('modalContent');
         const closeModalBtn = document.getElementById('closeModal');
-        const filters = document.querySelectorAll('.filter-btn');
         const countEl = document.getElementById('resourceCount');
         const searchInput = document.getElementById('searchInput');
         const musicTierBar = document.getElementById('musicTierBar');
@@ -1815,9 +1811,193 @@
 
         let currentCategory = 'film-festivals';
         let searchQuery = '';
-        let musicTier = 'paid';
-        let aiType = 'all';
-        let droneType = 'channels';
+
+        // ============================================
+        // FAVORITES (Saved)
+        // ============================================
+        const FAVORITES_KEY = 'lab_favorites_v1';
+        let favorites = new Set();
+        let activeResourceId = null;
+        let lastFocusEl = null;
+
+        function loadFavorites(){
+            try {
+                const raw = localStorage.getItem(FAVORITES_KEY);
+                const arr = raw ? JSON.parse(raw) : [];
+                favorites = new Set(Array.isArray(arr) ? arr : []);
+            } catch { favorites = new Set(); }
+        }
+        function saveFavorites(){
+            try { localStorage.setItem(FAVORITES_KEY, JSON.stringify(Array.from(favorites))); } catch {}
+        }
+        function getResourceId(r){ return r.id || normalizeValue(r.name); }
+        function isFavoriteId(id){ return favorites.has(id); }
+
+        function showToast(msg){
+            if (!toastEl) return;
+            toastEl.textContent = msg;
+            toastEl.classList.add('is-show');
+            clearTimeout(showToast._t);
+            showToast._t = setTimeout(() => toastEl.classList.remove('is-show'), 1600);
+        }
+
+        // init favorites early
+        loadFavorites();
+
+        function setFavoriteUI(id) {
+            const btn = document.getElementById('toggleFavorite');
+            if (!btn) return;
+            const saved = id && isFavoriteId(id);
+            btn.classList.toggle('is-saved', saved);
+            btn.textContent = saved ? '★' : '☆';
+            btn.setAttribute('aria-label', saved ? 'Unsave resource' : 'Save resource');
+            btn.title = saved ? 'Saved' : 'Save';
+        }
+
+        // Favorite button handler
+        const favBtn = document.getElementById('toggleFavorite');
+        if (favBtn) {
+            favBtn.addEventListener('click', () => {
+                if (!activeResourceId) return;
+                if (favorites.has(activeResourceId)) favorites.delete(activeResourceId);
+                else favorites.add(activeResourceId);
+                saveFavorites();
+                setFavoriteUI(activeResourceId);
+                if (quickFilters && quickFilters.saved) renderResources(true);
+                renderSavedDrawer();
+            });
+        }
+
+        function getSavedParam(){
+            const p = new URLSearchParams(location.search);
+            const raw = p.get('saved');
+            if (!raw) return null;
+            return raw.split(',').map(s => s.trim()).filter(Boolean);
+        }
+
+        function mergeSavedFromUrl(){
+            const ids = getSavedParam();
+            if (!ids || !ids.length) return;
+            ids.forEach(id => favorites.add(id));
+            saveFavorites();
+            if (quickFilters) quickFilters.saved = true;
+            const savedBtn = document.querySelector('.quickfilter-btn[data-qf="saved"]');
+            if (savedBtn) savedBtn.classList.add('is-active');
+            showToast('Imported saved list');
+        }
+        mergeSavedFromUrl();
+
+        async function copyToClipboard(text){
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                const ok = document.execCommand('copy');
+                ta.remove();
+                return ok;
+            }
+        }
+
+        if (shareSavedBtn){
+            shareSavedBtn.addEventListener('click', async () => {
+                const ids = Array.from(favorites);
+                if (!ids.length){ showToast('No saved items yet'); return; }
+                const url = new URL(location.href);
+                url.searchParams.set('saved', ids.join(','));
+                const ok = await copyToClipboard(url.toString());
+                showToast(ok ? 'Saved link copied' : 'Copy failed');
+            });
+        }
+
+        function renderSavedDrawer(){
+            if (!savedList) return;
+            const q = (savedSearch && savedSearch.value ? savedSearch.value.trim().toLowerCase() : '');
+            const favResources = resources
+                .map(r => ({ r, id: getResourceId(r) }))
+                .filter(x => favorites.has(x.id))
+                .filter(x => !q || (x.r.name || '').toLowerCase().includes(q) || (x.r.desc || '').toLowerCase().includes(q));
+
+            if (savedCountLabel) savedCountLabel.textContent = `${favResources.length} saved`;
+
+            if (!favResources.length){
+                savedList.innerHTML = `<div class="proto-text-mono" style="opacity:.7;">No saved items yet.</div>`;
+                return;
+            }
+
+            savedList.innerHTML = favResources.map(({r,id}) => `
+                <div class="saved-item" data-id="${id}">
+                    <div class="saved-item-top">
+                        <div class="saved-item-name">${r.name}</div>
+                        <button class="saved-remove" type="button" data-remove="${id}">Remove</button>
+                    </div>
+                    <div class="saved-item-desc">${(r.desc || '').slice(0, 120)}</div>
+                </div>
+            `).join('');
+        }
+
+        function openSavedDrawer(){
+            lastFocusEl = document.activeElement;
+            savedBackdrop.classList.add('is-open');
+            savedBackdrop.setAttribute('aria-hidden', 'false');
+            renderSavedDrawer();
+            setTimeout(() => (savedSearch ? savedSearch.focus() : savedDrawer.focus()), 0);
+        }
+        function closeSavedDrawer(){
+            savedBackdrop.classList.remove('is-open');
+            savedBackdrop.setAttribute('aria-hidden', 'true');
+            if (lastFocusEl && lastFocusEl.focus) lastFocusEl.focus();
+        }
+
+        if (openSavedDrawerBtn) openSavedDrawerBtn.addEventListener('click', openSavedDrawer);
+        if (savedClose) savedClose.addEventListener('click', closeSavedDrawer);
+        if (savedBackdrop){
+            savedBackdrop.addEventListener('click', (e) => { if (e.target === savedBackdrop) closeSavedDrawer(); });
+        }
+        document.addEventListener('keydown', (e) => {
+            if (!savedBackdrop || !savedBackdrop.classList.contains('is-open')) return;
+            if (e.key === 'Escape'){ e.preventDefault(); closeSavedDrawer(); return; }
+            if (e.key !== 'Tab') return;
+
+            const focusables = Array.from(savedDrawer.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])'))
+                .filter(el => el.offsetParent !== null);
+            if (!focusables.length) return;
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+
+            if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+        });
+
+        if (savedSearch){
+            savedSearch.addEventListener('input', () => renderSavedDrawer());
+        }
+
+        if (savedList){
+            savedList.addEventListener('click', (e) => {
+                const removeBtn = e.target.closest('button[data-remove]');
+                if (removeBtn){
+                    const id = removeBtn.dataset.remove;
+                    favorites.delete(id);
+                    saveFavorites();
+                    renderSavedDrawer();
+                    renderResources(true);
+                    return;
+                }
+
+                const item = e.target.closest('.saved-item');
+                if (!item) return;
+                const id = item.dataset.id;
+                const resource = resources.find(r => getResourceId(r) === id);
+                if (resource){
+                    closeSavedDrawer();
+                    openModal(resource);
+                }
+            });
+        }
 
         // ============================================
         // FAVORITES (Saved)
@@ -2165,6 +2345,8 @@
             if (musicTierBar) {
                 musicTierBar.toggleAttribute('hidden', !(isStock && stockSubcategory === 'music'));
             }
+            grid.innerHTML = html;
+        }
 
             if (aiTypeBar) {
                 aiTypeBar.toggleAttribute('hidden', !(isTools && toolsSubcategory === 'ai'));
@@ -2598,7 +2780,7 @@
             }
         }
 
-        filters.forEach(btn => {
+        groupButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 setGroup(btn.dataset.group);
                 renderResources(true);
@@ -2668,26 +2850,33 @@
                 musicTier = btn.dataset.tier;
                 renderResources(true);
             });
-        });
+        }
 
-        aiTypeButtons.forEach(btn => {
+        stockHubBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                if (btn.classList.contains('active')) return;
-                aiTypeButtons.forEach(b => b.classList.remove('active'));
+                stockHubBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                aiType = btn.dataset.type;
+                currentStockSub = btn.dataset.sub;
                 renderResources(true);
             });
         });
 
-        droneTypeButtons.forEach(btn => {
+        toolsHubBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                if (btn.classList.contains('active')) return;
-                droneTypeButtons.forEach(b => b.classList.remove('active'));
+                toolsHubBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                droneType = btn.dataset.type;
+                currentToolsSub = btn.dataset.sub;
                 renderResources(true);
             });
+        });
+
+        // Keyboard shortcut: / focuses search (like a real app)
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== '/') return;
+            const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+            if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+            e.preventDefault();
+            searchInput.focus();
         });
 
         let searchTimeout;
@@ -2696,7 +2885,7 @@
             searchTimeout = setTimeout(() => {
                 searchQuery = e.target.value.trim();
                 if (searchQuery) {
-                    setCategory('all');
+                    setGroup('all');
                 }
                 renderResources(true);
             }, 150);
