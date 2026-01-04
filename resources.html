@@ -1740,7 +1740,6 @@
             <button class="filter-btn" data-group="stock">Stock</button>
             <button class="filter-btn" data-group="tools">Tools</button>
             <button class="filter-btn" data-group="collaborators">Friends</button>
-            <button class="filter-btn" data-group="inspiration">Inspiration</button>
             <button class="filter-btn" data-group="references">References</button>
             <button class="filter-btn" data-group="drones">Drones</button>
             <button class="filter-btn" data-group="all">All</button>
@@ -1767,6 +1766,32 @@
                 <button class="subfilter-btn" data-tools="ai">AI</button>
                 <button class="subfilter-btn" data-tools="gear">Software</button>
                 <button class="subfilter-btn" data-tools="drone">Drone</button>
+            </div>
+        </div>
+
+        <!-- References Subcategories (shown when References is active) -->
+        <div class="subfilter-row" id="referencesGroupBar" aria-live="polite" hidden>
+            <span class="subfilter-label">References:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn" data-references="inspiration">Inspiration</button>
+                <button class="subfilter-btn" data-references="art">Art</button>
+                <button class="subfilter-btn" data-references="editing">Editing</button>
+                <button class="subfilter-btn" data-references="filming">Filming</button>
+                <button class="subfilter-btn" data-references="music">Music</button>
+                <button class="subfilter-btn" data-references="references">References</button>
+                <button class="subfilter-btn" data-references="comedy">Comedy</button>
+                <button class="subfilter-btn active" data-references="all">All</button>
+            </div>
+        </div>
+
+        <!-- Drone Subcategories (shown when Tools → Drone is active) -->
+        <div class="subfilter-row" id="droneTypeBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Drone:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn" data-type="part107">Part 107</button>
+                <button class="subfilter-btn" data-type="channels">Channels</button>
+                <button class="subfilter-btn" data-type="stores">Stores</button>
+                <button class="subfilter-btn active" data-type="all">All</button>
             </div>
         </div>
 
@@ -1852,7 +1877,7 @@
                             <option value="fonts">Fonts</option>
                             <option value="community">Community</option>
                             <option value="film-festivals">Film Festivals</option>
-                            <option value="inspiration">Inspiration</option>
+                            <option value="references">References</option>
                             <option value="other">Other</option>
                         </select>
                     </div>
@@ -1887,6 +1912,8 @@
         const stockGroupButtons = stockGroupBar ? stockGroupBar.querySelectorAll('.subfilter-btn') : [];
         const toolsGroupBar = document.getElementById('toolsGroupBar');
         const toolsGroupButtons = toolsGroupBar ? toolsGroupBar.querySelectorAll('.subfilter-btn') : [];
+        const referencesGroupBar = document.getElementById('referencesGroupBar');
+        const referencesGroupButtons = referencesGroupBar ? referencesGroupBar.querySelectorAll('.subfilter-btn') : [];
 
         const musicTierBar = document.getElementById('musicTierBar');
         const musicTierButtons = musicTierBar ? musicTierBar.querySelectorAll('.subfilter-btn') : [];
@@ -1904,6 +1931,9 @@
             paid: false
         };
 
+        const referenceTypeValues = new Set(['inspiration', 'art', 'editing', 'filming', 'music', 'references', 'comedy']);
+        const REFERENCES_DEBUG = true;
+
         // Saved drawer elements
         const savedDrawer = document.getElementById('savedDrawer');
         const savedList = document.getElementById('savedList');
@@ -1918,9 +1948,10 @@
         let currentGroup = 'film-festivals';
         let stockSubcategory = 'all-stock';
         let toolsSubcategory = 'all-tools';
+        let referencesSubcategory = 'all';
         let musicTier = 'paid';
         let aiType = 'all';
-        let droneType = 'channels';
+        let droneType = 'all';
         let searchQuery = '';
 
         // ============================================
@@ -2123,9 +2154,38 @@
                 .replace(/\/+$/, '');
         }
 
+        function normalizeReferenceSelection(value) {
+            const normalized = normalizeValue(value);
+            if (!normalized || normalized === 'all' || normalized === 'all-ref' || normalized === 'all_ref' || normalized === 'all references') {
+                return 'all';
+            }
+            return referenceTypeValues.has(normalized) ? normalized : 'all';
+        }
+
+        function getReferenceType(resource) {
+            return normalizeValue(resource.refType || resource.inspirationType);
+        }
+
         function getCategoryList(resource) {
             const categories = Array.isArray(resource.category) ? resource.category : [resource.category];
-            return categories.map(normalizeValue).filter(Boolean);
+            const normalized = categories.map(normalizeValue).filter(Boolean);
+            if (normalized.includes('inspiration') && !normalized.includes('references')) {
+                normalized.push('references');
+            }
+            return normalized;
+        }
+
+        function logReferencesDebug(filteredCount) {
+            if (!REFERENCES_DEBUG || currentGroup !== 'references') return;
+            const totalResources = Array.isArray(resources) ? resources.length : 0;
+            const referencesTotal = Array.isArray(resources) ? resources.filter(r => getCategoryList(r).includes('references')).length : 0;
+            const refSelection = normalizeReferenceSelection(referencesSubcategory);
+            console.debug('[References]', {
+                totalResources,
+                referencesTotal,
+                refSelection,
+                filteredCount
+            });
         }
 
         function getResourceKey(resource) {
@@ -2153,8 +2213,14 @@
             if (currentGroup === 'film-festivals') return cats.includes('film-festivals');
             if (currentGroup === 'community') return cats.includes('community');
             if (currentGroup === 'collaborators') return cats.includes('collaborators');
-            if (currentGroup === 'inspiration') return cats.includes('inspiration');
-            if (currentGroup === 'references') return cats.includes('references');
+            if (currentGroup === 'references') {
+                const matchesCategory = cats.includes('references');
+                if (!matchesCategory) return false;
+                const normalizedRefType = getReferenceType(resource);
+                const normalizedSelection = normalizeReferenceSelection(referencesSubcategory);
+                if (normalizedSelection === 'all') return true;
+                return normalizedRefType === normalizedSelection;
+            }
             if (currentGroup === 'drones') return cats.includes('drone');
 
             if (currentGroup === 'stock') {
@@ -2267,11 +2333,13 @@
                 });
             }
 
-            if (currentGroup === 'tools' && toolsSubcategory === 'drone') {
+            if ((currentGroup === 'tools' && toolsSubcategory === 'drone') || currentGroup === 'drones') {
                 filtered = filtered.filter(r => {
-                    if (droneType === 'channels') return r.droneType === 'channel';
-                    if (droneType === 'shops') return r.droneType === 'shop';
-                    if (droneType === 'part-107') return r.droneType === 'part-107';
+                    const droneSubType = normalizeValue(r.droneSubType || r.droneType);
+                    if (droneType === 'all') return true;
+                    if (droneType === 'channels') return droneSubType === 'channels';
+                    if (droneType === 'stores') return droneSubType === 'stores';
+                    if (droneType === 'part107') return droneSubType === 'part107' || droneSubType === 'part-107';
                     return true;
                 });
             }
@@ -2396,12 +2464,17 @@
         function renderResources(animate = false) {
             const isStock = currentGroup === 'stock';
             const isTools = currentGroup === 'tools';
+            const isReferences = currentGroup === 'references';
+            const isDrones = currentGroup === 'drones';
 
             if (stockGroupBar) {
                 stockGroupBar.toggleAttribute('hidden', !isStock);
             }
             if (toolsGroupBar) {
                 toolsGroupBar.toggleAttribute('hidden', !isTools);
+            }
+            if (referencesGroupBar) {
+                referencesGroupBar.toggleAttribute('hidden', !isReferences);
             }
 
             if (musicTierBar) {
@@ -2413,11 +2486,14 @@
             }
 
             if (droneTypeBar) {
-                droneTypeBar.toggleAttribute('hidden', !(isTools && toolsSubcategory === 'drone'));
+                const showDroneFilters = (isTools && toolsSubcategory === 'drone') || isDrones;
+                droneTypeBar.toggleAttribute('hidden', !showDroneFilters);
             }
 
             const filtered = getFilteredResources();
             const count = filtered.length;
+
+            logReferencesDebug(count);
 
             // Update count with animation
             animateCount(count);
@@ -2823,6 +2899,17 @@
                 toolsSubcategory = 'all-tools';
                 toolsGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.tools === toolsSubcategory));
             }
+            if (newGroup !== 'references') {
+                referencesSubcategory = 'all';
+                referencesGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.references === referencesSubcategory));
+            } else {
+                referencesSubcategory = normalizeReferenceSelection(referencesSubcategory);
+                const hasMatch = Array.from(referencesGroupButtons).some(b => b.dataset.references === referencesSubcategory);
+                if (!hasMatch) {
+                    referencesSubcategory = 'all';
+                }
+                referencesGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.references === referencesSubcategory));
+            }
 
             if (!(newGroup === 'stock' && stockSubcategory === 'music') && musicTier !== 'paid') {
                 musicTier = 'paid';
@@ -2834,9 +2921,14 @@
                 aiTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
             }
 
-            if (!(newGroup === 'tools' && toolsSubcategory === 'drone') && droneType !== 'channels') {
-                droneType = 'channels';
-                droneTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'channels'));
+            const isToolsDrone = newGroup === 'tools' && toolsSubcategory === 'drone';
+            const isDroneGroup = newGroup === 'drones';
+            if (!isToolsDrone && !isDroneGroup && droneType !== 'all') {
+                droneType = 'all';
+                droneTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
+            } else if ((isToolsDrone || isDroneGroup) && !Array.from(droneTypeButtons).some(b => b.dataset.type === droneType)) {
+                droneType = 'all';
+                droneTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
             }
         }
 
@@ -2879,6 +2971,28 @@
                 renderResources(true);
             });
         });
+
+        referencesGroupButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                const normalizedSelection = normalizeReferenceSelection(btn.dataset.references);
+                referencesSubcategory = normalizedSelection;
+                referencesGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.references === referencesSubcategory));
+                renderResources(true);
+            });
+        });
+
+        if (droneTypeButtons.length) {
+            droneTypeButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.classList.contains('active')) return;
+                    droneTypeButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    droneType = btn.dataset.type;
+                    renderResources(true);
+                });
+            });
+        }
 
         // Keyboard shortcut: / focuses search (like a real app)
         document.addEventListener('keydown', (e) => {
