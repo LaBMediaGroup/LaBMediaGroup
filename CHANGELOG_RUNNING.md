@@ -2,13 +2,6 @@
 
 Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
-## 2026-01-05
-- Change: Resources page adds a Saved drawer with inline search, delegated remove/open controls, and shareable links; saved lists can be merged from ?saved= on load.
-- Change: Resources categories regrouped into Stock and Tools hubs with dedicated subcategories plus quick actions for opening the Saved drawer or sharing favorites.
-- Change: Events page derives deadline entries with Show/Only toggles and deep-linkable detail modals; ICS export remains available.
-- Change: Portfolio videos now use click-to-play thumbnails that hydrate to autoplaying iframes to reduce initial load.
-- Files touched: resources.html, events.html, portfolio.html
-
 ## 2026-01-04
 - Change: Resources grid now uses event delegation + chunked rendering for smoother filtering and less DOM churn. Added Saved (favorites) system using localStorage and a modal save toggle.
 - Files touched: resources.html
