@@ -136,8 +136,8 @@
             margin-top: 1rem;
             display: flex;
             justify-content: flex-start;
-            flex-direction: column;
-            gap: 0.4rem;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
         .suggest-btn {
             border: 1px solid rgba(255,255,255,0.18);
@@ -148,8 +148,23 @@
             transition: transform 0.12s ease, background 0.2s ease, border-color 0.2s ease;
             font-family: 'Space Mono', monospace;
         }
-        .suggest-btn:hover { transform: translateY(-1px); background: rgba(255,255,255,0.06); }
-        .suggest-btn:active { transform: translateY(0); }
+        .suggest-btn:hover {
+            transform: translateY(-1px);
+            background: rgba(255,255,255,0.06);
+        }
+        .suggest-btn:active {
+            transform: translateY(0);
+        }
+
+        .suggest-note {
+            color: var(--gray-400);
+            font-size: 0.9rem;
+        }
+
+        .suggest-note {
+            color: var(--gray-400);
+            font-size: 0.9rem;
+        }
 
         .suggest-note {
             color: var(--gray-400);
@@ -230,12 +245,11 @@
 
         .calendar-day-cell {
             background: var(--black);
-            height: 100%;
-            min-height: 0;
+            height: 120px;
+            min-height: 120px;
+            max-height: 120px;
             padding: 0.75rem;
             position: relative;
-            display: flex;
-            flex-direction: column;
             overflow: hidden;
         }
 
@@ -259,10 +273,24 @@
             display: flex;
             flex-direction: column;
             gap: 0.35rem;
-            flex: 1;
-            min-height: 0;
+            max-height: 75px;
             overflow-y: auto;
-            padding-right: 2px;
+            overflow-x: hidden;
+        }
+
+        /* Subtle scrollbar for event lists */
+        .calendar-events-list::-webkit-scrollbar {
+            width: 3px;
+        }
+        .calendar-events-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .calendar-events-list::-webkit-scrollbar-thumb {
+            background: var(--gray-600);
+            border-radius: 3px;
+        }
+        .calendar-events-list::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
         }
 
         .calendar-event-pill {
@@ -342,10 +370,13 @@
             padding: 0.75rem 1rem;
             border: 1px solid rgba(255,255,255,0.1);
             background: rgba(255,255,255,0.02);
-            color: inherit;
-            text-align: left;
-            width: 100%;
-            border-radius: 0;
+            transition: all 0.2s ease;
+        }
+
+        .list-row:hover {
+            border-color: rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.05);
+            transform: translateX(2px);
         }
 
         .list-row h4 { margin: 0; color: var(--white); }
@@ -675,11 +706,352 @@
             cursor: pointer;
             font-family: 'Space Mono', monospace;
         }
+        /* Event Preview Modal */
+        .event-preview-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            z-index: 1500;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .event-preview-backdrop.is-open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .event-preview-modal {
+            width: min(650px, 100%);
+            max-height: 85vh;
+            overflow: auto;
+            background: var(--black);
+            border: 2px solid var(--gray-800);
+            position: relative;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .event-preview-backdrop.is-open .event-preview-modal {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .event-modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--gray-800);
+            position: relative;
+        }
+        .event-modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-400);
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 1px;
+        }
+        .event-modal-close:hover {
+            border-color: var(--white);
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+        }
+        .event-modal-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.6rem;
+            color: var(--white);
+            font-weight: 400;
+            margin: 0 0 1rem;
+            padding-right: 6rem;
+            line-height: 1.3;
+        }
+        .event-modal-type-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        .event-modal-type-badge.type-meetup {
+            border-color: #22C55E;
+            color: #22C55E;
+            background: rgba(34, 197, 94, 0.08);
+        }
+        .event-modal-type-badge.type-deadline {
+            border-color: #EF4444;
+            color: #EF4444;
+            background: rgba(239, 68, 68, 0.08);
+        }
+        .event-modal-type-badge.type-festival {
+            border-color: #F59E0B;
+            color: #F59E0B;
+            background: rgba(245, 158, 11, 0.08);
+        }
+        .event-modal-type-badge.type-workshop {
+            border-color: #3B82F6;
+            color: #3B82F6;
+            background: rgba(59, 130, 246, 0.08);
+        }
+        .event-modal-type-badge.type-screening {
+            border-color: #A855F7;
+            color: #A855F7;
+            background: rgba(168, 85, 247, 0.08);
+        }
+        .event-modal-body {
+            padding: 2rem;
+        }
+        .event-modal-section {
+            margin-bottom: 1.75rem;
+        }
+        .event-modal-section-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+        .event-modal-description {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--gray-300);
+        }
+        .event-info-grid {
+            display: grid;
+            gap: 1rem;
+        }
+        .event-info-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        .event-info-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            min-width: 80px;
+        }
+        .event-info-value {
+            font-size: 0.9rem;
+            color: var(--gray-300);
+            line-height: 1.6;
+        }
+        .event-modal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            text-transform: uppercase;
+            border: 1px solid var(--white);
+            color: var(--white);
+            background: transparent;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+        .event-modal-link:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(2px);
+        }
+        .event-modal-link span {
+            transition: transform 0.2s ease;
+        }
+        .event-modal-link:hover span {
+            transform: translateX(3px);
+        }
+        .event-modal-link.calendar-btn {
+            border-color: #3B82F6;
+            color: #3B82F6;
+            background: rgba(59, 130, 246, 0.05);
+            cursor: pointer;
+        }
+        .event-modal-link.calendar-btn:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #60A5FA;
+        }
+
+        /* Past Events Archive View */
+        .past-events-header {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+        .past-events-header h2 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--white);
+            font-weight: 400;
+            margin: 0 0 0.75rem;
+            letter-spacing: -0.5px;
+        }
+        .past-events-header p {
+            color: var(--gray-400);
+            font-size: 0.95rem;
+            margin: 0;
+            line-height: 1.6;
+        }
+        .past-events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        .past-event-card {
+            border: 1px solid var(--gray-800);
+            background: rgba(255,255,255,0.02);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .past-event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gray-600);
+            transition: background 0.3s ease;
+        }
+        .past-event-card.type-meetup::before { background: #22C55E; }
+        .past-event-card.type-deadline::before { background: #EF4444; }
+        .past-event-card.type-festival::before { background: #F59E0B; }
+        .past-event-card.type-workshop::before { background: #3B82F6; }
+        .past-event-card.type-screening::before { background: #A855F7; }
+
+        .past-event-card:hover {
+            border-color: rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.04);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .past-event-type-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.3rem 0.65rem;
+            border: 1px solid;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+        .past-event-type-badge.type-meetup {
+            border-color: #22C55E;
+            color: #22C55E;
+        }
+        .past-event-type-badge.type-deadline {
+            border-color: #EF4444;
+            color: #EF4444;
+        }
+        .past-event-type-badge.type-festival {
+            border-color: #F59E0B;
+            color: #F59E0B;
+        }
+        .past-event-type-badge.type-workshop {
+            border-color: #3B82F6;
+            color: #3B82F6;
+        }
+        .past-event-type-badge.type-screening {
+            border-color: #A855F7;
+            color: #A855F7;
+        }
+        .past-event-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--white);
+            margin: 0 0 0.75rem;
+            line-height: 1.4;
+            text-decoration: line-through;
+            text-decoration-color: var(--gray-600);
+            text-decoration-thickness: 1px;
+        }
+        .past-event-date {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+        .past-event-description {
+            font-size: 0.9rem;
+            color: var(--gray-400);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        .past-event-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-800);
+        }
+        .past-event-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--gray-500);
+        }
+        .past-event-meta-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 70px;
+        }
+        .past-event-photos-placeholder {
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px dashed var(--gray-800);
+            background: rgba(255,255,255,0.01);
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+        }
+        .past-event-comments-placeholder {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            border: 1px dashed var(--gray-800);
+            background: rgba(255,255,255,0.01);
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+        }
+
         @media (max-width: 768px) {
             .list-row { grid-template-columns: 1fr; gap: 0.35rem; }
             .list-header { display: none; }
             .suggest-modal { max-height: 90vh; }
-            .past-card-top { grid-template-columns: 1fr; }
+            .event-preview-modal { max-height: 95vh; }
+            .event-modal-title { font-size: 1.3rem; }
         }
     </style>
 </head>
@@ -691,9 +1063,9 @@
         </a>
         <ul class="nav-links">
             <li><a href="portfolio.html">Work</a></li>
-            <li><a href="plan-your-project.html">Project</a></li>
             <li><a href="resources.html">Resources</a></li>
             <li><a href="events.html">Events</a></li>
+            <li><a href="plan-your-project.html">Plan</a></li>
             <li><a href="index.html#contact">Contact</a></li>
         </ul>
     </nav>
@@ -732,14 +1104,12 @@
             </div>
         </section>
 
-        <section class="view-section" id="pastSection" hidden>
-            <div class="list-row list-header">
-                <span>Past Event</span>
-                <span>Date</span>
-                <span>Location</span>
-                <span>Status</span>
+        <section class="view-section" id="pastEventsSection" hidden>
+            <div class="past-events-header">
+                <h2>Past Events Archive</h2>
+                <p>Explore highlights and memories from previous LaB community events</p>
             </div>
-            <div class="past-view" id="pastContainer"></div>
+            <div id="pastEventsContainer" class="past-events-grid"></div>
         </section>
     </div>
 
@@ -804,18 +1174,24 @@
     </div>
 
     <!-- Event Preview Modal -->
-    <div class="event-modal-backdrop" id="eventModal" aria-hidden="true">
-        <div class="event-modal" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle">
+    <div class="event-preview-backdrop" id="eventPreviewBackdrop" aria-hidden="true">
+        <div class="event-preview-modal" id="eventPreviewModal" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle" tabindex="-1">
             <div class="event-modal-header">
-                <div>
-                    <div class="status-chip" id="eventModalType">Event</div>
-                    <h3 class="event-modal-title" id="eventModalTitle"></h3>
-                </div>
-                <button class="event-modal-close" id="eventModalClose" aria-label="Close">×</button>
+                <button class="event-modal-close" id="eventModalClose" type="button">ESC</button>
+                <div id="eventModalTypeBadge" class="event-modal-type-badge"></div>
+                <h2 class="event-modal-title" id="eventModalTitle"></h2>
             </div>
-            <div class="event-meta-grid" id="eventMeta"></div>
-            <div class="event-description" id="eventDescription"></div>
-            <div class="cta-row" id="eventCtas"></div>
+            <div class="event-modal-body">
+                <div class="event-modal-section">
+                    <h3 class="event-modal-section-title">Details</h3>
+                    <div class="event-info-grid" id="eventInfoGrid"></div>
+                </div>
+                <div class="event-modal-section" id="eventDescriptionSection">
+                    <h3 class="event-modal-section-title">About</h3>
+                    <p class="event-modal-description" id="eventModalDescription"></p>
+                </div>
+                <div class="event-modal-section" id="eventLinkSection"></div>
+            </div>
         </div>
     </div>
 
@@ -946,7 +1322,21 @@
                     <div class="calendar-day-cell${isToday ? ' today' : ''}">
                         <div class="calendar-day-number">${day}</div>
                         <div class="calendar-events-list">
-                            ${dayEvents.map(buildEventPill).join('')}
+                `;
+
+                dayEvents.forEach(evt => {
+                    const isPast = isEventPast(evt);
+                    const pastClass = isPast ? ' is-past' : '';
+                    calendarHTML += `
+                        <div class="calendar-event-pill type-${evt.type}${pastClass}"
+                             data-event-id="${evt.id}"
+                             title="${evt.title}">
+                            ${evt.title}
+                        </div>
+                    `;
+                });
+
+                calendarHTML += `
                         </div>
                     </div>
                 `;
@@ -963,11 +1353,19 @@
             calendarHTML += '</div>';
             calendarGrid.innerHTML = calendarHTML;
 
-            const monthGridEl = calendarGrid.querySelector('.calendar-month-grid');
-            if (monthGridEl) {
-                monthGridEl.style.setProperty('--weeks', weeks);
-            }
+            // Add click listeners to event pills
+            const eventPills = calendarGrid.querySelectorAll('.calendar-event-pill');
+            eventPills.forEach(pill => {
+                pill.addEventListener('click', (e) => {
+                    const eventId = e.currentTarget.dataset.eventId;
+                    const eventData = eventsData.find(evt => evt.id === eventId);
+                    if (eventData) {
+                        openEventPreview(eventData);
+                    }
+                });
+            });
 
+            // Add month navigation listeners
             document.getElementById('prevMonth')?.addEventListener('click', () => {
                 currentMonth--;
                 if (currentMonth < 0) {
@@ -996,80 +1394,55 @@
         }
 
         function renderList() {
-            const upcoming = eventsData.filter(evt => !isEventPast(evt)).sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
-            listContainer.innerHTML = upcoming.map(ev => `
-                <button class="list-row" data-id="${ev.id}" type="button">
-                    <h4>${ev.title}</h4>
-                    <span>${formatDateRange(ev)}${ev.startTime ? ' · ' + formatTimeRange(ev) : ''}</span>
-                    <span>${ev.location || 'TBD'}</span>
-                    <span class="tag">${typeLabels[ev.type] || ev.type}</span>
-                </button>
-            `).join('');
-
-            listContainer.querySelectorAll('.list-row').forEach(row => {
-                row.addEventListener('click', () => {
-                    const id = row.dataset.id;
-                    const evt = eventsData.find(e => e.id === id);
-                    if (evt) openEventModal(evt);
-                });
-            });
-        }
-
-        function renderPastList() {
-            const pastEvents = eventsData.filter(isEventPast).sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
-            pastContainer.innerHTML = pastEvents.map(ev => `
-                <div class="past-card" data-id="${ev.id}">
-                    <div class="past-card-top">
-                        <div>
-                            <div class="proto-text-mono past-meta-label">Past Event</div>
-                            <h4>${ev.title}</h4>
-                            <div class="tag">${typeLabels[ev.type] || ev.type}</div>
-                        </div>
-                        <div class="meta past-meta-grid">
-                            <div>
-                                <div class="past-meta-label">When</div>
-                                <div>${formatDateRange(ev)}${ev.startTime ? ' · ' + formatTimeRange(ev) : ''}</div>
-                            </div>
-                            <div>
-                                <div class="past-meta-label">Where</div>
-                                <div>${ev.location || 'TBD'}${ev.venue ? ' — ' + ev.venue : ''}</div>
-                            </div>
-                            ${ev.url ? `<div><div class="past-meta-label">Link</div><a class="past-link" href="${ev.url}" target="_blank" rel="noreferrer">Event site</a></div>` : ''}
-                        </div>
+            const sorted = [...eventsData].sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+            listContainer.innerHTML = sorted.map(ev => {
+                const isPast = isEventPast(ev);
+                const pastClass = isPast ? ' is-past' : '';
+                return `
+                    <div class="list-row${pastClass}" data-event-id="${ev.id}" style="cursor: pointer;">
+                        <h4>${ev.title}</h4>
+                        <span>${formatDate(ev.startDate)}${ev.endDate ? ' – ' + formatDate(ev.endDate) : ''}</span>
+                        <span>${ev.location || 'TBD'}</span>
+                        <span class="tag">${ev.type}</span>
                     </div>
-                    <div class="past-note">${ev.description || ''}</div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
-            pastContainer.querySelectorAll('.past-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const id = card.dataset.id;
-                    const evt = eventsData.find(e => e.id === id);
-                    if (evt) openEventModal(evt);
+            // Add click listeners to list rows
+            const listRows = listContainer.querySelectorAll('.list-row');
+            listRows.forEach(row => {
+                row.addEventListener('click', (e) => {
+                    const eventId = e.currentTarget.dataset.eventId;
+                    const eventData = eventsData.find(evt => evt.id === eventId);
+                    if (eventData) {
+                        openEventPreview(eventData);
+                    }
                 });
             });
         }
 
         function setView(view) {
-            currentView = view;
-            viewButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
-            updateViewVisibility();
-        }
+            const pastEventsSection = document.getElementById('pastEventsSection');
 
-        function updateViewVisibility() {
-            if (showPastEvents) {
-                calendarSection.hidden = true;
-                listSection.hidden = true;
-                pastSection.hidden = false;
-            } else {
-                pastSection.hidden = true;
-                if (currentView === 'list') {
-                    listSection.hidden = false;
-                    calendarSection.hidden = true;
-                } else {
-                    calendarSection.hidden = false;
-                    listSection.hidden = true;
+            viewButtons.forEach(btn => {
+                // Only deactivate calendar and list buttons, not past events button
+                if (btn.dataset.view) {
+                    btn.classList.toggle('active', btn.dataset.view === view);
                 }
+            });
+
+            if (view === 'list') {
+                listSection.hidden = false;
+                calendarSection.hidden = true;
+                if (pastEventsSection) pastEventsSection.hidden = true;
+            } else if (view === 'pastEvents') {
+                if (pastEventsSection) pastEventsSection.hidden = false;
+                listSection.hidden = true;
+                calendarSection.hidden = true;
+            } else {
+                listSection.hidden = true;
+                calendarSection.hidden = false;
+                if (pastEventsSection) pastEventsSection.hidden = true;
             }
         }
 
@@ -1080,12 +1453,83 @@
             });
         });
 
+        // Function to render past events grid
+        function renderPastEvents() {
+            const pastEventsContainer = document.getElementById('pastEventsContainer');
+            if (!pastEventsContainer) return;
+
+            const pastEvents = eventsData.filter(isEventPast).sort((a, b) => {
+                return new Date(b.startDate) - new Date(a.startDate); // Most recent first
+            });
+
+            if (pastEvents.length === 0) {
+                pastEventsContainer.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: var(--gray-500);">
+                        <p style="font-family: 'Space Mono', monospace; font-size: 0.9rem;">No past events yet. Check back later!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            pastEventsContainer.innerHTML = pastEvents.map(evt => {
+                const dateRange = evt.endDate && evt.endDate !== evt.startDate
+                    ? `${formatDate(evt.startDate)} – ${formatDate(evt.endDate)}`
+                    : formatDate(evt.startDate);
+
+                return `
+                    <div class="past-event-card type-${evt.type}" data-event-id="${evt.id}">
+                        <div class="past-event-type-badge type-${evt.type}">${evt.type}</div>
+                        <h3 class="past-event-title">${evt.title}</h3>
+                        <div class="past-event-date">${dateRange}</div>
+                        <p class="past-event-description">${evt.description || 'No description available.'}</p>
+                        <div class="past-event-meta">
+                            ${evt.location ? `
+                                <div class="past-event-meta-item">
+                                    <span class="past-event-meta-label">Location:</span>
+                                    <span>${evt.location}</span>
+                                </div>
+                            ` : ''}
+                            ${evt.startTime ? `
+                                <div class="past-event-meta-item">
+                                    <span class="past-event-meta-label">Time:</span>
+                                    <span>${evt.startTime}${evt.endTime ? ` – ${evt.endTime}` : ''}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="past-event-photos-placeholder">📷 PHOTOS COMING SOON</div>
+                        <div class="past-event-comments-placeholder">💬 COMMENTS COMING SOON</div>
+                    </div>
+                `;
+            }).join('');
+
+            // Add click handlers
+            const cards = pastEventsContainer.querySelectorAll('.past-event-card');
+            cards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    const eventId = e.currentTarget.dataset.eventId;
+                    const eventData = eventsData.find(evt => evt.id === eventId);
+                    if (eventData) {
+                        openEventPreview(eventData);
+                    }
+                });
+            });
+        }
+
+        // Toggle past events - now switches to archive view
         if (togglePastEventsBtn) {
             togglePastEventsBtn.addEventListener('click', () => {
                 showPastEvents = !showPastEvents;
-                togglePastEventsBtn.textContent = showPastEvents ? '🕐 Hide Past' : '🕐 Show Past';
+                togglePastEventsBtn.textContent = showPastEvents ? '📅 Show Calendar' : '🕐 Show Past';
                 togglePastEventsBtn.classList.toggle('active', showPastEvents);
-                updateViewVisibility();
+
+                if (showPastEvents) {
+                    // Switch to past events archive view
+                    renderPastEvents();
+                    setView('pastEvents');
+                } else {
+                    // Switch back to calendar view
+                    setView('calendar');
+                }
             });
         }
 
@@ -1236,6 +1680,292 @@
             });
         }
         document.addEventListener('keydown', trapFocus);
+
+        // ============================================
+        // EVENT PREVIEW MODAL
+        // ============================================
+        const eventPreviewBackdrop = document.getElementById('eventPreviewBackdrop');
+        const eventPreviewModal = document.getElementById('eventPreviewModal');
+        const eventModalClose = document.getElementById('eventModalClose');
+        let currentEventData = null;
+        let lastEventFocusEl = null;
+
+        function formatEventDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr + 'T00:00:00');
+            return date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            });
+        }
+
+        function formatEventTime(timeStr) {
+            if (!timeStr) return '';
+            const [hours, minutes] = timeStr.split(':');
+            const date = new Date();
+            date.setHours(parseInt(hours), parseInt(minutes));
+            return date.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+        }
+
+        function openEventPreview(eventData) {
+            if (!eventPreviewBackdrop || !eventData) return;
+
+            currentEventData = eventData;
+            lastEventFocusEl = document.activeElement;
+
+            // Set type badge
+            const typeBadge = document.getElementById('eventModalTypeBadge');
+            if (typeBadge) {
+                typeBadge.textContent = eventData.type;
+                typeBadge.className = `event-modal-type-badge type-${eventData.type}`;
+            }
+
+            // Set title with strikethrough for past events
+            const titleEl = document.getElementById('eventModalTitle');
+            if (titleEl) {
+                titleEl.textContent = eventData.title;
+                const isPastEvent = isEventPast(eventData);
+                if (isPastEvent) {
+                    titleEl.style.textDecoration = 'line-through';
+                    titleEl.style.textDecorationColor = 'var(--gray-600)';
+                    titleEl.style.textDecorationThickness = '1px';
+                } else {
+                    titleEl.style.textDecoration = 'none';
+                }
+            }
+
+            // Build event info grid
+            const infoGrid = document.getElementById('eventInfoGrid');
+            if (infoGrid) {
+                let infoHTML = '';
+
+                // Date
+                if (eventData.startDate) {
+                    const startDateFormatted = formatEventDate(eventData.startDate);
+                    const endDateFormatted = eventData.endDate ? formatEventDate(eventData.endDate) : null;
+
+                    infoHTML += `
+                        <div class="event-info-item">
+                            <div class="event-info-label">Date</div>
+                            <div class="event-info-value">
+                                ${startDateFormatted}
+                                ${endDateFormatted && endDateFormatted !== startDateFormatted ? ` – ${endDateFormatted}` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Time
+                if (eventData.startTime) {
+                    const startTime = formatEventTime(eventData.startTime);
+                    const endTime = eventData.endTime ? formatEventTime(eventData.endTime) : null;
+
+                    infoHTML += `
+                        <div class="event-info-item">
+                            <div class="event-info-label">Time</div>
+                            <div class="event-info-value">
+                                ${startTime}${endTime ? ` – ${endTime}` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Location
+                if (eventData.location) {
+                    infoHTML += `
+                        <div class="event-info-item">
+                            <div class="event-info-label">Location</div>
+                            <div class="event-info-value">${eventData.location}</div>
+                        </div>
+                    `;
+                }
+
+                // Deadline (for festivals/competitions)
+                if (eventData.deadlineDate) {
+                    infoHTML += `
+                        <div class="event-info-item">
+                            <div class="event-info-label">Deadline</div>
+                            <div class="event-info-value">${formatEventDate(eventData.deadlineDate)}</div>
+                        </div>
+                    `;
+                }
+
+                infoGrid.innerHTML = infoHTML;
+            }
+
+            // Description
+            const descSection = document.getElementById('eventDescriptionSection');
+            const descEl = document.getElementById('eventModalDescription');
+            if (descEl && eventData.description) {
+                descEl.textContent = eventData.description;
+                if (descSection) descSection.style.display = 'block';
+            } else if (descSection) {
+                descSection.style.display = 'none';
+            }
+
+            // Links
+            const linkSection = document.getElementById('eventLinkSection');
+            if (linkSection) {
+                let linksHTML = '<h3 class="event-modal-section-title">Links</h3>';
+
+                // Add to calendar button - only show for future events
+                const isPastEvent = isEventPast(eventData);
+                if (!isPastEvent) {
+                    linksHTML += `
+                        <button class="event-modal-link calendar-btn" id="addToCalendarBtn" type="button">
+                            📅 Add to Calendar
+                            <span>→</span>
+                        </button>
+                    `;
+                }
+
+                // Event URL if available
+                if (eventData.url) {
+                    linksHTML += `
+                        <a href="${eventData.url}" target="_blank" rel="noopener noreferrer" class="event-modal-link">
+                            Visit Event Page
+                            <span>→</span>
+                        </a>
+                    `;
+                }
+
+                linkSection.innerHTML = linksHTML;
+                linkSection.style.display = 'block';
+
+                // Add click handler for calendar export (only if button exists)
+                if (!isPastEvent) {
+                    const addToCalBtn = document.getElementById('addToCalendarBtn');
+                    if (addToCalBtn) {
+                        addToCalBtn.addEventListener('click', () => exportSingleEventToIcal(eventData));
+                    }
+                }
+            }
+
+            // Open modal
+            eventPreviewBackdrop.classList.add('is-open');
+            eventPreviewBackdrop.setAttribute('aria-hidden', 'false');
+            setTimeout(() => {
+                eventPreviewModal.focus();
+            }, 100);
+        }
+
+        function closeEventPreview() {
+            if (!eventPreviewBackdrop) return;
+            eventPreviewBackdrop.classList.remove('is-open');
+            eventPreviewBackdrop.setAttribute('aria-hidden', 'true');
+            if (lastEventFocusEl && lastEventFocusEl.focus) lastEventFocusEl.focus();
+        }
+
+        // Close button
+        if (eventModalClose) {
+            eventModalClose.addEventListener('click', closeEventPreview);
+        }
+
+        // Click outside to close
+        if (eventPreviewBackdrop) {
+            eventPreviewBackdrop.addEventListener('click', (e) => {
+                if (e.target === eventPreviewBackdrop) closeEventPreview();
+            });
+        }
+
+        // ESC key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && eventPreviewBackdrop.classList.contains('is-open')) {
+                closeEventPreview();
+            }
+        });
+
+        // ============================================
+        // EXPORT SINGLE EVENT TO ICAL (.ics)
+        // ============================================
+        function exportSingleEventToIcal(evt) {
+            if (!evt) return;
+
+            const uid = `${evt.id}@labmedia.com`;
+            const dtstamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+            // Format dates for iCal (YYYYMMDD or YYYYMMDDTHHMMSS)
+            const startDate = evt.startDate.replace(/-/g, '');
+            const endDate = evt.endDate ? evt.endDate.replace(/-/g, '') : startDate;
+
+            let dtstart, dtend;
+            if (evt.startTime) {
+                // Event has time - use datetime format
+                const startTime = evt.startTime.replace(/:/g, '');
+                const endTime = evt.endTime ? evt.endTime.replace(/:/g, '') : startTime;
+                dtstart = `DTSTART:${startDate}T${startTime}00`;
+                dtend = `DTEND:${endDate}T${endTime}00`;
+            } else {
+                // All-day event
+                dtstart = `DTSTART;VALUE=DATE:${startDate}`;
+                // For all-day events, end date is exclusive, so add 1 day
+                const endDateObj = new Date(evt.endDate || evt.startDate);
+                endDateObj.setDate(endDateObj.getDate() + 1);
+                const endDateFormatted = endDateObj.toISOString().split('T')[0].replace(/-/g, '');
+                dtend = `DTEND;VALUE=DATE:${endDateFormatted}`;
+            }
+
+            // Escape special characters in text fields
+            const summary = (evt.title || '').replace(/[,;\\]/g, '\\$&').replace(/\n/g, '\\n');
+            const description = (evt.description || '').replace(/[,;\\]/g, '\\$&').replace(/\n/g, '\\n');
+            const location = (evt.location || '').replace(/[,;\\]/g, '\\$&').replace(/\n/g, '\\n');
+
+            // Build event categories based on type
+            const categories = {
+                'meetup': 'CATEGORIES:MEETING,NETWORKING',
+                'deadline': 'CATEGORIES:DEADLINE,IMPORTANT',
+                'festival': 'CATEGORIES:FESTIVAL,FILM',
+                'workshop': 'CATEGORIES:WORKSHOP,EDUCATION',
+                'screening': 'CATEGORIES:SCREENING,FILM'
+            };
+
+            // Generate iCal file content
+            const icalContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//LaB Media//Events Calendar//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:LaB Media Events
+X-WR-TIMEZONE:America/Detroit
+X-WR-CALDESC:LaB Media community events - deadlines, meetups, festivals, workshops, and screenings
+BEGIN:VEVENT
+UID:${uid}
+DTSTAMP:${dtstamp}
+${dtstart}
+${dtend}
+SUMMARY:${summary}
+DESCRIPTION:${description}
+${location ? `LOCATION:${location}` : ''}
+${evt.url ? `URL:${evt.url}` : ''}
+${categories[evt.type] || 'CATEGORIES:EVENT'}
+STATUS:CONFIRMED
+SEQUENCE:0
+END:VEVENT
+END:VCALENDAR`;
+
+            // Create download
+            const blob = new Blob([icalContent], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+
+            // Create filename from event title (sanitized)
+            const sanitizedTitle = evt.title.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+            a.download = `${sanitizedTitle}-${evt.startDate}.ics`;
+
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            console.log(`Exported "${evt.title}" to iCal`);
+        }
     </script>
 </body>
 </html>
