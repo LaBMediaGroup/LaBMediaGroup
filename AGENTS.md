@@ -4,16 +4,20 @@ This repo is a static website (HTML/CSS/JS). No frameworks, no build step.
 
 This document defines how to work on the site using coding assistants (Codex, ChatGPT, Claude Code, etc.) without breaking design intent or duplicating UI.
 
+---
+
 Ops & logging (mandatory)
 	•	Every PR/change must append to CHANGELOG_RUNNING.md (never delete or rewrite prior entries).
 	•	Keep the exact entry format:
 
-  YYYY-MM-DD | h:mmAM/PM EST
+———————————————————————
+YYYY-MM-DD | h:mmAM/PM EST
 ———————————————————————
 Change:
 Files touched:
 Notes:
 Quick test checklist:
+———————————————————————
 
 “Files touched” must list actual edited filenames.
 	•	“Quick test checklist” must be manual checks (see Verification rules below).
