@@ -835,39 +835,29 @@
             background: var(--white);
             transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         .resource-card:hover { background: var(--gray-900); }
         .resource-card:hover::before { width: 100%; }
         .resource-card:active { transform: scale(0.98); }
-        
-        /* Card type styling */
-        .resource-card.is-collaborator {
-            background: linear-gradient(135deg, rgba(249, 115, 22, 0.03) 0%, var(--black) 100%);
-            border-left: 2px solid var(--lab-orange);
-        }
-        .resource-card.is-collaborator::before { background: var(--lab-orange); }
-        .resource-card.is-collaborator:hover { background: linear-gradient(135deg, rgba(249, 115, 22, 0.08) 0%, var(--gray-900) 100%); }
-        
-        .resource-card.is-community {
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.03) 0%, var(--black) 100%);
-            border-left: 2px solid var(--lab-green);
-        }
-        .resource-card.is-community::before { background: var(--lab-green); }
-        .resource-card.is-community:hover { background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, var(--gray-900) 100%); }
 
-        .resource-card.is-film-festival {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.03) 0%, var(--black) 100%);
-            border-left: 2px solid #F59E0B;
+        /* Card outline accents — crisp, no glow */
+        .resource-card {
+            border: 1px solid rgba(255,255,255,0.10);
+            background: var(--black);
         }
-        .resource-card.is-film-festival::before { background: #F59E0B; }
-        .resource-card.is-film-festival:hover { background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, var(--gray-900) 100%); }
+        .resource-card.is-film-festival { border-color: rgba(255, 140, 66, 0.35); }
+        .resource-card.is-community     { border-color: rgba(0, 217, 255, 0.28); }
+        .resource-card.is-collaborator  { border-color: rgba(74, 158, 255, 0.30); }
+        .resource-card.is-inspiration   { border-color: rgba(46, 204, 113, 0.25); }
+        .resource-card.is-stock-hub     { border-color: rgba(255,255,255,0.18); }
+        .resource-card.is-tools-hub     { border-color: rgba(255,255,255,0.18); }
 
-        .resource-card.is-inspiration {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.03) 0%, var(--black) 100%);
-            border-left: 2px solid var(--lab-purple);
+        .resource-card,
+        .resource-card::before,
+        .resource-card::after {
+            box-shadow: none !important;
+            filter: none !important;
         }
-        .resource-card.is-inspiration::before { background: var(--lab-purple); }
-        .resource-card.is-inspiration:hover { background: linear-gradient(135deg, rgba(168, 85, 247, 0.08) 0%, var(--gray-900) 100%); }
         
         /* LaB Pick indicator */
         .resource-card.is-lab-pick::after {
@@ -2808,7 +2798,7 @@
                 stockSubcategory = btn.dataset.stock;
                 renderResources(true);
             });
-        });
+        }
 
         toolsGroupButtons.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -2868,6 +2858,15 @@
                 currentToolsSub = btn.dataset.sub;
                 renderResources(true);
             });
+        });
+
+        // Keyboard shortcut: / focuses search (like a real app)
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== '/') return;
+            const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+            if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+            e.preventDefault();
+            searchInput.focus();
         });
 
         // Keyboard shortcut: / focuses search (like a real app)
