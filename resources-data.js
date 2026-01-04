@@ -325,7 +325,7 @@ const resources = [
         url: 'https://www.youtube.com/@ChuckLeeMBM',
         paid: false,
         featuredVideo: 'iGTif3RG42U',
-        features: ['Filmmaking', 'Creative Process', 'Storytelling', 'Craft']
+        features: ['Filmmaking', 'Creative Process', 'Storytelling', 'Craft', 'Made in Michigan']
     },
     {
         name: 'Joris Hermans',
@@ -412,7 +412,8 @@ const resources = [
     {
         name: 'Joshua Bardwell',
         category: 'drone',
-        droneType: 'channel',
+        droneType: 'channels',
+        droneSubType: 'channels',
         desc: 'FPV drone tutorials and gear deep-dives with clear visual demos.',
         fullDesc: 'Technical yet accessible breakdowns of FPV drone builds, tuning, and flight footage—essential resource for FPV learning, diagnostics, and gear selection. Clear explanations for both beginners and advanced pilots.',
         url: 'https://www.youtube.com/@JoshuaBardwell',
@@ -424,7 +425,8 @@ const resources = [
     {
         name: 'DJI',
         category: 'drone',
-        droneType: 'shop',
+        droneType: 'stores',
+        droneSubType: 'stores',
         desc: 'Industry-leading camera drones for aerial photography and cinematography.',
         fullDesc: 'DJI offers the most comprehensive lineup of camera drones, from compact mini drones to professional multi-lens flagship models. Their products enable creators to capture aerial moments with reliability, advanced stabilization, and professional-grade imaging—trusted by filmmakers worldwide.',
         url: 'https://www.dji.com/camera-drones',
@@ -434,7 +436,8 @@ const resources = [
     {
         name: 'BetaFPV',
         category: 'drone',
-        droneType: 'shop',
+        droneType: 'stores',
+        droneSubType: 'stores',
         desc: 'Trailblazer in micro FPV drones and components.',
         fullDesc: 'BetaFPV specializes in micro FPV drones and comprehensive component offerings including ready-to-fly kits, brushless quadcopters, flight controllers, cameras, motors, and accessories. Perfect for both beginner pilots and experienced racers looking for compact, agile systems.',
         url: 'https://betafpv.com',
@@ -445,7 +448,8 @@ const resources = [
     {
         name: 'FAA Drone Certification',
         category: 'drone',
-        droneType: 'part-107',
+        droneType: 'part107',
+        droneSubType: 'part107',
         desc: 'Official guide to becoming a certified commercial drone pilot (Part 107).',
         fullDesc: 'The FAA\'s comprehensive resource for obtaining your Remote Pilot Certificate under Part 107. Covers eligibility requirements, application process through IACRA, knowledge testing, and ongoing recertification—essential for anyone operating drones commercially in the United States.',
         url: 'https://www.faa.gov/uas/commercial_operators/become_a_drone_pilot',
@@ -463,7 +467,8 @@ const resources = [
     {
         name: 'King Schools Part 107 Prep',
         category: 'drone',
-        droneType: 'part-107',
+        droneType: 'part107',
+        droneSubType: 'part107',
         desc: 'Self-paced course to pass the FAA Part 107 Remote Pilot knowledge test.',
         fullDesc: 'King Schools offers a dedicated Part 107 online course with video lessons, practice tests, and scenario-based training to prepare pilots for the FAA Remote Pilot knowledge exam. Designed for clarity and test confidence with mobile-friendly access.',
         url: 'https://kingschools.com/drone-pilot-license-test-prep-course',
@@ -481,7 +486,8 @@ const resources = [
     {
         name: 'Mike Sytes (Part 107)',
         category: 'drone',
-        droneType: 'part-107',
+        droneType: 'part107',
+        droneSubType: 'part107',
         desc: 'Practical Part 107 study walkthroughs with clear test-taking tips.',
         fullDesc: 'Mike Sytes provides approachable guidance for passing the Part 107 exam, including regulation breakdowns, aeronautical charts, and practice question reviews. Useful for quick refreshers and applied study sessions.',
         url: 'https://www.youtube.com/@mikesytes',
@@ -500,7 +506,8 @@ const resources = [
     {
         name: 'Mr. Migs Classroom (Part 107)',
         category: 'drone',
-        droneType: 'part-107',
+        droneType: 'part107',
+        droneSubType: 'part107',
         desc: 'Classroom-style lessons covering Part 107 knowledge areas.',
         fullDesc: 'Mr. Migs Classroom delivers organized Part 107 instruction with playlists on airspace, weather, sectional charts, and operating rules—great for structured study and teaching contexts.',
         url: 'https://www.youtube.com/@MrMigsClassroom',
@@ -519,7 +526,8 @@ const resources = [
     {
         name: 'CAPTAIN DRONE',
         category: 'drone',
-        droneType: 'channel',
+        droneType: 'channels',
+        droneSubType: 'channels',
         desc: 'FPV tutorials, reviews, and flight content.',
         fullDesc: 'YouTube channel focused on FPV drone flying, gear reviews, tutorials, and flight footage. Practical insights for pilots at all levels with an emphasis on real-world flying and equipment recommendations.',
         url: 'https://www.youtube.com/@CAPTAINDRONE798',
@@ -530,7 +538,8 @@ const resources = [
     {
         name: 'GetFPV',
         category: 'drone',
-        droneType: 'shop',
+        droneType: 'stores',
+        droneSubType: 'stores',
         desc: 'Leading FPV drone retailer with extensive components and learning resources.',
         fullDesc: 'GetFPV is a comprehensive FPV drone store offering everything from complete systems to individual components, batteries, and accessories. Their YouTube channel provides tutorials, product reviews, and build guides—solid resource for gear selection and technical knowledge.',
         url: 'https://www.getfpv.com',
@@ -541,7 +550,8 @@ const resources = [
     {
         name: 'RaceDayQuads',
         category: 'drone',
-        droneType: 'shop',
+        droneType: 'stores',
+        droneSubType: 'stores',
         desc: 'FPV racing equipment and components from top brands.',
         fullDesc: 'RaceDayQuads specializes in FPV drone racing equipment with a comprehensive selection of pre-built drones, flight controllers, motors, propellers, batteries, frames, and accessories from leading industry brands. Go-to shop for competitive racing builds.',
         url: 'https://www.racedayquads.com',
@@ -551,7 +561,8 @@ const resources = [
     {
         name: 'Pyrodrone',
         category: 'drone',
-        droneType: 'shop',
+        droneType: 'stores',
+        droneSubType: 'stores',
         desc: 'Top-rated FPV drones and extensive component selection.',
         fullDesc: 'Pyrodrone offers prebuilt FPV drones across micro, digital, analog, and cinewhoop categories, plus extensive individual components including motors, propellers, batteries, frames, and electronics. Well-curated selection for FPV enthusiasts of all skill levels.',
         url: 'https://pyrodrone.com',
@@ -561,7 +572,8 @@ const resources = [
     {
         name: 'Mr Steele',
         category: 'drone',
-        droneType: 'channel',
+        droneType: 'channels',
+        droneSubType: 'channels',
         desc: 'Legendary FPV pilot known for cinematic freestyle and creativity.',
         fullDesc: 'Mr Steele is one of the most influential FPV pilots in the community, known for his smooth cinematic freestyle flying and creative approach to drone content. His videos showcase what\'s possible with FPV—useful inspiration for visual movement and dynamic aerial storytelling.',
         url: 'https://www.youtube.com/@MrSteeleFPV',
@@ -574,7 +586,8 @@ const resources = [
     {
         name: 'BOTGRINDER',
         category: 'drone',
-        droneType: 'channel',
+        droneType: 'channels',
+        droneSubType: 'channels',
         desc: 'High-energy FPV freestyle and creative drone cinematography.',
         fullDesc: 'BOTGRINDER delivers aggressive, technical FPV freestyle with creative cinematography and unique locations. Known for pushing the limits of FPV movement and visual storytelling—great reference for dynamic aerial work and bold flying.',
         url: 'https://www.youtube.com/@BOTGRINDER',
@@ -585,7 +598,8 @@ const resources = [
     {
         name: 'BobtatsiC',
         category: 'drone',
-        droneType: 'channel',
+        droneType: 'channels',
+        droneSubType: 'channels',
         desc: 'FPV drone flights and channel updates from BobtatsiC.',
         fullDesc: 'BobtatsiC shares FPV flight footage and channel updates with a focus on hands-on piloting. Useful reference for real-world freestyle runs and progress tracking.',
         url: 'https://www.youtube.com/@BobtastiCFPV',
