@@ -2,6 +2,17 @@
 
 Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
+2026-01-04 | 2:26PM EST
+———————————————————————
+Change: Fixed References filtering defaults so reference items render (including Comedy) even when subfilter state is stale; kept canonical category key `references`.
+Files touched: resources.html
+Notes: Ensures refs show when All is selected; comedy remains available.
+Quick test checklist:
+- Open References tab and verify items render without manual filters
+- Toggle each References subfilter including Comedy → results adjust
+- Ensure other categories (Film Festivals, Tools, Drones) still populate
+- Check console for errors when switching between categories
+
 ## 2026-01-04
 - Change: Resources grid now uses event delegation + chunked rendering for smoother filtering and less DOM churn. Added Saved (favorites) system using localStorage and a modal save toggle.
 - Files touched: resources.html
