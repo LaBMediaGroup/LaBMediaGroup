@@ -825,124 +825,6 @@
             color: var(--white);
         }
 
-        /* ============================================
-           SAVED DRAWER / SHARE
-        ============================================ */
-        .saved-drawer {
-            position: fixed;
-            top: 1.5rem;
-            right: 1.5rem;
-            width: min(320px, 90vw);
-            max-height: calc(100vh - 3rem);
-            background: rgba(9, 9, 9, 0.92);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            overflow: hidden;
-            z-index: 1200;
-        }
-        .saved-drawer h3 {
-            margin: 0;
-            color: var(--white);
-            font-size: 1rem;
-            letter-spacing: 0.01em;
-        }
-        .saved-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.5rem;
-        }
-        .saved-count {
-            color: var(--gray-300);
-            font-family: 'Space Mono', monospace;
-        }
-        .saved-actions {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .saved-share {
-            border: 1px solid rgba(255,255,255,0.14);
-            background: rgba(255,255,255,0.04);
-            color: var(--white);
-            padding: 0.35rem 0.5rem;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-        .saved-search input {
-            width: 100%;
-            padding: 0.6rem 0.75rem;
-            border: 1px solid rgba(255,255,255,0.14);
-            background: rgba(255,255,255,0.05);
-            color: var(--white);
-        }
-        .saved-list {
-            overflow: auto;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        .saved-item {
-            border: 1px solid rgba(255,255,255,0.08);
-            background: rgba(255,255,255,0.02);
-            padding: 0.5rem 0.6rem;
-        }
-        .saved-item .saved-name {
-            color: var(--white);
-            font-weight: 600;
-        }
-        .saved-meta {
-            color: var(--gray-300);
-            font-size: 0.85rem;
-            margin: 0.2rem 0 0.4rem;
-        }
-        .saved-item-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-        .saved-btn {
-            border: 1px solid rgba(255,255,255,0.14);
-            background: rgba(255,255,255,0.05);
-            color: var(--white);
-            padding: 0.35rem 0.55rem;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-        .saved-empty {
-            color: var(--gray-400);
-            text-align: center;
-            padding: 0.5rem 0;
-        }
-        .toast {
-            position: fixed;
-            bottom: 1rem;
-            right: 1rem;
-            background: rgba(24, 24, 24, 0.95);
-            color: var(--white);
-            padding: 0.65rem 0.85rem;
-            border: 1px solid rgba(255,255,255,0.14);
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.2s ease, transform 0.2s ease;
-            z-index: 1500;
-        }
-        .toast.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        @media (max-width: 960px) {
-            .saved-drawer {
-                position: static;
-                width: 100%;
-                max-height: none;
-                margin-top: 1rem;
-            }
-        }
-
         .resource-card::before {
             content: '';
             position: absolute;
@@ -1780,6 +1662,13 @@
             </div>
         </div>
 
+        <!-- Quick Filters -->
+        <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
+            <button class="quickfilter-btn" type="button" data-qf="labPick">LaB Picks</button>
+            <button class="quickfilter-btn" type="button" data-qf="free">Free</button>
+            <button class="quickfilter-btn" type="button" data-qf="paid">Paid</button>
+        </div>
+
         <div class="subfilter-row" id="musicTierBar" aria-live="polite" hidden>
             <span class="subfilter-label">Music view:</span>
             <div class="subfilter-buttons">
@@ -1915,30 +1804,16 @@
         const aiTypeButtons = aiTypeBar.querySelectorAll('.subfilter-btn');
         const droneTypeBar = document.getElementById('droneTypeBar');
         const droneTypeButtons = droneTypeBar.querySelectorAll('.subfilter-btn');
-        const stockGroupBar = document.getElementById('stockGroupBar');
-        const stockGroupButtons = stockGroupBar ? stockGroupBar.querySelectorAll('[data-stock]') : [];
-        const toolsGroupBar = document.getElementById('toolsGroupBar');
-        const toolsGroupButtons = toolsGroupBar ? toolsGroupBar.querySelectorAll('[data-tools]') : [];
-
-        const savedDrawer = document.getElementById('savedDrawer');
-        const savedList = document.getElementById('savedList');
-        const savedCountEl = document.getElementById('savedCount');
-        const savedSearchInput = document.getElementById('savedSearch');
-        const shareSavedBtn = document.getElementById('shareSavedBtn');
-        const shareToast = document.getElementById('shareToast');
 
         const quickFilterBar = document.getElementById('quickFilterBar');
         const quickFilterButtons = quickFilterBar ? quickFilterBar.querySelectorAll('.quickfilter-btn') : [];
         const quickFilters = {
-            saved: false,
             labPick: false,
             free: false,
             paid: false
         };
 
-        let currentGroup = 'film-festivals';
-        let stockSubcategory = 'all-stock';
-        let toolsSubcategory = 'all-tools';
+        let currentCategory = 'film-festivals';
         let searchQuery = '';
         let musicTier = 'paid';
         let aiType = 'all';
@@ -1995,85 +1870,8 @@
                 setFavoriteUI(activeResourceId);
                 // If "Saved" filter is active, re-render to reflect changes
                 if (quickFilters && quickFilters.saved) renderResources(true);
-                renderSavedDrawer();
             });
         }
-
-        function getResourceById(id) {
-            return resources.find(r => (r.id || normalizeValue(r.name)) === id);
-        }
-
-        function renderSavedDrawer() {
-            if (!savedList) return;
-            const favIds = Array.from(favorites);
-            const query = normalizeValue(savedSearchInput.value);
-            const mapped = favIds
-                .map(id => getResourceById(id))
-                .filter(Boolean)
-                .filter(r => {
-                    if (!query) return true;
-                    const text = [r.name, r.shortDesc, r.desc].filter(Boolean).join(' ').toLowerCase();
-                    return text.includes(query);
-                });
-
-            savedCountEl.textContent = favIds.length;
-
-            if (!mapped.length) {
-                savedList.innerHTML = '<div class="saved-empty">No saved resources yet.</div>';
-                return;
-            }
-
-            const html = mapped.map(r => {
-                const id = r.id || normalizeValue(r.name);
-                const primaryCat = getPrimaryCategory(r);
-                return `
-                    <div class="saved-item" data-id="${id}">
-                        <div class="saved-name">${r.name}</div>
-                        <div class="saved-meta">${primaryCat}</div>
-                        <div class="saved-item-buttons">
-                            <button class="saved-btn" data-action="open" data-id="${id}">Open</button>
-                            <button class="saved-btn" data-action="remove" data-id="${id}">Remove</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            savedList.innerHTML = html;
-        }
-
-        function showShareToast(message = 'Link copied') {
-            if (!shareToast) return;
-            shareToast.textContent = message;
-            shareToast.classList.add('is-visible');
-            setTimeout(() => shareToast.classList.remove('is-visible'), 1400);
-        }
-
-        function buildSavedShareUrl() {
-            const ids = Array.from(favorites);
-            const url = new URL(window.location.href);
-            if (ids.length) {
-                url.searchParams.set('saved', ids.join(','));
-            } else {
-                url.searchParams.delete('saved');
-            }
-            return url.toString();
-        }
-
-        function mergeSavedFromQuery() {
-            const params = new URLSearchParams(window.location.search);
-            const savedParam = params.get('saved');
-            if (!savedParam) return;
-            savedParam.split(',').map(normalizeValue).filter(Boolean).forEach(id => favorites.add(id));
-            saveFavorites();
-            quickFilters.saved = true;
-            const savedBtn = quickFilterBar ? quickFilterBar.querySelector('[data-qf="saved"]') : null;
-            if (savedBtn) savedBtn.classList.add('is-active');
-            renderSavedDrawer();
-        }
-
-        // Init drawer
-        renderSavedDrawer();
-        mergeSavedFromQuery();
 
         // ============================================
         // UTILITY FUNCTIONS
@@ -2245,15 +2043,9 @@
             const wantsLabPick = quickFilters.labPick;
             const wantsFree = quickFilters.free;
             const wantsPaid = quickFilters.paid;
-            const wantsSaved = quickFilters.saved;
 
             if (wantsLabPick) {
                 filtered = filtered.filter(r => r.labPick === true);
-            }
-
-            // Saved filter (favorites)
-            if (wantsSaved) {
-                filtered = filtered.filter(r => favorites.has(r.id || normalizeValue(r.name)));
             }
 
             // Free/Paid toggles work across categories when r.paid is present.
@@ -2765,44 +2557,6 @@
             if (resource) openModal(resource);
         });
 
-        if (savedList) {
-            savedList.addEventListener('click', (e) => {
-                const actionBtn = e.target.closest('[data-action]');
-                if (!actionBtn) return;
-                const id = actionBtn.dataset.id;
-                if (!id) return;
-                if (actionBtn.dataset.action === 'open') {
-                    const resource = getResourceById(id);
-                    if (resource) openModal(resource);
-                }
-                if (actionBtn.dataset.action === 'remove') {
-                    favorites.delete(id);
-                    saveFavorites();
-                    setFavoriteUI(activeResourceId);
-                    renderSavedDrawer();
-                    if (quickFilters.saved) renderResources(true);
-                }
-            });
-        }
-
-        if (savedSearchInput) {
-            savedSearchInput.addEventListener('input', () => {
-                renderSavedDrawer();
-            });
-        }
-
-        if (shareSavedBtn) {
-            shareSavedBtn.addEventListener('click', async () => {
-                const url = buildSavedShareUrl();
-                try {
-                    await navigator.clipboard.writeText(url);
-                    showShareToast('Link copied');
-                } catch (err) {
-                    showShareToast('Copy not available');
-                }
-            });
-        }
-
         // ============================================
         // FILTER & SEARCH
         // ============================================
@@ -2883,6 +2637,19 @@
                 renderResources(true);
             });
         });
+
+        // Quick filters (multi-toggle)
+        if (quickFilterButtons.length) {
+            quickFilterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const key = btn.dataset.qf;
+                    if (!key || !(key in quickFilters)) return;
+                    quickFilters[key] = !quickFilters[key];
+                    btn.classList.toggle('is-active', quickFilters[key]);
+                    renderResources(true);
+                });
+            });
+        }
 
         // Keyboard shortcut: / focuses search (like a real app)
         document.addEventListener('keydown', (e) => {
