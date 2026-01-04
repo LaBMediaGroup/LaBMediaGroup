@@ -764,7 +764,67 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
+        /* ============================================
+           SKELETON LOADING (cards)
+        ============================================ */
+        .resource-card.is-skeleton {
+            cursor: default;
+            pointer-events: none;
+            opacity: 1;
+            animation: none;
+        }
+        .resource-card.is-skeleton .card-index,
+        .resource-card.is-skeleton .card-name,
+        .resource-card.is-skeleton .card-description,
+        .resource-card.is-skeleton .card-badges,
+        .resource-card.is-skeleton .card-arrow {
+            visibility: hidden;
+        }
+        .resource-card.is-skeleton::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg,
+                rgba(255,255,255,0.04),
+                rgba(255,255,255,0.08),
+                rgba(255,255,255,0.04)
+            );
+            transform: translateX(-60%);
+            animation: skeletonShimmer 1.2s ease-in-out infinite;
+            opacity: 0.9;
+        }
+        @keyframes skeletonShimmer {
+            0% { transform: translateX(-60%); }
+            100% { transform: translateX(60%); }
+        }
+
+        /* ============================================
+           QUICK FILTERS (multi-toggle)
+        ============================================ */
+        .quickfilter-row {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .quickfilter-btn {
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.03);
+            color: var(--gray-300);
+            padding: 0.5rem 0.75rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: transform 0.12s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+        .quickfilter-btn:hover { transform: translateY(-1px); }
+        .quickfilter-btn.is-active {
+            border-color: rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.06);
+            color: var(--white);
+        }
+
         .resource-card::before {
             content: '';
             position: absolute;
@@ -1559,6 +1619,13 @@
             <button class="filter-btn" data-category="all">All</button>
         </div>
 
+        <!-- Quick Filters -->
+        <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
+            <button class="quickfilter-btn" type="button" data-qf="labPick">LaB Picks</button>
+            <button class="quickfilter-btn" type="button" data-qf="free">Free</button>
+            <button class="quickfilter-btn" type="button" data-qf="paid">Paid</button>
+        </div>
+
         <div class="subfilter-row" id="musicTierBar" aria-live="polite" hidden>
             <span class="subfilter-label">Music view:</span>
             <div class="subfilter-buttons">
@@ -1672,6 +1739,14 @@
         const aiTypeButtons = aiTypeBar.querySelectorAll('.subfilter-btn');
         const droneTypeBar = document.getElementById('droneTypeBar');
         const droneTypeButtons = droneTypeBar.querySelectorAll('.subfilter-btn');
+
+        const quickFilterBar = document.getElementById('quickFilterBar');
+        const quickFilterButtons = quickFilterBar ? quickFilterBar.querySelectorAll('.quickfilter-btn') : [];
+        const quickFilters = {
+            labPick: false,
+            free: false,
+            paid: false
+        };
 
         let currentCategory = 'film-festivals';
         let searchQuery = '';
@@ -1823,6 +1898,22 @@
                 });
             }
 
+            // Quick filters (multi-toggle)
+            const wantsLabPick = quickFilters.labPick;
+            const wantsFree = quickFilters.free;
+            const wantsPaid = quickFilters.paid;
+
+            if (wantsLabPick) {
+                filtered = filtered.filter(r => r.labPick === true);
+            }
+
+            // Free/Paid toggles work across categories when r.paid is present.
+            // If both are off, allow all. If one is on, filter accordingly.
+            if (wantsFree !== wantsPaid) {
+                if (wantsFree) filtered = filtered.filter(r => r.paid === false);
+                if (wantsPaid) filtered = filtered.filter(r => r.paid === true);
+            }
+
             // Dedupe before sorting
             filtered = dedupeResources(filtered);
 
@@ -1901,7 +1992,24 @@
         // ============================================
         // RENDER LOGIC
         // ============================================
-        
+
+        function buildSkeletonGrid(count = 8) {
+            const skeletonCount = Math.max(6, Math.min(count, 12));
+            let html = '';
+            for (let i = 0; i < skeletonCount; i++) {
+                html += `
+                    <div class="resource-card is-skeleton">
+                        <span class="card-index">${String(i + 1).padStart(3, '0')}</span>
+                        <h3 class="card-name">Loading</h3>
+                        <div class="card-badges"></div>
+                        <p class="card-description">Loading</p>
+                        <span class="card-arrow">→</span>
+                    </div>
+                `;
+            }
+            grid.innerHTML = html;
+        }
+
         function renderResources(animate = false) {
             if (currentCategory === 'music') {
                 musicTierBar.removeAttribute('hidden');
@@ -1929,10 +2037,16 @@
             
             // Set data-count attribute for CSS adaptive grid
             grid.setAttribute('data-count', Math.min(count, 12));
-            
+
             if (animate) {
-                grid.style.opacity = '0';
-                grid.style.transform = 'translateY(10px)';
+                // Show skeletons immediately for a modern loading feel
+                grid.style.transition = 'none';
+                buildSkeletonGrid();
+                grid.style.opacity = '1';
+                grid.style.transform = 'translateY(0)';
+                // Force reflow so the next transition applies cleanly
+                void grid.offsetHeight;
+
                 setTimeout(() => {
                     buildGrid(filtered);
                     grid.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -2328,6 +2442,28 @@
                 setCategory(btn.dataset.category);
                 renderResources(true);
             });
+        });
+
+        // Quick filters (multi-toggle)
+        if (quickFilterButtons.length) {
+            quickFilterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const key = btn.dataset.qf;
+                    if (!key || !(key in quickFilters)) return;
+                    quickFilters[key] = !quickFilters[key];
+                    btn.classList.toggle('is-active', quickFilters[key]);
+                    renderResources(true);
+                });
+            });
+        }
+
+        // Keyboard shortcut: / focuses search (like a real app)
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== '/') return;
+            const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+            if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+            e.preventDefault();
+            searchInput.focus();
         });
 
         musicTierButtons.forEach(btn => {
