@@ -2,17 +2,6 @@
 
 Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
-2026-01-04 | 2:47PM EST
-———————————————————————
-Change: Normalize References subfilter handling (including Comedy) and show drone subtype filters on the top-level Drones tab; add debug counters for References renders.
-Files touched: resources.html
-Notes: References now defaults to All even if stale/legacy values are present; drone subfilter row appears for Drones and Tools→Drone views.
-Quick test checklist:
-- Hard refresh Resources, open References, confirm cards render
-- Switch each References subfilter (including Comedy and All) to verify updates
-- Open Drones tab and test Part 107 / Channels / Stores / All filters
-- Check console for debug counts and absence of JS errors
-
 2026-01-04 | 2:26PM EST
 ———————————————————————
 Change: Fixed References filtering defaults so reference items render (including Comedy) even when subfilter state is stale; kept canonical category key `references`.
@@ -70,13 +59,3 @@ Quick test checklist:
 - Toggle Inspiration/Editing/Filming/Art/Music/References/Comedy/All → results stay populated
 - Select Drones → Drone subfilter row shows; Part 107/Channels/Stores/All filter items accordingly
 - Console free of errors (favicon only)
-2026-01-04 | 3:22PM EST
-———————————————————————
-Change: Fix Resources render crash (undefined isDrones) and resolve duplicate modal close declaration on Events.
-Files touched: resources.html, events.html
-Notes: Scoped drone detection to cover drone/drones keys; renamed modal close handle to avoid redeclaration.
-Quick test checklist:
-- Hard refresh Resources; Friends/Community/Drones tabs render without console errors
-- Toggle Drones subfilters → cards remain visible
-- Hard refresh Events; calendar visible
-- Click an event → modal opens; close button works

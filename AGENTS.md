@@ -6,6 +6,24 @@ This document defines how to work on the site using coding assistants (Codex, Ch
 
 ---
 
+Ops & logging (mandatory)
+	•	Every PR/change must append to CHANGELOG_RUNNING.md (never delete or rewrite prior entries).
+	•	Keep the exact entry format:
+
+
+YYYY-MM-DD | h:mmAM/PM EST
+———————————————————————
+Change:
+Files touched:
+Notes:
+Quick test checklist:
+
+
+“Files touched” must list actual edited filenames.
+	•	“Quick test checklist” must be manual checks (see Verification rules below).
+
+---
+
 ## 1) Non-negotiable project rules
 
 ### Stack & structure
@@ -95,6 +113,16 @@ When given a task:
 4. Provide acceptance criteria.
 5. Provide a short smoke test list.
 
+Verification rules (environment constraint)
+	•	Do not attempt Playwright install or automated screenshot capture (proxy restriction).
+	•	Testing output must be:
+	•	“Automated tests: Not run (environment restriction)”
+	•	A manual verification checklist with click-path steps + observed outcomes
+	•	A console error check step (DevTools) for the touched page(s)
+
+Changelog requirement (repeat here so it’s never missed)
+	•	Always append a new entry to CHANGELOG_RUNNING.md using the required template.
+
 ---
 
 ## 5) Local-only events filter (default)
@@ -118,3 +146,6 @@ After any merge:
   - no TX/CA/NY demo locations
   - month grid calendar default
 - No console errors
+- General:
+	•	Confirm CHANGELOG_RUNNING.md has a new appended entry for the change
+	•	Confirm no console errors on the page(s) touched
