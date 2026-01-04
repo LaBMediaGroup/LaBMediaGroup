@@ -49,3 +49,13 @@ Example template:
   - Confirm poster lines animate with no halo/glow
   - Test on mobile + desktop
   - Check prefers-reduced-motion still behaves
+2026-01-04 | 3:06PM EST
+———————————————————————
+Change: Normalize References data/filter fallbacks so reference cards render and Comedy is selectable; ensure Drone subfilters appear for Drones tab.
+Files touched: resources.html
+Notes: Added inspiration→references fallback for both category and refType lookups; kept subfilter rows single-instance for drones/references.
+Quick test checklist:
+- Hard refresh Resources; click References → cards render
+- Toggle Inspiration/Editing/Filming/Art/Music/References/Comedy/All → results stay populated
+- Select Drones → Drone subfilter row shows; Part 107/Channels/Stores/All filter items accordingly
+- Console free of errors (favicon only)
