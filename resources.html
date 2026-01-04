@@ -1941,6 +1941,32 @@
             </div>
         </div>
 
+        <!-- References Subcategories (shown when References is active) -->
+        <div class="subfilter-row" id="referencesGroupBar" aria-live="polite" hidden>
+            <span class="subfilter-label">References:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn" data-references="inspiration">Inspiration</button>
+                <button class="subfilter-btn" data-references="art">Art</button>
+                <button class="subfilter-btn" data-references="editing">Editing</button>
+                <button class="subfilter-btn" data-references="filming">Filming</button>
+                <button class="subfilter-btn" data-references="music">Music</button>
+                <button class="subfilter-btn" data-references="references">References</button>
+                <button class="subfilter-btn" data-references="comedy">Comedy</button>
+                <button class="subfilter-btn active" data-references="all">All</button>
+            </div>
+        </div>
+
+        <!-- Drone Subcategories (shown when Tools → Drone is active) -->
+        <div class="subfilter-row" id="droneTypeBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Drone:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn" data-type="part107">Part 107</button>
+                <button class="subfilter-btn" data-type="channels">Channels</button>
+                <button class="subfilter-btn" data-type="stores">Stores</button>
+                <button class="subfilter-btn active" data-type="all">All</button>
+            </div>
+        </div>
+
         <!-- Quick Filters Row -->
         <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
             <button class="quickfilter-btn" type="button" data-qf="saved">
@@ -2081,6 +2107,9 @@
             free: false,
             paid: false
         };
+
+        const referenceTypeValues = new Set(['inspiration', 'art', 'editing', 'filming', 'music', 'references', 'comedy']);
+        const REFERENCES_DEBUG = true;
 
         // Saved drawer elements
         const savedDrawer = document.getElementById('savedDrawer');
@@ -2383,9 +2412,30 @@
                 .replace(/\/+$/, '');
         }
 
+        function normalizeReferenceSelection(value) {
+            const normalized = normalizeValue(value);
+            if (!normalized || normalized === 'all' || normalized === 'all-ref' || normalized === 'all_ref' || normalized === 'all references') {
+                return 'all';
+            }
+            return referenceTypeValues.has(normalized) ? normalized : 'all';
+        }
+
         function getCategoryList(resource) {
             const categories = Array.isArray(resource.category) ? resource.category : [resource.category];
             return categories.map(normalizeValue).filter(Boolean);
+        }
+
+        function logReferencesDebug(filteredCount) {
+            if (!REFERENCES_DEBUG || currentGroup !== 'references') return;
+            const totalResources = Array.isArray(resources) ? resources.length : 0;
+            const referencesTotal = Array.isArray(resources) ? resources.filter(r => getCategoryList(r).includes('references')).length : 0;
+            const refSelection = normalizeReferenceSelection(referencesSubcategory);
+            console.debug('[References]', {
+                totalResources,
+                referencesTotal,
+                refSelection,
+                filteredCount
+            });
         }
 
         function getResourceKey(resource) {
@@ -2531,7 +2581,7 @@
                 });
             }
 
-            if (currentGroup === 'tools' && toolsSubcategory === 'drone') {
+            if ((currentGroup === 'tools' && toolsSubcategory === 'drone') || currentGroup === 'drones') {
                 filtered = filtered.filter(r => {
                     const droneSubType = normalizeValue(r.droneSubType || r.droneType);
                     if (droneType === 'all') return true;
@@ -2683,11 +2733,14 @@
             }
 
             if (droneTypeBar) {
-                droneTypeBar.toggleAttribute('hidden', !(isTools && toolsSubcategory === 'drone'));
+                const showDroneFilters = (isTools && toolsSubcategory === 'drone') || isDrones;
+                droneTypeBar.toggleAttribute('hidden', !showDroneFilters);
             }
 
             const filtered = getFilteredResources();
             const count = filtered.length;
+
+            logReferencesDebug(count);
 
             // Update count with animation
             animateCount(count);
