@@ -764,7 +764,67 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
+        /* ============================================
+           SKELETON LOADING (cards)
+        ============================================ */
+        .resource-card.is-skeleton {
+            cursor: default;
+            pointer-events: none;
+            opacity: 1;
+            animation: none;
+        }
+        .resource-card.is-skeleton .card-index,
+        .resource-card.is-skeleton .card-name,
+        .resource-card.is-skeleton .card-description,
+        .resource-card.is-skeleton .card-badges,
+        .resource-card.is-skeleton .card-arrow {
+            visibility: hidden;
+        }
+        .resource-card.is-skeleton::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg,
+                rgba(255,255,255,0.04),
+                rgba(255,255,255,0.08),
+                rgba(255,255,255,0.04)
+            );
+            transform: translateX(-60%);
+            animation: skeletonShimmer 1.2s ease-in-out infinite;
+            opacity: 0.9;
+        }
+        @keyframes skeletonShimmer {
+            0% { transform: translateX(-60%); }
+            100% { transform: translateX(60%); }
+        }
+
+        /* ============================================
+           QUICK FILTERS (multi-toggle)
+        ============================================ */
+        .quickfilter-row {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .quickfilter-btn {
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.03);
+            color: var(--gray-300);
+            padding: 0.5rem 0.75rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: transform 0.12s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+        .quickfilter-btn:hover { transform: translateY(-1px); }
+        .quickfilter-btn.is-active {
+            border-color: rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.06);
+            color: var(--white);
+        }
+
         .resource-card::before {
             content: '';
             position: absolute;
@@ -1022,6 +1082,25 @@
         .modal-close:active {
             transform: scale(0.95);
             background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Favorite (Saved) toggle in modal */
+        .modal-fav{
+            position:absolute;
+            top: 1.2rem;
+            right: 4.75rem; /* leaves room for ESC button on the far right */
+            width: 44px;
+            height: 44px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.04);
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+        .modal-fav.is-saved{
+            border-color: rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.07);
         }
         
         .modal-title {
@@ -1559,6 +1638,14 @@
             <button class="filter-btn" data-category="all">All</button>
         </div>
 
+        <!-- Quick Filters -->
+        <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
+            <button class="quickfilter-btn" type="button" data-qf="saved">Saved</button>
+            <button class="quickfilter-btn" type="button" data-qf="labPick">LaB Picks</button>
+            <button class="quickfilter-btn" type="button" data-qf="free">Free</button>
+            <button class="quickfilter-btn" type="button" data-qf="paid">Paid</button>
+        </div>
+
         <div class="subfilter-row" id="musicTierBar" aria-live="polite" hidden>
             <span class="subfilter-label">Music view:</span>
             <div class="subfilter-buttons">
@@ -1603,6 +1690,12 @@
     <div class="modal" id="modal">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="closeModal">ESC</button>
+
+            <!-- Favorite toggle -->
+            <button class="modal-fav" id="toggleFavorite" type="button" aria-label="Save resource" title="Save">
+                ☆
+            </button>
+
             <div class="modal-header">
                 <div class="modal-lab-pick" id="modalLabPick" style="display: none;">LaB Pick</div>
                 <h2 class="modal-title" id="modalTitle"></h2>
@@ -1673,11 +1766,74 @@
         const droneTypeBar = document.getElementById('droneTypeBar');
         const droneTypeButtons = droneTypeBar.querySelectorAll('.subfilter-btn');
 
+        const quickFilterBar = document.getElementById('quickFilterBar');
+        const quickFilterButtons = quickFilterBar ? quickFilterBar.querySelectorAll('.quickfilter-btn') : [];
+        const quickFilters = {
+            saved: false,
+            labPick: false,
+            free: false,
+            paid: false
+        };
+
         let currentCategory = 'film-festivals';
         let searchQuery = '';
         let musicTier = 'paid';
         let aiType = 'all';
         let droneType = 'channels';
+
+        // ============================================
+        // FAVORITES (Saved)
+        // ============================================
+        const FAVORITES_KEY = 'lab_favorites_v1';
+        let favorites = new Set();
+        let activeResourceId = null;
+
+        function loadFavorites() {
+            try {
+                const raw = localStorage.getItem(FAVORITES_KEY);
+                const arr = raw ? JSON.parse(raw) : [];
+                favorites = new Set(Array.isArray(arr) ? arr : []);
+            } catch {
+                favorites = new Set();
+            }
+        }
+
+        function saveFavorites() {
+            try {
+                localStorage.setItem(FAVORITES_KEY, JSON.stringify(Array.from(favorites)));
+            } catch {}
+        }
+
+        function isFavorite(id) {
+            return favorites.has(id);
+        }
+
+        function setFavoriteUI(id) {
+            const btn = document.getElementById('toggleFavorite');
+            if (!btn) return;
+            const saved = id && isFavorite(id);
+            btn.classList.toggle('is-saved', saved);
+            btn.textContent = saved ? '★' : '☆';
+            btn.setAttribute('aria-label', saved ? 'Unsave resource' : 'Save resource');
+            btn.title = saved ? 'Saved' : 'Save';
+        }
+
+        // init favorites early
+        loadFavorites();
+
+        // Favorite button handler
+        const favBtn = document.getElementById('toggleFavorite');
+        if (favBtn) {
+            favBtn.addEventListener('click', () => {
+                if (!activeResourceId) return;
+                if (favorites.has(activeResourceId)) favorites.delete(activeResourceId);
+                else favorites.add(activeResourceId);
+                saveFavorites();
+                setFavoriteUI(activeResourceId);
+                // If "Saved" filter is active, re-render to reflect changes
+                if (quickFilters && quickFilters.saved) renderResources(true);
+            });
+        }
 
         // ============================================
         // UTILITY FUNCTIONS
@@ -1823,6 +1979,28 @@
                 });
             }
 
+            // Quick filters (multi-toggle)
+            const wantsLabPick = quickFilters.labPick;
+            const wantsFree = quickFilters.free;
+            const wantsPaid = quickFilters.paid;
+            const wantsSaved = quickFilters.saved;
+
+            if (wantsLabPick) {
+                filtered = filtered.filter(r => r.labPick === true);
+            }
+
+            // Saved filter (favorites)
+            if (wantsSaved) {
+                filtered = filtered.filter(r => favorites.has(r.id || normalizeValue(r.name)));
+            }
+
+            // Free/Paid toggles work across categories when r.paid is present.
+            // If both are off, allow all. If one is on, filter accordingly.
+            if (wantsFree !== wantsPaid) {
+                if (wantsFree) filtered = filtered.filter(r => r.paid === false);
+                if (wantsPaid) filtered = filtered.filter(r => r.paid === true);
+            }
+
             // Dedupe before sorting
             filtered = dedupeResources(filtered);
 
@@ -1901,7 +2079,24 @@
         // ============================================
         // RENDER LOGIC
         // ============================================
-        
+
+        function buildSkeletonGrid(count = 8) {
+            const skeletonCount = Math.max(6, Math.min(count, 12));
+            let html = '';
+            for (let i = 0; i < skeletonCount; i++) {
+                html += `
+                    <div class="resource-card is-skeleton">
+                        <span class="card-index">${String(i + 1).padStart(3, '0')}</span>
+                        <h3 class="card-name">Loading</h3>
+                        <div class="card-badges"></div>
+                        <p class="card-description">Loading</p>
+                        <span class="card-arrow">→</span>
+                    </div>
+                `;
+            }
+            grid.innerHTML = html;
+        }
+
         function renderResources(animate = false) {
             if (currentCategory === 'music') {
                 musicTierBar.removeAttribute('hidden');
@@ -1929,10 +2124,16 @@
             
             // Set data-count attribute for CSS adaptive grid
             grid.setAttribute('data-count', Math.min(count, 12));
-            
+
             if (animate) {
-                grid.style.opacity = '0';
-                grid.style.transform = 'translateY(10px)';
+                // Show skeletons immediately for a modern loading feel
+                grid.style.transition = 'none';
+                buildSkeletonGrid();
+                grid.style.opacity = '1';
+                grid.style.transform = 'translateY(0)';
+                // Force reflow so the next transition applies cleanly
+                void grid.offsetHeight;
+
                 setTimeout(() => {
                     buildGrid(filtered);
                     grid.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -1952,60 +2153,62 @@
                 return;
             }
 
-            // Build resource cards
-            let html = filtered.map((r, i) => {
-                const primaryCat = getPrimaryCategory(r);
-                const isCollaborator = primaryCat === 'collaborators';
-                const isCommunity = primaryCat === 'community';
-                const isFilmFestival = primaryCat === 'film-festivals';
-                const isInspiration = primaryCat === 'inspiration';
-                const isLabPick = r.labPick === true;
-
-                // Handle badges - use badges array if present, otherwise generate from properties
-                const badges = r.badges || generateBadges(r);
-                const badgeHTML = badges.slice(0, 4).map(badge =>
-                    '<span class="badge badge-' + badge + '">' + badge + '</span>'
-                ).join('');
-
-                let cardClass = 'resource-card';
-                if (isCollaborator) cardClass += ' is-collaborator';
-                if (isCommunity) cardClass += ' is-community';
-                if (isFilmFestival) cardClass += ' is-film-festival';
-                if (isInspiration) cardClass += ' is-inspiration';
-                if (isLabPick) cardClass += ' is-lab-pick';
-
-                // Use name as fallback ID if id not present
-                const resourceId = r.id || normalizeValue(r.name);
-                // Use desc as fallback for shortDesc
-                const shortDesc = r.shortDesc || r.desc || '';
-
-                return '<div class="' + cardClass + '" data-id="' + resourceId + '" style="animation-delay: ' + (i * 0.03) + 's">' +
-                    '<span class="card-index">' + String(i + 1).padStart(3, '0') + '</span>' +
-                    '<h3 class="card-name">' + r.name + '</h3>' +
-                    '<div class="card-badges">' + badgeHTML + '</div>' +
-                    '<p class="card-description">' + shortDesc + '</p>' +
-                    '<span class="card-arrow">→</span>' +
-                '</div>';
-            }).join('');
-            
-            // Add ghost tiles for partial rows (first one is "Suggest" CTA)
+            // Ghost tile count depends on final filtered length
             const ghostCount = calculateGhostTiles(filtered.length);
-            for (let i = 0; i < ghostCount; i++) {
-                html += createGhostTile(i);
+
+            grid.innerHTML = '';
+            let i = 0;
+            const BATCH = 24;
+
+            function renderBatch() {
+                const slice = filtered.slice(i, i + BATCH);
+                let html = slice.map((r, idx) => {
+                    const primaryCat = getPrimaryCategory(r);
+                    const isCollaborator = primaryCat === 'collaborators';
+                    const isCommunity = primaryCat === 'community';
+                    const isFilmFestival = primaryCat === 'film-festivals';
+                    const isInspiration = primaryCat === 'inspiration';
+                    const isLabPick = r.labPick === true;
+
+                    const badges = r.badges || generateBadges(r);
+                    const badgeHTML = badges.slice(0, 4).map(badge =>
+                        '<span class="badge badge-' + badge + '">' + badge + '</span>'
+                    ).join('');
+
+                    let cardClass = 'resource-card';
+                    if (isCollaborator) cardClass += ' is-collaborator';
+                    if (isCommunity) cardClass += ' is-community';
+                    if (isFilmFestival) cardClass += ' is-film-festival';
+                    if (isInspiration) cardClass += ' is-inspiration';
+                    if (isLabPick) cardClass += ' is-lab-pick';
+
+                    const resourceId = r.id || normalizeValue(r.name);
+                    const shortDesc = r.shortDesc || r.desc || '';
+                    const absoluteIndex = i + idx;
+
+                    return '<div class="' + cardClass + '" data-id="' + resourceId + '" style="animation-delay: ' + (absoluteIndex * 0.03) + 's">' +
+                        '<span class="card-index">' + String(absoluteIndex + 1).padStart(3, '0') + '</span>' +
+                        '<h3 class="card-name">' + r.name + '</h3>' +
+                        '<div class="card-badges">' + badgeHTML + '</div>' +
+                        '<p class="card-description">' + shortDesc + '</p>' +
+                        '<span class="card-arrow">→</span>' +
+                    '</div>';
+                }).join('');
+
+                grid.insertAdjacentHTML('beforeend', html);
+                i += BATCH;
+
+                if (i < filtered.length) {
+                    requestAnimationFrame(renderBatch);
+                } else {
+                    for (let g = 0; g < ghostCount; g++) {
+                        grid.insertAdjacentHTML('beforeend', createGhostTile(g));
+                    }
+                    initGhostAnimations();
+                }
             }
-            
-            grid.innerHTML = html;
-            
-            // Attach click handlers
-            document.querySelectorAll('.resource-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const resource = resources.find(r => (r.id || normalizeValue(r.name)) === card.dataset.id);
-                    if (resource) openModal(resource);
-                });
-            });
-            
-            // Initialize ghost tile animations with GSAP (subtle)
-            initGhostAnimations();
+
+            requestAnimationFrame(renderBatch);
         }
         
         // ============================================
@@ -2098,9 +2301,11 @@
             else if (isFilmFestival) modalContent.classList.add('is-film-festival');
             else if (isInspiration) modalContent.classList.add('is-inspiration');
             if (isLabPick) modalContent.classList.add('is-lab-pick');
-            
+
             document.getElementById('modalLabPick').style.display = isLabPick ? 'block' : 'none';
             document.getElementById('modalTitle').textContent = r.name;
+            activeResourceId = r.id || normalizeValue(r.name);
+            setFavoriteUI(activeResourceId);
 
             const badges = r.badges || generateBadges(r);
             document.getElementById('modalBadges').innerHTML = badges.map(badge =>
@@ -2279,6 +2484,21 @@
             }
         });
 
+        // Event delegation for resource cards
+        grid.addEventListener('click', (e) => {
+            const card = e.target.closest('.resource-card');
+            if (!card || !grid.contains(card)) return;
+
+            if (card.classList.contains('is-skeleton')) return;
+            if (card.classList.contains('ghost-tile')) return;
+
+            const id = card.dataset.id;
+            if (!id) return;
+
+            const resource = resources.find(r => (r.id || normalizeValue(r.name)) === id);
+            if (resource) openModal(resource);
+        });
+
         // ============================================
         // FILTER & SEARCH
         // ============================================
@@ -2328,6 +2548,28 @@
                 setCategory(btn.dataset.category);
                 renderResources(true);
             });
+        });
+
+        // Quick filters (multi-toggle)
+        if (quickFilterButtons.length) {
+            quickFilterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const key = btn.dataset.qf;
+                    if (!key || !(key in quickFilters)) return;
+                    quickFilters[key] = !quickFilters[key];
+                    btn.classList.toggle('is-active', quickFilters[key]);
+                    renderResources(true);
+                });
+            });
+        }
+
+        // Keyboard shortcut: / focuses search (like a real app)
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== '/') return;
+            const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+            if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+            e.preventDefault();
+            searchInput.focus();
         });
 
         musicTierButtons.forEach(btn => {
