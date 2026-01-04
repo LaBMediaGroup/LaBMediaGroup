@@ -581,6 +581,14 @@ const resources = [
         instagramUrl: 'https://www.instagram.com/bob.tastic/',
         paid: false,
         featuredVideo: 'k1uJmmoMX1I',
+        additionalLinks: [
+            {
+                label: 'Example Video',
+                url: 'https://www.youtube.com/watch?v=k1uJmmoMX1I',
+                type: 'video',
+                description: 'Sample FPV flight shared on the channel.'
+            }
+        ],
         features: ['FPV Freestyle', 'YouTube Channel', 'Flight Footage', 'Hands-On Flying']
     },
 
