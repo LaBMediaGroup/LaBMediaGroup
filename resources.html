@@ -764,7 +764,185 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
+        /* ============================================
+           SKELETON LOADING (cards)
+        ============================================ */
+        .resource-card.is-skeleton {
+            cursor: default;
+            pointer-events: none;
+            opacity: 1;
+            animation: none;
+        }
+        .resource-card.is-skeleton .card-index,
+        .resource-card.is-skeleton .card-name,
+        .resource-card.is-skeleton .card-description,
+        .resource-card.is-skeleton .card-badges,
+        .resource-card.is-skeleton .card-arrow {
+            visibility: hidden;
+        }
+        .resource-card.is-skeleton::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg,
+                rgba(255,255,255,0.04),
+                rgba(255,255,255,0.08),
+                rgba(255,255,255,0.04)
+            );
+            transform: translateX(-60%);
+            animation: skeletonShimmer 1.2s ease-in-out infinite;
+            opacity: 0.9;
+        }
+        @keyframes skeletonShimmer {
+            0% { transform: translateX(-60%); }
+            100% { transform: translateX(60%); }
+        }
+
+        /* ============================================
+           QUICK FILTERS (multi-toggle)
+        ============================================ */
+        .quickfilter-row {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .quickfilter-btn {
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.03);
+            color: var(--gray-300);
+            padding: 0.5rem 0.75rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: transform 0.12s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+        .quickfilter-btn:hover { transform: translateY(-1px); }
+        .quickfilter-btn.is-active {
+            border-color: rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.06);
+            color: var(--white);
+        }
+
+        /* ============================================
+           SAVED DRAWER / SHARE
+        ============================================ */
+        .saved-drawer {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: min(320px, 90vw);
+            max-height: calc(100vh - 3rem);
+            background: rgba(9, 9, 9, 0.92);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            overflow: hidden;
+            z-index: 1200;
+        }
+        .saved-drawer h3 {
+            margin: 0;
+            color: var(--white);
+            font-size: 1rem;
+            letter-spacing: 0.01em;
+        }
+        .saved-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+        .saved-count {
+            color: var(--gray-300);
+            font-family: 'Space Mono', monospace;
+        }
+        .saved-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .saved-share {
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.04);
+            color: var(--white);
+            padding: 0.35rem 0.5rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .saved-search input {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+        }
+        .saved-list {
+            overflow: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .saved-item {
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.02);
+            padding: 0.5rem 0.6rem;
+        }
+        .saved-item .saved-name {
+            color: var(--white);
+            font-weight: 600;
+        }
+        .saved-meta {
+            color: var(--gray-300);
+            font-size: 0.85rem;
+            margin: 0.2rem 0 0.4rem;
+        }
+        .saved-item-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .saved-btn {
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+            padding: 0.35rem 0.55rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .saved-empty {
+            color: var(--gray-400);
+            text-align: center;
+            padding: 0.5rem 0;
+        }
+        .toast {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: rgba(24, 24, 24, 0.95);
+            color: var(--white);
+            padding: 0.65rem 0.85rem;
+            border: 1px solid rgba(255,255,255,0.14);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 1500;
+        }
+        .toast.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (max-width: 960px) {
+            .saved-drawer {
+                position: static;
+                width: 100%;
+                max-height: none;
+                margin-top: 1rem;
+            }
+        }
+
         .resource-card::before {
             content: '';
             position: absolute;
@@ -1022,6 +1200,25 @@
         .modal-close:active {
             transform: scale(0.95);
             background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Favorite (Saved) toggle in modal */
+        .modal-fav{
+            position:absolute;
+            top: 1.2rem;
+            right: 4.75rem; /* leaves room for ESC button on the far right */
+            width: 44px;
+            height: 44px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.04);
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+        .modal-fav.is-saved{
+            border-color: rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.07);
         }
         
         .modal-title {
@@ -1542,21 +1739,45 @@
         
         <!-- Filter -->
         <div class="filter-row">
-            <button class="filter-btn active" data-category="film-festivals">Film Fest's</button>
-            <button class="filter-btn" data-category="community">Community</button>
-            <button class="filter-btn" data-category="music">Music</button>
-            <button class="filter-btn" data-category="soundfx">Sound FX</button>
-            <button class="filter-btn" data-category="ai">AI</button>
-            <button class="filter-btn" data-category="stock">Stock</button>
-            <button class="filter-btn" data-category="equipment">Gear</button>
-            <button class="filter-btn" data-category="3d">3D</button>
-            <button class="filter-btn" data-category="fonts">Fonts</button>
-            <button class="filter-btn" data-category="other">FreeLance</button>
-            <button class="filter-btn" data-category="collaborators">Friends</button>
-            <button class="filter-btn" data-category="drone">Drone</button>
-            <button class="filter-btn" data-category="inspiration">Inspiration</button>
-            <button class="filter-btn" data-category="references">References</button>
-            <button class="filter-btn" data-category="all">All</button>
+            <button class="filter-btn active" data-group="film-festivals">Film Festivals</button>
+            <button class="filter-btn" data-group="community">Community</button>
+            <button class="filter-btn" data-group="stock">Stock</button>
+            <button class="filter-btn" data-group="tools">Tools</button>
+            <button class="filter-btn" data-group="collaborators">Friends</button>
+            <button class="filter-btn" data-group="other">FreeLance</button>
+            <button class="filter-btn" data-group="inspiration">Inspiration</button>
+            <button class="filter-btn" data-group="references">References</button>
+            <button class="filter-btn" data-group="all">All</button>
+        </div>
+
+        <!-- Quick Filters -->
+        <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
+            <button class="quickfilter-btn" type="button" data-qf="saved">Saved</button>
+            <button class="quickfilter-btn" type="button" data-qf="labPick">LaB Picks</button>
+            <button class="quickfilter-btn" type="button" data-qf="free">Free</button>
+            <button class="quickfilter-btn" type="button" data-qf="paid">Paid</button>
+        </div>
+
+        <div class="subfilter-row" id="stockGroupBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Stock view:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn active" data-stock="all-stock">All Stock</button>
+                <button class="subfilter-btn" data-stock="music">Music</button>
+                <button class="subfilter-btn" data-stock="soundfx">Sound FX</button>
+                <button class="subfilter-btn" data-stock="stock">Stock</button>
+                <button class="subfilter-btn" data-stock="fonts">Fonts</button>
+                <button class="subfilter-btn" data-stock="3d">3D</button>
+            </div>
+        </div>
+
+        <div class="subfilter-row" id="toolsGroupBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Tools view:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn active" data-tools="all-tools">All Tools</button>
+                <button class="subfilter-btn" data-tools="ai">AI</button>
+                <button class="subfilter-btn" data-tools="gear">Gear</button>
+                <button class="subfilter-btn" data-tools="drone">Drone</button>
+            </div>
         </div>
 
         <div class="subfilter-row" id="musicTierBar" aria-live="polite" hidden>
@@ -1591,6 +1812,20 @@
         </div>
 
         <div class="resources-grid" id="resourcesGrid"></div>
+
+        <aside class="saved-drawer" id="savedDrawer" aria-label="Saved resources">
+            <div class="saved-header">
+                <h3 class="proto-text-mono">Saved</h3>
+                <div class="saved-actions">
+                    <span class="saved-count" id="savedCount">0</span>
+                    <button class="saved-share" id="shareSavedBtn" type="button">Share Saved</button>
+                </div>
+            </div>
+            <div class="saved-search">
+                <input type="text" id="savedSearch" placeholder="Search saved...">
+            </div>
+            <div class="saved-list" id="savedList" aria-live="polite"></div>
+        </aside>
     </div>
     </div>
     
@@ -1603,6 +1838,12 @@
     <div class="modal" id="modal">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="closeModal">ESC</button>
+
+            <!-- Favorite toggle -->
+            <button class="modal-fav" id="toggleFavorite" type="button" aria-label="Save resource" title="Save">
+                ☆
+            </button>
+
             <div class="modal-header">
                 <div class="modal-lab-pick" id="modalLabPick" style="display: none;">LaB Pick</div>
                 <h2 class="modal-title" id="modalTitle"></h2>
@@ -1657,6 +1898,8 @@
         </div>
     </div>
 
+    <div class="toast" id="shareToast" role="status" aria-live="polite">Link copied</div>
+
     <script src="resources-data.js"></script>
     <script>
         const grid = document.getElementById('resourcesGrid');
@@ -1672,12 +1915,165 @@
         const aiTypeButtons = aiTypeBar.querySelectorAll('.subfilter-btn');
         const droneTypeBar = document.getElementById('droneTypeBar');
         const droneTypeButtons = droneTypeBar.querySelectorAll('.subfilter-btn');
+        const stockGroupBar = document.getElementById('stockGroupBar');
+        const stockGroupButtons = stockGroupBar ? stockGroupBar.querySelectorAll('[data-stock]') : [];
+        const toolsGroupBar = document.getElementById('toolsGroupBar');
+        const toolsGroupButtons = toolsGroupBar ? toolsGroupBar.querySelectorAll('[data-tools]') : [];
 
-        let currentCategory = 'film-festivals';
+        const savedDrawer = document.getElementById('savedDrawer');
+        const savedList = document.getElementById('savedList');
+        const savedCountEl = document.getElementById('savedCount');
+        const savedSearchInput = document.getElementById('savedSearch');
+        const shareSavedBtn = document.getElementById('shareSavedBtn');
+        const shareToast = document.getElementById('shareToast');
+
+        const quickFilterBar = document.getElementById('quickFilterBar');
+        const quickFilterButtons = quickFilterBar ? quickFilterBar.querySelectorAll('.quickfilter-btn') : [];
+        const quickFilters = {
+            saved: false,
+            labPick: false,
+            free: false,
+            paid: false
+        };
+
+        let currentGroup = 'film-festivals';
+        let stockSubcategory = 'all-stock';
+        let toolsSubcategory = 'all-tools';
         let searchQuery = '';
         let musicTier = 'paid';
         let aiType = 'all';
         let droneType = 'channels';
+
+        // ============================================
+        // FAVORITES (Saved)
+        // ============================================
+        const FAVORITES_KEY = 'lab_favorites_v1';
+        let favorites = new Set();
+        let activeResourceId = null;
+
+        function loadFavorites() {
+            try {
+                const raw = localStorage.getItem(FAVORITES_KEY);
+                const arr = raw ? JSON.parse(raw) : [];
+                favorites = new Set(Array.isArray(arr) ? arr : []);
+            } catch {
+                favorites = new Set();
+            }
+        }
+
+        function saveFavorites() {
+            try {
+                localStorage.setItem(FAVORITES_KEY, JSON.stringify(Array.from(favorites)));
+            } catch {}
+        }
+
+        function isFavorite(id) {
+            return favorites.has(id);
+        }
+
+        function setFavoriteUI(id) {
+            const btn = document.getElementById('toggleFavorite');
+            if (!btn) return;
+            const saved = id && isFavorite(id);
+            btn.classList.toggle('is-saved', saved);
+            btn.textContent = saved ? '★' : '☆';
+            btn.setAttribute('aria-label', saved ? 'Unsave resource' : 'Save resource');
+            btn.title = saved ? 'Saved' : 'Save';
+        }
+
+        // init favorites early
+        loadFavorites();
+
+        // Favorite button handler
+        const favBtn = document.getElementById('toggleFavorite');
+        if (favBtn) {
+            favBtn.addEventListener('click', () => {
+                if (!activeResourceId) return;
+                if (favorites.has(activeResourceId)) favorites.delete(activeResourceId);
+                else favorites.add(activeResourceId);
+                saveFavorites();
+                setFavoriteUI(activeResourceId);
+                // If "Saved" filter is active, re-render to reflect changes
+                if (quickFilters && quickFilters.saved) renderResources(true);
+                renderSavedDrawer();
+            });
+        }
+
+        function getResourceById(id) {
+            return resources.find(r => (r.id || normalizeValue(r.name)) === id);
+        }
+
+        function renderSavedDrawer() {
+            if (!savedList) return;
+            const favIds = Array.from(favorites);
+            const query = normalizeValue(savedSearchInput.value);
+            const mapped = favIds
+                .map(id => getResourceById(id))
+                .filter(Boolean)
+                .filter(r => {
+                    if (!query) return true;
+                    const text = [r.name, r.shortDesc, r.desc].filter(Boolean).join(' ').toLowerCase();
+                    return text.includes(query);
+                });
+
+            savedCountEl.textContent = favIds.length;
+
+            if (!mapped.length) {
+                savedList.innerHTML = '<div class="saved-empty">No saved resources yet.</div>';
+                return;
+            }
+
+            const html = mapped.map(r => {
+                const id = r.id || normalizeValue(r.name);
+                const primaryCat = getPrimaryCategory(r);
+                return `
+                    <div class="saved-item" data-id="${id}">
+                        <div class="saved-name">${r.name}</div>
+                        <div class="saved-meta">${primaryCat}</div>
+                        <div class="saved-item-buttons">
+                            <button class="saved-btn" data-action="open" data-id="${id}">Open</button>
+                            <button class="saved-btn" data-action="remove" data-id="${id}">Remove</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            savedList.innerHTML = html;
+        }
+
+        function showShareToast(message = 'Link copied') {
+            if (!shareToast) return;
+            shareToast.textContent = message;
+            shareToast.classList.add('is-visible');
+            setTimeout(() => shareToast.classList.remove('is-visible'), 1400);
+        }
+
+        function buildSavedShareUrl() {
+            const ids = Array.from(favorites);
+            const url = new URL(window.location.href);
+            if (ids.length) {
+                url.searchParams.set('saved', ids.join(','));
+            } else {
+                url.searchParams.delete('saved');
+            }
+            return url.toString();
+        }
+
+        function mergeSavedFromQuery() {
+            const params = new URLSearchParams(window.location.search);
+            const savedParam = params.get('saved');
+            if (!savedParam) return;
+            savedParam.split(',').map(normalizeValue).filter(Boolean).forEach(id => favorites.add(id));
+            saveFavorites();
+            quickFilters.saved = true;
+            const savedBtn = quickFilterBar ? quickFilterBar.querySelector('[data-qf="saved"]') : null;
+            if (savedBtn) savedBtn.classList.add('is-active');
+            renderSavedDrawer();
+        }
+
+        // Init drawer
+        renderSavedDrawer();
+        mergeSavedFromQuery();
 
         // ============================================
         // UTILITY FUNCTIONS
@@ -1715,11 +2111,33 @@
             });
         }
         
-        function resourceInCategory(resource, category) {
-            if (category === 'all') return true;
-            const normalizedCategory = normalizeValue(category);
+        function resourceMatchesGroup(resource) {
             const cats = getCategoryList(resource);
-            return cats.includes(normalizedCategory);
+            const primary = cats[0];
+            if (currentGroup === 'all') return true;
+            if (currentGroup === 'film-festivals') return cats.includes('film-festivals');
+            if (currentGroup === 'community') return cats.includes('community');
+            if (currentGroup === 'collaborators') return cats.includes('collaborators');
+            if (currentGroup === 'other') return cats.includes('other');
+            if (currentGroup === 'inspiration') return cats.includes('inspiration');
+            if (currentGroup === 'references') return cats.includes('references');
+
+            if (currentGroup === 'stock') {
+                const stockCats = ['music', 'soundfx', 'stock', 'fonts', '3d'];
+                if (!cats.some(c => stockCats.includes(c))) return false;
+                if (stockSubcategory === 'all-stock') return true;
+                return cats.includes(stockSubcategory);
+            }
+
+            if (currentGroup === 'tools') {
+                const toolCats = ['ai', 'equipment', 'drone'];
+                if (!cats.some(c => toolCats.includes(c))) return false;
+                if (toolsSubcategory === 'all-tools') return true;
+                if (toolsSubcategory === 'gear') return cats.includes('equipment');
+                return cats.includes(toolsSubcategory);
+            }
+
+            return cats.includes(primary);
         }
 
         function getPrimaryCategory(resource) {
@@ -1792,10 +2210,10 @@
         
         function getFilteredResources() {
             let filtered = resources.filter(r =>
-                resourceInCategory(r, currentCategory) && matchesSearch(r, searchQuery)
+                resourceMatchesGroup(r) && matchesSearch(r, searchQuery)
             );
 
-            if (currentCategory === 'music') {
+            if (currentGroup === 'stock' && stockSubcategory === 'music') {
                 filtered = filtered.filter(r => {
                     if (musicTier === 'free') return r.paid === false;
                     if (musicTier === 'paid') return r.paid === true;
@@ -1803,7 +2221,7 @@
                 });
             }
 
-            if (currentCategory === 'ai') {
+            if (currentGroup === 'tools' && toolsSubcategory === 'ai') {
                 filtered = filtered.filter(r => {
                     if (aiType === 'chat') return r.aiType === 'chat';
                     if (aiType === 'music') return r.aiType === 'music';
@@ -1814,13 +2232,35 @@
                 });
             }
 
-            if (currentCategory === 'drone') {
+            if (currentGroup === 'tools' && toolsSubcategory === 'drone') {
                 filtered = filtered.filter(r => {
                     if (droneType === 'channels') return r.droneType === 'channel';
                     if (droneType === 'shops') return r.droneType === 'shop';
                     if (droneType === 'part-107') return r.droneType === 'part-107';
                     return true;
                 });
+            }
+
+            // Quick filters (multi-toggle)
+            const wantsLabPick = quickFilters.labPick;
+            const wantsFree = quickFilters.free;
+            const wantsPaid = quickFilters.paid;
+            const wantsSaved = quickFilters.saved;
+
+            if (wantsLabPick) {
+                filtered = filtered.filter(r => r.labPick === true);
+            }
+
+            // Saved filter (favorites)
+            if (wantsSaved) {
+                filtered = filtered.filter(r => favorites.has(r.id || normalizeValue(r.name)));
+            }
+
+            // Free/Paid toggles work across categories when r.paid is present.
+            // If both are off, allow all. If one is on, filter accordingly.
+            if (wantsFree !== wantsPaid) {
+                if (wantsFree) filtered = filtered.filter(r => r.paid === false);
+                if (wantsPaid) filtered = filtered.filter(r => r.paid === true);
             }
 
             // Dedupe before sorting
@@ -1901,24 +2341,45 @@
         // ============================================
         // RENDER LOGIC
         // ============================================
-        
+
+        function buildSkeletonGrid(count = 8) {
+            const skeletonCount = Math.max(6, Math.min(count, 12));
+            let html = '';
+            for (let i = 0; i < skeletonCount; i++) {
+                html += `
+                    <div class="resource-card is-skeleton">
+                        <span class="card-index">${String(i + 1).padStart(3, '0')}</span>
+                        <h3 class="card-name">Loading</h3>
+                        <div class="card-badges"></div>
+                        <p class="card-description">Loading</p>
+                        <span class="card-arrow">→</span>
+                    </div>
+                `;
+            }
+            grid.innerHTML = html;
+        }
+
         function renderResources(animate = false) {
-            if (currentCategory === 'music') {
-                musicTierBar.removeAttribute('hidden');
-            } else {
-                musicTierBar.setAttribute('hidden', 'true');
+            const isStock = currentGroup === 'stock';
+            const isTools = currentGroup === 'tools';
+
+            if (stockGroupBar) {
+                stockGroupBar.toggleAttribute('hidden', !isStock);
+            }
+            if (toolsGroupBar) {
+                toolsGroupBar.toggleAttribute('hidden', !isTools);
             }
 
-            if (currentCategory === 'ai') {
-                aiTypeBar.removeAttribute('hidden');
-            } else {
-                aiTypeBar.setAttribute('hidden', 'true');
+            if (musicTierBar) {
+                musicTierBar.toggleAttribute('hidden', !(isStock && stockSubcategory === 'music'));
             }
 
-            if (currentCategory === 'drone') {
-                droneTypeBar.removeAttribute('hidden');
-            } else {
-                droneTypeBar.setAttribute('hidden', 'true');
+            if (aiTypeBar) {
+                aiTypeBar.toggleAttribute('hidden', !(isTools && toolsSubcategory === 'ai'));
+            }
+
+            if (droneTypeBar) {
+                droneTypeBar.toggleAttribute('hidden', !(isTools && toolsSubcategory === 'drone'));
             }
 
             const filtered = getFilteredResources();
@@ -1929,10 +2390,16 @@
             
             // Set data-count attribute for CSS adaptive grid
             grid.setAttribute('data-count', Math.min(count, 12));
-            
+
             if (animate) {
-                grid.style.opacity = '0';
-                grid.style.transform = 'translateY(10px)';
+                // Show skeletons immediately for a modern loading feel
+                grid.style.transition = 'none';
+                buildSkeletonGrid();
+                grid.style.opacity = '1';
+                grid.style.transform = 'translateY(0)';
+                // Force reflow so the next transition applies cleanly
+                void grid.offsetHeight;
+
                 setTimeout(() => {
                     buildGrid(filtered);
                     grid.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -1952,60 +2419,62 @@
                 return;
             }
 
-            // Build resource cards
-            let html = filtered.map((r, i) => {
-                const primaryCat = getPrimaryCategory(r);
-                const isCollaborator = primaryCat === 'collaborators';
-                const isCommunity = primaryCat === 'community';
-                const isFilmFestival = primaryCat === 'film-festivals';
-                const isInspiration = primaryCat === 'inspiration';
-                const isLabPick = r.labPick === true;
-
-                // Handle badges - use badges array if present, otherwise generate from properties
-                const badges = r.badges || generateBadges(r);
-                const badgeHTML = badges.slice(0, 4).map(badge =>
-                    '<span class="badge badge-' + badge + '">' + badge + '</span>'
-                ).join('');
-
-                let cardClass = 'resource-card';
-                if (isCollaborator) cardClass += ' is-collaborator';
-                if (isCommunity) cardClass += ' is-community';
-                if (isFilmFestival) cardClass += ' is-film-festival';
-                if (isInspiration) cardClass += ' is-inspiration';
-                if (isLabPick) cardClass += ' is-lab-pick';
-
-                // Use name as fallback ID if id not present
-                const resourceId = r.id || normalizeValue(r.name);
-                // Use desc as fallback for shortDesc
-                const shortDesc = r.shortDesc || r.desc || '';
-
-                return '<div class="' + cardClass + '" data-id="' + resourceId + '" style="animation-delay: ' + (i * 0.03) + 's">' +
-                    '<span class="card-index">' + String(i + 1).padStart(3, '0') + '</span>' +
-                    '<h3 class="card-name">' + r.name + '</h3>' +
-                    '<div class="card-badges">' + badgeHTML + '</div>' +
-                    '<p class="card-description">' + shortDesc + '</p>' +
-                    '<span class="card-arrow">→</span>' +
-                '</div>';
-            }).join('');
-            
-            // Add ghost tiles for partial rows (first one is "Suggest" CTA)
+            // Ghost tile count depends on final filtered length
             const ghostCount = calculateGhostTiles(filtered.length);
-            for (let i = 0; i < ghostCount; i++) {
-                html += createGhostTile(i);
+
+            grid.innerHTML = '';
+            let i = 0;
+            const BATCH = 24;
+
+            function renderBatch() {
+                const slice = filtered.slice(i, i + BATCH);
+                let html = slice.map((r, idx) => {
+                    const primaryCat = getPrimaryCategory(r);
+                    const isCollaborator = primaryCat === 'collaborators';
+                    const isCommunity = primaryCat === 'community';
+                    const isFilmFestival = primaryCat === 'film-festivals';
+                    const isInspiration = primaryCat === 'inspiration';
+                    const isLabPick = r.labPick === true;
+
+                    const badges = r.badges || generateBadges(r);
+                    const badgeHTML = badges.slice(0, 4).map(badge =>
+                        '<span class="badge badge-' + badge + '">' + badge + '</span>'
+                    ).join('');
+
+                    let cardClass = 'resource-card';
+                    if (isCollaborator) cardClass += ' is-collaborator';
+                    if (isCommunity) cardClass += ' is-community';
+                    if (isFilmFestival) cardClass += ' is-film-festival';
+                    if (isInspiration) cardClass += ' is-inspiration';
+                    if (isLabPick) cardClass += ' is-lab-pick';
+
+                    const resourceId = r.id || normalizeValue(r.name);
+                    const shortDesc = r.shortDesc || r.desc || '';
+                    const absoluteIndex = i + idx;
+
+                    return '<div class="' + cardClass + '" data-id="' + resourceId + '" style="animation-delay: ' + (absoluteIndex * 0.03) + 's">' +
+                        '<span class="card-index">' + String(absoluteIndex + 1).padStart(3, '0') + '</span>' +
+                        '<h3 class="card-name">' + r.name + '</h3>' +
+                        '<div class="card-badges">' + badgeHTML + '</div>' +
+                        '<p class="card-description">' + shortDesc + '</p>' +
+                        '<span class="card-arrow">→</span>' +
+                    '</div>';
+                }).join('');
+
+                grid.insertAdjacentHTML('beforeend', html);
+                i += BATCH;
+
+                if (i < filtered.length) {
+                    requestAnimationFrame(renderBatch);
+                } else {
+                    for (let g = 0; g < ghostCount; g++) {
+                        grid.insertAdjacentHTML('beforeend', createGhostTile(g));
+                    }
+                    initGhostAnimations();
+                }
             }
-            
-            grid.innerHTML = html;
-            
-            // Attach click handlers
-            document.querySelectorAll('.resource-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const resource = resources.find(r => (r.id || normalizeValue(r.name)) === card.dataset.id);
-                    if (resource) openModal(resource);
-                });
-            });
-            
-            // Initialize ghost tile animations with GSAP (subtle)
-            initGhostAnimations();
+
+            requestAnimationFrame(renderBatch);
         }
         
         // ============================================
@@ -2098,9 +2567,11 @@
             else if (isFilmFestival) modalContent.classList.add('is-film-festival');
             else if (isInspiration) modalContent.classList.add('is-inspiration');
             if (isLabPick) modalContent.classList.add('is-lab-pick');
-            
+
             document.getElementById('modalLabPick').style.display = isLabPick ? 'block' : 'none';
             document.getElementById('modalTitle').textContent = r.name;
+            activeResourceId = r.id || normalizeValue(r.name);
+            setFavoriteUI(activeResourceId);
 
             const badges = r.badges || generateBadges(r);
             document.getElementById('modalBadges').innerHTML = badges.map(badge =>
@@ -2279,55 +2750,147 @@
             }
         });
 
+        // Event delegation for resource cards
+        grid.addEventListener('click', (e) => {
+            const card = e.target.closest('.resource-card');
+            if (!card || !grid.contains(card)) return;
+
+            if (card.classList.contains('is-skeleton')) return;
+            if (card.classList.contains('ghost-tile')) return;
+
+            const id = card.dataset.id;
+            if (!id) return;
+
+            const resource = resources.find(r => (r.id || normalizeValue(r.name)) === id);
+            if (resource) openModal(resource);
+        });
+
+        if (savedList) {
+            savedList.addEventListener('click', (e) => {
+                const actionBtn = e.target.closest('[data-action]');
+                if (!actionBtn) return;
+                const id = actionBtn.dataset.id;
+                if (!id) return;
+                if (actionBtn.dataset.action === 'open') {
+                    const resource = getResourceById(id);
+                    if (resource) openModal(resource);
+                }
+                if (actionBtn.dataset.action === 'remove') {
+                    favorites.delete(id);
+                    saveFavorites();
+                    setFavoriteUI(activeResourceId);
+                    renderSavedDrawer();
+                    if (quickFilters.saved) renderResources(true);
+                }
+            });
+        }
+
+        if (savedSearchInput) {
+            savedSearchInput.addEventListener('input', () => {
+                renderSavedDrawer();
+            });
+        }
+
+        if (shareSavedBtn) {
+            shareSavedBtn.addEventListener('click', async () => {
+                const url = buildSavedShareUrl();
+                try {
+                    await navigator.clipboard.writeText(url);
+                    showShareToast('Link copied');
+                } catch (err) {
+                    showShareToast('Copy not available');
+                }
+            });
+        }
+
         // ============================================
         // FILTER & SEARCH
         // ============================================
         
-        function setCategory(newCategory) {
-            const previousCategory = currentCategory;
-            if (previousCategory === newCategory) {
-                // Ensure the active state matches even if we're reapplying
-                filters.forEach(b => b.classList.toggle('active', b.dataset.category === newCategory));
+        function setGroup(newGroup) {
+            const previousGroup = currentGroup;
+            if (previousGroup === newGroup) {
+                filters.forEach(b => b.classList.toggle('active', b.dataset.group === newGroup));
                 return;
             }
 
             filters.forEach(b => b.classList.remove('active'));
-            const targetBtn = Array.from(filters).find(b => b.dataset.category === newCategory);
+            const targetBtn = Array.from(filters).find(b => b.dataset.group === newGroup);
             if (targetBtn) targetBtn.classList.add('active');
-            currentCategory = newCategory;
+            currentGroup = newGroup;
 
-            // When switching to music category, default to paid view
-            if (currentCategory === 'music' && musicTier === 'all') {
+            if (newGroup !== 'stock') {
+                stockSubcategory = 'all-stock';
+                stockGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.stock === stockSubcategory));
+            }
+            if (newGroup !== 'tools') {
+                toolsSubcategory = 'all-tools';
+                toolsGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.tools === toolsSubcategory));
+            }
+
+            if (!(newGroup === 'stock' && stockSubcategory === 'music') && musicTier !== 'paid') {
                 musicTier = 'paid';
-                musicTierButtons.forEach(b => b.classList.remove('active'));
-                musicTierButtons.forEach(b => {
-                    if (b.dataset.tier === 'paid') b.classList.add('active');
-                });
-            }
-            // When switching away from music, reset to all
-            else if (previousCategory === 'music' && musicTier !== 'all') {
-                musicTier = 'all';
-                musicTierButtons.forEach(b => b.classList.remove('active'));
-                musicTierButtons.forEach(b => {
-                    if (b.dataset.tier === 'all') b.classList.add('active');
-                });
+                musicTierButtons.forEach(b => b.classList.toggle('active', b.dataset.tier === 'paid'));
             }
 
-            // Reset AI view when leaving AI tab
-            if (previousCategory === 'ai' && aiType !== 'all') {
+            if (!(newGroup === 'tools' && toolsSubcategory === 'ai') && aiType !== 'all') {
                 aiType = 'all';
-                aiTypeButtons.forEach(b => b.classList.remove('active'));
-                aiTypeButtons.forEach(b => {
-                    if (b.dataset.type === 'all') b.classList.add('active');
-                });
+                aiTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
+            }
+
+            if (!(newGroup === 'tools' && toolsSubcategory === 'drone') && droneType !== 'channels') {
+                droneType = 'channels';
+                droneTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'channels'));
             }
         }
 
         filters.forEach(btn => {
             btn.addEventListener('click', () => {
-                setCategory(btn.dataset.category);
+                setGroup(btn.dataset.group);
                 renderResources(true);
             });
+        });
+
+        // Quick filters (multi-toggle)
+        if (quickFilterButtons.length) {
+            quickFilterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const key = btn.dataset.qf;
+                    if (!key || !(key in quickFilters)) return;
+                    quickFilters[key] = !quickFilters[key];
+                    btn.classList.toggle('is-active', quickFilters[key]);
+                    renderResources(true);
+                });
+            });
+        }
+
+        stockGroupButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                stockGroupButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                stockSubcategory = btn.dataset.stock;
+                renderResources(true);
+            });
+        });
+
+        toolsGroupButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                toolsGroupButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                toolsSubcategory = btn.dataset.tools;
+                renderResources(true);
+            });
+        });
+
+        // Keyboard shortcut: / focuses search (like a real app)
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== '/') return;
+            const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+            if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+            e.preventDefault();
+            searchInput.focus();
         });
 
         musicTierButtons.forEach(btn => {

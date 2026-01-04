@@ -2,6 +2,31 @@
 
 Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
+## 2026-01-05
+- Change: Resources page adds a Saved drawer with shareable links, inline search, and delegated remove/open controls. Saved lists can be shared via URL (?saved=) and merged on load.
+- Change: Resources categories regrouped into Stock and Tools hubs with subcategories; filtering respects existing data while music/AI/drone subfilters adapt accordingly.
+- Change: Events page now shows deadline-derived events with Show/Only toggles, deep-linkable modal details with copyable URLs, and ICS export still available.
+- Change: Portfolio videos load via click-to-play thumbnails to lighten initial load.
+- Files touched: resources.html, events.html, portfolio.html
+
+## 2026-01-04
+- Change: Resources grid now uses event delegation + chunked rendering for smoother filtering and less DOM churn. Added Saved (favorites) system using localStorage and a modal save toggle.
+- Files touched: resources.html
+- Notes: Favorites stored in localStorage key lab_favorites_v1. Saved filter shows only favorites.
+- Quick test checklist:
+  - Filtering/search doesn’t hitch during typing
+  - Clicking resource cards still opens modal
+  - Ghost/skeleton tiles never open modal
+  - Save/unsave toggles star and persists after refresh
+  - Saved filter correctly narrows results
+
+- Change: Events page can export .ics calendar file from events-data.js
+- Files touched: events.html
+- Notes: Uses America/Detroit timezone for timed events and all-day spans for festivals.
+- Quick test checklist:
+  - Export downloads .ics
+  - Import into Apple/Google Calendar shows expected dates/times
+
 ## YYYY-MM-DD
 - Change:
 - Files touched:
