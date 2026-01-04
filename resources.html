@@ -825,98 +825,6 @@
             color: var(--white);
         }
 
-        /* Saved drawer + toast */
-        .saved-backdrop{
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.68);
-            opacity: 0; visibility: hidden; pointer-events: none;
-            display: none;
-            align-items: stretch;
-            justify-content: flex-end;
-            z-index: 1600;
-            transition: opacity .2s ease, visibility .2s ease;
-        }
-        .saved-backdrop.is-open{
-            display: flex;
-            opacity: 1; visibility: visible; pointer-events: auto;
-        }
-        .saved-drawer{
-            position: absolute;
-            top: 0; right: 0;
-            height: 100%;
-            width: min(420px, 92vw);
-            background: var(--black);
-            border-left: 1px solid rgba(255,255,255,0.14);
-            padding: 1rem;
-            overflow: auto;
-        }
-        .saved-header{
-            display:flex; align-items:center; justify-content:space-between; gap:1rem;
-            margin-bottom: 1rem;
-        }
-        .saved-title{ font-family:'Space Mono', monospace; color: var(--white); }
-        .saved-close{
-            width: 40px; height: 40px;
-            border: 1px solid rgba(255,255,255,0.14);
-            background: rgba(255,255,255,0.04);
-            color: var(--white);
-            cursor: pointer;
-        }
-        .saved-controls{
-            display:grid; gap:.5rem;
-            margin-bottom: 1rem;
-        }
-        .saved-controls input{
-            width: 100%;
-            padding: .75rem;
-            border: 1px solid rgba(255,255,255,0.14);
-            background: rgba(255,255,255,0.03);
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-        }
-        .saved-meta{ color: var(--gray-300); font-size: .85rem; }
-        .saved-list{ display:grid; gap:.5rem; }
-        .saved-item{
-            border: 1px solid rgba(255,255,255,0.12);
-            background: rgba(255,255,255,0.03);
-            padding: .75rem;
-            cursor: pointer;
-        }
-        .saved-item:hover{ background: rgba(255,255,255,0.05); }
-        .saved-item-top{ display:flex; align-items:center; justify-content:space-between; gap:.75rem; }
-        .saved-item-name{ color: var(--white); font-family:'Space Mono', monospace; font-size:.95rem; }
-        .saved-item-desc{ color: var(--gray-300); margin-top:.35rem; font-size:.9rem; }
-        .saved-remove{
-            border: 1px solid rgba(255,255,255,0.14);
-            background: rgba(255,255,255,0.04);
-            color: var(--white);
-            cursor:pointer;
-            padding: .35rem .5rem;
-            font-family: 'Space Mono', monospace;
-            font-size: .8rem;
-        }
-
-        .toast{
-            position: fixed;
-            left: 1rem;
-            bottom: 1rem;
-            z-index: 1700;
-            background: rgba(0,0,0,0.85);
-            border: 1px solid rgba(255,255,255,0.14);
-            color: var(--white);
-            padding: .75rem 1rem;
-            font-family: 'Space Mono', monospace;
-            font-size: .85rem;
-            opacity: 0;
-            transform: translateY(6px);
-            pointer-events: none;
-            transition: opacity .18s ease, transform .18s ease;
-        }
-        .toast.is-show{
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         .resource-card::before {
             content: '';
             position: absolute;
@@ -1702,16 +1610,53 @@
         </div>
         
         <!-- Filter -->
-        <div class="filter-row" id="groupFilterRow">
-            <button class="filter-btn active" data-group="film-festivals">Film Fest's</button>
+        <div class="filter-row">
+            <button class="filter-btn active" data-group="film-festivals">Film Festivals</button>
             <button class="filter-btn" data-group="community">Community</button>
-            <button class="filter-btn" data-group="stock-hub">Stock</button>
-            <button class="filter-btn" data-group="tools-hub">Tools</button>
+            <button class="filter-btn" data-group="stock">Stock</button>
+            <button class="filter-btn" data-group="tools">Tools</button>
             <button class="filter-btn" data-group="collaborators">Friends</button>
             <button class="filter-btn" data-group="other">FreeLance</button>
             <button class="filter-btn" data-group="inspiration">Inspiration</button>
             <button class="filter-btn" data-group="references">References</button>
             <button class="filter-btn" data-group="all">All</button>
+        </div>
+
+        <!-- Quick Filters -->
+        <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
+            <button class="quickfilter-btn" type="button" data-qf="saved">Saved</button>
+            <button class="quickfilter-btn" type="button" data-qf="labPick">LaB Picks</button>
+            <button class="quickfilter-btn" type="button" data-qf="free">Free</button>
+            <button class="quickfilter-btn" type="button" data-qf="paid">Paid</button>
+        </div>
+
+        <div class="subfilter-row" id="stockGroupBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Stock view:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn active" data-stock="all-stock">All Stock</button>
+                <button class="subfilter-btn" data-stock="music">Music</button>
+                <button class="subfilter-btn" data-stock="soundfx">Sound FX</button>
+                <button class="subfilter-btn" data-stock="stock">Stock</button>
+                <button class="subfilter-btn" data-stock="fonts">Fonts</button>
+                <button class="subfilter-btn" data-stock="3d">3D</button>
+            </div>
+        </div>
+
+        <div class="subfilter-row" id="toolsGroupBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Tools view:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn active" data-tools="all-tools">All Tools</button>
+                <button class="subfilter-btn" data-tools="ai">AI</button>
+                <button class="subfilter-btn" data-tools="gear">Gear</button>
+                <button class="subfilter-btn" data-tools="drone">Drone</button>
+            </div>
+        </div>
+
+        <!-- Quick Filters -->
+        <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
+            <button class="quickfilter-btn" type="button" data-qf="labPick">LaB Picks</button>
+            <button class="quickfilter-btn" type="button" data-qf="free">Free</button>
+            <button class="quickfilter-btn" type="button" data-qf="paid">Paid</button>
         </div>
 
         <!-- Subcategory bars (hidden unless Stock/Tools group is active) -->
@@ -1743,6 +1688,20 @@
             <button class="quickfilter-btn" type="button" data-qf="paid">Paid</button>
         </div>
         <div class="resources-grid" id="resourcesGrid"></div>
+
+        <aside class="saved-drawer" id="savedDrawer" aria-label="Saved resources">
+            <div class="saved-header">
+                <h3 class="proto-text-mono">Saved</h3>
+                <div class="saved-actions">
+                    <span class="saved-count" id="savedCount">0</span>
+                    <button class="saved-share" id="shareSavedBtn" type="button">Share Saved</button>
+                </div>
+            </div>
+            <div class="saved-search">
+                <input type="text" id="savedSearch" placeholder="Search saved...">
+            </div>
+            <div class="saved-list" id="savedList" aria-live="polite"></div>
+        </aside>
     </div>
     </div>
     
@@ -1815,28 +1774,7 @@
         </div>
     </div>
 
-    <!-- Saved Drawer -->
-    <div class="saved-backdrop" id="savedBackdrop" aria-hidden="true">
-        <aside class="saved-drawer" id="savedDrawer" role="dialog" aria-modal="true" aria-labelledby="savedTitle" tabindex="-1">
-            <div class="saved-header">
-                <div>
-                    <div class="proto-text-mono" style="opacity:.7;">Favorites</div>
-                    <h3 id="savedTitle" class="saved-title">Saved Resources</h3>
-                </div>
-                <button class="saved-close" id="savedClose" type="button" aria-label="Close">×</button>
-            </div>
-
-            <div class="saved-controls">
-                <input id="savedSearch" type="search" placeholder="Search saved…" aria-label="Search saved">
-                <div class="saved-meta proto-text-mono" id="savedCountLabel"></div>
-            </div>
-
-            <div class="saved-list" id="savedList"></div>
-        </aside>
-    </div>
-
-    <!-- Toast -->
-    <div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+    <div class="toast" id="shareToast" role="status" aria-live="polite">Link copied</div>
 
     <script src="resources-data.js"></script>
     <script>
@@ -1846,36 +1784,22 @@
         const closeModalBtn = document.getElementById('closeModal');
         const countEl = document.getElementById('resourceCount');
         const searchInput = document.getElementById('searchInput');
-
-        const groupRow = document.getElementById('groupFilterRow');
-        const groupButtons = groupRow ? groupRow.querySelectorAll('.filter-btn') : [];
-        const stockHubBar = document.getElementById('stockHubBar');
-        const toolsHubBar = document.getElementById('toolsHubBar');
-        const stockHubBtns = stockHubBar ? stockHubBar.querySelectorAll('.subfilter-btn') : [];
-        const toolsHubBtns = toolsHubBar ? toolsHubBar.querySelectorAll('.subfilter-btn') : [];
-
-        const savedBackdrop = document.getElementById('savedBackdrop');
-        const savedDrawer = document.getElementById('savedDrawer');
-        const openSavedDrawerBtn = document.getElementById('openSavedDrawer');
-        const savedClose = document.getElementById('savedClose');
-        const savedList = document.getElementById('savedList');
-        const savedSearch = document.getElementById('savedSearch');
-        const savedCountLabel = document.getElementById('savedCountLabel');
-        const shareSavedBtn = document.getElementById('shareSavedBtn');
-        const toastEl = document.getElementById('toast');
+        const musicTierBar = document.getElementById('musicTierBar');
+        const musicTierButtons = musicTierBar.querySelectorAll('.subfilter-btn');
+        const aiTypeBar = document.getElementById('aiTypeBar');
+        const aiTypeButtons = aiTypeBar.querySelectorAll('.subfilter-btn');
+        const droneTypeBar = document.getElementById('droneTypeBar');
+        const droneTypeButtons = droneTypeBar.querySelectorAll('.subfilter-btn');
 
         const quickFilterBar = document.getElementById('quickFilterBar');
         const quickFilterButtons = quickFilterBar ? quickFilterBar.querySelectorAll('.quickfilter-btn') : [];
         const quickFilters = {
-            saved: false,
             labPick: false,
             free: false,
             paid: false
         };
 
-        let currentGroup = 'film-festivals';
-        let currentStockSub = 'all';
-        let currentToolsSub = 'all';
+        let currentCategory = 'film-festivals';
         let searchQuery = '';
 
         // ============================================
@@ -1949,6 +1873,7 @@
             if (quickFilters) quickFilters.saved = true;
             const savedBtn = document.querySelector('.quickfilter-btn[data-qf="saved"]');
             if (savedBtn) savedBtn.classList.add('is-active');
+            showToast('Imported saved list');
         }
         mergeSavedFromUrl();
 
@@ -2065,6 +1990,60 @@
         }
 
         // ============================================
+        // FAVORITES (Saved)
+        // ============================================
+        const FAVORITES_KEY = 'lab_favorites_v1';
+        let favorites = new Set();
+        let activeResourceId = null;
+
+        function loadFavorites() {
+            try {
+                const raw = localStorage.getItem(FAVORITES_KEY);
+                const arr = raw ? JSON.parse(raw) : [];
+                favorites = new Set(Array.isArray(arr) ? arr : []);
+            } catch {
+                favorites = new Set();
+            }
+        }
+
+        function saveFavorites() {
+            try {
+                localStorage.setItem(FAVORITES_KEY, JSON.stringify(Array.from(favorites)));
+            } catch {}
+        }
+
+        function isFavorite(id) {
+            return favorites.has(id);
+        }
+
+        function setFavoriteUI(id) {
+            const btn = document.getElementById('toggleFavorite');
+            if (!btn) return;
+            const saved = id && isFavorite(id);
+            btn.classList.toggle('is-saved', saved);
+            btn.textContent = saved ? '★' : '☆';
+            btn.setAttribute('aria-label', saved ? 'Unsave resource' : 'Save resource');
+            btn.title = saved ? 'Saved' : 'Save';
+        }
+
+        // init favorites early
+        loadFavorites();
+
+        // Favorite button handler
+        const favBtn = document.getElementById('toggleFavorite');
+        if (favBtn) {
+            favBtn.addEventListener('click', () => {
+                if (!activeResourceId) return;
+                if (favorites.has(activeResourceId)) favorites.delete(activeResourceId);
+                else favorites.add(activeResourceId);
+                saveFavorites();
+                setFavoriteUI(activeResourceId);
+                // If "Saved" filter is active, re-render to reflect changes
+                if (quickFilters && quickFilters.saved) renderResources(true);
+            });
+        }
+
+        // ============================================
         // UTILITY FUNCTIONS
         // ============================================
         
@@ -2099,37 +2078,34 @@
                 return true;
             });
         }
-
-        const GROUPS = {
-            'film-festivals': ['film-festivals'],
-            'community': ['community'],
-            'stock-hub': ['music','soundfx','stock','fonts','3d'],
-            'tools-hub': ['ai','equipment','drone'],
-            'collaborators': ['collaborators'],
-            'other': ['other'],
-            'inspiration': ['inspiration'],
-            'references': ['references'],
-            'all': null
-        };
-
-        function matchGroup(resource){
-            if (currentGroup === 'all') return true;
-            const allowed = GROUPS[currentGroup];
-            if (!allowed) return true;
+        
+        function resourceMatchesGroup(resource) {
             const cats = getCategoryList(resource);
-            return cats.some(c => allowed.includes(c));
-        }
+            const primary = cats[0];
+            if (currentGroup === 'all') return true;
+            if (currentGroup === 'film-festivals') return cats.includes('film-festivals');
+            if (currentGroup === 'community') return cats.includes('community');
+            if (currentGroup === 'collaborators') return cats.includes('collaborators');
+            if (currentGroup === 'other') return cats.includes('other');
+            if (currentGroup === 'inspiration') return cats.includes('inspiration');
+            if (currentGroup === 'references') return cats.includes('references');
 
-        function matchSub(resource){
-            if (currentGroup === 'stock-hub'){
-                if (currentStockSub === 'all') return true;
-                return getCategoryList(resource).includes(currentStockSub);
+            if (currentGroup === 'stock') {
+                const stockCats = ['music', 'soundfx', 'stock', 'fonts', '3d'];
+                if (!cats.some(c => stockCats.includes(c))) return false;
+                if (stockSubcategory === 'all-stock') return true;
+                return cats.includes(stockSubcategory);
             }
-            if (currentGroup === 'tools-hub'){
-                if (currentToolsSub === 'all') return true;
-                return getCategoryList(resource).includes(currentToolsSub);
+
+            if (currentGroup === 'tools') {
+                const toolCats = ['ai', 'equipment', 'drone'];
+                if (!cats.some(c => toolCats.includes(c))) return false;
+                if (toolsSubcategory === 'all-tools') return true;
+                if (toolsSubcategory === 'gear') return cats.includes('equipment');
+                return cats.includes(toolsSubcategory);
             }
-            return true;
+
+            return cats.includes(primary);
         }
 
         function getPrimaryCategory(resource) {
@@ -2202,22 +2178,44 @@
         
         function getFilteredResources() {
             let filtered = resources.filter(r =>
-                matchGroup(r) && matchSub(r) && matchesSearch(r, searchQuery)
+                resourceMatchesGroup(r) && matchesSearch(r, searchQuery)
             );
+
+            if (currentGroup === 'stock' && stockSubcategory === 'music') {
+                filtered = filtered.filter(r => {
+                    if (musicTier === 'free') return r.paid === false;
+                    if (musicTier === 'paid') return r.paid === true;
+                    return true;
+                });
+            }
+
+            if (currentGroup === 'tools' && toolsSubcategory === 'ai') {
+                filtered = filtered.filter(r => {
+                    if (aiType === 'chat') return r.aiType === 'chat';
+                    if (aiType === 'music') return r.aiType === 'music';
+                    if (aiType === 'video') return r.aiType === 'video';
+                    if (aiType === 'image') return r.aiType === 'image';
+                    if (aiType === 'voice') return r.aiType === 'voice';
+                    return true;
+                });
+            }
+
+            if (currentGroup === 'tools' && toolsSubcategory === 'drone') {
+                filtered = filtered.filter(r => {
+                    if (droneType === 'channels') return r.droneType === 'channel';
+                    if (droneType === 'shops') return r.droneType === 'shop';
+                    if (droneType === 'part-107') return r.droneType === 'part-107';
+                    return true;
+                });
+            }
 
             // Quick filters (multi-toggle)
             const wantsLabPick = quickFilters.labPick;
             const wantsFree = quickFilters.free;
             const wantsPaid = quickFilters.paid;
-            const wantsSaved = quickFilters.saved;
 
             if (wantsLabPick) {
                 filtered = filtered.filter(r => r.labPick === true);
-            }
-
-            // Saved filter (favorites)
-            if (wantsSaved) {
-                filtered = filtered.filter(r => favorites.has(r.id || normalizeValue(r.name)));
             }
 
             // Free/Paid toggles work across categories when r.paid is present.
@@ -2324,14 +2322,28 @@
         }
 
         function renderResources(animate = false) {
-            const isStock = currentGroup === 'stock-hub';
-            const isTools = currentGroup === 'tools-hub';
+            const isStock = currentGroup === 'stock';
+            const isTools = currentGroup === 'tools';
 
-            if (stockHubBar) {
-                stockHubBar.toggleAttribute('hidden', !isStock);
+            if (stockGroupBar) {
+                stockGroupBar.toggleAttribute('hidden', !isStock);
             }
-            if (toolsHubBar) {
-                toolsHubBar.toggleAttribute('hidden', !isTools);
+            if (toolsGroupBar) {
+                toolsGroupBar.toggleAttribute('hidden', !isTools);
+            }
+
+            if (musicTierBar) {
+                musicTierBar.toggleAttribute('hidden', !(isStock && stockSubcategory === 'music'));
+            }
+            grid.innerHTML = html;
+        }
+
+            if (aiTypeBar) {
+                aiTypeBar.toggleAttribute('hidden', !(isTools && toolsSubcategory === 'ai'));
+            }
+
+            if (droneTypeBar) {
+                droneTypeBar.toggleAttribute('hidden', !(isTools && toolsSubcategory === 'drone'));
             }
 
             const filtered = getFilteredResources();
@@ -2386,8 +2398,6 @@
                     const isCommunity = primaryCat === 'community';
                     const isFilmFestival = primaryCat === 'film-festivals';
                     const isInspiration = primaryCat === 'inspiration';
-                    const isStockHub = ['music','soundfx','stock','fonts','3d'].includes(primaryCat);
-                    const isToolsHub = ['ai','equipment','drone'].includes(primaryCat);
                     const isLabPick = r.labPick === true;
 
                     const badges = r.badges || generateBadges(r);
@@ -2400,8 +2410,6 @@
                     if (isCommunity) cardClass += ' is-community';
                     if (isFilmFestival) cardClass += ' is-film-festival';
                     if (isInspiration) cardClass += ' is-inspiration';
-                    if (isStockHub) cardClass += ' is-stock-hub';
-                    if (isToolsHub) cardClass += ' is-tools-hub';
                     if (isLabPick) cardClass += ' is-lab-pick';
 
                     const resourceId = r.id || normalizeValue(r.name);
@@ -2725,20 +2733,40 @@
         // FILTER & SEARCH
         // ============================================
         
-        function setGroup(newGroup){
-            currentGroup = newGroup;
-            groupButtons.forEach(b => b.classList.toggle('active', b.dataset.group === newGroup));
-
-            if (stockHubBar) stockHubBar.toggleAttribute('hidden', newGroup !== 'stock-hub');
-            if (toolsHubBar) toolsHubBar.toggleAttribute('hidden', newGroup !== 'tools-hub');
-
-            if (newGroup !== 'stock-hub'){
-                currentStockSub = 'all';
-                stockHubBtns.forEach(b => b.classList.toggle('active', b.dataset.sub === 'all'));
+        function setGroup(newGroup) {
+            const previousGroup = currentGroup;
+            if (previousGroup === newGroup) {
+                filters.forEach(b => b.classList.toggle('active', b.dataset.group === newGroup));
+                return;
             }
-            if (newGroup !== 'tools-hub'){
-                currentToolsSub = 'all';
-                toolsHubBtns.forEach(b => b.classList.toggle('active', b.dataset.sub === 'all'));
+
+            filters.forEach(b => b.classList.remove('active'));
+            const targetBtn = Array.from(filters).find(b => b.dataset.group === newGroup);
+            if (targetBtn) targetBtn.classList.add('active');
+            currentGroup = newGroup;
+
+            if (newGroup !== 'stock') {
+                stockSubcategory = 'all-stock';
+                stockGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.stock === stockSubcategory));
+            }
+            if (newGroup !== 'tools') {
+                toolsSubcategory = 'all-tools';
+                toolsGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.tools === toolsSubcategory));
+            }
+
+            if (!(newGroup === 'stock' && stockSubcategory === 'music') && musicTier !== 'paid') {
+                musicTier = 'paid';
+                musicTierButtons.forEach(b => b.classList.toggle('active', b.dataset.tier === 'paid'));
+            }
+
+            if (!(newGroup === 'tools' && toolsSubcategory === 'ai') && aiType !== 'all') {
+                aiType = 'all';
+                aiTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
+            }
+
+            if (!(newGroup === 'tools' && toolsSubcategory === 'drone') && droneType !== 'channels') {
+                droneType = 'channels';
+                droneTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'channels'));
             }
         }
 
@@ -2762,6 +2790,58 @@
             });
         }
 
+        stockGroupButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                stockGroupButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                stockSubcategory = btn.dataset.stock;
+                renderResources(true);
+            });
+        }
+
+        toolsGroupButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                toolsGroupButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                toolsSubcategory = btn.dataset.tools;
+                renderResources(true);
+            });
+        });
+
+        // Quick filters (multi-toggle)
+        if (quickFilterButtons.length) {
+            quickFilterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const key = btn.dataset.qf;
+                    if (!key || !(key in quickFilters)) return;
+                    quickFilters[key] = !quickFilters[key];
+                    btn.classList.toggle('is-active', quickFilters[key]);
+                    renderResources(true);
+                });
+            });
+        }
+
+        // Keyboard shortcut: / focuses search (like a real app)
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== '/') return;
+            const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+            if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+            e.preventDefault();
+            searchInput.focus();
+        });
+
+        musicTierButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                musicTierButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                musicTier = btn.dataset.tier;
+                renderResources(true);
+            });
+        }
+
         stockHubBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 stockHubBtns.forEach(b => b.classList.remove('active'));
@@ -2778,6 +2858,15 @@
                 currentToolsSub = btn.dataset.sub;
                 renderResources(true);
             });
+        });
+
+        // Keyboard shortcut: / focuses search (like a real app)
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== '/') return;
+            const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+            if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+            e.preventDefault();
+            searchInput.focus();
         });
 
         // Keyboard shortcut: / focuses search (like a real app)
