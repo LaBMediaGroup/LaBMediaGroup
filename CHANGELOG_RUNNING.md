@@ -123,3 +123,12 @@ Quick test checklist:
 - Toggle Inspiration/Editing/Filming/Art/Music/References/Comedy/All → results stay populated
 - Select Drones → Drone subfilter row shows; Part 107/Channels/Stores/All filter items accordingly
 - Console free of errors (favicon only)
+2026-01-04 | 4:58PM EST
+———————————————————————
+Change: Refresh events data, add verification badges for unverified listings, and display Film Fest labeling in type tags and modal previews.
+Files touched: events.html, events-data.js, CHANGELOG_RUNNING.md
+Notes: Added optional verification badge logic that links to event URLs when present while keeping verified events unchanged.
+Quick test checklist:
+- Load events page in list view: unverified Royal Starr mixers show orange badge beside type label; verified events display normally.
+- Open the Royal Starr mixer modal: badge appears near the type/status chips and links to the event site; Film Fest label shows for festival types.
+- Confirm no console errors on page load after hard refresh.

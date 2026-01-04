@@ -402,6 +402,19 @@
             color: var(--gray-200);
         }
 
+        .tag-warning {
+            border-color: rgba(249, 115, 22, 0.5);
+            color: var(--lab-orange);
+            background: rgba(249, 115, 22, 0.12);
+        }
+
+        .tag-stack {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
         /* Event preview modal */
         .event-modal-backdrop {
             position: fixed;
@@ -557,6 +570,12 @@
             color: var(--gray-200);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+        }
+
+        .status-chip--warn {
+            border-color: rgba(249, 115, 22, 0.5);
+            color: var(--lab-orange);
+            background: rgba(249, 115, 22, 0.08);
         }
 
         /* Past events */
@@ -808,6 +827,14 @@
             border-color: #A855F7;
             color: #A855F7;
             background: rgba(168, 85, 247, 0.08);
+        }
+
+        .event-modal-chip-row {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
         }
         .event-modal-body {
             padding: 2rem;
@@ -1176,7 +1203,10 @@
         <div class="event-preview-modal" id="eventPreviewModal" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle" tabindex="-1">
             <div class="event-modal-header">
                 <button class="event-modal-close" id="eventModalClose" type="button">ESC</button>
-                <div id="eventModalTypeBadge" class="event-modal-type-badge"></div>
+                <div class="event-modal-chip-row">
+                    <div id="eventModalTypeBadge" class="event-modal-type-badge"></div>
+                    <span id="eventModalVerificationBadge"></span>
+                </div>
                 <h2 class="event-modal-title" id="eventModalTitle"></h2>
             </div>
             <div class="event-modal-body">
@@ -1224,12 +1254,43 @@
 
         const typeLabels = {
             meetup: 'Meetup',
-            festival: 'Festival',
+            festival: 'Film Fest',
             workshop: 'Workshop',
             screening: 'Screening',
             deadline: 'Deadline',
             other: 'Event'
         };
+
+        const getTypeLabel = (type) => typeLabels[type] || type || 'Event';
+
+        function getVerificationMeta(event) {
+            if (!event || !event.verification) return null;
+            const normalized = String(event.verification).toLowerCase();
+            if (normalized === 'verified') return null;
+
+            let label = event.verificationLabel;
+            if (!label) {
+                if (normalized.includes('tbd') || normalized.includes('announce')) {
+                    label = 'TBD';
+                } else {
+                    label = 'Check site';
+                }
+            }
+
+            const url = event.verificationUrl || event.url || '';
+            return { label, url };
+        }
+
+        function buildVerificationBadge(event, variant = 'tag') {
+            const meta = getVerificationMeta(event);
+            if (!meta) return '';
+
+            const baseClass = variant === 'chip' ? 'status-chip status-chip--warn' : 'tag tag-warning';
+            if (meta.url) {
+                return `<a class="${baseClass}" href="${meta.url}" target="_blank" rel="noopener noreferrer">${meta.label}</a>`;
+            }
+            return `<span class="${baseClass}">${meta.label}</span>`;
+        }
 
         function formatDate(dateStr) {
             if (!dateStr) return '';
@@ -1401,12 +1462,17 @@
             listContainer.innerHTML = sorted.map(ev => {
                 const isPast = isEventPast(ev);
                 const pastClass = isPast ? ' is-past' : '';
+                const typeLabel = getTypeLabel(ev.type);
+                const verificationBadge = buildVerificationBadge(ev);
                 return `
                     <div class="list-row${pastClass}" data-event-id="${ev.id}" style="cursor: pointer;">
                         <h4>${ev.title}</h4>
                         <span>${formatDate(ev.startDate)}${ev.endDate ? ' – ' + formatDate(ev.endDate) : ''}</span>
                         <span>${ev.location || 'TBD'}</span>
-                        <span class="tag">${ev.type}</span>
+                        <span class="tag-stack">
+                            <span class="tag">${typeLabel}</span>
+                            ${verificationBadge}
+                        </span>
                     </div>
                 `;
             }).join('');
@@ -1481,7 +1547,7 @@
 
                 return `
                     <div class="past-event-card type-${evt.type}" data-event-id="${evt.id}">
-                        <div class="past-event-type-badge type-${evt.type}">${evt.type}</div>
+                        <div class="past-event-type-badge type-${evt.type}">${getTypeLabel(evt.type)}</div>
                         <h3 class="past-event-title">${evt.title}</h3>
                         <div class="past-event-date">${dateRange}</div>
                         <p class="past-event-description">${evt.description || 'No description available.'}</p>
@@ -1574,11 +1640,12 @@
             ];
 
             const isPast = isEventPast(event);
+            const verificationBadge = buildVerificationBadge(event, 'chip');
             eventDescription.innerHTML = `
                 <div class="event-bio">
                     <div class="event-bio-head">
                         <div class="proto-text-mono" style="opacity:0.7;">Event Preview</div>
-                        ${isPast ? '<span class="status-chip">Past</span>' : ''}
+                        ${[isPast ? '<span class="status-chip">Past</span>' : '', verificationBadge].filter(Boolean).join('')}
                     </div>
                     <p class="event-bio-summary">${event.description || 'Details coming soon.'}</p>
                     <div class="event-bio-grid">
@@ -1719,8 +1786,16 @@
             // Set type badge
             const typeBadge = document.getElementById('eventModalTypeBadge');
             if (typeBadge) {
-                typeBadge.textContent = eventData.type;
+                const typeLabel = getTypeLabel(eventData.type);
+                typeBadge.textContent = typeLabel;
                 typeBadge.className = `event-modal-type-badge type-${eventData.type}`;
+            }
+
+            const verificationSlot = document.getElementById('eventModalVerificationBadge');
+            if (verificationSlot) {
+                const verificationBadge = buildVerificationBadge(eventData, 'chip');
+                verificationSlot.innerHTML = verificationBadge;
+                verificationSlot.style.display = verificationBadge ? 'inline-flex' : 'none';
             }
 
             // Set title with strikethrough for past events
