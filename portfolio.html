@@ -153,14 +153,46 @@
             overflow: hidden;
             background: #000;
         }
-        
-        .video-container iframe {
+
+        .video-container iframe,
+        .yt-lite {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            border: none;
+        }
+
+        .yt-lite{
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.14);
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .yt-thumb{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            opacity: 0.92;
+        }
+        .yt-play{
+            position: absolute;
+            inset: 0;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-family: 'Space Mono', monospace;
+            font-size: 2.25rem;
+            color: var(--white);
+            background: radial-gradient(circle at center, rgba(0,0,0,0.0), rgba(0,0,0,0.55));
+        }
+        .yt-lite:focus{
+            outline: 2px solid rgba(255,255,255,0.35);
+            outline-offset: 2px;
         }
         
         /* Info Side - Default hidden state for animation */
@@ -646,12 +678,13 @@
     
     <!-- SECTION 1: ANTHONY BRASS -->
     <section id="artist" class="proto-grid" data-index="1">
-        <div class="section-inner">
+            <div class="section-inner">
             <div class="video-side">
                 <div class="video-container proto-corners">
-                    <iframe src="https://www.youtube.com/embed/CPvxM8GrCg8"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen loading="lazy"></iframe>
+                    <div class="yt-lite" data-yt="CPvxM8GrCg8" aria-label="Play Anthony Brass video" role="button" tabindex="0">
+                        <img class="yt-thumb" src="https://img.youtube.com/vi/CPvxM8GrCg8/hqdefault.jpg" alt="Anthony Brass thumbnail" loading="lazy">
+                        <div class="yt-play">▶</div>
+                    </div>
                 </div>
             </div>
             <div class="info-side">
@@ -680,12 +713,13 @@
     
     <!-- SECTION 2: MOZ INTERIORS -->
     <section id="moz" class="reversed proto-grid" data-index="2">
-        <div class="section-inner">
+            <div class="section-inner">
             <div class="video-side">
                 <div class="video-container proto-corners">
-                    <iframe src="https://www.youtube.com/embed/HtF4L9RpkaU"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen loading="lazy"></iframe>
+                    <div class="yt-lite" data-yt="HtF4L9RpkaU" aria-label="Play MOZ Interiors video" role="button" tabindex="0">
+                        <img class="yt-thumb" src="https://img.youtube.com/vi/HtF4L9RpkaU/hqdefault.jpg" alt="MOZ Interiors thumbnail" loading="lazy">
+                        <div class="yt-play">▶</div>
+                    </div>
                 </div>
             </div>
             <div class="info-side">
@@ -720,12 +754,13 @@
     
     <!-- SECTION 3: THE PANDYS -->
     <section id="pandys" class="proto-grid" data-index="3">
-        <div class="section-inner">
+            <div class="section-inner">
             <div class="video-side">
                 <div class="video-container proto-corners">
-                    <iframe src="https://www.youtube.com/embed/ZXYtZmIRiRI"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen loading="lazy"></iframe>
+                    <div class="yt-lite" data-yt="ZXYtZmIRiRI" aria-label="Play Driven Interiors video" role="button" tabindex="0">
+                        <img class="yt-thumb" src="https://img.youtube.com/vi/ZXYtZmIRiRI/hqdefault.jpg" alt="Driven Interiors thumbnail" loading="lazy">
+                        <div class="yt-play">▶</div>
+                    </div>
                 </div>
             </div>
             <div class="info-side">
@@ -754,12 +789,13 @@
     
     <!-- SECTION 4: TRAIL DEAD -->
     <section id="horror" class="reversed proto-grid" data-index="4">
-        <div class="section-inner">
+            <div class="section-inner">
             <div class="video-side">
                 <div class="video-container proto-corners">
-                    <iframe src="https://www.youtube.com/embed/rtEs8chuDlM"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen loading="lazy"></iframe>
+                    <div class="yt-lite" data-yt="rtEs8chuDlM" aria-label="Play Backyard Sessions video" role="button" tabindex="0">
+                        <img class="yt-thumb" src="https://img.youtube.com/vi/rtEs8chuDlM/hqdefault.jpg" alt="Backyard Sessions thumbnail" loading="lazy">
+                        <div class="yt-play">▶</div>
+                    </div>
                 </div>
             </div>
             <div class="info-side">
@@ -791,12 +827,13 @@
     
     <!-- SECTION 5: LOOKOUT -->
     <section id="comedy" class="proto-grid" data-index="5">
-        <div class="section-inner">
+            <div class="section-inner">
             <div class="video-side">
                 <div class="video-container proto-corners">
-                    <iframe src="https://www.youtube.com/embed/G0zfFWwQuZA"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen loading="lazy"></iframe>
+                    <div class="yt-lite" data-yt="G0zfFWwQuZA" aria-label="Play Comedy Roll video" role="button" tabindex="0">
+                        <img class="yt-thumb" src="https://img.youtube.com/vi/G0zfFWwQuZA/hqdefault.jpg" alt="Comedy Roll thumbnail" loading="lazy">
+                        <div class="yt-play">▶</div>
+                    </div>
                 </div>
             </div>
             <div class="info-side">
@@ -828,7 +865,29 @@
     <script>
         const sections = document.querySelectorAll('section');
         const counterCurrent = document.querySelector('.counter-current');
-        
+
+        document.querySelectorAll('.yt-lite').forEach(el => {
+            const id = el.dataset.yt;
+            const img = el.querySelector('.yt-thumb');
+            if (img) img.src = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+
+            function activate(){
+                const iframe = document.createElement('iframe');
+                iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                iframe.allowFullscreen = true;
+                iframe.style.width = "100%";
+                iframe.style.height = "100%";
+                iframe.style.border = "0";
+                el.replaceWith(iframe);
+            }
+
+            el.addEventListener('click', activate);
+            el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+            });
+        });
+
         // Intersection Observer for section reveals
         const observerOptions = {
             threshold: 0.4,

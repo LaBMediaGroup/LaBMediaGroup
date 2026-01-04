@@ -1,12 +1,1020 @@
-Placeholder for Events Page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events | LaB Media</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
+    <!-- Prototype Design System -->
+    <link rel="stylesheet" href="prototype-theme.css">
 
-Calendar
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-200: #C5C5C5;
+            --gray-300: #B0B0B0;
+            --gray-400: #888888;
+            --gray-600: #555555;
+            --gray-800: #1A1A1A;
+            --gray-900: #0D0D0D;
+            --lab-orange: #F97316;
+        }
 
+        * { box-sizing: border-box; }
 
-Blog section or post stye section for recent events info or posts and things, 
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--black);
+            color: var(--gray-300);
+            margin: 0;
+            min-height: 100vh;
+        }
 
+        a { color: inherit; text-decoration: none; }
 
+        .page-shell {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 3rem;
+        }
 
-nice links for some of the community resources like camfire and royal star meetups
+        header.page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .brand {
+            font-family: 'Space Mono', monospace;
+            color: var(--white);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav a {
+            font-family: 'Space Mono', monospace;
+            color: var(--gray-300);
+            padding: 0.35rem 0.6rem;
+            border: 1px solid transparent;
+            transition: border-color 0.2s ease, color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--white);
+            border-color: var(--gray-800);
+        }
+
+        .hero {
+            margin-top: 1rem;
+            padding: 1rem 0 0.5rem;
+        }
+
+        .hero h1 {
+            font-family: 'Space Mono', monospace;
+            color: var(--white);
+            font-size: 2.3rem;
+            margin: 0 0 0.25rem;
+        }
+
+        .hero p {
+            margin: 0;
+            color: var(--gray-400);
+            max-width: 720px;
+            line-height: 1.6;
+        }
+
+        .view-toggle {
+            margin-top: 1.25rem;
+            display: inline-flex;
+            gap: 0.5rem;
+        }
+
+        .view-btn {
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.03);
+            color: var(--gray-300);
+            padding: 0.5rem 0.85rem;
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+            transition: transform 0.1s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+        }
+
+        .view-btn:hover { transform: translateY(-1px); color: var(--white); }
+        .view-btn.active {
+            border-color: rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.06);
+            color: var(--white);
+        }
+
+        .deadline-toggle {
+            margin-top: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* Suggest Event */
+        .hero-actions {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: flex-start;
+        }
+        .suggest-btn {
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.04);
+            color: var(--white);
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: transform 0.12s ease, background 0.2s ease, border-color 0.2s ease;
+            font-family: 'Space Mono', monospace;
+        }
+        .suggest-btn:hover { transform: translateY(-1px); background: rgba(255,255,255,0.06); }
+        .suggest-btn:active { transform: translateY(0); }
+
+        /* Layout */
+        .view-section {
+            margin-top: 2rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+
+        .event-card {
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.02);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .event-date {
+            font-family: 'Space Mono', monospace;
+            color: var(--gray-200);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .event-name {
+            color: var(--white);
+            font-size: 1.05rem;
+            margin: 0;
+        }
+
+        .event-meta {
+            color: var(--gray-400);
+            font-size: 0.9rem;
+        }
+
+        .event-type {
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 0.15rem 0.4rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gray-200);
+        }
+
+        .list-view {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .list-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 0.8fr;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .list-row h4 { margin: 0; color: var(--white); }
+        .list-row span { color: var(--gray-400); font-size: 0.95rem; }
+
+        .list-header {
+            font-family: 'Space Mono', monospace;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-color: rgba(255,255,255,0.18);
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid rgba(255,255,255,0.14);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray-200);
+        }
+
+        /* Suggest modal */
+        .suggest-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.68);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            z-index: 1400;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+        .suggest-backdrop.is-open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .suggest-modal {
+            width: min(720px, 100%);
+            max-height: 80vh;
+            overflow: auto;
+            background: var(--black);
+            border: 1px solid rgba(255,255,255,0.14);
+            padding: 1rem;
+        }
+        .suggest-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .suggest-title { color: var(--white); font-family: 'Space Mono', monospace; }
+        .suggest-close {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.04);
+            color: var(--white);
+            cursor: pointer;
+        }
+        .suggest-form {
+            display: grid;
+            gap: 0.75rem;
+        }
+        .suggest-form label {
+            font-family: 'Space Mono', monospace;
+            color: var(--gray-300);
+            font-size: 0.85rem;
+            display: grid;
+            gap: 0.35rem;
+        }
+        .suggest-form input,
+        .suggest-form select,
+        .suggest-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.03);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+        }
+        .suggest-form textarea { min-height: 110px; resize: vertical; }
+        .suggest-submit {
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.06);
+            color: var(--white);
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Event Detail Modal */
+        .event-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.72);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 1200;
+        }
+        .event-backdrop.is-open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .event-modal {
+            width: min(760px, 100%);
+            background: var(--black);
+            border: 1px solid rgba(255,255,255,0.14);
+            padding: 1rem;
+            max-height: 85vh;
+            overflow: auto;
+        }
+        .event-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .event-modal-title {
+            color: var(--white);
+            margin: 0;
+        }
+        .event-modal-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .event-action-btn {
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+            padding: 0.45rem 0.65rem;
+            cursor: pointer;
+        }
+        .event-modal-body {
+            margin-top: 0.75rem;
+            display: grid;
+            gap: 0.5rem;
+        }
+        .event-row {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 0.5rem;
+            align-items: start;
+            color: var(--gray-300);
+        }
+        .event-row strong { color: var(--white); font-weight: 600; }
+        .event-toast {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: rgba(20,20,20,0.95);
+            color: var(--white);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 0.55rem 0.75rem;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 1300;
+        }
+        .event-toast.is-visible { opacity: 1; transform: translateY(0); }
+        @media (max-width: 768px) {
+            .list-row { grid-template-columns: 1fr; gap: 0.35rem; }
+            .list-header { display: none; }
+            .suggest-modal { max-height: 90vh; }
+            .event-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <header class="page-header">
+            <div class="brand">LaB Media</div>
+            <nav aria-label="Main Navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="plan-your-project.html">Project</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h1>Events</h1>
+            <p>Deadlines, screenings, meetups, and festivals that keep the LaB community connected. Toggle views to browse.</p>
+
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="calendar">📅 Calendar</button>
+                <button class="view-btn" data-view="list">📋 List</button>
+                <button class="view-btn" id="exportIcsBtn" type="button">⬇︎ Export .ics</button>
+            </div>
+
+            <div class="deadline-toggle">
+                <button class="view-btn" id="showDeadlinesBtn" type="button">⏱ Show Deadlines</button>
+                <button class="view-btn" id="onlyDeadlinesBtn" type="button">Only Deadlines</button>
+            </div>
+
+        <div class="hero-actions">
+            <button class="suggest-btn proto-text-mono" id="suggestEventBtn" type="button">+ Suggest Event</button>
+        </div>
+        </section>
+
+        <section class="view-section" id="calendarSection">
+            <div class="calendar-grid" id="calendarGrid" aria-live="polite"></div>
+        </section>
+
+        <section class="view-section" id="listSection" hidden>
+            <div class="list-view">
+                <div class="list-row list-header">
+                    <span>Event</span>
+                    <span>Date</span>
+                    <span>Location</span>
+                    <span>Type</span>
+                </div>
+                <div id="listContainer"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Event Detail Modal -->
+    <div class="event-backdrop" id="eventBackdrop" aria-hidden="true">
+        <div class="event-modal" id="eventDialog" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle" tabindex="-1">
+            <div class="event-modal-header">
+                <h3 class="event-modal-title" id="eventModalTitle"></h3>
+                <div class="event-modal-actions">
+                    <button class="event-action-btn" id="copyEventLink" type="button">Copy Link</button>
+                    <button class="event-action-btn" id="closeEventModal" type="button">ESC</button>
+                </div>
+            </div>
+            <div class="event-modal-body">
+                <div class="event-row"><strong>Date</strong><span id="eventModalDate"></span></div>
+                <div class="event-row"><strong>Deadline</strong><span id="eventModalDeadline"></span></div>
+                <div class="event-row"><strong>Location</strong><span id="eventModalLocation"></span></div>
+                <div class="event-row"><strong>Link</strong><span id="eventModalLink"></span></div>
+                <div class="event-row"><strong>Details</strong><span id="eventModalDescription"></span></div>
+            </div>
+        </div>
+    </div>
+    <div class="event-toast" id="eventToast" role="status" aria-live="polite">Link copied</div>
+
+    <!-- Suggest Event Modal -->
+    <div class="suggest-backdrop" id="suggestBackdrop" aria-hidden="true">
+        <div class="suggest-modal" id="suggestDialog" role="dialog" aria-modal="true" aria-labelledby="suggestTitle" tabindex="-1">
+            <div class="suggest-header">
+                <div>
+                    <div class="proto-text-mono" style="opacity:0.7;">Community Contribution</div>
+                    <h3 class="suggest-title" id="suggestTitle">Suggest an Event</h3>
+                </div>
+                <button class="suggest-close" id="suggestClose" type="button" aria-label="Close">×</button>
+            </div>
+
+            <form class="suggest-form" action="https://formspree.io/f/mkgvggge" method="POST">
+                <input type="hidden" name="source" value="events-page">
+                <label>
+                    Event name
+                    <input name="event_name" required>
+                </label>
+
+                <label>
+                    Type
+                    <select name="event_type" required>
+                        <option value="festival">Festival</option>
+                        <option value="meetup">Meetup</option>
+                        <option value="deadline">Deadline</option>
+                        <option value="screening">Screening</option>
+                        <option value="workshop">Workshop</option>
+                        <option value="other">Other</option>
+                    </select>
+                </label>
+
+                <label>
+                    Start date
+                    <input type="date" name="start_date" required>
+                </label>
+
+                <label>
+                    End date (optional)
+                    <input type="date" name="end_date">
+                </label>
+
+                <label>
+                    Location (city/state)
+                    <input name="location">
+                </label>
+
+                <label>
+                    Link (optional)
+                    <input name="url" placeholder="https://">
+                </label>
+
+                <label>
+                    Notes (optional)
+                    <textarea name="notes" placeholder="Any details, deadlines, FilmFreeway link, etc."></textarea>
+                </label>
+
+                <button class="suggest-submit" type="submit">Send Suggestion</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const eventsData = [
+            {
+                id: 'lab-monthly-meetup',
+                title: 'LaB Monthly Meetup',
+                startDate: '2024-08-10',
+                startTime: '18:00',
+                endTime: '20:00',
+                location: 'Los Angeles, CA',
+                type: 'meetup',
+                url: 'https://lab.media/meetup',
+                description: 'Monthly mixer for collaborators, shooters, and editors.'
+            },
+            {
+                id: 'festival-window',
+                title: 'Indie Festival Window',
+                startDate: '2024-09-15',
+                endDate: '2024-09-20',
+                deadlineDate: '2024-08-25',
+                location: 'Austin, TX',
+                type: 'festival',
+                url: 'https://lab.media/festival-window',
+                description: 'A week of showcases with a submission cutoff ahead of the program.'
+            },
+            {
+                id: 'color-grading-workshop',
+                title: 'Workshop: Color Grading',
+                startDate: '2024-10-05',
+                endDate: '2024-10-06',
+                location: 'Brooklyn, NY',
+                type: 'workshop',
+                url: 'https://lab.media/grading',
+                description: 'Two-day hands-on lab focused on DaVinci workflows.'
+            },
+            {
+                id: 'short-film-deadline',
+                title: 'Short Film Deadline',
+                startDate: '2024-09-01',
+                deadlineDate: '2024-09-01',
+                location: 'Online',
+                type: 'deadline',
+                url: 'https://lab.media/shorts',
+                description: 'Submit your short film for quarterly review.'
+            }
+        ];
+
+        const viewButtons = document.querySelectorAll('.view-btn[data-view]');
+        const calendarSection = document.getElementById('calendarSection');
+        const listSection = document.getElementById('listSection');
+        const calendarGrid = document.getElementById('calendarGrid');
+        const listContainer = document.getElementById('listContainer');
+        const showDeadlinesBtn = document.getElementById('showDeadlinesBtn');
+        const onlyDeadlinesBtn = document.getElementById('onlyDeadlinesBtn');
+        const exportBtn = document.getElementById('exportIcsBtn');
+
+        const eventBackdrop = document.getElementById('eventBackdrop');
+        const eventDialog = document.getElementById('eventDialog');
+        const eventModalTitle = document.getElementById('eventModalTitle');
+        const eventModalDate = document.getElementById('eventModalDate');
+        const eventModalDeadline = document.getElementById('eventModalDeadline');
+        const eventModalLocation = document.getElementById('eventModalLocation');
+        const eventModalLink = document.getElementById('eventModalLink');
+        const eventModalDescription = document.getElementById('eventModalDescription');
+        const closeEventModalBtn = document.getElementById('closeEventModal');
+        const copyEventLinkBtn = document.getElementById('copyEventLink');
+        const eventToast = document.getElementById('eventToast');
+
+        const suggestEventBtn = document.getElementById('suggestEventBtn');
+        const suggestBackdrop = document.getElementById('suggestBackdrop');
+        const suggestDialog = document.getElementById('suggestDialog');
+        const suggestClose = document.getElementById('suggestClose');
+
+        const focusableSel = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+        let lastFocusEl = null;
+        let lastEventTrigger = null;
+        let activeEventId = null;
+        let showDeadlines = false;
+        let onlyDeadlines = false;
+
+        function normalizeValue(value) {
+            return (value || '').toString().trim().toLowerCase();
+        }
+
+        function getEventStartDate(ev) {
+            return ev?.startDate || ev?.start || '';
+        }
+
+        function getEventEndDate(ev) {
+            return ev?.endDate || ev?.end || '';
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return 'TBD';
+            const date = new Date(dateStr + 'T00:00:00');
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function formatDateWithTime(dateStr, timeStr) {
+            if (!dateStr) return 'TBD';
+            const date = new Date(`${dateStr}T${timeStr || '00:00'}:00`);
+            return date.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+        }
+
+        function formatDateRange(ev) {
+            const start = getEventStartDate(ev);
+            const end = getEventEndDate(ev);
+            if (!start) return 'Date TBD';
+            if (ev.startTime) {
+                const startStr = formatDateWithTime(start, ev.startTime);
+                if (ev.endTime) {
+                    return `${startStr} – ${formatDateWithTime(start, ev.endTime)}`;
+                }
+                return startStr;
+            }
+            if (end && end !== start) {
+                return `${formatDate(start)} – ${formatDate(end)}`;
+            }
+            return formatDate(start);
+        }
+
+        function buildDeadlineEntry(ev) {
+            if (!ev.deadlineDate) return null;
+            const baseId = ev.id || normalizeValue(ev.title || ev.name);
+            return {
+                ...ev,
+                id: `${baseId}__deadline`,
+                parentId: baseId,
+                title: `${ev.title || ev.name} — Deadline`,
+                startDate: ev.deadlineDate,
+                endDate: ev.deadlineDate,
+                type: 'deadline',
+                isDerivedDeadline: true,
+                color: '#e11d48',
+                url: ev.filmFreewayUrl || ev.url,
+                description: 'Submission deadline' + (ev.url ? `\n${ev.url}` : '')
+            };
+        }
+
+        function dedupeEvents(list) {
+            const seen = new Set();
+            return list.filter(ev => {
+                const id = ev && (ev.id || normalizeValue(ev.title || ev.name));
+                if (!id) return false;
+                if (seen.has(id)) return false;
+                seen.add(id);
+                return true;
+            });
+        }
+
+        function buildExpandedEvents(){
+            const base = Array.isArray(eventsData) ? [...eventsData] : [];
+            const derived = base.map(buildDeadlineEntry).filter(Boolean);
+            const baseDeadlines = base.filter(ev => normalizeValue(ev.type) === 'deadline');
+
+            if (onlyDeadlines) {
+                return dedupeEvents([...baseDeadlines, ...derived]);
+            }
+
+            if (showDeadlines) {
+                return dedupeEvents([...base, ...derived]);
+            }
+
+            return dedupeEvents(base.filter(ev => normalizeValue(ev.type) !== 'deadline'));
+        }
+
+        function getVisibleEvents() {
+            return buildExpandedEvents();
+        }
+
+        function getExportEvents() {
+            const base = Array.isArray(eventsData) ? [...eventsData] : [];
+            const derived = base.map(buildDeadlineEntry).filter(Boolean);
+            return dedupeEvents([...base, ...derived]);
+        }
+
+        function renderCalendar() {
+            const sorted = getVisibleEvents().sort((a, b) => new Date(getEventStartDate(a)) - new Date(getEventStartDate(b)));
+            calendarGrid.innerHTML = sorted.map(ev => {
+                const deadlineLabel = ev.deadlineDate ? `<span class="event-type">Deadline: ${formatDate(ev.deadlineDate)}</span>` : '';
+                return `
+                <article class="event-card" data-event-id="${ev.id}">
+                    <div class="event-date">${formatDateRange(ev)}</div>
+                    <h3 class="event-name">${ev.title || ev.name}</h3>
+                    <div class="event-meta">${ev.location || 'TBD'}</div>
+                    <span class="event-type">${ev.type || 'event'}</span>
+                    ${deadlineLabel}
+                </article>
+                `;
+            }).join('');
+        }
+
+        function renderList() {
+            const sorted = getVisibleEvents().sort((a, b) => new Date(getEventStartDate(a)) - new Date(getEventStartDate(b)));
+            listContainer.innerHTML = sorted.map(ev => `
+                <div class="list-row" data-event-id="${ev.id}">
+                    <h4>${ev.title || ev.name}</h4>
+                    <span>${formatDateRange(ev)}</span>
+                    <span>${ev.location || 'TBD'}</span>
+                    <span class="tag">${ev.type || 'event'}</span>
+                </div>
+            `).join('');
+        }
+
+        function setView(view) {
+            viewButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+            if (view === 'list') {
+                listSection.hidden = false;
+                calendarSection.hidden = true;
+            } else {
+                listSection.hidden = true;
+                calendarSection.hidden = false;
+            }
+        }
+
+        function updateDeadlineButtons() {
+            if (showDeadlinesBtn) showDeadlinesBtn.classList.toggle('active', showDeadlines && !onlyDeadlines);
+            if (onlyDeadlinesBtn) onlyDeadlinesBtn.classList.toggle('active', onlyDeadlines);
+        }
+
+        viewButtons.forEach(btn => btn.addEventListener('click', () => setView(btn.dataset.view)));
+
+        if (showDeadlinesBtn) {
+            showDeadlinesBtn.addEventListener('click', () => {
+                showDeadlines = !showDeadlines;
+                if (!showDeadlines && onlyDeadlines) onlyDeadlines = false;
+                updateDeadlineButtons();
+                renderCalendar();
+                renderList();
+            });
+        }
+
+        if (onlyDeadlinesBtn) {
+            onlyDeadlinesBtn.addEventListener('click', () => {
+                onlyDeadlines = !onlyDeadlines;
+                if (onlyDeadlines) showDeadlines = true;
+                updateDeadlineButtons();
+                renderCalendar();
+                renderList();
+            });
+        }
+
+        updateDeadlineButtons();
+
+        function showEventToast(message) {
+            if (!eventToast) return;
+            eventToast.textContent = message;
+            eventToast.classList.add('is-visible');
+            setTimeout(() => eventToast.classList.remove('is-visible'), 1400);
+        }
+
+        function openEventModal(eventData, triggerEl) {
+            if (!eventBackdrop || !eventDialog || !eventData) return;
+            lastEventTrigger = triggerEl || document.activeElement;
+            activeEventId = eventData.id || normalizeValue(eventData.title || eventData.name);
+            eventModalTitle.textContent = eventData.title || eventData.name || 'Event';
+            eventModalDate.textContent = formatDateRange(eventData);
+            const deadlineText = eventData.deadlineDate ? formatDate(eventData.deadlineDate) : '—';
+            eventModalDeadline.textContent = deadlineText;
+            eventModalLocation.textContent = eventData.location || 'TBD';
+
+            if (eventData.url) {
+                eventModalLink.innerHTML = `<a href="${eventData.url}" target="_blank" rel="noopener noreferrer">${eventData.url}</a>`;
+            } else {
+                eventModalLink.textContent = '—';
+            }
+
+            eventModalDescription.textContent = eventData.description || 'No description yet.';
+
+            eventBackdrop.classList.add('is-open');
+            eventBackdrop.setAttribute('aria-hidden', 'false');
+            eventDialog.focus();
+        }
+
+        function closeEventModal() {
+            if (!eventBackdrop) return;
+            eventBackdrop.classList.remove('is-open');
+            eventBackdrop.setAttribute('aria-hidden', 'true');
+            if (lastEventTrigger && lastEventTrigger.focus) lastEventTrigger.focus();
+        }
+
+        function openEventModalById(id) {
+            if (!id) return;
+            const evt = getExportEvents().find(ev => (ev.id || normalizeValue(ev.title || ev.name)) === id);
+            if (evt) {
+                openEventModal(evt);
+            }
+        }
+
+        function openEventFromQuery() {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('event');
+            if (id) {
+                setTimeout(() => openEventModalById(id), 50);
+            }
+        }
+
+        if (calendarGrid) {
+            calendarGrid.addEventListener('click', (e) => {
+                const card = e.target.closest('[data-event-id]');
+                if (!card) return;
+                const eventId = card.dataset.eventId;
+                const evt = getVisibleEvents().find(ev => ev.id === eventId);
+                if (evt) openEventModal(evt, card);
+            });
+        }
+
+        if (listContainer) {
+            listContainer.addEventListener('click', (e) => {
+                const row = e.target.closest('[data-event-id]');
+                if (!row) return;
+                const eventId = row.dataset.eventId;
+                const evt = getVisibleEvents().find(ev => ev.id === eventId);
+                if (evt) openEventModal(evt, row);
+            });
+        }
+
+        if (closeEventModalBtn) closeEventModalBtn.addEventListener('click', closeEventModal);
+        if (eventBackdrop) {
+            eventBackdrop.addEventListener('click', (e) => {
+                if (e.target === eventBackdrop) closeEventModal();
+            });
+        }
+
+        async function copyEventLink() {
+            if (!activeEventId) return;
+            const url = new URL(window.location.href);
+            url.searchParams.set('event', activeEventId);
+            try {
+                await navigator.clipboard.writeText(url.toString());
+                showEventToast('Event link copied');
+            } catch (err) {
+                showEventToast('Copy not available');
+            }
+        }
+
+        if (copyEventLinkBtn) copyEventLinkBtn.addEventListener('click', copyEventLink);
+
+        // ============================================
+        // Export iCalendar (.ics)
+        // ============================================
+        function pad2(n){ return String(n).padStart(2,'0'); }
+        function ymdToIcsDate(ymd){
+            const [y,m,d] = ymd.split('-');
+            return `${y}${m}${d}`;
+        }
+        function nextDay(ymd){
+            const dt = new Date(ymd + 'T00:00:00');
+            dt.setDate(dt.getDate() + 1);
+            return `${dt.getFullYear()}-${pad2(dt.getMonth()+1)}-${pad2(dt.getDate())}`;
+        }
+        function escapeIcs(s){
+            return String(s || '')
+                .replace(/\\/g,'\\\\')
+                .replace(/\n/g,'\\n')
+                .replace(/,/g,'\\,')
+                .replace(/;/g,'\\;');
+        }
+
+        function buildIcs() {
+            const tz = 'America/Detroit';
+            const now = new Date();
+            const stamp = `${now.getUTCFullYear()}${pad2(now.getUTCMonth()+1)}${pad2(now.getUTCDate())}T${pad2(now.getUTCHours())}${pad2(now.getUTCMinutes())}${pad2(now.getUTCSeconds())}Z`;
+
+            const lines = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//LaB Media//Events//EN',
+                'CALSCALE:GREGORIAN',
+                'METHOD:PUBLISH'
+            ];
+
+            getExportEvents().forEach(ev => {
+                const startDate = getEventStartDate(ev);
+                if (!ev || !startDate) return;
+                const uid = `${escapeIcs(ev.id || ev.title)}@labmedia.work`;
+
+                const title = ev.title || ev.name || 'Event';
+                const loc = [ev.venue, ev.location].filter(Boolean).join(' — ');
+                const url = ev.url || '';
+                const descParts = [];
+                if (ev.description) descParts.push(ev.description);
+                if (url) descParts.push(url);
+                const desc = descParts.join('\n');
+
+                lines.push('BEGIN:VEVENT');
+                lines.push(`UID:${uid}`);
+                lines.push(`DTSTAMP:${stamp}`);
+                lines.push(`SUMMARY:${escapeIcs(title)}`);
+                if (loc) lines.push(`LOCATION:${escapeIcs(loc)}`);
+                if (desc) lines.push(`DESCRIPTION:${escapeIcs(desc)}`);
+
+                if (ev.startTime) {
+                    const start = ymdToIcsDate(startDate) + 'T' + ev.startTime.replace(':','') + '00';
+                    lines.push(`DTSTART;TZID=${tz}:${start}`);
+
+                    if (ev.endTime) {
+                        const end = ymdToIcsDate(startDate) + 'T' + ev.endTime.replace(':','') + '00';
+                        lines.push(`DTEND;TZID=${tz}:${end}`);
+                    }
+                } else {
+                    const dtStart = ymdToIcsDate(startDate);
+                    const endBase = ev.endDate ? ev.endDate : startDate;
+                    const dtEnd = ymdToIcsDate(nextDay(endBase));
+                    lines.push(`DTSTART;VALUE=DATE:${dtStart}`);
+                    lines.push(`DTEND;VALUE=DATE:${dtEnd}`);
+                }
+
+                lines.push('END:VEVENT');
+            });
+
+            lines.push('END:VCALENDAR');
+            return lines.join('\r\n');
+        }
+
+        function downloadIcs(filename, text) {
+            const blob = new Blob([text], { type: 'text/calendar;charset=utf-8' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(a.href);
+            a.remove();
+        }
+
+        if (exportBtn) {
+            exportBtn.addEventListener('click', () => {
+                const ics = buildIcs();
+                downloadIcs('lab-media-events.ics', ics);
+            });
+        }
+
+        // ============================================
+        // SUGGEST EVENT MODAL (accessible, lightweight)
+        // ============================================
+        function openSuggestModal() {
+            if (!suggestBackdrop) return;
+            lastFocusEl = document.activeElement;
+            suggestBackdrop.classList.add('is-open');
+            suggestBackdrop.setAttribute('aria-hidden', 'false');
+            const first = suggestDialog.querySelector('input, select, textarea, button');
+            (first || suggestDialog).focus();
+        }
+
+        function closeSuggestModal() {
+            if (!suggestBackdrop) return;
+            suggestBackdrop.classList.remove('is-open');
+            suggestBackdrop.setAttribute('aria-hidden', 'true');
+            if (lastFocusEl && lastFocusEl.focus) lastFocusEl.focus();
+        }
+
+        function trapFocus(e) {
+            const isEventOpen = eventBackdrop && eventBackdrop.classList.contains('is-open');
+            const isSuggestOpen = suggestBackdrop && suggestBackdrop.classList.contains('is-open');
+            if (!isEventOpen && !isSuggestOpen) return;
+
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                if (isEventOpen) closeEventModal();
+                else closeSuggestModal();
+                return;
+            }
+
+            if (e.key !== 'Tab') return;
+            const dialog = isEventOpen ? eventDialog : suggestDialog;
+            const focusables = Array.from(dialog.querySelectorAll(focusableSel)).filter(el => el.offsetParent !== null);
+            if (!focusables.length) return;
+
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        }
+
+        if (suggestEventBtn) suggestEventBtn.addEventListener('click', openSuggestModal);
+        if (suggestClose) suggestClose.addEventListener('click', closeSuggestModal);
+        if (suggestBackdrop) {
+            suggestBackdrop.addEventListener('click', (e) => {
+                if (e.target === suggestBackdrop) closeSuggestModal();
+            });
+        }
+        document.addEventListener('keydown', trapFocus);
+
+        renderCalendar();
+        renderList();
+        setView('calendar');
+        updateDeadlineButtons();
+        openEventFromQuery();
+    </script>
+</body>
+</html>
