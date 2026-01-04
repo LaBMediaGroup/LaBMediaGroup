@@ -10,7 +10,6 @@ Ops & logging (mandatory)
 	•	Every PR/change must append to CHANGELOG_RUNNING.md (never delete or rewrite prior entries).
 	•	Keep the exact entry format:
 
-———————————————————————
 
 YYYY-MM-DD | h:mmAM/PM EST
 ———————————————————————
@@ -19,7 +18,6 @@ Files touched:
 Notes:
 Quick test checklist:
 
-———————————————————————
 
 “Files touched” must list actual edited filenames.
 	•	“Quick test checklist” must be manual checks (see Verification rules below).
