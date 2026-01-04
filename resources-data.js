@@ -571,6 +571,26 @@ const resources = [
         featuredVideo: 'zA6y9TXxoZg',
         features: ['FPV Freestyle', 'Creative Cinematography', 'Technical Flying', 'Bold Movement']
     },
+    {
+        name: 'BobtatsiC',
+        category: 'drone',
+        droneType: 'channel',
+        desc: 'FPV drone flights and channel updates from BobtatsiC.',
+        fullDesc: 'BobtatsiC shares FPV flight footage and channel updates with a focus on hands-on piloting. Useful reference for real-world freestyle runs and progress tracking.',
+        url: 'https://www.youtube.com/@BobtastiCFPV',
+        instagramUrl: 'https://www.instagram.com/bob.tastic/',
+        paid: false,
+        featuredVideo: 'k1uJmmoMX1I',
+        additionalLinks: [
+            {
+                label: 'Example Video',
+                url: 'https://www.youtube.com/watch?v=k1uJmmoMX1I',
+                type: 'video',
+                description: 'Sample FPV flight shared on the channel.'
+            }
+        ],
+        features: ['FPV Freestyle', 'YouTube Channel', 'Flight Footage', 'Hands-On Flying']
+    },
 
     // ============================================
     // REFERENCES (Short Films)
