@@ -4,85 +4,124 @@
 // ============================================
 
 const eventsData = [
+  // ============================================
+  // UPCOMING (Verified / Active listings)
+  // ============================================
+
   {
-    id: 'royal-starr-mixer-2026-01',
-    title: 'Royal Starr Filmmaker Community Mixer',
+    id: 'royal-starr-new-year-mixer-2026-01-13',
+    title: 'Royal Starr Filmmaker New Year Mixer',
     type: 'meetup',
     startDate: '2026-01-13',
-    startTime: '18:00',
-    endTime: '21:00',
-    location: 'Royal Oak, MI',
-    venue: 'Royal Starr Arts Institute',
+    // Facebook/event listings can change—verify before posting hard details
+    startTime: '19:00',
+    endTime: '22:00',
+    location: 'Metro Detroit, MI',
+    venue: 'TBD (check RSVP / listing)',
     url: 'https://www.royalstarr.org',
-    description: 'Monthly filmmaker community mixer (2nd Tuesday). Upcoming date derived from their recurring cadence — confirm ahead.'
+    description: 'Royal Starr New Year mixer (listed for Jan 13). Confirm exact venue/time via RSVP/listing before sharing widely.',
+    verification: 'partial (listing found; confirm final details)'
   },
   {
-    id: 'royal-starr-mixer-2026-02',
+    id: 'royal-starr-mixer-2026-02-10',
     title: 'Royal Starr Filmmaker Community Mixer',
     type: 'meetup',
     startDate: '2026-02-10',
-    startTime: '18:00',
-    endTime: '21:00',
-    location: 'Royal Oak, MI',
-    venue: 'Royal Starr Arts Institute',
+    location: 'Metro Detroit, MI',
+    venue: 'TBD (Royal Starr posts details monthly)',
     url: 'https://www.royalstarr.org',
-    description: 'Second-Tuesday mixer for Metro Detroit filmmakers. Date follows the posted monthly pattern — confirm ahead.'
+    description: 'Royal Starr indicates a 2nd-Tuesday mixer cadence (Jan–Oct). Confirm exact venue/time on the official RSVP/listing.',
+    verification: 'cadence (date derived; details TBD)'
   },
   {
-    id: 'royal-starr-mixer-2026-03',
+    id: 'royal-starr-mixer-2026-03-10',
     title: 'Royal Starr Filmmaker Community Mixer',
     type: 'meetup',
     startDate: '2026-03-10',
-    startTime: '18:00',
-    endTime: '21:00',
-    location: 'Royal Oak, MI',
-    venue: 'Royal Starr Arts Institute',
+    location: 'Metro Detroit, MI',
+    venue: 'TBD (Royal Starr posts details monthly)',
     url: 'https://www.royalstarr.org',
-    description: 'Royal Starr monthly mixer (calculated from their 2nd Tuesday schedule). Confirm ahead.'
+    description: 'Royal Starr indicates a 2nd-Tuesday mixer cadence (Jan–Oct). Confirm exact venue/time on the official RSVP/listing.',
+    verification: 'cadence (date derived; details TBD)'
   },
   {
-    id: 'campfire-animation-2026',
-    title: 'In Motion: Animation on Film',
+    id: 'campfire-in-motion-2026-01-15',
+    title: 'In Motion (Part 1 of 3): Animation on Film',
     type: 'workshop',
     startDate: '2026-01-15',
     startTime: '18:30',
-    location: 'Detroit, MI',
+    location: 'The Scarab Club, 217 Farnsworth St, Detroit, MI 48202',
     venue: 'The Scarab Club',
-    url: 'https://campfirefilmcoop.org/events',
-    description: 'Campfire Film Cooperative — Part 1 of 3. Hands-on look at animation on film (Scarab Club).'
+    url: 'https://campfirefilm.org/events',
+    description: 'Campfire Film Cooperative animation series kickoff: “In Motion: Animation on Film.”',
+    verification: 'verified'
+  },
+
+  // ============================================
+  // PAST EVENTS (Confirmed)
+  // ============================================
+
+  {
+    id: 'comedy-roll-kickoff-2025',
+    title: 'The Comedy Roll Kickoff 2025',
+    type: 'festival',
+    startDate: '2025-04-01',
+    startTime: '19:00',
+    endTime: '22:00',
+    location: 'Hazel Park, MI',
+    venue: 'Eastern Palace Club',
+    url: 'https://thecomedyroll.com',
+    description: 'Opening-night kickoff for The Comedy Roll: live pitches, lineup reveal, and signups for the 2025 run.',
+    verification: 'verified'
   },
   {
-    id: 'michigan-filmmakers-screening-2026',
-    title: 'Free Movie Screening at the State Theater',
+    id: 'comedy-roll-showcase-2025',
+    title: 'The Comedy Roll Showcase 2025',
     type: 'screening',
-    startDate: '2026-01-24',
-    startTime: '12:30',
-    location: 'Ann Arbor, MI',
-    venue: 'State Theater',
-    url: 'https://www.meetup.com/indie-filmmakers-ann-arbor',
-    description: 'Michigan Filmmakers & Indie Film Fans meetup — free community screening.'
+    startDate: '2025-05-20',
+    startTime: '19:00',
+    location: 'Royal Oak, MI',
+    venue: 'Emagine Royal Oak',
+    url: 'https://thecomedyroll.com',
+    description: 'Showcase screening for the 2025 Comedy Roll (per official site listing).',
+    verification: 'verified'
   },
   {
-    id: 'lab-monthly-meetup',
-    title: 'LaB Monthly Meetup',
-    type: 'meetup',
-    startDate: '2026-01-18',
-    startTime: '18:30',
-    endTime: '20:30',
-    location: 'Shelby Township, MI',
-    venue: 'Local coffee shop',
-    url: '',
-    description: 'Local LaB community meetup for collaborators and shooters.'
+    id: 'hfr-kickoff-2025',
+    title: 'Horror Film Roulette XII Kick-Off',
+    type: 'festival',
+    startDate: '2025-09-05',
+    startTime: '18:00',
+    endTime: '22:00',
+    location: 'The Scarab Club, 217 Farnsworth St, Detroit, MI 48202',
+    venue: 'The Scarab Club',
+    url: 'https://www.horrorfilmroulette.com',
+    description: 'Annual HFR competition kick-off (teams draw subgenres + begin the sprint).',
+    verification: 'verified'
   },
   {
-    id: 'oakland-workshop-2026',
-    title: 'Oakland County Production Workshop',
-    type: 'workshop',
-    startDate: '2026-03-10',
-    location: 'Troy, MI',
-    venue: 'Oakland County Studio',
-    url: '',
-    description: 'Hands-on production workflow lab in Oakland County.'
+    id: 'royal-starr-film-festival-2025',
+    title: 'Royal Starr Film Festival 2025',
+    type: 'festival',
+    startDate: '2025-09-11',
+    endDate: '2025-09-14',
+    location: 'Birmingham, MI',
+    venue: 'Emagine Birmingham 8',
+    url: 'https://filmfreeway.com/RoyalStarrFilmFestival',
+    description: 'Royal Starr Film Festival 2025 run.',
+    verification: 'verified'
+  },
+  {
+    id: 'hfr-showcase-2025',
+    title: 'Horror Film Roulette XII Showcase',
+    type: 'screening',
+    startDate: '2025-10-26',
+    startTime: '19:00',
+    location: 'Royal Oak, MI',
+    venue: 'Emagine Royal Oak',
+    url: 'https://www.horrorfilmroulette.com',
+    description: 'Big-screen showcase of the year’s HFR films.',
+    verification: 'verified'
   },
   {
     id: 'horror-film-roulette-2024',
@@ -92,7 +131,9 @@ const eventsData = [
     startTime: '18:00',
     endTime: '22:00',
     location: 'The Scarab Club, 217 Farnsworth St, Detroit, MI 48202',
+    venue: 'The Scarab Club',
     url: 'https://filmfreeway.com/HorrorFilmRoulette',
-    description: 'Horror Film Roulette is Michigan\'s unique annual horror filmmaking competition where creativity meets chance. Filmmakers spin our roulette wheel to discover their assigned theme and must create a 5-minute horror film in just 4 weeks. Compete for a $2,000 CASH grand prize and the thrill of seeing your film on the big screen!'
+    description: 'Horror Film Roulette: annual Michigan horror filmmaking competition (roulette theme draw + 4-week sprint).',
+    verification: 'verified'
   }
 ];
