@@ -84,50 +84,15 @@ const eventsData = [
     url: '',
     description: 'Hands-on production workflow lab in Oakland County.'
   },
-  // Past events (shown in the Past Events view)
   {
-    id: 'hfr-kickoff-2025',
+    id: 'horror-film-roulette-2024',
     title: 'Horror Film Roulette Kickoff',
     type: 'festival',
-    startDate: '2025-09-05',
+    startDate: '2024-09-05',
     startTime: '18:00',
     endTime: '22:00',
-    location: 'Detroit, MI',
-    venue: 'The Scarab Club',
-    url: 'https://www.horrorfilmroulette.com',
-    description: 'Annual HFR competition start. Teams spin for subgenres and begin the 4-week sprint.'
-  },
-  {
-    id: 'hfr-showcase-2025',
-    title: 'Horror Film Roulette Showcase',
-    type: 'screening',
-    startDate: '2025-10-26',
-    location: 'Royal Oak, MI',
-    venue: 'Emagine Royal Oak',
-    url: 'https://www.horrorfilmroulette.com',
-    description: 'Big-screen showcase of the year’s HFR competition films.'
-  },
-  {
-    id: 'royal-starr-festival-2025',
-    title: 'Royal Starr Film Festival',
-    type: 'festival',
-    startDate: '2025-09-11',
-    endDate: '2025-09-14',
-    location: 'Royal Oak, MI',
-    venue: 'Emagine Royal Oak',
-    url: 'https://filmfreeway.com/RoyalStarrFilmFestival',
-    description: '2025 Royal Starr Film Festival run (past).'
-  },
-  {
-    id: 'comedy-roll-kickoff-2025',
-    title: 'The Comedy Roll Kickoff 2025',
-    type: 'festival',
-    startDate: '2025-04-01',
-    startTime: '19:00',
-    endTime: '22:00',
-    location: 'Hazel Park, MI',
-    venue: 'Eastern Palace Club',
-    url: 'https://thecomedyroll.com',
-    description: 'Opening-night kickoff for The Comedy Roll: live pitches, performer lineup reveal, and on-site signups for the 2025 run.'
+    location: 'The Scarab Club, 217 Farnsworth St, Detroit, MI 48202',
+    url: 'https://filmfreeway.com/HorrorFilmRoulette',
+    description: 'Horror Film Roulette is Michigan\'s unique annual horror filmmaking competition where creativity meets chance. Filmmakers spin our roulette wheel to discover their assigned theme and must create a 5-minute horror film in just 4 weeks. Compete for a $2,000 CASH grand prize and the thrill of seeing your film on the big screen!'
   }
 ];
