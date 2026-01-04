@@ -11,12 +11,14 @@ Ops & logging (mandatory)
 	•	Keep the exact entry format:
 
 ———————————————————————
+
 YYYY-MM-DD | h:mmAM/PM EST
 ———————————————————————
 Change:
 Files touched:
 Notes:
 Quick test checklist:
+
 ———————————————————————
 
 “Files touched” must list actual edited filenames.
