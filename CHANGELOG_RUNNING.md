@@ -2,6 +2,28 @@
 
 Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
+2026-01-04 | 2:47PM EST
+———————————————————————
+Change: Normalize References subfilter handling (including Comedy) and show drone subtype filters on the top-level Drones tab; add debug counters for References renders.
+Files touched: resources.html
+Notes: References now defaults to All even if stale/legacy values are present; drone subfilter row appears for Drones and Tools→Drone views.
+Quick test checklist:
+- Hard refresh Resources, open References, confirm cards render
+- Switch each References subfilter (including Comedy and All) to verify updates
+- Open Drones tab and test Part 107 / Channels / Stores / All filters
+- Check console for debug counts and absence of JS errors
+
+2026-01-04 | 2:26PM EST
+———————————————————————
+Change: Fixed References filtering defaults so reference items render (including Comedy) even when subfilter state is stale; kept canonical category key `references`.
+Files touched: resources.html
+Notes: Ensures refs show when All is selected; comedy remains available.
+Quick test checklist:
+- Open References tab and verify items render without manual filters
+- Toggle each References subfilter including Comedy → results adjust
+- Ensure other categories (Film Festivals, Tools, Drones) still populate
+- Check console for errors when switching between categories
+
 ## 2026-01-04
 - Change: Resources grid now uses event delegation + chunked rendering for smoother filtering and less DOM churn. Added Saved (favorites) system using localStorage and a modal save toggle.
 - Files touched: resources.html
