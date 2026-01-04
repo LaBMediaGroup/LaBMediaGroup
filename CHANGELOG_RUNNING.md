@@ -2,6 +2,25 @@
 
 Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
+2026-01-04 | 3:40PM EST
+———————————————————————
+Change: Fixed critical JS errors preventing Resources/Events pages from loading; removed duplicate HTML IDs; normalized References taxonomy (inspiration → references); added Drone subfilter event handlers.
+Files touched: resources.html, resources-data.js, events.html
+Notes:
+- Fixed ReferenceError: isDrones undefined in resources.html:2779
+- Fixed SyntaxError: duplicate eventModalClose declaration in events.html:1704
+- Changed all category:'inspiration' to category:'references' and inspirationType to refType in resources-data.js
+- Removed 4 duplicate droneTypeBar and 5 duplicate referencesGroupBar HTML blocks
+- Added missing event listeners for droneTypeButtons and aiTypeButtons
+- Normalized referencesSubcategory initial value from 'all-ref' to 'all' to match button data-attribute
+Quick test checklist:
+- Resources page: hard refresh, no console errors
+- Click each category (Friends/Community/Stock/Tools/Drones/References) → tiles render correctly
+- References tab: subfilters show (Inspiration/Art/Editing/Filming/Music/References/Comedy/All) and filter results
+- Drones tab: subfilters show (Part 107/Channels/Stores/All) and filter results
+- Events page: hard refresh, calendar loads, no console errors
+- Events: click event opens modal, close button works
+
 2026-01-04 | 2:26PM EST
 ———————————————————————
 Change: Fixed References filtering defaults so reference items render (including Comedy) even when subfilter state is stale; kept canonical category key `references`.
