@@ -5,53 +5,82 @@
 
 const eventsData = [
   {
-    id: 'lab-meetup-shelby-1',
+    id: 'royal-starr-mixer-2026-01',
+    title: 'Royal Starr Filmmaker Community Mixer',
+    type: 'meetup',
+    startDate: '2026-01-13',
+    startTime: '18:00',
+    endTime: '21:00',
+    location: 'Royal Oak, MI',
+    venue: 'Royal Starr Arts Institute',
+    url: 'https://www.royalstarr.org',
+    description: 'Monthly filmmaker community mixer (2nd Tuesday). Upcoming date derived from their recurring cadence — confirm ahead.'
+  },
+  {
+    id: 'royal-starr-mixer-2026-02',
+    title: 'Royal Starr Filmmaker Community Mixer',
+    type: 'meetup',
+    startDate: '2026-02-10',
+    startTime: '18:00',
+    endTime: '21:00',
+    location: 'Royal Oak, MI',
+    venue: 'Royal Starr Arts Institute',
+    url: 'https://www.royalstarr.org',
+    description: 'Second-Tuesday mixer for Metro Detroit filmmakers. Date follows the posted monthly pattern — confirm ahead.'
+  },
+  {
+    id: 'royal-starr-mixer-2026-03',
+    title: 'Royal Starr Filmmaker Community Mixer',
+    type: 'meetup',
+    startDate: '2026-03-10',
+    startTime: '18:00',
+    endTime: '21:00',
+    location: 'Royal Oak, MI',
+    venue: 'Royal Starr Arts Institute',
+    url: 'https://www.royalstarr.org',
+    description: 'Royal Starr monthly mixer (calculated from their 2nd Tuesday schedule). Confirm ahead.'
+  },
+  {
+    id: 'campfire-animation-2026',
+    title: 'In Motion: Animation on Film',
+    type: 'workshop',
+    startDate: '2026-01-15',
+    startTime: '18:30',
+    location: 'Detroit, MI',
+    venue: 'The Scarab Club',
+    url: 'https://campfirefilmcoop.org/events',
+    description: 'Campfire Film Cooperative — Part 1 of 3. Hands-on look at animation on film (Scarab Club).'
+  },
+  {
+    id: 'michigan-filmmakers-screening-2026',
+    title: 'Free Movie Screening at the State Theater',
+    type: 'screening',
+    startDate: '2026-01-24',
+    startTime: '12:30',
+    location: 'Ann Arbor, MI',
+    venue: 'State Theater',
+    url: 'https://www.meetup.com/indie-filmmakers-ann-arbor',
+    description: 'Michigan Filmmakers & Indie Film Fans meetup — free community screening.'
+  },
+  {
+    id: 'lab-monthly-meetup',
     title: 'LaB Monthly Meetup',
     type: 'meetup',
     startDate: '2026-01-18',
     startTime: '18:30',
     endTime: '20:30',
     location: 'Shelby Township, MI',
+    venue: 'Local coffee shop',
     url: '',
     description: 'Local LaB community meetup for collaborators and shooters.'
   },
   {
-    id: 'royal-starr-deadline',
-    title: 'Royal Starr Film Festival — Deadline',
-    type: 'deadline',
-    startDate: '2026-02-01',
-    location: 'Royal Oak, MI',
-    url: 'https://filmfreeway.com/RoyalStarrFilmFestival',
-    description: 'Submission deadline for Michigan\'s premiere film festival.'
-  },
-  {
-    id: 'detroit-doc-days',
-    title: 'Detroit Doc Days',
-    type: 'festival',
-    startDate: '2026-02-20',
-    endDate: '2026-02-23',
-    deadlineDate: '2026-01-25',
-    location: 'Detroit, MI',
-    url: '',
-    description: 'Regional documentary screenings and panels.'
-  },
-  {
-    id: 'ferndale-mixer',
-    title: 'Ferndale Filmmaker Mixer',
-    type: 'meetup',
-    startDate: '2026-01-30',
-    startTime: '19:00',
-    endTime: '21:00',
-    location: 'Ferndale, MI',
-    url: '',
-    description: 'Casual mixer for Metro Detroit filmmakers.'
-  },
-  {
-    id: 'oakland-workshop',
+    id: 'oakland-workshop-2026',
     title: 'Oakland County Production Workshop',
     type: 'workshop',
     startDate: '2026-03-10',
     location: 'Troy, MI',
+    venue: 'Oakland County Studio',
     url: '',
     description: 'Hands-on production workflow lab in Oakland County.'
   },
