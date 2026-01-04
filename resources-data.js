@@ -278,11 +278,12 @@ const resources = [
     },
 
     // ============================================
-    // INSPIRATION
+    // REFERENCES
     // ============================================
     {
         name: 'Hillier Smith',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'editing',
         desc: 'High-level breakdowns on editing momentum for YouTube storytelling.',
         fullDesc: 'Film editor Hillier Smith dissects pacing, structure, and storytelling choices for creator-led projects—practical, advanced insight for cutting modern YouTube narratives.',
         url: 'https://www.youtube.com/@HillierSmith',
@@ -293,7 +294,8 @@ const resources = [
     },
     {
         name: 'Gawx Art',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'art',
         desc: 'Experimental digital artist blending illustration, animation, and texture.',
         fullDesc: 'Expressive digital illustration through animation, texture, and surreal motion—great reference for stylized visual language.',
         url: 'https://www.youtube.com/@GawxArt',
@@ -304,7 +306,8 @@ const resources = [
     },
     {
         name: 'Dodford',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'filming',
         desc: 'Visual storytelling experiments with a creator-first, process-forward approach.',
         fullDesc: 'A channel built around creative experimentation—useful for seeing how simple ideas evolve into polished visual narratives.',
         url: 'https://www.youtube.com/@DodfordYT',
@@ -315,7 +318,8 @@ const resources = [
     },
     {
         name: 'Chuck Lee MBM',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'editing',
         desc: 'Creative filmmaking and craft-focused storytelling references.',
         fullDesc: 'Practical creative inspiration centered on making, refining, and finishing work—good fuel for momentum.',
         url: 'https://www.youtube.com/@ChuckLeeMBM',
@@ -325,7 +329,8 @@ const resources = [
     },
     {
         name: 'Joris Hermans',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'filming',
         desc: 'Design-forward filmmaking and visual craft inspiration.',
         fullDesc: 'A clean, intentional approach to visuals—useful reference for composition, pacing, and taste.',
         url: 'https://www.youtube.com/@JorisHermans',
@@ -336,6 +341,7 @@ const resources = [
     {
         name: 'ALTER',
         category: 'references',
+        refType: 'filming',
         desc: 'Award-winning short horror films and genre storytelling.',
         fullDesc: 'Curated horror shorts from filmmakers around the world—a consistent reference for pacing, atmosphere, and short-form genre execution. Useful for studying structure, tension building, and visual storytelling in tight formats.',
         url: 'https://www.youtube.com/WatchALTER',
@@ -346,7 +352,8 @@ const resources = [
     },
     {
         name: 'paul_et',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'art',
         desc: 'Design, motion, and digital craft inspiration with a modern aesthetic.',
         fullDesc: 'A modern visual sensibility—useful reference for minimal, clean design decisions and motion-forward thinking.',
         url: 'https://www.youtube.com/@paul_et',
@@ -356,7 +363,8 @@ const resources = [
     },
     {
         name: 'Sean Kitching',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'inspiration',
         desc: 'Creator workflow and filmmaking momentum inspiration.',
         fullDesc: 'A reference point for staying consistent—workflow, output, and pushing projects over the finish line.',
         url: 'https://www.youtube.com/@seankitching',
@@ -366,7 +374,8 @@ const resources = [
     },
     {
         name: 'Casey Neistat',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'inspiration',
         desc: 'High-energy personal filmmaking and creative momentum.',
         fullDesc: 'A reference for rhythm, structure, and creative confidence—motion-first storytelling with editorial instinct.',
         url: 'https://www.youtube.com/@casey',
@@ -376,7 +385,8 @@ const resources = [
     },
     {
         name: 'Lofi Girl',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'music',
         desc: 'Iconic lo-fi music channel with strong visual identity.',
         fullDesc: 'A reference point for branding, tone, and ambient storytelling through consistent visual language.',
         url: 'https://www.youtube.com/@LofiGirl',
@@ -386,7 +396,8 @@ const resources = [
     },
     {
         name: 'Viva La Dirt League',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'filming',
         desc: 'Narrative comedy sketches rooted in gaming and pop culture.',
         fullDesc: 'High-output narrative comedy with strong character consistency and efficient production workflows.',
         url: 'https://www.youtube.com/@VivaLaDirtLeague',
@@ -598,6 +609,7 @@ const resources = [
     {
         name: 'Crypt TV',
         category: 'references',
+        refType: 'filming',
         desc: 'Short horror films and monster-driven genre content.',
         fullDesc: 'Crypt TV produces short horror films and episodic monster content with recurring creatures and interconnected lore. Their work focuses on practical creature effects, atmospheric horror, and building tension in short formats—useful reference for genre filmmaking and franchise-building storytelling.',
         url: 'https://www.youtube.com/@Crypttv/videos',
@@ -607,7 +619,8 @@ const resources = [
     },
     {
         name: 'PandaHouse',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'music',
         desc: 'Detroit-based music project blending indie, alternative, and expressive songwriting.',
         fullDesc: 'Mood-driven songwriting with an atmospheric edge—useful inspiration for music-led visual tone and emotional pacing. Features Anthony Brass (collaborator) on drums alongside emotive indie arrangements.',
         url: 'https://www.pandahousedetroit.com',
@@ -620,7 +633,8 @@ const resources = [
     },
     {
         name: 'TenHundred',
-        category: 'inspiration',
+        category: 'references',
+        refType: 'art',
         desc: 'Multidisciplinary artist working across painting, murals, illustration, and YouTube.',
         fullDesc: 'TenHundred is a creative based in Southwest Michigan whose work spans painting, murals, illustration, and design. Their YouTube channel documents the creative process, offering insights into making work with momentum and intention—useful inspiration for project-driven creativity.',
         url: 'https://tenhundredart.com',
@@ -633,6 +647,7 @@ const resources = [
     {
         name: 'Omeleto',
         category: 'references',
+        refType: 'filming',
         desc: 'Award-winning short films across all genres—drama, comedy, sci-fi, thriller.',
         fullDesc: 'Omeleto curates and showcases the best short films from festivals and independent filmmakers worldwide. Their catalog spans every genre with consistently high production values and compelling storytelling—essential reference for studying narrative structure, pacing, and cinematic craft in 5-20 minute formats.',
         url: 'https://www.youtube.com/@Omeleto',
@@ -644,6 +659,7 @@ const resources = [
     {
         name: 'Short of the Week',
         category: 'references',
+        refType: 'filming',
         desc: 'Curated short film platform highlighting the best in independent short cinema.',
         fullDesc: 'Short of the Week is a tastemaker platform that hand-picks exceptional short films across narrative, documentary, animation, and experimental formats. Each film is thoughtfully curated and includes editorial insights—ideal for discovering cutting-edge storytelling and unique visual approaches.',
         url: 'https://www.shortoftheweek.com',
@@ -656,6 +672,7 @@ const resources = [
     {
         name: 'Film Shortage',
         category: 'references',
+        refType: 'art',
         desc: 'International short films with a focus on narrative and experimental cinema.',
         fullDesc: 'Film Shortage showcases boundary-pushing short films from around the world, often highlighting experimental techniques and bold narrative choices. Their selection leans artistic and unconventional—great for studying non-traditional storytelling and visual risk-taking.',
         url: 'https://www.youtube.com/@FilmShortage',
