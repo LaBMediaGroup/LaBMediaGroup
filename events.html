@@ -443,51 +443,6 @@
             margin-bottom: 1rem;
         }
 
-        .event-bio {
-            border: 1px solid rgba(255,255,255,0.14);
-            background: rgba(255,255,255,0.02);
-            padding: 1rem;
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .event-bio-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.75rem;
-        }
-
-        .event-bio-summary {
-            margin: 0;
-            color: var(--gray-300);
-        }
-
-        .event-bio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 0.75rem;
-        }
-
-        .event-bio-block {
-            border: 1px solid rgba(255,255,255,0.08);
-            padding: 0.65rem 0.75rem;
-            background: rgba(255,255,255,0.01);
-        }
-
-        .event-bio-label {
-            font-family: 'Space Mono', monospace;
-            color: var(--gray-400);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .event-bio-value {
-            color: var(--white);
-            margin-top: 0.35rem;
-        }
-
         .cta-row {
             display: flex;
             flex-wrap: wrap;
@@ -533,7 +488,8 @@
             background: rgba(255,255,255,0.02);
             padding: 1rem;
             display: grid;
-            gap: 0.85rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
             cursor: pointer;
             transition: border-color 0.2s ease, transform 0.15s ease;
         }
@@ -545,36 +501,13 @@
             color: var(--white);
         }
 
-        .past-card-top {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 0.75rem;
-        }
-
-        .past-meta-grid {
-            display: grid;
-            gap: 0.35rem;
-        }
-
-        .past-meta-label {
-            font-family: 'Space Mono', monospace;
-            color: var(--gray-400);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
         .past-card .meta {
             color: var(--gray-400);
             font-size: 0.95rem;
         }
 
-        .past-link {
-            color: var(--lab-orange);
-            text-decoration: underline;
-        }
-
         .past-note {
+            grid-column: 1 / -1;
             color: var(--gray-400);
         }
 
@@ -583,7 +516,7 @@
         @media (max-width: 900px) {
             .event-modal { max-height: 90vh; }
             .event-modal-header { flex-direction: column; align-items: flex-start; }
-            .past-card-top { grid-template-columns: 1fr; }
+            .past-card { grid-template-columns: 1fr; }
         }
 
         /* Suggest modal */
@@ -998,23 +931,13 @@
             const pastEvents = eventsData.filter(isEventPast).sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
             pastContainer.innerHTML = pastEvents.map(ev => `
                 <div class="past-card" data-id="${ev.id}">
-                    <div class="past-card-top">
-                        <div>
-                            <div class="proto-text-mono past-meta-label">Past Event</div>
-                            <h4>${ev.title}</h4>
-                            <div class="tag">${typeLabels[ev.type] || ev.type}</div>
-                        </div>
-                        <div class="meta past-meta-grid">
-                            <div>
-                                <div class="past-meta-label">When</div>
-                                <div>${formatDateRange(ev)}${ev.startTime ? ' · ' + formatTimeRange(ev) : ''}</div>
-                            </div>
-                            <div>
-                                <div class="past-meta-label">Where</div>
-                                <div>${ev.location || 'TBD'}${ev.venue ? ' — ' + ev.venue : ''}</div>
-                            </div>
-                            ${ev.url ? `<div><div class="past-meta-label">Link</div><a class="past-link" href="${ev.url}" target="_blank" rel="noreferrer">Event site</a></div>` : ''}
-                        </div>
+                    <div>
+                        <h4>${ev.title}</h4>
+                        <div class="tag">${typeLabels[ev.type] || ev.type}</div>
+                    </div>
+                    <div class="meta">
+                        <div>${formatDateRange(ev)}${ev.startTime ? ' · ' + formatTimeRange(ev) : ''}</div>
+                        <div>${ev.location || 'TBD'}${ev.venue ? ' — ' + ev.venue : ''}</div>
                     </div>
                     <div class="past-note">${ev.description || ''}</div>
                 </div>
@@ -1086,43 +1009,7 @@
                 </div>
             `).join('');
 
-            const bioDetails = [
-                {
-                    label: 'When',
-                    value: `${formatDateRange(event)}${formatTimeRange(event) ? ' · ' + formatTimeRange(event) : ''}`
-                },
-                {
-                    label: 'Where',
-                    value: `${event.location || 'Michigan'}${event.venue ? ' — ' + event.venue : ''}`
-                },
-                {
-                    label: 'Category',
-                    value: typeLabels[event.type] || 'Event'
-                },
-                {
-                    label: 'Link',
-                    value: event.url ? `<a class="past-link" href="${event.url}" target="_blank" rel="noreferrer">Event site</a>` : 'Add link coming soon'
-                }
-            ];
-
-            const isPast = isEventPast(event);
-            eventDescription.innerHTML = `
-                <div class="event-bio">
-                    <div class="event-bio-head">
-                        <div class="proto-text-mono" style="opacity:0.7;">Event Preview</div>
-                        ${isPast ? '<span class="status-chip">Past</span>' : ''}
-                    </div>
-                    <p class="event-bio-summary">${event.description || 'Details coming soon.'}</p>
-                    <div class="event-bio-grid">
-                        ${bioDetails.map(detail => `
-                            <div class="event-bio-block">
-                                <div class="event-bio-label">${detail.label}</div>
-                                <div class="event-bio-value">${detail.value}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
+            eventDescription.textContent = event.description || '';
 
             const ctas = [];
             if (event.url) {
