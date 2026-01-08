@@ -132,3 +132,12 @@ Quick test checklist:
 - Load events page in list view: unverified Royal Starr mixers show orange badge beside type label; verified events display normally.
 - Open the Royal Starr mixer modal: badge appears near the type/status chips and links to the event site; Film Fest label shows for festival types.
 - Confirm no console errors on page load after hard refresh.
+2026-01-08 | 2:35PM EST
+———————————————————————
+Change: Replace Short Film Block Party listing with Fresh Coast Film Festival on Resources.
+Files touched: resources-data.js
+Notes: Added Fresh Coast Film Festival details with website and Instagram.
+Quick test checklist:
+- Hard refresh Resources page; confirm Fresh Coast Film Festival appears in Film Festivals list
+- Open Fresh Coast Film Festival detail view; verify website/Instagram links display
+- Console free of errors on Resources page

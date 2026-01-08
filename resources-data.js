@@ -268,13 +268,17 @@ const resources = [
         features: ['Community Screenings', 'Q&A Sessions', 'Metro Detroit', 'FilmFreeway Submissions']
     },
     {
-        name: 'Short Film Block Party',
+        name: 'Fresh Coast Film Festival',
         category: 'film-festivals',
-        desc: 'Dedicated shorts showcase built around filmmaker-friendly blocks.',
-        fullDesc: 'Short Film Block Party curates themed blocks of short films with an emphasis on discoverability and audience engagement. Filmmakers get networking time between screenings plus a straightforward FilmFreeway submission path.',
-        filmFreewayUrl: 'https://filmfreeway.com/ShortFilmBlockParty',
+        desc: 'Traverse City film festival spotlighting fresh voices and regional storytelling.',
+        fullDesc: 'Fresh Coast Film Festival in Traverse City highlights emerging and established filmmakers with a focus on community-driven screenings, filmmaker meetups, and a welcoming festival experience for audiences and creators.',
+        url: 'https://freshcoastfilmtraversecity.ludus.com/',
+        instagramUrl: 'https://www.instagram.com/freshcoastfilm',
         paid: true,
-        features: ['Short Films Only', 'Themed Blocks', 'Networking Time', 'FilmFreeway Submissions']
+        keyInfo: [
+            { label: 'Location', value: 'Traverse City, MI' }
+        ],
+        features: ['Regional Festival', 'Community Screenings', 'Filmmaker Meetups', 'Fresh Voices']
     },
 
     // ============================================
