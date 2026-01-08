@@ -56,6 +56,18 @@ const eventsData = [
     description: 'Campfire Film Cooperative animation series kickoff: “In Motion: Animation on Film.”',
     verification: 'verified'
   },
+  {
+    id: 'fresh-coast-film-festival-2025',
+    title: 'Fresh Coast Film Festival',
+    type: 'festival',
+    startDate: '2025-10-09',
+    endDate: '2025-10-12',
+    location: 'Traverse City, MI',
+    venue: 'Traverse City venues (see official schedule)',
+    url: 'https://freshcoastfilmtraversecity.ludus.com/',
+    description: 'Traverse City festival focused on fresh voices, screenings, and community events. Confirm final schedule/times via official listings.',
+    verification: 'partial (dates to confirm)'
+  },
 
   // ============================================
   // PAST EVENTS (Confirmed)

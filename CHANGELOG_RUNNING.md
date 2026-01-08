@@ -141,3 +141,12 @@ Quick test checklist:
 - Hard refresh Resources page; confirm Fresh Coast Film Festival appears in Film Festivals list
 - Open Fresh Coast Film Festival detail view; verify website/Instagram links display
 - Console free of errors on Resources page
+2026-01-08 | 2:53PM EST
+———————————————————————
+Change: Move Fiverr, Mandy, and ProductionHub into Tools and add Fresh Coast Film Festival to events data.
+Files touched: resources-data.js, events-data.js, CHANGELOG_RUNNING.md
+Notes: Reclassified hiring marketplaces under software/tools and logged Fresh Coast Film Festival with dates pending verification.
+Quick test checklist:
+- Hard refresh Resources page; filter Tools → All Tools and confirm Fiverr, Mandy, ProductionHub appear (not under Community)
+- Load Events page; find Fresh Coast Film Festival entry and open modal to confirm date range + Traverse City location display
+- Console free of errors on Resources and Events pages
