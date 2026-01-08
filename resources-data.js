@@ -199,6 +199,56 @@ const resources = [
         features: ['Ann Arbor', 'Curated Selection', 'Indie Focus', 'University Town']
     },
     {
+        name: 'Ann Arbor Film Festival (AAFF)',
+        category: 'film-festivals',
+        desc: 'Oldest experimental film festival in North America celebrating independent and avant-garde cinema.',
+        fullDesc: 'Ann Arbor Film Festival is a globally recognized festival for experimental, documentary, narrative, animation, and hybrid films. Founded in 1963, it is Academy Award®–qualifying for short films and features international submissions alongside a traveling Best of AAFF program.',
+        url: 'https://www.aafilmfest.org/',
+        filmFreewayUrl: 'https://filmfreeway.com/AAFilmFest',
+        paid: true,
+        keyInfo: [
+            { label: 'Location', value: 'Ann Arbor, MI' },
+            { label: 'Timing', value: 'Late March (annual)' }
+        ],
+        features: ['Experimental Focus', 'Academy Award Qualifying', 'International Submissions', 'Best of AAFF Tour']
+    },
+    {
+        name: 'Capital City Film Festival (CCFF)',
+        category: 'film-festivals',
+        desc: '10-day Lansing festival with screenings, mixers, and filmmaker Q&As.',
+        fullDesc: 'Capital City Film Festival in Lansing showcases a diverse mix of narrative, documentary, and experimental films alongside live events, mixers, and filmmaker Q&As. It supports both local and international artists.',
+        filmFreewayUrl: 'https://filmfreeway.com/CapitalCityFilmFestival',
+        paid: true,
+        keyInfo: [
+            { label: 'Location', value: 'Lansing, MI' },
+            { label: 'Timing', value: 'April (annual)' }
+        ],
+        features: ['Lansing', 'Live Events', 'Filmmaker Q&As', 'International & Local Mix']
+    },
+    {
+        name: 'Dancing Stars Uplifting Film Fest',
+        category: 'film-festivals',
+        desc: 'Emerging film festival focused on uplifting stories and visibility.',
+        fullDesc: 'Dancing Stars Uplifting Film Fest is a growing festival highlighted through FilmFreeway, offering visibility for uplifting and positive storytelling across short and feature formats.',
+        filmFreewayUrl: 'https://filmfreeway.com/DancingstarsUpliftingFilmFest',
+        paid: true,
+        features: ['Emerging Festival', 'Uplifting Stories', 'FilmFreeway Submissions']
+    },
+    {
+        name: 'Hell’s Half Mile Film & Music Festival',
+        category: 'film-festivals',
+        desc: 'Bay City indie film and music festival with screenings, panels, and live music.',
+        fullDesc: 'Hell’s Half Mile is a four-day independent film and music festival in downtown Bay City featuring features, shorts, live music, panels, and community networking events. Founded in 2006, it blends indie cinema with indie music culture.',
+        url: 'https://hhmfest.com/',
+        filmFreewayUrl: 'https://filmfreeway.com/HellsHalfMileFilmMusicFestival',
+        paid: true,
+        keyInfo: [
+            { label: 'Location', value: 'Bay City, MI' },
+            { label: 'Timing', value: 'Late September (annual)' }
+        ],
+        features: ['Film + Music', 'Panels & Networking', 'Downtown Bay City', 'Indie Focus']
+    },
+    {
         name: 'Horror Film Roulette',
         category: 'film-festivals',
         desc: 'Horror short film competition. Trail Dead won Best Editing 2025.',
@@ -270,15 +320,16 @@ const resources = [
     {
         name: 'Fresh Coast Film Festival',
         category: 'film-festivals',
-        desc: 'Traverse City film festival spotlighting fresh voices and regional storytelling.',
-        fullDesc: 'Fresh Coast Film Festival in Traverse City highlights emerging and established filmmakers with a focus on community-driven screenings, filmmaker meetups, and a welcoming festival experience for audiences and creators.',
-        url: 'https://freshcoastfilmtraversecity.ludus.com/',
+        desc: 'Marquette documentary festival celebrating outdoor lifestyle and Great Lakes stories.',
+        fullDesc: 'Fresh Coast Film Festival in Marquette showcases documentary films centered on outdoor lifestyles, Great Lakes storytelling, and environmental and cultural themes. The October festival pairs screenings with outdoor activities and community events.',
+        url: 'https://freshcoastfilm.com/',
         instagramUrl: 'https://www.instagram.com/freshcoastfilm',
         paid: true,
         keyInfo: [
-            { label: 'Location', value: 'Traverse City, MI' }
+            { label: 'Location', value: 'Marquette, MI' },
+            { label: 'Timing', value: 'October (third weekend)' }
         ],
-        features: ['Regional Festival', 'Community Screenings', 'Filmmaker Meetups', 'Fresh Voices']
+        features: ['Documentary Focus', 'Outdoor Lifestyle', 'Great Lakes Stories', 'Community Screenings']
     },
 
     // ============================================

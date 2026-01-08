@@ -150,3 +150,13 @@ Quick test checklist:
 - Hard refresh Resources page; filter Tools → All Tools and confirm Fiverr, Mandy, ProductionHub appear (not under Community)
 - Load Events page; find Fresh Coast Film Festival entry and open modal to confirm date range + Traverse City location display
 - Console free of errors on Resources and Events pages
+2026-01-08 | 11:33AM EST
+———————————————————————
+Change: Add Ann Arbor Film Festival, Capital City Film Festival, Dancing Stars Uplifting Film Fest, and Hell’s Half Mile entries; update Fresh Coast Film Festival details for Marquette.
+Files touched: resources-data.js, CHANGELOG_RUNNING.md
+Notes: Added new festival listings with key timing/location info and refreshed Fresh Coast description.
+Quick test checklist:
+- Hard refresh Resources page; filter Film Festivals and confirm the new festival cards appear
+- Open each new festival detail view; verify website and FilmFreeway links where provided
+- Open Fresh Coast Film Festival detail view; confirm Marquette location and October timing
+- Console free of errors on Resources page
