@@ -1498,7 +1498,7 @@ const resources = [
     },
     {
         name: 'Fiverr',
-        category: 'community',
+        category: 'software',
         desc: 'Freelance marketplace for creative services.',
         fullDesc: 'Find freelancers for specific tasks: logo animation, subtitles, voice-over, etc. Variable quality - vet carefully. Useful for specialized one-off needs.',
         url: 'https://www.fiverr.com',
@@ -1507,7 +1507,7 @@ const resources = [
     },
     {
         name: 'Mandy',
-        category: 'community',
+        category: 'software',
         desc: 'Crew and talent hiring platform for production.',
         fullDesc: 'Find crew, actors, and production professionals. Job postings and crew profiles. UK-focused but growing internationally. Good for finding local talent.',
         url: 'https://www.mandy.com',
@@ -1519,7 +1519,7 @@ const resources = [
     },
     {
         name: 'ProductionHub',
-        category: 'community',
+        category: 'software',
         desc: 'US-focused production job board and directory.',
         fullDesc: 'Find and post production jobs. Searchable directory of crew and vendors by location. Useful for staffing up local shoots and finding specialists.',
         url: 'https://www.productionhub.com',
