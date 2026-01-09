@@ -169,3 +169,12 @@ Quick test checklist:
 - Load Resources page; select Community and click Events/Casting/Groups/Meetups; confirm cards filter and the subfilter label flickers faster.
 - Switch Stock/Tools/References tabs; verify subcategory button labels match the requested list and results update.
 - Open DevTools console on Resources page; confirm no errors.
+2026-01-09 | 4:07PM EST
+———————————————————————
+Change: Restore Music option in Stock subcategories to keep music filtering available on Resources.
+Files touched: resources.html, CHANGELOG_RUNNING.md
+Notes: Re-added the Music subcategory button for Stock filters.
+Quick test checklist:
+- Load Resources page; select Stock and confirm Music appears alongside 3D/Fonts/Footage/SoundFX/All.
+- Click Stock → Music and verify music resources are isolated and the list updates.
+- Open DevTools console on Resources page; confirm no errors.
