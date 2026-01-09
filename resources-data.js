@@ -67,6 +67,7 @@ const resources = [
     {
         name: 'Royal Starr Arts Institute',
         category: 'community',
+        communityType: 'events',
         desc: 'Michigan nonprofit building filmmaker community through mixers, events, and festival programming.',
         fullDesc: 'Royal Starr Arts Institute serves Michigan\'s creative community through networking, education, and events—anchored by Royal Starr Film Festival and recurring filmmaker mixers in Metro Detroit.',
         url: 'https://www.royalstarr.org',
@@ -93,6 +94,7 @@ const resources = [
     {
         name: 'Michigan Filmmaker Community (Facebook Group)',
         category: 'community',
+        communityType: 'groups',
         desc: 'Facebook networking group for Michigan filmmakers, cast, and crew.',
         fullDesc: 'Active Facebook group for connecting Michigan filmmakers with actors, crew, and collaborators. Useful for posting gigs, staffing up, sharing resources, and finding local production support.',
         url: 'https://www.facebook.com/groups/mifilmcommunity',
@@ -126,6 +128,7 @@ const resources = [
     {
         name: 'Campfire Film Cooperative',
         category: 'community',
+        communityType: 'groups',
         desc: 'Community for filmmakers and creators—events, meetups, and crew connection.',
         fullDesc: 'Campfire Film Cooperative is a community built around connection and craft: share work, find collaborators, and show up for events designed to spark momentum and keep projects moving.',
         url: 'https://campfirefilm.org',
@@ -138,6 +141,7 @@ const resources = [
     {
         name: 'Mograph Mondays Detroit',
         category: 'community',
+        communityType: 'events',
         desc: 'Monthly Detroit meetup for motion designers, animators, and CG artists.',
         fullDesc: 'Mograph Mondays Detroit is a recurring meetup for motion designers, animators, CG artists, and adjacent creatives—an easy on-ramp to post, VFX, and design collaborators.',
         url: 'https://www.mographmondays.com/det',
@@ -149,6 +153,7 @@ const resources = [
     {
         name: 'Michigan Crew Calls',
         category: 'community',
+        communityType: 'groups',
         desc: 'Facebook group for Michigan crew opportunities and on-set needs.',
         fullDesc: 'Michigan Crew Calls is a Facebook community built for posting and finding crew gigs, last-minute hires, and on-set opportunities across the state.',
         url: 'https://www.facebook.com/groups/micrewcalls/',
@@ -158,6 +163,7 @@ const resources = [
     {
         name: 'Michigan Talent Casting',
         category: 'community',
+        communityType: 'casting',
         desc: 'Facebook group dedicated to casting calls for Michigan talent.',
         fullDesc: 'Michigan Talent Casting connects producers and directors with Michigan actors and performers—centralized casting posts and opportunities.',
         url: 'https://www.facebook.com/groups/micasting/',
