@@ -1856,10 +1856,10 @@
         <div class="subfilter-row" id="communityGroupBar" aria-live="polite" hidden>
             <span class="subfilter-label">Community:</span>
             <div class="subfilter-buttons">
-                <button class="subfilter-btn active" data-community="events">Events</button>
+                <button class="subfilter-btn" data-community="events">Events</button>
                 <button class="subfilter-btn" data-community="casting">Casting</button>
                 <button class="subfilter-btn" data-community="groups">Groups/Meetups</button>
-                <button class="subfilter-btn" data-community="all">All</button>
+                <button class="subfilter-btn active" data-community="all">All</button>
             </div>
         </div>
 
@@ -1872,7 +1872,7 @@
                 <button class="subfilter-btn" data-stock="stock">Footage</button>
                 <button class="subfilter-btn" data-stock="music">Music</button>
                 <button class="subfilter-btn" data-stock="soundfx">SoundFX</button>
-                <button class="subfilter-btn" data-stock="all-stock">All</button>
+                <button class="subfilter-btn active" data-stock="all-stock">All</button>
             </div>
         </div>
 
@@ -1884,7 +1884,7 @@
                 <button class="subfilter-btn" data-tools="drone">Drone</button>
                 <button class="subfilter-btn" data-tools="gear">Software</button>
                 <button class="subfilter-btn" data-tools="casting">Casting</button>
-                <button class="subfilter-btn" data-tools="all-tools">All</button>
+                <button class="subfilter-btn active" data-tools="all-tools">All</button>
             </div>
         </div>
 
@@ -2071,10 +2071,10 @@
 
         // Current filter state
         let currentGroup = 'film-festivals';
-        let communitySubcategory = 'events';
-        let stockSubcategory = '3d';
-        let toolsSubcategory = 'ai';
-        let referencesSubcategory = 'inspiration';
+        let communitySubcategory = 'all';
+        let stockSubcategory = 'all-stock';
+        let toolsSubcategory = 'all-tools';
+        let referencesSubcategory = 'all';
         let musicTier = 'paid';
         let aiType = 'all';
         let droneType = 'part107';
@@ -3119,7 +3119,7 @@
                 stockGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.stock === stockSubcategory));
             }
             if (newGroup !== 'community') {
-                communitySubcategory = 'events';
+                communitySubcategory = 'all';
                 communityGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.community === communitySubcategory));
             }
             if (newGroup !== 'tools') {
