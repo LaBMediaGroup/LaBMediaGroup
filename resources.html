@@ -1867,7 +1867,7 @@
         <div class="subfilter-row" id="stockGroupBar" aria-live="polite" hidden>
             <span class="subfilter-label">Stock:</span>
             <div class="subfilter-buttons">
-                <button class="subfilter-btn" data-stock="3d">3D</button>
+                <button class="subfilter-btn active" data-stock="3d">3D</button>
                 <button class="subfilter-btn" data-stock="fonts">Fonts</button>
                 <button class="subfilter-btn" data-stock="stock">Footage</button>
                 <button class="subfilter-btn" data-stock="music">Music</button>
@@ -1880,7 +1880,7 @@
         <div class="subfilter-row" id="toolsGroupBar" aria-live="polite" hidden>
             <span class="subfilter-label">Tools:</span>
             <div class="subfilter-buttons">
-                <button class="subfilter-btn" data-tools="ai">AI</button>
+                <button class="subfilter-btn active" data-tools="ai">AI</button>
                 <button class="subfilter-btn" data-tools="drone">Drone</button>
                 <button class="subfilter-btn" data-tools="gear">Software</button>
                 <button class="subfilter-btn" data-tools="casting">Casting</button>
@@ -1892,13 +1892,13 @@
         <div class="subfilter-row" id="referencesGroupBar" aria-live="polite" hidden>
             <span class="subfilter-label">References:</span>
             <div class="subfilter-buttons">
-                <button class="subfilter-btn" data-references="inspiration">Inspiration</button>
+                <button class="subfilter-btn active" data-references="inspiration">Inspiration</button>
                 <button class="subfilter-btn" data-references="art">Art</button>
                 <button class="subfilter-btn" data-references="editing">Editing</button>
                 <button class="subfilter-btn" data-references="filming">Filming</button>
                 <button class="subfilter-btn" data-references="music">Music</button>
                 <button class="subfilter-btn" data-references="comedy">Comedy</button>
-                <button class="subfilter-btn active" data-references="all">All</button>
+                <button class="subfilter-btn" data-references="all">All</button>
             </div>
         </div>
 
@@ -1906,10 +1906,10 @@
         <div class="subfilter-row" id="droneTypeBar" aria-live="polite" hidden>
             <span class="subfilter-label">Drone:</span>
             <div class="subfilter-buttons">
-                <button class="subfilter-btn" data-type="part107">Part 107</button>
+                <button class="subfilter-btn active" data-type="part107">Part 107</button>
                 <button class="subfilter-btn" data-type="channels">Channels</button>
                 <button class="subfilter-btn" data-type="stores">Stores</button>
-                <button class="subfilter-btn active" data-type="all">All</button>
+                <button class="subfilter-btn" data-type="all">All</button>
             </div>
         </div>
 
@@ -2077,7 +2077,7 @@
         let referencesSubcategory = 'all';
         let musicTier = 'paid';
         let aiType = 'all';
-        let droneType = 'all';
+        let droneType = 'part107';
         let searchQuery = '';
 
         // ============================================
@@ -3115,7 +3115,7 @@
             currentGroup = newGroup;
 
             if (newGroup !== 'stock') {
-                stockSubcategory = 'all-stock';
+                stockSubcategory = '3d';
                 stockGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.stock === stockSubcategory));
             }
             if (newGroup !== 'community') {
@@ -3123,11 +3123,11 @@
                 communityGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.community === communitySubcategory));
             }
             if (newGroup !== 'tools') {
-                toolsSubcategory = 'all-tools';
+                toolsSubcategory = 'ai';
                 toolsGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.tools === toolsSubcategory));
             }
             if (newGroup !== 'references') {
-                referencesSubcategory = 'all';
+                referencesSubcategory = 'inspiration';
                 referencesGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.references === referencesSubcategory));
             }
 
@@ -3141,9 +3141,9 @@
                 aiTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
             }
 
-            if (!(newGroup === 'tools' && toolsSubcategory === 'drone') && droneType !== 'all') {
-                droneType = 'all';
-                droneTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
+            if (!(newGroup === 'tools' && toolsSubcategory === 'drone') && newGroup !== 'drones' && droneType !== 'part107') {
+                droneType = 'part107';
+                droneTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'part107'));
             }
         }
 
@@ -3193,6 +3193,10 @@
                 toolsGroupButtons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 toolsSubcategory = btn.dataset.tools;
+                if (toolsSubcategory === 'drone' && droneType !== 'part107') {
+                    droneType = 'part107';
+                    droneTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'part107'));
+                }
                 renderResources(true);
             });
         });
