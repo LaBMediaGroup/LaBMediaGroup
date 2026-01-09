@@ -160,3 +160,12 @@ Quick test checklist:
 - Open each new festival detail view; verify website and FilmFreeway links where provided
 - Open Fresh Coast Film Festival detail view; confirm Marquette location and October timing
 - Console free of errors on Resources page
+2026-01-09 | 2:52PM EST
+———————————————————————
+Change: Speed up Resources subcategory label flicker and align community/stock/tools/reference subcategory options with updated filter logic.
+Files touched: resources.html, resources-data.js, CHANGELOG_RUNNING.md
+Notes: Added community subcategory filtering support and refreshed subcategory button labels.
+Quick test checklist:
+- Load Resources page; select Community and click Events/Casting/Groups/Meetups; confirm cards filter and the subfilter label flickers faster.
+- Switch Stock/Tools/References tabs; verify subcategory button labels match the requested list and results update.
+- Open DevTools console on Resources page; confirm no errors.
