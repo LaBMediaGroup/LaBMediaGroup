@@ -294,7 +294,7 @@
             font-family: 'Space Mono', monospace;
             font-size: 0.7rem;
             letter-spacing: 1px;
-            animation: labelFlicker 4s infinite;
+            animation: labelFlicker 2.5s infinite;
             color: var(--gray-600);
             text-transform: uppercase;
         }
@@ -1852,16 +1852,27 @@
             <button class="filter-btn" data-group="all">All</button>
         </div>
 
+        <!-- Community Subcategories (shown when Community is active) -->
+        <div class="subfilter-row" id="communityGroupBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Community:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn active" data-community="events">Events</button>
+                <button class="subfilter-btn" data-community="casting">Casting</button>
+                <button class="subfilter-btn" data-community="groups">Groups/Meetups</button>
+                <button class="subfilter-btn" data-community="all">All</button>
+            </div>
+        </div>
+
         <!-- Stock Subcategories (shown when Stock is active) -->
         <div class="subfilter-row" id="stockGroupBar" aria-live="polite" hidden>
             <span class="subfilter-label">Stock:</span>
             <div class="subfilter-buttons">
-                <button class="subfilter-btn" data-stock="3d">3D</button>
+                <button class="subfilter-btn active" data-stock="3d">3D</button>
                 <button class="subfilter-btn" data-stock="fonts">Fonts</button>
                 <button class="subfilter-btn" data-stock="stock">Footage</button>
                 <button class="subfilter-btn" data-stock="music">Music</button>
-                <button class="subfilter-btn" data-stock="soundfx">Sound FX</button>
-                <button class="subfilter-btn active" data-stock="all-stock">All Stock</button>
+                <button class="subfilter-btn" data-stock="soundfx">SoundFX</button>
+                <button class="subfilter-btn" data-stock="all-stock">All</button>
             </div>
         </div>
 
@@ -1869,10 +1880,11 @@
         <div class="subfilter-row" id="toolsGroupBar" aria-live="polite" hidden>
             <span class="subfilter-label">Tools:</span>
             <div class="subfilter-buttons">
-                <button class="subfilter-btn" data-tools="ai">AI</button>
+                <button class="subfilter-btn active" data-tools="ai">AI</button>
                 <button class="subfilter-btn" data-tools="drone">Drone</button>
                 <button class="subfilter-btn" data-tools="gear">Software</button>
-                <button class="subfilter-btn active" data-tools="all-tools">All Tools</button>
+                <button class="subfilter-btn" data-tools="casting">Casting</button>
+                <button class="subfilter-btn" data-tools="all-tools">All</button>
             </div>
         </div>
 
@@ -1880,14 +1892,13 @@
         <div class="subfilter-row" id="referencesGroupBar" aria-live="polite" hidden>
             <span class="subfilter-label">References:</span>
             <div class="subfilter-buttons">
-                <button class="subfilter-btn" data-references="inspiration">Inspiration</button>
+                <button class="subfilter-btn active" data-references="inspiration">Inspiration</button>
                 <button class="subfilter-btn" data-references="art">Art</button>
                 <button class="subfilter-btn" data-references="editing">Editing</button>
                 <button class="subfilter-btn" data-references="filming">Filming</button>
                 <button class="subfilter-btn" data-references="music">Music</button>
-                <button class="subfilter-btn" data-references="references">References</button>
                 <button class="subfilter-btn" data-references="comedy">Comedy</button>
-                <button class="subfilter-btn active" data-references="all">All</button>
+                <button class="subfilter-btn" data-references="all">All</button>
             </div>
         </div>
 
@@ -1895,10 +1906,10 @@
         <div class="subfilter-row" id="droneTypeBar" aria-live="polite" hidden>
             <span class="subfilter-label">Drone:</span>
             <div class="subfilter-buttons">
-                <button class="subfilter-btn" data-type="part107">Part 107</button>
+                <button class="subfilter-btn active" data-type="part107">Part 107</button>
                 <button class="subfilter-btn" data-type="channels">Channels</button>
                 <button class="subfilter-btn" data-type="stores">Stores</button>
-                <button class="subfilter-btn active" data-type="all">All</button>
+                <button class="subfilter-btn" data-type="all">All</button>
             </div>
         </div>
 
@@ -2020,6 +2031,8 @@
         const filters = document.querySelectorAll('.filter-btn');
 
         // Subfilter bars and buttons
+        const communityGroupBar = document.getElementById('communityGroupBar');
+        const communityGroupButtons = communityGroupBar ? communityGroupBar.querySelectorAll('.subfilter-btn') : [];
         const stockGroupBar = document.getElementById('stockGroupBar');
         const stockGroupButtons = stockGroupBar ? stockGroupBar.querySelectorAll('.subfilter-btn') : [];
         const toolsGroupBar = document.getElementById('toolsGroupBar');
@@ -2058,12 +2071,13 @@
 
         // Current filter state
         let currentGroup = 'film-festivals';
-        let stockSubcategory = 'all-stock';
-        let toolsSubcategory = 'all-tools';
-        let referencesSubcategory = 'all';
+        let communitySubcategory = 'events';
+        let stockSubcategory = '3d';
+        let toolsSubcategory = 'ai';
+        let referencesSubcategory = 'inspiration';
         let musicTier = 'paid';
         let aiType = 'all';
-        let droneType = 'all';
+        let droneType = 'part107';
         let searchQuery = '';
 
         // ============================================
@@ -2413,7 +2427,11 @@
             const primary = cats[0];
             if (currentGroup === 'all') return true;
             if (currentGroup === 'film-festivals') return cats.includes('film-festivals');
-            if (currentGroup === 'community') return cats.includes('community');
+            if (currentGroup === 'community') {
+                if (!cats.includes('community')) return false;
+                if (communitySubcategory === 'all') return true;
+                return normalizeValue(resource.communityType) === normalizeValue(communitySubcategory);
+            }
             if (currentGroup === 'collaborators') return cats.includes('collaborators');
             if (currentGroup === 'references') {
                 const matchesCategory = cats.includes('references');
@@ -2432,7 +2450,7 @@
             }
 
             if (currentGroup === 'tools') {
-                const toolCats = ['ai', 'software', 'equipment'];
+                const toolCats = ['ai', 'software', 'equipment', 'casting'];
                 if (!cats.some(c => toolCats.includes(c))) return false;
                 if (toolsSubcategory === 'all-tools') return true;
                 if (toolsSubcategory === 'gear') return cats.includes('equipment');
@@ -2663,11 +2681,15 @@
         }
 
         function renderResources(animate = false) {
+            const isCommunity = currentGroup === 'community';
             const isStock = currentGroup === 'stock';
             const isTools = currentGroup === 'tools';
             const isReferences = currentGroup === 'references';
             const isDrones = currentGroup === 'drones';
 
+            if (communityGroupBar) {
+                communityGroupBar.toggleAttribute('hidden', !isCommunity);
+            }
             if (stockGroupBar) {
                 stockGroupBar.toggleAttribute('hidden', !isStock);
             }
@@ -3093,15 +3115,19 @@
             currentGroup = newGroup;
 
             if (newGroup !== 'stock') {
-                stockSubcategory = 'all-stock';
+                stockSubcategory = '3d';
                 stockGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.stock === stockSubcategory));
             }
+            if (newGroup !== 'community') {
+                communitySubcategory = 'events';
+                communityGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.community === communitySubcategory));
+            }
             if (newGroup !== 'tools') {
-                toolsSubcategory = 'all-tools';
+                toolsSubcategory = 'ai';
                 toolsGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.tools === toolsSubcategory));
             }
             if (newGroup !== 'references') {
-                referencesSubcategory = 'all';
+                referencesSubcategory = 'inspiration';
                 referencesGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.references === referencesSubcategory));
             }
 
@@ -3115,9 +3141,9 @@
                 aiTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
             }
 
-            if (!(newGroup === 'tools' && toolsSubcategory === 'drone') && droneType !== 'all') {
-                droneType = 'all';
-                droneTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
+            if (!(newGroup === 'tools' && toolsSubcategory === 'drone') && newGroup !== 'drones' && droneType !== 'part107') {
+                droneType = 'part107';
+                droneTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'part107'));
             }
         }
 
@@ -3141,6 +3167,16 @@
             });
         }
 
+        communityGroupButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                communityGroupButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                communitySubcategory = btn.dataset.community;
+                renderResources(true);
+            });
+        });
+
         stockGroupButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 if (btn.classList.contains('active')) return;
@@ -3157,6 +3193,10 @@
                 toolsGroupButtons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 toolsSubcategory = btn.dataset.tools;
+                if (toolsSubcategory === 'drone' && droneType !== 'part107') {
+                    droneType = 'part107';
+                    droneTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'part107'));
+                }
                 renderResources(true);
             });
         });
