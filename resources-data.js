@@ -679,7 +679,7 @@ const resources = [
     },
     {
         name: 'Betaflight',
-        category: 'drone',
+        category: ['drone', 'software'],
         droneType: 'software',
         desc: 'Open-source flight controller firmware for FPV drones.',
         fullDesc: 'Betaflight is the industry-standard open-source flight controller firmware for FPV racing and freestyle drones. Offers precise tuning, configurator software, and active development—essential for custom builds and performance optimization.',
