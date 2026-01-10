@@ -178,3 +178,12 @@ Quick test checklist:
 - Load Resources page; select Stock and confirm Music appears alongside 3D/Fonts/Footage/SoundFX/All.
 - Click Stock → Music and verify music resources are isolated and the list updates.
 - Open DevTools console on Resources page; confirm no errors.
+2026-01-09 | 11:41PM EST
+———————————————————————
+Change: Add Betaflight to Tools → Drone filters in Resources.
+Files touched: resources-data.js, CHANGELOG_RUNNING.md
+Notes: Tagged Betaflight with software category so it appears under Tools → Drone.
+Quick test checklist:
+- Open resources.html; select Tools → Drone and confirm Betaflight appears in the list.
+- Use the search bar to find Betaflight; confirm it still opens the resource modal.
+- Open DevTools console on Resources page; confirm no errors.
