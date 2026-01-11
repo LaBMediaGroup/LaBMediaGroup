@@ -859,10 +859,9 @@ Quick test checklist:
 - Open DevTools console on Resources page; confirm no errors.
 2026-01-11 | 10:45PM EST
 ———————————————————————
-Change: Align Resources filter button selectors with data-group attributes so accent colors render correctly.
-Files touched: resources.html, CHANGELOG_RUNNING.md
-Notes: Updated category selectors (including drones) to match the filter button data-group values.
+Change: Allow YouTube iframe embeds in the portfolio page CSP for thumbnail-to-iframe playback.
+Files touched: portfolio.html, CHANGELOG_RUNNING.md
+Notes: Added frame-src permissions for YouTube domains while leaving the rest of the CSP intact.
 Quick test checklist:
-- Open resources.html; click each top filter (Film Festivals, Community, Stock, Tools, Friends, References, Drones, All) and confirm the accent color shows in the default and active states.
-- Toggle between multiple filters and confirm the active styling transitions cleanly without lingering colors.
-- Open DevTools console on resources.html; confirm no errors.
+- Open portfolio.html; click a video thumbnail and confirm the YouTube player loads and playback starts.
+- Open DevTools console on portfolio.html; confirm no CSP errors.
