@@ -859,10 +859,9 @@ Quick test checklist:
 - Open DevTools console on Resources page; confirm no errors.
 2026-01-11 | 10:45PM EST
 ———————————————————————
-Change: Ensure Stock and Tools subfilter rows default to a single active selection.
-Files touched: resources.html, CHANGELOG_RUNNING.md
-Notes: Removed duplicate active states so each subfilter row starts with one default option.
+Change: Allow YouTube iframe embeds in the portfolio page CSP for thumbnail-to-iframe playback.
+Files touched: portfolio.html, CHANGELOG_RUNNING.md
+Notes: Added frame-src permissions for YouTube domains while leaving the rest of the CSP intact.
 Quick test checklist:
-- Open resources.html; confirm each subfilter row shows a single active button by default.
-- Toggle Stock and Tools subfilters; verify only one button remains active at a time.
-- Open DevTools console on Resources page; confirm no errors.
+- Open portfolio.html; click a video thumbnail and confirm the YouTube player loads and playback starts.
+- Open DevTools console on portfolio.html; confirm no CSP errors.
