@@ -857,3 +857,11 @@ Quick test checklist:
 - Open resources.html; select Tools → Drone and confirm Betaflight appears in the list.
 - Use the search bar to find Betaflight; confirm it still opens the resource modal.
 - Open DevTools console on Resources page; confirm no errors.
+2026-01-11 | 10:45PM EST
+———————————————————————
+Change: Allow YouTube iframe embeds in the portfolio page CSP for thumbnail-to-iframe playback.
+Files touched: portfolio.html, CHANGELOG_RUNNING.md
+Notes: Added frame-src permissions for YouTube domains while leaving the rest of the CSP intact.
+Quick test checklist:
+- Open portfolio.html; click a video thumbnail and confirm the YouTube player loads and playback starts.
+- Open DevTools console on portfolio.html; confirm no CSP errors.
