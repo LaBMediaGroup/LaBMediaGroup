@@ -857,3 +857,12 @@ Quick test checklist:
 - Open resources.html; select Tools → Drone and confirm Betaflight appears in the list.
 - Use the search bar to find Betaflight; confirm it still opens the resource modal.
 - Open DevTools console on Resources page; confirm no errors.
+2026-01-11 | 10:45PM EST
+———————————————————————
+Change: Align Resources filter button selectors with data-group attributes so accent colors render correctly.
+Files touched: resources.html, CHANGELOG_RUNNING.md
+Notes: Updated category selectors (including drones) to match the filter button data-group values.
+Quick test checklist:
+- Open resources.html; click each top filter (Film Festivals, Community, Stock, Tools, Friends, References, Drones, All) and confirm the accent color shows in the default and active states.
+- Toggle between multiple filters and confirm the active styling transitions cleanly without lingering colors.
+- Open DevTools console on resources.html; confirm no errors.
