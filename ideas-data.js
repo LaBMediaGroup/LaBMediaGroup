@@ -1044,7 +1044,7 @@ const ideasData = {
         "A used roll of tape with hair stuck to it",
         "A flash drive that's warm to the touch",
         "A return label already addressed to them",
-        "A burner phone with one contact: "HOME"",
+        "A burner phone with one contact: \"HOME\"",
         "A stack of photos where one is missing—cleanly removed",
         "A spare house key that looks newly cut"
     ].map(normalizeIdeaEntry),
@@ -1954,6 +1954,7 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 if (typeof window !== 'undefined') {
+    window.ideasData = ideasData;
     window.rollIdea = rollIdea;
     window.LOCAL_FILMMAKER_PRESET = LOCAL_FILMMAKER_PRESET;
 }

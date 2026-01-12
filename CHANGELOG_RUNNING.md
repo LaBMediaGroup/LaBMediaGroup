@@ -1130,3 +1130,21 @@ Quick test checklist:
 - Click Roll the Die; confirm prompt cards render and show CREEPY DETAIL or COMEDY BEAT when toggles are active.
 - Click reroll on Constraint/Twist with Comedy active; confirm comedy mechanics/twists appear.
 - Open DevTools console on Ideas page; confirm no errors.
+2026-01-12 | 9:40PM EST
+———————————————————————
+Change: Fix Ideas data script parse error so roll buttons can read the objects list.
+Files touched: ideas-data.js, CHANGELOG_RUNNING.md
+Notes: Escaped the HOME quote in the objects list to prevent a JavaScript syntax error.
+Quick test checklist:
+- Open ideas.html; click Roll the Die and confirm prompt cards render with concept/constraint/twist.
+- Use Quick Rollers → Place/Object and confirm each roll shows a result.
+- Open DevTools console on Ideas page; confirm no errors.
+2026-01-12 | 9:48PM EST
+———————————————————————
+Change: Expose ideasData on window so Ideas page roll handlers can access the dataset reliably.
+Files touched: ideas-data.js, CHANGELOG_RUNNING.md
+Notes: Added an explicit window.ideasData assignment alongside the existing global helpers.
+Quick test checklist:
+- Load ideas.html and click Roll the Die; confirm prompt cards render.
+- Use Quick Rollers (Place/Object/Character/Genre) and confirm results appear.
+- Open DevTools console on Ideas page; confirm no errors.
