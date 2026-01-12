@@ -4,7 +4,8 @@
 const defaultIdeaTags = () => ({
     tone: ['neutral'],
     cast: [],
-    budget: []
+    budget: [],
+    accessible: undefined
 });
 
 const normalizeIdeaEntry = (entry) => {
@@ -15,12 +16,14 @@ const normalizeIdeaEntry = (entry) => {
     const tone = Array.isArray(tags.tone) && tags.tone.length ? tags.tone : ['neutral'];
     const cast = Array.isArray(tags.cast) ? tags.cast : [];
     const budget = Array.isArray(tags.budget) ? tags.budget : [];
+    const accessible = typeof tags.accessible === 'boolean' ? tags.accessible : undefined;
     const normalized = {
         ...entry,
         tags: {
             tone,
             cast,
-            budget
+            budget,
+            accessible
         }
     };
     if (typeof tags.intensity === 'number') {
@@ -737,7 +740,302 @@ const ideasData = {
     ].map(normalizeIdeaEntry)
 };
 
+// =====================================================
+// TAGGED ADDITIONS — Objects, Twists, Characters, Bonuses
+// =====================================================
+const objects_additions = [
+    { text: "A laminated ‘employee of the month’ photo with the face cut out", tags: { tone: ["mystery", "dark", "neutral"], budget: ["micro"], intensity: 3 } },
+    { text: "A motel Bible with a phone number written in the margins", tags: { tone: ["mystery", "neutral"], budget: ["micro"], intensity: 2 } },
+    { text: "A bag of ice melting inside a backpack", tags: { tone: ["comedy", "thriller", "neutral"], budget: ["micro"], intensity: 2 } },
+    { text: "A key taped under a table", tags: { tone: ["mystery", "neutral"], budget: ["micro"], intensity: 2 } },
+    { text: "A name badge with the wrong name worn proudly", tags: { tone: ["comedy", "slice-of-life"], budget: ["micro"], intensity: 1 } },
+    { text: "A receipt for something they swear they never bought", tags: { tone: ["mystery", "neutral"], budget: ["micro"], intensity: 2 } },
+    { text: "A Polaroid that develops into a different photo each time you look away", tags: { tone: ["experimental", "mystery", "horror"], budget: ["micro"], intensity: 4 } },
+    { text: "A voicemail transcription full of words they never said", tags: { tone: ["mystery", "thriller", "neutral"], budget: ["micro"], intensity: 3 } },
+    { text: "A cheap trophy engraved with a future date", tags: { tone: ["mystery", "dark", "neutral"], budget: ["micro"], intensity: 3 } },
+    { text: "A folded-up eulogy in a coat pocket", tags: { tone: ["drama", "tender", "dark"], budget: ["micro"], intensity: 3 } },
+    { text: "A lock with no key, already opened", tags: { tone: ["mystery", "neutral"], budget: ["micro"], intensity: 2 } },
+    { text: "A burned CD labeled ‘DO NOT PLAY’", tags: { tone: ["horror", "thriller", "mystery"], budget: ["micro"], intensity: 4 } },
+    { text: "A set of dice with one blank side", tags: { tone: ["absurd", "mystery", "neutral"], budget: ["micro"], intensity: 2 } },
+    { text: "A tiny bottle of hand sanitizer refilled with something else", tags: { tone: ["comedy", "thriller", "neutral"], budget: ["micro"], intensity: 2 } },
+    { text: "A menu with one item circled in red ink", tags: { tone: ["mystery", "thriller"], budget: ["micro"], intensity: 3 } },
+    { text: "A flashlight that only works when pointed at a person", tags: { tone: ["horror", "experimental", "thriller"], budget: ["micro"], intensity: 4 } },
+    { text: "A disposable glove filled with air like a hand", tags: { tone: ["comedy", "horror", "absurd"], budget: ["micro"], intensity: 3 } },
+    { text: "A souvenir magnet from a place they’ve never been", tags: { tone: ["mystery", "tender", "neutral"], budget: ["micro"], intensity: 2 } },
+    { text: "A book of matches that smells like a specific person", tags: { tone: ["romance", "tender", "mystery"], budget: ["micro"], intensity: 2 } },
+    { text: "A broken phone that still receives notifications", tags: { tone: ["thriller", "mystery", "neutral"], budget: ["micro"], intensity: 3 } },
+    { text: "A single earbud that plays someone else’s audio", tags: { tone: ["mystery", "thriller", "neutral"], budget: ["micro"], intensity: 3 } },
+    { text: "A handwritten to-do list that includes ‘forgive them’", tags: { tone: ["tender", "drama"], budget: ["micro"], intensity: 2 } },
+    { text: "A locket with nothing inside—yet it feels heavy", tags: { tone: ["tender", "mystery", "drama"], budget: ["micro"], intensity: 2 } },
+    { text: "A parking pass that never expires", tags: { tone: ["absurd", "mystery", "neutral"], budget: ["micro"], intensity: 2 } },
+    { text: "A printed screenshot of a text they never received", tags: { tone: ["mystery", "drama", "neutral"], budget: ["micro"], intensity: 2 } },
+    { text: "A house key on a ring labeled ‘NOT YOURS’", tags: { tone: ["mystery", "thriller"], budget: ["micro"], intensity: 3 } },
+    { text: "A roll of quarters with one coin taped on the outside", tags: { tone: ["slice-of-life", "comedy"], budget: ["micro"], intensity: 1 } },
+    { text: "A clipboard sign-in sheet of unfamiliar names… including theirs", tags: { tone: ["mystery", "thriller", "dark"], budget: ["micro"], intensity: 4 } },
+    { text: "A thrifted jacket with something stitched into the lining", tags: { tone: ["mystery", "neutral"], budget: ["micro"], intensity: 2 } },
+    { text: "A stress ball shaped like a heart, visibly punctured", tags: { tone: ["drama", "dark", "comedy"], budget: ["micro"], intensity: 2 } },
+    { text: "A coffee punch card with one stamp left—always one stamp left", tags: { tone: ["absurd", "comedy", "neutral"], budget: ["micro"], intensity: 1 } },
+    { text: "A ring light used as a halo in a dark room", tags: { tone: ["experimental", "dark", "comedy"], budget: ["micro"], intensity: 2 } },
+    { text: "A tiny screwdriver set missing the exact bit you need", tags: { tone: ["comedy", "slice-of-life"], budget: ["micro"], intensity: 1 } },
+    { text: "A journal with the last page torn out cleanly", tags: { tone: ["mystery", "drama"], budget: ["micro"], intensity: 2 } },
+    { text: "A self-help book full of angry underlines", tags: { tone: ["comedy", "drama", "dark"], budget: ["micro"], intensity: 2 } },
+    { text: "A snow globe with no water inside", tags: { tone: ["tender", "melancholy", "neutral"], budget: ["micro"], intensity: 1 } },
+    { text: "A security tag still attached to clothing", tags: { tone: ["thriller", "comedy", "neutral"], budget: ["micro"], intensity: 2 } },
+    { text: "A library card with someone else’s photo", tags: { tone: ["mystery", "neutral"], budget: ["micro"], intensity: 2 } },
+    { text: "A ticket number that keeps being called… for other people", tags: { tone: ["absurd", "mystery", "dark"], budget: ["micro"], intensity: 3 } }
+];
+
+const twists_additions = [
+    { text: "They aren’t waiting for a person—they’re waiting for permission.", tags: { tone: ["drama", "tender", "neutral"], intensity: 2 } },
+    { text: "The ‘helpful’ stranger is actually stalling to prevent a mistake.", tags: { tone: ["thriller", "mystery", "neutral"], intensity: 3 } },
+    { text: "The apology is real—but it’s being used as leverage.", tags: { tone: ["drama", "dark", "thriller"], intensity: 3 } },
+    { text: "The object is evidence, but of a kindness—not a crime.", tags: { tone: ["tender", "mystery"], intensity: 2 } },
+    { text: "The lie wasn’t to deceive them—it was to protect the truth from being spoken aloud.", tags: { tone: ["drama", "tender"], intensity: 2 } },
+    { text: "What we assumed was awkwardness is actually a rehearsed strategy.", tags: { tone: ["comedy", "thriller", "neutral"], intensity: 2 } },
+    { text: "The conversation is happening in two different timeframes.", tags: { tone: ["experimental", "mystery"], intensity: 3 } },
+    { text: "They get what they want and realize it proves the other person right.", tags: { tone: ["drama", "dark"], intensity: 3 } },
+    { text: "The ‘villain’ is the only person telling the truth.", tags: { tone: ["thriller", "mystery", "dark"], intensity: 3 } },
+    { text: "The most honest line was played as a joke—and now it can’t be taken back.", tags: { tone: ["comedy", "drama"], intensity: 2 } },
+    { text: "They’re not trapped in the location—they’re trapped in the role they’re performing.", tags: { tone: ["drama", "experimental", "neutral"], intensity: 3 } },
+    { text: "The rules keep changing because someone off-screen is negotiating them.", tags: { tone: ["thriller", "mystery"], intensity: 3 } },
+    { text: "They aren’t trying to win—they’re trying to be witnessed losing.", tags: { tone: ["drama", "dark"], intensity: 3 } },
+    { text: "The ‘solution’ happens early; the rest is the cost.", tags: { tone: ["thriller", "drama"], intensity: 3 } },
+    { text: "They didn’t forget—they decided not to remember.", tags: { tone: ["drama", "dark", "mystery"], intensity: 3 } },
+    { text: "The stranger knows their routine because they helped invent it.", tags: { tone: ["mystery", "thriller"], intensity: 3 } },
+    { text: "The silence isn’t absence—it’s a shared agreement.", tags: { tone: ["tender", "mystery", "neutral"], intensity: 2 } },
+    { text: "They realize they’ve been the anonymous voice in someone else’s story.", tags: { tone: ["drama", "tender", "mystery"], intensity: 3 } },
+    { text: "The message is real—but it was sent years ago and just arrived.", tags: { tone: ["mystery", "drama"], intensity: 2 } },
+    { text: "They accidentally become the ‘sign’ they were waiting for.", tags: { tone: ["tender", "slice-of-life", "neutral"], intensity: 2 } },
+    { text: "The beginning was already an ending; we just didn’t have the context.", tags: { tone: ["drama", "mystery"], intensity: 2 } },
+    { text: "The ‘romantic’ gesture is revealed to be a coping mechanism.", tags: { tone: ["romance", "drama", "dark"], intensity: 3 } },
+    { text: "The person who ‘doesn’t know’ has known the longest.", tags: { tone: ["drama", "tender"], intensity: 2 } },
+    { text: "The threat is real, but it’s coming from an act of love.", tags: { tone: ["thriller", "tender"], intensity: 3 } },
+    { text: "The location was public the whole time; privacy was an illusion.", tags: { tone: ["dark", "thriller", "experimental"], intensity: 4 } },
+    { text: "They’ve been mispronouncing a name on purpose—to keep distance.", tags: { tone: ["drama", "tender"], intensity: 2 } },
+    { text: "The ‘kindness’ is strategic—and it works.", tags: { tone: ["thriller", "dark"], intensity: 3 } },
+    { text: "A misunderstanding resolves… into something worse but truer.", tags: { tone: ["drama", "dark"], intensity: 3 } },
+    { text: "The last shot reveals the person we trusted was editing the story.", tags: { tone: ["thriller", "mystery"], intensity: 3 } },
+    { text: "The ‘happy ending’ is available—but they refuse it on principle.", tags: { tone: ["drama", "slice-of-life", "neutral"], intensity: 2 } }
+];
+
+const characters_additions = [
+    { text: "Someone who treats every interaction like a negotiation", tags: { tone: ["comedy", "thriller", "neutral"], cast: ["solo", "two"], intensity: 2 } },
+    { text: "A person who refuses to sit down until they get the truth", tags: { tone: ["thriller", "drama"], cast: ["solo", "two"], intensity: 3 } },
+    { text: "Someone who’s always ‘on their way’ but never arrives", tags: { tone: ["comedy", "drama", "slice-of-life"], cast: ["solo"], intensity: 2 } },
+    { text: "A person who laughs too loudly when they’re cornered", tags: { tone: ["comedy", "dark"], cast: ["solo", "two"], intensity: 2 } },
+    { text: "Someone who collects rules because chaos scares them", tags: { tone: ["drama", "tender", "neutral"], cast: ["solo"], intensity: 2 } },
+    { text: "A person who keeps souvenirs of moments they ruined", tags: { tone: ["drama", "dark"], cast: ["solo"], intensity: 3 } },
+    { text: "Someone who is overly polite as a form of control", tags: { tone: ["thriller", "dark", "comedy"], cast: ["two"], intensity: 3 } },
+    { text: "A person who can’t stop narrating their own choices", tags: { tone: ["comedy", "experimental"], cast: ["solo"], intensity: 2 } },
+    { text: "Someone who speaks in advice they never follow", tags: { tone: ["comedy", "slice-of-life"], cast: ["solo"], intensity: 1 } },
+    { text: "A person who makes everyone comfortable, then asks for something big", tags: { tone: ["thriller", "drama"], cast: ["two"], intensity: 3 } },
+    { text: "Someone who keeps receipts like they’re evidence in court", tags: { tone: ["comedy", "mystery"], cast: ["solo", "two"], intensity: 2 } },
+    { text: "A person who won’t say ‘sorry’ but will do everything else", tags: { tone: ["tender", "drama"], cast: ["solo", "two"], intensity: 2 } },
+    { text: "Someone who insists they’re fine—and proves it aggressively", tags: { tone: ["comedy", "dark"], cast: ["solo"], intensity: 2 } },
+    { text: "A person who is always waiting for a ‘sincere ‘sign’ to change", tags: { tone: ["tender", "slice-of-life"], cast: ["solo"], intensity: 1 } },
+    { text: "Someone convinced they’re being punished—quietly", tags: { tone: ["dark", "drama"], cast: ["solo"], intensity: 3 } },
+    { text: "A person who compliments people like they’re taking notes", tags: { tone: ["comedy", "thriller", "neutral"], cast: ["two"], intensity: 2 } },
+    { text: "Someone who hides anger inside helpfulness", tags: { tone: ["drama", "dark"], cast: ["solo", "two"], intensity: 3 } },
+    { text: "A person who believes the universe speaks in coincidences", tags: { tone: ["mystery", "tender", "neutral"], cast: ["solo"], intensity: 2 } },
+    { text: "Someone who gives gifts that feel like obligations", tags: { tone: ["comedy", "dark", "drama"], cast: ["two"], intensity: 2 } },
+    { text: "A person terrified of being misunderstood—and makes it worse", tags: { tone: ["comedy", "drama"], cast: ["solo"], intensity: 2 } },
+    { text: "Someone who never deletes anything", tags: { tone: ["mystery", "thriller", "neutral"], cast: ["solo"], intensity: 2 } },
+    { text: "A person who can’t stop smiling when the stakes rise", tags: { tone: ["dark", "comedy", "thriller"], cast: ["solo"], intensity: 3 } },
+    { text: "Someone charming only when they’re lying", tags: { tone: ["thriller", "romance", "dark"], cast: ["two"], intensity: 3 } },
+    { text: "A person who apologizes for other people’s behavior", tags: { tone: ["tender", "drama"], cast: ["solo", "two"], intensity: 2 } },
+    { text: "Someone trying to outgrow their old self—angrily", tags: { tone: ["drama", "dark"], cast: ["solo"], intensity: 3 } },
+    { text: "A person who acts like a side character in their own life", tags: { tone: ["drama", "tender"], cast: ["solo"], intensity: 2 } },
+    { text: "Someone who refuses to be photographed", tags: { tone: ["mystery", "drama", "neutral"], cast: ["solo"], intensity: 2 } },
+    { text: "A person practicing bravery in private", tags: { tone: ["tender", "drama"], cast: ["solo"], intensity: 2 } },
+    { text: "Someone who asks questions like they’re testing you", tags: { tone: ["thriller", "comedy", "neutral"], cast: ["two"], intensity: 2 } },
+    { text: "A person who can’t leave until they’ve ‘fixed’ the vibe", tags: { tone: ["comedy", "slice-of-life"], cast: ["solo", "two"], intensity: 1 } }
+];
+
+const bonuses_additions = [
+    { text: "A character must misinterpret kindness as a threat", tags: { tone: ["thriller", "mystery", "dark"], intensity: 3 } },
+    { text: "A prop must change owners three times", tags: { tone: ["neutral", "comedy", "mystery"], intensity: 2 } },
+    { text: "Someone must overhear their own name said with disgust", tags: { tone: ["drama", "dark"], intensity: 3 } },
+    { text: "The most intense moment must occur during a mundane task", tags: { tone: ["neutral", "thriller", "drama"], intensity: 2 } },
+    { text: "A character must pretend not to recognize someone", tags: { tone: ["mystery", "drama", "romance"], intensity: 2 } },
+    { text: "A lie must be corrected gently—too late", tags: { tone: ["drama", "tender"], intensity: 2 } },
+    { text: "A character must refuse an easy exit", tags: { tone: ["drama", "thriller", "neutral"], intensity: 2 } },
+    { text: "An object must be used in a way it was never intended", tags: { tone: ["comedy", "thriller", "neutral"], intensity: 2 } },
+    { text: "Two characters must share a secret without saying it out loud", tags: { tone: ["tender", "mystery", "romance"], intensity: 2 } },
+    { text: "Someone must be caught rehearsing", tags: { tone: ["comedy", "drama", "neutral"], intensity: 1 } },
+    { text: "A background detail must become the main plot", tags: { tone: ["neutral", "mystery"], intensity: 2 } },
+    { text: "A character must get exactly what they asked for—and hate it", tags: { tone: ["dark", "drama", "thriller"], intensity: 3 } },
+    { text: "A misunderstanding must resolve into something worse but truer", tags: { tone: ["drama", "dark"], intensity: 3 } },
+    { text: "A character must offer help they don’t mean", tags: { tone: ["comedy", "dark", "thriller"], intensity: 2 } },
+    { text: "A joke must land, then haunt the rest of the film", tags: { tone: ["comedy", "dark"], intensity: 2 } },
+    { text: "A character must make a promise they can’t keep within the runtime", tags: { tone: ["drama", "tender"], intensity: 2 } },
+    { text: "Someone must leave a message they immediately regret", tags: { tone: ["drama", "mystery", "neutral"], intensity: 2 } },
+    { text: "A character must break a personal rule on camera", tags: { tone: ["neutral", "thriller", "drama"], intensity: 2 } },
+    { text: "A location must be revisited in a different emotional genre", tags: { tone: ["experimental", "neutral"], intensity: 2 } },
+    { text: "The final moment must be silent but unmistakably decisive", tags: { tone: ["drama", "tender", "thriller"], intensity: 2 } },
+    { text: "A character must be interrupted at the moment they become honest", tags: { tone: ["comedy", "drama"], intensity: 2 } },
+    { text: "The ‘villain’ must do something genuinely kind", tags: { tone: ["tender", "thriller", "dark"], intensity: 2 } },
+    { text: "A small sound must become unbearable by the end", tags: { tone: ["horror", "thriller", "experimental"], intensity: 4 } },
+    { text: "Someone must walk away without turning around once", tags: { tone: ["neutral", "drama", "thriller"], intensity: 2 } },
+    { text: "The last shot must prove someone was listening", tags: { tone: ["mystery", "thriller", "dark"], intensity: 3 } }
+];
+
+ideasData.objects = ideasData.objects.concat(objects_additions.map(normalizeIdeaEntry));
+ideasData.twists = ideasData.twists.concat(twists_additions.map(normalizeIdeaEntry));
+ideasData.characters = ideasData.characters.concat(characters_additions.map(normalizeIdeaEntry));
+ideasData.bonuses = ideasData.bonuses.concat(bonuses_additions.map(normalizeIdeaEntry));
+
+// =====================================================
+// DROP-IN ROLL FUNCTION — filters + relaxes rules
+// Works with either strings or {text, tags:{...}} objects.
+// =====================================================
+const randPick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+const normalizeRollEntry = (entry) => normalizeIdeaEntry(entry);
+
+const hasAnyTone = (item, toneWanted) => {
+    const tones = item.tags?.tone ?? ['neutral'];
+    return tones.includes(toneWanted) || tones.includes('neutral');
+};
+
+const matchesCast = (item, maxCast) => {
+    if (!maxCast) return true;
+    const castTags = item.tags?.cast;
+    if (!castTags || castTags.length === 0) return true;
+    const castMax = castTags.includes('ensemble') ? 3 : (castTags.includes('two') ? 2 : 1);
+    return castMax <= maxCast;
+};
+
+const matchesBudget = (item, budgetWanted) => {
+    if (!budgetWanted) return true;
+    const budgets = item.tags?.budget;
+    if (!budgets || budgets.length === 0) return true;
+    return budgets.includes(budgetWanted);
+};
+
+const matchesAccessibility = (item, accessibleOnly) => {
+    if (!accessibleOnly) return true;
+    const acc = item.tags?.accessible;
+    return acc === undefined ? true : acc === true;
+};
+
+/**
+ * Filters with graceful relaxation:
+ * 1) tone + other constraints
+ * 2) tone relaxed to include neutral already (built-in), then:
+ * 3) if too small, drop tone constraint
+ * 4) if still too small, drop cast/budget/accessibility constraints in that order
+ */
+const filterWithRelaxation = (items, rules, minPool = 6) => {
+    const base = items.map(normalizeRollEntry);
+
+    const applyAll = (arr, r) => arr.filter((it) =>
+        (!r.tone || hasAnyTone(it, r.tone)) &&
+        matchesCast(it, r.maxCast) &&
+        matchesBudget(it, r.budget) &&
+        matchesAccessibility(it, r.accessibleOnly)
+    );
+
+    let pool = applyAll(base, rules);
+    if (pool.length >= minPool) return pool;
+
+    pool = applyAll(base, { ...rules, tone: null });
+    if (pool.length >= minPool) return pool;
+
+    pool = applyAll(base, { ...rules, tone: null, maxCast: null });
+    if (pool.length >= minPool) return pool;
+
+    pool = applyAll(base, { ...rules, tone: null, maxCast: null, budget: null });
+    if (pool.length >= minPool) return pool;
+
+    pool = base;
+    return pool.length ? pool : [];
+};
+
+/**
+ * Roll an idea bundle from your library.
+ *
+ * @param {object} library - your full data object, e.g. { concepts, constraints, twists, places, objects, characters, genres, visualStyles, emotions, bonuses }
+ * @param {object} options
+ * @param {string|null} options.tone - e.g. "comedy" | "horror" | "mystery" | "romance" | "slice-of-life" | "experimental" | null
+ * @param {boolean} options.localMode - if true: maxCast=2, budget="micro", accessibleOnly=true
+ * @param {number|null} options.maxCast - override; if localMode true and maxCast not provided => 2
+ * @param {string|null} options.budget - override; if localMode true and budget not provided => "micro"
+ * @returns rolled bundle with text + original objects
+ */
+const rollIdea = (library, options = {}) => {
+    const {
+        tone = null,
+        localMode = false,
+        maxCast = null,
+        budget = null
+    } = options;
+
+    const rules = {
+        tone,
+        maxCast: localMode ? (maxCast ?? 2) : maxCast,
+        budget: localMode ? (budget ?? 'micro') : budget,
+        accessibleOnly: !!localMode
+    };
+
+    const rollFrom = (arr) => {
+        const pool = filterWithRelaxation(arr ?? [], rules);
+        return pool.length ? randPick(pool) : null;
+    };
+
+    const concept = rollFrom(library.concepts);
+    const place = rollFrom(library.places);
+    const object = rollFrom(library.objects);
+    const character = rollFrom(library.characters);
+    const constraint = rollFrom(library.constraints);
+    const twist = rollFrom(library.twists);
+    const bonus = rollFrom(library.bonuses);
+
+    const softRules = { tone };
+    const softRollFrom = (arr) => {
+        const base = (arr ?? []).map(normalizeRollEntry);
+        let pool = base.filter((it) => !softRules.tone || hasAnyTone(it, softRules.tone));
+        if (pool.length < 6) pool = base;
+        return pool.length ? randPick(pool) : null;
+    };
+
+    const genre = softRollFrom(library.genres);
+    const visualStyle = softRollFrom(library.visualStyles);
+    const emotion = softRollFrom(library.emotions);
+
+    return {
+        mode: localMode ? 'local-filmmaker' : 'standard',
+        tone: tone ?? 'mixed',
+        picks: { concept, place, object, character, constraint, twist, genre, visualStyle, emotion, bonus },
+        text: {
+            concept: concept?.text ?? '',
+            place: place?.text ?? '',
+            object: object?.text ?? '',
+            character: character?.text ?? '',
+            constraint: constraint?.text ?? '',
+            twist: twist?.text ?? '',
+            genre: genre?.text ?? (typeof genre === 'string' ? genre : ''),
+            visualStyle: visualStyle?.text ?? '',
+            emotion: emotion?.text ?? '',
+            bonus: bonus?.text ?? ''
+        }
+    };
+};
+
+// Optional: a helper preset you can expose in UI
+const LOCAL_FILMMAKER_PRESET = {
+    localMode: true,
+    maxCast: 2,
+    budget: 'micro'
+};
+
 // Export for potential module use
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = ideasData;
+    module.exports.rollIdea = rollIdea;
+    module.exports.LOCAL_FILMMAKER_PRESET = LOCAL_FILMMAKER_PRESET;
+}
+
+if (typeof window !== 'undefined') {
+    window.rollIdea = rollIdea;
+    window.LOCAL_FILMMAKER_PRESET = LOCAL_FILMMAKER_PRESET;
 }
