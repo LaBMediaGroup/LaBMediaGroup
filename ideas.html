@@ -1342,7 +1342,9 @@
 
             for (let i = 0; i < 3; i++) {
                 const previousPrompt = promptHistory[i];
-                const locks = getPromptLocks(previousPrompt);
+                const locks = typeof getPromptLocks === 'function'
+                    ? getPromptLocks(previousPrompt)
+                    : { concept: false, constraint: false, twist: false };
 
                 // Get unique concept
                 let concept;

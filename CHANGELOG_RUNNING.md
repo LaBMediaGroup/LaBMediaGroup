@@ -1098,3 +1098,15 @@ Quick test checklist:
 - Open ideas.html and click “Roll The Die”; confirm three prompt cards appear.
 - Click “Roll The Die” again; confirm prompts refresh without console errors.
 - Open DevTools Console on ideas.html; confirm no new errors appear.
+2026-01-12 | 7:08PM EST
+———————————————————————
+Change:
+Guarded prompt lock lookup during prompt generation to prevent roll errors when the lock helper is unavailable.
+Files touched:
+ideas.html, CHANGELOG_RUNNING.md
+Notes:
+Adds a safe fallback so prompt rolls do not throw a ReferenceError.
+Quick test checklist:
+- Open ideas.html and click “Roll The Die”; confirm three prompt cards render.
+- Click “Roll The Die” again; confirm prompts refresh without console errors.
+- Open DevTools Console on ideas.html; confirm no new errors appear.
