@@ -205,6 +205,10 @@
         .roll-container {
             text-align: center;
             margin-bottom: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
         }
 
         .roll-button {
@@ -263,6 +267,55 @@
             0% { transform: rotate(0deg) scale(1); }
             50% { transform: rotate(360deg) scale(1.2); }
             100% { transform: rotate(720deg) scale(1); }
+        }
+
+        .roll-all-btn {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .roll-all-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .roll-all-btn.rolling .roll-all-icon {
+            animation: spin-jolt 0.6s ease-in-out;
+        }
+
+        .roll-all-btn.rolling {
+            animation: shake-lines 0.6s ease-in-out;
+        }
+
+        .roll-all-btn.is-used {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @keyframes spin-jolt {
+            0% { transform: rotate(0deg) scale(1); }
+            40% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes shake-lines {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-4px); }
+            40% { transform: translateX(4px); }
+            60% { transform: translateX(-3px); }
+            80% { transform: translateX(3px); }
+            100% { transform: translateX(0); }
         }
 
         /* ============================================
@@ -990,6 +1043,10 @@
                     <span class="die-icon">&#x2680;</span>
                     <span>Roll the Die</span>
                 </button>
+                <button class="roll-all-btn" id="rollAllBtn">
+                    <span class="roll-all-icon">&#x2726;</span>
+                    <span>Roll All (One-Time)</span>
+                </button>
             </div>
 
             <div class="prompts-container" id="promptsContainer">
@@ -1271,6 +1328,9 @@
             const twistPool = getTwistPool();
 
             for (let i = 0; i < 3; i++) {
+                const previousPrompt = previousPrompts[i];
+                const locks = getPromptLocks(previousPrompt);
+
                 // Get unique concept
                 let concept;
                 do {
@@ -1300,7 +1360,20 @@
                     genre: Math.random() > 0.5 ? getRandomItem(ideasData.genres) : null,
                     visualStyle: Math.random() > 0.6 ? getRandomItem(ideasData.visualStyles) : null,
                     emotion: Math.random() > 0.6 ? getRandomItem(ideasData.emotions) : null,
+                    locks: locks
                 };
+
+                if (previousPrompt) {
+                    if (locks.concept) {
+                        prompt.concept = previousPrompt.concept;
+                    }
+                    if (locks.constraint) {
+                        prompt.constraint = previousPrompt.constraint;
+                    }
+                    if (locks.twist) {
+                        prompt.twist = previousPrompt.twist;
+                    }
+                }
                 prompts.push(prompt);
             }
             return prompts;
@@ -1355,6 +1428,16 @@
                 card.setAttribute('role', 'button');
                 card.setAttribute('tabindex', '0');
 
+                const locks = prompt.locks || { concept: false, constraint: false, twist: false };
+                const conceptLockIcon = locks.concept ? '🔒' : '🔓';
+                const constraintLockIcon = locks.constraint ? '🔒' : '🔓';
+                const twistLockIcon = locks.twist ? '🔒' : '🔓';
+                const conceptLockClass = locks.concept ? 'is-locked' : '';
+                const constraintLockClass = locks.constraint ? 'is-locked' : '';
+                const twistLockClass = locks.twist ? 'is-locked' : '';
+                const constraintRerollDisabled = locks.constraint ? 'disabled' : '';
+                const twistRerollDisabled = locks.twist ? 'disabled' : '';
+
                 let flavorHTML = '';
                 if (prompt.genre || prompt.visualStyle || prompt.emotion) {
                     flavorHTML = '<div class="prompt-flavor">';
@@ -1376,7 +1459,14 @@
                     <div class="prompt-number">0${index + 1}</div>
                     <div class="prompt-content">
                         <div class="prompt-section">
-                            <span class="prompt-label">Concept</span>
+                            <div class="prompt-section-header">
+                                <span class="prompt-label">Concept</span>
+                                <div class="prompt-section-controls">
+                                    <button class="prompt-lock-btn ${conceptLockClass}" type="button" data-field="concept" aria-pressed="${locks.concept}">
+                                        ${conceptLockIcon}
+                                    </button>
+                                </div>
+                            </div>
                             <p class="prompt-text concept">${prompt.concept}</p>
                         </div>
                         <div class="prompt-section">
@@ -1443,6 +1533,7 @@
         // EVENT HANDLERS
         // ============================================
         const mainRollBtn = document.getElementById('mainRollBtn');
+        const rollAllBtn = document.getElementById('rollAllBtn');
         const rollAgainBtn = document.getElementById('rollAgainBtn');
         const promptsContainer = document.getElementById('promptsContainer');
         const bonusRollBtn = document.getElementById('bonusRollBtn');
@@ -1470,7 +1561,7 @@
                 dieIcon.textContent = getRandomDieFace();
 
                 // Generate and show prompts
-                const prompts = generatePrompts();
+                const prompts = generatePrompts(resultsState.generatedPrompts);
                 renderPrompts(prompts);
 
                 // Save to state
@@ -1490,8 +1581,7 @@
         mainRollBtn.addEventListener('click', handleMainRoll);
         rollAgainBtn.addEventListener('click', handleMainRoll);
 
-        // Bonus roll handler
-        bonusRollBtn.addEventListener('click', () => {
+        function triggerBonusRoll() {
             const bonus = getRandomItem(ideasData.bonuses);
             const bonusText = getEntryText(bonus);
             bonusResult.textContent = bonusText;
@@ -1510,36 +1600,36 @@
                 bonusResult.style.opacity = '1';
                 bonusResult.style.transform = 'translateX(0)';
             }, 10);
-        });
+        }
+
+        // Bonus roll handler
+        bonusRollBtn.addEventListener('click', triggerBonusRoll);
 
         // Mini rollers
         const miniPlaceholderText = 'Click roll to reveal...';
 
-        document.querySelectorAll('.mini-roll-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const type = btn.dataset.type;
-                const resultEl = document.querySelector(`[data-result="${type}"]`);
+        function rollMini(type) {
+            const resultEl = document.querySelector(`[data-result="${type}"]`);
 
-                let result;
-                if (type === 'places') {
-                    result = getRandomItem(ideasData.places);
-                } else if (type === 'objects') {
-                    result = getRandomItem(ideasData.objects);
-                } else if (type === 'characters') {
-                    result = getRandomItem(ideasData.characters);
-                } else if (type === 'genres') {
-                    result = getRandomItem(ideasData.genres);
-                }
+            let result;
+            if (type === 'places') {
+                result = getRandomItem(ideasData.places);
+            } else if (type === 'objects') {
+                result = getRandomItem(ideasData.objects);
+            } else if (type === 'characters') {
+                result = getRandomItem(ideasData.characters);
+            } else if (type === 'genres') {
+                result = getRandomItem(ideasData.genres);
+            }
 
-                // Save to state
-                const resultText = getEntryText(result);
-                resultsState.miniRollers[type] = resultText;
-                updateResultsDisplay();
+            const resultText = getEntryText(result);
+            resultsState.miniRollers[type] = resultText;
+            updateResultsDisplay();
 
+            if (resultEl) {
                 resultEl.classList.remove('empty');
                 resultEl.textContent = resultText;
 
-                // Animate
                 resultEl.style.opacity = '0';
                 resultEl.style.transform = 'translateY(10px)';
                 setTimeout(() => {
@@ -1547,8 +1637,34 @@
                     resultEl.style.opacity = '1';
                     resultEl.style.transform = 'translateY(0)';
                 }, 10);
+            }
+        }
+
+        document.querySelectorAll('.mini-roll-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                rollMini(btn.dataset.type);
             });
         });
+
+        function handleRollAll() {
+            if (rollAllBtn.classList.contains('is-used')) {
+                return;
+            }
+
+            rollAllBtn.classList.add('rolling');
+            handleMainRoll();
+
+            setTimeout(() => {
+                triggerBonusRoll();
+                ['places', 'objects', 'characters', 'genres'].forEach(rollMini);
+                rollAllBtn.classList.remove('rolling');
+                rollAllBtn.classList.add('is-used');
+                rollAllBtn.setAttribute('disabled', 'disabled');
+                rollAllBtn.querySelector('span:last-child').textContent = 'Challenge Locked';
+            }, 700);
+        }
+
+        rollAllBtn.addEventListener('click', handleRollAll);
 
         document.querySelectorAll('.mini-clear-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1825,6 +1941,10 @@
                 el.classList.add('empty');
                 el.textContent = miniPlaceholderText;
             });
+
+            rollAllBtn.classList.remove('is-used');
+            rollAllBtn.removeAttribute('disabled');
+            rollAllBtn.querySelector('span:last-child').textContent = 'Roll All (One-Time)';
 
             updateResultsDisplay();
         }
