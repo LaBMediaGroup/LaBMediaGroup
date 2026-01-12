@@ -1124,6 +1124,39 @@
             return shuffled.slice(0, count);
         }
 
+        function normalizeIdeaEntry(entry) {
+            if (typeof entry === 'string') {
+                return { text: entry, tags: { tone: ['neutral'], cast: [], budget: [] } };
+            }
+            const tags = entry.tags || {};
+            const tone = Array.isArray(tags.tone) && tags.tone.length ? tags.tone : ['neutral'];
+            const cast = Array.isArray(tags.cast) ? tags.cast : [];
+            const budget = Array.isArray(tags.budget) ? tags.budget : [];
+            const normalized = {
+                ...entry,
+                tags: {
+                    tone,
+                    cast,
+                    budget
+                }
+            };
+            if (typeof tags.intensity === 'number') {
+                normalized.tags.intensity = tags.intensity;
+            }
+            return normalized;
+        }
+
+        function filterByTone(entries, selectedTone, minimumCount) {
+            const normalizedEntries = entries.map(normalizeIdeaEntry);
+            const filteredEntries = normalizedEntries.filter(entry =>
+                entry.tags.tone.includes(selectedTone) || entry.tags.tone.includes('neutral')
+            );
+            if (filteredEntries.length < minimumCount) {
+                return normalizedEntries;
+            }
+            return filteredEntries;
+        }
+
         // Dice face characters
         const diceFaces = ['\u2680', '\u2681', '\u2682', '\u2683', '\u2684', '\u2685'];
 
@@ -1169,34 +1202,38 @@
             const usedConcepts = new Set();
             const usedConstraints = new Set();
             const usedTwists = new Set();
+            const selectedTone = 'neutral';
+            const conceptPool = filterByTone(ideasData.concepts, selectedTone, 3);
+            const constraintPool = filterByTone(ideasData.constraints, selectedTone, 3);
+            const twistPool = filterByTone(ideasData.twists, selectedTone, 3);
 
             for (let i = 0; i < 3; i++) {
                 // Get unique concept
                 let concept;
                 do {
-                    concept = getRandomItem(ideasData.concepts);
-                } while (usedConcepts.has(concept) && usedConcepts.size < ideasData.concepts.length);
-                usedConcepts.add(concept);
+                    concept = getRandomItem(conceptPool);
+                } while (usedConcepts.has(concept.text) && usedConcepts.size < conceptPool.length);
+                usedConcepts.add(concept.text);
 
                 // Get unique constraint
                 let constraint;
                 do {
-                    constraint = getRandomItem(ideasData.constraints);
-                } while (usedConstraints.has(constraint.text) && usedConstraints.size < ideasData.constraints.length);
+                    constraint = getRandomItem(constraintPool);
+                } while (usedConstraints.has(constraint.text) && usedConstraints.size < constraintPool.length);
                 usedConstraints.add(constraint.text);
 
                 // Get unique twist
                 let twist;
                 do {
-                    twist = getRandomItem(ideasData.twists);
-                } while (usedTwists.has(twist) && usedTwists.size < ideasData.twists.length);
-                usedTwists.add(twist);
+                    twist = getRandomItem(twistPool);
+                } while (usedTwists.has(twist.text) && usedTwists.size < twistPool.length);
+                usedTwists.add(twist.text);
 
                 // Optional flavor elements (rotate, don't force all)
                 const prompt = {
-                    concept: concept,
+                    concept: concept.text,
                     constraint: constraint,
-                    twist: twist,
+                    twist: twist.text,
                     genre: Math.random() > 0.5 ? getRandomItem(ideasData.genres) : null,
                     visualStyle: Math.random() > 0.6 ? getRandomItem(ideasData.visualStyles) : null,
                     emotion: Math.random() > 0.6 ? getRandomItem(ideasData.emotions) : null,

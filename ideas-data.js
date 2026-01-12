@@ -1,15 +1,52 @@
 // Ideas Generator Data
 // Short film prompts, locations, objects, and characters for filmmakers
 
+const defaultIdeaTags = () => ({
+    tone: ['neutral'],
+    cast: [],
+    budget: []
+});
+
+const normalizeIdeaEntry = (entry) => {
+    if (typeof entry === 'string') {
+        return { text: entry, tags: defaultIdeaTags() };
+    }
+    const tags = entry.tags || {};
+    const tone = Array.isArray(tags.tone) && tags.tone.length ? tags.tone : ['neutral'];
+    const cast = Array.isArray(tags.cast) ? tags.cast : [];
+    const budget = Array.isArray(tags.budget) ? tags.budget : [];
+    const normalized = {
+        ...entry,
+        tags: {
+            tone,
+            cast,
+            budget
+        }
+    };
+    if (typeof tags.intensity === 'number') {
+        normalized.tags.intensity = tags.intensity;
+    }
+    return normalized;
+};
+
 const ideasData = {
     // ============================================
     // CORE CONCEPTS - Central ideas/situations
     // Evocative 1-2 sentence scenarios
     // ============================================
     concepts: [
-        "A stranger is sitting in your usual coffee shop seat. You decide to wait them out.",
-        "Someone finds a phone on a park bench with one missed call—from their own number.",
-        "Two people meet at an intersection. Both are running late to the same event, but neither knows it yet.",
+        {
+            text: "A stranger is sitting in your usual coffee shop seat. You decide to wait them out.",
+            tags: { tone: ['neutral', 'dark'], cast: ['two'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "A cashier is overly cheerful. The customer slowly realizes the cashier is stalling them from leaving.",
+            tags: { tone: ['horror', 'dark'], cast: ['two'], budget: ['micro'], intensity: 4 }
+        },
+        {
+            text: "Two strangers compete for the last available outlet. The fight gets intimate, fast.",
+            tags: { tone: ['comedy', 'dark'], cast: ['two'], budget: ['micro'], intensity: 3 }
+        },
         "A person rehearses the same conversation in their car before going inside. We never see who they're meeting.",
         "Someone returns to their childhood home to retrieve one specific object. The new owners let them in.",
         "A delivery driver has been circling the same block for an hour. They can't bring themselves to make this delivery.",
@@ -57,7 +94,7 @@ const ideasData = {
         "A person takes a photo of themselves. They delete it immediately. They try again.",
         "Two people make eye contact across a crowded room. One looks away. The other doesn't.",
         "A child asks a parent a question they can't answer honestly."
-    ],
+    ].map(normalizeIdeaEntry),
 
     // ============================================
     // CONSTRAINTS - Rules that shape the story
@@ -103,7 +140,7 @@ const ideasData = {
         { text: "The entire story must fit in a 3-minute runtime", type: "time" },
         { text: "We only see what fits in a mirror", type: "visual" },
         { text: "The action takes place in complete silence until the final moment", type: "audio" }
-    ],
+    ].map(normalizeIdeaEntry),
 
     // ============================================
     // TWISTS - Complications that reframe the story
@@ -149,7 +186,7 @@ const ideasData = {
         "The thing they're hiding is obvious to everyone but them.",
         "This isn't the beginning—it's the middle.",
         "The real story is what we don't see."
-    ],
+    ].map(normalizeIdeaEntry),
 
     // ============================================
     // PLACES - Low-budget filming locations
