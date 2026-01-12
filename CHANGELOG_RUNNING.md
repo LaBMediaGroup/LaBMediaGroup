@@ -984,3 +984,12 @@ Quick test checklist:
 - Click one prompt card; confirm Current Results shows only the selected prompt plus any bonus/quick rolls.
 - Roll a bonus and a quick roller; confirm they appear alongside the selected prompt.
 - Open DevTools console on ideas.html; confirm no errors.
+2026-01-12 | 4:14AM EST
+———————————————————————
+Change: Add select-one cue above prompts and per-tile clear actions for Quick Rollers.
+Files touched: ideas.html, CHANGELOG_RUNNING.md
+Notes: Added a subtle "Select One" hint and clear buttons for each mini roller tile.
+Quick test checklist:
+- Open ideas.html; click Roll the Die and confirm "Select One" appears between the header and Roll Again button.
+- In Quick Rollers, click Roll on a tile and then Clear; confirm that tile resets to "Click roll to reveal..." and Current Results updates.
+- Open DevTools console on ideas.html; confirm no errors.
