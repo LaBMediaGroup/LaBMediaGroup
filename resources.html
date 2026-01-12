@@ -93,6 +93,27 @@
         
         .nav-back:hover { opacity: 0.5; }
 
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover { opacity: 0.5; }
+
         /* ============================================
            HERO SECTION
         ============================================ */
@@ -1843,7 +1864,14 @@
         <a href="index.html">
             <img src="images/WhiteBeakerLogo.png" alt="LaB" class="nav-logo">
         </a>
-        <a href="index.html" class="nav-back">← Back</a>
+        <ul class="nav-links">
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="ideas.html">Ideas</a></li>
+            <li><a href="plan-your-project.html">Plan</a></li>
+            <li><a href="portfolio.html">Work</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
     </nav>
     
     <div class="container proto-grid">
