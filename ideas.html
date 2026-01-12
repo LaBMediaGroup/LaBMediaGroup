@@ -1153,6 +1153,25 @@
             return normalized;
         }
 
+        function entryMaxCast(entry) {
+            const normalized = normalizeIdeaEntry(entry);
+            const cast = normalized.tags.cast || [];
+            if (cast.includes('solo')) return 1;
+            if (cast.includes('two')) return 2;
+            if (cast.includes('ensemble')) return 3;
+            return null;
+        }
+
+        function filterByMaxCast(entries, maxCast) {
+            if (!maxCast) return entries.map(normalizeIdeaEntry);
+            const normalized = entries.map(normalizeIdeaEntry);
+            const filtered = normalized.filter(entry => {
+                const max = entryMaxCast(entry);
+                return max == null || max <= maxCast;
+            });
+            return filtered.length ? filtered : normalized;
+        }
+
         function filterByTone(entries, selectedTone, minimumCount) {
             const normalizedEntries = entries.map(normalizeIdeaEntry);
             const filteredEntries = normalizedEntries.filter(entry =>
@@ -1210,7 +1229,10 @@
             const usedConstraints = new Set();
             const usedTwists = new Set();
             const selectedTone = 'neutral';
-            const conceptPool = filterByTone(ideasData.concepts, selectedTone, 3);
+            const localMode = true;
+            const maxCast = localMode ? 2 : null;
+            let conceptPool = filterByTone(ideasData.concepts, selectedTone, 3);
+            conceptPool = filterByMaxCast(conceptPool, maxCast);
             const constraintPool = filterByTone(ideasData.constraints, selectedTone, 3);
             const twistPool = filterByTone(ideasData.twists, selectedTone, 3);
 
