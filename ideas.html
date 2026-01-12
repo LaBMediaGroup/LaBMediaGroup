@@ -1,0 +1,2258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
+    <title>Ideas | LaB Media - Short Film Prompt Generator</title>
+    <link rel="canonical" href="https://labmedia.work/ideas.html">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Roll the die and spark your next short film. An interactive prompt generator for filmmakers with concepts, constraints, locations, and bonus challenges.">
+    <meta name="keywords" content="short film ideas, film prompts, filmmaking inspiration, story generator, indie film concepts, screenplay ideas, creative writing prompts">
+    <meta name="author" content="LaB Media">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://labmedia.work/ideas.html">
+    <meta property="og:title" content="Ideas | LaB Media - Short Film Prompt Generator">
+    <meta property="og:description" content="Roll the die and spark your next short film. An interactive prompt generator for filmmakers.">
+    <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://labmedia.work/ideas.html">
+    <meta name="twitter:title" content="Ideas | LaB Media - Short Film Prompt Generator">
+    <meta name="twitter:description" content="Roll the die and spark your next short film. An interactive prompt generator for filmmakers.">
+    <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Prototype Design System -->
+    <link rel="stylesheet" href="prototype-theme.css">
+
+    <!-- Ideas Data -->
+    <script src="ideas-data.js"></script>
+
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-400: #888888;
+            --gray-600: #555555;
+            --gray-800: #1A1A1A;
+            --gray-900: #0D0D0D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--black);
+            color: var(--gray-400);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* ============================================
+           NAVIGATION
+        ============================================ */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+
+        .nav-logo {
+            height: 22px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.5;
+        }
+
+        .nav-links a.active {
+            opacity: 1;
+            border-bottom: 1px solid var(--white);
+            padding-bottom: 2px;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            padding: 0.75rem;
+            min-width: 44px;
+            min-height: 44px;
+            z-index: 1001;
+            background: none;
+            border: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .menu-toggle span {
+            width: 22px;
+            height: 2px;
+            background: var(--white);
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(3px, 3px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(3px, -3px);
+        }
+
+        /* ============================================
+           PAGE SHELL
+        ============================================ */
+        .page-shell {
+            min-height: 100vh;
+            padding: clamp(6rem, 12vw, 10rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 8vw, 6rem);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ============================================
+           HERO SECTION
+        ============================================ */
+        .hero-section {
+            text-align: center;
+            margin-bottom: clamp(3rem, 8vw, 6rem);
+        }
+
+        .page-title {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: var(--gray-400);
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+        }
+
+        .page-description {
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--gray-600);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        /* ============================================
+           MAIN GENERATOR
+        ============================================ */
+        .generator-section {
+            margin-bottom: clamp(4rem, 10vw, 8rem);
+        }
+
+        .roll-container {
+            text-align: center;
+            margin-bottom: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .roll-button {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem 3rem;
+            background: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .roll-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .roll-button:hover {
+            color: var(--black);
+        }
+
+        .roll-button:hover::before {
+            left: 0;
+        }
+
+        .roll-button:active {
+            transform: scale(0.98);
+        }
+
+        .die-icon {
+            font-size: 1.5rem;
+            display: inline-block;
+        }
+
+        .roll-button.rolling .die-icon {
+            animation: dieRoll 0.6s ease-out;
+        }
+
+        @keyframes dieRoll {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(360deg) scale(1.2); }
+            100% { transform: rotate(720deg) scale(1); }
+        }
+
+        .roll-all-btn {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .roll-all-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .roll-all-btn.rolling .roll-all-icon {
+            animation: spin-jolt 0.6s ease-in-out;
+        }
+
+        .roll-all-btn.rolling {
+            animation: shake-lines 0.6s ease-in-out;
+        }
+
+        .roll-all-btn.is-used {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @keyframes spin-jolt {
+            0% { transform: rotate(0deg) scale(1); }
+            40% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes shake-lines {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-4px); }
+            40% { transform: translateX(4px); }
+            60% { transform: translateX(-3px); }
+            80% { transform: translateX(3px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* ============================================
+           GENRE TOGGLES
+        ============================================ */
+        .genre-toggles {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+
+        .toggle-checkbox {
+            display: none;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 26px;
+            background: var(--gray-800);
+            border: 1px solid var(--gray-600);
+            border-radius: 13px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--gray-600);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-checkbox:checked + .toggle-switch.horror {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #EF4444;
+        }
+
+        .toggle-checkbox:checked + .toggle-switch.horror::after {
+            left: 26px;
+            background: #EF4444;
+        }
+
+        .toggle-checkbox:checked + .toggle-switch.comedy {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: #22C55E;
+        }
+
+        .toggle-checkbox:checked + .toggle-switch.comedy::after {
+            left: 26px;
+            background: #22C55E;
+        }
+
+        .toggle-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-400);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Dynamic button styling based on toggle state */
+        .roll-button.horror-mode {
+            background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%);
+            border-color: #EF4444;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .roll-button.horror-mode::before {
+            background: #EF4444;
+        }
+
+        .roll-button.comedy-mode {
+            background: linear-gradient(135deg, #065f46 0%, #064e3b 100%);
+            border-color: #22C55E;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+        }
+
+        .roll-button.comedy-mode::before {
+            background: #22C55E;
+        }
+
+        .roll-button.both-mode {
+            background: linear-gradient(135deg, #7f1d1d 0%, #065f46 100%);
+            border-color: #F59E0B;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .roll-button.both-mode::before {
+            background: #F59E0B;
+        }
+
+        /* ============================================
+           PROMPTS CONTAINER
+        ============================================ */
+        .prompts-container {
+            display: none;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .prompts-container.visible {
+            display: flex;
+        }
+
+        .prompts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .prompts-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .prompts-hint {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gray-600);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .roll-again-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .roll-again-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        /* ============================================
+           PROMPT CARDS
+        ============================================ */
+        .prompts-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .prompt-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--gray-800);
+            padding: 2rem;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .prompt-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--gray-600);
+        }
+
+        .prompt-card.is-selected {
+            border-color: var(--white);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .prompt-card.is-selected .prompt-number {
+            color: var(--gray-600);
+        }
+
+        .prompt-number {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-600);
+            line-height: 1;
+        }
+
+        .prompt-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .prompt-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .prompt-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .prompt-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .prompt-reroll-btn {
+            border: 1px solid var(--gray-600);
+            background: transparent;
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            letter-spacing: 0;
+            padding: 0.35rem 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            line-height: 1;
+        }
+
+        .prompt-reroll-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .prompt-text {
+            color: var(--white);
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .prompt-text.concept {
+            font-size: 1.1rem;
+        }
+
+        .prompt-text.constraint {
+            color: var(--gray-400);
+            font-style: italic;
+        }
+
+        .prompt-text.twist {
+            color: var(--gray-400);
+        }
+
+        .prompt-flavor {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-800);
+        }
+
+        .flavor-badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.3rem 0.6rem;
+            background: var(--gray-900);
+            border: 1px solid var(--gray-800);
+            color: var(--gray-400);
+        }
+
+        .flavor-badge.genre {
+            border-color: var(--proto-orange, #FF8C42);
+            color: var(--proto-orange, #FF8C42);
+        }
+
+        .flavor-badge.visual {
+            border-color: var(--proto-cyan, #00D9FF);
+            color: var(--proto-cyan, #00D9FF);
+        }
+
+        .flavor-badge.emotion {
+            border-color: var(--proto-green, #2ECC71);
+            color: var(--proto-green, #2ECC71);
+        }
+
+        /* Optional genre-specific details */
+        .prompt-section.genre-detail {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 2px solid var(--gray-600);
+            margin-top: 1rem;
+        }
+
+        .prompt-section.genre-detail.creepy {
+            border-left-color: #EF4444;
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .prompt-section.genre-detail.comedy {
+            border-left-color: #22C55E;
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .prompt-section.genre-detail .prompt-label {
+            color: var(--white);
+        }
+
+        /* ============================================
+           BONUS CHALLENGE SECTION
+        ============================================ */
+        .bonus-section {
+            margin-bottom: clamp(4rem, 10vw, 8rem);
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--gray-800);
+        }
+
+        .bonus-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .bonus-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--white);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .bonus-subtitle {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            margin-top: 0.25rem;
+        }
+
+        .bonus-roll-btn {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bonus-roll-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .bonus-result {
+            padding: 1.5rem;
+            background: var(--gray-900);
+            border-left: 2px solid var(--proto-orange, #FF8C42);
+            color: var(--white);
+            font-size: 1rem;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .bonus-result.visible {
+            display: block;
+        }
+
+        .bonus-placeholder {
+            color: var(--gray-600);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* ============================================
+           MINI ROLLERS SECTION
+        ============================================ */
+        .mini-rollers-section {
+            margin-bottom: clamp(4rem, 10vw, 8rem);
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--white);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+        }
+
+        .mini-rollers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .mini-roller {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--gray-800);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mini-roller:hover {
+            border-color: var(--gray-600);
+        }
+
+        .mini-roller-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .mini-roller-icon {
+            font-size: 1.5rem;
+        }
+
+        .mini-roller-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-400);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .mini-roll-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mini-roller-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .mini-clear-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--gray-600);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mini-clear-btn:hover {
+            border-color: var(--gray-600);
+            color: var(--gray-400);
+        }
+
+        .mini-roll-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .mini-roller-result {
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            color: var(--white);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .mini-roller-result.empty {
+            color: var(--gray-600);
+            font-style: italic;
+            font-size: 0.8rem;
+        }
+
+        /* ============================================
+           CURRENT RESULTS SECTION
+        ============================================ */
+        .results-section {
+            display: none;
+            margin-bottom: clamp(4rem, 10vw, 8rem);
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--gray-800);
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-800);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .results-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--white);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .results-btn {
+            padding: 0.75rem 1.25rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .results-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .results-btn.primary {
+            background: var(--white);
+            border-color: var(--white);
+            color: var(--black);
+        }
+
+        .results-btn.primary:hover {
+            background: var(--gray-400);
+            border-color: var(--gray-400);
+        }
+
+        .results-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .results-group {
+            padding: 1.5rem;
+            background: var(--gray-900);
+            border-left: 2px solid var(--gray-600);
+        }
+
+        .results-group-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-400);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .results-group-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .results-item {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--gray-800);
+        }
+
+        .results-item-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-item-text {
+            color: var(--white);
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        .results-prompt-card {
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--gray-800);
+            margin-bottom: 1rem;
+        }
+
+        .results-prompt-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .results-prompt-number {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+
+        .results-prompt-section {
+            margin-bottom: 0.75rem;
+        }
+
+        .results-prompt-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .results-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .results-empty {
+            color: var(--gray-600);
+            font-style: italic;
+            font-size: 0.85rem;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        @media (max-width: 640px) {
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .results-mini-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============================================
+           FOOTER
+        ============================================ */
+        .footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--gray-800);
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        .footer-credit {
+            font-size: 0.7rem;
+            color: var(--gray-600);
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 1024px) {
+            .mini-rollers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 100%;
+                max-width: 300px;
+                background: rgba(0, 0, 0, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.4s ease;
+                mix-blend-mode: normal;
+                border-left: 1px solid var(--gray-800);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links a {
+                opacity: 1;
+                font-size: 0.9rem;
+                color: var(--white) !important;
+                mix-blend-mode: normal;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .prompts-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .mini-rollers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .prompt-card {
+                padding: 1.5rem;
+            }
+
+            .prompt-number {
+                font-size: 1.5rem;
+                top: 0.75rem;
+                right: 1rem;
+            }
+
+            .roll-button {
+                padding: 1.25rem 2rem;
+                font-size: 0.85rem;
+            }
+
+            .bonus-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB" class="nav-logo">
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="ideas.html" class="active">Ideas</a></li>
+            <li><a href="plan-your-project.html">Plan</a></li>
+            <li><a href="portfolio.html">Work</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main class="page-shell proto-grid">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="page-title">Ideas</h1>
+            <p class="page-subtitle">Roll the die. Spark a film.</p>
+            <p class="page-description">
+                Generate short film prompts designed to be shot this weekend.
+                Each roll gives you a concept, a constraint, and a twist.
+                Low-budget friendly, cliche-free, and actually filmable.
+            </p>
+        </section>
+
+        <!-- Main Generator -->
+        <section class="generator-section">
+            <!-- Genre Toggles -->
+            <div class="genre-toggles">
+                <label class="toggle-label">
+                    <input type="checkbox" id="toggleHorror" class="toggle-checkbox">
+                    <span class="toggle-switch horror"></span>
+                    <span class="toggle-text">Horror</span>
+                </label>
+                <label class="toggle-label">
+                    <input type="checkbox" id="toggleComedy" class="toggle-checkbox">
+                    <span class="toggle-switch comedy"></span>
+                    <span class="toggle-text">Comedy</span>
+                </label>
+            </div>
+
+            <div class="roll-container">
+                <button class="roll-button" id="mainRollBtn">
+                    <span class="die-icon">&#x2680;</span>
+                    <span class="roll-button-text">Roll the Die</span>
+                </button>
+                <button class="roll-all-btn" id="rollAllBtn">
+                    <span class="roll-all-icon">&#x2726;</span>
+                    <span>Roll All (One-Time)</span>
+                </button>
+            </div>
+
+            <div class="prompts-container" id="promptsContainer">
+                <div class="prompts-header">
+                    <span class="prompts-title">Your Prompts</span>
+                    <span class="prompts-hint">Select One</span>
+                    <button class="roll-again-btn" id="rollAgainBtn">Roll Again</button>
+                </div>
+                <div class="prompts-grid" id="promptsGrid">
+                    <!-- Prompt cards will be inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Bonus Challenge -->
+        <section class="bonus-section proto-corners">
+            <span class="proto-corner-tl"></span>
+            <span class="proto-corner-tr"></span>
+            <span class="proto-corner-bl"></span>
+            <span class="proto-corner-br"></span>
+
+            <div class="bonus-header">
+                <div>
+                    <h2 class="bonus-title">Extra Points</h2>
+                    <p class="bonus-subtitle">Add a bonus challenge to your film</p>
+                </div>
+                <button class="bonus-roll-btn" id="bonusRollBtn">
+                    <span>&#x2680;</span>
+                    <span>Roll Bonus</span>
+                </button>
+            </div>
+            <div class="bonus-result" id="bonusResult"></div>
+            <p class="bonus-placeholder" id="bonusPlaceholder">Roll to reveal a bonus challenge...</p>
+        </section>
+
+        <!-- Mini Rollers -->
+        <section class="mini-rollers-section">
+            <div class="section-header">
+                <h2 class="section-title">Quick Rollers</h2>
+                <p class="section-subtitle">Need a specific element? Roll individually.</p>
+            </div>
+
+            <div class="mini-rollers-grid">
+                <!-- Places Roller -->
+                <div class="mini-roller proto-corners">
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="mini-roller-header">
+                        <span class="mini-roller-icon">&#x1F3E0;</span>
+                        <span class="mini-roller-label">Place</span>
+                    </div>
+                    <div class="mini-roller-actions">
+                        <button class="mini-roll-btn" data-type="places">Roll</button>
+                        <button class="mini-clear-btn" data-type="places">Clear</button>
+                    </div>
+                    <div class="mini-roller-result empty" data-result="places">Click roll to reveal...</div>
+                </div>
+
+                <!-- Objects Roller -->
+                <div class="mini-roller proto-corners">
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="mini-roller-header">
+                        <span class="mini-roller-icon">&#x1F511;</span>
+                        <span class="mini-roller-label">Object</span>
+                    </div>
+                    <div class="mini-roller-actions">
+                        <button class="mini-roll-btn" data-type="objects">Roll</button>
+                        <button class="mini-clear-btn" data-type="objects">Clear</button>
+                    </div>
+                    <div class="mini-roller-result empty" data-result="objects">Click roll to reveal...</div>
+                </div>
+
+                <!-- Characters Roller -->
+                <div class="mini-roller proto-corners">
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="mini-roller-header">
+                        <span class="mini-roller-icon">&#x1F464;</span>
+                        <span class="mini-roller-label">Character</span>
+                    </div>
+                    <div class="mini-roller-actions">
+                        <button class="mini-roll-btn" data-type="characters">Roll</button>
+                        <button class="mini-clear-btn" data-type="characters">Clear</button>
+                    </div>
+                    <div class="mini-roller-result empty" data-result="characters">Click roll to reveal...</div>
+                </div>
+
+                <!-- Genre Roller -->
+                <div class="mini-roller proto-corners">
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="mini-roller-header">
+                        <span class="mini-roller-icon">&#x1F3AC;</span>
+                        <span class="mini-roller-label">Genre</span>
+                    </div>
+                    <div class="mini-roller-actions">
+                        <button class="mini-roll-btn" data-type="genres">Roll</button>
+                        <button class="mini-clear-btn" data-type="genres">Clear</button>
+                    </div>
+                    <div class="mini-roller-result empty" data-result="genres">Click roll to reveal...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Current Results Section -->
+        <section class="results-section proto-corners" id="resultsSection">
+            <span class="proto-corner-tl"></span>
+            <span class="proto-corner-tr"></span>
+            <span class="proto-corner-bl"></span>
+            <span class="proto-corner-br"></span>
+
+            <div class="results-header">
+                <h2 class="results-title">Current Results</h2>
+                <div class="results-actions">
+                    <button class="results-btn primary" id="downloadPdfBtn">
+                        <span>📄</span>
+                        <span>Download PDF</span>
+                    </button>
+                    <button class="results-btn" id="clearResultsBtn">
+                        <span>🗑️</span>
+                        <span>Clear All</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="results-content" id="resultsContent">
+                <p class="results-empty">Roll some dice to see your results here...</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="portfolio.html">Work</a>
+                <a href="resources.html">Resources</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <p class="footer-credit">Made in Shelby Twp, MI with ❤️</p>
+        </footer>
+    </main>
+
+    <script>
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        function getEntryText(entry) {
+            if (entry == null) return '';
+            if (typeof entry === 'string') return entry;
+            if (typeof entry.text === 'string') return entry.text;
+            return String(entry);
+        }
+
+        function getRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function getRandomItems(array, count, unique = true) {
+            if (!unique) {
+                return Array.from({ length: count }, () => getRandomItem(array));
+            }
+            const shuffled = [...array].sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, count);
+        }
+
+        function normalizeIdeaEntryLocal(entry) {
+            if (typeof entry === 'string') {
+                return { text: entry, tags: { tone: ['neutral'], cast: [], budget: [] } };
+            }
+            const tags = entry.tags || {};
+            const tone = Array.isArray(tags.tone) && tags.tone.length ? tags.tone : ['neutral'];
+            const cast = Array.isArray(tags.cast) ? tags.cast : [];
+            const budget = Array.isArray(tags.budget) ? tags.budget : [];
+            const normalized = {
+                ...entry,
+                tags: {
+                    tone,
+                    cast,
+                    budget
+                }
+            };
+            if (typeof tags.intensity === 'number') {
+                normalized.tags.intensity = tags.intensity;
+            }
+            return normalized;
+        }
+
+        function entryMaxCast(entry) {
+            const normalized = normalizeIdeaEntryLocal(entry);
+            const cast = normalized.tags.cast || [];
+            if (cast.includes('solo')) return 1;
+            if (cast.includes('two')) return 2;
+            if (cast.includes('ensemble')) return 3;
+            return null;
+        }
+
+        function filterByMaxCast(entries, maxCast) {
+            if (!maxCast) return entries.map(normalizeIdeaEntryLocal);
+            const normalized = entries.map(normalizeIdeaEntryLocal);
+            const filtered = normalized.filter(entry => {
+                const max = entryMaxCast(entry);
+                return max == null || max <= maxCast;
+            });
+            return filtered.length ? filtered : normalized;
+        }
+
+        function filterByTone(entries, selectedTone, minimumCount) {
+            const normalizedEntries = entries.map(normalizeIdeaEntryLocal);
+            const filteredEntries = normalizedEntries.filter(entry =>
+                entry.tags.tone.includes(selectedTone) || entry.tags.tone.includes('neutral')
+            );
+            if (filteredEntries.length < minimumCount) {
+                return normalizedEntries;
+            }
+            return filteredEntries;
+        }
+
+        // Dice face characters
+        const diceFaces = ['\u2680', '\u2681', '\u2682', '\u2683', '\u2684', '\u2685'];
+
+        function getRandomDieFace() {
+            return diceFaces[Math.floor(Math.random() * diceFaces.length)];
+        }
+
+        // ============================================
+        // RESULTS STATE
+        // ============================================
+        const resultsState = {
+            prompts: [],
+            generatedPrompts: [],
+            selectedPromptIndex: null,
+            bonus: null,
+            miniRollers: {
+                places: null,
+                objects: null,
+                characters: null,
+                genres: null
+            }
+        };
+
+        // Pre-load the logo image for PDF
+        let logoImage = null;
+        const logoImg = new Image();
+        logoImg.crossOrigin = 'anonymous';
+        logoImg.onload = function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = logoImg.width;
+            canvas.height = logoImg.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(logoImg, 0, 0);
+            logoImage = canvas.toDataURL('image/png');
+        };
+        logoImg.src = 'images/WhiteBeakerLogo.png';
+
+        // ============================================
+        // PROMPT GENERATION
+        // ============================================
+        const selectedTone = 'neutral';
+        const localMode = true;
+        const maxCast = localMode ? 2 : null;
+
+        function getConstraintPool() {
+            return filterByTone(ideasData.constraints, selectedTone, 3);
+        }
+
+        function getTwistPool() {
+            return filterByTone(ideasData.twists, selectedTone, 3);
+        }
+
+        function generatePrompts(previousPrompts = []) {
+            const prompts = [];
+            const usedConcepts = new Set();
+            const usedConstraints = new Set();
+            const usedTwists = new Set();
+            let conceptPool = filterByTone(ideasData.concepts, selectedTone, 3);
+            conceptPool = filterByMaxCast(conceptPool, maxCast);
+            const constraintPool = getConstraintPool();
+            const twistPool = getTwistPool();
+
+            // Check toggle states
+            const horrorToggle = document.getElementById('toggleHorror');
+            const comedyToggle = document.getElementById('toggleComedy');
+            const isHorrorMode = horrorToggle && horrorToggle.checked;
+            const isComedyMode = comedyToggle && comedyToggle.checked;
+
+            for (let i = 0; i < 3; i++) {
+                // Get unique concept
+                let concept;
+                do {
+                    concept = getRandomItem(conceptPool);
+                } while (usedConcepts.has(concept.text) && usedConcepts.size < conceptPool.length);
+                usedConcepts.add(concept.text);
+
+                // Get unique constraint - may use comedy mechanics if comedy mode active
+                let constraint;
+                if (isComedyMode && ideasData.comedyMechanics && ideasData.comedyMechanics.length > 0 && Math.random() > 0.5) {
+                    constraint = getRandomItem(ideasData.comedyMechanics);
+                } else {
+                    do {
+                        constraint = getRandomItem(constraintPool);
+                    } while (usedConstraints.has(getEntryText(constraint)) && usedConstraints.size < constraintPool.length);
+                }
+                usedConstraints.add(getEntryText(constraint));
+
+                // Get unique twist - may use comedy twists if comedy mode active
+                let twist;
+                if (isComedyMode && ideasData.comedyTwists && ideasData.comedyTwists.length > 0 && Math.random() > 0.5) {
+                    twist = getRandomItem(ideasData.comedyTwists);
+                } else {
+                    do {
+                        twist = getRandomItem(twistPool);
+                    } while (usedTwists.has(getEntryText(twist)) && usedTwists.size < twistPool.length);
+                }
+                usedTwists.add(getEntryText(twist));
+
+                // Optional flavor elements (rotate, don't force all)
+                const prompt = {
+                    concept: concept.text,
+                    constraint: normalizeIdeaEntryLocal(constraint),
+                    twist: getEntryText(twist),
+                    genre: Math.random() > 0.5 ? getRandomItem(ideasData.genres) : null,
+                    visualStyle: Math.random() > 0.6 ? getRandomItem(ideasData.visualStyles) : null,
+                    emotion: Math.random() > 0.6 ? getRandomItem(ideasData.emotions) : null
+                };
+
+                // Add optional creepy detail if horror mode or genre matches
+                if (ideasData.creepyEerie && ideasData.creepyEerie.length > 0) {
+                    const genreText = getEntryText(prompt.genre).toLowerCase();
+                    const shouldAddCreepy = isHorrorMode ||
+                                           genreText.includes('horror') ||
+                                           genreText.includes('thriller') ||
+                                           genreText.includes('mystery');
+                    if (shouldAddCreepy && Math.random() > 0.3) {
+                        prompt.creepyDetail = getEntryText(getRandomItem(ideasData.creepyEerie));
+                    }
+                }
+
+                // Add optional comedy beat if comedy mode or genre matches
+                if (ideasData.comedyComplications && ideasData.comedyComplications.length > 0) {
+                    const genreText = getEntryText(prompt.genre).toLowerCase();
+                    const shouldAddComedy = isComedyMode ||
+                                           genreText.includes('comedy') ||
+                                           genreText.includes('satire') ||
+                                           genreText.includes('rom-com');
+                    if (shouldAddComedy && Math.random() > 0.3) {
+                        prompt.comedyBeat = getEntryText(getRandomItem(ideasData.comedyComplications));
+                    }
+                }
+
+                prompts.push(prompt);
+            }
+            return prompts;
+        }
+
+        function getDifferentItem(pool, currentText) {
+            if (!pool.length) return null;
+            let next = getRandomItem(pool);
+            let attempts = 0;
+            while (pool.length > 1 && getEntryText(next) === currentText && attempts < 10) {
+                next = getRandomItem(pool);
+                attempts++;
+            }
+            return next;
+        }
+
+        function rerollPromptField(index, field) {
+            const prompt = resultsState.generatedPrompts[index];
+            if (!prompt) return;
+
+            if (field === 'constraint') {
+                const nextConstraint = getDifferentItem(getConstraintPool(), getEntryText(prompt.constraint));
+                if (!nextConstraint) return;
+                prompt.constraint = normalizeIdeaEntryLocal(nextConstraint);
+
+                const card = document.querySelector(`.prompt-card[data-prompt-index="${index}"]`);
+                if (card) {
+                    card.querySelector('.prompt-text.constraint').textContent = getEntryText(prompt.constraint);
+                }
+            }
+
+            if (field === 'twist') {
+                const nextTwist = getDifferentItem(getTwistPool(), prompt.twist);
+                if (!nextTwist) return;
+                prompt.twist = getEntryText(nextTwist);
+
+                const card = document.querySelector(`.prompt-card[data-prompt-index="${index}"]`);
+                if (card) {
+                    card.querySelector('.prompt-text.twist').textContent = prompt.twist;
+                }
+            }
+
+            updateResultsDisplay();
+        }
+
+        function renderPrompts(prompts) {
+            const grid = document.getElementById('promptsGrid');
+            grid.innerHTML = '';
+
+            prompts.forEach((prompt, index) => {
+                const card = document.createElement('div');
+                card.className = 'prompt-card proto-corners';
+                card.dataset.promptIndex = index;
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
+
+                let flavorHTML = '';
+                if (prompt.genre || prompt.visualStyle || prompt.emotion) {
+                    flavorHTML = '<div class="prompt-flavor">';
+                    if (prompt.genre) {
+                        flavorHTML += `<span class="flavor-badge genre">${getEntryText(prompt.genre)}</span>`;
+                    }
+                    if (prompt.visualStyle) {
+                        flavorHTML += `<span class="flavor-badge visual">${getEntryText(prompt.visualStyle)}</span>`;
+                    }
+                    if (prompt.emotion) {
+                        flavorHTML += `<span class="flavor-badge emotion">${getEntryText(prompt.emotion)}</span>`;
+                    }
+                    flavorHTML += '</div>';
+                }
+
+                let genreDetailsHTML = '';
+                if (prompt.creepyDetail) {
+                    genreDetailsHTML += `
+                        <div class="prompt-section genre-detail creepy">
+                            <span class="prompt-label">Creepy Detail</span>
+                            <p class="prompt-text">${prompt.creepyDetail}</p>
+                        </div>
+                    `;
+                }
+                if (prompt.comedyBeat) {
+                    genreDetailsHTML += `
+                        <div class="prompt-section genre-detail comedy">
+                            <span class="prompt-label">Comedy Beat</span>
+                            <p class="prompt-text">${prompt.comedyBeat}</p>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="prompt-number">0${index + 1}</div>
+                    <div class="prompt-content">
+                        <div class="prompt-section">
+                            <div class="prompt-section-header">
+                                <span class="prompt-label">Concept</span>
+                            </div>
+                            <p class="prompt-text concept">${prompt.concept}</p>
+                        </div>
+                        <div class="prompt-section">
+                            <div class="prompt-section-header">
+                                <span class="prompt-label">Constraint</span>
+                                <button class="prompt-reroll-btn" type="button" data-action="constraint">↻</button>
+                            </div>
+                            <p class="prompt-text constraint">${getEntryText(prompt.constraint)}</p>
+                        </div>
+                        <div class="prompt-section">
+                            <div class="prompt-section-header">
+                                <span class="prompt-label">Twist</span>
+                                <button class="prompt-reroll-btn" type="button" data-action="twist">↻</button>
+                            </div>
+                            <p class="prompt-text twist">${prompt.twist}</p>
+                        </div>
+                        ${genreDetailsHTML}
+                    </div>
+                    ${flavorHTML}
+                `;
+
+                card.addEventListener('click', (event) => {
+                    // Don't select card if clicking on a reroll button
+                    if (event.target.classList.contains('prompt-reroll-btn')) {
+                        return;
+                    }
+                    selectPrompt(index);
+                });
+
+                card.addEventListener('keydown', (event) => {
+                    if (event.target.classList.contains('prompt-reroll-btn')) {
+                        return;
+                    }
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        selectPrompt(index);
+                    }
+                });
+
+                card.querySelectorAll('.prompt-reroll-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        rerollPromptField(index, button.dataset.action);
+                    });
+                });
+
+                grid.appendChild(card);
+            });
+
+            // Animate cards in
+            animateCardsIn();
+        }
+
+        function animateCardsIn() {
+            const cards = document.querySelectorAll('.prompt-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+        }
+
+        // ============================================
+        // EVENT HANDLERS
+        // ============================================
+        const mainRollBtn = document.getElementById('mainRollBtn');
+        const rollAllBtn = document.getElementById('rollAllBtn');
+        const rollAgainBtn = document.getElementById('rollAgainBtn');
+        const promptsContainer = document.getElementById('promptsContainer');
+        const bonusRollBtn = document.getElementById('bonusRollBtn');
+        const bonusResult = document.getElementById('bonusResult');
+        const bonusPlaceholder = document.getElementById('bonusPlaceholder');
+
+        function handleMainRoll() {
+            const dieIcon = mainRollBtn.querySelector('.die-icon');
+
+            // Add rolling class for animation
+            mainRollBtn.classList.add('rolling');
+
+            // Cycle through die faces during animation
+            let rollCount = 0;
+            const rollInterval = setInterval(() => {
+                dieIcon.textContent = getRandomDieFace();
+                rollCount++;
+                if (rollCount > 10) {
+                    clearInterval(rollInterval);
+                }
+            }, 50);
+
+            setTimeout(() => {
+                mainRollBtn.classList.remove('rolling');
+                dieIcon.textContent = getRandomDieFace();
+
+                // Generate and show prompts
+                const prompts = generatePrompts(resultsState.generatedPrompts);
+                renderPrompts(prompts);
+
+                // Save to state
+                resultsState.generatedPrompts = prompts;
+                resultsState.prompts = prompts;
+                resultsState.selectedPromptIndex = null;
+                updateResultsDisplay();
+
+                // Show prompts container
+                promptsContainer.classList.add('visible');
+
+                // Scroll to prompts
+                promptsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 600);
+        }
+
+        mainRollBtn.addEventListener('click', handleMainRoll);
+        rollAgainBtn.addEventListener('click', handleMainRoll);
+
+        function triggerBonusRoll() {
+            const bonus = getRandomItem(ideasData.bonuses);
+            const bonusText = getEntryText(bonus);
+            bonusResult.textContent = bonusText;
+            bonusResult.classList.add('visible');
+            bonusPlaceholder.style.display = 'none';
+
+            // Save to state
+            resultsState.bonus = bonusText;
+            updateResultsDisplay();
+
+            // Animate
+            bonusResult.style.opacity = '0';
+            bonusResult.style.transform = 'translateX(-10px)';
+            setTimeout(() => {
+                bonusResult.style.transition = 'all 0.4s ease';
+                bonusResult.style.opacity = '1';
+                bonusResult.style.transform = 'translateX(0)';
+            }, 10);
+        }
+
+        // Bonus roll handler
+        bonusRollBtn.addEventListener('click', triggerBonusRoll);
+
+        // Mini rollers
+        const miniPlaceholderText = 'Click roll to reveal...';
+
+        function rollMini(type) {
+            const resultEl = document.querySelector(`[data-result="${type}"]`);
+
+            let result;
+            if (type === 'places') {
+                result = getRandomItem(ideasData.places);
+            } else if (type === 'objects') {
+                result = getRandomItem(ideasData.objects);
+            } else if (type === 'characters') {
+                result = getRandomItem(ideasData.characters);
+            } else if (type === 'genres') {
+                result = getRandomItem(ideasData.genres);
+            }
+
+            const resultText = getEntryText(result);
+            resultsState.miniRollers[type] = resultText;
+            updateResultsDisplay();
+
+            if (resultEl) {
+                resultEl.classList.remove('empty');
+                resultEl.textContent = resultText;
+
+                resultEl.style.opacity = '0';
+                resultEl.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    resultEl.style.transition = 'all 0.3s ease';
+                    resultEl.style.opacity = '1';
+                    resultEl.style.transform = 'translateY(0)';
+                }, 10);
+            }
+        }
+
+        document.querySelectorAll('.mini-roll-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                rollMini(btn.dataset.type);
+            });
+        });
+
+        function handleRollAll() {
+            if (rollAllBtn.classList.contains('is-used')) {
+                return;
+            }
+
+            rollAllBtn.classList.add('rolling');
+            handleMainRoll();
+
+            setTimeout(() => {
+                triggerBonusRoll();
+                ['places', 'objects', 'characters', 'genres'].forEach(rollMini);
+                rollAllBtn.classList.remove('rolling');
+                rollAllBtn.classList.add('is-used');
+                rollAllBtn.setAttribute('disabled', 'disabled');
+                rollAllBtn.querySelector('span:last-child').textContent = 'Challenge Locked';
+            }, 700);
+        }
+
+        rollAllBtn.addEventListener('click', handleRollAll);
+
+        document.querySelectorAll('.mini-clear-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const type = btn.dataset.type;
+                const resultEl = document.querySelector(`[data-result="${type}"]`);
+
+                resultsState.miniRollers[type] = null;
+                updateResultsDisplay();
+
+                resultEl.classList.add('empty');
+                resultEl.textContent = miniPlaceholderText;
+            });
+        });
+
+        // ============================================
+        // RESULTS DISPLAY & PDF
+        // ============================================
+        const resultsSection = document.getElementById('resultsSection');
+        const resultsContent = document.getElementById('resultsContent');
+        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+        const clearResultsBtn = document.getElementById('clearResultsBtn');
+
+        function hasAnyResults() {
+            return resultsState.prompts.length > 0 ||
+                   resultsState.bonus !== null ||
+                   Object.values(resultsState.miniRollers).some(v => v !== null);
+        }
+
+        function updateResultsDisplay() {
+            if (!hasAnyResults()) {
+                resultsSection.classList.remove('visible');
+                resultsContent.innerHTML = '<p class="results-empty">Roll some dice to see your results here...</p>';
+                return;
+            }
+
+            resultsSection.classList.add('visible');
+            let html = '';
+
+            // Prompts
+            if (resultsState.prompts.length > 0) {
+                html += '<div class="results-group">';
+                html += '<h3 class="results-group-title">Film Prompts</h3>';
+                html += '<div class="results-group-items">';
+                resultsState.prompts.forEach((prompt, idx) => {
+                    let flavorHtml = '';
+                    if (prompt.genre) flavorHtml += `<span style="color: #FF8C42;">${getEntryText(prompt.genre)}</span> `;
+                    if (prompt.visualStyle) flavorHtml += `<span style="color: #00D9FF;">${getEntryText(prompt.visualStyle)}</span> `;
+                    if (prompt.emotion) flavorHtml += `<span style="color: #2ECC71;">${getEntryText(prompt.emotion)}</span>`;
+
+                    let genreDetailsResultsHtml = '';
+                    if (prompt.creepyDetail) {
+                        genreDetailsResultsHtml += `
+                            <div class="results-prompt-section">
+                                <div class="results-item-label" style="color: #EF4444;">Creepy Detail</div>
+                                <div class="results-item-text">${prompt.creepyDetail}</div>
+                            </div>
+                        `;
+                    }
+                    if (prompt.comedyBeat) {
+                        genreDetailsResultsHtml += `
+                            <div class="results-prompt-section">
+                                <div class="results-item-label" style="color: #22C55E;">Comedy Beat</div>
+                                <div class="results-item-text">${prompt.comedyBeat}</div>
+                            </div>
+                        `;
+                    }
+
+                    html += `<div class="results-prompt-card">
+                        <div class="results-prompt-number">PROMPT 0${idx + 1}</div>
+                        <div class="results-prompt-section">
+                            <div class="results-item-label">Concept</div>
+                            <div class="results-item-text">${prompt.concept}</div>
+                        </div>
+                        <div class="results-prompt-section">
+                            <div class="results-item-label">Constraint</div>
+                            <div class="results-item-text" style="color: #888;">${getEntryText(prompt.constraint)}</div>
+                        </div>
+                        <div class="results-prompt-section">
+                            <div class="results-item-label">Twist</div>
+                            <div class="results-item-text" style="color: #888;">${prompt.twist}</div>
+                        </div>
+                        ${genreDetailsResultsHtml}
+                        ${flavorHtml ? `<div style="margin-top: 0.5rem; font-size: 0.7rem;">${flavorHtml}</div>` : ''}
+                    </div>`;
+                });
+                html += '</div></div>';
+            }
+
+            // Bonus
+            if (resultsState.bonus) {
+                html += '<div class="results-group" style="border-left-color: #FF8C42;">';
+                html += '<h3 class="results-group-title">Bonus Challenge</h3>';
+                html += '<div class="results-item">';
+                html += `<div class="results-item-text">${resultsState.bonus}</div>`;
+                html += '</div></div>';
+            }
+
+            // Mini Rollers
+            const miniResults = Object.entries(resultsState.miniRollers).filter(([k, v]) => v !== null);
+            if (miniResults.length > 0) {
+                html += '<div class="results-group">';
+                html += '<h3 class="results-group-title">Quick Roll Results</h3>';
+                html += '<div class="results-mini-grid">';
+                miniResults.forEach(([type, value]) => {
+                    const label = type.charAt(0).toUpperCase() + type.slice(1, -1);
+                    html += `<div class="results-item">
+                        <div class="results-item-label">${label}</div>
+                        <div class="results-item-text">${value}</div>
+                    </div>`;
+                });
+                html += '</div></div>';
+            }
+
+            resultsContent.innerHTML = html;
+        }
+
+        function selectPrompt(index) {
+            const selected = resultsState.generatedPrompts[index];
+            if (!selected) return;
+
+            resultsState.prompts = [selected];
+            resultsState.selectedPromptIndex = index;
+            updateResultsDisplay();
+
+            document.querySelectorAll('.prompt-card').forEach((card) => {
+                const cardIndex = Number(card.dataset.promptIndex);
+                card.classList.toggle('is-selected', cardIndex === index);
+            });
+        }
+
+        function generatePDF() {
+            if (!hasAnyResults()) return;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            let yPos = 20;
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const margin = 20;
+            const contentWidth = pageWidth - (margin * 2);
+
+            // Add logo if loaded
+            if (logoImage) {
+                const logoWidth = 30;
+                const logoHeight = 30;
+                doc.addImage(logoImage, 'PNG', (pageWidth - logoWidth) / 2, yPos, logoWidth, logoHeight);
+                yPos += logoHeight + 10;
+            }
+
+            // Title
+            doc.setFontSize(24);
+            doc.setFont('helvetica', 'bold');
+            doc.text('SHORT FILM IDEAS', pageWidth / 2, yPos, { align: 'center' });
+            yPos += 10;
+
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(128);
+            doc.text('Generated by LaB Media Ideas Generator', pageWidth / 2, yPos, { align: 'center' });
+            yPos += 15;
+            doc.setTextColor(0);
+
+            // Prompts
+            if (resultsState.prompts.length > 0) {
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                doc.text('FILM PROMPTS', margin, yPos);
+                yPos += 8;
+
+                resultsState.prompts.forEach((prompt, idx) => {
+                    if (yPos > 250) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(`Prompt 0${idx + 1}`, margin, yPos);
+                    yPos += 6;
+
+                    doc.setFontSize(10);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Concept:', margin, yPos);
+                    doc.setFont('helvetica', 'normal');
+                    const conceptLines = doc.splitTextToSize(prompt.concept, contentWidth - 20);
+                    doc.text(conceptLines, margin + 20, yPos);
+                    yPos += conceptLines.length * 5 + 4;
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Constraint:', margin, yPos);
+                    doc.setFont('helvetica', 'normal');
+                    const constraintLines = doc.splitTextToSize(getEntryText(prompt.constraint), contentWidth - 20);
+                    doc.text(constraintLines, margin + 22, yPos);
+                    yPos += constraintLines.length * 5 + 4;
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Twist:', margin, yPos);
+                    doc.setFont('helvetica', 'normal');
+                    const twistLines = doc.splitTextToSize(prompt.twist, contentWidth - 20);
+                    doc.text(twistLines, margin + 14, yPos);
+                    yPos += twistLines.length * 5 + 4;
+
+                    // Optional genre-specific details
+                    if (prompt.creepyDetail) {
+                        doc.setFont('helvetica', 'bold');
+                        doc.setTextColor(239, 68, 68);
+                        doc.text('Creepy Detail:', margin, yPos);
+                        doc.setTextColor(0);
+                        doc.setFont('helvetica', 'normal');
+                        const creepyLines = doc.splitTextToSize(prompt.creepyDetail, contentWidth - 28);
+                        doc.text(creepyLines, margin + 28, yPos);
+                        yPos += creepyLines.length * 5 + 4;
+                    }
+
+                    if (prompt.comedyBeat) {
+                        doc.setFont('helvetica', 'bold');
+                        doc.setTextColor(34, 197, 94);
+                        doc.text('Comedy Beat:', margin, yPos);
+                        doc.setTextColor(0);
+                        doc.setFont('helvetica', 'normal');
+                        const comedyLines = doc.splitTextToSize(prompt.comedyBeat, contentWidth - 26);
+                        doc.text(comedyLines, margin + 26, yPos);
+                        yPos += comedyLines.length * 5 + 4;
+                    }
+
+                    // Flavor badges
+                    let flavors = [];
+                    if (prompt.genre) flavors.push(`Genre: ${getEntryText(prompt.genre)}`);
+                    if (prompt.visualStyle) flavors.push(`Style: ${getEntryText(prompt.visualStyle)}`);
+                    if (prompt.emotion) flavors.push(`Emotion: ${getEntryText(prompt.emotion)}`);
+                    if (flavors.length > 0) {
+                        doc.setFontSize(9);
+                        doc.setTextColor(100);
+                        doc.text(flavors.join('  |  '), margin, yPos);
+                        doc.setTextColor(0);
+                        yPos += 6;
+                    }
+
+                    yPos += 8;
+                });
+            }
+
+            // Bonus
+            if (resultsState.bonus) {
+                if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                doc.text('BONUS CHALLENGE', margin, yPos);
+                yPos += 8;
+
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'normal');
+                const bonusLines = doc.splitTextToSize(resultsState.bonus, contentWidth);
+                doc.text(bonusLines, margin, yPos);
+                yPos += bonusLines.length * 5 + 12;
+            }
+
+            // Mini Rollers
+            const miniResults = Object.entries(resultsState.miniRollers).filter(([k, v]) => v !== null);
+            if (miniResults.length > 0) {
+                if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                doc.text('QUICK ROLL RESULTS', margin, yPos);
+                yPos += 8;
+
+                miniResults.forEach(([type, value]) => {
+                    const label = type.charAt(0).toUpperCase() + type.slice(1, -1);
+                    doc.setFontSize(10);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(`${label}:`, margin, yPos);
+                    doc.setFont('helvetica', 'normal');
+                    const valueLines = doc.splitTextToSize(value, contentWidth - 30);
+                    doc.text(valueLines, margin + 25, yPos);
+                    yPos += valueLines.length * 5 + 4;
+                });
+            }
+
+            // Footer
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(150);
+                doc.text('labmedia.work/ideas', pageWidth / 2, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
+            }
+
+            // Download
+            const timestamp = new Date().toISOString().slice(0, 10);
+            doc.save(`lab-ideas-${timestamp}.pdf`);
+        }
+
+        function clearResults() {
+            resultsState.prompts = [];
+            resultsState.generatedPrompts = [];
+            resultsState.selectedPromptIndex = null;
+            resultsState.bonus = null;
+            resultsState.miniRollers = {
+                places: null,
+                objects: null,
+                characters: null,
+                genres: null
+            };
+
+            // Reset UI
+            promptsContainer.classList.remove('visible');
+            document.getElementById('promptsGrid').innerHTML = '';
+            bonusResult.classList.remove('visible');
+            bonusPlaceholder.style.display = '';
+            document.querySelectorAll('.mini-roller-result').forEach(el => {
+                el.classList.add('empty');
+                el.textContent = miniPlaceholderText;
+            });
+
+            rollAllBtn.classList.remove('is-used');
+            rollAllBtn.removeAttribute('disabled');
+            rollAllBtn.querySelector('span:last-child').textContent = 'Roll All (One-Time)';
+
+            updateResultsDisplay();
+        }
+
+        downloadPdfBtn.addEventListener('click', generatePDF);
+        clearResultsBtn.addEventListener('click', clearResults);
+
+        // ============================================
+        // TOGGLE SYSTEM - Dynamic Button Styling
+        // ============================================
+        const horrorToggle = document.getElementById('toggleHorror');
+        const comedyToggle = document.getElementById('toggleComedy');
+
+        function updateRollButtonStyle() {
+            const isHorror = horrorToggle.checked;
+            const isComedy = comedyToggle.checked;
+            const buttonText = mainRollBtn.querySelector('.roll-button-text');
+
+            // Remove all mode classes
+            mainRollBtn.classList.remove('horror-mode', 'comedy-mode', 'both-mode');
+
+            // Update button style and text based on active toggles
+            if (isHorror && isComedy) {
+                mainRollBtn.classList.add('both-mode');
+                buttonText.textContent = 'Roll Mixed Genre';
+            } else if (isHorror) {
+                mainRollBtn.classList.add('horror-mode');
+                buttonText.textContent = 'Roll Horror';
+            } else if (isComedy) {
+                mainRollBtn.classList.add('comedy-mode');
+                buttonText.textContent = 'Roll Comedy';
+            } else {
+                buttonText.textContent = 'Roll the Die';
+            }
+        }
+
+        // Attach toggle listeners
+        if (horrorToggle) {
+            horrorToggle.addEventListener('change', updateRollButtonStyle);
+        }
+        if (comedyToggle) {
+            comedyToggle.addEventListener('change', updateRollButtonStyle);
+        }
+
+        // Initialize button style on page load
+        updateRollButtonStyle();
+
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close menu when clicking a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !menuToggle.contains(e.target) && navLinks.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+
+    <!-- Global Error Handler -->
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            console.error('[Global Error Handler]', {
+                message: message,
+                source: source,
+                line: lineno,
+                column: colno,
+                error: error
+            });
+            return false;
+        };
+
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('[Unhandled Promise Rejection]', event.reason);
+        });
+    </script>
+</body>
+</html>
