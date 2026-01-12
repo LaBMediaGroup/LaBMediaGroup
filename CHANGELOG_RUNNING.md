@@ -1056,3 +1056,12 @@ Quick test checklist:
 - Open plan-your-project.html; verify the Budget dropdown tops out at $5,000+.
 - Select Budget options and confirm the form accepts the selection.
 - Open DevTools console on plan-your-project.html; confirm no errors.
+2026-01-12 | 4:48PM EST
+———————————————————————
+Change: Add new visual style, emotional target, and bonus challenge options to the ideas data set.
+Files touched: ideas-data.js, CHANGELOG_RUNNING.md
+Notes: Appended new entries without removing existing options.
+Quick test checklist:
+- Open ideas.html; trigger rolls and confirm new visual style, emotion, and bonus options appear.
+- Open ideas.html; refresh and confirm existing idea options still render.
+- Open DevTools console on ideas.html; confirm no errors.
