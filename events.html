@@ -3,7 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
     <title>Events | LaB Media</title>
+    <link rel="canonical" href="https://labmedia.work/events.html">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Film festivals, filmmaker meetups, workshops, and screenings in Michigan and Metro Detroit. Community events for filmmakers and creators.">
+    <meta name="keywords" content="Detroit film events, Michigan filmmaker meetups, film festivals Detroit, filmmaker workshops, screening events">
+    <meta name="author" content="LaB Media">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://labmedia.work/events.html">
+    <meta property="og:title" content="Events | LaB Media">
+    <meta property="og:description" content="Film festivals, filmmaker meetups, and workshops in Michigan and Metro Detroit.">
+    <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://labmedia.work/events.html">
+    <meta name="twitter:title" content="Events | LaB Media">
+    <meta name="twitter:description" content="Film festivals, filmmaker meetups, and workshops in Michigan and Metro Detroit.">
+    <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -1126,6 +1147,7 @@
         <ul class="nav-links">
             <li><a href="resources.html">Resources</a></li>
             <li><a href="events.html">Events</a></li>
+            <li><a href="ideas.html">Ideas</a></li>
             <li><a href="plan-your-project.html">Plan</a></li>
             <li><a href="portfolio.html">Work</a></li>
             <li><a href="index.html#contact">Contact</a></li>
@@ -1162,10 +1184,6 @@
             <div class="legend-item">
                 <span class="legend-dot type-festival"></span>
                 <span>Festival</span>
-            </div>
-            <div class="legend-item">
-                <span class="legend-dot type-deadline"></span>
-                <span>Deadline</span>
             </div>
             <div class="legend-item">
                 <span class="legend-dot type-workshop"></span>
@@ -2095,9 +2113,25 @@ END:VCALENDAR`;
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-
-            console.log(`Exported "${evt.title}" to iCal`);
         }
+    </script>
+
+    <!-- Global Error Handler -->
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            console.error('[Global Error Handler]', {
+                message: message,
+                source: source,
+                line: lineno,
+                column: colno,
+                error: error
+            });
+            return false;
+        };
+
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('[Unhandled Promise Rejection]', event.reason);
+        });
     </script>
 </body>
 </html>
