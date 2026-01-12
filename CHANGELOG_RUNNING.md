@@ -1047,3 +1047,12 @@ Quick test checklist:
 - Open resources.html; open collaborators like Anthony R Brass and confirm the embedded video renders in the modal.
 - Open resources.html; open a drone channel like Joshua Bardwell or BOTGRINDER and confirm the embedded video renders.
 - Open DevTools console on resources.html; confirm no errors.
+2026-01-12 | 6:12AM EST
+———————————————————————
+Change: Cap plan page budget dropdown at $5,000+ as the maximum option.
+Files touched: plan-your-project.html, CHANGELOG_RUNNING.md
+Notes: Removed higher budget tiers so the max range matches the requested ceiling.
+Quick test checklist:
+- Open plan-your-project.html; verify the Budget dropdown tops out at $5,000+.
+- Select Budget options and confirm the form accepts the selection.
+- Open DevTools console on plan-your-project.html; confirm no errors.
