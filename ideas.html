@@ -378,12 +378,37 @@
             gap: 0.5rem;
         }
 
+        .prompt-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
         .prompt-label {
             font-family: 'Space Mono', monospace;
             font-size: 0.6rem;
             color: var(--gray-600);
             letter-spacing: 2px;
             text-transform: uppercase;
+        }
+
+        .prompt-reroll-btn {
+            border: 1px solid var(--gray-800);
+            background: transparent;
+            color: var(--gray-600);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.25rem 0.6rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .prompt-reroll-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
         }
 
         .prompt-text {
@@ -1223,18 +1248,27 @@
         // ============================================
         // PROMPT GENERATION
         // ============================================
+        const selectedTone = 'neutral';
+        const localMode = true;
+        const maxCast = localMode ? 2 : null;
+
+        function getConstraintPool() {
+            return filterByTone(ideasData.constraints, selectedTone, 3);
+        }
+
+        function getTwistPool() {
+            return filterByTone(ideasData.twists, selectedTone, 3);
+        }
+
         function generatePrompts() {
             const prompts = [];
             const usedConcepts = new Set();
             const usedConstraints = new Set();
             const usedTwists = new Set();
-            const selectedTone = 'neutral';
-            const localMode = true;
-            const maxCast = localMode ? 2 : null;
             let conceptPool = filterByTone(ideasData.concepts, selectedTone, 3);
             conceptPool = filterByMaxCast(conceptPool, maxCast);
-            const constraintPool = filterByTone(ideasData.constraints, selectedTone, 3);
-            const twistPool = filterByTone(ideasData.twists, selectedTone, 3);
+            const constraintPool = getConstraintPool();
+            const twistPool = getTwistPool();
 
             for (let i = 0; i < 3; i++) {
                 // Get unique concept
@@ -1270,6 +1304,44 @@
                 prompts.push(prompt);
             }
             return prompts;
+        }
+
+        function getDifferentItem(pool, currentText) {
+            if (!pool.length) return null;
+            let next = getRandomItem(pool);
+            let attempts = 0;
+            while (pool.length > 1 && getEntryText(next) === currentText && attempts < 10) {
+                next = getRandomItem(pool);
+                attempts++;
+            }
+            return next;
+        }
+
+        function rerollPromptField(index, field) {
+            const prompt = resultsState.generatedPrompts[index];
+            if (!prompt) return;
+
+            if (field === 'constraint') {
+                const nextConstraint = getDifferentItem(getConstraintPool(), getEntryText(prompt.constraint));
+                if (!nextConstraint) return;
+                prompt.constraint = normalizeIdeaEntryLocal(nextConstraint);
+            }
+
+            if (field === 'twist') {
+                const nextTwist = getDifferentItem(getTwistPool(), prompt.twist);
+                if (!nextTwist) return;
+                prompt.twist = getEntryText(nextTwist);
+            }
+
+            const card = document.querySelector(`.prompt-card[data-prompt-index="${index}"]`);
+            if (card && field === 'constraint') {
+                card.querySelector('.prompt-text.constraint').textContent = prompt.constraint.text;
+            }
+            if (card && field === 'twist') {
+                card.querySelector('.prompt-text.twist').textContent = prompt.twist;
+            }
+
+            updateResultsDisplay();
         }
 
         function renderPrompts(prompts) {
@@ -1308,11 +1380,17 @@
                             <p class="prompt-text concept">${prompt.concept}</p>
                         </div>
                         <div class="prompt-section">
-                            <span class="prompt-label">Constraint</span>
+                            <div class="prompt-section-header">
+                                <span class="prompt-label">Constraint</span>
+                                <button class="prompt-reroll-btn" type="button" data-action="constraint">Reroll</button>
+                            </div>
                             <p class="prompt-text constraint">${prompt.constraint.text}</p>
                         </div>
                         <div class="prompt-section">
-                            <span class="prompt-label">Twist</span>
+                            <div class="prompt-section-header">
+                                <span class="prompt-label">Twist</span>
+                                <button class="prompt-reroll-btn" type="button" data-action="twist">Reroll</button>
+                            </div>
                             <p class="prompt-text twist">${prompt.twist}</p>
                         </div>
                     </div>
@@ -1328,6 +1406,13 @@
                         event.preventDefault();
                         selectPrompt(index);
                     }
+                });
+
+                card.querySelectorAll('.prompt-reroll-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        rerollPromptField(index, button.dataset.action);
+                    });
                 });
 
                 grid.appendChild(card);
