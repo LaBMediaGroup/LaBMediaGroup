@@ -1086,3 +1086,15 @@ Quick test checklist:
 - Open ideas.html and click the main roll button to confirm three prompts render.
 - Lock and reroll a prompt field, then confirm the locked items persist.
 - Open DevTools Console on ideas.html and confirm no new errors appear.
+2026-01-12 | 7:00PM EST
+———————————————————————
+Change:
+Restored prompt lock defaults so rolling the die always generates three prompts.
+Files touched:
+ideas.html, CHANGELOG_RUNNING.md
+Notes:
+Added a safe lock-state helper to prevent prompt generation crashes when no prior history exists.
+Quick test checklist:
+- Open ideas.html and click “Roll The Die”; confirm three prompt cards appear.
+- Click “Roll The Die” again; confirm prompts refresh without console errors.
+- Open DevTools Console on ideas.html; confirm no new errors appear.

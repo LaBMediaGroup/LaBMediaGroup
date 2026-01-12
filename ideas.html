@@ -1317,6 +1317,18 @@
             return filterByTone(ideasData.twists, selectedTone, 3);
         }
 
+        function getPromptLocks(previousPrompt) {
+            if (!previousPrompt || !previousPrompt.locks) {
+                return { concept: false, constraint: false, twist: false };
+            }
+
+            return {
+                concept: Boolean(previousPrompt.locks.concept),
+                constraint: Boolean(previousPrompt.locks.constraint),
+                twist: Boolean(previousPrompt.locks.twist)
+            };
+        }
+
         function generatePrompts(previousPrompts = []) {
             const promptHistory = Array.isArray(previousPrompts) ? previousPrompts : [];
             const prompts = [];
