@@ -974,3 +974,13 @@ Quick test checklist:
 - Open portfolio.html; click each video thumbnail and confirm the YouTube player loads and plays in place.
 - Resize the browser and confirm MOZ video maintains its 16:9 frame while playing.
 - Open DevTools console on portfolio.html; confirm no errors.
+2026-01-11 | 10:55PM EST
+———————————————————————
+Change: Let a single selected prompt populate the Current Results list instead of showing all three.
+Files touched: ideas.html, CHANGELOG_RUNNING.md
+Notes: Added prompt selection handling so choosing a card isolates it in the results while keeping bonus and mini rolls.
+Quick test checklist:
+- Open ideas.html; click Roll the Die and confirm three prompts appear.
+- Click one prompt card; confirm Current Results shows only the selected prompt plus any bonus/quick rolls.
+- Roll a bonus and a quick roller; confirm they appear alongside the selected prompt.
+- Open DevTools console on ideas.html; confirm no errors.
