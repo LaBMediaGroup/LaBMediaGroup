@@ -1029,3 +1029,12 @@ Quick test checklist:
 - Open ideas.html; roll prompts and confirm objects/twists/characters/bonuses include new entries.
 - In DevTools console on ideas.html, run rollIdea(ideasData, { tone: "mystery", localMode: true }) and confirm a bundle returns.
 - Open DevTools console on ideas.html; confirm no errors.
+2026-01-12 | 5:38AM EST
+———————————————————————
+Change: Allow embedded example videos to load in resource modals by expanding CSP frame sources.
+Files touched: resources.html, CHANGELOG_RUNNING.md
+Notes: Added YouTube and Vimeo frame-src allowances for modal video iframes.
+Quick test checklist:
+- Open resources.html; open a resource with an Example Video (e.g., Mike Sytes) and confirm the video iframe loads.
+- Open resources.html; open another resource with a Vimeo example and confirm the video iframe loads.
+- Open DevTools console on resources.html; confirm no errors.
