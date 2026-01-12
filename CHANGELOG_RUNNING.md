@@ -1065,3 +1065,21 @@ Quick test checklist:
 - Open ideas.html; trigger rolls and confirm new visual style, emotion, and bonus options appear.
 - Open ideas.html; refresh and confirm existing idea options still render.
 - Open DevTools console on ideas.html; confirm no errors.
+2026-01-12 | 11:57AM EST
+———————————————————————
+Change: Add per-prompt reroll buttons for constraints and twists on the Ideas page.
+Files touched: ideas.html, CHANGELOG_RUNNING.md
+Notes: Reroll controls update the prompt card text and results summary without changing the concept.
+Quick test checklist:
+- Open ideas.html; roll prompts, then reroll Constraint and Twist on a card and confirm the text updates in the card.
+- Select a prompt after rerolling and confirm the Current Results section reflects the updated constraint/twist.
+- Open DevTools console on ideas.html; confirm no errors.
+2026-01-12 | 11:58AM EST
+———————————————————————
+Change: Fix keyboard reroll actions to avoid triggering prompt selection.
+Files touched: ideas.html, CHANGELOG_RUNNING.md
+Notes: Card keydown now ignores reroll buttons and reroll buttons stop Enter/Space propagation.
+Quick test checklist:
+- Open ideas.html; roll prompts, tab to a reroll button, press Enter/Space, and confirm the constraint/twist rerolls without selecting the card.
+- Tab to the card itself and press Enter/Space; confirm it selects the card as before.
+- Open DevTools console on ideas.html; confirm no errors.
