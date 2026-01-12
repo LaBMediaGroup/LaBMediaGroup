@@ -1139,3 +1139,13 @@ Quick test checklist:
 - Open ideas.html; click Roll the Die and confirm prompt cards render with concept/constraint/twist.
 - Use Quick Rollers → Place/Object and confirm each roll shows a result.
 - Open DevTools console on Ideas page; confirm no errors.
+2026-01-12 | 9:56PM EST
+———————————————————————
+Change: Restore the primary header navigation on the Events, Resources, Plan, Contact, and Work pages and allow portfolio YouTube embeds via CSP.
+Files touched: events.html, resources.html, plan-your-project.html, contact.html, portfolio.html, CHANGELOG_RUNNING.md
+Notes: Enabled the nav link list on Events and added the primary link row to supporting pages; extended CSP to allow YouTube frames.
+Quick test checklist:
+- Open events.html; confirm the top header shows Resources, Events, Ideas, Plan, Work, Contact.
+- Open resources.html, plan-your-project.html, contact.html, and portfolio.html; confirm the same header links are visible.
+- On portfolio.html click a video placeholder; confirm the YouTube video loads and plays.
+- Open DevTools console on Events and Portfolio pages; confirm no errors.
