@@ -965,3 +965,12 @@ Quick test checklist:
 - Open resources.html; select Tools → Drone and confirm Betaflight appears in the list.
 - Use the search bar to find Betaflight; confirm it still opens the resource modal.
 - Open DevTools console on Resources page; confirm no errors.
+2026-01-12 | 3:46AM EST
+———————————————————————
+Change: Fix portfolio video embeds to load inside the correct aspect wrapper so click-to-play works on all sections.
+Files touched: portfolio.html, CHANGELOG_RUNNING.md
+Notes: Updated the video loader to target the MOZ aspect wrapper when present.
+Quick test checklist:
+- Open portfolio.html; click each video thumbnail and confirm the YouTube player loads and plays in place.
+- Resize the browser and confirm MOZ video maintains its 16:9 frame while playing.
+- Open DevTools console on portfolio.html; confirm no errors.
