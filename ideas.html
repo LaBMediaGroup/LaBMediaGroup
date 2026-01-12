@@ -1131,7 +1131,7 @@
             return shuffled.slice(0, count);
         }
 
-        function normalizeIdeaEntry(entry) {
+        function normalizeIdeaEntryLocal(entry) {
             if (typeof entry === 'string') {
                 return { text: entry, tags: { tone: ['neutral'], cast: [], budget: [] } };
             }
@@ -1154,7 +1154,7 @@
         }
 
         function entryMaxCast(entry) {
-            const normalized = normalizeIdeaEntry(entry);
+            const normalized = normalizeIdeaEntryLocal(entry);
             const cast = normalized.tags.cast || [];
             if (cast.includes('solo')) return 1;
             if (cast.includes('two')) return 2;
@@ -1163,8 +1163,8 @@
         }
 
         function filterByMaxCast(entries, maxCast) {
-            if (!maxCast) return entries.map(normalizeIdeaEntry);
-            const normalized = entries.map(normalizeIdeaEntry);
+            if (!maxCast) return entries.map(normalizeIdeaEntryLocal);
+            const normalized = entries.map(normalizeIdeaEntryLocal);
             const filtered = normalized.filter(entry => {
                 const max = entryMaxCast(entry);
                 return max == null || max <= maxCast;
@@ -1173,7 +1173,7 @@
         }
 
         function filterByTone(entries, selectedTone, minimumCount) {
-            const normalizedEntries = entries.map(normalizeIdeaEntry);
+            const normalizedEntries = entries.map(normalizeIdeaEntryLocal);
             const filteredEntries = normalizedEntries.filter(entry =>
                 entry.tags.tone.includes(selectedTone) || entry.tags.tone.includes('neutral')
             );

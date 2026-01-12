@@ -1020,3 +1020,21 @@ Quick test checklist:
 - Open ideas.html; click Roll the Die and confirm prompts render with readable flavor badges.
 - Click Bonus Roll and each mini roller; confirm results appear and Current Results updates.
 - Open DevTools console on ideas.html; confirm no errors.
+2026-01-12 | 12:23AM EST
+———————————————————————
+Change: Add tagged idea additions and a roll helper with local filmmaker filtering in the ideas data library.
+Files touched: ideas-data.js, CHANGELOG_RUNNING.md
+Notes: Included optional accessible tags and a browser/global preset for local-mode rolls.
+Quick test checklist:
+- Open ideas.html; roll prompts and confirm objects/twists/characters/bonuses include new entries.
+- In DevTools console on ideas.html, run rollIdea(ideasData, { tone: "mystery", localMode: true }) and confirm a bundle returns.
+- Open DevTools console on ideas.html; confirm no errors.
+2026-01-12 | 12:26AM EST
+———————————————————————
+Change: Avoid duplicate normalizeIdeaEntry declarations by using a local helper in ideas.html.
+Files touched: ideas.html, CHANGELOG_RUNNING.md
+Notes: Prevents the inline script from redeclaring the data helper already defined in ideas-data.js.
+Quick test checklist:
+- Open ideas.html; refresh and confirm the page loads without a console SyntaxError.
+- Click Roll the Die and Bonus Roll; confirm prompts render as expected.
+- Open DevTools console on ideas.html; confirm no errors.
