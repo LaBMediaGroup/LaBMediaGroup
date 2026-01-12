@@ -1954,6 +1954,7 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 if (typeof window !== 'undefined') {
+    window.ideasData = ideasData;
     window.rollIdea = rollIdea;
     window.LOCAL_FILMMAKER_PRESET = LOCAL_FILMMAKER_PRESET;
 }
