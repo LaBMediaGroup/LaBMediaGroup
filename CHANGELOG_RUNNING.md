@@ -993,3 +993,12 @@ Quick test checklist:
 - Open ideas.html; click Roll the Die and confirm "Select One" appears between the header and Roll Again button.
 - In Quick Rollers, click Roll on a tile and then Clear; confirm that tile resets to "Click roll to reveal..." and Current Results updates.
 - Open DevTools console on ideas.html; confirm no errors.
+2026-01-12 | 4:51AM EST
+———————————————————————
+Change: Add tone-tagged idea entries with tone-aware prompt filtering and normalization.
+Files touched: ideas-data.js, ideas.html, CHANGELOG_RUNNING.md
+Notes: Added tagging helpers and tone filtering with neutral fallback plus sample tagged concepts.
+Quick test checklist:
+- Open ideas.html; click Roll the Die and confirm three prompts render with concept/constraint/twist text.
+- Refresh and roll again; confirm prompts still generate without errors.
+- Open DevTools console on ideas.html; confirm no errors.
