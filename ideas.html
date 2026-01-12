@@ -282,6 +282,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 1rem;
             margin-bottom: 1rem;
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--gray-800);
@@ -292,6 +293,14 @@
             font-size: 0.7rem;
             color: var(--gray-600);
             letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .prompts-hint {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gray-600);
+            letter-spacing: 1.5px;
             text-transform: uppercase;
         }
 
@@ -306,6 +315,7 @@
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-left: auto;
         }
 
         .roll-again-btn:hover {
@@ -574,6 +584,29 @@
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s ease;
+        }
+
+        .mini-roller-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .mini-clear-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--gray-600);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mini-clear-btn:hover {
+            border-color: var(--gray-600);
+            color: var(--gray-400);
         }
 
         .mini-roll-btn:hover {
@@ -937,6 +970,7 @@
             <div class="prompts-container" id="promptsContainer">
                 <div class="prompts-header">
                     <span class="prompts-title">Your Prompts</span>
+                    <span class="prompts-hint">Select One</span>
                     <button class="roll-again-btn" id="rollAgainBtn">Roll Again</button>
                 </div>
                 <div class="prompts-grid" id="promptsGrid">
@@ -982,7 +1016,10 @@
                         <span class="mini-roller-icon">&#x1F3E0;</span>
                         <span class="mini-roller-label">Place</span>
                     </div>
-                    <button class="mini-roll-btn" data-type="places">Roll</button>
+                    <div class="mini-roller-actions">
+                        <button class="mini-roll-btn" data-type="places">Roll</button>
+                        <button class="mini-clear-btn" data-type="places">Clear</button>
+                    </div>
                     <div class="mini-roller-result empty" data-result="places">Click roll to reveal...</div>
                 </div>
 
@@ -994,7 +1031,10 @@
                         <span class="mini-roller-icon">&#x1F511;</span>
                         <span class="mini-roller-label">Object</span>
                     </div>
-                    <button class="mini-roll-btn" data-type="objects">Roll</button>
+                    <div class="mini-roller-actions">
+                        <button class="mini-roll-btn" data-type="objects">Roll</button>
+                        <button class="mini-clear-btn" data-type="objects">Clear</button>
+                    </div>
                     <div class="mini-roller-result empty" data-result="objects">Click roll to reveal...</div>
                 </div>
 
@@ -1006,7 +1046,10 @@
                         <span class="mini-roller-icon">&#x1F464;</span>
                         <span class="mini-roller-label">Character</span>
                     </div>
-                    <button class="mini-roll-btn" data-type="characters">Roll</button>
+                    <div class="mini-roller-actions">
+                        <button class="mini-roll-btn" data-type="characters">Roll</button>
+                        <button class="mini-clear-btn" data-type="characters">Clear</button>
+                    </div>
                     <div class="mini-roller-result empty" data-result="characters">Click roll to reveal...</div>
                 </div>
 
@@ -1018,7 +1061,10 @@
                         <span class="mini-roller-icon">&#x1F3AC;</span>
                         <span class="mini-roller-label">Genre</span>
                     </div>
-                    <button class="mini-roll-btn" data-type="genres">Roll</button>
+                    <div class="mini-roller-actions">
+                        <button class="mini-roll-btn" data-type="genres">Roll</button>
+                        <button class="mini-clear-btn" data-type="genres">Clear</button>
+                    </div>
                     <div class="mini-roller-result empty" data-result="genres">Click roll to reveal...</div>
                 </div>
             </div>
@@ -1312,6 +1358,8 @@
         });
 
         // Mini rollers
+        const miniPlaceholderText = 'Click roll to reveal...';
+
         document.querySelectorAll('.mini-roll-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const type = btn.dataset.type;
@@ -1343,6 +1391,19 @@
                     resultEl.style.opacity = '1';
                     resultEl.style.transform = 'translateY(0)';
                 }, 10);
+            });
+        });
+
+        document.querySelectorAll('.mini-clear-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const type = btn.dataset.type;
+                const resultEl = document.querySelector(`[data-result="${type}"]`);
+
+                resultsState.miniRollers[type] = null;
+                updateResultsDisplay();
+
+                resultEl.classList.add('empty');
+                resultEl.textContent = miniPlaceholderText;
             });
         });
 
@@ -1606,7 +1667,7 @@
             bonusPlaceholder.style.display = '';
             document.querySelectorAll('.mini-roller-result').forEach(el => {
                 el.classList.add('empty');
-                el.textContent = 'Click roll to reveal...';
+                el.textContent = miniPlaceholderText;
             });
 
             updateResultsDisplay();
