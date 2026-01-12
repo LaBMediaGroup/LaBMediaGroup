@@ -1416,11 +1416,6 @@
                         event.stopPropagation();
                         rerollPromptField(index, button.dataset.action);
                     });
-                    button.addEventListener('keydown', (event) => {
-                        if (event.key === 'Enter' || event.key === ' ') {
-                            event.stopPropagation();
-                        }
-                    });
                 });
 
                 grid.appendChild(card);
