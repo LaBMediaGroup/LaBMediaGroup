@@ -1038,3 +1038,12 @@ Quick test checklist:
 - Open resources.html; open a resource with an Example Video (e.g., Mike Sytes) and confirm the video iframe loads.
 - Open resources.html; open another resource with a Vimeo example and confirm the video iframe loads.
 - Open DevTools console on resources.html; confirm no errors.
+2026-01-12 | 5:51AM EST
+———————————————————————
+Change: Improve resource modal video embedding by resolving IDs from stored video fields and link URLs.
+Files touched: resources.html, CHANGELOG_RUNNING.md
+Notes: Added YouTube/Vimeo ID parsing and embed fallbacks to keep video frames loading across entries.
+Quick test checklist:
+- Open resources.html; open collaborators like Anthony R Brass and confirm the embedded video renders in the modal.
+- Open resources.html; open a drone channel like Joshua Bardwell or BOTGRINDER and confirm the embedded video renders.
+- Open DevTools console on resources.html; confirm no errors.

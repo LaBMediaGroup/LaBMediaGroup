@@ -2587,6 +2587,22 @@
             return /facebook\.com/.test(url || '');
         }
 
+        function getYouTubeVideoId(value) {
+            if (!value) return '';
+            const input = String(value).trim();
+            if (/^[\w-]{11}$/.test(input)) return input;
+            const match = input.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/i);
+            return match ? match[1] : '';
+        }
+
+        function getVimeoVideoId(value) {
+            if (!value) return '';
+            const input = String(value).trim();
+            if (/^\d+$/.test(input)) return input;
+            const match = input.match(/vimeo\.com\/(?:video\/)?(\d+)/i);
+            return match ? match[1] : '';
+        }
+
         function getCtaPreset(type = 'website') {
             const presets = {
                 website: { variant: 'btn--outline-white', icon: '', label: 'Website' },
@@ -3102,17 +3118,20 @@
             // Video embed for inspiration, references, drone, and collaborators categories
             const isDrone = primaryCat === 'drone';
             const isReferences = primaryCat === 'references';
-            const showVideo = (isInspiration || isDrone || isReferences || isCollaborator) && (r.featuredVideo || r.vimeoVideo);
+            const videoLink = additionalLinks.find(link => link && link.type === 'video' && link.url);
+            const vimeoVideoId = getVimeoVideoId(r.vimeoVideo || (videoLink && videoLink.url));
+            const youtubeVideoId = getYouTubeVideoId(r.featuredVideo || (videoLink && videoLink.url));
+            const showVideo = (isInspiration || isDrone || isReferences || isCollaborator) && (youtubeVideoId || vimeoVideoId);
 
             let videoHTML = '';
             if (showVideo) {
                 let embedSrc = '';
-                if (r.vimeoVideo) {
+                if (vimeoVideoId) {
                     // Vimeo embed
-                    embedSrc = 'https://player.vimeo.com/video/' + r.vimeoVideo + '?title=0&byline=0&portrait=0';
-                } else if (r.featuredVideo) {
+                    embedSrc = 'https://player.vimeo.com/video/' + vimeoVideoId + '?title=0&byline=0&portrait=0';
+                } else if (youtubeVideoId) {
                     // YouTube embed
-                    embedSrc = 'https://www.youtube.com/embed/' + r.featuredVideo + '?rel=0&modestbranding=1';
+                    embedSrc = 'https://www.youtube-nocookie.com/embed/' + youtubeVideoId + '?rel=0&modestbranding=1';
                 }
 
                 if (embedSrc) {
