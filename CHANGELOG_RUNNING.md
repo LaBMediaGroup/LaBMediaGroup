@@ -1011,3 +1011,12 @@ Quick test checklist:
 - Open ideas.html; click Roll the Die and confirm new prompt text appears across concepts, constraints, and places.
 - Roll multiple times to confirm tags do not break prompt generation.
 - Open DevTools console on ideas.html; confirm no errors.
+2026-01-12 | 5:15AM EST
+———————————————————————
+Change: Make ideas UI resilient to object-backed entries and normalize extra data arrays.
+Files touched: ideas.html, ideas-data.js, CHANGELOG_RUNNING.md
+Notes: Added getEntryText usage across bonus, mini rollers, flavor display, and fixed constraint type fields.
+Quick test checklist:
+- Open ideas.html; click Roll the Die and confirm prompts render with readable flavor badges.
+- Click Bonus Roll and each mini roller; confirm results appear and Current Results updates.
+- Open DevTools console on ideas.html; confirm no errors.

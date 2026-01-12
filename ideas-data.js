@@ -278,63 +278,78 @@ const ideasData = {
         { text: "The action takes place in complete silence until the final moment", type: "audio" },
         {
             text: "The story unfolds during a single shared task",
-            tags: { tone: ['neutral'], type: "structure" }
+            type: "structure",
+            tags: { tone: ['neutral'] }
         },
         {
             text: "The protagonist must change their mind twice",
-            tags: { tone: ['neutral'], type: "storytelling" }
+            type: "storytelling",
+            tags: { tone: ['neutral'] }
         },
         {
             text: "We never hear the most important line of dialogue",
-            tags: { tone: ['neutral'], type: "dialogue" }
+            type: "dialogue",
+            tags: { tone: ['neutral'] }
         },
         {
             text: "Every scene must include an interruption",
-            tags: { tone: ['comedy'], type: "pacing" }
+            type: "pacing",
+            tags: { tone: ['comedy'] }
         },
         {
             text: "Only one character is allowed to move at a time",
-            tags: { tone: ['neutral'], type: "visual" }
+            type: "visual",
+            tags: { tone: ['neutral'] }
         },
         {
             text: "The film must begin and end with the same action",
-            tags: { tone: ['neutral'], type: "structure" }
+            type: "structure",
+            tags: { tone: ['neutral'] }
         },
         {
             text: "All conflict is expressed through behavior, not dialogue",
-            tags: { tone: ['neutral'], type: "storytelling" }
+            type: "storytelling",
+            tags: { tone: ['neutral'] }
         },
         {
             text: "We only hear one side of every conversation",
-            tags: { tone: ['neutral'], type: "audio" }
+            type: "audio",
+            tags: { tone: ['neutral'] }
         },
         {
             text: "The protagonist must teach something incorrectly at first",
-            tags: { tone: ['comedy'], type: "storytelling" }
+            type: "storytelling",
+            tags: { tone: ['comedy'] }
         },
         {
             text: "The camera never enters the main space—it observes from outside",
-            tags: { tone: ['neutral'], type: "visual" }
+            type: "visual",
+            tags: { tone: ['neutral'] }
         },
         {
             text: "A recurring sound gains new meaning by the end",
-            tags: { tone: ['neutral'], type: "audio" }
+            type: "audio",
+            tags: { tone: ['neutral'] }
         },
         {
             text: "Every scene must reveal a small mistake",
-            tags: { tone: ['comedy'], type: "storytelling" }
+            type: "storytelling",
+            tags: { tone: ['comedy'] }
         },
         {
             text: "The story must work without subtitles or dialogue",
-            tags: { tone: ['neutral'], type: "audio" }
+            type: "audio",
+            tags: { tone: ['neutral'] }
         },
         {
             text: "We never see the resolution—only the choice",
-            tags: { tone: ['neutral'], type: "structure" }
+            type: "structure",
+            tags: { tone: ['neutral'] }
         },
         {
             text: "The protagonist must attempt something they’re bad at",
-            tags: { tone: ['comedy'], type: "character" }
+            type: "character",
+            tags: { tone: ['comedy'] }
         }
     ].map(normalizeIdeaEntry),
 
@@ -508,7 +523,7 @@ const ideasData = {
             text: "Closed roller rink",
             tags: { tone: ['neutral'], budget: ['micro'] }
         }
-    ],
+    ].map(normalizeIdeaEntry),
 
     // ============================================
     // OBJECTS - Items to incorporate into the story
@@ -574,7 +589,7 @@ const ideasData = {
         "A coat that fits no one in the house",
         "A stack of unsent letters tied with string",
         "A wedding invitation on a refrigerator"
-    ],
+    ].map(normalizeIdeaEntry),
 
     // ============================================
     // CHARACTERS - Archetypes and traits
@@ -620,7 +635,7 @@ const ideasData = {
         "A person who is generous to a fault",
         "Someone who keeps grudges in a journal",
         "A person who walks away from every fight—but remembers every word"
-    ],
+    ].map(normalizeIdeaEntry),
 
     // ============================================
     // GENRES
@@ -641,7 +656,7 @@ const ideasData = {
         "Coming-of-age",
         "Mockumentary",
         "Absurdist"
-    ],
+    ].map(normalizeIdeaEntry),
 
     // ============================================
     // VISUAL STYLES
@@ -662,7 +677,7 @@ const ideasData = {
         "Shallow depth of field",
         "High contrast black and white",
         "Long takes with no cuts"
-    ],
+    ].map(normalizeIdeaEntry),
 
     // ============================================
     // EMOTIONAL TARGETS
@@ -683,7 +698,7 @@ const ideasData = {
         "Quiet joy",
         "Bittersweet",
         "Uncertainty"
-    ],
+    ].map(normalizeIdeaEntry),
 
     // ============================================
     // BONUS CHALLENGES - Extra points
@@ -719,7 +734,7 @@ const ideasData = {
         "A character must make a decision without all the information",
         "The weather must reflect or contrast the emotional tone",
         "Someone must be overheard saying something they shouldn't"
-    ]
+    ].map(normalizeIdeaEntry)
 };
 
 // Export for potential module use
