@@ -1002,3 +1002,12 @@ Quick test checklist:
 - Open ideas.html; click Roll the Die and confirm three prompts render with concept/constraint/twist text.
 - Refresh and roll again; confirm prompts still generate without errors.
 - Open DevTools console on ideas.html; confirm no errors.
+2026-01-12 | 5:01AM EST
+———————————————————————
+Change: Add tagged idea concepts, constraints, and places to expand the data library.
+Files touched: ideas-data.js, CHANGELOG_RUNNING.md
+Notes: Normalized new entries to the supported tone tags with micro-budget defaults.
+Quick test checklist:
+- Open ideas.html; click Roll the Die and confirm new prompt text appears across concepts, constraints, and places.
+- Roll multiple times to confirm tags do not break prompt generation.
+- Open DevTools console on ideas.html; confirm no errors.

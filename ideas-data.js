@@ -93,7 +93,143 @@ const ideasData = {
         "Someone is on hold with customer service. They've been waiting long enough to rethink everything.",
         "A person takes a photo of themselves. They delete it immediately. They try again.",
         "Two people make eye contact across a crowded room. One looks away. The other doesn't.",
-        "A child asks a parent a question they can't answer honestly."
+        "A child asks a parent a question they can't answer honestly.",
+        {
+            text: "A person returns a borrowed item to someone who insists they’ve never met.",
+            tags: { tone: ['neutral', 'dark'], cast: ['two'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "Someone keeps getting ‘wrong number’ calls from the same voice, asking for them by name.",
+            tags: { tone: ['dark', 'horror'], cast: ['solo', 'two'], budget: ['micro'], intensity: 4 }
+        },
+        {
+            text: "A barista recognizes a customer from a dream they had last night—and can prove it.",
+            tags: { tone: ['neutral', 'dark'], cast: ['two'], budget: ['micro'], intensity: 3 }
+        },
+        {
+            text: "Two people share a quiet table. Their phones buzz at the exact same time: ‘Don’t look up.’",
+            tags: { tone: ['dark', 'horror'], cast: ['two'], budget: ['micro'], intensity: 4 }
+        },
+        {
+            text: "A person tries to record a simple apology video. Every take is interrupted by something off-screen that gets closer.",
+            tags: { tone: ['horror', 'dark'], cast: ['solo'], budget: ['micro'], intensity: 5 }
+        },
+        {
+            text: "A person is interviewed for a job they definitely didn’t apply for. The interviewer knows intimate details anyway.",
+            tags: { tone: ['dark', 'horror'], cast: ['two'], budget: ['micro'], intensity: 4 }
+        },
+        {
+            text: "Someone finds a lost pet flyer… featuring a photo of their own face.",
+            tags: { tone: ['dark', 'horror'], cast: ['solo'], budget: ['micro'], intensity: 4 }
+        },
+        {
+            text: "A couple practices a breakup in the mirror like choreography. One of them keeps changing the script.",
+            tags: { tone: ['neutral', 'dark'], cast: ['two'], budget: ['micro'], intensity: 3 }
+        },
+        {
+            text: "A person arrives early to a support group and realizes the meeting is for something they secretly are.",
+            tags: { tone: ['dark', 'horror'], cast: ['ensemble'], budget: ['micro'], intensity: 4 }
+        },
+        {
+            text: "A rideshare driver picks up the same passenger twice in one night—same clothes, same seat, different story.",
+            tags: { tone: ['dark', 'horror'], cast: ['two'], budget: ['micro'], intensity: 4 }
+        },
+        {
+            text: "Two strangers discover they’ve been rehearsing the same difficult conversation—for different people.",
+            tags: { tone: ['neutral'], cast: ['two'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "A person records a goodbye message, then realizes they don’t remember who it’s for.",
+            tags: { tone: ['neutral'], cast: ['solo'], budget: ['micro'], intensity: 3 }
+        },
+        {
+            text: "Someone waits at the wrong location for an event that already ended—and starts meeting others who missed it too.",
+            tags: { tone: ['comedy'], cast: ['ensemble'], budget: ['micro'], intensity: 1 }
+        },
+        {
+            text: "A barista notices two customers using the café as a rehearsal space for different versions of themselves.",
+            tags: { tone: ['neutral'], cast: ['ensemble'], budget: ['micro'], intensity: 1 }
+        },
+        {
+            text: "A person practices telling a joke that once ruined a relationship.",
+            tags: { tone: ['comedy'], cast: ['solo'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "Two people share a ride and slowly realize they’re both lying about where they’re going.",
+            tags: { tone: ['neutral'], cast: ['two'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "A person finds a handwritten note in a book they donated years ago—addressed to them now.",
+            tags: { tone: ['neutral'], cast: ['solo'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "Someone agrees to help a stranger move, only to realize the apartment is already empty.",
+            tags: { tone: ['comedy'], cast: ['two'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "Two siblings compete over who remembers a shared childhood event correctly.",
+            tags: { tone: ['neutral'], cast: ['two'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "A person keeps bumping into the same stranger who claims they’ve already had this conversation.",
+            tags: { tone: ['dark'], cast: ['two'], budget: ['micro'], intensity: 3 }
+        },
+        {
+            text: "A musician plays the same song for different people, changing it slightly each time.",
+            tags: { tone: ['neutral'], cast: ['solo'], budget: ['micro'], intensity: 1 }
+        },
+        {
+            text: "A person agrees to dogsit but the dog refuses to acknowledge them at all.",
+            tags: { tone: ['comedy'], cast: ['solo'], budget: ['micro'], intensity: 1 }
+        },
+        {
+            text: "Two strangers realize they are both pretending to be someone else for the same reason.",
+            tags: { tone: ['neutral'], cast: ['two'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "A person receives a thank-you card for something they don’t remember doing.",
+            tags: { tone: ['neutral'], cast: ['solo'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "Someone tries to quietly quit a volunteer role that no one realizes they’ve been carrying alone.",
+            tags: { tone: ['neutral'], cast: ['ensemble'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "A person returns to a place they associate with confidence and finds it unchanged—except for them.",
+            tags: { tone: ['neutral'], cast: ['solo'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "Two people argue politely in public about something deeply personal.",
+            tags: { tone: ['comedy'], cast: ['two'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "A person agrees to teach someone a skill they themselves have just learned.",
+            tags: { tone: ['neutral'], cast: ['two'], budget: ['micro'], intensity: 1 }
+        },
+        {
+            text: "Someone discovers their routine has been quietly adopted by a stranger.",
+            tags: { tone: ['neutral'], cast: ['two'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "A person practices being honest and finds it’s much harder than lying.",
+            tags: { tone: ['neutral'], cast: ['solo'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "Two people share an awkward task neither wants to admit they don’t know how to do.",
+            tags: { tone: ['comedy'], cast: ['two'], budget: ['micro'], intensity: 1 }
+        },
+        {
+            text: "A person tries to recreate a moment they remember as perfect.",
+            tags: { tone: ['neutral'], cast: ['solo'], budget: ['micro'], intensity: 3 }
+        },
+        {
+            text: "Someone keeps delaying a small decision until it becomes a big one.",
+            tags: { tone: ['neutral'], cast: ['solo'], budget: ['micro'], intensity: 2 }
+        },
+        {
+            text: "Two strangers share a quiet win and don’t exchange names.",
+            tags: { tone: ['neutral'], cast: ['two'], budget: ['micro'], intensity: 1 }
+        }
     ].map(normalizeIdeaEntry),
 
     // ============================================
@@ -139,7 +275,67 @@ const ideasData = {
         { text: "No character can be named", type: "dialogue" },
         { text: "The entire story must fit in a 3-minute runtime", type: "time" },
         { text: "We only see what fits in a mirror", type: "visual" },
-        { text: "The action takes place in complete silence until the final moment", type: "audio" }
+        { text: "The action takes place in complete silence until the final moment", type: "audio" },
+        {
+            text: "The story unfolds during a single shared task",
+            tags: { tone: ['neutral'], type: "structure" }
+        },
+        {
+            text: "The protagonist must change their mind twice",
+            tags: { tone: ['neutral'], type: "storytelling" }
+        },
+        {
+            text: "We never hear the most important line of dialogue",
+            tags: { tone: ['neutral'], type: "dialogue" }
+        },
+        {
+            text: "Every scene must include an interruption",
+            tags: { tone: ['comedy'], type: "pacing" }
+        },
+        {
+            text: "Only one character is allowed to move at a time",
+            tags: { tone: ['neutral'], type: "visual" }
+        },
+        {
+            text: "The film must begin and end with the same action",
+            tags: { tone: ['neutral'], type: "structure" }
+        },
+        {
+            text: "All conflict is expressed through behavior, not dialogue",
+            tags: { tone: ['neutral'], type: "storytelling" }
+        },
+        {
+            text: "We only hear one side of every conversation",
+            tags: { tone: ['neutral'], type: "audio" }
+        },
+        {
+            text: "The protagonist must teach something incorrectly at first",
+            tags: { tone: ['comedy'], type: "storytelling" }
+        },
+        {
+            text: "The camera never enters the main space—it observes from outside",
+            tags: { tone: ['neutral'], type: "visual" }
+        },
+        {
+            text: "A recurring sound gains new meaning by the end",
+            tags: { tone: ['neutral'], type: "audio" }
+        },
+        {
+            text: "Every scene must reveal a small mistake",
+            tags: { tone: ['comedy'], type: "storytelling" }
+        },
+        {
+            text: "The story must work without subtitles or dialogue",
+            tags: { tone: ['neutral'], type: "audio" }
+        },
+        {
+            text: "We never see the resolution—only the choice",
+            tags: { tone: ['neutral'], type: "structure" }
+        },
+        {
+            text: "The protagonist must attempt something they’re bad at",
+            tags: { tone: ['comedy'], type: "character" }
+        }
     ].map(normalizeIdeaEntry),
 
     // ============================================
@@ -251,7 +447,67 @@ const ideasData = {
         "Corner of a gym",
         "Bowling alley lane",
         "Record store listening booth",
-        "Dance studio mirror wall"
+        "Dance studio mirror wall",
+        {
+            text: "Community college hallway",
+            tags: { tone: ['neutral'], budget: ['micro'] }
+        },
+        {
+            text: "Public library book return area",
+            tags: { tone: ['neutral'], budget: ['micro'] }
+        },
+        {
+            text: "Local print shop counter",
+            tags: { tone: ['comedy'], budget: ['micro'] }
+        },
+        {
+            text: "Basement laundry room",
+            tags: { tone: ['neutral'], budget: ['micro'] }
+        },
+        {
+            text: "Ice cream shop in winter",
+            tags: { tone: ['neutral'], budget: ['micro'] }
+        },
+        {
+            text: "Town hall meeting room",
+            tags: { tone: ['neutral'], budget: ['micro'] }
+        },
+        {
+            text: "Empty dog park",
+            tags: { tone: ['comedy'], budget: ['micro'] }
+        },
+        {
+            text: "Apartment mailroom",
+            tags: { tone: ['neutral'], budget: ['micro'] }
+        },
+        {
+            text: "Community theater lobby",
+            tags: { tone: ['neutral'], budget: ['micro'] }
+        },
+        {
+            text: "Parking garage rooftop",
+            tags: { tone: ['neutral'], budget: ['micro'] }
+        },
+        {
+            text: "Record store listening station",
+            tags: { tone: ['neutral'], budget: ['micro'] }
+        },
+        {
+            text: "Church basement after an event",
+            tags: { tone: ['neutral'], budget: ['micro'] }
+        },
+        {
+            text: "Bike repair shop",
+            tags: { tone: ['comedy'], budget: ['micro'] }
+        },
+        {
+            text: "Public pool bleachers",
+            tags: { tone: ['neutral'], budget: ['micro'] }
+        },
+        {
+            text: "Closed roller rink",
+            tags: { tone: ['neutral'], budget: ['micro'] }
+        }
     ],
 
     // ============================================
