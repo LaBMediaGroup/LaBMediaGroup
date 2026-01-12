@@ -1333,24 +1333,39 @@
 
                 // Get unique concept
                 let concept;
-                do {
-                    concept = getRandomItem(conceptPool);
-                } while (usedConcepts.has(concept.text) && usedConcepts.size < conceptPool.length);
-                usedConcepts.add(concept.text);
+                if (previousPrompt && locks.concept) {
+                    concept = { text: previousPrompt.concept };
+                    usedConcepts.add(concept.text);
+                } else {
+                    do {
+                        concept = getRandomItem(conceptPool);
+                    } while (usedConcepts.has(concept.text) && usedConcepts.size < conceptPool.length);
+                    usedConcepts.add(concept.text);
+                }
 
                 // Get unique constraint
                 let constraint;
-                do {
-                    constraint = getRandomItem(constraintPool);
-                } while (usedConstraints.has(constraint.text) && usedConstraints.size < constraintPool.length);
-                usedConstraints.add(constraint.text);
+                if (previousPrompt && locks.constraint) {
+                    constraint = previousPrompt.constraint;
+                    usedConstraints.add(constraint.text);
+                } else {
+                    do {
+                        constraint = getRandomItem(constraintPool);
+                    } while (usedConstraints.has(constraint.text) && usedConstraints.size < constraintPool.length);
+                    usedConstraints.add(constraint.text);
+                }
 
                 // Get unique twist
                 let twist;
-                do {
-                    twist = getRandomItem(twistPool);
-                } while (usedTwists.has(twist.text) && usedTwists.size < twistPool.length);
-                usedTwists.add(twist.text);
+                if (previousPrompt && locks.twist) {
+                    twist = { text: previousPrompt.twist };
+                    usedTwists.add(twist.text);
+                } else {
+                    do {
+                        twist = getRandomItem(twistPool);
+                    } while (usedTwists.has(twist.text) && usedTwists.size < twistPool.length);
+                    usedTwists.add(twist.text);
+                }
 
                 // Optional flavor elements (rotate, don't force all)
                 const prompt = {
