@@ -1317,7 +1317,8 @@
             return filterByTone(ideasData.twists, selectedTone, 3);
         }
 
-        function generatePrompts() {
+        function generatePrompts(previousPrompts = []) {
+            const promptHistory = Array.isArray(previousPrompts) ? previousPrompts : [];
             const prompts = [];
             const usedConcepts = new Set();
             const usedConstraints = new Set();
@@ -1328,7 +1329,7 @@
             const twistPool = getTwistPool();
 
             for (let i = 0; i < 3; i++) {
-                const previousPrompt = previousPrompts[i];
+                const previousPrompt = promptHistory[i];
                 const locks = getPromptLocks(previousPrompt);
 
                 // Get unique concept

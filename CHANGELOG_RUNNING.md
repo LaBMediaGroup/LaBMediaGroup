@@ -1074,3 +1074,15 @@ Quick test checklist:
 - Open ideas.html; roll prompts, then reroll Constraint and Twist on a card and confirm the text updates in the card.
 - Select a prompt after rerolling and confirm the Current Results section reflects the updated constraint/twist.
 - Open DevTools console on ideas.html; confirm no errors.
+2026-01-12 | 6:51PM EST
+———————————————————————
+Change:
+Fixed prompt generation to handle missing previous prompt history without errors.
+Files touched:
+ideas.html
+Notes:
+Addressed console error that prevented the main roll from returning prompts.
+Quick test checklist:
+- Open ideas.html and click the main roll button to confirm three prompts render.
+- Lock and reroll a prompt field, then confirm the locked items persist.
+- Open DevTools Console on ideas.html and confirm no new errors appear.
