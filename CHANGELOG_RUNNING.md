@@ -1120,3 +1120,13 @@ Quick test checklist:
 - Open resources.html; select Tools → Drone and confirm Betaflight appears in the list.
 - Use the search bar to find Betaflight; confirm it still opens the resource modal.
 - Open DevTools console on Resources page; confirm no errors.
+2026-01-12 | 9:32PM EST
+———————————————————————
+Change: Activate horror/comedy toggles in the Ideas generator with tone-aware prompt pools and uppercase genre detail labels.
+Files touched: ideas.html, CHANGELOG_RUNNING.md
+Notes: Updated prompt generation to sample tone pools with comedy sub-pools and removed glow styling on toggle button modes.
+Quick test checklist:
+- Load ideas.html; toggle Horror/Comedy and confirm the Roll button label and styling change appropriately.
+- Click Roll the Die; confirm prompt cards render and show CREEPY DETAIL or COMEDY BEAT when toggles are active.
+- Click reroll on Constraint/Twist with Comedy active; confirm comedy mechanics/twists appear.
+- Open DevTools console on Ideas page; confirm no errors.
