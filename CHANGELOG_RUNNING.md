@@ -1065,3 +1065,39 @@ Quick test checklist:
 - Open ideas.html; trigger rolls and confirm new visual style, emotion, and bonus options appear.
 - Open ideas.html; refresh and confirm existing idea options still render.
 - Open DevTools console on ideas.html; confirm no errors.
+2026-01-12 | 11:57AM EST
+———————————————————————
+Change: Add per-prompt reroll buttons for constraints and twists on the Ideas page.
+Files touched: ideas.html, CHANGELOG_RUNNING.md
+Notes: Reroll controls update the prompt card text and results summary without changing the concept.
+Quick test checklist:
+- Open ideas.html; roll prompts, then reroll Constraint and Twist on a card and confirm the text updates in the card.
+- Select a prompt after rerolling and confirm the Current Results section reflects the updated constraint/twist.
+- Open DevTools console on ideas.html; confirm no errors.
+2026-01-12 | 11:58AM EST
+———————————————————————
+Change: Fix keyboard reroll actions to avoid triggering prompt selection.
+Files touched: ideas.html, CHANGELOG_RUNNING.md
+Notes: Card keydown now ignores reroll buttons and reroll buttons stop Enter/Space propagation.
+Quick test checklist:
+- Open ideas.html; roll prompts, tab to a reroll button, press Enter/Space, and confirm the constraint/twist rerolls without selecting the card.
+- Tab to the card itself and press Enter/Space; confirm it selects the card as before.
+- Open DevTools console on ideas.html; confirm no errors.
+2026-01-12 | 12:05PM EST
+———————————————————————
+Change: Add Roll All challenge, prompt locks, and new idea data options on the Ideas page.
+Files touched: ideas.html, ideas-data.js, CHANGELOG_RUNNING.md
+Notes: Roll All triggers prompts, bonus, and quick rollers once per reset; lock toggles preserve fields during rerolls.
+Quick test checklist:
+- Open ideas.html; click Roll All and confirm prompts, bonus, and quick rollers populate with the animation and the button locks afterward.
+- Toggle lock icons on a prompt, click Roll Again, and confirm locked fields persist while unlocked fields reroll.
+- Open DevTools console on ideas.html; confirm no errors.
+2026-01-12 | 12:07PM EST
+———————————————————————
+Change: Preserve uniqueness when locked prompt fields are carried forward.
+Files touched: ideas.html, CHANGELOG_RUNNING.md
+Notes: Locked concepts/constraints/twists now count toward uniqueness pools during rerolls.
+Quick test checklist:
+- Open ideas.html; lock a concept/constraint/twist on prompt 1, click Roll Again, and confirm prompt 2 does not duplicate the locked value.
+- Repeat with multiple locks to ensure each locked value remains unique across the three prompts.
+- Open DevTools console on ideas.html; confirm no errors.

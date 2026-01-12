@@ -205,6 +205,10 @@
         .roll-container {
             text-align: center;
             margin-bottom: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
         }
 
         .roll-button {
@@ -263,6 +267,55 @@
             0% { transform: rotate(0deg) scale(1); }
             50% { transform: rotate(360deg) scale(1.2); }
             100% { transform: rotate(720deg) scale(1); }
+        }
+
+        .roll-all-btn {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .roll-all-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .roll-all-btn.rolling .roll-all-icon {
+            animation: spin-jolt 0.6s ease-in-out;
+        }
+
+        .roll-all-btn.rolling {
+            animation: shake-lines 0.6s ease-in-out;
+        }
+
+        .roll-all-btn.is-used {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @keyframes spin-jolt {
+            0% { transform: rotate(0deg) scale(1); }
+            40% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes shake-lines {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-4px); }
+            40% { transform: translateX(4px); }
+            60% { transform: translateX(-3px); }
+            80% { transform: translateX(3px); }
+            100% { transform: translateX(0); }
         }
 
         /* ============================================
@@ -378,12 +431,69 @@
             gap: 0.5rem;
         }
 
+        .prompt-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .prompt-section-controls {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
         .prompt-label {
             font-family: 'Space Mono', monospace;
             font-size: 0.6rem;
             color: var(--gray-600);
             letter-spacing: 2px;
             text-transform: uppercase;
+        }
+
+        .prompt-reroll-btn {
+            border: 1px solid var(--gray-800);
+            background: transparent;
+            color: var(--gray-600);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.25rem 0.6rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .prompt-reroll-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .prompt-reroll-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .prompt-lock-btn {
+            border: 1px solid var(--gray-800);
+            background: transparent;
+            color: var(--gray-600);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            padding: 0.2rem 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .prompt-lock-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .prompt-lock-btn.is-locked {
+            border-color: var(--white);
+            color: var(--white);
         }
 
         .prompt-text {
@@ -965,6 +1075,10 @@
                     <span class="die-icon">&#x2680;</span>
                     <span>Roll the Die</span>
                 </button>
+                <button class="roll-all-btn" id="rollAllBtn">
+                    <span class="roll-all-icon">&#x2726;</span>
+                    <span>Roll All (One-Time)</span>
+                </button>
             </div>
 
             <div class="prompts-container" id="promptsContainer">
@@ -1223,40 +1337,75 @@
         // ============================================
         // PROMPT GENERATION
         // ============================================
-        function generatePrompts() {
+        const selectedTone = 'neutral';
+        const localMode = true;
+        const maxCast = localMode ? 2 : null;
+
+        function getConstraintPool() {
+            return filterByTone(ideasData.constraints, selectedTone, 3);
+        }
+
+        function getTwistPool() {
+            return filterByTone(ideasData.twists, selectedTone, 3);
+        }
+
+        function getPromptLocks(prompt) {
+            return {
+                concept: Boolean(prompt?.locks?.concept),
+                constraint: Boolean(prompt?.locks?.constraint),
+                twist: Boolean(prompt?.locks?.twist)
+            };
+        }
+
+        function generatePrompts(previousPrompts = []) {
             const prompts = [];
             const usedConcepts = new Set();
             const usedConstraints = new Set();
             const usedTwists = new Set();
-            const selectedTone = 'neutral';
-            const localMode = true;
-            const maxCast = localMode ? 2 : null;
             let conceptPool = filterByTone(ideasData.concepts, selectedTone, 3);
             conceptPool = filterByMaxCast(conceptPool, maxCast);
-            const constraintPool = filterByTone(ideasData.constraints, selectedTone, 3);
-            const twistPool = filterByTone(ideasData.twists, selectedTone, 3);
+            const constraintPool = getConstraintPool();
+            const twistPool = getTwistPool();
 
             for (let i = 0; i < 3; i++) {
+                const previousPrompt = previousPrompts[i];
+                const locks = getPromptLocks(previousPrompt);
+
                 // Get unique concept
                 let concept;
-                do {
-                    concept = getRandomItem(conceptPool);
-                } while (usedConcepts.has(concept.text) && usedConcepts.size < conceptPool.length);
-                usedConcepts.add(concept.text);
+                if (previousPrompt && locks.concept) {
+                    concept = { text: previousPrompt.concept };
+                    usedConcepts.add(concept.text);
+                } else {
+                    do {
+                        concept = getRandomItem(conceptPool);
+                    } while (usedConcepts.has(concept.text) && usedConcepts.size < conceptPool.length);
+                    usedConcepts.add(concept.text);
+                }
 
                 // Get unique constraint
                 let constraint;
-                do {
-                    constraint = getRandomItem(constraintPool);
-                } while (usedConstraints.has(constraint.text) && usedConstraints.size < constraintPool.length);
-                usedConstraints.add(constraint.text);
+                if (previousPrompt && locks.constraint) {
+                    constraint = previousPrompt.constraint;
+                    usedConstraints.add(constraint.text);
+                } else {
+                    do {
+                        constraint = getRandomItem(constraintPool);
+                    } while (usedConstraints.has(constraint.text) && usedConstraints.size < constraintPool.length);
+                    usedConstraints.add(constraint.text);
+                }
 
                 // Get unique twist
                 let twist;
-                do {
-                    twist = getRandomItem(twistPool);
-                } while (usedTwists.has(twist.text) && usedTwists.size < twistPool.length);
-                usedTwists.add(twist.text);
+                if (previousPrompt && locks.twist) {
+                    twist = { text: previousPrompt.twist };
+                    usedTwists.add(twist.text);
+                } else {
+                    do {
+                        twist = getRandomItem(twistPool);
+                    } while (usedTwists.has(twist.text) && usedTwists.size < twistPool.length);
+                    usedTwists.add(twist.text);
+                }
 
                 // Optional flavor elements (rotate, don't force all)
                 const prompt = {
@@ -1266,10 +1415,69 @@
                     genre: Math.random() > 0.5 ? getRandomItem(ideasData.genres) : null,
                     visualStyle: Math.random() > 0.6 ? getRandomItem(ideasData.visualStyles) : null,
                     emotion: Math.random() > 0.6 ? getRandomItem(ideasData.emotions) : null,
+                    locks: locks
                 };
+
                 prompts.push(prompt);
             }
             return prompts;
+        }
+
+        function getDifferentItem(pool, currentText) {
+            if (!pool.length) return null;
+            let next = getRandomItem(pool);
+            let attempts = 0;
+            while (pool.length > 1 && getEntryText(next) === currentText && attempts < 10) {
+                next = getRandomItem(pool);
+                attempts++;
+            }
+            return next;
+        }
+
+        function rerollPromptField(index, field) {
+            const prompt = resultsState.generatedPrompts[index];
+            if (!prompt) return;
+            if (prompt.locks && prompt.locks[field]) return;
+
+            if (field === 'constraint') {
+                const nextConstraint = getDifferentItem(getConstraintPool(), getEntryText(prompt.constraint));
+                if (!nextConstraint) return;
+                prompt.constraint = normalizeIdeaEntryLocal(nextConstraint);
+            }
+
+            if (field === 'twist') {
+                const nextTwist = getDifferentItem(getTwistPool(), prompt.twist);
+                if (!nextTwist) return;
+                prompt.twist = getEntryText(nextTwist);
+            }
+
+            const card = document.querySelector(`.prompt-card[data-prompt-index="${index}"]`);
+            if (card && field === 'constraint') {
+                card.querySelector('.prompt-text.constraint').textContent = prompt.constraint.text;
+            }
+            if (card && field === 'twist') {
+                card.querySelector('.prompt-text.twist').textContent = prompt.twist;
+            }
+
+            updateResultsDisplay();
+        }
+
+        function togglePromptLock(index, field, button) {
+            const prompt = resultsState.generatedPrompts[index];
+            if (!prompt) return;
+            if (!prompt.locks) {
+                prompt.locks = { concept: false, constraint: false, twist: false };
+            }
+            prompt.locks[field] = !prompt.locks[field];
+
+            button.classList.toggle('is-locked', prompt.locks[field]);
+            button.setAttribute('aria-pressed', String(prompt.locks[field]));
+            button.textContent = prompt.locks[field] ? '🔒' : '🔓';
+
+            const rerollBtn = button.closest('.prompt-section-header')?.querySelector('.prompt-reroll-btn');
+            if (rerollBtn) {
+                rerollBtn.disabled = prompt.locks[field];
+            }
         }
 
         function renderPrompts(prompts) {
@@ -1282,6 +1490,16 @@
                 card.dataset.promptIndex = index;
                 card.setAttribute('role', 'button');
                 card.setAttribute('tabindex', '0');
+
+                const locks = prompt.locks || { concept: false, constraint: false, twist: false };
+                const conceptLockIcon = locks.concept ? '🔒' : '🔓';
+                const constraintLockIcon = locks.constraint ? '🔒' : '🔓';
+                const twistLockIcon = locks.twist ? '🔒' : '🔓';
+                const conceptLockClass = locks.concept ? 'is-locked' : '';
+                const constraintLockClass = locks.constraint ? 'is-locked' : '';
+                const twistLockClass = locks.twist ? 'is-locked' : '';
+                const constraintRerollDisabled = locks.constraint ? 'disabled' : '';
+                const twistRerollDisabled = locks.twist ? 'disabled' : '';
 
                 let flavorHTML = '';
                 if (prompt.genre || prompt.visualStyle || prompt.emotion) {
@@ -1304,15 +1522,38 @@
                     <div class="prompt-number">0${index + 1}</div>
                     <div class="prompt-content">
                         <div class="prompt-section">
-                            <span class="prompt-label">Concept</span>
+                            <div class="prompt-section-header">
+                                <span class="prompt-label">Concept</span>
+                                <div class="prompt-section-controls">
+                                    <button class="prompt-lock-btn ${conceptLockClass}" type="button" data-field="concept" aria-pressed="${locks.concept}">
+                                        ${conceptLockIcon}
+                                    </button>
+                                </div>
+                            </div>
                             <p class="prompt-text concept">${prompt.concept}</p>
                         </div>
                         <div class="prompt-section">
-                            <span class="prompt-label">Constraint</span>
+                            <div class="prompt-section-header">
+                                <span class="prompt-label">Constraint</span>
+                                <div class="prompt-section-controls">
+                                    <button class="prompt-lock-btn ${constraintLockClass}" type="button" data-field="constraint" aria-pressed="${locks.constraint}">
+                                        ${constraintLockIcon}
+                                    </button>
+                                    <button class="prompt-reroll-btn" type="button" data-action="constraint" ${constraintRerollDisabled}>Reroll</button>
+                                </div>
+                            </div>
                             <p class="prompt-text constraint">${prompt.constraint.text}</p>
                         </div>
                         <div class="prompt-section">
-                            <span class="prompt-label">Twist</span>
+                            <div class="prompt-section-header">
+                                <span class="prompt-label">Twist</span>
+                                <div class="prompt-section-controls">
+                                    <button class="prompt-lock-btn ${twistLockClass}" type="button" data-field="twist" aria-pressed="${locks.twist}">
+                                        ${twistLockIcon}
+                                    </button>
+                                    <button class="prompt-reroll-btn" type="button" data-action="twist" ${twistRerollDisabled}>Reroll</button>
+                                </div>
+                            </div>
                             <p class="prompt-text twist">${prompt.twist}</p>
                         </div>
                     </div>
@@ -1324,10 +1565,37 @@
                 });
 
                 card.addEventListener('keydown', (event) => {
+                    if (event.target.classList.contains('prompt-reroll-btn') || event.target.classList.contains('prompt-lock-btn')) {
+                        return;
+                    }
                     if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault();
                         selectPrompt(index);
                     }
+                });
+
+                card.querySelectorAll('.prompt-reroll-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        rerollPromptField(index, button.dataset.action);
+                    });
+                    button.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.stopPropagation();
+                        }
+                    });
+                });
+
+                card.querySelectorAll('.prompt-lock-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        togglePromptLock(index, button.dataset.field, button);
+                    });
+                    button.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.stopPropagation();
+                        }
+                    });
                 });
 
                 grid.appendChild(card);
@@ -1355,6 +1623,7 @@
         // EVENT HANDLERS
         // ============================================
         const mainRollBtn = document.getElementById('mainRollBtn');
+        const rollAllBtn = document.getElementById('rollAllBtn');
         const rollAgainBtn = document.getElementById('rollAgainBtn');
         const promptsContainer = document.getElementById('promptsContainer');
         const bonusRollBtn = document.getElementById('bonusRollBtn');
@@ -1382,7 +1651,7 @@
                 dieIcon.textContent = getRandomDieFace();
 
                 // Generate and show prompts
-                const prompts = generatePrompts();
+                const prompts = generatePrompts(resultsState.generatedPrompts);
                 renderPrompts(prompts);
 
                 // Save to state
@@ -1402,8 +1671,7 @@
         mainRollBtn.addEventListener('click', handleMainRoll);
         rollAgainBtn.addEventListener('click', handleMainRoll);
 
-        // Bonus roll handler
-        bonusRollBtn.addEventListener('click', () => {
+        function triggerBonusRoll() {
             const bonus = getRandomItem(ideasData.bonuses);
             const bonusText = getEntryText(bonus);
             bonusResult.textContent = bonusText;
@@ -1422,36 +1690,36 @@
                 bonusResult.style.opacity = '1';
                 bonusResult.style.transform = 'translateX(0)';
             }, 10);
-        });
+        }
+
+        // Bonus roll handler
+        bonusRollBtn.addEventListener('click', triggerBonusRoll);
 
         // Mini rollers
         const miniPlaceholderText = 'Click roll to reveal...';
 
-        document.querySelectorAll('.mini-roll-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const type = btn.dataset.type;
-                const resultEl = document.querySelector(`[data-result="${type}"]`);
+        function rollMini(type) {
+            const resultEl = document.querySelector(`[data-result="${type}"]`);
 
-                let result;
-                if (type === 'places') {
-                    result = getRandomItem(ideasData.places);
-                } else if (type === 'objects') {
-                    result = getRandomItem(ideasData.objects);
-                } else if (type === 'characters') {
-                    result = getRandomItem(ideasData.characters);
-                } else if (type === 'genres') {
-                    result = getRandomItem(ideasData.genres);
-                }
+            let result;
+            if (type === 'places') {
+                result = getRandomItem(ideasData.places);
+            } else if (type === 'objects') {
+                result = getRandomItem(ideasData.objects);
+            } else if (type === 'characters') {
+                result = getRandomItem(ideasData.characters);
+            } else if (type === 'genres') {
+                result = getRandomItem(ideasData.genres);
+            }
 
-                // Save to state
-                const resultText = getEntryText(result);
-                resultsState.miniRollers[type] = resultText;
-                updateResultsDisplay();
+            const resultText = getEntryText(result);
+            resultsState.miniRollers[type] = resultText;
+            updateResultsDisplay();
 
+            if (resultEl) {
                 resultEl.classList.remove('empty');
                 resultEl.textContent = resultText;
 
-                // Animate
                 resultEl.style.opacity = '0';
                 resultEl.style.transform = 'translateY(10px)';
                 setTimeout(() => {
@@ -1459,8 +1727,34 @@
                     resultEl.style.opacity = '1';
                     resultEl.style.transform = 'translateY(0)';
                 }, 10);
+            }
+        }
+
+        document.querySelectorAll('.mini-roll-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                rollMini(btn.dataset.type);
             });
         });
+
+        function handleRollAll() {
+            if (rollAllBtn.classList.contains('is-used')) {
+                return;
+            }
+
+            rollAllBtn.classList.add('rolling');
+            handleMainRoll();
+
+            setTimeout(() => {
+                triggerBonusRoll();
+                ['places', 'objects', 'characters', 'genres'].forEach(rollMini);
+                rollAllBtn.classList.remove('rolling');
+                rollAllBtn.classList.add('is-used');
+                rollAllBtn.setAttribute('disabled', 'disabled');
+                rollAllBtn.querySelector('span:last-child').textContent = 'Challenge Locked';
+            }, 700);
+        }
+
+        rollAllBtn.addEventListener('click', handleRollAll);
 
         document.querySelectorAll('.mini-clear-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1737,6 +2031,10 @@
                 el.classList.add('empty');
                 el.textContent = miniPlaceholderText;
             });
+
+            rollAllBtn.classList.remove('is-used');
+            rollAllBtn.removeAttribute('disabled');
+            rollAllBtn.querySelector('span:last-child').textContent = 'Roll All (One-Time)';
 
             updateResultsDisplay();
         }
