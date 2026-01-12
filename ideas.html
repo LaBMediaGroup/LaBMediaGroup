@@ -1402,6 +1402,9 @@
                 });
 
                 card.addEventListener('keydown', (event) => {
+                    if (event.target.classList.contains('prompt-reroll-btn')) {
+                        return;
+                    }
                     if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault();
                         selectPrompt(index);
