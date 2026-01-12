@@ -438,12 +438,6 @@
             gap: 1rem;
         }
 
-        .prompt-section-controls {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
         .prompt-label {
             font-family: 'Space Mono', monospace;
             font-size: 0.6rem;
@@ -466,32 +460,6 @@
         }
 
         .prompt-reroll-btn:hover {
-            border-color: var(--white);
-            color: var(--white);
-        }
-
-        .prompt-reroll-btn:disabled {
-            opacity: 0.35;
-            cursor: not-allowed;
-        }
-
-        .prompt-lock-btn {
-            border: 1px solid var(--gray-800);
-            background: transparent;
-            color: var(--gray-600);
-            font-family: 'Space Mono', monospace;
-            font-size: 0.6rem;
-            padding: 0.2rem 0.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .prompt-lock-btn:hover {
-            border-color: var(--white);
-            color: var(--white);
-        }
-
-        .prompt-lock-btn.is-locked {
             border-color: var(--white);
             color: var(--white);
         }
@@ -1349,15 +1317,7 @@
             return filterByTone(ideasData.twists, selectedTone, 3);
         }
 
-        function getPromptLocks(prompt) {
-            return {
-                concept: Boolean(prompt?.locks?.concept),
-                constraint: Boolean(prompt?.locks?.constraint),
-                twist: Boolean(prompt?.locks?.twist)
-            };
-        }
-
-        function generatePrompts(previousPrompts = []) {
+        function generatePrompts() {
             const prompts = [];
             const usedConcepts = new Set();
             const usedConstraints = new Set();
@@ -1433,7 +1393,6 @@
         function rerollPromptField(index, field) {
             const prompt = resultsState.generatedPrompts[index];
             if (!prompt) return;
-            if (prompt.locks && prompt.locks[field]) return;
 
             if (field === 'constraint') {
                 const nextConstraint = getDifferentItem(getConstraintPool(), getEntryText(prompt.constraint));
@@ -1456,24 +1415,6 @@
             }
 
             updateResultsDisplay();
-        }
-
-        function togglePromptLock(index, field, button) {
-            const prompt = resultsState.generatedPrompts[index];
-            if (!prompt) return;
-            if (!prompt.locks) {
-                prompt.locks = { concept: false, constraint: false, twist: false };
-            }
-            prompt.locks[field] = !prompt.locks[field];
-
-            button.classList.toggle('is-locked', prompt.locks[field]);
-            button.setAttribute('aria-pressed', String(prompt.locks[field]));
-            button.textContent = prompt.locks[field] ? '🔒' : '🔓';
-
-            const rerollBtn = button.closest('.prompt-section-header')?.querySelector('.prompt-reroll-btn');
-            if (rerollBtn) {
-                rerollBtn.disabled = prompt.locks[field];
-            }
         }
 
         function renderPrompts(prompts) {
@@ -1531,24 +1472,14 @@
                         <div class="prompt-section">
                             <div class="prompt-section-header">
                                 <span class="prompt-label">Constraint</span>
-                                <div class="prompt-section-controls">
-                                    <button class="prompt-lock-btn ${constraintLockClass}" type="button" data-field="constraint" aria-pressed="${locks.constraint}">
-                                        ${constraintLockIcon}
-                                    </button>
-                                    <button class="prompt-reroll-btn" type="button" data-action="constraint" ${constraintRerollDisabled}>Reroll</button>
-                                </div>
+                                <button class="prompt-reroll-btn" type="button" data-action="constraint">Reroll</button>
                             </div>
                             <p class="prompt-text constraint">${prompt.constraint.text}</p>
                         </div>
                         <div class="prompt-section">
                             <div class="prompt-section-header">
                                 <span class="prompt-label">Twist</span>
-                                <div class="prompt-section-controls">
-                                    <button class="prompt-lock-btn ${twistLockClass}" type="button" data-field="twist" aria-pressed="${locks.twist}">
-                                        ${twistLockIcon}
-                                    </button>
-                                    <button class="prompt-reroll-btn" type="button" data-action="twist" ${twistRerollDisabled}>Reroll</button>
-                                </div>
+                                <button class="prompt-reroll-btn" type="button" data-action="twist">Reroll</button>
                             </div>
                             <p class="prompt-text twist">${prompt.twist}</p>
                         </div>
@@ -1561,7 +1492,7 @@
                 });
 
                 card.addEventListener('keydown', (event) => {
-                    if (event.target.classList.contains('prompt-reroll-btn') || event.target.classList.contains('prompt-lock-btn')) {
+                    if (event.target.classList.contains('prompt-reroll-btn')) {
                         return;
                     }
                     if (event.key === 'Enter' || event.key === ' ') {
@@ -1574,23 +1505,6 @@
                     button.addEventListener('click', (event) => {
                         event.stopPropagation();
                         rerollPromptField(index, button.dataset.action);
-                    });
-                    button.addEventListener('keydown', (event) => {
-                        if (event.key === 'Enter' || event.key === ' ') {
-                            event.stopPropagation();
-                        }
-                    });
-                });
-
-                card.querySelectorAll('.prompt-lock-btn').forEach(button => {
-                    button.addEventListener('click', (event) => {
-                        event.stopPropagation();
-                        togglePromptLock(index, button.dataset.field, button);
-                    });
-                    button.addEventListener('keydown', (event) => {
-                        if (event.key === 'Enter' || event.key === ' ') {
-                            event.stopPropagation();
-                        }
                     });
                 });
 
