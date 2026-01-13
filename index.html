@@ -1582,80 +1582,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid var(--gray-800);
             gap: 1.5rem;
             flex-wrap: wrap;
         }
 
-        .footer-copy {
+        .footer-text {
             font-family: 'Space Mono', monospace;
-            font-size: 0.6rem;
-            color: var(--gray-600);
-            letter-spacing: 1px;
-        }
-
-        .footer-note {
-            display: block;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.6rem;
-            color: var(--gray-600);
-            letter-spacing: 0.6px;
-        }
-
-        .footer-link {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.6rem;
+            font-size: 0.7rem;
             color: var(--gray-400);
             letter-spacing: 1px;
-            text-transform: uppercase;
-            text-decoration: none;
-            transition: color 0.3s ease, opacity 0.3s ease;
-        }
-
-        .footer-link:hover {
-            color: var(--white);
-            opacity: 0.8;
-        }
-
-        .footer-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.6rem 1.2rem;
-            border: 1px solid var(--gray-800);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .footer-cta-text {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.6rem;
-            color: var(--gray-400);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-        }
-
-        .footer-cta-arrow {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--gray-600);
-            transition: all 0.3s ease;
-        }
-
-        .footer-cta:hover {
-            border-color: var(--white);
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .footer-cta:hover .footer-cta-text {
-            color: var(--white);
-        }
-
-        .footer-cta:hover .footer-cta-arrow {
-            color: var(--white);
-            transform: translateX(3px);
         }
 
         /* ============================================
@@ -1827,11 +1762,6 @@
                 gap: 1.5rem;
                 padding: 1.5rem;
                 align-items: flex-start;
-            }
-
-            /* Hide Start Project button on mobile */
-            .footer-cta {
-                display: none;
             }
 
             .scroll-indicator {
@@ -2069,16 +1999,8 @@
 
     <!-- Footer -->
     <footer>
-        <div class="footer-copy">
-            © 2025 LaB Media
-            <span class="footer-note">Turn project notes into a quick narrated mini-podcast — table-read energy for your ideas, in audio form.</span>
-        </div>
-        <a href="https://youtube.com/@BobtastiCFPV" class="footer-link" target="_blank" rel="noopener">FPV</a>
-        <a href="https://ai.studio/apps/drive/1h-3BvBuLgnF0kRHx43_GWVIlwwWC31od?fullscreenApplet=true" class="footer-link" target="_blank" rel="noopener noreferrer">LaB Talk (Beta)</a>
-        <a href="plan-your-project.html" class="footer-cta">
-            <span class="footer-cta-text">Start Project</span>
-            <span class="footer-cta-arrow">→</span>
-        </a>
+        <span class="footer-text">Made in Shelby Twp, MI with ❤️</span>
+        <span class="footer-text">© 2026 LaB Media</span>
     </footer>
 
     <!-- Load Events Data -->
