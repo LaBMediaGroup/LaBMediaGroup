@@ -178,25 +178,6 @@
 
         .view-toggle {
             margin-top: 1.25rem;
-            display: inline-flex;
-            gap: 0.5rem;
-        }
-
-        .view-btn {
-            border: 1px solid rgba(255,255,255,0.18);
-            background: rgba(255,255,255,0.03);
-            color: var(--gray-300);
-            padding: 0.5rem 0.85rem;
-            cursor: pointer;
-            font-family: 'Space Mono', monospace;
-            transition: transform 0.1s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
-        }
-
-        .view-btn:hover { transform: translateY(-1px); color: var(--white); }
-        .view-btn.active {
-            border-color: rgba(255,255,255,0.35);
-            background: rgba(255,255,255,0.06);
-            color: var(--white);
         }
 
         /* Suggest Event */
@@ -1355,7 +1336,7 @@
             </section>
         </div>
 
-        <section class="view-section" id="pastEventsSection" hidden>
+        <section class="view-section" id="pastEventsSection">
             <div class="past-events-header">
                 <h2>Past Events Archive</h2>
                 <p>Explore highlights and memories from previous LaB community events</p>
