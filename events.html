@@ -2078,6 +2078,17 @@
                     `;
                 }
 
+                if (eventData.website) {
+                    infoHTML += `
+                        <div class="event-info-item">
+                            <div class="event-info-label">Website</div>
+                            <div class="event-info-value">
+                                <a href="${eventData.website}" target="_blank" rel="noopener noreferrer">${eventData.website}</a>
+                            </div>
+                        </div>
+                    `;
+                }
+
                 if (eventData.audience) {
                     infoHTML += `
                         <div class="event-info-item">
@@ -2214,7 +2225,8 @@
 
             // Escape special characters in text fields
             const summary = (evt.title || '').replace(/[,;\\]/g, '\\$&').replace(/\n/g, '\\n');
-            const description = (evt.description || '').replace(/[,;\\]/g, '\\$&').replace(/\n/g, '\\n');
+            const descriptionText = `${evt.description || ''}${evt.url ? `\n\nEvent URL: ${evt.url}` : ''}`;
+            const description = descriptionText.replace(/[,;\\]/g, '\\$&').replace(/\n/g, '\\n');
             const location = (evt.location || '').replace(/[,;\\]/g, '\\$&').replace(/\n/g, '\\n');
 
             // Build event categories based on type
