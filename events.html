@@ -459,8 +459,9 @@
 
         .list-row {
             display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 0.8fr;
+            grid-template-columns: 72px 1.5fr 1fr 1fr 0.8fr;
             align-items: center;
+            gap: 0.75rem;
             padding: 0.75rem 1rem;
             border: 1px solid rgba(255,255,255,0.1);
             background: rgba(255,255,255,0.02);
@@ -487,6 +488,32 @@
         .list-row.is-selected {
             border-color: rgba(255,255,255,0.45);
             background: rgba(255,255,255,0.08);
+        }
+
+        .list-row-media {
+            width: 64px;
+            height: 64px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .list-row-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .list-row-media--empty {
+            color: var(--gray-500);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
         }
 
         .list-row h4 { margin: 0; color: var(--white); }
@@ -1188,6 +1215,7 @@
 
         @media (max-width: 768px) {
             .list-row { grid-template-columns: 1fr; gap: 0.35rem; }
+            .list-row-media { width: 72px; height: 72px; }
             .list-header { display: none; }
             .suggest-modal { max-height: 90vh; }
             .event-preview-modal { max-height: 95vh; }
@@ -1322,6 +1350,7 @@
             <section class="view-section events-pane list-pane" id="listSection">
                 <div class="list-view">
                     <div class="list-row list-header">
+                        <span>Poster</span>
                         <span>Event</span>
                         <span>Date</span>
                         <span>Location</span>
@@ -1719,8 +1748,12 @@
                 const pastClass = isPast ? ' is-past' : '';
                 const typeLabel = getTypeLabel(ev.type);
                 const verificationBadge = buildVerificationBadge(ev);
+                const mediaMarkup = ev.thumbnail
+                    ? `<span class="list-row-media"><img src="${ev.thumbnail}" alt="${ev.title} poster"></span>`
+                    : '<span class="list-row-media list-row-media--empty" aria-hidden="true"></span>';
                 return `
                     <button class="list-row${pastClass}" data-event-id="${ev.id}" type="button" aria-pressed="false">
+                        ${mediaMarkup}
                         <h4>${ev.title}</h4>
                         <span>${formatDate(ev.startDate)}${ev.endDate ? ' – ' + formatDate(ev.endDate) : ''}</span>
                         <span>${ev.location || 'TBD'}</span>

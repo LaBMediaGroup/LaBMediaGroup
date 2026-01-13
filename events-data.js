@@ -62,15 +62,18 @@ const eventsData = [
   },
   {
     id: 'frames-and-fabric-film-detroit-2026-01-31',
-    title: 'Frames & Fabric: The Art of Film in Detroit',
+    title: "Film Detroit's Frames & Fabrics: The Art of Film in Detroit",
     type: 'workshop',
     startDate: '2026-01-31',
     startTime: '15:00',
     endTime: '20:00',
     location: 'Heilmann Rec Center, 19601 Brock Ave, Detroit, MI 48205',
     venue: 'Heilmann Rec Center',
-    url: '',
+    url: 'https://detroitmi.gov/events/film-detroits-frames-fabrics-event-art-film-detroit-jan-31',
+    thumbnail: 'images/events/frames-fabrics-2026.svg',
+    promoUrl: 'https://www.facebook.com/share/r/1858PXs8By/?mibextid=wwXIfr',
     description: 'Community-focused film event with filmmaking sessions, budget workshops, and makeup/wardrobe sessions.',
+    // Official link = Detroit.gov; promo media from FB/screenshot.
     verification: 'verified',
     audience: 'Detroit filmmakers, students, and neighbors exploring hands-on film craft.'
   },

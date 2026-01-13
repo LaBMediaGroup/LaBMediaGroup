@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Film Detroit's Frames &amp; Fabrics: The Art of Film in Detroit</title>
+  <desc id="desc">Event poster placeholder for Film Detroit's Frames & Fabrics on January 31, 2026 at Heilmann Rec Center.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b0b0b"/>
+      <stop offset="100%" stop-color="#111111"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect x="48" y="48" width="1104" height="579" fill="none" stroke="#2a2a2a" stroke-width="2"/>
+  <g fill="#f5f5f5" font-family="'Space Mono', monospace">
+    <text x="96" y="170" font-size="38" letter-spacing="2">FILM DETROIT</text>
+    <text x="96" y="250" font-size="54" font-weight="700">Frames &amp; Fabrics</text>
+    <text x="96" y="310" font-size="26" letter-spacing="1">The Art of Film in Detroit</text>
+  </g>
+  <g fill="#c7c7c7" font-family="'Space Mono', monospace" font-size="22">
+    <text x="96" y="410">Saturday, Jan 31, 2026 • 3:00 PM – 8:00 PM</text>
+    <text x="96" y="455">Heilmann Rec Center</text>
+    <text x="96" y="500">19601 Brock Ave, Detroit, MI 48205</text>
+  </g>
+  <g fill="#6b7280" font-family="'Space Mono', monospace" font-size="18">
+    <text x="96" y="575">Official link: detroitmi.gov</text>
+  </g>
+</svg>
