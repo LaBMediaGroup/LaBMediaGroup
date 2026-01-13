@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
+    <title>Contact | LaB Media</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Get in touch with LaB Media for film production, video projects, and creative collaborations in Detroit and Metro Detroit.">
+    <meta name="keywords" content="contact LaB Media, Detroit film production contact, video production inquiry, Bobby Labinski">
+    <meta name="author" content="LaB Media">
+    <link rel="canonical" href="https://labmedia.work/contact.html">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://labmedia.work/contact.html">
+    <meta property="og:title" content="Contact | LaB Media">
+    <meta property="og:description" content="Get in touch with LaB Media for film production and creative collaborations.">
+    <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://labmedia.work/contact.html">
+    <meta name="twitter:title" content="Contact | LaB Media">
+    <meta name="twitter:description" content="Get in touch with LaB Media for film production and creative collaborations.">
+    <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Prototype Design System -->
+    <link rel="stylesheet" href="prototype-theme.css">
+
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-400: #888888;
+            --gray-600: #555555;
+            --gray-800: #1A1A1A;
+            --gray-900: #0D0D0D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--black);
+            color: var(--gray-400);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+
+        .nav-logo {
+            height: 22px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            opacity: 0.6;
+        }
+
+        .nav-back {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-back:hover {
+            opacity: 0.5;
+        }
+
+        /* ============================================
+           CONTACT - Portal Prototype Design
+        ============================================ */
+        .contact {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 8rem 3rem 4rem;
+            background: transparent;
+        }
+
+        /* Corner accent lines - Portal style */
+        .contact-lines {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .contact-corner {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 1px solid var(--gray-800);
+        }
+
+        .contact-corner.top-left {
+            top: 3rem;
+            left: 3rem;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .contact-corner.top-right {
+            top: 3rem;
+            right: 3rem;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .contact-corner.bottom-left {
+            bottom: 3rem;
+            left: 3rem;
+            border-right: none;
+            border-top: none;
+        }
+
+        .contact-corner.bottom-right {
+            bottom: 3rem;
+            right: 3rem;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* Central content container */
+        .contact-container {
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            border: 1px solid var(--gray-800);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Header section with system label */
+        .contact-header {
+            padding: 2rem 3rem;
+            border-bottom: 1px solid var(--gray-800);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .contact-system-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .contact-status {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+        }
+
+        .contact-status::before {
+            content: '●';
+            color: var(--gray-600);
+            margin-right: 0.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Main content grid */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .contact-primary {
+            padding: 3rem;
+            border-right: 1px solid var(--gray-800);
+        }
+
+        .contact-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.5rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-email {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: var(--white);
+            text-decoration: none;
+            line-height: 1.6;
+            transition: color 0.3s ease;
+            display: block;
+            margin-bottom: 2rem;
+        }
+
+        .contact-email:hover {
+            color: var(--gray-400);
+        }
+
+        .contact-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--gray-800);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .contact-cta:hover {
+            background: var(--white);
+            color: var(--black);
+            border-color: var(--white);
+        }
+
+        .contact-cta::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+
+        .contact-cta:hover::after {
+            transform: translateX(3px);
+        }
+
+        /* Secondary info */
+        .contact-secondary {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .info-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.5rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--white);
+            letter-spacing: 0.3px;
+        }
+
+        .info-value a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .info-value a:hover {
+            color: var(--gray-400);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--white);
+            text-decoration: none;
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            border-bottom-color: var(--white);
+        }
+
+        /* Footer metadata */
+        .contact-footer {
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .contact-meta {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.5rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 1024px) {
+            .contact {
+                padding: 6rem 2rem 4rem;
+            }
+
+            .contact-corner {
+                width: 40px;
+                height: 40px;
+            }
+
+            .contact-corner.top-left,
+            .contact-corner.top-right {
+                top: 1.5rem;
+            }
+
+            .contact-corner.bottom-left,
+            .contact-corner.bottom-right {
+                bottom: 1.5rem;
+            }
+
+            .contact-corner.top-left,
+            .contact-corner.bottom-left {
+                left: 1.5rem;
+            }
+
+            .contact-corner.top-right,
+            .contact-corner.bottom-right {
+                right: 1.5rem;
+            }
+
+            .contact-header,
+            .contact-primary,
+            .contact-secondary,
+            .contact-footer {
+                padding: 1.5rem 2rem;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-primary {
+                border-right: none;
+                border-bottom: 1px solid var(--gray-800);
+            }
+
+            .info-row {
+                grid-template-columns: 80px 1fr;
+                gap: 0.75rem;
+            }
+
+            .contact-footer {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 640px) {
+            nav {
+                padding: 1.5rem;
+            }
+
+            .contact {
+                padding: 5rem 1.5rem 3rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Footer */
+        .site-footer {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--gray-800);
+            text-align: center;
+            background: var(--black);
+            margin-top: 4rem;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-nav a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .footer-nav a:hover {
+            color: var(--white);
+        }
+
+        .footer-cta {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--black);
+            background: var(--white);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .footer-cta:hover {
+            background: transparent;
+            color: var(--white);
+            outline: 1px solid var(--white);
+        }
+
+        .footer-credit {
+            font-size: 0.7rem;
+            color: var(--gray-600);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB" class="nav-logo">
+        </a>
+        <ul class="nav-links">
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="ideas.html">Story Generator</a></li>
+            <li><a href="plan-your-project.html">Plan</a></li>
+            <li><a href="portfolio.html">Work</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Contact -->
+    <section class="contact">
+        <!-- Corner accents -->
+        <div class="contact-lines" aria-hidden="true">
+            <div class="contact-corner top-left"></div>
+            <div class="contact-corner top-right"></div>
+            <div class="contact-corner bottom-left"></div>
+            <div class="contact-corner bottom-right"></div>
+        </div>
+
+        <!-- Central container -->
+        <div class="contact-container">
+            <!-- Header -->
+            <div class="contact-header">
+                <div class="contact-system-label">Contact Protocol</div>
+                <div class="contact-status">Available</div>
+            </div>
+
+            <!-- Main content -->
+            <div class="contact-content">
+                <div class="contact-primary">
+                    <div class="contact-label">Primary Channel</div>
+                    <a href="#" class="contact-email" id="emailLink" data-user="Bobby" data-domain="labmedia" data-tld="work">Email Us</a>
+                    <a href="plan-your-project.html" class="contact-cta">Initiate Project</a>
+                </div>
+
+                <div class="contact-secondary">
+                    <div class="info-row">
+                        <div class="info-label">Phone</div>
+                        <div class="info-value"><a href="tel:3139237444">(313) 923-7444</a></div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-label">Location</div>
+                        <div class="info-value">Shelby Township, MI</div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-label">Network</div>
+                        <div class="info-value social-links">
+                            <a href="https://www.instagram.com/thisislabmedia/" target="_blank" rel="noopener">Instagram</a>
+                            <a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" rel="noopener">YouTube</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer metadata -->
+            <div class="contact-footer">
+                <div class="contact-meta">LaB Media © 2025</div>
+                <div class="contact-meta">Response time: 24-48h</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // GSAP animation on page load
+        gsap.from('.contact-container', {
+            opacity: 0,
+            scale: 0.98,
+            duration: 1,
+            ease: 'power2.out',
+            delay: 0.2
+        });
+
+        gsap.from('.contact-corner', {
+            opacity: 0,
+            scale: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: 'back.out(1.7)',
+            delay: 0.1
+        });
+
+        gsap.from('.contact-header', {
+            opacity: 0,
+            y: -20,
+            duration: 0.8,
+            delay: 0.5,
+            ease: 'power2.out'
+        });
+
+        gsap.from('.contact-primary > *', {
+            opacity: 0,
+            x: -15,
+            duration: 0.6,
+            stagger: 0.1,
+            delay: 0.7,
+            ease: 'power2.out'
+        });
+
+        gsap.from('.info-row', {
+            opacity: 0,
+            x: 15,
+            duration: 0.6,
+            stagger: 0.1,
+            delay: 0.8,
+            ease: 'power2.out'
+        });
+
+        gsap.from('.contact-footer', {
+            opacity: 0,
+            y: 10,
+            duration: 0.8,
+            delay: 1,
+            ease: 'power2.out'
+        });
+
+        // Email obfuscation - decode on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailLink = document.getElementById('emailLink');
+            if (emailLink) {
+                const user = emailLink.dataset.user;
+                const domain = emailLink.dataset.domain;
+                const tld = emailLink.dataset.tld;
+                const email = user + '@' + domain + '.' + tld;
+                emailLink.href = 'mailto:' + email;
+                emailLink.textContent = email;
+            }
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <nav class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="portfolio.html">Work</a>
+            <a href="resources.html">Resources</a>
+            <a href="events.html">Events</a>
+            <a href="ideas.html">Story Generator</a>
+        </nav>
+        <a href="plan-your-project.html" class="footer-cta">Start a Project</a>
+        <p class="footer-credit">Made in Shelby Twp, MI with ❤️</p>
+    </footer>
+
+    <!-- Global Error Handler -->
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            console.error('[Global Error Handler]', {
+                message: message,
+                source: source,
+                line: lineno,
+                column: colno,
+                error: error
+            });
+            return false;
+        };
+
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('[Unhandled Promise Rejection]', event.reason);
+        });
+    </script>
+</body>
+</html>
