@@ -838,6 +838,254 @@
         }
 
         /* ============================================
+           EVENT PREVIEW MODAL
+        ============================================ */
+        .event-preview-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            z-index: 1500;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        .event-preview-backdrop.is-open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .event-preview-modal {
+            width: min(650px, 100%);
+            max-height: 85vh;
+            overflow: auto;
+            background: var(--black);
+            border: 2px solid var(--gray-800);
+            position: relative;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .event-preview-backdrop.is-open .event-preview-modal {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .event-modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--gray-800);
+            position: relative;
+        }
+
+        .event-modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: var(--gray-500);
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            backdrop-filter: blur(8px);
+        }
+
+        .event-modal-close:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .event-modal-close:active {
+            transform: translateY(0);
+        }
+
+        .event-modal-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.6rem;
+            color: var(--white);
+            font-weight: 400;
+            margin: 0 0 1rem;
+            padding-right: 6rem;
+            line-height: 1.3;
+        }
+
+        .event-modal-type-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-modal-type-badge.type-meetup {
+            border-color: #22C55E;
+            color: #22C55E;
+            background: rgba(34, 197, 94, 0.08);
+        }
+
+        .event-modal-type-badge.type-deadline {
+            border-color: #EF4444;
+            color: #EF4444;
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        .event-modal-type-badge.type-festival {
+            border-color: #F59E0B;
+            color: #F59E0B;
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        .event-modal-type-badge.type-workshop {
+            border-color: #3B82F6;
+            color: #3B82F6;
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        .event-modal-type-badge.type-screening {
+            border-color: #A855F7;
+            color: #A855F7;
+            background: rgba(168, 85, 247, 0.08);
+        }
+
+        .event-modal-chip-row {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-modal-body {
+            padding: 2rem;
+        }
+
+        .event-modal-section {
+            margin-bottom: 1.75rem;
+        }
+
+        .event-modal-section-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .event-modal-description {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--gray-300);
+        }
+
+        .event-info-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .event-info-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .event-info-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            min-width: 80px;
+        }
+
+        .event-info-value {
+            font-size: 0.9rem;
+            color: var(--gray-300);
+            line-height: 1.6;
+        }
+
+        .event-modal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            text-transform: uppercase;
+            border: 1px solid var(--white);
+            color: var(--white);
+            background: transparent;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .event-modal-link:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(2px);
+        }
+
+        .event-modal-link span {
+            transition: transform 0.2s ease;
+        }
+
+        .event-modal-link:hover span {
+            transform: translateX(3px);
+        }
+
+        .event-modal-link.calendar-btn {
+            border-color: #3B82F6;
+            color: #3B82F6;
+            background: rgba(59, 130, 246, 0.05);
+            cursor: pointer;
+        }
+
+        .event-modal-link.calendar-btn:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #60A5FA;
+        }
+
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.55rem;
+            border: 1px solid rgba(255,255,255,0.14);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray-200);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-chip--warn {
+            border-color: rgba(249, 115, 22, 0.5);
+            color: var(--lab-orange);
+            background: rgba(249, 115, 22, 0.08);
+        }
+
+        /* ============================================
            CONTACT - Portal Prototype Design
         ============================================ */
         .contact {
@@ -1793,6 +2041,31 @@
         </div>
     </section>
 
+    <!-- Event Preview Modal -->
+    <div class="event-preview-backdrop" id="eventPreviewBackdrop" aria-hidden="true">
+        <div class="event-preview-modal" id="eventPreviewModal" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle" tabindex="-1">
+            <div class="event-modal-header">
+                <button class="event-modal-close" id="eventModalClose" type="button">ESC</button>
+                <div class="event-modal-chip-row">
+                    <div id="eventModalTypeBadge" class="event-modal-type-badge"></div>
+                    <span id="eventModalVerificationBadge"></span>
+                </div>
+                <h2 class="event-modal-title" id="eventModalTitle"></h2>
+            </div>
+            <div class="event-modal-body">
+                <div class="event-modal-section">
+                    <h3 class="event-modal-section-title">Details</h3>
+                    <div class="event-info-grid" id="eventInfoGrid"></div>
+                </div>
+                <div class="event-modal-section" id="eventDescriptionSection">
+                    <h3 class="event-modal-section-title">About</h3>
+                    <p class="event-modal-description" id="eventModalDescription"></p>
+                </div>
+                <div class="event-modal-section" id="eventLinkSection"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Voice Agent Modal -->
     <div class="voice-modal-backdrop" id="voiceModalBackdrop" aria-hidden="true">
         <div class="voice-modal" id="voiceModalDialog" role="dialog" aria-modal="true" aria-labelledby="voiceModalTitle" tabindex="-1">
@@ -1876,14 +2149,323 @@
                 });
 
                 return `
-                    <a href="events.html" class="event-preview-card">
+                    <button class="event-preview-card" data-event-id="${event.id}" type="button">
                         <div class="event-date">${dateStr}</div>
                         <h4 class="event-title">${event.title}</h4>
                         <div class="event-location">${event.location || event.venue || 'Location TBD'}</div>
                         <span class="event-type-badge type-${event.type}">${event.type}</span>
-                    </a>
+                    </button>
                 `;
             }).join('');
+
+            const previewCards = grid.querySelectorAll('.event-preview-card');
+            previewCards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    const eventId = e.currentTarget.dataset.eventId;
+                    const eventData = eventsData.find(evt => evt.id === eventId);
+                    if (eventData) {
+                        openEventPreview(eventData);
+                    }
+                });
+            });
+        }
+
+        // ============================================
+        // EVENT PREVIEW MODAL
+        // ============================================
+        const eventPreviewBackdrop = document.getElementById('eventPreviewBackdrop');
+        const eventPreviewModal = document.getElementById('eventPreviewModal');
+        const eventModalClose = document.getElementById('eventModalClose');
+
+        let lastEventFocusEl = null;
+        let currentEventData = null;
+
+        const typeLabels = {
+            meetup: 'Meetup',
+            festival: 'Film Fest',
+            workshop: 'Workshop',
+            screening: 'Screening',
+            deadline: 'Deadline',
+            other: 'Event'
+        };
+
+        const getTypeLabel = (type) => typeLabels[type] || type || 'Event';
+
+        function getVerificationMeta(event) {
+            if (!event || !event.verification) return null;
+            const normalized = String(event.verification).toLowerCase();
+            if (normalized === 'verified') return null;
+
+            let label = event.verificationLabel;
+            if (!label) {
+                if (normalized.includes('tbd') || normalized.includes('announce')) {
+                    label = 'TBD';
+                } else {
+                    label = 'Check site';
+                }
+            }
+
+            const url = event.verificationUrl || event.url || '';
+            return { label, url };
+        }
+
+        function buildVerificationBadge(event, variant = 'tag') {
+            const meta = getVerificationMeta(event);
+            if (!meta) return '';
+
+            const baseClass = variant === 'chip' ? 'status-chip status-chip--warn' : 'tag tag-warning';
+            if (meta.url) {
+                return `<a class="${baseClass}" href="${meta.url}" target="_blank" rel="noopener noreferrer">${meta.label}</a>`;
+            }
+            return `<span class="${baseClass}">${meta.label}</span>`;
+        }
+
+        function isEventPast(event) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const eventDate = new Date(event.endDate || event.startDate);
+            return eventDate < today;
+        }
+
+        function formatEventDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr + 'T00:00:00');
+            return date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            });
+        }
+
+        function formatEventTime(timeStr) {
+            if (!timeStr) return '';
+            const [hours, minutes] = timeStr.split(':');
+            const date = new Date();
+            date.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+            return date.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+        }
+
+        function openEventPreview(eventData) {
+            if (!eventPreviewBackdrop || !eventData) return;
+
+            currentEventData = eventData;
+            lastEventFocusEl = document.activeElement;
+
+            const typeBadge = document.getElementById('eventModalTypeBadge');
+            if (typeBadge) {
+                const typeLabel = getTypeLabel(eventData.type);
+                typeBadge.textContent = typeLabel;
+                typeBadge.className = `event-modal-type-badge type-${eventData.type}`;
+            }
+
+            const verificationSlot = document.getElementById('eventModalVerificationBadge');
+            if (verificationSlot) {
+                const verificationBadge = buildVerificationBadge(eventData, 'chip');
+                verificationSlot.innerHTML = verificationBadge;
+                verificationSlot.style.display = verificationBadge ? 'inline-flex' : 'none';
+            }
+
+            const titleEl = document.getElementById('eventModalTitle');
+            if (titleEl) {
+                titleEl.textContent = eventData.title;
+                const isPastEvent = isEventPast(eventData);
+                if (isPastEvent) {
+                    titleEl.style.textDecoration = 'line-through';
+                    titleEl.style.textDecorationColor = 'var(--gray-600)';
+                    titleEl.style.textDecorationThickness = '1px';
+                } else {
+                    titleEl.style.textDecoration = 'none';
+                }
+            }
+
+            const infoGrid = document.getElementById('eventInfoGrid');
+            if (infoGrid) {
+                let infoHTML = '';
+
+                if (eventData.startDate) {
+                    const startDateFormatted = formatEventDate(eventData.startDate);
+                    const endDateFormatted = eventData.endDate ? formatEventDate(eventData.endDate) : null;
+
+                    infoHTML += `
+                        <div class="event-info-item">
+                            <div class="event-info-label">Date</div>
+                            <div class="event-info-value">
+                                ${startDateFormatted}
+                                ${endDateFormatted && endDateFormatted !== startDateFormatted ? ` – ${endDateFormatted}` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (eventData.startTime) {
+                    const startTime = formatEventTime(eventData.startTime);
+                    const endTime = eventData.endTime ? formatEventTime(eventData.endTime) : null;
+
+                    infoHTML += `
+                        <div class="event-info-item">
+                            <div class="event-info-label">Time</div>
+                            <div class="event-info-value">
+                                ${startTime}${endTime ? ` – ${endTime}` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (eventData.location) {
+                    infoHTML += `
+                        <div class="event-info-item">
+                            <div class="event-info-label">Location</div>
+                            <div class="event-info-value">${eventData.location}</div>
+                        </div>
+                    `;
+                }
+
+                if (eventData.deadlineDate) {
+                    infoHTML += `
+                        <div class="event-info-item">
+                            <div class="event-info-label">Deadline</div>
+                            <div class="event-info-value">${formatEventDate(eventData.deadlineDate)}</div>
+                        </div>
+                    `;
+                }
+
+                infoGrid.innerHTML = infoHTML;
+            }
+
+            const descSection = document.getElementById('eventDescriptionSection');
+            const descEl = document.getElementById('eventModalDescription');
+            if (descEl && eventData.description) {
+                descEl.textContent = eventData.description;
+                if (descSection) descSection.style.display = 'block';
+            } else if (descSection) {
+                descSection.style.display = 'none';
+            }
+
+            const linkSection = document.getElementById('eventLinkSection');
+            if (linkSection) {
+                let linksHTML = '<h3 class="event-modal-section-title">Links</h3>';
+                const isPastEvent = isEventPast(eventData);
+                if (!isPastEvent) {
+                    linksHTML += `
+                        <button class="event-modal-link calendar-btn" id="addToCalendarBtn" type="button">
+                            📅 Add to Calendar
+                            <span>→</span>
+                        </button>
+                    `;
+                }
+
+                if (eventData.url) {
+                    linksHTML += `
+                        <a href="${eventData.url}" target="_blank" rel="noopener noreferrer" class="event-modal-link">
+                            Visit Event Page
+                            <span>→</span>
+                        </a>
+                    `;
+                }
+
+                linkSection.innerHTML = linksHTML;
+                linkSection.style.display = 'block';
+
+                if (!isPastEvent) {
+                    const addToCalBtn = document.getElementById('addToCalendarBtn');
+                    if (addToCalBtn) {
+                        addToCalBtn.addEventListener('click', () => exportSingleEventToIcal(eventData));
+                    }
+                }
+            }
+
+            eventPreviewBackdrop.classList.add('is-open');
+            eventPreviewBackdrop.setAttribute('aria-hidden', 'false');
+            setTimeout(() => {
+                eventPreviewModal.focus();
+            }, 100);
+        }
+
+        function closeEventPreview() {
+            if (!eventPreviewBackdrop) return;
+            eventPreviewBackdrop.classList.remove('is-open');
+            eventPreviewBackdrop.setAttribute('aria-hidden', 'true');
+            if (lastEventFocusEl && lastEventFocusEl.focus) lastEventFocusEl.focus();
+        }
+
+        if (eventModalClose) {
+            eventModalClose.addEventListener('click', closeEventPreview);
+        }
+
+        if (eventPreviewBackdrop) {
+            eventPreviewBackdrop.addEventListener('click', (e) => {
+                if (e.target === eventPreviewBackdrop) closeEventPreview();
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && eventPreviewBackdrop.classList.contains('is-open')) {
+                closeEventPreview();
+            }
+        });
+
+        function exportSingleEventToIcal(evt) {
+            if (!evt) return;
+
+            const uid = `${evt.id}@labmedia.com`;
+            const dtstamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+            const startDate = evt.startDate.replace(/-/g, '');
+            const endDate = evt.endDate ? evt.endDate.replace(/-/g, '') : startDate;
+
+            let dtStart = startDate;
+            let dtEnd = endDate;
+
+            if (evt.startTime) {
+                const startTime = evt.startTime.replace(':', '') + '00';
+                dtStart = `${startDate}T${startTime}`;
+
+                if (evt.endTime) {
+                    const endTime = evt.endTime.replace(':', '') + '00';
+                    dtEnd = `${endDate}T${endTime}`;
+                } else {
+                    dtEnd = `${endDate}T${startTime}`;
+                }
+            } else {
+                const endDateObj = new Date(evt.endDate || evt.startDate);
+                endDateObj.setDate(endDateObj.getDate() + 1);
+                dtEnd = endDateObj.toISOString().slice(0, 10).replace(/-/g, '');
+            }
+
+            const description = evt.description || '';
+            const location = evt.location || '';
+            const url = evt.url || '';
+
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//LaB Media//Events Calendar//EN',
+                'BEGIN:VEVENT',
+                `UID:${uid}`,
+                `DTSTAMP:${dtstamp}`,
+                evt.startTime ? `DTSTART:${dtStart}` : `DTSTART;VALUE=DATE:${dtStart}`,
+                evt.startTime ? `DTEND:${dtEnd}` : `DTEND;VALUE=DATE:${dtEnd}`,
+                `SUMMARY:${evt.title}`,
+                `DESCRIPTION:${description}`,
+                `LOCATION:${location}`,
+                url ? `URL:${url}` : '',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].filter(Boolean).join('\r\n');
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const urlObj = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = urlObj;
+            link.download = `${evt.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.ics`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(urlObj);
         }
 
         // Load events on page load

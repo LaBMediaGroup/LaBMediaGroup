@@ -4,6 +4,18 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 9:18AM EST
+———————————————————————
+Change: Updated homepage event preview cards to open the event detail modal instead of linking directly to the events page.
+Files touched: index.html
+Notes: Event previews now mirror the events page bio-style modal with details and calendar export.
+Quick test checklist:
+1. Open index.html and click an event preview card to confirm the event modal opens with details.
+2. Click outside the modal or press ESC to ensure the modal closes and focus returns to the card.
+3. Use the "Add to Calendar" button on a future event and confirm a .ics download starts.
+4. Click "View Full Calendar" to verify it still navigates to events.html.
+5. Check DevTools console for any errors on index.html.
+
 2026-01-13 | 6:10AM EST
 ———————————————————————
 Change: Reordered homepage sections to lead with Work before the Story Generator CTA, Events Preview, and Resources.
