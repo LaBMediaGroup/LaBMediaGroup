@@ -64,7 +64,7 @@
         }
 
         /* Navigation */
-        nav {
+        .site-nav {
             position: fixed;
             top: 0;
             left: 0;
@@ -77,18 +77,18 @@
             mix-blend-mode: difference;
         }
 
-        .nav-logo {
+        .site-nav .nav-logo {
             height: 22px;
             width: auto;
             filter: brightness(0) invert(1);
             transition: opacity 0.3s ease;
         }
 
-        .nav-logo:hover {
+        .site-nav .nav-logo:hover {
             opacity: 0.6;
         }
 
-        .nav-back {
+        .site-nav .nav-back {
             font-family: 'Space Mono', monospace;
             font-size: 0.7rem;
             color: var(--white);
@@ -97,7 +97,7 @@
             transition: opacity 0.3s ease;
         }
 
-        .nav-back:hover {
+        .site-nav .nav-back:hover {
             opacity: 0.5;
         }
 
@@ -406,7 +406,7 @@
         }
 
         @media (max-width: 640px) {
-            nav {
+            .site-nav {
                 padding: 1.5rem;
             }
 
@@ -478,7 +478,7 @@
             color: var(--gray-600);
         }
 
-        .nav-links {
+        .site-nav .nav-links {
             display: flex;
             align-items: center;
             gap: 1.5rem;
@@ -487,7 +487,7 @@
             padding: 0;
         }
 
-        .nav-links a {
+        .site-nav .nav-links a {
             color: var(--white);
             text-decoration: none;
             font-family: 'Space Mono', monospace;
@@ -497,14 +497,14 @@
             transition: opacity 0.3s ease;
         }
 
-        .nav-links a:hover {
+        .site-nav .nav-links a:hover {
             opacity: 0.5;
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav>
+    <nav class="site-nav">
         <a href="index.html">
             <img src="images/WhiteBeakerLogo.png" alt="LaB" class="nav-logo">
         </a>

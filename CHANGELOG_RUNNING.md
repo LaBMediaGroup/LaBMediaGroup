@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 2:09PM EST
+———————————————————————
+Change: Scoped header nav styles on Plan and Contact pages to prevent the footer nav from rendering as a fixed header.
+Files touched: plan-your-project.html, contact.html
+Notes: Footer navs now keep their footer styling while the header nav remains fixed.
+Quick test checklist:
+1. Open plan-your-project.html and confirm only one top nav row appears and the footer nav stays at the bottom.
+2. Open contact.html and confirm only one top nav row appears and the footer nav stays at the bottom.
+3. Open DevTools console on both pages and confirm no errors.
+
 2026-01-13 | 7:54AM EST
 ———————————————————————
 Change: Removed the hero headline and description text from the homepage hero block.
