@@ -4,6 +4,18 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 2:47AM EST
+———————————————————————
+Change: Added LaB Talk (Beta) footer link across site pages and a muted homepage footer note describing the tool.
+Files touched: index.html, resources.html, portfolio.html, plan-your-project.html, past-events.html, events.html, contact.html, ideas.html
+Notes: Footer-only link opens the hosted AI Studio app in a new tab; microcopy appears only on the homepage footer.
+Quick test checklist:
+1. Open index.html and confirm the footer shows the LaB Talk (Beta) link and the muted descriptive line, with the top nav unchanged.
+2. Open resources.html, portfolio.html, plan-your-project.html, past-events.html, events.html, contact.html, and ideas.html to confirm the footer includes the LaB Talk (Beta) link.
+3. Click the LaB Talk (Beta) link on any page and verify it opens the AI Studio app in a new tab.
+4. Check mobile layout in the browser responsive mode to ensure the footer spacing remains intact.
+5. Check DevTools console for errors on index.html and a secondary page (ex: resources.html).
+
 2026-01-13 | 7:11AM EST
 ———————————————————————
 Change: Removed duplicate top navigation styling on the portfolio page and cleaned up video framing with varied video sizes.
