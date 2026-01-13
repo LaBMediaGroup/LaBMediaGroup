@@ -342,6 +342,16 @@ const resources = [
     // REFERENCES
     // ============================================
     {
+        name: 'FrameSet',
+        category: 'references',
+        refType: 'inspiration',
+        desc: 'UI and layout inspiration for clean, editorial web presentation.',
+        fullDesc: 'FrameSet is a modern reference library for layout, typography, and interface inspiration—useful for studying clear hierarchy, spacing, and elegant grid systems.',
+        url: 'https://frameset.app',
+        paid: false,
+        features: ['Layout Inspiration', 'Typography', 'Editorial Design', 'UI Reference']
+    },
+    {
         name: 'Hillier Smith',
         category: 'references',
         refType: 'editing',
@@ -456,9 +466,19 @@ const resources = [
         features: ['Music Channel', 'Visual Identity', 'Brand Consistency']
     },
     {
+        name: 'Adobe Color Tools',
+        category: 'references',
+        refType: 'color',
+        desc: 'Color palette exploration and harmony tools.',
+        fullDesc: 'Adobe Color helps explore palettes, generate harmonies, and save color themes—useful for building visual systems, brand palettes, and set design references.',
+        url: 'https://color.adobe.com/explore',
+        paid: false,
+        features: ['Color Palettes', 'Harmony Rules', 'Mood Reference', 'Theme Builder']
+    },
+    {
         name: 'Viva La Dirt League',
         category: 'references',
-        refType: 'filming',
+        refType: 'comedy',
         desc: 'Narrative comedy sketches rooted in gaming and pop culture.',
         fullDesc: 'High-output narrative comedy with strong character consistency and efficient production workflows.',
         url: 'https://www.youtube.com/@VivaLaDirtLeague',
@@ -466,6 +486,25 @@ const resources = [
         paid: false,
         featuredVideo: 'tM2L1Je92w0',
         features: ['Comedy', 'Sketch Writing', 'Narrative Shorts', 'High Output']
+    },
+    {
+        name: 'That’s a Bad Idea',
+        category: 'references',
+        refType: 'comedy',
+        desc: 'Sketch comedy channel with bold visual beats and punchy pacing.',
+        fullDesc: 'That’s a Bad Idea delivers tight, joke-dense sketches with strong setups and quick turnarounds—great reference for comedic timing and clear visual staging.',
+        url: 'https://www.youtube.com/@thats_a_bad_idea',
+        paid: false,
+        featuredVideo: 'rrky0lveA5w',
+        additionalLinks: [
+            {
+                label: 'Example Video',
+                url: 'https://www.youtube.com/watch?v=rrky0lveA5w',
+                type: 'video',
+                description: 'Sample sketch for pacing and staging reference.'
+            }
+        ],
+        features: ['Sketch Comedy', 'Comedic Timing', 'Visual Beats', 'YouTube Channel']
     },
     // ============================================
     // DRONE
@@ -678,14 +717,15 @@ const resources = [
         features: ['FPV Freestyle', 'YouTube Channel', 'Flight Footage', 'Hands-On Flying']
     },
     {
-        name: 'Betaflight',
+        name: 'BetaFlight',
         category: ['drone', 'software'],
         droneType: 'software',
-        desc: 'Open-source flight controller firmware for FPV drones.',
-        fullDesc: 'Betaflight is the industry-standard open-source flight controller firmware for FPV racing and freestyle drones. Offers precise tuning, configurator software, and active development—essential for custom builds and performance optimization.',
+        droneSubType: 'software',
+        desc: 'Drone tuning software and open-source flight controller firmware.',
+        fullDesc: 'BetaFlight is the industry-standard open-source flight controller firmware for FPV racing and freestyle drones. Offers precise tuning, configurator software, and active development—essential for custom builds and performance optimization.',
         url: 'https://www.betaflight.com',
         paid: false,
-        features: ['Flight Controller', 'Open Source', 'FPV Standard', 'Performance Tuning']
+        features: ['Drone Tuning', 'Flight Controller', 'Open Source', 'FPV Standard']
     },
     {
         name: 'DJI Assistant 2',
@@ -1526,6 +1566,15 @@ const resources = [
     // ============================================
     // FREELANCE & OTHER
     // ============================================
+    {
+        name: 'Film Detroit',
+        category: 'casting',
+        desc: 'Detroit film office resources, permits, and production support.',
+        fullDesc: 'Film Detroit provides permit guidance, location coordination, and production resources for filming in Detroit. Helpful starting point for licensing requirements and local production contacts.',
+        url: 'https://detroitmi.gov/departments/media-services-department/film-detroit',
+        paid: false,
+        features: ['Film Permits', 'Location Support', 'Detroit Resources', 'City Office']
+    },
     {
         name: 'DaVinci Resolve',
         category: 'software',

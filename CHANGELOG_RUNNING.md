@@ -4,6 +4,29 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 7:19AM EST
+———————————————————————
+Change: Added new resources for drone tools, casting, and references (including color and comedy), plus a new references subfilter.
+Files touched: resources.html, resources-data.js
+Notes: Added a new Color references subcategory and expanded drone filters to include software.
+Quick test checklist:
+1. Open resources.html, switch to References, and confirm the new Color subfilter appears and filters Adobe Color Tools.
+2. Switch to References → Comedy and confirm Viva La Dirt League and That’s a Bad Idea appear with the example video link.
+3. Switch to Tools → Drone and select Software to confirm BetaFlight appears.
+4. Switch to Tools → Casting and confirm Film Detroit appears.
+5. Check DevTools console for errors on resources.html.
+
+2026-01-13 | 7:11AM EST
+———————————————————————
+Change: Removed duplicate top navigation styling on the portfolio page and cleaned up video framing with varied video sizes.
+Files touched: portfolio.html
+Notes: Portfolio hero nav now uses a scoped site-nav class; video containers drop proto corner frames and use section-specific sizing.
+Quick test checklist:
+1. Open portfolio.html and confirm only one top nav row appears.
+2. Scroll each portfolio section to confirm video tiles show without corner frames and have varied sizes.
+3. Click a video thumbnail to confirm the YouTube player loads.
+4. Check DevTools console for errors on portfolio.html.
+
 2026-01-13 | 7:01AM EST
 ———————————————————————
 Change: Reordered homepage narrative, added story generator stickiness, expanded event detail context, and launched a past events archive page.
