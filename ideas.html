@@ -438,6 +438,7 @@
             margin-bottom: 1rem;
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--gray-800);
+            flex-wrap: wrap;
         }
 
         .prompts-title {
@@ -456,6 +457,14 @@
             text-transform: uppercase;
         }
 
+        .prompts-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: auto;
+            flex-wrap: wrap;
+        }
+
         .roll-again-btn {
             padding: 0.5rem 1rem;
             background: transparent;
@@ -467,10 +476,14 @@
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-left: auto;
         }
 
         .roll-again-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .roll-again-btn.primary {
             border-color: var(--white);
             color: var(--white);
         }
@@ -913,6 +926,14 @@
             border-color: var(--gray-400);
         }
 
+        .save-feedback {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
         .results-content {
             display: flex;
             flex-direction: column;
@@ -1164,9 +1185,9 @@
             <h1 class="page-title">Ideas</h1>
             <p class="page-subtitle">Roll the die. Spark a film.</p>
             <p class="page-description">
-                Generate short film prompts designed to be shot this weekend.
-                Each roll gives you a concept, a constraint, and a twist.
-                Low-budget friendly, cliche-free, and actually filmable.
+                A repeat-use tool for sketching short films you can actually shoot.
+                Each roll gives you a concept, a constraint, and a twist you can build on.
+                Low-budget friendly, cliche-free, and made for real production momentum.
             </p>
         </section>
 
@@ -1201,7 +1222,10 @@
                 <div class="prompts-header">
                     <span class="prompts-title">Your Prompts</span>
                     <span class="prompts-hint">Select One</span>
-                    <button class="roll-again-btn" id="rollAgainBtn">Roll Again</button>
+                    <div class="prompts-actions">
+                        <button class="roll-again-btn" id="rollAgainBtn">Roll Again</button>
+                        <button class="roll-again-btn primary" id="rollKeepConstraintBtn">Roll Again (Keep Constraint)</button>
+                    </div>
                 </div>
                 <div class="prompts-grid" id="promptsGrid">
                     <!-- Prompt cards will be inserted here -->
@@ -1318,11 +1342,16 @@
                         <span>📄</span>
                         <span>Download PDF</span>
                     </button>
+                    <button class="results-btn" id="saveIdeaBtn">
+                        <span>💾</span>
+                        <span>Save Idea</span>
+                    </button>
                     <button class="results-btn" id="clearResultsBtn">
                         <span>🗑️</span>
                         <span>Clear All</span>
                     </button>
                 </div>
+                <div class="save-feedback" id="saveFeedback" role="status" aria-live="polite"></div>
             </div>
 
             <div class="results-content" id="resultsContent">
@@ -1752,6 +1781,7 @@
         const mainRollBtn = document.getElementById('mainRollBtn');
         const rollAllBtn = document.getElementById('rollAllBtn');
         const rollAgainBtn = document.getElementById('rollAgainBtn');
+        const rollKeepConstraintBtn = document.getElementById('rollKeepConstraintBtn');
         const promptsContainer = document.getElementById('promptsContainer');
         const bonusRollBtn = document.getElementById('bonusRollBtn');
         const bonusResult = document.getElementById('bonusResult');
@@ -1797,6 +1827,34 @@
 
         mainRollBtn.addEventListener('click', handleMainRoll);
         rollAgainBtn.addEventListener('click', handleMainRoll);
+
+        function handleRollKeepConstraint() {
+            const selectedPrompt = resultsState.selectedPromptIndex != null
+                ? resultsState.generatedPrompts[resultsState.selectedPromptIndex]
+                : null;
+
+            if (!selectedPrompt || !selectedPrompt.constraint) {
+                alert('Select a prompt first so we can keep its constraint.');
+                return;
+            }
+
+            const keptConstraint = normalizeIdeaEntryLocal(selectedPrompt.constraint);
+            const prompts = generatePrompts(resultsState.generatedPrompts);
+            prompts.forEach((prompt) => {
+                prompt.constraint = keptConstraint;
+            });
+
+            renderPrompts(prompts);
+            resultsState.generatedPrompts = prompts;
+            resultsState.prompts = prompts;
+            resultsState.selectedPromptIndex = null;
+            updateResultsDisplay();
+
+            promptsContainer.classList.add('visible');
+            promptsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        rollKeepConstraintBtn?.addEventListener('click', handleRollKeepConstraint);
 
         function triggerBonusRoll() {
             const bonus = getRandomItem(ideasData.bonuses);
@@ -1903,6 +1961,9 @@
         const resultsContent = document.getElementById('resultsContent');
         const downloadPdfBtn = document.getElementById('downloadPdfBtn');
         const clearResultsBtn = document.getElementById('clearResultsBtn');
+        const saveIdeaBtn = document.getElementById('saveIdeaBtn');
+        const saveFeedback = document.getElementById('saveFeedback');
+        const savedIdeasKey = 'lab-saved-ideas';
 
         function hasAnyResults() {
             return resultsState.prompts.length > 0 ||
@@ -2209,10 +2270,53 @@
             rollAllBtn.querySelector('span:last-child').textContent = 'Roll All (One-Time)';
 
             updateResultsDisplay();
+            if (saveFeedback) saveFeedback.textContent = '';
         }
 
         downloadPdfBtn.addEventListener('click', generatePDF);
         clearResultsBtn.addEventListener('click', clearResults);
+
+        function getPromptToSave() {
+            if (resultsState.selectedPromptIndex != null) {
+                return resultsState.generatedPrompts[resultsState.selectedPromptIndex];
+            }
+            if (resultsState.prompts.length === 1) {
+                return resultsState.prompts[0];
+            }
+            return null;
+        }
+
+        function saveIdea() {
+            const prompt = getPromptToSave();
+            if (!prompt) {
+                if (saveFeedback) saveFeedback.textContent = 'Select a prompt to save.';
+                return;
+            }
+
+            const savedIdea = {
+                id: `idea-${Date.now()}`,
+                savedAt: new Date().toISOString(),
+                concept: prompt.concept,
+                constraint: getEntryText(prompt.constraint),
+                twist: prompt.twist,
+                genre: prompt.genre ? getEntryText(prompt.genre) : null,
+                visualStyle: prompt.visualStyle ? getEntryText(prompt.visualStyle) : null,
+                emotion: prompt.emotion ? getEntryText(prompt.emotion) : null
+            };
+
+            const existing = JSON.parse(localStorage.getItem(savedIdeasKey) || '[]');
+            existing.unshift(savedIdea);
+            localStorage.setItem(savedIdeasKey, JSON.stringify(existing.slice(0, 50)));
+
+            if (saveFeedback) {
+                saveFeedback.textContent = 'Saved to this device.';
+                setTimeout(() => {
+                    if (saveFeedback) saveFeedback.textContent = '';
+                }, 2000);
+            }
+        }
+
+        saveIdeaBtn?.addEventListener('click', saveIdea);
 
         // Share Prompt button - Copy prompt to clipboard with site link
         const sharePromptBtn = document.getElementById('sharePromptBtn');

@@ -206,6 +206,7 @@
             justify-content: center;
             position: relative;
             z-index: 1;
+            padding: 6rem 2rem 5rem;
         }
         
         /* Thin accent lines */
@@ -363,6 +364,47 @@
             letter-spacing: 2px;
             text-transform: uppercase;
         }
+
+        .hero-content {
+            margin-top: 2rem;
+            text-align: center;
+            max-width: 680px;
+            display: grid;
+            gap: 1rem;
+            z-index: 2;
+        }
+
+        .hero-heading {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+            color: var(--white);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hero-description {
+            color: var(--gray-400);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .hero-pills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .hero-pill {
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            padding: 0.4rem 0.75rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            background: rgba(255, 255, 255, 0.03);
+        }
         
         .scroll-indicator {
             position: absolute;
@@ -432,6 +474,13 @@
             align-items: flex-start;
             gap: 1rem;
             margin-bottom: 3rem;
+        }
+
+        .section-intro {
+            color: var(--gray-400);
+            line-height: 1.6;
+            max-width: 520px;
+            margin-top: 0.75rem;
         }
 
         .section-label {
@@ -683,6 +732,8 @@
         .view-all {
             display: flex;
             justify-content: flex-end;
+            gap: 0.75rem;
+            flex-wrap: wrap;
             margin-top: 3.5rem;
             position: relative;
             z-index: 10;
@@ -742,6 +793,21 @@
         .events-preview-inner {
             max-width: 1400px;
             margin: 0 auto;
+        }
+
+        .community-kicker {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .community-description {
+            color: var(--gray-400);
+            margin-bottom: 2rem;
+            max-width: 620px;
+            line-height: 1.7;
         }
 
         .events-preview-grid {
@@ -1413,6 +1479,16 @@
             z-index: 1;
         }
 
+        .newsletter-placeholder {
+            padding: 3rem;
+            border-top: 1px dashed var(--gray-800);
+            color: var(--gray-600);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
         /* Create subtle grid peek-through effect in resources */
         .resources-section::before {
             content: '';
@@ -1905,6 +1981,19 @@
 
         <img src="images/TheLaB.png" alt="The LaB" class="hero-logo" loading="lazy">
 
+        <div class="hero-content">
+            <h1 class="hero-heading">Metro Detroit filmmaker-first studio</h1>
+            <p class="hero-description">
+                Local tools, events, and resources built to move projects from idea to shootable plan.
+                If you’re making films in Metro Detroit, this is your home base.
+            </p>
+            <div class="hero-pills">
+                <span class="hero-pill">Local Focus</span>
+                <span class="hero-pill">Story Generator</span>
+                <span class="hero-pill">Events + Resources</span>
+            </div>
+        </div>
+
         <div class="hero-tagline proto-text-mono">A Creative Studio</div>
 
         <div class="scroll-indicator">
@@ -1913,13 +2002,27 @@
         </div>
     </section>
 
+    <!-- Story Generator CTA -->
+    <section class="story-generator-cta proto-grid">
+        <div class="story-cta-inner">
+            <div class="story-cta-label proto-text-mono">Core Tool</div>
+            <h2 class="story-cta-title">Story Generator</h2>
+            <p class="story-cta-desc">Roll fast, grab a constraint, and build something shootable. Come back anytime to keep the momentum.</p>
+            <a href="ideas.html" class="story-cta-btn proto-btn">
+                <span>Generate an Idea</span>
+                <span class="story-cta-arrow">→</span>
+            </a>
+        </div>
+    </section>
+
     <!-- Work -->
     <section class="work" id="work">
         <div class="section-header">
-            <span class="section-label proto-text-mono">Work</span>
+            <span class="section-label proto-text-mono">Selected Work</span>
             <div class="section-line"></div>
             <span class="section-count proto-text-mono">05</span>
         </div>
+        <p class="section-intro">A handful of projects that earned trust and repeat collaborators across Detroit.</p>
 
         <div class="project-grid">
             <a href="portfolio.html#moz" class="project proto-card">
@@ -1990,55 +2093,50 @@
         </div>
     </section>
 
-    <!-- Story Generator CTA -->
-    <section class="story-generator-cta proto-grid">
-        <div class="story-cta-inner">
-            <div class="story-cta-label proto-text-mono">Writer's Block?</div>
-            <h2 class="story-cta-title">Roll the Dice</h2>
-            <p class="story-cta-desc">Instant film prompts. Genre, character, setting, twist. Horror & comedy modes included.</p>
-            <a href="ideas.html" class="story-cta-btn proto-btn">
-                <span>Try Story Generator</span>
-                <span class="story-cta-arrow">→</span>
-            </a>
-        </div>
-    </section>
-
     <!-- Events Preview Section -->
     <section class="events-preview">
         <div class="events-preview-inner">
+            <div class="community-kicker">Community Backbone</div>
+            <p class="community-description">What’s happening around Metro Detroit and what helps you show up prepared.</p>
             <div class="section-header">
-                <span class="section-label proto-text-mono">Upcoming</span>
+                <span class="section-label proto-text-mono">What’s happening</span>
                 <div class="section-line"></div>
                 <span class="section-count proto-text-mono" id="eventsCount">00</span>
             </div>
 
-            <div class="events-preview-grid" id="eventsPreviewGrid">
+            <div class="events-preview-grid" id="eventsPreviewGrid" data-source="events-data">
                 <!-- Events will be dynamically inserted here -->
             </div>
 
             <div class="view-all">
                 <a href="events.html">View Full Calendar</a>
+                <a href="past-events.html">Past Events Archive</a>
             </div>
         </div>
     </section>
 
     <!-- Resources Section -->
-    <section class="resources-section proto-grid">
+    <section class="resources-section proto-grid" data-source="resources-data">
         <div class="section-header">
-            <span class="section-label proto-text-mono">For Reference</span>
+            <span class="section-label proto-text-mono">What helps</span>
             <div class="section-line"></div>
             <span class="section-count proto-text-mono">04</span>
         </div>
         <div class="resources-inner">
             <div class="resources-text">
                 <h3 class="resources-title proto-text-mono">Production Toolkit</h3>
-                <p class="resources-desc">Music licensing, AI tools, gear rentals, and everything else we use to make things.</p>
+                <p class="resources-desc">Local-first resources, gear, funding, and tools we actually use while making projects.</p>
+                <div class="resources-label" hidden data-resource-trust-placeholder>Trust signals placeholder</div>
             </div>
             <a href="resources.html" class="resources-link proto-btn">
                 <span>Browse Resources</span>
                 <span class="resources-arrow">→</span>
             </a>
         </div>
+    </section>
+
+    <section class="newsletter-placeholder" hidden data-newsletter-placeholder>
+        Weekly filmmaker brief signup placeholder.
     </section>
 
     <!-- Event Preview Modal -->
