@@ -211,6 +211,15 @@
             gap: 1rem;
         }
 
+        .flow-hint {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            opacity: 0.8;
+        }
+
         .roll-button {
             position: relative;
             display: inline-flex;
@@ -1216,6 +1225,7 @@
                     <span class="roll-all-icon">&#x2726;</span>
                     <span>Roll All (One-Time)</span>
                 </button>
+                <p class="flow-hint">Start here: roll, pick a prompt, build the short.</p>
             </div>
 
             <div class="prompts-container" id="promptsContainer">

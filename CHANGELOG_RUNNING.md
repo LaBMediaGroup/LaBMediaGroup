@@ -4,6 +4,18 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 1:10PM EST
+———————————————————————
+Change: Added lightweight guidance copy to the homepage, Ideas, Resources, and Events pages to clarify primary flows and local focus.
+Files touched: index.html, ideas.html, resources.html, events.html, CHANGELOG_RUNNING.md
+Notes: Microcopy hints reinforce first-time user flow without changing layout structure.
+Quick test checklist:
+1. Open index.html and confirm the new hero mission line appears under the pills.
+2. Open ideas.html and confirm the start-here hint appears below the roll buttons.
+3. Open resources.html and confirm the filter hint appears between search and category filters.
+4. Open events.html and confirm the local focus line appears under the hero description.
+5. Open DevTools console on each touched page and confirm no errors.
+
 2026-01-13 | 4:02PM EST
 ———————————————————————
 Change: Renamed the Tools subfilter to Gear, moved Dodford into editing references, trimmed the AI list, and fixed footer nav markup so it no longer mirrors the fixed header.
