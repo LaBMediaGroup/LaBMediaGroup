@@ -4,6 +4,17 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 6:18PM EST
+———————————————————————
+Change: Updated the homepage section order, portfolio labeling, and removed the voice agent entry points.
+Files touched: index.html, CHANGELOG_RUNNING.md
+Notes: Story Generator now sits between Events and the Production Toolkit; portfolio copy is simplified.
+Quick test checklist:
+1. Open index.html and confirm the portfolio section label reads “Our Stuff” and the intro sentence is removed.
+2. Scroll past Events and confirm the Story Generator CTA appears before the Production Toolkit block.
+3. Confirm the Voice Agent button/link/modal are no longer present on the homepage.
+4. Open DevTools console on index.html and confirm no errors.
+
 2026-01-13 | 1:10PM EST
 ———————————————————————
 Change: Added lightweight guidance copy to the homepage, Ideas, Resources, and Events pages to clarify primary flows and local focus.
