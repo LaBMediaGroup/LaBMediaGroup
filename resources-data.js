@@ -1093,23 +1093,8 @@ const resources = [
         features: ['AI Video Generation', 'Background Removal', 'Object Removal', 'Frame Interpolation']
     },
     {
-        name: 'Descript',
-        category: 'ai',
-        aiType: 'video',
-        desc: 'Edit video by editing text transcript.',
-        fullDesc: 'Perfect for interviews, podcasts, talking-heads. Auto transcription, filler word removal, AI voices. Studio Sound removes background noise. Workflow game changer.',
-        url: 'https://www.descript.com',
-        paid: true,
-        pricing: [
-            { plan: 'Free', price: '$0 (1hr/mo)' },
-            { plan: 'Creator', price: '$24/mo' },
-            { plan: 'Pro', price: '$40/mo' }
-        ],
-        features: ['Edit Video as Text', 'Auto Transcription', 'Studio Sound', 'Filler Word Removal']
-    },
-    {
         name: 'MiniMax',
-        category: 'ai',
+        category: 'coding',
         aiType: 'video',
         desc: 'Chinese AI platform with video generation, audio synthesis, and 4M token context models.',
         fullDesc: 'MiniMax offers multimodal AI capabilities including Hailuo Video Agent for video creation, lifelike audio synthesis, and the open-source MiniMax-01 models with 456B parameters and 4M token context (20-32x longer than competitors). API access available for developers with competitive token-based pricing.',
@@ -1155,7 +1140,7 @@ const resources = [
     },
     {
         name: 'Claude.ai',
-        category: 'ai',
+        category: 'coding',
         aiType: 'chat',
         desc: 'AI assistant tuned for coding help, writing, and research.',
         fullDesc: 'Claude handles code review, generation, and doc summaries with strong long-context support. Useful for scripting, technical outlines, and brainstorming workflows without leaving the browser.',
@@ -1169,7 +1154,7 @@ const resources = [
     },
     {
         name: 'Chat.com',
-        category: 'ai',
+        category: 'coding',
         aiType: 'chat',
         desc: 'Simple web AI chat for quick prompts and ideation.',
         fullDesc: 'Chat.com offers a straightforward AI assistant experience—drop in a prompt to brainstorm ideas, rephrase copy, or outline project steps without extra setup or logins.',
@@ -1179,7 +1164,7 @@ const resources = [
     },
     {
         name: 'Z.ai',
-        category: 'ai',
+        category: 'coding',
         aiType: 'chat',
         desc: 'AI chat platform powered by top-tier models including GLM-4.7 and GPT-5.2.',
         fullDesc: 'Z.ai provides a clean AI chat interface powered by multiple leading AI models including GLM-4.7 and GPT-5.2. Supports brainstorming, coding help, writing assistance, and quick problem-solving with developer-friendly pricing and MCP tools integration.',
@@ -1194,7 +1179,7 @@ const resources = [
     },
     {
         name: 'OpenRouter',
-        category: 'ai',
+        category: 'coding',
         aiType: 'chat',
         desc: 'Unified API for 500+ AI models across 60+ providers with pay-as-you-go pricing.',
         fullDesc: 'OpenRouter aggregates access to 500+ AI models from providers like OpenAI, Anthropic, Google, and Meta through a single OpenAI-compatible API. Features automatic fallback for reliability, flexible credit-based pricing with no subscriptions, and customizable data policies. Ideal for developers who want to test and switch between models without architectural changes.',
@@ -1207,7 +1192,7 @@ const resources = [
     },
     {
         name: 'Google AI Studio',
-        category: 'ai',
+        category: 'coding',
         aiType: 'chat',
         desc: 'Playground for Gemini models with API keys and quick testing.',
         fullDesc: 'AI Studio makes it easy to prototype with Gemini models—test prompts, generate code snippets, and grab API keys for integrating generative AI into apps or production pipelines.',
@@ -1254,16 +1239,6 @@ const resources = [
         url: 'https://opal.google/landing/',
         paid: false,
         features: ['Video Generation', 'Style Controls', 'Fast Iteration', 'Google Models']
-    },
-    {
-        name: 'Sora by OpenAI',
-        category: 'ai',
-        aiType: 'video',
-        desc: 'Text-to-video generation focused on cinematic, photoreal results.',
-        fullDesc: 'Sora converts prompts into detailed video sequences with realistic motion, camera moves, and environments—great for previz, concept tests, and mood films when paired with clear prompt references.',
-        url: 'https://sora.chatgpt.com',
-        paid: false,
-        features: ['Text-to-Video', 'Cinematic Motion', 'Camera Control', 'Previsualization']
     },
     {
         name: 'Krotos Studio (AI)',
