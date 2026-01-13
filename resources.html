@@ -196,6 +196,16 @@
             background: rgba(255, 255, 255, 0.02);
         }
 
+        .filter-hint {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            margin-bottom: 0.75rem;
+            opacity: 0.85;
+        }
+
         /* Label flicker animation */
         @keyframes labelFlicker {
             0%, 100% {
@@ -1895,6 +1905,8 @@
         <div class="search-row">
             <input type="text" class="search-input proto-card" id="searchInput" placeholder="Search resources..." autocomplete="off">
         </div>
+
+        <div class="filter-hint">Start with a category, then refine with subfilters.</div>
         
         <!-- Main Category Filter Row -->
         <div class="filter-row">
