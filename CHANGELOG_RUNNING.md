@@ -4,6 +4,18 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 6:10AM EST
+———————————————————————
+Change: Reordered homepage sections to lead with Work before the Story Generator CTA, Events Preview, and Resources.
+Files touched: index.html
+Notes: Homepage flow now matches the "Credibility Then Community" layout request.
+Quick test checklist:
+1. Open index.html and verify the Work section appears directly after the Hero.
+2. Scroll down to confirm Story Generator CTA follows Work.
+3. Confirm Events Preview appears after the Story Generator CTA.
+4. Confirm Resources section appears after Events Preview.
+5. Check DevTools console for any errors.
+
 2026-01-13 | 1:05AM EST
 ———————————————————————
 Change: FINAL FIX - Portfolio navigation dots now properly positioned on far right edge (not center)
