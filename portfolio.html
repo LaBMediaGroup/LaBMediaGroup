@@ -64,7 +64,7 @@
         }
         
         /* Navigation */
-        nav {
+        .site-nav {
             position: fixed;
             top: 0;
             left: 0;
@@ -290,14 +290,21 @@
         /* Video Side */
         .video-side {
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
+
         .video-container {
             position: relative;
+            width: 100%;
+            max-width: var(--video-max, 640px);
+            margin: 0 auto;
             padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
             background: #000;
+            border-radius: 18px;
         }
 
         .video-container iframe,
@@ -473,6 +480,7 @@
         ============================================ */
         #artist {
             background: linear-gradient(180deg, #f5e6dd 0%, #f9ede6 50%, #fdf4ef 100%);
+            --video-max: 720px;
         }
         
         #artist .section-inner {
@@ -483,6 +491,7 @@
             border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 30px 60px rgba(180, 100, 80, 0.15);
+            max-width: 720px;
         }
         
         #artist .project-index {
@@ -877,6 +886,7 @@
         ============================================ */
         #pandys {
             background: linear-gradient(135deg, #1a0f1f 0%, #0d0710 100%);
+            --video-max: 600px;
         }
         
         #pandys .project-title {
@@ -904,6 +914,7 @@
             background: #000;
             position: relative;
             overflow: hidden;
+            --video-max: 560px;
         }
         
         /* Subtle noise texture */
@@ -959,8 +970,9 @@
         }
         
         #horror .video-container {
-            box-shadow: 0 0 60px rgba(220, 38, 38, 0.15);
+            box-shadow: none;
             padding-bottom: 41.84%; /* 2.39:1 cinemascope aspect ratio */
+            max-width: 560px;
         }
         
         #horror .award-badge {
@@ -990,6 +1002,7 @@
         #comedy {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             position: relative;
+            --video-max: 660px;
         }
         
         #comedy .project-index {
@@ -1185,7 +1198,7 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav>
+    <nav class="site-nav">
         <a href="index.html">
             <img src="images/WhiteBeakerLogo.png" alt="LaB Media" class="nav-logo">
         </a>
@@ -1239,7 +1252,7 @@
     <section id="artist" class="proto-grid" data-index="1">
             <div class="section-inner">
             <div class="video-side">
-                <div class="video-container proto-corners">
+                <div class="video-container">
                     <button class="video-placeholder" type="button" data-video-id="CPvxM8GrCg8" aria-label="Play Anthony Brass video">
                         <img class="video-thumb" src="https://img.youtube.com/vi/CPvxM8GrCg8/hqdefault.jpg" alt="Anthony Brass thumbnail" loading="lazy">
                         <span class="video-play">▶</span>
@@ -1336,7 +1349,7 @@
     <section id="pandys" class="proto-grid" data-index="3">
             <div class="section-inner">
             <div class="video-side">
-                <div class="video-container proto-corners">
+                <div class="video-container">
                     <button class="video-placeholder" type="button" data-video-id="ZXYtZmIRiRI" aria-label="Play Driven Interiors video">
                         <img class="video-thumb" src="https://img.youtube.com/vi/ZXYtZmIRiRI/hqdefault.jpg" alt="Driven Interiors thumbnail" loading="lazy">
                         <span class="video-play">▶</span>
@@ -1371,7 +1384,7 @@
     <section id="horror" class="reversed proto-grid" data-index="4">
             <div class="section-inner">
             <div class="video-side">
-                <div class="video-container proto-corners">
+                <div class="video-container">
                     <button class="video-placeholder" type="button" data-video-id="rtEs8chuDlM" aria-label="Play Backyard Sessions video">
                         <img class="video-thumb" src="https://img.youtube.com/vi/rtEs8chuDlM/hqdefault.jpg" alt="Backyard Sessions thumbnail" loading="lazy">
                         <span class="video-play">▶</span>
@@ -1409,7 +1422,7 @@
     <section id="comedy" class="proto-grid" data-index="5">
             <div class="section-inner">
             <div class="video-side">
-                <div class="video-container proto-corners">
+                <div class="video-container">
                     <button class="video-placeholder" type="button" data-video-id="G0zfFWwQuZA" aria-label="Play Comedy Roll video">
                         <img class="video-thumb" src="https://img.youtube.com/vi/G0zfFWwQuZA/hqdefault.jpg" alt="Comedy Roll thumbnail" loading="lazy">
                         <span class="video-play">▶</span>
