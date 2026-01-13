@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 7:54AM EST
+———————————————————————
+Change: Removed the hero headline and description text from the homepage hero block.
+Files touched: index.html
+Notes: Kept the hero pills intact while clearing the hero copy per request.
+Quick test checklist:
+1. Open index.html and confirm the hero headline/description text is gone.
+2. Verify the hero pills still render in the hero block.
+3. Open DevTools console and confirm no errors on index.html.
+
 2026-01-13 | 2:47AM EST
 ———————————————————————
 Change: Added LaB Talk (Beta) footer link across site pages and a muted homepage footer note describing the tool.
