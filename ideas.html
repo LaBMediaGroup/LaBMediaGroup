@@ -1352,16 +1352,11 @@
                         <span>📄</span>
                         <span>Download PDF</span>
                     </button>
-                    <button class="results-btn" id="saveIdeaBtn">
-                        <span>💾</span>
-                        <span>Save Idea</span>
-                    </button>
                     <button class="results-btn" id="clearResultsBtn">
                         <span>🗑️</span>
                         <span>Clear All</span>
                     </button>
                 </div>
-                <div class="save-feedback" id="saveFeedback" role="status" aria-live="polite"></div>
             </div>
 
             <div class="results-content" id="resultsContent">
@@ -1491,17 +1486,36 @@
 
         // Pre-load the logo image for PDF
         let logoImage = null;
-        const logoImg = new Image();
-        logoImg.crossOrigin = 'anonymous';
-        logoImg.onload = function() {
-            const canvas = document.createElement('canvas');
-            canvas.width = logoImg.width;
-            canvas.height = logoImg.height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(logoImg, 0, 0);
-            logoImage = canvas.toDataURL('image/png');
-        };
-        logoImg.src = 'images/WhiteBeakerLogo.png';
+        let logoPromise = null;
+
+        function loadLogoDataUrl() {
+            if (logoImage) {
+                return Promise.resolve(logoImage);
+            }
+            if (logoPromise) {
+                return logoPromise;
+            }
+            logoPromise = new Promise((resolve) => {
+                const logoImg = new Image();
+                logoImg.crossOrigin = 'anonymous';
+                logoImg.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = logoImg.width;
+                    canvas.height = logoImg.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(logoImg, 0, 0);
+                    logoImage = canvas.toDataURL('image/png');
+                    resolve(logoImage);
+                };
+                logoImg.onerror = function() {
+                    resolve(null);
+                };
+                logoImg.src = 'images/WhiteBeakerLogo.png';
+            });
+            return logoPromise;
+        }
+
+        loadLogoDataUrl();
 
         // ============================================
         // PROMPT GENERATION
@@ -1972,9 +1986,6 @@
         const resultsContent = document.getElementById('resultsContent');
         const downloadPdfBtn = document.getElementById('downloadPdfBtn');
         const clearResultsBtn = document.getElementById('clearResultsBtn');
-        const saveIdeaBtn = document.getElementById('saveIdeaBtn');
-        const saveFeedback = document.getElementById('saveFeedback');
-        const savedIdeasKey = 'lab-saved-ideas';
 
         function hasAnyResults() {
             return resultsState.prompts.length > 0 ||
@@ -2087,7 +2098,7 @@
             });
         }
 
-        function generatePDF() {
+        async function generatePDF() {
             if (!hasAnyResults()) return;
 
             const { jsPDF } = window.jspdf;
@@ -2098,10 +2109,11 @@
             const contentWidth = pageWidth - (margin * 2);
 
             // Add logo if loaded
-            if (logoImage) {
+            const logoData = await loadLogoDataUrl();
+            if (logoData) {
                 const logoWidth = 30;
                 const logoHeight = 30;
-                doc.addImage(logoImage, 'PNG', (pageWidth - logoWidth) / 2, yPos, logoWidth, logoHeight);
+                doc.addImage(logoData, 'PNG', (pageWidth - logoWidth) / 2, yPos, logoWidth, logoHeight);
                 yPos += logoHeight + 10;
             }
 
@@ -2281,72 +2293,51 @@
             rollAllBtn.querySelector('span:last-child').textContent = 'Roll All (One-Time)';
 
             updateResultsDisplay();
-            if (saveFeedback) saveFeedback.textContent = '';
         }
 
         downloadPdfBtn.addEventListener('click', generatePDF);
         clearResultsBtn.addEventListener('click', clearResults);
 
-        function getPromptToSave() {
+        function getPrimaryPrompt() {
             if (resultsState.selectedPromptIndex != null) {
                 return resultsState.generatedPrompts[resultsState.selectedPromptIndex];
             }
-            if (resultsState.prompts.length === 1) {
+            if (resultsState.prompts.length > 0) {
                 return resultsState.prompts[0];
             }
             return null;
         }
 
-        function saveIdea() {
-            const prompt = getPromptToSave();
-            if (!prompt) {
-                if (saveFeedback) saveFeedback.textContent = 'Select a prompt to save.';
-                return;
-            }
-
-            const savedIdea = {
-                id: `idea-${Date.now()}`,
-                savedAt: new Date().toISOString(),
-                concept: prompt.concept,
-                constraint: getEntryText(prompt.constraint),
-                twist: prompt.twist,
-                genre: prompt.genre ? getEntryText(prompt.genre) : null,
-                visualStyle: prompt.visualStyle ? getEntryText(prompt.visualStyle) : null,
-                emotion: prompt.emotion ? getEntryText(prompt.emotion) : null
-            };
-
-            const existing = JSON.parse(localStorage.getItem(savedIdeasKey) || '[]');
-            existing.unshift(savedIdea);
-            localStorage.setItem(savedIdeasKey, JSON.stringify(existing.slice(0, 50)));
-
-            if (saveFeedback) {
-                saveFeedback.textContent = 'Saved to this device.';
-                setTimeout(() => {
-                    if (saveFeedback) saveFeedback.textContent = '';
-                }, 2000);
-            }
-        }
-
-        saveIdeaBtn?.addEventListener('click', saveIdea);
-
         // Share Prompt button - Copy prompt to clipboard with site link
         const sharePromptBtn = document.getElementById('sharePromptBtn');
         sharePromptBtn.addEventListener('click', () => {
-            if (!currentResults) {
+            if (!hasAnyResults()) {
                 alert('Roll the dice first to generate a prompt!');
                 return;
             }
 
+            const prompt = getPrimaryPrompt();
             // Build shareable text
-            let shareText = `🎬 Film Prompt from LaB Media Story Generator:\n\n`;
-            shareText += `Genre: ${currentResults.genre}\n`;
-            shareText += `Character: ${currentResults.character}\n`;
-            shareText += `Setting: ${currentResults.setting}\n`;
-            if (currentResults.constraint) shareText += `Constraint: ${currentResults.constraint}\n`;
-            if (currentResults.twist) shareText += `Twist: ${currentResults.twist}\n`;
-            if (currentResults.creepyDetail) shareText += `Creepy Detail: ${currentResults.creepyDetail}\n`;
-            if (currentResults.comedyBeat) shareText += `Comedy Beat: ${currentResults.comedyBeat}\n`;
-            if (currentResults.bonus) shareText += `Bonus Challenge: ${currentResults.bonus}\n`;
+            let shareText = `🎬 Film Prompt from LaB Media Ideas Generator:\n\n`;
+            if (prompt) {
+                shareText += `Concept: ${prompt.concept}\n`;
+                shareText += `Constraint: ${getEntryText(prompt.constraint)}\n`;
+                shareText += `Twist: ${prompt.twist}\n`;
+                if (prompt.genre) shareText += `Genre: ${getEntryText(prompt.genre)}\n`;
+                if (prompt.visualStyle) shareText += `Style: ${getEntryText(prompt.visualStyle)}\n`;
+                if (prompt.emotion) shareText += `Emotion: ${getEntryText(prompt.emotion)}\n`;
+                if (prompt.creepyDetail) shareText += `Creepy Detail: ${prompt.creepyDetail}\n`;
+                if (prompt.comedyBeat) shareText += `Comedy Beat: ${prompt.comedyBeat}\n`;
+            }
+            if (resultsState.bonus) shareText += `Bonus Challenge: ${resultsState.bonus}\n`;
+            const miniResults = Object.entries(resultsState.miniRollers).filter(([, value]) => value !== null);
+            if (miniResults.length > 0) {
+                shareText += '\nQuick Roll Results:\n';
+                miniResults.forEach(([type, value]) => {
+                    const label = type.charAt(0).toUpperCase() + type.slice(1, -1);
+                    shareText += `${label}: ${value}\n`;
+                });
+            }
             shareText += `\n🎲 Generate your own: https://labmedia.work/ideas.html`;
 
             // Copy to clipboard
