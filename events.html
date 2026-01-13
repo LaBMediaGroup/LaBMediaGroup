@@ -2078,6 +2078,15 @@
                     `;
                 }
 
+                if (eventData.organizer) {
+                    infoHTML += `
+                        <div class="event-info-item">
+                            <div class="event-info-label">Organizer</div>
+                            <div class="event-info-value">${eventData.organizer}</div>
+                        </div>
+                    `;
+                }
+
                 if (eventData.website) {
                     infoHTML += `
                         <div class="event-info-item">

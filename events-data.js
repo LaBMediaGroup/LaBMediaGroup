@@ -11,6 +11,7 @@ const eventsData = [
   {
     id: 'royal-starr-new-year-mixer-2026-01-13',
     title: 'Royal Starr Filmmaker New Year Mixer',
+    organizer: 'Royal Starr Arts Institute',
     type: 'meetup',
     startDate: '2026-01-13',
     // Facebook/event listings can change—verify before posting hard details
@@ -26,6 +27,7 @@ const eventsData = [
   {
     id: 'royal-starr-mixer-2026-02-10',
     title: 'Royal Starr Filmmaker Community Mixer',
+    organizer: 'Royal Starr Arts Institute',
     type: 'meetup',
     startDate: '2026-02-10',
     location: 'Metro Detroit, MI',
@@ -38,6 +40,7 @@ const eventsData = [
   {
     id: 'royal-starr-mixer-2026-03-10',
     title: 'Royal Starr Filmmaker Community Mixer',
+    organizer: 'Royal Starr Arts Institute',
     type: 'meetup',
     startDate: '2026-03-10',
     location: 'Metro Detroit, MI',
@@ -50,19 +53,21 @@ const eventsData = [
   {
     id: 'campfire-in-motion-2026-01-15',
     title: 'In Motion (Part 1 of 3): Animation on Film',
+    organizer: 'Campfire Film Cooperative',
     type: 'workshop',
     startDate: '2026-01-15',
     startTime: '18:30',
-    location: 'The Scarab Club, 217 Farnsworth St, Detroit, MI 48202',
+    location: 'The Scarab Club, 217 Farnsworth Street, Detroit, MI 48202',
     venue: 'The Scarab Club',
     url: 'https://campfirefilm.org/events',
-    description: 'Campfire Film Cooperative animation series kickoff: “In Motion: Animation on Film.”',
+    description: 'Campfire Film Cooperative series kickoff (Part 1 of 3) focused on animation + film. Doors open at 6:30 PM; no end time listed.',
     verification: 'verified',
     audience: 'Animators, experimental filmmakers, and anyone exploring hand-crafted motion.'
   },
   {
     id: 'frames-and-fabric-film-detroit-2026-01-31',
     title: "Film Detroit's Frames & Fabrics: The Art of Film in Detroit",
+    organizer: 'Film Detroit / City of Detroit',
     type: 'workshop',
     startDate: '2026-01-31',
     startTime: '15:00',

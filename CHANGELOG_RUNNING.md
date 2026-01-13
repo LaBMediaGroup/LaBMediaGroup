@@ -4,6 +4,17 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 8:31PM EST
+———————————————————————
+Change: Added organizer details to event modals and refreshed January 2026 event data notes.
+Files touched: events-data.js, events.html, CHANGELOG_RUNNING.md
+Notes: Campfire “In Motion” details now include organizer and doors-open note; Film Detroit entry now shows organizer.
+Quick test checklist:
+1. Open events.html and navigate to January 2026; confirm “In Motion (Part 1 of 3)” and “Frames & Fabrics” appear in the list and calendar.
+2. Open each event modal and confirm the Organizer field displays for Campfire and Film Detroit entries.
+3. Confirm the “In Motion” modal shows the 6:30 PM time with no end time listed.
+4. Open DevTools console on events.html and confirm no errors.
+
 2026-01-13 | 8:07PM EST
 ———————————————————————
 Change: Added the Frames & Fabrics website to the event bio info and ensured calendar exports include event URLs in the description.
