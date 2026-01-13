@@ -4,6 +4,17 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 2:46PM EST
+———————————————————————
+Change: Confirmed and added Detroit-area film events, including a new Frames & Fabric entry and a verified Royal Starr mixer.
+Files touched: events-data.js, CHANGELOG_RUNNING.md
+Notes: Added Frames & Fabric details; verified Royal Starr Community Mixer status and kept Metro Detroit location per source.
+Quick test checklist:
+1. Open events.html and navigate to January 2026; confirm “In Motion (Part 1 of 3)” and “Frames & Fabric” appear in both list and calendar.
+2. Navigate to February 2026 and confirm “Royal Starr Filmmaker Community Mixer” appears in list and calendar.
+3. Open each event modal and confirm details match the source (date/time/location) where provided.
+4. Open DevTools console on events.html and confirm no errors.
+
 2026-02-14 | 10:00AM EST
 ———————————————————————
 Change: Simplified the index footer to match the nav bar styling and updated the copyright year.

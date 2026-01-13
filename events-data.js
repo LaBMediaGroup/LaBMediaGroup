@@ -31,8 +31,8 @@ const eventsData = [
     location: 'Metro Detroit, MI',
     venue: 'TBD (Royal Starr posts details monthly)',
     url: 'https://www.royalstarr.org',
-    description: 'Royal Starr indicates a 2nd-Tuesday mixer cadence (Jan–Oct). Confirm exact venue/time on the official RSVP/listing.',
-    verification: 'cadence (date derived; details TBD)',
+    description: 'Royal Starr filmmaker community mixer in Metro Detroit. Check the official RSVP/listing for the final venue.',
+    verification: 'verified',
     audience: 'Local filmmakers who want a casual monthly touchpoint.'
   },
   {
@@ -59,6 +59,20 @@ const eventsData = [
     description: 'Campfire Film Cooperative animation series kickoff: “In Motion: Animation on Film.”',
     verification: 'verified',
     audience: 'Animators, experimental filmmakers, and anyone exploring hand-crafted motion.'
+  },
+  {
+    id: 'frames-and-fabric-film-detroit-2026-01-31',
+    title: 'Frames & Fabric: The Art of Film in Detroit',
+    type: 'workshop',
+    startDate: '2026-01-31',
+    startTime: '15:00',
+    endTime: '20:00',
+    location: 'Heilmann Rec Center, 19601 Brock Ave, Detroit, MI 48205',
+    venue: 'Heilmann Rec Center',
+    url: '',
+    description: 'Community-focused film event with filmmaking sessions, budget workshops, and makeup/wardrobe sessions.',
+    verification: 'verified',
+    audience: 'Detroit filmmakers, students, and neighbors exploring hands-on film craft.'
   },
   {
     id: 'fresh-coast-film-festival-2025',
