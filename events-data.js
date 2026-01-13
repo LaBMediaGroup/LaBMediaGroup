@@ -70,6 +70,7 @@ const eventsData = [
     location: 'Heilmann Rec Center, 19601 Brock Ave, Detroit, MI 48205',
     venue: 'Heilmann Rec Center',
     url: 'https://detroitmi.gov/events/film-detroits-frames-fabrics-event-art-film-detroit-jan-31',
+    website: 'https://detroitmi.gov/events/film-detroits-frames-fabrics-event-art-film-detroit-jan-31',
     thumbnail: 'images/events/frames-fabrics-2026.svg',
     promoUrl: 'https://www.facebook.com/share/r/1858PXs8By/?mibextid=wwXIfr',
     description: 'Community-focused film event with filmmaking sessions, budget workshops, and makeup/wardrobe sessions.',

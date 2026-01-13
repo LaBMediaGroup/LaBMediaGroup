@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 8:07PM EST
+———————————————————————
+Change: Added the Frames & Fabrics website to the event bio info and ensured calendar exports include event URLs in the description.
+Files touched: events-data.js, events.html, CHANGELOG_RUNNING.md
+Notes: Event website now displays in the detail modal; exported .ics files append the event URL to the description.
+Quick test checklist:
+1. Open events.html and open the Frames & Fabrics event modal; confirm the Details section lists the website link.
+2. Click “Add to Calendar” for a future event and open the downloaded .ics file to confirm the event URL appears in the description.
+3. Open DevTools console on events.html and confirm no errors.
+
 2026-01-13 | 2:58PM EST
 ———————————————————————
 Change: Updated the Film Detroit Frames & Fabrics event with the official Detroit.gov link and added a local poster thumbnail in the events list.
