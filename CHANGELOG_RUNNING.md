@@ -4,16 +4,6 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-13 | 3:33PM EST
-———————————————————————
-Change: Scoped Resources header nav styles so the footer nav no longer renders as a fixed header.
-Files touched: resources.html
-Notes: Header nav now uses a site-nav class to avoid leaking styles to the footer.
-Quick test checklist:
-1. Open resources.html and confirm only one top nav row appears.
-2. Scroll to the footer and confirm footer links stay in the footer, not fixed.
-3. Open DevTools console and confirm no errors on resources.html.
-
 2026-01-13 | 2:09PM EST
 ———————————————————————
 Change: Scoped header nav styles on Plan and Contact pages to prevent the footer nav from rendering as a fixed header.
