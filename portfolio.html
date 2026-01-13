@@ -164,6 +164,51 @@
             align-items: center;
         }
 
+        .project-map {
+            position: fixed;
+            left: 3rem;
+            top: 50%;
+            transform: translateY(-20%);
+            z-index: 998;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            mix-blend-mode: difference;
+        }
+
+        .project-map-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-600);
+        }
+
+        .project-map-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .project-map-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            text-align: left;
+            transition: color 0.3s ease;
+        }
+
+        .project-map-link.active,
+        .project-map-link:hover {
+            color: var(--white);
+        }
+
         .nav-dot {
             width: 12px;
             height: 12px;
@@ -1010,6 +1055,10 @@
                 right: 2rem;
             }
 
+            .project-map {
+                display: none;
+            }
+
             /* Portfolio nav on mobile - horizontal at bottom */
             .portfolio-nav {
                 left: 50%;
@@ -1174,6 +1223,17 @@
             <span class="dot-number">05</span>
         </button>
     </nav>
+
+    <aside class="project-map" aria-label="Project map">
+        <div class="project-map-title">Project Map</div>
+        <div class="project-map-list">
+            <button class="project-map-link active" data-target="artist">Anthony Brass</button>
+            <button class="project-map-link" data-target="moz">MOZ Interiors</button>
+            <button class="project-map-link" data-target="pandys">The Pandys</button>
+            <button class="project-map-link" data-target="horror">Trail Dead</button>
+            <button class="project-map-link" data-target="comedy">Lookout</button>
+        </div>
+    </aside>
 
     <!-- SECTION 1: ANTHONY BRASS -->
     <section id="artist" class="proto-grid" data-index="1">
@@ -1437,6 +1497,10 @@
                     document.querySelectorAll('.nav-dot').forEach(dot => {
                         dot.classList.toggle('active', dot.dataset.target === sectionId);
                     });
+
+                    document.querySelectorAll('.project-map-link').forEach(link => {
+                        link.classList.toggle('active', link.dataset.target === sectionId);
+                    });
                 }
             });
         }, observerOptions);
@@ -1449,6 +1513,16 @@
         document.querySelectorAll('.nav-dot').forEach(dot => {
             dot.addEventListener('click', () => {
                 const targetId = dot.dataset.target;
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        document.querySelectorAll('.project-map-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const targetId = link.dataset.target;
                 const targetSection = document.getElementById(targetId);
                 if (targetSection) {
                     targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });

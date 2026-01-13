@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
+    <title>Past Events Archive | LaB Media</title>
+    <link rel="canonical" href="https://labmedia.work/past-events.html">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Past LaB Media community events, screenings, workshops, and filmmaker meetups across Metro Detroit.">
+    <meta name="keywords" content="Detroit film events archive, past filmmaker meetups, screenings Detroit, LaB Media events">
+    <meta name="author" content="LaB Media">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://labmedia.work/past-events.html">
+    <meta property="og:title" content="Past Events Archive | LaB Media">
+    <meta property="og:description" content="Past LaB Media community events and filmmaker meetups across Metro Detroit.">
+    <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://labmedia.work/past-events.html">
+    <meta name="twitter:title" content="Past Events Archive | LaB Media">
+    <meta name="twitter:description" content="Past LaB Media community events and filmmaker meetups across Metro Detroit.">
+    <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="prototype-theme.css">
+
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-200: #C5C5C5;
+            --gray-300: #B0B0B0;
+            --gray-400: #888888;
+            --gray-600: #555555;
+            --gray-800: #1A1A1A;
+            --gray-900: #0D0D0D;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--black);
+            color: var(--gray-300);
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+
+        .nav-logo {
+            height: 22px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover { opacity: 0.5; }
+
+        .page-shell {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 3rem 4rem;
+        }
+
+        .archive-header {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .archive-header h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--white);
+            font-weight: 400;
+            margin: 0 0 1rem;
+        }
+
+        .archive-header p {
+            margin: 0 0 1.5rem;
+            color: var(--gray-400);
+            max-width: 720px;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .archive-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .archive-actions a {
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.55rem 0.9rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--white);
+            background: rgba(255,255,255,0.04);
+        }
+
+        .past-events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .past-event-card {
+            border: 1px solid var(--gray-800);
+            background: rgba(255,255,255,0.02);
+            padding: 1.5rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .past-event-type {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.3rem 0.65rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gray-200);
+        }
+
+        .past-event-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--white);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .past-event-date {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            letter-spacing: 0.5px;
+        }
+
+        .past-event-recap {
+            font-size: 0.9rem;
+            color: var(--gray-400);
+            line-height: 1.7;
+        }
+
+        .past-event-photos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .past-event-photos img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+            border: 1px solid var(--gray-800);
+        }
+
+        .photos-placeholder {
+            border: 1px dashed var(--gray-800);
+            padding: 0.75rem;
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+        }
+
+        .past-event-meta {
+            display: grid;
+            gap: 0.35rem;
+            font-size: 0.85rem;
+            color: var(--gray-400);
+        }
+
+        .past-event-meta span {
+            color: var(--gray-200);
+        }
+
+        .site-footer {
+            position: relative;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--gray-800);
+            text-align: center;
+            background: var(--black);
+            margin-top: 4rem;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-nav a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .footer-nav a:hover { color: var(--white); }
+
+        .footer-credit {
+            font-size: 0.7rem;
+            color: var(--gray-600);
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 1.5rem; }
+            .page-shell { padding: 7rem 1.5rem 3rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB" class="nav-logo">
+        </a>
+        <ul class="nav-links">
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="ideas.html">Story Generator</a></li>
+            <li><a href="plan-your-project.html">Plan</a></li>
+            <li><a href="portfolio.html">Work</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-shell">
+        <header class="archive-header">
+            <h1>Past Events Archive</h1>
+            <p>Proof of time, shared milestones, and community momentum. These are the gatherings that shaped the LaB Media filmmaker orbit.</p>
+            <div class="archive-actions">
+                <a href="events.html">Back to Calendar</a>
+                <a href="events.html#suggest">Suggest an Event</a>
+            </div>
+        </header>
+
+        <section class="past-events-grid" id="pastEventsGrid" aria-live="polite"></section>
+    </div>
+
+    <script src="events-data.js"></script>
+    <script>
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr + 'T00:00:00');
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function formatDateRange(event) {
+            if (!event.endDate || event.startDate === event.endDate) {
+                return formatDate(event.startDate);
+            }
+            return `${formatDate(event.startDate)} – ${formatDate(event.endDate)}`;
+        }
+
+        function isEventPast(event) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const eventDate = new Date(event.endDate || event.startDate);
+            return eventDate < today;
+        }
+
+        function renderPastEvents() {
+            const grid = document.getElementById('pastEventsGrid');
+            if (!grid) return;
+
+            const pastEvents = eventsData.filter(isEventPast).sort((a, b) => {
+                return new Date(b.startDate) - new Date(a.startDate);
+            });
+
+            if (!pastEvents.length) {
+                grid.innerHTML = '<p style="color: var(--gray-500);">No past events yet.</p>';
+                return;
+            }
+
+            grid.innerHTML = pastEvents.map(event => {
+                const photos = Array.isArray(event.photos) ? event.photos.slice(0, 3) : [];
+                const recap = event.recap || event.description || 'Recap coming soon.';
+
+                return `
+                    <article class="past-event-card">
+                        <div class="past-event-type">${event.type || 'Event'}</div>
+                        <h2 class="past-event-title">${event.title}</h2>
+                        <div class="past-event-date">${formatDateRange(event)}</div>
+                        <p class="past-event-recap">${recap}</p>
+                        ${photos.length ? `
+                            <div class="past-event-photos">
+                                ${photos.map(photo => `<img src="${photo}" alt="${event.title} photo">`).join('')}
+                            </div>
+                        ` : '<div class="photos-placeholder">PHOTOS COMING SOON</div>'}
+                        <div class="past-event-meta">
+                            ${event.location ? `<div>Location: <span>${event.location}</span></div>` : ''}
+                            ${event.audience ? `<div>Who attended: <span>${event.audience}</span></div>` : ''}
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        renderPastEvents();
+    </script>
+
+    <footer class="site-footer">
+        <nav class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="portfolio.html">Work</a>
+            <a href="resources.html">Resources</a>
+            <a href="ideas.html">Story Generator</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <p class="footer-credit">Made in Shelby Twp, MI with ❤️</p>
+    </footer>
+</body>
+</html>

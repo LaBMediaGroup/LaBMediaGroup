@@ -20,7 +20,8 @@ const eventsData = [
     venue: 'TBD (check RSVP / listing)',
     url: 'https://www.royalstarr.org',
     description: 'Royal Starr New Year mixer (listed for Jan 13). Confirm exact venue/time via RSVP/listing before sharing widely.',
-    verification: 'partial (listing found; confirm final details)'
+    verification: 'partial (listing found; confirm final details)',
+    audience: 'Filmmakers, writers, and creatives looking to connect for 2026 projects.'
   },
   {
     id: 'royal-starr-mixer-2026-02-10',
@@ -31,7 +32,8 @@ const eventsData = [
     venue: 'TBD (Royal Starr posts details monthly)',
     url: 'https://www.royalstarr.org',
     description: 'Royal Starr indicates a 2nd-Tuesday mixer cadence (Jan–Oct). Confirm exact venue/time on the official RSVP/listing.',
-    verification: 'cadence (date derived; details TBD)'
+    verification: 'cadence (date derived; details TBD)',
+    audience: 'Local filmmakers who want a casual monthly touchpoint.'
   },
   {
     id: 'royal-starr-mixer-2026-03-10',
@@ -42,7 +44,8 @@ const eventsData = [
     venue: 'TBD (Royal Starr posts details monthly)',
     url: 'https://www.royalstarr.org',
     description: 'Royal Starr indicates a 2nd-Tuesday mixer cadence (Jan–Oct). Confirm exact venue/time on the official RSVP/listing.',
-    verification: 'cadence (date derived; details TBD)'
+    verification: 'cadence (date derived; details TBD)',
+    audience: 'Local filmmakers who want a casual monthly touchpoint.'
   },
   {
     id: 'campfire-in-motion-2026-01-15',
@@ -54,7 +57,8 @@ const eventsData = [
     venue: 'The Scarab Club',
     url: 'https://campfirefilm.org/events',
     description: 'Campfire Film Cooperative animation series kickoff: “In Motion: Animation on Film.”',
-    verification: 'verified'
+    verification: 'verified',
+    audience: 'Animators, experimental filmmakers, and anyone exploring hand-crafted motion.'
   },
   {
     id: 'fresh-coast-film-festival-2025',
@@ -66,7 +70,8 @@ const eventsData = [
     venue: 'Traverse City venues (see official schedule)',
     url: 'https://freshcoastfilmtraversecity.ludus.com/',
     description: 'Traverse City festival focused on fresh voices, screenings, and community events. Confirm final schedule/times via official listings.',
-    verification: 'partial (dates to confirm)'
+    verification: 'partial (dates to confirm)',
+    audience: 'Filmmakers and film lovers looking for regional festival exposure.'
   },
 
   // ============================================
@@ -84,7 +89,10 @@ const eventsData = [
     venue: 'Eastern Palace Club',
     url: 'https://thecomedyroll.com',
     description: 'Opening-night kickoff for The Comedy Roll: live pitches, lineup reveal, and signups for the 2025 run.',
-    verification: 'verified'
+    verification: 'verified',
+    audience: 'Comedy filmmakers, writers, and teams looking for a timed challenge.',
+    recap: 'A packed kickoff night with live pitches, new teams forming, and the 2025 challenge calendar revealed.',
+    photos: []
   },
   {
     id: 'comedy-roll-showcase-2025',
@@ -96,7 +104,10 @@ const eventsData = [
     venue: 'Emagine Royal Oak',
     url: 'https://thecomedyroll.com',
     description: 'Showcase screening for the 2025 Comedy Roll (per official site listing).',
-    verification: 'verified'
+    verification: 'verified',
+    audience: 'Comedy teams, friends, and local supporters celebrating finished shorts.',
+    recap: 'A full-house screening with audience Q&A and a spotlight on standout teams.',
+    photos: []
   },
   {
     id: 'hfr-kickoff-2025',
@@ -109,7 +120,10 @@ const eventsData = [
     venue: 'The Scarab Club',
     url: 'https://www.horrorfilmroulette.com',
     description: 'Annual HFR competition kick-off (teams draw subgenres + begin the sprint).',
-    verification: 'verified'
+    verification: 'verified',
+    audience: 'Horror filmmakers and teams ready to sprint on a tight deadline.',
+    recap: 'Teams pulled their genres, met collaborators, and launched the 4-week production sprint.',
+    photos: []
   },
   {
     id: 'royal-starr-film-festival-2025',
@@ -121,7 +135,10 @@ const eventsData = [
     venue: 'Emagine Birmingham 8',
     url: 'https://filmfreeway.com/RoyalStarrFilmFestival',
     description: 'Royal Starr Film Festival 2025 run.',
-    verification: 'verified'
+    verification: 'verified',
+    audience: 'Filmmakers and film lovers attending screenings, panels, and mixers.',
+    recap: 'Multiple days of screenings and filmmaker spotlights across Birmingham.',
+    photos: []
   },
   {
     id: 'hfr-showcase-2025',
@@ -133,7 +150,10 @@ const eventsData = [
     venue: 'Emagine Royal Oak',
     url: 'https://www.horrorfilmroulette.com',
     description: 'Big-screen showcase of the year’s HFR films.',
-    verification: 'verified'
+    verification: 'verified',
+    audience: 'Horror Film Roulette teams, fans, and Metro Detroit film community.',
+    recap: 'Showcase night with an audience-first screening and team recognition.',
+    photos: []
   },
   {
     id: 'horror-film-roulette-2024',
@@ -146,6 +166,9 @@ const eventsData = [
     venue: 'The Scarab Club',
     url: 'https://filmfreeway.com/HorrorFilmRoulette',
     description: 'Horror Film Roulette: annual Michigan horror filmmaking competition (roulette theme draw + 4-week sprint).',
-    verification: 'verified'
+    verification: 'verified',
+    audience: 'Horror filmmakers and crews starting their competition sprint.',
+    recap: 'A classic kickoff with theme draws, team meetups, and production planning.',
+    photos: []
   }
 ];

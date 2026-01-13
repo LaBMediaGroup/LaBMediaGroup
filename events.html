@@ -207,6 +207,12 @@
             transition: transform 0.12s ease, background 0.2s ease, border-color 0.2s ease;
             font-family: 'Space Mono', monospace;
         }
+
+        .suggest-btn.primary {
+            border-color: rgba(255,255,255,0.45);
+            background: rgba(255,255,255,0.08);
+        }
+
         .suggest-btn:hover {
             transform: translateY(-1px);
             background: rgba(255,255,255,0.06);
@@ -225,6 +231,14 @@
             margin: 0;
             opacity: 0.85;
             line-height: 1.4;
+        }
+
+        .suggest-confirmation {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-300);
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         /* Layout */
@@ -938,6 +952,11 @@
             color: var(--gray-300);
             line-height: 1.6;
         }
+
+        .event-audience {
+            font-size: 0.9rem;
+            color: var(--gray-200);
+        }
         .event-modal-link {
             display: inline-flex;
             align-items: center;
@@ -1226,9 +1245,11 @@
                 <button class="view-btn" id="togglePastEvents" data-show="false">🕐 Show Past</button>
             </div>
 
-            <div class="hero-actions">
-                <button class="suggest-btn proto-text-mono" id="suggestEventBtn" type="button">+ Suggest Event</button>
+            <div class="hero-actions" id="suggest">
+                <button class="suggest-btn primary proto-text-mono" id="suggestEventBtn" type="button">+ Suggest Event</button>
                 <p class="suggest-note">Missing an Event? Send It Our Way</p>
+                <a class="suggest-note" href="past-events.html">Past Events Archive →</a>
+                <p class="suggest-confirmation" id="suggestConfirmation" role="status" aria-live="polite"></p>
             </div>
         </section>
 
@@ -1835,6 +1856,8 @@
         const suggestBackdrop = document.getElementById('suggestBackdrop');
         const suggestDialog = document.getElementById('suggestDialog');
         const suggestClose = document.getElementById('suggestClose');
+        const suggestForm = document.querySelector('.suggest-form');
+        const suggestConfirmation = document.getElementById('suggestConfirmation');
 
         const focusableSel = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
         let lastSuggestFocusEl = null;
@@ -1887,6 +1910,40 @@
             });
         }
         document.addEventListener('keydown', trapFocus);
+
+        if (suggestForm) {
+            suggestForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                if (suggestConfirmation) {
+                    suggestConfirmation.textContent = 'Sending...';
+                }
+
+                try {
+                    const response = await fetch(suggestForm.action, {
+                        method: 'POST',
+                        body: new FormData(suggestForm),
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (response.ok) {
+                        suggestForm.reset();
+                        if (suggestConfirmation) {
+                            suggestConfirmation.textContent = 'Thanks! Your event is in review.';
+                        }
+                        closeSuggestModal();
+                    } else {
+                        if (suggestConfirmation) {
+                            suggestConfirmation.textContent = 'Submission failed. Try again or email us.';
+                        }
+                    }
+                } catch (error) {
+                    console.error('Suggest event error:', error);
+                    if (suggestConfirmation) {
+                        suggestConfirmation.textContent = 'Submission failed. Try again or email us.';
+                    }
+                }
+            });
+        }
 
         // ============================================
         // EVENT PREVIEW MODAL
@@ -1992,6 +2049,15 @@
                         <div class="event-info-item">
                             <div class="event-info-label">Location</div>
                             <div class="event-info-value">${eventData.location}</div>
+                        </div>
+                    `;
+                }
+
+                if (eventData.audience) {
+                    infoHTML += `
+                        <div class="event-info-item">
+                            <div class="event-info-label">Who should attend</div>
+                            <div class="event-info-value event-audience">${eventData.audience}</div>
                         </div>
                     `;
                 }

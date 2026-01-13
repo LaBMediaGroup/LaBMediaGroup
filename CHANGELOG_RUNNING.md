@@ -4,6 +4,19 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 7:01AM EST
+———————————————————————
+Change: Reordered homepage narrative, added story generator stickiness, expanded event detail context, and launched a past events archive page.
+Files touched: index.html, ideas.html, events.html, events-data.js, past-events.html, plan-your-project.html, portfolio.html, sitemap.xml
+Notes: Added audience fields and recaps for past events, new archive page, and clarified plan-your-project intro guidance.
+Quick test checklist:
+1. Open index.html and confirm hero copy, Story Generator CTA, and community layer links render (including past events archive).
+2. Open ideas.html, roll prompts, select a prompt, and use “Roll Again (Keep Constraint)” plus “Save Idea” (confirm local save feedback).
+3. Open events.html, open an event modal, verify “Who should attend” appears, and submit Suggest Event to see confirmation feedback.
+4. Open past-events.html and confirm past events render with recaps and photo placeholders.
+5. Open plan-your-project.html and confirm the new intro text and example output render without layout shifts.
+6. Check DevTools console for errors on index.html, ideas.html, events.html, and past-events.html.
+
 2026-01-13 | 9:18AM EST
 ———————————————————————
 Change: Updated homepage event preview cards to open the event detail modal instead of linking directly to the events page.

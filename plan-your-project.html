@@ -537,6 +537,40 @@
             margin-top: 1rem;
             line-height: 1.6;
         }
+
+        .form-intro {
+            margin-top: 1.5rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-intro p {
+            color: var(--gray-400);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .example-output {
+            border: 1px solid var(--gray-800);
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .example-output-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .example-output p {
+            margin: 0;
+            color: var(--gray-300);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
         
         /* Progress Bar */
         .progress-bar {
@@ -1048,6 +1082,13 @@
                 <div class="form-step proto-text-mono">Step 01 / Build Your Poster</div>
                 <h2 class="form-title">Tell us about your project</h2>
                 <p class="form-subtitle">Fill in the details and watch your movie poster come to life. Then send it to us or download it.</p>
+                <div class="form-intro">
+                    <p>This tool helps you go from idea → shootable plan. Next step: download, share, or bring it to a collaborator.</p>
+                    <div class="example-output">
+                        <div class="example-output-title">Example Output</div>
+                        <p>“24-second brand spot · Cinematic · Release: 2025-08-12 · Budget: $1,000 – $3,000 · Story: A single-location portrait of the maker behind the product.”</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Progress -->
