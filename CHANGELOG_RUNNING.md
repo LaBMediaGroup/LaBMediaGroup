@@ -4,6 +4,17 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 4:23PM EST
+———————————————————————
+Change: Removed the Ideas page save button, fixed share prompt copy, and ensured the beaker logo is included on generated PDFs.
+Files touched: ideas.html, CHANGELOG_RUNNING.md
+Notes: Share now copies the current prompt state; PDF generation waits for the logo asset before rendering.
+Quick test checklist:
+1. Open ideas.html and confirm the Save Idea button is no longer present.
+2. Roll a prompt and click Share Prompt; confirm clipboard text matches the current prompt and quick rolls.
+3. Roll a prompt and click Download PDF; confirm the beaker logo appears at the top of the PDF.
+4. Open DevTools console on ideas.html and confirm no errors.
+
 2026-01-13 | 9:17PM EST
 ———————————————————————
 Change: Removed video matte framing and refreshed the Trail Dead layout for a larger hero video and non-overlapping text.
