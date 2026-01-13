@@ -934,6 +934,7 @@
         .badge-free { border-color: #22C55E; color: #22C55E; }
         .badge-paid { border-color: var(--gray-400); color: var(--gray-400); }
         .badge-ai { border-color: #EC4899; color: #EC4899; }
+        .badge-coding { border-color: #38BDF8; color: #38BDF8; }
         .badge-subscription { border-color: #3B82F6; color: #3B82F6; }
         .badge-lifetime { border-color: #A855F7; color: #A855F7; }
         .badge-perpetual { border-color: #A855F7; color: #A855F7; }
@@ -1949,6 +1950,7 @@
             <span class="subfilter-label">Tools:</span>
             <div class="subfilter-buttons">
                 <button class="subfilter-btn active" data-tools="ai">AI</button>
+                <button class="subfilter-btn" data-tools="coding">Coding</button>
                 <button class="subfilter-btn" data-tools="drone">Drone</button>
                 <button class="subfilter-btn" data-tools="gear">Gear</button>
                 <button class="subfilter-btn" data-tools="casting">Casting</button>
@@ -2645,7 +2647,7 @@
             }
 
             if (currentGroup === 'tools') {
-                const toolCats = ['ai', 'software', 'equipment', 'casting'];
+                const toolCats = ['ai', 'software', 'equipment', 'casting', 'coding'];
                 if (!cats.some(c => toolCats.includes(c))) return false;
                 if (toolsSubcategory === 'all-tools') return true;
                 if (toolsSubcategory === 'gear') return cats.includes('equipment');
