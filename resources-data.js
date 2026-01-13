@@ -378,7 +378,7 @@ const resources = [
     {
         name: 'Dodford',
         category: 'references',
-        refType: 'filming',
+        refType: 'editing',
         desc: 'Visual storytelling experiments with a creator-first, process-forward approach.',
         fullDesc: 'A channel built around creative experimentation—useful for seeing how simple ideas evolve into polished visual narratives.',
         url: 'https://www.youtube.com/@DodfordYT',
@@ -1168,21 +1168,6 @@ const resources = [
         features: ['Long Context', 'Coding Help', 'Writing Support', 'Browser-Based']
     },
     {
-        name: 'Grok',
-        category: 'ai',
-        aiType: 'chat',
-        desc: 'xAI\'s chatbot with real-time X platform access and free limited usage.',
-        fullDesc: 'Grok is xAI\'s AI chatbot featuring real-time access to X (Twitter) for current events and trending topics. Available in 29 languages with Fast and Expert modes. Free tier offers limited access (~10 requests every 2 hours), while paid plans unlock Grok 4 and higher usage limits. API access available for developers.',
-        url: 'https://grok.com',
-        paid: true,
-        pricing: [
-            { plan: 'Free', price: '$0 (limited, via X)' },
-            { plan: 'SuperGrok', price: '$30/mo' },
-            { plan: 'X Premium+', price: '$40/mo' }
-        ],
-        features: ['Real-Time X Access', 'Current Events', 'Image Generation', 'Voice Function', 'API Available']
-    },
-    {
         name: 'Chat.com',
         category: 'ai',
         aiType: 'chat',
@@ -1279,34 +1264,6 @@ const resources = [
         url: 'https://sora.chatgpt.com',
         paid: false,
         features: ['Text-to-Video', 'Cinematic Motion', 'Camera Control', 'Previsualization']
-    },
-    {
-        name: 'Gemini',
-        category: 'ai',
-        aiType: 'chat',
-        desc: 'Google’s multimodal assistant for research, outlining, and coding.',
-        fullDesc: 'Gemini handles chat, code, and image understanding in one workspace—good for script coverage, outline drafts, research pulls, and quick code snippets with Google account sign-in.',
-        url: 'https://gemini.google.com',
-        paid: true,
-        pricing: [
-            { plan: 'Free', price: '$0' },
-            { plan: 'Advanced', price: '$19.99/mo' }
-        ],
-        features: ['Multimodal', 'Research', 'Code Help', 'Outline Drafts']
-    },
-    {
-        name: 'Perplexity',
-        category: 'ai',
-        aiType: 'chat',
-        desc: 'Answer-focused AI with citations and quick reading mode.',
-        fullDesc: 'Perplexity blends web search with AI summaries, returning citations by default—handy for fast fact checks, source gathering, and concise briefs before deeper dives.',
-        url: 'https://www.perplexity.ai',
-        paid: true,
-        pricing: [
-            { plan: 'Free', price: '$0' },
-            { plan: 'Pro', price: '$20/mo' }
-        ],
-        features: ['Cited Answers', 'Web Search', 'Summaries', 'Reading Mode']
     },
     {
         name: 'Krotos Studio (AI)',

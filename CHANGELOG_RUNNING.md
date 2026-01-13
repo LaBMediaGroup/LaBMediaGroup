@@ -4,6 +4,17 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 4:02PM EST
+———————————————————————
+Change: Renamed the Tools subfilter to Gear, moved Dodford into editing references, trimmed the AI list, and fixed footer nav markup so it no longer mirrors the fixed header.
+Files touched: resources.html, resources-data.js, CHANGELOG_RUNNING.md
+Notes: Footer nav now uses non-nav markup to avoid global fixed nav styling on resources.html.
+Quick test checklist:
+1. Open resources.html and confirm the Tools subfilter shows Gear (not Software) and the footer nav stays at the bottom without duplicating the header.
+2. Filter References > Editing and confirm Dodford appears there.
+3. Open Tools > AI and confirm Grok, Gemini, and Perplexity no longer appear.
+4. Open DevTools console on resources.html and confirm no errors.
+
 2026-01-13 | 2:09PM EST
 ———————————————————————
 Change: Scoped header nav styles on Plan and Contact pages to prevent the footer nav from rendering as a fixed header.
