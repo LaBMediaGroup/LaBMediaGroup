@@ -4,6 +4,17 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 2:58PM EST
+———————————————————————
+Change: Updated the Film Detroit Frames & Fabrics event with the official Detroit.gov link and added a local poster thumbnail in the events list.
+Files touched: events-data.js, events.html, images/events/frames-fabrics-2026.svg, CHANGELOG_RUNNING.md
+Notes: Official link now points to Detroit.gov; promo media stored locally with FB as reference only.
+Quick test checklist:
+1. Open events.html and confirm the Frames & Fabrics event appears once in the January 2026 list and calendar.
+2. Click the event row and confirm the modal link goes to Detroit.gov.
+3. Confirm the list row shows the Frames & Fabrics poster thumbnail and other rows display the placeholder box without layout issues.
+4. Open DevTools console on events.html and confirm no errors.
+
 2026-01-13 | 2:46PM EST
 ———————————————————————
 Change: Confirmed and added Detroit-area film events, including a new Frames & Fabric entry and a verified Royal Starr mixer.
