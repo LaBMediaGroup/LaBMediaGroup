@@ -4,6 +4,20 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 2:15PM EST
+———————————————————————
+Change: Fixed the Events split layout, synced list/calendar data, and scoped header nav styling to prevent footer nav duplication.
+Files touched: events.html, past-events.html, CHANGELOG_RUNNING.md
+Notes: Double nav was caused by global nav styles affecting the footer <nav>; headers now use a scoped .site-nav class.
+Quick test checklist:
+1. Open events.html and confirm only one header nav appears while the footer nav stays in the footer.
+2. On events.html, confirm list + calendar are both visible on desktop and stacked on mobile widths.
+3. Click a list item and confirm the matching calendar pill highlights and the event modal opens.
+4. Click a calendar pill and confirm the matching list row highlights and the event modal opens.
+5. Toggle "Show Past" and confirm the archive view replaces the split view, then toggle back.
+6. Open past-events.html and confirm only one header nav appears.
+7. Open DevTools console on events.html and past-events.html and confirm no errors.
+
 2026-01-13 | 6:18PM EST
 ———————————————————————
 Change: Updated the homepage section order, portfolio labeling, and removed the voice agent entry points.

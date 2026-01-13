@@ -64,7 +64,7 @@
         }
 
         /* Navigation to match index.html */
-        nav {
+        .site-nav {
             position: fixed;
             top: 0;
             left: 0;
@@ -255,8 +255,27 @@
             margin-top: 3rem;
         }
 
-        #calendarSection {
-            margin-top: 2rem;
+        .events-split {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+
+        .events-pane {
+            border: 1px solid var(--gray-800);
+            background: rgba(255,255,255,0.01);
+            padding: 1.5rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .events-pane .view-section {
+            margin-top: 0;
+        }
+
+        .calendar-pane .calendar-grid {
+            margin-bottom: 0;
         }
 
         .calendar-grid {
@@ -399,6 +418,17 @@
             transform: translateX(2px);
         }
 
+        .calendar-event-pill:focus-visible {
+            outline: 1px solid var(--white);
+            outline-offset: 2px;
+        }
+
+        .calendar-event-pill.is-selected {
+            border-color: var(--white);
+            color: var(--white);
+            background: rgba(255,255,255,0.1);
+        }
+
         .calendar-event-pill.type-meetup {
             border-color: rgba(34, 197, 94, 0.4);
             color: #22C55E;
@@ -454,12 +484,28 @@
             border: 1px solid rgba(255,255,255,0.1);
             background: rgba(255,255,255,0.02);
             transition: all 0.2s ease;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            color: inherit;
+            font: inherit;
+            appearance: none;
         }
 
         .list-row:hover {
             border-color: rgba(255,255,255,0.25);
             background: rgba(255,255,255,0.05);
             transform: translateX(2px);
+        }
+
+        .list-row:focus-visible {
+            outline: 1px solid var(--white);
+            outline-offset: 2px;
+        }
+
+        .list-row.is-selected {
+            border-color: rgba(255,255,255,0.45);
+            background: rgba(255,255,255,0.08);
         }
 
         .list-row h4 { margin: 0; color: var(--white); }
@@ -471,6 +517,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             border-color: rgba(255,255,255,0.18);
+            cursor: default;
         }
 
         .tag {
@@ -1166,6 +1213,16 @@
             .event-modal-title { font-size: 1.3rem; }
         }
 
+        @media (max-width: 900px) {
+            .events-split {
+                grid-template-columns: 1fr;
+            }
+
+            .events-pane {
+                max-height: none;
+            }
+        }
+
         /* Footer */
         .site-footer {
             position: relative;
@@ -1228,7 +1285,7 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav>
+    <nav class="site-nav">
         <a href="index.html">
             <img src="images/WhiteBeakerLogo.png" alt="LaB" class="nav-logo">
         </a>
@@ -1250,8 +1307,6 @@
             <p class="hero-local">Metro Detroit only — roughly 50 miles from Shelby Township.</p>
 
             <div class="view-toggle">
-                <button class="view-btn active" data-view="calendar">📅 Calendar</button>
-                <button class="view-btn" data-view="list">📋 List</button>
                 <button class="view-btn" id="togglePastEvents" data-show="false">🕐 Show Past</button>
             </div>
 
@@ -1282,21 +1337,23 @@
             </div>
         </div>
 
-        <section class="view-section" id="calendarSection">
-            <div class="calendar-grid" id="calendarGrid" aria-live="polite"></div>
-        </section>
-
-        <section class="view-section" id="listSection" hidden>
-            <div class="list-view">
-                <div class="list-row list-header">
-                    <span>Event</span>
-                    <span>Date</span>
-                    <span>Location</span>
-                    <span>Type</span>
+        <div class="events-split" id="eventsSplitView">
+            <section class="view-section events-pane list-pane" id="listSection">
+                <div class="list-view">
+                    <div class="list-row list-header">
+                        <span>Event</span>
+                        <span>Date</span>
+                        <span>Location</span>
+                        <span>Type</span>
+                    </div>
+                    <div id="listContainer"></div>
                 </div>
-                <div id="listContainer"></div>
-            </div>
-        </section>
+            </section>
+
+            <section class="view-section events-pane calendar-pane" id="calendarSection">
+                <div class="calendar-grid" id="calendarGrid" aria-live="polite"></div>
+            </section>
+        </div>
 
         <section class="view-section" id="pastEventsSection" hidden>
             <div class="past-events-header">
@@ -1394,22 +1451,13 @@
 
     <script src="events-data.js"></script>
     <script>
-        const viewButtons = document.querySelectorAll('.view-btn');
-        const calendarSection = document.getElementById('calendarSection');
-        const listSection = document.getElementById('listSection');
-        const pastSection = document.getElementById('pastSection');
+        const eventsSplitView = document.getElementById('eventsSplitView');
+        const pastEventsSection = document.getElementById('pastEventsSection');
         const calendarGrid = document.getElementById('calendarGrid');
         const listContainer = document.getElementById('listContainer');
-        const pastContainer = document.getElementById('pastContainer');
         const togglePastEventsBtn = document.getElementById('togglePastEvents');
 
-        const eventModal = document.getElementById('eventModal');
         const eventModalClose = document.getElementById('eventModalClose');
-        const eventModalTitle = document.getElementById('eventModalTitle');
-        const eventModalType = document.getElementById('eventModalType');
-        const eventMeta = document.getElementById('eventMeta');
-        const eventDescription = document.getElementById('eventDescription');
-        const eventCtas = document.getElementById('eventCtas');
 
         const eventPreviewBackdrop = document.getElementById('eventPreviewBackdrop');
         const eventPreviewModal = document.getElementById('eventPreviewModal');
@@ -1417,9 +1465,9 @@
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
         let showPastEvents = false;
-        let currentView = 'calendar';
         let currentEventData = null;
         let lastEventFocusEl = null;
+        let selectedEventId = null;
 
         const typeLabels = {
             meetup: 'Meetup',
@@ -1431,6 +1479,39 @@
         };
 
         const getTypeLabel = (type) => typeLabels[type] || type || 'Event';
+
+        const parseDate = (dateStr) => {
+            if (!dateStr) return null;
+            const [year, month, day] = dateStr.split('-').map(Number);
+            return new Date(year, month - 1, day);
+        };
+
+        const getMonthRange = (year, month) => {
+            const rangeStart = new Date(year, month, 1);
+            const rangeEnd = new Date(year, month + 1, 0);
+            rangeStart.setHours(0, 0, 0, 0);
+            rangeEnd.setHours(0, 0, 0, 0);
+            return { rangeStart, rangeEnd };
+        };
+
+        const eventOverlapsRange = (event, rangeStart, rangeEnd) => {
+            const startDate = parseDate(event.startDate);
+            const endDate = parseDate(event.endDate || event.startDate);
+            if (!startDate || !endDate) return false;
+            return startDate <= rangeEnd && endDate >= rangeStart;
+        };
+
+        const eventSpansDate = (event, dateObj) => {
+            const startDate = parseDate(event.startDate);
+            const endDate = parseDate(event.endDate || event.startDate);
+            if (!startDate || !endDate) return false;
+            return dateObj >= startDate && dateObj <= endDate;
+        };
+
+        const getVisibleEvents = () => {
+            const { rangeStart, rangeEnd } = getMonthRange(currentYear, currentMonth);
+            return eventsData.filter(evt => eventOverlapsRange(evt, rangeStart, rangeEnd));
+        };
 
         function getVerificationMeta(event) {
             if (!event || !event.verification) return null;
@@ -1484,18 +1565,44 @@
         function isEventPast(event) {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
-            const eventDate = new Date(event.endDate || event.startDate);
+            const eventDate = parseDate(event.endDate || event.startDate);
+            if (!eventDate) return false;
             return eventDate < today;
         }
 
-        function buildEventPill(evt) {
-            const isPast = isEventPast(evt);
-            const pastClass = isPast ? ' is-past' : '';
-            return `
-                <button class="calendar-event-pill type-${evt.type}${pastClass}" data-id="${evt.id}" title="${evt.title}" type="button">
-                    ${evt.title}
-                </button>
-            `;
+        function updateSelectionStyles() {
+            const listRows = listContainer.querySelectorAll('[data-event-id]');
+            listRows.forEach(row => {
+                const isSelected = row.dataset.eventId === selectedEventId;
+                row.classList.toggle('is-selected', isSelected);
+                row.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+            });
+
+            const calendarPills = calendarGrid.querySelectorAll('.calendar-event-pill');
+            calendarPills.forEach(pill => {
+                const isSelected = pill.dataset.eventId === selectedEventId;
+                pill.classList.toggle('is-selected', isSelected);
+                pill.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+            });
+        }
+
+        function setSelectedEvent(eventId, { scrollToList = false, scrollToCalendar = false } = {}) {
+            selectedEventId = eventId;
+            updateSelectionStyles();
+
+            if (scrollToList) {
+                const row = listContainer.querySelector(`[data-event-id="${eventId}"]`);
+                if (row && row.scrollIntoView) {
+                    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+
+            if (scrollToCalendar) {
+                const pill = calendarGrid.querySelector(`[data-event-id="${eventId}"]`);
+                if (pill && pill.scrollIntoView) {
+                    pill.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
         }
 
         function renderCalendar() {
@@ -1523,7 +1630,7 @@
                         <button id="nextMonth">Next →</button>
                     </div>
                 </div>
-                <div class="calendar-month-grid">
+                <div class="calendar-month-grid" style="--weeks: ${weeks};">
             `;
 
             dayNames.forEach(day => {
@@ -1540,16 +1647,15 @@
             }
 
             const today = new Date();
-            const visibleEvents = eventsData.filter(evt => !isEventPast(evt));
+            today.setHours(0, 0, 0, 0);
+            const visibleEvents = getVisibleEvents();
 
             for (let day = 1; day <= daysInMonth; day++) {
                 const date = new Date(currentYear, currentMonth, day);
-                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const isToday = date.toDateString() === today.toDateString();
+                date.setHours(0, 0, 0, 0);
+                const isToday = date.getTime() === today.getTime();
 
-                const dayEvents = visibleEvents.filter(evt => {
-                    return evt.startDate === dateStr || (evt.endDate && dateStr >= evt.startDate && dateStr <= evt.endDate);
-                });
+                const dayEvents = visibleEvents.filter(evt => eventSpansDate(evt, date));
 
                 calendarHTML += `
                     <div class="calendar-day-cell${isToday ? ' today' : ''}">
@@ -1561,11 +1667,13 @@
                     const isPast = isEventPast(evt);
                     const pastClass = isPast ? ' is-past' : '';
                     calendarHTML += `
-                        <div class="calendar-event-pill type-${evt.type}${pastClass}"
+                        <button class="calendar-event-pill type-${evt.type}${pastClass}"
                              data-event-id="${evt.id}"
-                             title="${evt.title}">
+                             title="${evt.title}"
+                             type="button"
+                             aria-pressed="false">
                             ${evt.title}
-                        </div>
+                        </button>
                     `;
                 });
 
@@ -1593,6 +1701,7 @@
                     const eventId = e.currentTarget.dataset.eventId;
                     const eventData = eventsData.find(evt => evt.id === eventId);
                     if (eventData) {
+                        setSelectedEvent(eventId, { scrollToList: true });
                         openEventPreview(eventData);
                     }
                 });
@@ -1606,6 +1715,7 @@
                     currentYear--;
                 }
                 renderCalendar();
+                renderList();
             });
 
             document.getElementById('nextMonth')?.addEventListener('click', () => {
@@ -1615,26 +1725,21 @@
                     currentYear++;
                 }
                 renderCalendar();
+                renderList();
             });
-
-            calendarGrid.querySelectorAll('.calendar-event-pill').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const id = btn.dataset.id;
-                    const evt = eventsData.find(e => e.id === id);
-                    if (evt) openEventModal(evt);
-                });
-            });
+            updateSelectionStyles();
         }
 
         function renderList() {
-            const sorted = [...eventsData].sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+            const visibleEvents = getVisibleEvents();
+            const sorted = [...visibleEvents].sort((a, b) => parseDate(a.startDate) - parseDate(b.startDate));
             listContainer.innerHTML = sorted.map(ev => {
                 const isPast = isEventPast(ev);
                 const pastClass = isPast ? ' is-past' : '';
                 const typeLabel = getTypeLabel(ev.type);
                 const verificationBadge = buildVerificationBadge(ev);
                 return `
-                    <div class="list-row${pastClass}" data-event-id="${ev.id}" style="cursor: pointer;">
+                    <button class="list-row${pastClass}" data-event-id="${ev.id}" type="button" aria-pressed="false">
                         <h4>${ev.title}</h4>
                         <span>${formatDate(ev.startDate)}${ev.endDate ? ' – ' + formatDate(ev.endDate) : ''}</span>
                         <span>${ev.location || 'TBD'}</span>
@@ -1642,7 +1747,7 @@
                             <span class="tag">${typeLabel}</span>
                             ${verificationBadge}
                         </span>
-                    </div>
+                    </button>
                 `;
             }).join('');
 
@@ -1653,43 +1758,21 @@
                     const eventId = e.currentTarget.dataset.eventId;
                     const eventData = eventsData.find(evt => evt.id === eventId);
                     if (eventData) {
+                        setSelectedEvent(eventId, { scrollToCalendar: true });
                         openEventPreview(eventData);
                     }
                 });
             });
+            updateSelectionStyles();
         }
-
-        function setView(view) {
-            const pastEventsSection = document.getElementById('pastEventsSection');
-
-            viewButtons.forEach(btn => {
-                // Only deactivate calendar and list buttons, not past events button
-                if (btn.dataset.view) {
-                    btn.classList.toggle('active', btn.dataset.view === view);
-                }
-            });
-
-            if (view === 'list') {
-                listSection.hidden = false;
-                calendarSection.hidden = true;
-                if (pastEventsSection) pastEventsSection.hidden = true;
-            } else if (view === 'pastEvents') {
-                if (pastEventsSection) pastEventsSection.hidden = false;
-                listSection.hidden = true;
-                calendarSection.hidden = true;
-            } else {
-                listSection.hidden = true;
-                calendarSection.hidden = false;
-                if (pastEventsSection) pastEventsSection.hidden = true;
+        function setSplitViewVisible(isVisible) {
+            if (eventsSplitView) {
+                eventsSplitView.hidden = !isVisible;
+            }
+            if (pastEventsSection) {
+                pastEventsSection.hidden = isVisible;
             }
         }
-
-        viewButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (btn.id === 'togglePastEvents') return;
-                setView(btn.dataset.view);
-            });
-        });
 
         // Function to render past events grid
         function renderPastEvents() {
@@ -1697,7 +1780,7 @@
             if (!pastEventsContainer) return;
 
             const pastEvents = eventsData.filter(isEventPast).sort((a, b) => {
-                return new Date(b.startDate) - new Date(a.startDate); // Most recent first
+                return parseDate(b.startDate) - parseDate(a.startDate); // Most recent first
             });
 
             if (pastEvents.length === 0) {
@@ -1763,97 +1846,15 @@
                 if (showPastEvents) {
                     // Switch to past events archive view
                     renderPastEvents();
-                    setView('pastEvents');
+                    setSplitViewVisible(false);
                 } else {
                     // Switch back to calendar view
-                    setView('calendar');
+                    setSplitViewVisible(true);
+                    renderCalendar();
+                    renderList();
                 }
             });
         }
-
-        function openEventModal(event) {
-            eventModalType.textContent = typeLabels[event.type] || 'Event';
-            eventModalTitle.textContent = event.title;
-
-            const metaItems = [
-                { label: 'Date', value: formatDateRange(event) },
-                { label: 'Time', value: formatTimeRange(event) || 'See site' },
-                { label: 'Location', value: event.location || 'Michigan' },
-                { label: 'Venue', value: event.venue || 'TBD' }
-            ];
-
-            eventMeta.innerHTML = metaItems.map(item => `
-                <div class="event-meta-item">
-                    <div class="event-meta-label">${item.label}</div>
-                    <div class="event-meta-value">${item.value}</div>
-                </div>
-            `).join('');
-
-            const bioDetails = [
-                {
-                    label: 'When',
-                    value: `${formatDateRange(event)}${formatTimeRange(event) ? ' · ' + formatTimeRange(event) : ''}`
-                },
-                {
-                    label: 'Where',
-                    value: `${event.location || 'Michigan'}${event.venue ? ' — ' + event.venue : ''}`
-                },
-                {
-                    label: 'Category',
-                    value: typeLabels[event.type] || 'Event'
-                },
-                {
-                    label: 'Link',
-                    value: event.url ? `<a class="past-link" href="${event.url}" target="_blank" rel="noreferrer">Event site</a>` : 'Add link coming soon'
-                }
-            ];
-
-            const isPast = isEventPast(event);
-            const verificationBadge = buildVerificationBadge(event, 'chip');
-            eventDescription.innerHTML = `
-                <div class="event-bio">
-                    <div class="event-bio-head">
-                        <div class="proto-text-mono" style="opacity:0.7;">Event Preview</div>
-                        ${[isPast ? '<span class="status-chip">Past</span>' : '', verificationBadge].filter(Boolean).join('')}
-                    </div>
-                    <p class="event-bio-summary">${event.description || 'Details coming soon.'}</p>
-                    <div class="event-bio-grid">
-                        ${bioDetails.map(detail => `
-                            <div class="event-bio-block">
-                                <div class="event-bio-label">${detail.label}</div>
-                                <div class="event-bio-value">${detail.value}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-
-            const ctas = [];
-            if (event.url) {
-                ctas.push(`<a class="cta-btn" href="${event.url}" target="_blank" rel="noreferrer">Open Link</a>`);
-            }
-
-            eventCtas.innerHTML = ctas.join('');
-
-            eventModal.classList.add('is-open');
-            eventModal.setAttribute('aria-hidden', 'false');
-        }
-
-        function closeEventModal() {
-            eventModal.classList.remove('is-open');
-            eventModal.setAttribute('aria-hidden', 'true');
-        }
-
-        eventModalClose?.addEventListener('click', closeEventModal);
-        eventModal?.addEventListener('click', (e) => {
-            if (e.target === eventModal) closeEventModal();
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && eventModal.classList.contains('is-open')) {
-                closeEventModal();
-            }
-        });
 
         renderCalendar();
         renderList();
