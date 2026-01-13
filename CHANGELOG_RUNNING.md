@@ -4,6 +4,28 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 3:56PM EST
+———————————————————————
+Change: Removed the right-side portfolio navigation dots now that the project map is present.
+Files touched: portfolio.html, CHANGELOG_RUNNING.md
+Notes: Eliminated dot nav styles, markup, and click/active handlers to avoid duplicate navigation.
+Quick test checklist:
+1. Open portfolio.html and confirm the right-side dot navigation is gone.
+2. Click the Project Map items and confirm each scrolls to the correct section.
+3. Scroll through sections and confirm the Project Map highlights the active section.
+4. Open DevTools console on portfolio.html and confirm no errors.
+
+2026-01-13 | 3:42PM EST
+———————————————————————
+Change: Removed the Trail Dead video matte framing and widened the video presentation.
+Files touched: portfolio.html, CHANGELOG_RUNNING.md
+Notes: Adjusted #horror video wrapper structure and overrides to remove the framed look.
+Quick test checklist:
+1. Open portfolio.html and scroll to Trail Dead; confirm the thumbnail fills the video frame without a matte.
+2. Click play and confirm the video iframe fills the frame with no white border.
+3. Confirm the Trail Dead video appears wider than before and other sections remain unchanged.
+4. Open DevTools console on portfolio.html and confirm no errors.
+
 2026-01-13 | 8:31PM EST
 ———————————————————————
 Change: Added organizer details to event modals and refreshed January 2026 event data notes.
