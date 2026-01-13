@@ -1287,7 +1287,9 @@
             <p>Screenings, meetups, and deadlines keeping the Detroit creative community connected.</p>
             <p class="hero-local">Metro Detroit only — roughly 50 miles from Shelby Township.</p>
 
-            <div class="view-toggle" aria-hidden="true"></div>
+            <div class="view-toggle">
+                <button class="view-btn" id="togglePastEvents" data-show="false">🕐 Show Past</button>
+            </div>
 
             <div class="hero-actions" id="suggest">
                 <button class="suggest-btn primary proto-text-mono" id="suggestEventBtn" type="button">+ Suggest Event</button>
@@ -1430,8 +1432,11 @@
 
     <script src="events-data.js"></script>
     <script>
+        const eventsSplitView = document.getElementById('eventsSplitView');
+        const pastEventsSection = document.getElementById('pastEventsSection');
         const calendarGrid = document.getElementById('calendarGrid');
         const listContainer = document.getElementById('listContainer');
+        const togglePastEventsBtn = document.getElementById('togglePastEvents');
 
         const eventModalClose = document.getElementById('eventModalClose');
 
@@ -1440,6 +1445,7 @@
 
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
+        let showPastEvents = false;
         let currentEventData = null;
         let lastEventFocusEl = null;
         let selectedEventId = null;
@@ -1740,6 +1746,15 @@
             });
             updateSelectionStyles();
         }
+        function setSplitViewVisible(isVisible) {
+            if (eventsSplitView) {
+                eventsSplitView.hidden = !isVisible;
+            }
+            if (pastEventsSection) {
+                pastEventsSection.hidden = isVisible;
+            }
+        }
+
         // Function to render past events grid
         function renderPastEvents() {
             const pastEventsContainer = document.getElementById('pastEventsContainer');
@@ -1799,6 +1814,26 @@
                         openEventPreview(eventData);
                     }
                 });
+            });
+        }
+
+        // Toggle past events - now switches to archive view
+        if (togglePastEventsBtn) {
+            togglePastEventsBtn.addEventListener('click', () => {
+                showPastEvents = !showPastEvents;
+                togglePastEventsBtn.textContent = showPastEvents ? '📅 Show Calendar' : '🕐 Show Past';
+                togglePastEventsBtn.classList.toggle('active', showPastEvents);
+
+                if (showPastEvents) {
+                    // Switch to past events archive view
+                    renderPastEvents();
+                    setSplitViewVisible(false);
+                } else {
+                    // Switch back to calendar view
+                    setSplitViewVisible(true);
+                    renderCalendar();
+                    renderList();
+                }
             });
         }
 

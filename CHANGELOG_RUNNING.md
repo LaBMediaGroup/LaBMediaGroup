@@ -4,29 +4,6 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-13 | 2:29PM EST
-———————————————————————
-Change: Kept past events visible on the Events page and updated Trail Dead media to preserve the wide format thumbnail.
-Files touched: events.html, portfolio.html, CHANGELOG_RUNNING.md
-Notes: Removed the past events toggle so list, calendar, and archive show together; Trail Dead uses the widescreen YouTube thumbnail with contain fit.
-Quick test checklist:
-1. Open events.html and confirm list, calendar, and past events sections are all visible together.
-2. Scroll the Events page and confirm no "Show Past" or "Show Calendar" toggle appears.
-3. Open portfolio.html and confirm the Trail Dead thumbnail displays in a wide format without cropping.
-4. Click the Trail Dead thumbnail and confirm the embedded video plays within the widescreen frame.
-5. Open DevTools console on events.html and portfolio.html and confirm no errors.
-
-2026-01-13 | 2:24PM EST
-———————————————————————
-Change: Removed unused AI tools, added a Coding subcategory under Tools, and moved coding-focused AI resources into it.
-Files touched: resources.html, resources-data.js, CHANGELOG_RUNNING.md
-Notes: Coding tools now filter separately from AI; removed Sora and Descript per request.
-Quick test checklist:
-1. Open resources.html, select Tools → Coding, and confirm Claude.ai, Z.ai, MiniMax, OpenRouter, Google AI Studio, and Chat.com appear.
-2. Switch Tools → AI and confirm Sora and Descript no longer appear.
-3. Switch between Tools subfilters and confirm results update without duplicate rows.
-4. Open DevTools console on resources.html and confirm no errors.
-
 2026-01-13 | 2:15PM EST
 ———————————————————————
 Change: Fixed the Events split layout, synced list/calendar data, and scoped header nav styling to prevent footer nav duplication.
