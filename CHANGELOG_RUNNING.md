@@ -4,6 +4,17 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-02-14 | 10:00AM EST
+———————————————————————
+Change: Simplified the index footer to match the nav bar styling and updated the copyright year.
+Files touched: index.html, CHANGELOG_RUNNING.md
+Notes: Removed promotional footer copy and links, leaving only the location note and copyright.
+Quick test checklist:
+1. Open index.html and confirm the footer is a clean bar with only the two specified text items.
+2. Confirm the footer typography and spacing match the top navigation bar styling.
+3. Confirm the copyright shows 2026.
+4. Open DevTools console on index.html and confirm no errors.
+
 2026-01-13 | 2:15PM EST
 ———————————————————————
 Change: Fixed the Events split layout, synced list/calendar data, and scoped header nav styling to prevent footer nav duplication.
