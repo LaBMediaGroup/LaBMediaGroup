@@ -4,6 +4,17 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-13 | 9:17PM EST
+———————————————————————
+Change: Removed video matte framing and refreshed the Trail Dead layout for a larger hero video and non-overlapping text.
+Files touched: portfolio.html, CHANGELOG_RUNNING.md
+Notes: Cleared video container backgrounds and expanded the Trail Dead grid/media sizing while padding the info column away from the project map.
+Quick test checklist:
+1. Open portfolio.html and play the MOZ, Pandys, Lookout, and Trail Dead videos to confirm no white frames appear.
+2. Scroll to Trail Dead and confirm the summary/details sit clear of the Project Map on the left.
+3. Confirm the Trail Dead video appears larger and aligned as a hero media block.
+4. Open DevTools console on portfolio.html and confirm no errors.
+
 2026-01-13 | 3:42PM EST
 ———————————————————————
 Change: Removed the Trail Dead video matte framing and widened the video presentation.
