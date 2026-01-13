@@ -150,20 +150,6 @@
             letter-spacing: 1px;
         }
 
-        /* Portfolio Navigation Dots */
-        .portfolio-nav {
-            position: fixed;
-            right: 2.5rem;
-            top: calc(50% + 3.5rem);
-            transform: none;
-            z-index: 998;
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            mix-blend-mode: difference;
-            align-items: center;
-        }
-
         .project-map {
             position: fixed;
             left: 3rem;
@@ -206,49 +192,6 @@
 
         .project-map-link.active,
         .project-map-link:hover {
-            color: var(--white);
-        }
-
-        .nav-dot {
-            width: 12px;
-            height: 12px;
-            border: 2px solid var(--gray-600);
-            background: transparent;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .nav-dot:hover {
-            border-color: var(--white);
-            transform: scale(1.2);
-        }
-
-        .nav-dot.active {
-            border-color: var(--white);
-            background: var(--white);
-        }
-
-        .dot-number {
-            position: absolute;
-            right: 1.8rem;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.6rem;
-            color: var(--gray-600);
-            letter-spacing: 1px;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .nav-dot:hover .dot-number {
-            opacity: 1;
             color: var(--white);
         }
 
@@ -1118,24 +1061,6 @@
                 display: none;
             }
 
-            /* Portfolio nav on mobile - horizontal at bottom */
-            .portfolio-nav {
-                left: 50%;
-                right: auto;
-                top: auto;
-                bottom: 2rem;
-                transform: translateX(-50%);
-                flex-direction: row;
-                gap: 1rem;
-            }
-
-            .dot-number {
-                top: -1.5rem;
-                left: 50%;
-                right: auto;
-                transform: translateX(-50%);
-            }
-
             section {
                 padding: 5rem 2rem;
             }
@@ -1263,25 +1188,6 @@
         <span class="counter-current">01</span>
         <span class="counter-total">/ 05</span>
     </div>
-
-    <!-- Portfolio Navigation Dots -->
-    <nav class="portfolio-nav" id="portfolioNav" aria-label="Jump to project">
-        <button class="nav-dot active" data-target="artist" aria-label="Anthony Brass - Project 1">
-            <span class="dot-number">01</span>
-        </button>
-        <button class="nav-dot" data-target="moz" aria-label="MOZ Interiors - Project 2">
-            <span class="dot-number">02</span>
-        </button>
-        <button class="nav-dot" data-target="pandys" aria-label="The Pandys - Project 3">
-            <span class="dot-number">03</span>
-        </button>
-        <button class="nav-dot" data-target="horror" aria-label="Trail Dead - Project 4">
-            <span class="dot-number">04</span>
-        </button>
-        <button class="nav-dot" data-target="comedy" aria-label="Lookout - Project 5">
-            <span class="dot-number">05</span>
-        </button>
-    </nav>
 
     <aside class="project-map" aria-label="Project map">
         <div class="project-map-title">Project Map</div>
@@ -1553,12 +1459,7 @@
                         }, 250);
                     }
 
-                    // Update portfolio nav dots
                     const sectionId = entry.target.id;
-                    document.querySelectorAll('.nav-dot').forEach(dot => {
-                        dot.classList.toggle('active', dot.dataset.target === sectionId);
-                    });
-
                     document.querySelectorAll('.project-map-link').forEach(link => {
                         link.classList.toggle('active', link.dataset.target === sectionId);
                     });
@@ -1568,17 +1469,6 @@
         
         sections.forEach(section => {
             observer.observe(section);
-        });
-
-        // Portfolio nav dots click handlers
-        document.querySelectorAll('.nav-dot').forEach(dot => {
-            dot.addEventListener('click', () => {
-                const targetId = dot.dataset.target;
-                const targetSection = document.getElementById(targetId);
-                if (targetSection) {
-                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
         });
 
         document.querySelectorAll('.project-map-link').forEach(link => {
