@@ -173,10 +173,15 @@
             padding: 0.75rem 0 1rem;
             border-bottom: 1px solid var(--gray-800);
             margin-bottom: 1.25rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
         }
-        
+
         .search-input {
-            width: 100%;
+            flex: 1;
+            min-width: 240px;
             max-width: 400px;
             padding: 0.75rem 1rem;
             background: transparent;
@@ -187,13 +192,52 @@
             letter-spacing: 0.5px;
             transition: all 0.3s ease;
         }
-        
+
         .search-input::placeholder { color: var(--gray-600); }
-        
+
         .search-input:focus {
             outline: none;
             border-color: var(--white);
             background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Sort Controls */
+        .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sort-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .sort-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.5rem 0.85rem;
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--gray-600);
+            cursor: pointer;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .sort-btn:hover {
+            color: var(--white);
+            border-color: var(--gray-600);
+        }
+
+        .sort-btn.active {
+            color: var(--black);
+            background: var(--white);
+            border-color: var(--white);
         }
 
         .filter-hint {
@@ -980,6 +1024,12 @@
             right: 0.75rem;
             z-index: 2;
         }
+
+        /* Move trending badge down when Lab Pick badge is present */
+        .resource-card.is-lab-pick .card-trending-indicator {
+            top: 3rem;
+        }
+
         .badge-networking { border-color: #3B82F6; color: #3B82F6; }
         .badge-casting { border-color: #EC4899; color: #EC4899; }
         .badge-submissions { border-color: #EF4444; color: #EF4444; }
@@ -1905,6 +1955,11 @@
         <!-- Search -->
         <div class="search-row">
             <input type="text" class="search-input proto-card" id="searchInput" placeholder="Search resources..." autocomplete="off">
+            <div class="sort-controls">
+                <span class="sort-label">Sort:</span>
+                <button class="sort-btn active" data-sort="alpha">A–Z</button>
+                <button class="sort-btn" data-sort="recent">Recent</button>
+            </div>
         </div>
 
         <div class="filter-hint">Start with a category, then refine with subfilters.</div>
@@ -1987,6 +2042,9 @@
 
         <!-- Quick Filters Row -->
         <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
+            <button class="quickfilter-btn" type="button" data-qf="getting-started">
+                🚀 Getting Started
+            </button>
             <button class="quickfilter-btn" type="button" data-qf="saved">
                 Saved
                 <span class="saved-badge" id="savedBadge"></span>
@@ -2130,6 +2188,7 @@
         const quickFilterBar = document.getElementById('quickFilterBar');
         const quickFilterButtons = quickFilterBar ? quickFilterBar.querySelectorAll('.quickfilter-btn') : [];
         const quickFilters = {
+            'getting-started': false,
             saved: false,
             labPick: false,
             free: false,
@@ -2159,6 +2218,7 @@
         let aiType = 'all';
         let droneType = 'part107';
         let searchQuery = '';
+        let currentSort = 'alpha'; // 'alpha' or 'recent'
 
         // ============================================
         // FAVORITES (Saved)
@@ -2778,10 +2838,15 @@
             }
 
             // Quick filters (multi-toggle)
+            const wantsGettingStarted = quickFilters['getting-started'];
             const wantsSaved = quickFilters.saved;
             const wantsLabPick = quickFilters.labPick;
             const wantsFree = quickFilters.free;
             const wantsPaid = quickFilters.paid;
+
+            if (wantsGettingStarted) {
+                filtered = filtered.filter(r => r.gettingStarted === true);
+            }
 
             if (wantsSaved) {
                 filtered = filtered.filter(r => isFavoriteId(getResourceId(r)));
@@ -2801,14 +2866,31 @@
             // Dedupe before sorting
             filtered = dedupeResources(filtered);
 
-            // Sort: LaB Picks first, then rest
+            // Sort: LaB Picks first, then by selected sort method
             filtered.sort((a, b) => {
                 const aIsLabPick = a.labPick === true;
                 const bIsLabPick = b.labPick === true;
 
+                // Lab Picks always first
                 if (aIsLabPick && !bIsLabPick) return -1;
                 if (!aIsLabPick && bIsLabPick) return 1;
-                return 0; // Maintain original order for items with same labPick status
+
+                // Then apply user-selected sort
+                if (currentSort === 'alpha') {
+                    // Alphabetical (A-Z)
+                    return (a.name || '').localeCompare(b.name || '');
+                } else if (currentSort === 'recent') {
+                    // Recently added (if addedDate exists, otherwise fallback to alpha)
+                    const dateA = a.addedDate ? new Date(a.addedDate).getTime() : 0;
+                    const dateB = b.addedDate ? new Date(b.addedDate).getTime() : 0;
+                    if (dateA !== dateB) {
+                        return dateB - dateA; // Most recent first
+                    }
+                    // Fallback to alpha if no dates
+                    return (a.name || '').localeCompare(b.name || '');
+                }
+
+                return 0;
             });
 
             return filtered;
@@ -3393,6 +3475,14 @@
         groupButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 setGroup(btn.dataset.group);
+
+                // Deactivate "Saved" filter when user manually changes category
+                if (quickFilters.saved) {
+                    quickFilters.saved = false;
+                    const savedBtn = document.querySelector('.quickfilter-btn[data-qf="saved"]');
+                    if (savedBtn) savedBtn.classList.remove('is-active');
+                }
+
                 renderResources(true);
             });
         });
@@ -3405,6 +3495,12 @@
                     if (!key || !(key in quickFilters)) return;
                     quickFilters[key] = !quickFilters[key];
                     btn.classList.toggle('is-active', quickFilters[key]);
+
+                    // When "Saved" is activated, switch to "All" category to show all saved items
+                    if (key === 'saved' && quickFilters[key] === true) {
+                        setGroup('all');
+                    }
+
                     renderResources(true);
                 });
             });
@@ -3519,7 +3615,24 @@
                 renderResources(true);
             }
         });
-        
+
+        // ============================================
+        // SORT CONTROLS
+        // ============================================
+        const sortButtons = document.querySelectorAll('.sort-btn');
+        sortButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const sortType = btn.dataset.sort;
+                if (currentSort === sortType) return; // Already active
+
+                currentSort = sortType;
+                sortButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                renderResources(true);
+            });
+        });
+
         // ============================================
         // RESIZE HANDLER
         // Recalculate ghost tiles on window resize
