@@ -602,9 +602,14 @@
         const openModalView = () => {
             modal.classList.add('active');
             modal.setAttribute('aria-hidden', 'false');
+            const firstField = modal.querySelector('input, select, textarea, button');
+            if (firstField) firstField.focus();
         };
 
         const closeModalView = () => {
+            if (modal.contains(document.activeElement)) {
+                openModal.focus();
+            }
             modal.classList.remove('active');
             modal.setAttribute('aria-hidden', 'true');
         };
