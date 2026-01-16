@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 2:53AM EST
+———————————————————————
+Change: Simplified the homepage hero headline to keep the intro minimal.
+Files touched: index.html, CHANGELOG_RUNNING.md
+Notes: Removed the long descriptor from the hero title so the supporting line carries the detail.
+Quick test checklist:
+1. Open index.html and confirm the hero headline is now "LaB Media" with the supporting mission line still visible.
+2. Check the hero section for any layout shifts or overlap at common desktop/mobile widths.
+3. Open DevTools Console and confirm there are no errors on load.
+
 2026-01-16 | 2:18AM EST
 ———————————————————————
 Change: Added orientation copy, updated SEO metadata, and aligned navigation/footers to position LaB as a Metro Detroit filmmaking hub with case studies.
