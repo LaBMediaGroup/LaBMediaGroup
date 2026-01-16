@@ -4,17 +4,6 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-16 | 6:30PM EST
-———————————————————————
-Change: Added an Events Posters section with poster cards that open the event modal and export to calendar.
-Files touched: events.html, events-data.js, CHANGELOG_RUNNING.md
-Notes: Posters are sorted by date, rendered from a dedicated dataset, and reuse the existing event preview modal.
-Quick test checklist:
-1. Open events.html and confirm the Events Posters section shows the Frames & Fabrics poster card with date/time/location.
-2. Click the poster card and confirm the event modal opens with details plus Add to Calendar and website link.
-3. Verify the modal export creates an .ics file with the poster event details.
-4. Open DevTools console on events.html and verify no errors.
-
 2026-01-16 | 6:20PM EST
 ———————————————————————
 Change: Added a contextual hot tip panel to resources, tuned mobile layouts on portfolio sections, and paused videos when scrolling away.
