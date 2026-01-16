@@ -544,12 +544,39 @@
            organic shapes, nature colors, rounded corners
         ============================================ */
         #artist {
-            background: linear-gradient(180deg, #f5e6dd 0%, #f9ede6 50%, #fdf4ef 100%);
+            background: #f5e6dd;
+            position: relative;
+            overflow: hidden;
             --video-max: 720px;
+        }
+
+        #artist::before {
+            content: '';
+            position: absolute;
+            top: -6%;
+            left: -6%;
+            width: 112%;
+            height: 112%;
+            background-image: url('images/BrassShoot.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: kenBurnsZoom 24s ease-in-out infinite alternate;
+            z-index: 1;
+        }
+
+        #artist::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(245, 230, 221, 0.82) 0%, rgba(249, 237, 230, 0.72) 50%, rgba(253, 244, 239, 0.78) 100%);
+            z-index: 2;
         }
         
         #artist .section-inner {
             gap: 4rem;
+            position: relative;
+            z-index: 3;
         }
         
         #artist .video-container {
@@ -937,6 +964,10 @@
 
         /* Reduced Motion */
         @media (prefers-reduced-motion: reduce) {
+            #artist::before {
+                animation: none !important;
+            }
+
             #moz::before {
                 animation: none !important;
             }
