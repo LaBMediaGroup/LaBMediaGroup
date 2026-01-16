@@ -375,7 +375,7 @@
 <body>
     <nav>
         <a href="index.html" aria-label="LaB Media home">
-            <img src="images/TheLaB.png" alt="LaB Media" class="nav-logo">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB Media" class="nav-logo">
         </a>
         <a href="index.html" class="nav-back">Back to Home</a>
     </nav>
@@ -602,9 +602,14 @@
         const openModalView = () => {
             modal.classList.add('active');
             modal.setAttribute('aria-hidden', 'false');
+            const firstField = modal.querySelector('input, select, textarea, button');
+            if (firstField) firstField.focus();
         };
 
         const closeModalView = () => {
+            if (modal.contains(document.activeElement)) {
+                openModal.focus();
+            }
             modal.classList.remove('active');
             modal.setAttribute('aria-hidden', 'true');
         };

@@ -221,6 +221,22 @@
             border-color: rgba(255,255,255,0.5);
         }
 
+        @keyframes announcementNudge {
+            0%, 94%, 100% {
+                transform: translateY(0);
+            }
+            96% {
+                transform: translateY(-3px);
+            }
+            98% {
+                transform: translateY(2px);
+            }
+        }
+
+        .announcement-toggle.nudge {
+            animation: announcementNudge 20s ease-in-out infinite;
+        }
+
         .announcement-content {
             display: grid;
             grid-template-columns: 1.5fr 1fr;
@@ -335,6 +351,12 @@
 
         .featured-announcement.is-collapsed {
             padding-bottom: 1.1rem;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .announcement-toggle.nudge {
+                animation: none;
+            }
         }
 
         /* Event Type Legend */
@@ -1582,6 +1604,7 @@
         <ul class="nav-links">
             <li><a href="resources.html">Resources</a></li>
             <li><a href="events.html">Events</a></li>
+            <li><a href="callboard.html">Callboard</a></li>
             <li><a href="ideas.html">Story Generator</a></li>
             <li><a href="plan-your-project.html">Plan</a></li>
             <li><a href="portfolio.html">Reel</a></li>
@@ -1604,11 +1627,11 @@
         </section>
 
         <!-- Featured Announcement: DFA x Detroit Public Access TV Partnership -->
-        <section class="featured-announcement" id="dfaAnnouncement">
+        <section class="featured-announcement is-collapsed" id="dfaAnnouncement">
             <div class="announcement-header">
                 <div class="announcement-header-top">
                     <div class="announcement-eyebrow">NEW PARTNERSHIP</div>
-                    <button class="announcement-toggle" type="button" id="announcementToggle" aria-expanded="true" aria-controls="announcementContent">Collapse</button>
+                    <button class="announcement-toggle nudge" type="button" id="announcementToggle" aria-expanded="false" aria-controls="announcementContent">Expand</button>
                 </div>
                 <h2 class="announcement-headline">DFA Films Now Air on Detroit Public Access TV</h2>
             </div>
@@ -1915,6 +1938,7 @@
                 const isCollapsed = announcementSection.classList.toggle('is-collapsed');
                 announcementToggle.textContent = isCollapsed ? 'Expand' : 'Collapse';
                 announcementToggle.setAttribute('aria-expanded', String(!isCollapsed));
+                announcementToggle.classList.toggle('nudge', isCollapsed);
             });
         }
 
@@ -2390,14 +2414,33 @@
                 }
 
                 try {
+                    const eventName = suggestForm.event_name.value.trim();
+                    const eventType = suggestForm.event_type.value.trim();
+                    const startDate = suggestForm.start_date.value;
+                    const endDate = suggestForm.end_date.value;
+                    const location = suggestForm.location.value.trim();
+                    const linkRaw = suggestForm.link.value.trim();
+                    const notesRaw = suggestForm.notes.value.trim();
+                    const source = suggestForm.source ? suggestForm.source.value.trim() : 'events-page';
+
+                    if (!eventName || !eventType || !startDate || !location) {
+                        if (suggestConfirmation) {
+                            suggestConfirmation.textContent = 'Please complete the required fields.';
+                        }
+                        return;
+                    }
+
                     const payload = {
-                        event_name: suggestForm.event_name.value.trim(),
-                        event_type: suggestForm.event_type.value,
-                        start_date: suggestForm.start_date.value,
-                        end_date: suggestForm.end_date.value || null,
-                        location: suggestForm.location.value.trim(),
-                        link: suggestForm.link.value.trim(),
-                        notes: suggestForm.notes.value.trim(),
+                        name: eventName,
+                        event_name: eventName,
+                        event_type: eventType,
+                        start_date: startDate,
+                        end_date: endDate || null,
+                        location,
+                        link: (linkRaw && linkRaw !== 'https://') ? linkRaw : null,
+                        url: (linkRaw && linkRaw !== 'https://') ? linkRaw : null,
+                        notes: notesRaw || null,
+                        source: source || 'events-page',
                         companyWebsite: suggestForm.companyWebsite.value.trim()
                     };
 
@@ -2411,7 +2454,9 @@
                         body: JSON.stringify(payload)
                     });
 
-                    if (response.ok) {
+                    const data = await response.json().catch(() => ({}));
+
+                    if (response.ok && data.ok !== false) {
                         suggestForm.reset();
                         if (suggestConfirmation) {
                             suggestConfirmation.textContent = 'Submitted for review.';
@@ -2419,7 +2464,7 @@
                         closeSuggestModal();
                     } else {
                         if (suggestConfirmation) {
-                            suggestConfirmation.textContent = 'Submission failed. Please try again shortly.';
+                            suggestConfirmation.textContent = data.error || 'Submission failed. Please try again shortly.';
                         }
                     }
                 } catch (error) {
