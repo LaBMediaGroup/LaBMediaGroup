@@ -4,6 +4,19 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 9:50AM EST
+———————————————————————
+Change: Restored the missing events data file so the calendar, list, past events, and export flow can render again.
+Files touched: events-data.js, CHANGELOG_RUNNING.md
+Notes: Recreated the events dataset with Metro Detroit-only entries (future and past) so the events UI can render and modal/export features can function.
+Quick test checklist:
+1. Open events.html and confirm calendar/list populate with event pills and rows.
+2. Click a list row and confirm the event modal opens with details and Add to Calendar button for future events.
+3. Toggle “Show Past” and confirm past events render in the archive grid and open the modal on click.
+4. Click “Add to Calendar” on a future event and confirm an .ics file downloads.
+5. Open past-events.html and confirm past events render.
+6. Open DevTools console on events.html and past-events.html and verify no errors.
+
 2026-01-16 | 2:14PM EST
 ———————————————————————
 Change: Tuned mobile portfolio styling for the MOZ section and lightened mobile backgrounds for Trail Dead and Lookout.
