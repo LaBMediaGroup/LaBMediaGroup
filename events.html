@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://dfwgjbjrkwikvqmnzcxx.supabase.co;">
     <title>Events | Detroit Film Events & Michigan Film Festivals | LaB Media</title>
     <link rel="canonical" href="https://labmedia.work/events.html">
 
@@ -1078,6 +1078,13 @@
             font-family: 'Inter', sans-serif;
         }
         .suggest-form textarea { min-height: 110px; resize: vertical; }
+        .honeypot-field {
+            position: absolute;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
         .suggest-submit {
             border: 1px solid rgba(255,255,255,0.18);
             background: rgba(255,255,255,0.06);
@@ -1674,6 +1681,10 @@
 
             <form class="suggest-form" action="https://formspree.io/f/mkgvggge" method="POST">
                 <input type="hidden" name="source" value="events-page">
+                <div class="honeypot-field" aria-hidden="true">
+                    <label for="companyWebsite">Company Website</label>
+                    <input id="companyWebsite" name="companyWebsite" autocomplete="off" tabindex="-1">
+                </div>
                 <label>
                     Event name
                     <input name="event_name" required>
@@ -1703,12 +1714,12 @@
 
                 <label>
                     Location (city/state)
-                    <input name="location">
+                    <input name="location" required>
                 </label>
 
                 <label>
                     Link (optional)
-                    <input name="url" placeholder="https://">
+                    <input name="link" placeholder="https://">
                 </label>
 
                 <label>
@@ -2306,6 +2317,10 @@
         const suggestClose = document.getElementById('suggestClose');
         const suggestForm = document.querySelector('.suggest-form');
         const suggestConfirmation = document.getElementById('suggestConfirmation');
+        const SUPABASE_EVENTS = {
+            url: 'https://dfwgjbjrkwikvqmnzcxx.supabase.co',
+            anonKey: 'sb_publishable__Mrv6qhUoPwuzpFl4b4baA_BQcWgd6e'
+        };
 
         const focusableSel = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
         let lastSuggestFocusEl = null;
@@ -2367,27 +2382,41 @@
                 }
 
                 try {
-                    const response = await fetch(suggestForm.action, {
+                    const payload = {
+                        event_name: suggestForm.event_name.value.trim(),
+                        event_type: suggestForm.event_type.value,
+                        start_date: suggestForm.start_date.value,
+                        end_date: suggestForm.end_date.value || null,
+                        location: suggestForm.location.value.trim(),
+                        link: suggestForm.link.value.trim(),
+                        notes: suggestForm.notes.value.trim(),
+                        companyWebsite: suggestForm.companyWebsite.value.trim()
+                    };
+
+                    const response = await fetch(`${SUPABASE_EVENTS.url}/functions/v1/submit-event`, {
                         method: 'POST',
-                        body: new FormData(suggestForm),
-                        headers: { 'Accept': 'application/json' }
+                        headers: {
+                            'Content-Type': 'application/json',
+                            apikey: SUPABASE_EVENTS.anonKey,
+                            Authorization: `Bearer ${SUPABASE_EVENTS.anonKey}`
+                        },
+                        body: JSON.stringify(payload)
                     });
 
                     if (response.ok) {
                         suggestForm.reset();
                         if (suggestConfirmation) {
-                            suggestConfirmation.textContent = 'Thanks! Your event is in review.';
+                            suggestConfirmation.textContent = 'Submitted for review.';
                         }
                         closeSuggestModal();
                     } else {
                         if (suggestConfirmation) {
-                            suggestConfirmation.textContent = 'Submission failed. Try again or email us.';
+                            suggestConfirmation.textContent = 'Submission failed. Please try again shortly.';
                         }
                     }
                 } catch (error) {
-                    console.error('Suggest event error:', error);
                     if (suggestConfirmation) {
-                        suggestConfirmation.textContent = 'Submission failed. Try again or email us.';
+                        suggestConfirmation.textContent = 'Submission failed. Please try again shortly.';
                     }
                 }
             });

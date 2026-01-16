@@ -4,6 +4,39 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 4:20PM EST
+———————————————————————
+Change: Moved events suggestion submissions to the Supabase submit-event edge function and added a honeypot field.
+Files touched: events.html, CHANGELOG_RUNNING.md
+Notes: Updated CSP connect-src for Supabase and replaced Formspree submission with JSON POST plus new success/error messaging.
+Quick test checklist:
+1. Open events.html and confirm the Suggest Event modal opens and includes the hidden honeypot field.
+2. Submit the form and confirm the success message reads “Submitted for review.”
+3. Disable network or block the endpoint and confirm a friendly error message appears.
+4. Open DevTools console on events.html and verify no errors.
+
+
+2026-01-16 | 4:19PM EST
+———————————————————————
+Change: Restored the full running changelog history and noted the Callboard CSP/connect-src update verification.
+Files touched: CHANGELOG_RUNNING.md
+Notes: Reinserted prior changelog entries to comply with the append-only rule; verified CSP connect-src includes the Supabase project URL.
+Quick test checklist:
+1. Open callboard.html and confirm CSP allows requests to the Supabase project URL.
+2. Verify the running changelog includes older entries below the new entry.
+3. Open DevTools console on callboard.html and verify no errors.
+
+2026-01-16 | 4:12PM EST
+———————————————————————
+Change: Added the Callboard page with Supabase-powered listings, filters, and a moderated submission modal.
+Files touched: callboard.html, CHANGELOG_RUNNING.md
+Notes: New callboard page reads approved listings and posts submissions to the submit-listing edge function with a honeypot field and friendly status messaging.
+Quick test checklist:
+1. Open callboard.html and confirm approved listings load with filters and search.
+2. Click “Submit a Listing,” fill the form, and confirm the success message “Submitted for approval.” appears.
+3. Trigger a network failure or block the endpoint and confirm the form shows a friendly error without console noise.
+4. Open DevTools console on callboard.html and verify no errors.
+
 2026-01-16 | 9:50AM EST
 ———————————————————————
 Change: Restored the missing events data file so the calendar, list, past events, and export flow can render again.
