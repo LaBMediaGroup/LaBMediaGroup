@@ -1582,6 +1582,7 @@
         <ul class="nav-links">
             <li><a href="resources.html">Resources</a></li>
             <li><a href="events.html">Events</a></li>
+            <li><a href="callboard.html">Callboard</a></li>
             <li><a href="ideas.html">Story Generator</a></li>
             <li><a href="plan-your-project.html">Plan</a></li>
             <li><a href="portfolio.html">Reel</a></li>
@@ -2390,14 +2391,31 @@
                 }
 
                 try {
+                    const eventName = suggestForm.event_name.value.trim();
+                    const eventType = suggestForm.event_type.value.trim();
+                    const startDate = suggestForm.start_date.value;
+                    const endDate = suggestForm.end_date.value;
+                    const location = suggestForm.location.value.trim();
+                    const linkRaw = suggestForm.link.value.trim();
+                    const notesRaw = suggestForm.notes.value.trim();
+                    const source = suggestForm.source ? suggestForm.source.value.trim() : 'events-page';
+
+                    if (!eventName || !eventType || !startDate || !location) {
+                        if (suggestConfirmation) {
+                            suggestConfirmation.textContent = 'Please complete the required fields.';
+                        }
+                        return;
+                    }
+
                     const payload = {
-                        event_name: suggestForm.event_name.value.trim(),
-                        event_type: suggestForm.event_type.value,
-                        start_date: suggestForm.start_date.value,
-                        end_date: suggestForm.end_date.value || null,
-                        location: suggestForm.location.value.trim(),
-                        link: suggestForm.link.value.trim(),
-                        notes: suggestForm.notes.value.trim(),
+                        event_name: eventName,
+                        event_type: eventType,
+                        start_date: startDate,
+                        end_date: endDate || null,
+                        location,
+                        link: (linkRaw && linkRaw !== 'https://') ? linkRaw : null,
+                        notes: notesRaw || null,
+                        source: source || 'events-page',
                         companyWebsite: suggestForm.companyWebsite.value.trim()
                     };
 
