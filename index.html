@@ -440,10 +440,21 @@
             border: 1px solid rgba(255,255,255,0.12);
             background: rgba(255,255,255,0.02);
             transition: border-color 0.2s ease;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            appearance: none;
+            color: inherit;
+            font: inherit;
         }
 
         .dfa-callout-content:hover {
             border-color: rgba(255,255,255,0.2);
+        }
+
+        .dfa-callout-content:focus-visible {
+            outline: none;
+            border-color: rgba(255,255,255,0.35);
         }
 
         .dfa-callout-image {
@@ -1266,6 +1277,42 @@
             border-color: #60A5FA;
         }
 
+        .dfa-modal-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .dfa-modal-image {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .dfa-modal-image img {
+            width: 100%;
+            max-width: 280px;
+            border: 1px solid var(--gray-800);
+            border-radius: 6px;
+            background: var(--black);
+            object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            .dfa-modal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dfa-modal-image {
+                justify-content: flex-start;
+            }
+
+            .dfa-modal-image img {
+                max-width: 100%;
+            }
+        }
+
         .status-chip {
             display: inline-flex;
             align-items: center;
@@ -2013,14 +2060,14 @@
 
     <!-- Temporary DFA Partnership Callout -->
     <section class="dfa-partnership-callout">
-        <div class="dfa-callout-content">
+        <button class="dfa-callout-content" id="dfaCalloutTrigger" type="button" aria-haspopup="dialog" aria-controls="dfaCalloutBackdrop">
             <img src="images/DFAXDFM.JPG" alt="DFA x Film Detroit" class="dfa-callout-image">
             <div class="dfa-callout-text">
                 <span class="dfa-callout-label">New Partnership</span>
                 <p class="dfa-callout-headline">DFA films now air on Detroit Public Access TV</p>
-                <a href="events.html" class="dfa-callout-link">Learn more →</a>
+                <span class="dfa-callout-link">Learn more →</span>
             </div>
-        </div>
+        </button>
     </section>
 
     <section class="start-here">
@@ -2169,6 +2216,52 @@
         Weekly filmmaker brief signup placeholder.
     </section>
 
+    <!-- DFA Partnership Modal -->
+    <div class="event-preview-backdrop" id="dfaCalloutBackdrop" aria-hidden="true">
+        <div class="event-preview-modal" id="dfaCalloutModal" role="dialog" aria-modal="true" aria-labelledby="dfaCalloutTitle" tabindex="-1">
+            <div class="event-modal-header">
+                <button class="event-modal-close" id="dfaCalloutClose" type="button">ESC</button>
+                <div class="event-modal-chip-row">
+                    <span class="status-chip">Partnership Update</span>
+                </div>
+                <h2 class="event-modal-title" id="dfaCalloutTitle">DFA films now air on Detroit Public Access TV</h2>
+            </div>
+            <div class="event-modal-body">
+                <div class="dfa-modal-grid">
+                    <div>
+                        <div class="event-modal-section">
+                            <h3 class="event-modal-section-title">Details</h3>
+                            <div class="event-info-grid">
+                                <div class="event-info-item">
+                                    <div class="event-info-label">Broadcast</div>
+                                    <div class="event-info-value">Detroit Public Access TV</div>
+                                </div>
+                                <div class="event-info-item">
+                                    <div class="event-info-label">Partner</div>
+                                    <div class="event-info-value">Film Detroit</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-modal-section">
+                            <h3 class="event-modal-section-title">About</h3>
+                            <p class="event-modal-description">Detroit Filmmaker Awards films are now airing on Detroit Public Access TV, giving local filmmakers a new broadcast home through DFA's partnership with Film Detroit.</p>
+                        </div>
+                        <div class="event-modal-section">
+                            <h3 class="event-modal-section-title">Links</h3>
+                            <a href="https://detroitfilmmakerawards.com/" target="_blank" rel="noopener noreferrer" class="event-modal-link">
+                                Visit Detroit Filmmaker Awards
+                                <span>→</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="dfa-modal-image">
+                        <img src="images/DFAXDFM.JPG" alt="DFA x Film Detroit">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Event Preview Modal -->
     <div class="event-preview-backdrop" id="eventPreviewBackdrop" aria-hidden="true">
         <div class="event-preview-modal" id="eventPreviewModal" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle" tabindex="-1">
@@ -2288,10 +2381,16 @@
         // ============================================
         // EVENT PREVIEW MODAL
         // ============================================
+        const dfaCalloutTrigger = document.getElementById('dfaCalloutTrigger');
+        const dfaCalloutBackdrop = document.getElementById('dfaCalloutBackdrop');
+        const dfaCalloutModal = document.getElementById('dfaCalloutModal');
+        const dfaCalloutClose = document.getElementById('dfaCalloutClose');
+
         const eventPreviewBackdrop = document.getElementById('eventPreviewBackdrop');
         const eventPreviewModal = document.getElementById('eventPreviewModal');
         const eventModalClose = document.getElementById('eventModalClose');
 
+        let lastDfaFocusEl = null;
         let lastEventFocusEl = null;
         let currentEventData = null;
 
@@ -2508,6 +2607,37 @@
             if (lastEventFocusEl && lastEventFocusEl.focus) lastEventFocusEl.focus();
         }
 
+        function openDfaCallout() {
+            if (!dfaCalloutBackdrop) return;
+            lastDfaFocusEl = document.activeElement;
+            dfaCalloutBackdrop.classList.add('is-open');
+            dfaCalloutBackdrop.setAttribute('aria-hidden', 'false');
+            setTimeout(() => {
+                if (dfaCalloutModal) dfaCalloutModal.focus();
+            }, 100);
+        }
+
+        function closeDfaCallout() {
+            if (!dfaCalloutBackdrop) return;
+            dfaCalloutBackdrop.classList.remove('is-open');
+            dfaCalloutBackdrop.setAttribute('aria-hidden', 'true');
+            if (lastDfaFocusEl && lastDfaFocusEl.focus) lastDfaFocusEl.focus();
+        }
+
+        if (dfaCalloutTrigger) {
+            dfaCalloutTrigger.addEventListener('click', openDfaCallout);
+        }
+
+        if (dfaCalloutClose) {
+            dfaCalloutClose.addEventListener('click', closeDfaCallout);
+        }
+
+        if (dfaCalloutBackdrop) {
+            dfaCalloutBackdrop.addEventListener('click', (e) => {
+                if (e.target === dfaCalloutBackdrop) closeDfaCallout();
+            });
+        }
+
         if (eventModalClose) {
             eventModalClose.addEventListener('click', closeEventPreview);
         }
@@ -2519,8 +2649,12 @@
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && eventPreviewBackdrop.classList.contains('is-open')) {
+            if (e.key !== 'Escape') return;
+            if (eventPreviewBackdrop && eventPreviewBackdrop.classList.contains('is-open')) {
                 closeEventPreview();
+            }
+            if (dfaCalloutBackdrop && dfaCalloutBackdrop.classList.contains('is-open')) {
+                closeDfaCallout();
             }
         });
 

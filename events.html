@@ -1697,7 +1697,8 @@
 
     <script src="events-data.js"></script>
     <script>
-        const eventSchemaItems = (eventsData || []).map((evt) => {
+        const eventsDataset = typeof eventsData !== 'undefined' ? eventsData : [];
+        const eventSchemaItems = eventsDataset.map((evt) => {
             if (!evt || !evt.title || !evt.startDate) return null;
             const start = evt.startTime ? `${evt.startDate}T${evt.startTime}` : evt.startDate;
             const endDate = evt.endDate || evt.startDate;
@@ -1791,7 +1792,7 @@
 
         const getVisibleEvents = () => {
             const { rangeStart, rangeEnd } = getMonthRange(currentYear, currentMonth);
-            return eventsData.filter(evt => eventOverlapsRange(evt, rangeStart, rangeEnd));
+            return eventsDataset.filter(evt => eventOverlapsRange(evt, rangeStart, rangeEnd));
         };
 
         function getVerificationMeta(event) {
@@ -1980,7 +1981,7 @@
             eventPills.forEach(pill => {
                 pill.addEventListener('click', (e) => {
                     const eventId = e.currentTarget.dataset.eventId;
-                    const eventData = eventsData.find(evt => evt.id === eventId);
+                    const eventData = eventsDataset.find(evt => evt.id === eventId);
                     if (eventData) {
                         setSelectedEvent(eventId, { scrollToList: true });
                         openEventPreview(eventData);
@@ -2044,7 +2045,7 @@
             listRows.forEach(row => {
                 row.addEventListener('click', (e) => {
                     const eventId = e.currentTarget.dataset.eventId;
-                    const eventData = eventsData.find(evt => evt.id === eventId);
+                    const eventData = eventsDataset.find(evt => evt.id === eventId);
                     if (eventData) {
                         setSelectedEvent(eventId, { scrollToCalendar: true });
                         openEventPreview(eventData);
@@ -2067,7 +2068,7 @@
             const pastEventsContainer = document.getElementById('pastEventsContainer');
             if (!pastEventsContainer) return;
 
-            const pastEvents = eventsData.filter(isEventPast).sort((a, b) => {
+            const pastEvents = eventsDataset.filter(isEventPast).sort((a, b) => {
                 return parseDate(b.startDate) - parseDate(a.startDate); // Most recent first
             });
 
@@ -2116,7 +2117,7 @@
             cards.forEach(card => {
                 card.addEventListener('click', (e) => {
                     const eventId = e.currentTarget.dataset.eventId;
-                    const eventData = eventsData.find(evt => evt.id === eventId);
+                    const eventData = eventsDataset.find(evt => evt.id === eventId);
                     if (eventData) {
                         openEventPreview(eventData);
                     }
