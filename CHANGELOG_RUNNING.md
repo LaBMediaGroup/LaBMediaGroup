@@ -4,6 +4,22 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 2:18AM EST
+———————————————————————
+Change: Added orientation copy, updated SEO metadata, and aligned navigation/footers to position LaB as a Metro Detroit filmmaking hub with case studies.
+Files touched: index.html, resources.html, events.html, past-events.html, ideas.html, portfolio.html, contact.html, plan-your-project.html, CHANGELOG_RUNNING.md
+Notes: Added intro copy and internal links across key pages, standardized "Case Studies" nav label, unified Instagram/YouTube links, added Organization + Event JSON-LD, and inserted a "Start here" block on the homepage.
+Quick test checklist:
+1. Open index.html and confirm the new orientation line, H1, and “Start here” links appear without layout issues.
+2. Open resources.html and verify the updated intro text plus events link, and confirm footer social icons link out.
+3. Open events.html and verify the new orientation line, resources link, and footer social links; confirm no console errors.
+4. Open past-events.html and verify new intro copy and links, plus footer social icons.
+5. Open ideas.html and confirm the new orientation line, footer links, and social icons render correctly.
+6. Open portfolio.html and confirm the intro header, reference line, and internal links appear above the case studies.
+7. Open contact.html and verify the new H1, updated social links, and footer social icons.
+8. Open plan-your-project.html and verify nav label updates plus footer social icons.
+9. Check DevTools console on updated pages for errors.
+
 2026-01-14 | 8:30PM EST
 ———————————————————————
 Change: Fixed portfolio sidebar overlap and events list text cutoff with improved layouts.

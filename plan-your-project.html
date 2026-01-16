@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
-    <title>Plan Your Project | LaB Media</title>
+    <title>Plan Your Project | Filmmaking Planner — LaB Media</title>
     <link rel="canonical" href="https://labmedia.work/plan-your-project.html">
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Interactive film project planning tool. Create shoot schedules, shot lists, and production planning documents for your next video project.">
-    <meta name="keywords" content="film project planner, shot list template, production schedule, video project planning, filmmaker tools">
+    <meta name="description" content="Plan shoots, shot lists, and schedules with LaB Media's free project planning tool for filmmakers in Metro Detroit and beyond.">
+    <meta name="keywords" content="film project planner, Metro Detroit filmmaking tools, shot list template, production schedule">
     <meta name="author" content="LaB Media">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://labmedia.work/plan-your-project.html">
-    <meta property="og:title" content="Plan Your Project | LaB Media">
-    <meta property="og:description" content="Interactive film project planning tool for creating shoot schedules and production documents.">
+    <meta property="og:title" content="Plan Your Project | Filmmaking Planner — LaB Media">
+    <meta property="og:description" content="Plan shoots, shot lists, and schedules with LaB Media's free project planning tool for filmmakers.">
     <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://labmedia.work/plan-your-project.html">
-    <meta name="twitter:title" content="Plan Your Project | LaB Media">
-    <meta name="twitter:description" content="Interactive film project planning tool for creating shoot schedules and production documents.">
+    <meta name="twitter:title" content="Plan Your Project | Filmmaking Planner — LaB Media">
+    <meta name="twitter:description" content="Plan shoots, shot lists, and schedules with LaB Media's free project planning tool for filmmakers.">
     <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,6 +33,23 @@
 
     <!-- Prototype Design System -->
     <link rel="stylesheet" href="prototype-theme.css">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "LaB Media",
+      "url": "https://labmedia.work",
+      "logo": "https://labmedia.work/images/TheLaB.png",
+      "description": "Metro Detroit creative studio and community hub sharing filmmaking resources, local events, and production knowledge.",
+      "areaServed": "Metro Detroit, Michigan",
+      "sameAs": [
+        "https://www.instagram.com/labmedia.work/",
+        "https://www.youtube.com/@labmediawork"
+      ]
+    }
+    </script>
 
     <style>
         :root {
@@ -950,6 +967,7 @@
 
         /* Footer */
         .site-footer {
+            position: relative;
             padding: 3rem 2rem;
             border-top: 1px solid var(--gray-800);
             text-align: center;
@@ -978,9 +996,42 @@
             color: var(--white);
         }
 
+        .footer-social {
+            position: absolute;
+            right: 2rem;
+            top: 3rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .footer-social a {
+            display: block;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            opacity: 1;
+        }
+
+        .footer-social img {
+            height: 24px;
+            width: auto;
+            display: block;
+        }
+
         .footer-credit {
             font-size: 0.7rem;
             color: var(--gray-600);
+        }
+
+        @media (max-width: 768px) {
+            .footer-social {
+                position: static;
+                justify-content: center;
+                margin-top: 1.25rem;
+            }
         }
     </style>
 </head>
@@ -1008,7 +1059,7 @@
             <li><a href="events.html">Events</a></li>
             <li><a href="ideas.html">Story Generator</a></li>
             <li><a href="plan-your-project.html">Plan</a></li>
-            <li><a href="portfolio.html">Work</a></li>
+            <li><a href="portfolio.html">Case Studies</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
@@ -1600,13 +1651,21 @@ Submitted: ${new Date().toLocaleString()}
     <footer class="site-footer">
         <nav class="footer-nav">
             <a href="index.html">Home</a>
-            <a href="portfolio.html">Work</a>
+            <a href="portfolio.html">Case Studies</a>
             <a href="resources.html">Resources</a>
             <a href="events.html">Events</a>
             <a href="ideas.html">Story Generator</a>
             <a href="https://ai.studio/apps/drive/1h-3BvBuLgnF0kRHx43_GWVIlwwWC31od?fullscreenApplet=true" target="_blank" rel="noopener noreferrer">LaB Talk (Beta)</a>
             <a href="contact.html">Contact</a>
         </nav>
+        <div class="footer-social" aria-label="LaB social links">
+            <a href="https://www.instagram.com/labmedia.work/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <img src="images/Instagram_Glyph_Gradient.png" alt="Instagram">
+            </a>
+            <a href="https://www.youtube.com/@labmediawork" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                <img src="images/yt_logo_fullcolor_white_digital.png" alt="YouTube">
+            </a>
+        </div>
         <p class="footer-credit">Made in Shelby Twp, MI with ❤️</p>
     </footer>
 
