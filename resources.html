@@ -1222,24 +1222,12 @@
             letter-spacing: 1px;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
             z-index: 10;
-        }
-        .modal-fav .star-icon {
-            font-size: 1rem;
-            transition: transform 0.2s ease;
-        }
-        .modal-fav:not(.is-saved) .star-icon {
-            opacity: 0.6;
         }
         .modal-fav.is-saved {
             border-color: #F59E0B;
             color: #F59E0B;
             background: rgba(245, 158, 11, 0.08);
-        }
-        .modal-fav.is-saved .star-icon {
-            opacity: 1;
-            color: #F59E0B;
         }
         .modal-fav:hover {
             border-color: var(--white);
@@ -1247,9 +1235,6 @@
             background: rgba(255, 255, 255, 0.05);
             box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
             transform: translateY(-1px);
-        }
-        .modal-fav:hover .star-icon {
-            transform: scale(1.1);
         }
         .modal-fav:active {
             transform: translateY(0) scale(0.98);
@@ -1281,19 +1266,11 @@
                 border-color: #F59E0B;
             }
         }
-        @keyframes starPop {
-            0% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.5) rotate(12deg); }
-            100% { transform: scale(1) rotate(0deg); }
-        }
         .modal-fav.saving-animation {
             animation: savePulse 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .modal-fav.saving-animation.is-saved {
             animation: fillIn 0.4s ease-out forwards;
-        }
-        .modal-fav.saving-animation .star-icon {
-            animation: starPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .modal-title {
@@ -2165,9 +2142,8 @@
             <button class="modal-close" id="closeModal">ESC</button>
 
             <!-- Favorite toggle -->
-            <button class="modal-fav" id="toggleFavorite" type="button" aria-label="Save resource">
-                <span class="star-icon">★</span>
-                <span class="fav-label">SAVE</span>
+            <button class="modal-fav" id="toggleFavorite" type="button" aria-label="Save item">
+                <span class="fav-label">Save Item</span>
             </button>
 
             <div class="modal-header">
@@ -2401,13 +2377,11 @@
                 return;
             }
             const saved = id && isFavoriteId(id);
-            const starIcon = btn.querySelector('.star-icon');
             const label = btn.querySelector('.fav-label');
 
             btn.classList.toggle('is-saved', saved);
-            if (starIcon) starIcon.textContent = saved ? '★' : '☆';
-            if (label) label.textContent = saved ? 'SAVED' : 'SAVE';
-            btn.setAttribute('aria-label', saved ? 'Remove from saved' : 'Save resource');
+            if (label) label.textContent = saved ? 'Saved Item' : 'Save Item';
+            btn.setAttribute('aria-label', saved ? 'Remove from saved items' : 'Save item');
         }
 
         // Favorite button handler

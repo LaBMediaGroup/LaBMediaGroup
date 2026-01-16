@@ -4,6 +4,47 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 4:50AM EST
+———————————————————————
+Change: Removed the homepage hero title text, enlarged the nav wordmark, and replaced the resources modal save emoji with text.
+Files touched: index.html, resources.html, images/LaBMedia.png, images/THELABLOGO.png, CHANGELOG_RUNNING.md
+Notes: Index nav now uses the LaBMedia.png wordmark at a larger size; hero relies on the logo image only; modal favorite button now reads “Save Item/Saved Item.”
+Quick test checklist:
+1. Open index.html and confirm the top-left wordmark uses LaBMedia.png and appears larger than before.
+2. Confirm the hero section no longer shows the “LaB Media” headline and the mission line spacing still feels balanced.
+3. Open resources.html, launch any resource modal, and confirm the save button shows text (no star emoji) and toggles between “Save Item” and “Saved Item.”
+4. Open DevTools Console on both pages and confirm there are no errors.
+
+2026-01-16 | 3:25AM EST
+———————————————————————
+Change: Swapped the homepage nav logo to use the existing wordmark asset to avoid adding new binary files.
+Files touched: index.html, CHANGELOG_RUNNING.md
+Notes: Homepage now references THELABLOGO.png for the nav logo; removed the new LaBMedia.png file.
+Quick test checklist:
+1. Open index.html and confirm the top-left logo renders as the wordmark.
+2. Confirm the nav layout spacing remains aligned with the new logo asset.
+3. Open DevTools Console and confirm there are no errors on load.
+
+2026-01-16 | 3:22AM EST
+———————————————————————
+Change: Swapped the homepage nav logo to a LaB Media wordmark and tightened the hero mission copy.
+Files touched: index.html, images/LaBMedia.png, CHANGELOG_RUNNING.md
+Notes: Homepage nav now uses the LaB Media wordmark instead of the beaker; mission sentence no longer repeats the brand name.
+Quick test checklist:
+1. Open index.html and confirm the top-left logo shows the LaB Media wordmark and aligns with the nav.
+2. Confirm the hero mission line starts with “A Metro Detroit–based creative studio…” and fits without wrapping oddly.
+3. Open DevTools Console and confirm there are no errors on load.
+
+2026-01-16 | 2:53AM EST
+———————————————————————
+Change: Simplified the homepage hero headline to keep the intro minimal.
+Files touched: index.html, CHANGELOG_RUNNING.md
+Notes: Removed the long descriptor from the hero title so the supporting line carries the detail.
+Quick test checklist:
+1. Open index.html and confirm the hero headline is now "LaB Media" with the supporting mission line still visible.
+2. Check the hero section for any layout shifts or overlap at common desktop/mobile widths.
+3. Open DevTools Console and confirm there are no errors on load.
+
 2026-01-16 | 2:18AM EST
 ———————————————————————
 Change: Added orientation copy, updated SEO metadata, and aligned navigation/footers to position LaB as a Metro Detroit filmmaking hub with case studies.
