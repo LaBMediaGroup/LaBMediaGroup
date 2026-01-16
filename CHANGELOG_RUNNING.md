@@ -4,6 +4,17 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 1:04PM EST
+———————————————————————
+Change: Added Detroit Filmmaker Awards bio image to the resources modal and aligned it beside the features list.
+Files touched: resources-data.js, resources.html, CHANGELOG_RUNNING.md
+Notes: Adds DFAXDFM.JPG image field to the Detroit Filmmaker Awards resource and renders a right-side image column in the modal when a bio image is present.
+Quick test checklist:
+1. Open resources.html and open the Detroit Filmmaker Awards modal.
+2. Confirm the DFAXDFM image appears to the right of the features list.
+3. Resize to mobile width and confirm the image stacks below the features list without layout issues.
+4. Open DevTools console and verify no errors.
+
 2026-01-16 | 1:15AM EST
 ———————————————————————
 Change: UI polish pass - fixed image loading, removed button arrows, toned down portfolio overlays, enlarged beaker icons
