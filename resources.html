@@ -281,6 +281,28 @@
             opacity: 0.85;
         }
 
+        .section-tip {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            margin-bottom: 1.25rem;
+            border: 1px solid var(--gray-800);
+            background: rgba(255, 255, 255, 0.02);
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--gray-400);
+        }
+
+        .section-tip strong {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--white);
+            white-space: nowrap;
+        }
+
         /* Label flicker animation */
         @keyframes labelFlicker {
             0%, 100% {
@@ -2054,6 +2076,10 @@
         </div>
 
         <div class="filter-hint">Start with a category, then refine with subfilters.</div>
+        <div class="section-tip" id="sectionTip" aria-live="polite">
+            <strong>Hot tip</strong>
+            <span>Film festival links lead to programmer-approved submissions and the best local fit.</span>
+        </div>
         
         <!-- Main Category Filter Row -->
         <div class="filter-row">
@@ -2182,7 +2208,6 @@
                 <img src="images/yt_logo_fullcolor_white_digital.png" alt="YouTube">
             </a>
         </div>
-        <a href="plan-your-project.html" class="footer-cta">Start a Project</a>
         <p class="footer-credit">Made in Shelby Twp, MI with ❤️</p>
     </footer>
     
@@ -2262,6 +2287,7 @@
         const countEl = document.getElementById('resourceCount');
         const searchInput = document.getElementById('searchInput');
         const toastEl = document.getElementById('shareToast');
+        const sectionTip = document.getElementById('sectionTip');
 
         // Filter buttons
         const groupButtons = document.querySelectorAll('.filter-btn');
@@ -2989,6 +3015,55 @@
 
             return filtered;
         }
+
+        function updateSectionTip() {
+            if (!sectionTip) return;
+            const tips = {
+                'film-festivals': 'Film festivals are sorted for filmmaker-friendly deadlines and programming that welcomes Midwest stories. Start here to find the right home for your cut.',
+                community: 'Community entries map to real local meetups, casting calls, and groups. We highlight spots that actually respond and keep Detroit creators connected.',
+                stock: {
+                    'all-stock': 'Stock tools cover footage, music, SFX, fonts, and 3D assets. These picks balance quality and usable licenses for indie budgets.',
+                    '3d': '3D assets help you block shots or build sets fast. We prioritize lightweight libraries that don’t lock you into paid tiers.',
+                    fonts: 'Fonts sets are curated for title cards and posters with permissive licensing. These are clean, readable, and quick to deploy.',
+                    stock: 'Footage libraries here offer usable B-roll without bloated subscriptions. We favor packs with clear licensing for short films.',
+                    music: 'Music picks are split by paid/free tiers so you can score quickly without copyright anxiety.',
+                    soundfx: 'SoundFX libraries are picked for clean downloads and clear licensing. Great for quick layers and atmosphere.'
+                },
+                tools: {
+                    'all-tools': 'Tools cover gear, casting, coding, and AI helpers. Each pick is tested for workflow speed and value on a zero-budget run.',
+                    ai: 'AI helpers here are about speed: ideation, notes, and clean-up. We keep the list lean and only share tools we actually use.',
+                    coding: 'Coding tools are for micro-sites, landing pages, and automation. We pick the ones that ship fast without subscriptions.',
+                    drone: 'Drone tools include FAA basics, training, and vendors. We focus on safety-first resources with local relevance.',
+                    gear: 'Gear picks are practical and repeatable in the field. We skip the hype and list dependable tools.',
+                    casting: 'Casting tools are chosen for response rate and local reach so you can find talent fast.'
+                },
+                collaborators: 'Friends are trusted local collaborators who have already delivered. Expect real people, real work, and fair rates.',
+                references: {
+                    all: 'Reference libraries are for taste, color, and technique. We curated the ones that inspire strong creative direction.',
+                    inspiration: 'Inspiration feeds for mood, story, and vibe. Use these to reset your creative compass.',
+                    color: 'Color references help lock palette decisions fast. We favor archives with clear, scrollable stills.',
+                    art: 'Art references support production design and poster direction. These are dense and curated.',
+                    editing: 'Editing references showcase rhythm, pacing, and transitions. Great for tightening your cut.',
+                    filming: 'Filming references focus on lighting and framing. Use them to match visual targets.',
+                    music: 'Music references help tone-set your score with clean, legal listening.',
+                    comedy: 'Comedy references are a quick gut-check for timing and punchline structure.'
+                },
+                drones: 'Drone resources cover Part 107, local vendors, and training. We keep this list lean so you fly legal and safe.'
+            };
+
+            let tipText = tips[currentGroup] || tips['film-festivals'];
+            if (currentGroup === 'stock' && tips.stock) {
+                tipText = tips.stock[stockSubcategory] || tips.stock['all-stock'];
+            }
+            if (currentGroup === 'tools' && tips.tools) {
+                tipText = tips.tools[toolsSubcategory] || tips.tools['all-tools'];
+            }
+            if (currentGroup === 'references' && tips.references) {
+                tipText = tips.references[referencesSubcategory] || tips.references.all;
+            }
+
+            sectionTip.querySelector('span').textContent = tipText;
+        }
         
         // ============================================
         // GHOST TILE LOGIC
@@ -3107,6 +3182,7 @@
             const count = filtered.length;
 
             logReferencesDebug(count);
+            updateSectionTip();
 
             // Update count with animation
             animateCount(count);

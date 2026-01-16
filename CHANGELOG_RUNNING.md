@@ -4,6 +4,28 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 6:30PM EST
+———————————————————————
+Change: Added an Events Posters section with poster cards that open the event modal and export to calendar.
+Files touched: events.html, events-data.js, CHANGELOG_RUNNING.md
+Notes: Posters are sorted by date, rendered from a dedicated dataset, and reuse the existing event preview modal.
+Quick test checklist:
+1. Open events.html and confirm the Events Posters section shows the Frames & Fabrics poster card with date/time/location.
+2. Click the poster card and confirm the event modal opens with details plus Add to Calendar and website link.
+3. Verify the modal export creates an .ics file with the poster event details.
+4. Open DevTools console on events.html and verify no errors.
+
+2026-01-16 | 6:20PM EST
+———————————————————————
+Change: Added a contextual hot tip panel to resources, tuned mobile layouts on portfolio sections, and paused videos when scrolling away.
+Files touched: resources.html, portfolio.html, CHANGELOG_RUNNING.md
+Notes: Removed footer "Start a Project" CTAs on resources/portfolio, added dynamic section tips on resources, and refined mobile layout rules for MOZ/Trail Dead/Lookout while pausing videos on section exit.
+Quick test checklist:
+1. Open resources.html, switch between categories/subfilters, and confirm the hot tip text updates with each section.
+2. Open portfolio.html on mobile width, confirm MOZ layout stacks cleanly, Trail Dead video fills the frame, and Lookout shows info above video so the background faces are visible.
+3. Play a portfolio video, scroll to the next/previous section, and confirm the video pauses.
+4. Open DevTools console on resources.html and portfolio.html and verify no errors.
+
 2026-01-16 | 5:19PM EST
 ———————————————————————
 Change: Softened the Anthony Brass overlay and muted the Lookout color wash to a darker, greener palette.

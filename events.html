@@ -345,6 +345,12 @@
             }
         }
 
+        @media (max-width: 900px) {
+            .events-posters {
+                padding: 1.5rem;
+            }
+        }
+
         .featured-announcement.is-collapsed .announcement-content {
             display: none;
         }
@@ -395,6 +401,94 @@
         .legend-dot.type-festival { background: #F59E0B; }
         .legend-dot.type-deadline { background: #EF4444; }
         .legend-dot.type-workshop { background: #3B82F6; }
+
+        /* Event Posters */
+        .events-posters {
+            margin: 2.5rem auto 2rem;
+            padding: 1.75rem;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.02);
+            max-width: 1200px;
+        }
+
+        .events-posters h2 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.4rem;
+            color: var(--white);
+            font-weight: 400;
+            margin: 0 0 0.5rem;
+        }
+
+        .events-posters p {
+            margin: 0 0 1.5rem;
+            color: var(--gray-400);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            max-width: 720px;
+        }
+
+        .poster-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .poster-card {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.14);
+            padding: 0;
+            text-align: left;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+        }
+
+        .poster-card:hover {
+            border-color: rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.04);
+            transform: translateY(-2px);
+        }
+
+        .poster-card:focus-visible {
+            outline: 1px solid var(--white);
+            outline-offset: 2px;
+        }
+
+        .poster-image {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .poster-meta {
+            padding: 1rem 1.1rem 1.25rem;
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .poster-date {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--lab-orange);
+        }
+
+        .poster-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--white);
+            margin: 0;
+        }
+
+        .poster-location {
+            font-size: 0.85rem;
+            color: var(--gray-400);
+        }
 
         .view-toggle {
             margin-top: 1.25rem;
@@ -1593,6 +1687,12 @@
             font-size: 0.7rem;
             color: var(--gray-600);
         }
+
+        @media (max-width: 640px) {
+            .poster-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1650,6 +1750,12 @@
                     <img src="images/DFAXDFM.JPG" alt="Detroit Filmmaker Awards x Film Detroit partnership" class="announcement-image" onerror="this.style.display='none';this.parentElement.style.display='none';">
                 </div>
             </div>
+        </section>
+
+        <section class="events-posters" id="eventsPostersSection">
+            <h2>Events Posters</h2>
+            <p>Social-first event flyers curated by date. Tap a poster to view details, links, and export to your calendar.</p>
+            <div class="poster-grid" id="posterGrid"></div>
         </section>
 
         <div class="event-legend">
@@ -1792,6 +1898,7 @@
     <script src="events-data.js"></script>
     <script>
         const eventsDataset = typeof eventsData !== 'undefined' ? eventsData : [];
+        const posterDataset = typeof eventsPosterData !== 'undefined' ? eventsPosterData : [];
         const normalizeEventKey = (title = '') => title
             .toLowerCase()
             .replace(/[’']/g, '')
@@ -1878,7 +1985,7 @@
             if (!eventData || !eventData.title) return null;
             return eventData.bio || resourceBioLookup[normalizeEventKey(eventData.title)] || null;
         };
-        const eventSchemaItems = eventsDataset.map((evt) => {
+        const eventSchemaItems = [...eventsDataset, ...posterDataset].map((evt) => {
             if (!evt || !evt.title || !evt.startDate) return null;
             const start = evt.startTime ? `${evt.startDate}T${evt.startTime}` : evt.startDate;
             const endDate = evt.endDate || evt.startDate;
@@ -1917,6 +2024,8 @@
         const pastEventsSection = document.getElementById('pastEventsSection');
         const calendarGrid = document.getElementById('calendarGrid');
         const listContainer = document.getElementById('listContainer');
+        const posterSection = document.getElementById('eventsPostersSection');
+        const posterGrid = document.getElementById('posterGrid');
         const togglePastEventsBtn = document.getElementById('togglePastEvents');
         const announcementSection = document.getElementById('dfaAnnouncement');
         const announcementToggle = document.getElementById('announcementToggle');
@@ -2035,6 +2144,13 @@
             return `${start}${end}`;
         }
 
+        function formatPosterTimeRange(event) {
+            if (!event.startTime) return '';
+            const start = formatEventTime(event.startTime);
+            const end = event.endTime ? ` – ${formatEventTime(event.endTime)}` : '';
+            return `${start}${end}`;
+        }
+
         function isEventPast(event) {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
@@ -2076,6 +2192,44 @@
                     pill.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             }
+        }
+
+        function renderPosterGrid() {
+            if (!posterSection || !posterGrid) return;
+            if (!posterDataset.length) {
+                posterSection.hidden = true;
+                return;
+            }
+
+            const sorted = [...posterDataset].sort((a, b) => parseDate(a.startDate) - parseDate(b.startDate));
+            posterGrid.innerHTML = sorted.map(evt => {
+                const dateLabel = formatDateRange(evt);
+                const timeLabel = formatPosterTimeRange(evt);
+                const metaLine = timeLabel ? `${dateLabel} • ${timeLabel}` : dateLabel;
+                const locationLine = evt.venue ? `${evt.venue} • ${evt.location || 'TBD'}` : (evt.location || 'TBD');
+                const posterImg = evt.posterImage || evt.thumbnail || '';
+                return `
+                    <button class="poster-card" data-poster-id="${evt.id}" type="button">
+                        ${posterImg ? `<img class="poster-image" src="${posterImg}" alt="${evt.title} poster" loading="lazy">` : ''}
+                        <div class="poster-meta">
+                            <div class="poster-date">${metaLine}</div>
+                            <h3 class="poster-title">${evt.title}</h3>
+                            <div class="poster-location">${locationLine}</div>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+
+            const posterCards = posterGrid.querySelectorAll('.poster-card');
+            posterCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const posterId = card.dataset.posterId;
+                    const eventData = posterDataset.find(evt => evt.id === posterId);
+                    if (eventData) {
+                        openEventPreview(eventData);
+                    }
+                });
+            });
         }
 
         function renderCalendar() {
@@ -2336,6 +2490,7 @@
             });
         }
 
+        renderPosterGrid();
         renderCalendar();
         renderList();
         renderPastEvents();
