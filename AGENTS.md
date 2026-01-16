@@ -166,6 +166,7 @@ When given a task:
 ### Verification Rules (Environment Constraint)
 
 **Do not attempt Playwright install or automated screenshot capture** (proxy restriction).
+Screenshots for diagnosing issues are allowed when using existing browser tooling (if available); do not install new browser tooling.
 
 Testing output must be:
 - "Automated tests: Not run (environment restriction)"
