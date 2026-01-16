@@ -232,6 +232,11 @@
             opacity: 0.7;
         }
 
+        .submit-btn.is-loading {
+            opacity: 0.7;
+            cursor: progress;
+        }
+
         .listings {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -295,6 +300,26 @@
             border: 1px solid var(--gray-800);
             background: var(--gray-900);
             color: var(--gray-400);
+        }
+        .status-message.is-sending {
+            color: var(--gray-300);
+            animation: statusPulse 1.2s ease-in-out infinite;
+        }
+        .status-message.is-success {
+            color: var(--white);
+            animation: statusReveal 0.35s ease;
+        }
+        .status-message.is-error {
+            color: #fca5a5;
+            animation: statusReveal 0.35s ease;
+        }
+        @keyframes statusPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+        @keyframes statusReveal {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .modal {
@@ -651,9 +676,21 @@
             if (event.target === modal) closeModalView();
         });
 
+        const setFormStatus = (message, state) => {
+            formStatus.textContent = message;
+            formStatus.classList.remove('is-sending', 'is-success', 'is-error');
+            if (state) formStatus.classList.add(`is-${state}`);
+        };
+
         listingForm.addEventListener('submit', async (event) => {
             event.preventDefault();
-            formStatus.textContent = 'Submitting...';
+            const submitBtn = listingForm.querySelector('button[type="submit"]');
+            setFormStatus('Submitting...', 'sending');
+            listingForm.setAttribute('aria-busy', 'true');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('is-loading');
+            }
 
             const payload = {
                 title: listingForm.title.value.trim(),
@@ -682,10 +719,16 @@
                     throw new Error('Request failed');
                 }
 
-                formStatus.textContent = 'Submitted for approval.';
+                setFormStatus('Submitted for approval.', 'success');
                 listingForm.reset();
             } catch (error) {
-                formStatus.textContent = 'Something went wrong. Please try again in a moment.';
+                setFormStatus('Something went wrong. Please try again in a moment.', 'error');
+            } finally {
+                listingForm.removeAttribute('aria-busy');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('is-loading');
+                }
             }
         });
 

@@ -1217,6 +1217,36 @@
             cursor: pointer;
             font-family: 'Space Mono', monospace;
         }
+        .suggest-submit.is-loading {
+            opacity: 0.7;
+            cursor: progress;
+        }
+        .suggest-confirmation {
+            min-height: 1.2rem;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--gray-400);
+        }
+        .suggest-confirmation.is-sending {
+            color: var(--gray-300);
+            animation: statusPulse 1.2s ease-in-out infinite;
+        }
+        .suggest-confirmation.is-success {
+            color: var(--white);
+            animation: statusReveal 0.35s ease;
+        }
+        .suggest-confirmation.is-error {
+            color: #fca5a5;
+            animation: statusReveal 0.35s ease;
+        }
+        @keyframes statusPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+        @keyframes statusReveal {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         /* Event Preview Modal */
         .event-preview-backdrop {
             position: fixed;
@@ -2562,10 +2592,22 @@
         document.addEventListener('keydown', trapFocus);
 
         if (suggestForm) {
+            const suggestSubmitBtn = suggestForm.querySelector('.suggest-submit');
+
+            const setSuggestStatus = (message, state) => {
+                if (!suggestConfirmation) return;
+                suggestConfirmation.textContent = message;
+                suggestConfirmation.classList.remove('is-sending', 'is-success', 'is-error');
+                if (state) suggestConfirmation.classList.add(`is-${state}`);
+            };
+
             suggestForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
-                if (suggestConfirmation) {
-                    suggestConfirmation.textContent = 'Sending...';
+                setSuggestStatus('Sending...', 'sending');
+                suggestForm.setAttribute('aria-busy', 'true');
+                if (suggestSubmitBtn) {
+                    suggestSubmitBtn.disabled = true;
+                    suggestSubmitBtn.classList.add('is-loading');
                 }
 
                 try {
@@ -2579,9 +2621,7 @@
                     const source = suggestForm.source ? suggestForm.source.value.trim() : 'events-page';
 
                     if (!eventName || !eventType || !startDate || !location) {
-                        if (suggestConfirmation) {
-                            suggestConfirmation.textContent = 'Please complete the required fields.';
-                        }
+                        setSuggestStatus('Please complete the required fields.', 'error');
                         return;
                     }
 
@@ -2611,18 +2651,21 @@
 
                     if (response.ok && data.ok !== false) {
                         suggestForm.reset();
-                        if (suggestConfirmation) {
-                            suggestConfirmation.textContent = 'Submitted for review.';
-                        }
-                        closeSuggestModal();
+                        setSuggestStatus('Submitted for review.', 'success');
+                        setTimeout(() => {
+                            closeSuggestModal();
+                            setSuggestStatus('', null);
+                        }, 1500);
                     } else {
-                        if (suggestConfirmation) {
-                            suggestConfirmation.textContent = data.error || 'Submission failed. Please try again shortly.';
-                        }
+                        setSuggestStatus(data.error || 'Submission failed. Please try again shortly.', 'error');
                     }
                 } catch (error) {
-                    if (suggestConfirmation) {
-                        suggestConfirmation.textContent = 'Submission failed. Please try again shortly.';
+                    setSuggestStatus('Submission failed. Please try again shortly.', 'error');
+                } finally {
+                    suggestForm.removeAttribute('aria-busy');
+                    if (suggestSubmitBtn) {
+                        suggestSubmitBtn.disabled = false;
+                        suggestSubmitBtn.classList.remove('is-loading');
                     }
                 }
             });
