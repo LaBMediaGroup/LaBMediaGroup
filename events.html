@@ -167,11 +167,24 @@
 
         /* Featured Announcement Section */
         .featured-announcement {
-            margin: 3rem 0;
-            padding: 2rem;
+            margin: 2.5rem 0 2rem;
+            padding: 1.5rem 1.75rem;
             border: 1px solid rgba(255,255,255,0.14);
             background: rgba(255,255,255,0.02);
             position: relative;
+        }
+
+        .announcement-header {
+            display: grid;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .announcement-header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
         }
 
         .announcement-eyebrow {
@@ -180,32 +193,48 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             color: var(--lab-orange);
-            margin-bottom: 1rem;
             font-weight: 700;
+        }
+
+        .announcement-toggle {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gray-200);
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+        }
+
+        .announcement-toggle:hover {
+            color: var(--white);
+            border-color: rgba(255,255,255,0.5);
         }
 
         .announcement-content {
             display: grid;
             grid-template-columns: 1.5fr 1fr;
-            gap: 2rem;
+            gap: 1.5rem;
             align-items: center;
         }
 
         .announcement-headline {
             font-family: 'Space Mono', monospace;
-            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-size: clamp(1.2rem, 2.6vw, 1.7rem);
             color: var(--white);
             font-weight: 400;
             line-height: 1.2;
-            margin: 0 0 1rem;
+            margin: 0;
             letter-spacing: -0.5px;
         }
 
         .announcement-summary {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             line-height: 1.6;
             color: var(--gray-300);
-            margin: 0 0 1.5rem;
+            margin: 0 0 1.25rem;
         }
 
         .announcement-facts {
@@ -273,6 +302,15 @@
         }
 
         @media (max-width: 900px) {
+            .announcement-header-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .announcement-toggle {
+                align-self: flex-start;
+            }
+
             .announcement-content {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
@@ -281,6 +319,14 @@
             .announcement-visual {
                 order: -1;
             }
+        }
+
+        .featured-announcement.is-collapsed .announcement-content {
+            display: none;
+        }
+
+        .featured-announcement.is-collapsed {
+            padding-bottom: 1.1rem;
         }
 
         /* Event Type Legend */
@@ -1543,11 +1589,16 @@
         </section>
 
         <!-- Featured Announcement: DFA x Detroit Public Access TV Partnership -->
-        <section class="featured-announcement">
-            <div class="announcement-eyebrow">NEW PARTNERSHIP</div>
-            <div class="announcement-content">
+        <section class="featured-announcement" id="dfaAnnouncement">
+            <div class="announcement-header">
+                <div class="announcement-header-top">
+                    <div class="announcement-eyebrow">NEW PARTNERSHIP</div>
+                    <button class="announcement-toggle" type="button" id="announcementToggle" aria-expanded="true" aria-controls="announcementContent">Collapse</button>
+                </div>
+                <h2 class="announcement-headline">DFA Films Now Air on Detroit Public Access TV</h2>
+            </div>
+            <div class="announcement-content" id="announcementContent">
                 <div class="announcement-text">
-                    <h2 class="announcement-headline">DFA Films Now Air on Detroit Public Access TV</h2>
                     <p class="announcement-summary">Accepted Detroit Filmmaker Awards films may now be broadcast on Detroit Public Access TV (Channels 22 & 68), reaching audiences on cable, streaming apps, and smart TVs across the region.</p>
                     <ul class="announcement-facts">
                         <li>Daily airings for one month</li>
@@ -1690,6 +1741,7 @@
                     <h3 class="event-modal-section-title">About</h3>
                     <p class="event-modal-description" id="eventModalDescription"></p>
                 </div>
+                <div class="event-modal-section" id="eventBioSection"></div>
                 <div class="event-modal-section" id="eventLinkSection"></div>
             </div>
         </div>
@@ -1698,6 +1750,92 @@
     <script src="events-data.js"></script>
     <script>
         const eventsDataset = typeof eventsData !== 'undefined' ? eventsData : [];
+        const normalizeEventKey = (title = '') => title
+            .toLowerCase()
+            .replace(/[’']/g, '')
+            .replace(/&/g, 'and')
+            .replace(/[^a-z0-9]+/g, ' ')
+            .trim();
+
+        const resourceBioLookup = {
+            'detroit filmmaker awards': {
+                summary: 'Detroit Filmmaker Awards is an annual Detroit festival and awards program that highlights independent filmmaking with screenings, networking, and celebration awards across multiple categories.',
+                highlights: [
+                    { label: 'Location', value: 'Detroit, MI' },
+                    { label: 'Broadcast', value: 'Detroit Public Access TV' }
+                ],
+                url: 'https://detroitfilmmakerawards.com/'
+            },
+            'cinetopia film festival': {
+                summary: 'Cinetopia brings acclaimed independent films to Ann Arbor with a focus on films that have premiered at major festivals, plus curated filmmaker appearances and community discussions.',
+                highlights: [
+                    { label: 'Location', value: 'Ann Arbor, MI' },
+                    { label: 'Focus', value: 'Curated indie premieres' }
+                ],
+                url: 'https://cinetopiafestival.org'
+            },
+            'ann arbor film festival aaff': {
+                summary: 'Ann Arbor Film Festival is a globally recognized festival for experimental, documentary, narrative, animation, and hybrid films. Founded in 1963, it is Academy Award®–qualifying for short films.',
+                highlights: [
+                    { label: 'Location', value: 'Ann Arbor, MI' },
+                    { label: 'Timing', value: 'Late March (annual)' }
+                ],
+                url: 'https://www.aafilmfest.org/'
+            },
+            'capital city film festival ccff': {
+                summary: 'Capital City Film Festival in Lansing showcases a diverse mix of narrative, documentary, and experimental films alongside live events, mixers, and filmmaker Q&As.',
+                highlights: [
+                    { label: 'Location', value: 'Lansing, MI' },
+                    { label: 'Timing', value: 'April (annual)' }
+                ],
+                url: 'https://filmfreeway.com/CapitalCityFilmFestival'
+            },
+            'hells half mile film and music festival': {
+                summary: 'Hell’s Half Mile is a four-day independent film and music festival in downtown Bay City featuring features, shorts, live music, panels, and community networking events.',
+                highlights: [
+                    { label: 'Location', value: 'Bay City, MI' },
+                    { label: 'Timing', value: 'Late September (annual)' }
+                ],
+                url: 'https://hhmfest.com/'
+            },
+            'horror film roulette': {
+                summary: 'Horror Film Roulette is a competitive horror short film festival where LaB Media’s “Trail Dead” earned Best Editing recognition in 2025.',
+                highlights: [
+                    { label: 'Format', value: 'Competition' },
+                    { label: 'Focus', value: 'Horror shorts' }
+                ],
+                url: 'https://horrorfilmroulette.com'
+            },
+            'comedy roll film festival': {
+                summary: 'Comedy Roll Film Festival celebrates comedic short films. LaB Media’s “Lookout” earned Top 25 placement in 2025.',
+                highlights: [
+                    { label: 'Focus', value: 'Comedy shorts' },
+                    { label: 'Recognition', value: 'Top 25 (2025)' }
+                ],
+                url: 'https://thecomedyroll.com'
+            },
+            'farmington film festival': {
+                summary: 'Farmington Film Festival showcases indie shorts and features with a focus on community connection in Metro Detroit, pairing screenings with Q&As and mixers.',
+                highlights: [
+                    { label: 'Location', value: 'Farmington, MI' },
+                    { label: 'Focus', value: 'Community screenings' }
+                ],
+                url: 'https://kickstartfarmington.org/film/'
+            },
+            'fresh coast film festival': {
+                summary: 'Fresh Coast Film Festival in Marquette showcases documentary films centered on outdoor lifestyles, Great Lakes storytelling, and environmental and cultural themes.',
+                highlights: [
+                    { label: 'Location', value: 'Marquette, MI' },
+                    { label: 'Timing', value: 'October (third weekend)' }
+                ],
+                url: 'https://freshcoastfilm.com/'
+            }
+        };
+
+        const getResourceBio = (eventData) => {
+            if (!eventData || !eventData.title) return null;
+            return eventData.bio || resourceBioLookup[normalizeEventKey(eventData.title)] || null;
+        };
         const eventSchemaItems = eventsDataset.map((evt) => {
             if (!evt || !evt.title || !evt.startDate) return null;
             const start = evt.startTime ? `${evt.startDate}T${evt.startTime}` : evt.startDate;
@@ -1738,6 +1876,8 @@
         const calendarGrid = document.getElementById('calendarGrid');
         const listContainer = document.getElementById('listContainer');
         const togglePastEventsBtn = document.getElementById('togglePastEvents');
+        const announcementSection = document.getElementById('dfaAnnouncement');
+        const announcementToggle = document.getElementById('announcementToggle');
 
         const eventModalClose = document.getElementById('eventModalClose');
 
@@ -1750,6 +1890,14 @@
         let currentEventData = null;
         let lastEventFocusEl = null;
         let selectedEventId = null;
+
+        if (announcementToggle && announcementSection) {
+            announcementToggle.addEventListener('click', () => {
+                const isCollapsed = announcementSection.classList.toggle('is-collapsed');
+                announcementToggle.textContent = isCollapsed ? 'Expand' : 'Collapse';
+                announcementToggle.setAttribute('aria-expanded', String(!isCollapsed));
+            });
+        }
 
         const typeLabels = {
             meetup: 'Meetup',
@@ -2403,6 +2551,37 @@
                 if (descSection) descSection.style.display = 'block';
             } else if (descSection) {
                 descSection.style.display = 'none';
+            }
+
+            const bioSection = document.getElementById('eventBioSection');
+            if (bioSection) {
+                const bioData = getResourceBio(eventData);
+                if (bioData && bioData.summary) {
+                    const highlights = Array.isArray(bioData.highlights) ? bioData.highlights : [];
+                    bioSection.innerHTML = `
+                        <h3 class="event-modal-section-title">Event Bio</h3>
+                        <div class="event-bio">
+                            <div class="event-bio-head">
+                                <div class="event-bio-label">Resource Snapshot</div>
+                                ${bioData.url ? `<a class="cta-btn" href="${bioData.url}" target="_blank" rel="noopener noreferrer">Visit resource →</a>` : ''}
+                            </div>
+                            <p class="event-bio-summary">${bioData.summary}</p>
+                            ${highlights.length ? `
+                                <div class="event-bio-grid">
+                                    ${highlights.map((item) => `
+                                        <div class="event-bio-block">
+                                            <div class="event-bio-label">${item.label}</div>
+                                            <div class="event-bio-value">${item.value}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                    bioSection.style.display = 'block';
+                } else {
+                    bioSection.style.display = 'none';
+                }
             }
 
             // Links
