@@ -4,6 +4,18 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 7:13PM EST
+———————————————————————
+Change: Refined mobile layout fixes on the portfolio page, aligned callboard navigation with the main site, and unified footer layout/placement across resources, ideas, events, plan, and contact.
+Files touched: portfolio.html, resources.html, ideas.html, events.html, plan-your-project.html, contact.html, callboard.html, CHANGELOG_RUNNING.md
+Notes: Updated MOZ mobile stacking, swapped Lookout mobile order, expanded Trail Dead mobile coverage, moved footer social icons left on resources, and matched footer layout across key pages with consistent nav styling.
+Quick test checklist:
+1. Open portfolio.html on a mobile viewport, confirm MOZ stacks cleanly, Trail Dead fills the screen without clipped edges, and Lookout shows video before text so background faces stay visible.
+2. Open resources.html and confirm the Instagram icon sits on the far left of the footer; verify layout spacing remains balanced at desktop and mobile widths.
+3. Open ideas.html, events.html, plan-your-project.html, and contact.html to confirm footer layout matches resources and icons are left-aligned on desktop, centered on mobile.
+4. Open callboard.html and confirm the top navigation uses the full link row matching other pages.
+5. Open DevTools console on portfolio.html, resources.html, and callboard.html to verify no errors.
+
 2026-01-16 | 6:20PM EST
 ———————————————————————
 Change: Added a contextual hot tip panel to resources, tuned mobile layouts on portfolio sections, and paused videos when scrolling away.
