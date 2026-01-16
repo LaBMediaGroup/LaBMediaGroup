@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 2:14PM EST
+———————————————————————
+Change: Tuned mobile portfolio styling for the MOZ section and lightened mobile backgrounds for Trail Dead and Lookout.
+Files touched: portfolio.html, CHANGELOG_RUNNING.md
+Notes: Added mobile spacing and logo sizing adjustments for MOZ, plus increased mobile background image visibility for Trail Dead and Lookout.
+Quick test checklist:
+1. Open portfolio.html on a phone-sized viewport and scroll to the MOZ section; confirm the logo, video, and info card stack cleanly without the nav overlapping.
+2. On the same viewport, check Trail Dead and Lookout sections; confirm the background art is more visible while text remains readable.
+3. Open DevTools console on portfolio.html and verify no errors.
+
 2026-01-16 | 1:32PM EST
 ———————————————————————
 Change: Made the DFA partnership callout open an on-page modal with full details and tuned the DFA resource bio image metadata.
