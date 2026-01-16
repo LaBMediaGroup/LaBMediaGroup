@@ -581,6 +581,15 @@ body {
     opacity: 0.5;
 }
 
+.footer-nav {
+    position: static;
+    top: auto;
+    right: auto;
+    left: auto;
+    padding: 0;
+    mix-blend-mode: normal;
+}
+
 /* ============================================
    UTILITY CLASSES
    ============================================ */
