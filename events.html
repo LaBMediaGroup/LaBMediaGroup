@@ -2431,14 +2431,12 @@
                     }
 
                     const payload = {
-                        name: eventName,
                         event_name: eventName,
                         event_type: eventType,
                         start_date: startDate,
                         end_date: endDate || null,
                         location,
                         link: (linkRaw && linkRaw !== 'https://') ? linkRaw : null,
-                        url: (linkRaw && linkRaw !== 'https://') ? linkRaw : null,
                         notes: notesRaw || null,
                         source: source || 'events-page',
                         companyWebsite: suggestForm.companyWebsite.value.trim()

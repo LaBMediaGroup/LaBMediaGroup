@@ -42,11 +42,11 @@ Quick test checklist:
 - Do not introduce new dependencies unless requested
 - **Zero budget constraint** - No paid services ever (no Airtable Pro, ConvertKit, custom backend, etc.)
 - Free tier tools only: GitHub Pages, Mailchimp free, Formspree free
-- If it costs money, don't suggest it
+- If it costs money, don't suggest it...unless it's cheap
 
 ### Design Intent
 - "Prototype / command-line" aesthetic
-- **Crisp lines only. No glow on accent lines.**
+- **Crisp lines only accent lines.**
   - Do not add box-shadow halos, neon glows, bloom effects to accent lines
   - Accent lines are solid/clean; any animation is opacity/position only
 - Cards/tiles remain minimal. Details go in modals/bio view
@@ -66,7 +66,7 @@ Quick test checklist:
 - Motion: GSAP/ScrollTrigger acceptable; must respect `prefers-reduced-motion`
 - Voice agent: should not clutter top nav; must not cover content
 
-### resources.html (Crown Jewel)
+### resources.html 
 - Fast filtering & search is priority
 - Category "hubs" preferred over too many tabs
 - Favorites:
@@ -203,8 +203,8 @@ After any merge, verify:
 - Saved drawer hidden until opened
 
 ### Events Page
-- No TX/CA/NY demo locations (Metro Detroit only)
-- Month grid calendar is default view
+- (Metro Detroit only) ~75 out
+- Month grid calendar is default view split with events list.
 
 ### All Pages
 - No console errors in DevTools
