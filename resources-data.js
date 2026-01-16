@@ -185,7 +185,7 @@ const resources = [
         filmFreewayUrl: 'https://filmfreeway.com/DetroitFilmmakerAwards',
         paid: true,
         bioImage: 'images/DFAXDFM.JPG',
-        bioImageAlt: 'Detroit Filmmaker Awards logo',
+        bioImageAlt: 'Detroit Filmmaker Awards x Film Detroit',
         keyInfo: [
             { label: 'Location', value: 'Detroit, MI' },
             { label: 'Broadcast', value: 'Local TV' }
