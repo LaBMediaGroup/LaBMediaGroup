@@ -460,6 +460,7 @@
             text-align: center;
             background: var(--black);
             margin-top: 4rem;
+            position: relative;
         }
 
         .footer-nav {
@@ -486,9 +487,12 @@
 
         .footer-social {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             gap: 1rem;
-            margin-bottom: 1.5rem;
+            position: absolute;
+            left: 2rem;
+            top: 3rem;
+            align-items: center;
         }
 
         .footer-social a {
@@ -530,6 +534,14 @@
         .footer-credit {
             font-size: 0.7rem;
             color: var(--gray-600);
+        }
+
+        @media (max-width: 768px) {
+            .footer-social {
+                position: static;
+                justify-content: center;
+                margin: 1.25rem 0;
+            }
         }
 
         .site-nav .nav-links {

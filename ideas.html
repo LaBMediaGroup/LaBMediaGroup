@@ -1154,20 +1154,23 @@
         /* ============================================
            FOOTER
         ============================================ */
-        .footer {
-            padding: 3rem 0;
+        .site-footer {
+            padding: 3rem 2rem;
             border-top: 1px solid var(--gray-800);
             text-align: center;
+            background: var(--black);
+            position: relative;
         }
 
-        .footer-links {
+        .footer-nav {
             display: flex;
             justify-content: center;
             gap: 2rem;
             margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
 
-        .footer-links a {
+        .footer-nav a {
             font-family: 'Space Mono', monospace;
             font-size: 0.65rem;
             color: var(--gray-600);
@@ -1177,15 +1180,17 @@
             transition: color 0.3s ease;
         }
 
-        .footer-links a:hover {
+        .footer-nav a:hover {
             color: var(--white);
         }
 
         .footer-social {
             display: flex;
-            justify-content: center;
             gap: 1rem;
-            margin-bottom: 1.25rem;
+            position: absolute;
+            left: 2rem;
+            top: 3rem;
+            align-items: center;
         }
 
         .footer-social a {
@@ -1207,6 +1212,18 @@
         .footer-credit {
             font-size: 0.7rem;
             color: var(--gray-600);
+        }
+
+        @media (max-width: 768px) {
+            .footer-social {
+                position: static;
+                justify-content: center;
+                margin-top: 1.25rem;
+            }
+
+            .footer-nav {
+                gap: 1rem;
+            }
         }
 
         /* ============================================
@@ -1894,8 +1911,8 @@
         </section>
 
         <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-links">
+        <footer class="site-footer">
+            <div class="footer-nav">
                 <a href="index.html">Home</a>
                 <a href="portfolio.html">Reel</a>
                 <a href="resources.html">Resources</a>
