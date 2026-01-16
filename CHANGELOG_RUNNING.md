@@ -4,6 +4,17 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 6:25AM EST
+———————————————————————
+Change: Added a Ken Burns background image treatment for the Anthony Brass portfolio section.
+Files touched: portfolio.html, CHANGELOG_RUNNING.md
+Notes: Applied BrassShoot.jpeg as the section background with a soft gradient overlay for readability.
+Quick test checklist:
+1. Open portfolio.html and confirm the Anthony Brass section shows the new background image with a subtle Ken Burns motion.
+2. Scroll within the Anthony Brass section and confirm text remains legible over the overlay.
+3. Enable prefers-reduced-motion and confirm the background animation stops.
+4. Open DevTools Console and confirm there are no errors.
+
 2026-01-16 | 5:55AM EST
 ———————————————————————
 Change: Increased the homepage nav logo height to make the LaBMedia.png mark more prominent.
