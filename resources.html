@@ -1407,6 +1407,32 @@
             padding-left: 1rem;
         }
 
+        .modal-feature-media {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .modal-feature-media .modal-section {
+            margin-bottom: 0;
+        }
+
+        .modal-image-col {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-image-col img {
+            width: 100%;
+            max-width: 320px;
+            border: 1px solid var(--gray-800);
+            border-radius: 6px;
+            background: var(--black);
+            object-fit: contain;
+        }
+
         /* Mobile: stack columns */
         @media (max-width: 768px) {
             .modal-two-col {
@@ -1423,6 +1449,20 @@
 
             .modal-two-col .links-col {
                 padding-left: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .modal-feature-media {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-image-col {
+                justify-content: flex-start;
+            }
+
+            .modal-image-col img {
+                max-width: 100%;
             }
         }
 
@@ -3304,6 +3344,20 @@
                     ).join('') + '</div></div>';
             }
 
+            let featuresWithMediaHTML = featuresHTML;
+            if (r.bioImage) {
+                const bioAltText = r.bioImageAlt || (r.name + ' image');
+                const bioImageHTML = '<div class="modal-image-col"><img src="' + r.bioImage + '" alt="' + bioAltText + '"></div>';
+                if (featuresHTML) {
+                    featuresWithMediaHTML = '<div class="modal-feature-media">' +
+                        '<div class="modal-feature-col">' + featuresHTML + '</div>' +
+                        bioImageHTML +
+                    '</div>';
+                } else {
+                    featuresWithMediaHTML = '<div class="modal-feature-media">' + bioImageHTML + '</div>';
+                }
+            }
+
             const ctas = [];
             const addedLinks = new Set();
             const filmFreewayLink = r.filmFreewayUrl || getKeyInfoLink(r, 'filmfreeway');
@@ -3422,7 +3476,7 @@
                     videoHTML +
                     keyInfoHTML +
                     pricingHTML +
-                    featuresHTML +
+                    featuresWithMediaHTML +
                     relatedLinksHTML +
                     ctaHTML;
             }
