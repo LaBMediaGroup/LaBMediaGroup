@@ -4,6 +4,17 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 1:32PM EST
+———————————————————————
+Change: Made the DFA partnership callout open an on-page modal with full details and tuned the DFA resource bio image metadata.
+Files touched: index.html, resources-data.js, CHANGELOG_RUNNING.md
+Notes: The DFA callout on the homepage is now fully clickable and opens a modal with details, image, and close behavior instead of navigating away.
+Quick test checklist:
+1. Open index.html and click anywhere on the DFA callout tile; confirm a modal opens with image, details, and a close button.
+2. Click the backdrop or press ESC to close the modal, then confirm focus returns to the callout tile.
+3. Open resources.html and open the Detroit Filmmaker Awards modal; confirm the DFA image appears in the bio panel.
+4. Open DevTools console on both pages and verify no errors.
+
 2026-01-16 | 1:04PM EST
 ———————————————————————
 Change: Added Detroit Filmmaker Awards bio image to the resources modal and aligned it beside the features list.
