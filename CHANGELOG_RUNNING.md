@@ -4,6 +4,36 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 6:09AM EST
+———————————————————————
+Change: Removed the ideas page orientation line and refreshed the genre toggle styling for a more themed feel.
+Files touched: ideas.html, CHANGELOG_RUNNING.md
+Notes: Added an inner accent ring and gradient fill to checked toggles.
+Quick test checklist:
+1. Open ideas.html and confirm the orientation line below the page intro is gone.
+2. Toggle Horror and Comedy on/off and confirm the switches show the new themed accent styling without glow.
+3. Open DevTools Console and confirm there are no errors on load.
+
+2026-01-16 | 6:05AM EST
+———————————————————————
+Change: Removed the Metro Detroit radius line from the events hero copy.
+Files touched: events.html, CHANGELOG_RUNNING.md
+Notes: Deleted the “Metro Detroit only — roughly 50 miles from Shelby Township.” line.
+Quick test checklist:
+1. Open events.html and confirm the hero section no longer shows the Metro Detroit radius line.
+2. Scroll the page and confirm the hero layout spacing still feels consistent.
+3. Open DevTools Console and confirm there are no errors on load.
+
+2026-01-16 | 5:55AM EST
+———————————————————————
+Change: Increased the homepage nav logo height to make the LaBMedia.png mark more prominent.
+Files touched: index.html, CHANGELOG_RUNNING.md
+Notes: Adjusted the nav logo height from 32px to 48px.
+Quick test checklist:
+1. Open index.html and confirm the top nav LaBMedia.png logo appears noticeably larger without overlapping the nav links.
+2. Resize the browser width and confirm the nav still stays aligned with no clipping.
+3. Open DevTools Console and confirm there are no errors on load.
+
 2026-01-16 | 5:41AM EST
 ———————————————————————
 Change: Updated the homepage hero copy and nav logo to match the latest brand presentation.
