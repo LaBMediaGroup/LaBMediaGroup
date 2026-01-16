@@ -622,7 +622,7 @@
         const fetchListings = async () => {
             setStatus('Loading approved listings...');
             try {
-                const url = `${SUPABASE_CONFIG.url}/rest/v1/callboard_listings?select=id,title,listing_type,compensation,location,description,contact_method,tags,date_posted,created_at&status=eq.approved&order=created_at.desc`;
+                const url = `${SUPABASE_CONFIG.url}/rest/v1/callboard_listings?select=id,title,listing_type,compensation,location,description,contact_method,tags,date_posted,created_at&approved=eq.true&order=created_at.desc`;
                 const response = await fetch(url, {
                     headers: {
                         apikey: SUPABASE_CONFIG.anonKey,
