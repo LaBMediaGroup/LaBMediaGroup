@@ -4,6 +4,24 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 9:22PM EST
+———————————————————————
+Change: Added clearer submission feedback on forms, fixed Events poster image, corrected Plan page footer nav duplication, and darkened Anthony Brass overlay.
+Files touched: events-data.js, events.html, callboard.html, resources.html, plan-your-project.html, portfolio.html, CHANGELOG_RUNNING.md
+Notes:
+1. Added animated status messaging for Callboard, Events, and Resources form submissions to make success/error states obvious.
+2. Updated the Frames & Fabrics poster to use the correct JPG asset.
+3. Replaced the Plan Your Project footer nav element to stop the fixed header duplication.
+4. Adjusted the Anthony Brass overlay/shadow to a darker, woodier tone.
+Quick test checklist:
+1. Open events.html → Submit Event → verify “Sending…” status animation, then “Submitted for review,” and modal closes after a short delay.
+2. Open callboard.html → Submit a Listing → verify status message animates and confirms submission.
+3. Open resources.html → Suggest a Resource → verify sending state and success confirmation animation before auto-close.
+4. Open events.html → Posters → confirm Frames & Fabrics poster image loads.
+5. Open plan-your-project.html → verify only one header nav appears and links are clickable.
+6. Open portfolio.html → Anthony Brass section → confirm darker overlay and less floaty video card styling.
+7. Open DevTools console on events.html, callboard.html, resources.html, plan-your-project.html, and portfolio.html → confirm no errors.
+
 2026-01-17 | 12:15AM EST
 ———————————————————————
 Change: Documentation overhaul, MOZ mobile fix, and SEO updates

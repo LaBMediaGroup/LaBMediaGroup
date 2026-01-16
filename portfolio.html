@@ -569,8 +569,8 @@
             content: '';
             position: absolute;
             inset: 0;
-            /* Horizontal gradient: stronger opacity left (text area) → lighter right (video area) */
-            background: linear-gradient(90deg, rgba(245, 230, 221, 0.38) 0%, rgba(249, 237, 230, 0.31) 50%, rgba(253, 244, 239, 0.25) 100%);
+            /* Dark brown veil: stronger opacity left (text area) → lighter right (video area) */
+            background: linear-gradient(90deg, rgba(62, 40, 28, 0.55) 0%, rgba(62, 40, 28, 0.4) 55%, rgba(62, 40, 28, 0.3) 100%);
             z-index: 2;
         }
         
@@ -595,7 +595,8 @@
         #artist .video-container {
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 30px 60px rgba(180, 100, 80, 0.15);
+            box-shadow: 0 18px 36px rgba(62, 40, 28, 0.35);
+            border: 1px solid rgba(62, 40, 28, 0.4);
             max-width: 720px;
         }
         

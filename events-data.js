@@ -123,6 +123,6 @@ const eventsPosterData = [
         website: 'https://detroitmi.gov/',
         verification: 'tbd',
         verificationLabel: 'Check site',
-        posterImage: 'images/events/frames-fabrics-2026.svg'
+        posterImage: 'images/Framesnfabricflyer.JPG'
     }
 ];
