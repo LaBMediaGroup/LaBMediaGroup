@@ -2018,6 +2018,7 @@
         <ul class="nav-links">
             <li><a href="resources.html">Resources</a></li>
             <li><a href="events.html">Events</a></li>
+            <li><a href="callboard.html">Callboard</a></li>
             <li><a href="ideas.html">Story Generator</a></li>
             <li><a href="plan-your-project.html">Plan</a></li>
             <li><a href="portfolio.html">Reel</a></li>
@@ -2132,8 +2133,8 @@
 
         <!-- Quick Filters Row -->
         <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
-            <button class="quickfilter-btn" type="button" data-qf="getting-started">
-                🚀 Getting Started
+            <button class="quickfilter-btn" type="button" id="suggestQuick">
+                + Suggest
             </button>
             <button class="quickfilter-btn" type="button" data-qf="saved">
                 Saved
@@ -2285,8 +2286,8 @@
 
         const quickFilterBar = document.getElementById('quickFilterBar');
         const quickFilterButtons = quickFilterBar ? quickFilterBar.querySelectorAll('.quickfilter-btn') : [];
+        const suggestQuickBtn = document.getElementById('suggestQuick');
         const quickFilters = {
-            'getting-started': false,
             saved: false,
             labPick: false,
             free: false,
@@ -2936,15 +2937,10 @@
             }
 
             // Quick filters (multi-toggle)
-            const wantsGettingStarted = quickFilters['getting-started'];
             const wantsSaved = quickFilters.saved;
             const wantsLabPick = quickFilters.labPick;
             const wantsFree = quickFilters.free;
             const wantsPaid = quickFilters.paid;
-
-            if (wantsGettingStarted) {
-                filtered = filtered.filter(r => r.gettingStarted === true);
-            }
 
             if (wantsSaved) {
                 filtered = filtered.filter(r => isFavoriteId(getResourceId(r)));
@@ -3772,6 +3768,10 @@
             document.body.style.overflow = 'hidden';
             // Focus first input
             setTimeout(() => document.getElementById('suggestName').focus(), 100);
+        }
+
+        if (suggestQuickBtn) {
+            suggestQuickBtn.addEventListener('click', openSuggestModal);
         }
 
         function closeSuggestModal() {
