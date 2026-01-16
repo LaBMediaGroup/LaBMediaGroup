@@ -4,26 +4,6 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-16 | 5:48AM EST
-———————————————————————
-Change: Restored the hero PNG size and increased the nav logo size instead.
-Files touched: index.html, CHANGELOG_RUNNING.md
-Notes: Reverted hero logo sizing to its original clamp values and bumped the nav logo height to better match the new asset.
-Quick test checklist:
-1. Open index.html and confirm the hero PNG size matches the prior layout.
-2. Verify the top navigation logo appears larger without overlapping the nav links.
-3. Open DevTools Console and confirm there are no errors on load.
-
-2026-01-16 | 5:45AM EST
-———————————————————————
-Change: Increased the hero PNG size to better match the layout proportions.
-Files touched: index.html, CHANGELOG_RUNNING.md
-Notes: Enlarged the hero logo clamp sizing to make the PNG more prominent.
-Quick test checklist:
-1. Open index.html and confirm the hero PNG appears larger without overlapping the pill row or mission line.
-2. Resize the browser to verify the hero logo still scales smoothly at smaller widths.
-3. Open DevTools Console and confirm there are no errors on load.
-
 2026-01-16 | 5:41AM EST
 ———————————————————————
 Change: Updated the homepage hero copy and nav logo to match the latest brand presentation.
