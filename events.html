@@ -1613,6 +1613,19 @@
             .suggest-modal { max-height: 90vh; }
             .event-preview-modal { max-height: 95vh; }
             .event-modal-title { font-size: 1.3rem; }
+
+            .nav-links {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 1rem;
+                padding-bottom: 0.5rem;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .nav-links::-webkit-scrollbar {
+                display: none;
+            }
         }
 
         @media (max-width: 900px) {
