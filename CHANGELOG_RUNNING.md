@@ -4,6 +4,31 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 9:55AM EST
+———————————————————————
+Change: Updated the events dataset to the provided Royal Starr, Campfire, Film Detroit, and confirmed past events listings.
+Files touched: events-data.js, CHANGELOG_RUNNING.md
+Notes: Replaced the placeholder events list with the supplied upcoming and past entries so the calendar, list, modals, and exports reflect the intended data.
+Quick test checklist:
+1. Open events.html and confirm the calendar/list populate with the new Royal Starr and Film Detroit listings.
+2. Click an upcoming event and confirm the modal opens with details and Add to Calendar export.
+3. Toggle “Show Past” and confirm Comedy Roll + Horror Film Roulette entries render and open modals.
+4. Open past-events.html and confirm the same past events render.
+5. Open DevTools console on events.html and past-events.html and verify no errors.
+
+2026-01-16 | 9:50AM EST
+———————————————————————
+Change: Restored the missing events data file so the calendar, list, past events, and export flow can render again.
+Files touched: events-data.js, CHANGELOG_RUNNING.md
+Notes: Recreated the events dataset with Metro Detroit-only entries (future and past) so the events UI can render and modal/export features can function.
+Quick test checklist:
+1. Open events.html and confirm calendar/list populate with event pills and rows.
+2. Click a list row and confirm the event modal opens with details and Add to Calendar button for future events.
+3. Toggle “Show Past” and confirm past events render in the archive grid and open the modal on click.
+4. Click “Add to Calendar” on a future event and confirm an .ics file downloads.
+5. Open past-events.html and confirm past events render.
+6. Open DevTools console on events.html and past-events.html and verify no errors.
+
 2026-01-16 | 2:14PM EST
 ———————————————————————
 Change: Tuned mobile portfolio styling for the MOZ section and lightened mobile backgrounds for Trail Dead and Lookout.
