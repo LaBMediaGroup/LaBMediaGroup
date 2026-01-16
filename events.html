@@ -458,10 +458,11 @@
 
         .poster-image {
             width: 100%;
-            aspect-ratio: 16 / 9;
-            object-fit: cover;
+            aspect-ratio: 3 / 4;
+            object-fit: contain;
             display: block;
             border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: #050505;
         }
 
         .poster-meta {
@@ -1005,6 +1006,18 @@
         .event-bio-summary {
             margin: 0;
             color: var(--gray-300);
+        }
+
+        .event-bio-poster {
+            width: min(320px, 100%);
+            border: 1px solid rgba(255,255,255,0.12);
+            background: #050505;
+        }
+
+        .event-bio-poster img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         .event-bio-grid {
@@ -2847,6 +2860,13 @@
             const bioSection = document.getElementById('eventBioSection');
             if (bioSection) {
                 const bioData = getResourceBio(eventData);
+                const posterImage = eventData.posterImage || eventData.thumbnail || '';
+                const posterMarkup = posterImage ? `
+                    <div class="event-bio-poster">
+                        <img src="${posterImage}" alt="${eventData.title} poster" loading="lazy">
+                    </div>
+                ` : '';
+
                 if (bioData && bioData.summary) {
                     const highlights = Array.isArray(bioData.highlights) ? bioData.highlights : [];
                     bioSection.innerHTML = `
@@ -2856,6 +2876,7 @@
                                 <div class="event-bio-label">Resource Snapshot</div>
                                 ${bioData.url ? `<a class="cta-btn" href="${bioData.url}" target="_blank" rel="noopener noreferrer">Visit resource →</a>` : ''}
                             </div>
+                            ${posterMarkup}
                             <p class="event-bio-summary">${bioData.summary}</p>
                             ${highlights.length ? `
                                 <div class="event-bio-grid">
@@ -2867,6 +2888,14 @@
                                     `).join('')}
                                 </div>
                             ` : ''}
+                        </div>
+                    `;
+                    bioSection.style.display = 'block';
+                } else if (posterMarkup) {
+                    bioSection.innerHTML = `
+                        <h3 class="event-modal-section-title">Event Flyer</h3>
+                        <div class="event-bio">
+                            ${posterMarkup}
                         </div>
                     `;
                     bioSection.style.display = 'block';
@@ -3039,6 +3068,7 @@ END:VCALENDAR`;
             <a href="index.html">Home</a>
             <a href="portfolio.html">Reel</a>
             <a href="resources.html">Resources</a>
+            <a href="events.html">Events</a>
             <a href="ideas.html">Story Generator</a>
             <a href="https://ai.studio/apps/drive/1h-3BvBuLgnF0kRHx43_GWVIlwwWC31od?fullscreenApplet=true" target="_blank" rel="noopener noreferrer">LaB Talk (Beta)</a>
             <a href="contact.html">Contact</a>
@@ -3051,7 +3081,6 @@ END:VCALENDAR`;
                 <img src="images/yt_logo_fullcolor_white_digital.png" alt="YouTube">
             </a>
         </div>
-        <a href="plan-your-project.html" class="footer-cta">Start a Project</a>
         <p class="footer-credit">Made in Shelby Twp, MI with ❤️</p>
     </footer>
 
