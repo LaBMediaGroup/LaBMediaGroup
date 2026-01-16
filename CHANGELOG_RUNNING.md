@@ -4,16 +4,6 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-16 | 5:25PM EST
-———————————————————————
-Change: Routed resource suggestions through Supabase instead of mailto and allowed the endpoint in the CSP.
-Files touched: resources.html, CHANGELOG_RUNNING.md
-Notes: The suggest modal now posts to the submit-resource function and shows the review success state.
-Quick test checklist:
-1. Open resources.html, submit a suggestion, and confirm the success message appears.
-2. Verify the suggestion submits without CSP errors in DevTools.
-3. Refresh resources.html, reopen the modal, and ensure the form resets properly.
-
 2026-01-16 | 5:19PM EST
 ———————————————————————
 Change: Softened the Anthony Brass overlay and muted the Lookout color wash to a darker, greener palette.
