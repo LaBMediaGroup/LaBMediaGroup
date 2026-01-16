@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 5:13PM EST
+———————————————————————
+Change: Updated Supabase submission pages to allow the Supabase endpoint in CSP connect-src.
+Files touched: callboard.html, events.html, CHANGELOG_RUNNING.md
+Notes: Reformatted the CSP meta tags while keeping the same directives plus the Supabase endpoint.
+Quick test checklist:
+1. Open callboard.html, submit a listing, and confirm the request reaches Supabase without CSP errors.
+2. Open events.html, submit an event, and confirm the request reaches Supabase without CSP errors.
+3. Open DevTools console on callboard.html and events.html and verify no CSP errors.
+
 2026-01-16 | 4:12PM EST
 ———————————————————————
 Change: Added the Callboard page with Supabase-powered listings, filters, and a moderated submission modal.
