@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 5:41AM EST
+———————————————————————
+Change: Updated the homepage hero copy and nav logo to match the latest brand presentation.
+Files touched: index.html, CHANGELOG_RUNNING.md
+Notes: Removed the hero title text under the PNG, adjusted the mission line, and swapped the nav logo to LaBMedia.png with a larger size.
+Quick test checklist:
+1. Open index.html and confirm the hero logo no longer has “LaB Media” beneath it and the mission line starts with “A Creative Studio.”
+2. Verify the top navigation logo uses LaBMedia.png and appears larger without layout overlap.
+3. Open DevTools Console and confirm there are no errors on load.
+
 2026-01-16 | 2:53AM EST
 ———————————————————————
 Change: Simplified the homepage hero headline to keep the intro minimal.
