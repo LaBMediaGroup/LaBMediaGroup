@@ -4,16 +4,65 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-16 | 9:35PM EST
+2026-01-16 | 9:22PM EST
 ———————————————————————
-Change: Added mobile horizontal scroll behavior for long header nav link rows so navigation stays accessible on small screens.
-Files touched: callboard.html, resources.html, events.html, portfolio.html, plan-your-project.html, contact.html, past-events.html, CHANGELOG_RUNNING.md
-Notes: Enabled swipeable nav link rows on non-hamburger pages with hidden scrollbars to prevent overflow on mobile widths.
+Change: Added clearer submission feedback on forms, fixed Events poster image, corrected Plan page footer nav duplication, and darkened Anthony Brass overlay.
+Files touched: events-data.js, events.html, callboard.html, resources.html, plan-your-project.html, portfolio.html, CHANGELOG_RUNNING.md
+Notes:
+1. Added animated status messaging for Callboard, Events, and Resources form submissions to make success/error states obvious.
+2. Updated the Frames & Fabrics poster to use the correct JPG asset.
+3. Replaced the Plan Your Project footer nav element to stop the fixed header duplication.
+4. Adjusted the Anthony Brass overlay/shadow to a darker, woodier tone.
 Quick test checklist:
-1. Open callboard.html on a 360–414px wide screen and confirm the nav link row scrolls horizontally without clipping.
-2. Open resources.html, events.html, portfolio.html, plan-your-project.html, contact.html, and past-events.html on mobile width and swipe the header nav to reach all links.
-3. Verify the nav row remains aligned and readable on desktop widths (no unexpected wrapping).
-4. Open DevTools console on callboard.html and resources.html and verify no errors.
+1. Open events.html → Submit Event → verify “Sending…” status animation, then “Submitted for review,” and modal closes after a short delay.
+2. Open callboard.html → Submit a Listing → verify status message animates and confirms submission.
+3. Open resources.html → Suggest a Resource → verify sending state and success confirmation animation before auto-close.
+4. Open events.html → Posters → confirm Frames & Fabrics poster image loads.
+5. Open plan-your-project.html → verify only one header nav appears and links are clickable.
+6. Open portfolio.html → Anthony Brass section → confirm darker overlay and less floaty video card styling.
+7. Open DevTools console on events.html, callboard.html, resources.html, plan-your-project.html, and portfolio.html → confirm no errors.
+
+2026-01-17 | 12:15AM EST
+———————————————————————
+Change: Documentation overhaul, MOZ mobile fix, and SEO updates
+Files touched: CLAUDE.MD, AGENTS.md, README.md, robots.txt, sitemap.xml, portfolio.html, CHANGELOG_RUNNING.md
+Notes:
+1. **CLAUDE.MD** - Added Callboard page to key pages list, added Supabase integration section (CSP requirements, form patterns, honeypot fields), added callboard page rules, updated regression checklist, expanded quick reference with all pages and data files.
+2. **AGENTS.md** - Added Supabase integration section, added callboard.html page ownership rules, updated regression checklist with callboard checks, updated free tier tools list.
+3. **README.md** - Complete rewrite from 3-line placeholder to full project overview with features, tech stack, local focus, contributor docs, and zero-budget philosophy.
+4. **robots.txt** - Added descriptive comments and Disallow for 404.html.
+5. **sitemap.xml** - Added callboard.html entry (priority 0.75, weekly changefreq).
+6. **portfolio.html** - Fixed MOZ mobile layout: Added flex column display to #moz section, proper order values for masthead/section-inner/pull-quote/photo-credit, z-index layering, adjusted spacing and typography for clean vertical stack on mobile.
+Quick test checklist:
+1. Open portfolio.html on mobile (375px width), scroll to MOZ section - verify logo, video, info card, pull quote, and photo credit stack cleanly without overlap
+2. Open callboard.html and verify nav includes Callboard link, form opens and has all fields
+3. View sitemap.xml and confirm callboard.html entry exists
+4. Open DevTools console on portfolio.html and callboard.html - verify no errors
+
+2026-01-16 | 11:30PM EST
+———————————————————————
+Change: Major asset optimization and CSS consolidation
+Files touched: prototype-theme.css, images/BrassShoot2.png→.jpg, images/Pandys.png→.jpg, CHANGELOG_RUNNING.md
+Notes:
+1. **Image compression** - BrassShoot2.png (49MB) → BrassShoot2.jpg (392KB), Pandys.png (17MB) → Pandys.jpg (262KB). Original PNGs renamed with _ORIGINAL suffix for backup. Total savings: ~65MB.
+2. **CSS consolidation** - Added non-prefixed color variables (--black, --white, --gray-*, --lab-orange, --lab-green, --lab-purple, --accent-blue) to prototype-theme.css. Added base reset (*, body) and site navigation styles (nav, .site-nav, .nav-logo, .nav-back, .nav-links) to eliminate duplication across HTML files.
+3. **Callboard nav** - Verified Callboard link exists in all main page navs (index, resources, ideas, events, past-events, portfolio, plan-your-project, contact). 404 keeps simplified nav as intended.
+Quick test checklist:
+1. Open portfolio.html and confirm BrassShoot2/Pandys images load correctly (now JPG format)
+2. Open any page and confirm styles still apply correctly (variables now coming from theme file)
+3. Confirm nav links work and include Callboard on all main pages
+4. Open DevTools console on index.html and resources.html and verify no errors
+
+2026-01-16 | 9:45PM EST
+———————————————————————
+Change: Reorganized events page layout to display Calendar, List, and Events Posters as 3-column grid with equal heights
+Files touched: events.html, CHANGELOG_RUNNING.md
+Notes: Moved Events Posters section from standalone block to third column in events-split grid. Updated grid columns from 2-column to 3-column layout (Calendar | List | Posters). All three panes now share same max-height (70vh) with independent scrolling. Poster grid changed to single column for better fit in narrower pane. Mobile remains single-column stack.
+Quick test checklist:
+1. Open events.html on desktop and confirm Calendar, List, and Events Posters appear side-by-side in 3 equal-height columns
+2. Verify all three sections end at the same height and can scroll independently if content exceeds viewport
+3. Open events.html on mobile width and confirm all three sections stack vertically without overlap
+4. Open DevTools console on events.html and verify no errors
 
 2026-01-16 | 7:13PM EST
 ———————————————————————
