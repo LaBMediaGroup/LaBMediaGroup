@@ -4,6 +4,18 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 9:52PM EST
+———————————————————————
+Change: Prevented footer nav from inheriting fixed header styling to eliminate ghosted headers on portfolio/contact.
+Files touched: prototype-theme.css, CHANGELOG_RUNNING.md
+Notes:
+1. Scoped footer nav to static positioning so only the main site header remains fixed.
+Quick test checklist:
+1. Open portfolio.html → confirm only one header nav appears and footer nav stays in footer.
+2. Open contact.html → confirm only one header nav appears and footer nav stays in footer.
+3. Resize between desktop/mobile breakpoints on both pages → verify no ghosted/duplicated header nav.
+4. Open DevTools console on portfolio.html and contact.html → confirm no errors.
+
 2026-01-16 | 9:22PM EST
 ———————————————————————
 Change: Added clearer submission feedback on forms, fixed Events poster image, corrected Plan page footer nav duplication, and darkened Anthony Brass overlay.
