@@ -1401,22 +1401,23 @@
             /* DEMOTE BACKGROUNDS TO AMBIENT TEXTURE */
             section::before,
             section::after {
-                opacity: 0.06 !important;
+                opacity: 0.12 !important;
                 animation: none !important;
             }
 
             /* Specific background overrides */
             #horror::before,
             #horror::after {
-                opacity: 0.05 !important;
+                opacity: 0.18 !important;
             }
 
-            #comedy::before {
-                opacity: 0.08 !important;
+            #comedy::before,
+            #comedy::after {
+                opacity: 0.2 !important;
             }
 
             #artist::before {
-                opacity: 0.06 !important;
+                opacity: 0.12 !important;
             }
 
             /* LEFT-ALIGN ALL TEXT (no centered poetry) */
@@ -1484,6 +1485,10 @@
                 max-width: 100% !important;
             }
 
+            #moz {
+                padding-top: 6rem !important;
+            }
+
             #moz .section-inner {
                 padding: 0 !important;
             }
@@ -1507,8 +1512,12 @@
 
             #moz .moz-masthead {
                 position: static !important;
-                margin-bottom: 1rem !important;
+                margin: 0 0 1.25rem !important;
                 text-align: left !important;
+            }
+
+            #moz .moz-logo {
+                height: 92px !important;
             }
 
             #pandys .project-title,

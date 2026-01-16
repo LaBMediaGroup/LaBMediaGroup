@@ -213,6 +213,25 @@
             line-height: 1.7;
         }
 
+        .past-event-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--white);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            width: fit-content;
+            padding-bottom: 0.2rem;
+        }
+
+        .past-event-link:hover {
+            border-bottom-color: var(--white);
+        }
+
         .past-event-photos {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
@@ -349,6 +368,51 @@
     <script src="events-data.js"></script>
     <script>
         const eventsDataset = typeof eventsData !== 'undefined' ? eventsData : [];
+        const normalizeEventKey = (title = '') => title
+            .toLowerCase()
+            .replace(/[’']/g, '')
+            .replace(/&/g, 'and')
+            .replace(/[^a-z0-9]+/g, ' ')
+            .trim();
+
+        const resourceBioLookup = {
+            'detroit filmmaker awards': {
+                summary: 'Detroit Filmmaker Awards is an annual Detroit festival and awards program that highlights independent filmmaking with screenings, networking, and celebration awards across multiple categories.',
+                url: 'https://detroitfilmmakerawards.com/'
+            },
+            'cinetopia film festival': {
+                summary: 'Cinetopia brings acclaimed independent films to Ann Arbor with a focus on films that have premiered at major festivals, plus curated filmmaker appearances and community discussions.',
+                url: 'https://cinetopiafestival.org'
+            },
+            'ann arbor film festival aaff': {
+                summary: 'Ann Arbor Film Festival is a globally recognized festival for experimental, documentary, narrative, animation, and hybrid films. Founded in 1963, it is Academy Award®–qualifying for short films.',
+                url: 'https://www.aafilmfest.org/'
+            },
+            'capital city film festival ccff': {
+                summary: 'Capital City Film Festival in Lansing showcases a diverse mix of narrative, documentary, and experimental films alongside live events, mixers, and filmmaker Q&As.',
+                url: 'https://filmfreeway.com/CapitalCityFilmFestival'
+            },
+            'hells half mile film and music festival': {
+                summary: 'Hell’s Half Mile is a four-day independent film and music festival in downtown Bay City featuring features, shorts, live music, panels, and community networking events.',
+                url: 'https://hhmfest.com/'
+            },
+            'horror film roulette': {
+                summary: 'Horror Film Roulette is a competitive horror short film festival where LaB Media’s “Trail Dead” earned Best Editing recognition in 2025.',
+                url: 'https://horrorfilmroulette.com'
+            },
+            'comedy roll film festival': {
+                summary: 'Comedy Roll Film Festival celebrates comedic short films. LaB Media’s “Lookout” earned Top 25 placement in 2025.',
+                url: 'https://thecomedyroll.com'
+            },
+            'farmington film festival': {
+                summary: 'Farmington Film Festival showcases indie shorts and features with a focus on community connection in Metro Detroit, pairing screenings with Q&As and mixers.',
+                url: 'https://kickstartfarmington.org/film/'
+            },
+            'fresh coast film festival': {
+                summary: 'Fresh Coast Film Festival in Marquette showcases documentary films centered on outdoor lifestyles, Great Lakes storytelling, and environmental and cultural themes.',
+                url: 'https://freshcoastfilm.com/'
+            }
+        };
 
         function formatDate(dateStr) {
             if (!dateStr) return '';
@@ -385,7 +449,8 @@
 
             grid.innerHTML = pastEvents.map(event => {
                 const photos = Array.isArray(event.photos) ? event.photos.slice(0, 3) : [];
-                const recap = event.recap || event.description || 'Recap coming soon.';
+                const resourceBio = resourceBioLookup[normalizeEventKey(event.title)] || null;
+                const recap = event.recap || event.description || resourceBio?.summary || 'Recap coming soon.';
 
                 return `
                     <article class="past-event-card">
@@ -393,6 +458,7 @@
                         <h2 class="past-event-title">${event.title}</h2>
                         <div class="past-event-date">${formatDateRange(event)}</div>
                         <p class="past-event-recap">${recap}</p>
+                        ${resourceBio?.url ? `<a class="past-event-link" href="${resourceBio.url}" target="_blank" rel="noopener noreferrer">Event resource →</a>` : ''}
                         ${photos.length ? `
                             <div class="past-event-photos">
                                 ${photos.map(photo => `<img src="${photo}" alt="${event.title} photo">`).join('')}
