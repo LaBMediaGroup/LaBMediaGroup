@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.youtube.com https://www.youtube-nocookie.com;">
-    <title>Work | LaB Media</title>
+    <title>Case Studies | Studio Work & Production Reference | LaB Media</title>
     <link rel="canonical" href="https://labmedia.work/portfolio.html">
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Documentary, music videos, commercial production, and creative work by LaB Media. Detroit-based film production portfolio.">
-    <meta name="keywords" content="LaB Media portfolio, Detroit filmmaker, documentary work, music video portfolio, commercial production">
+    <meta name="description" content="Selected case studies and reference projects from LaB Media, a Metro Detroit creative studio and community filmmaking hub.">
+    <meta name="keywords" content="LaB Media case studies, Metro Detroit creative studio, Detroit filmmaker work, production reference">
     <meta name="author" content="LaB Media">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://labmedia.work/portfolio.html">
-    <meta property="og:title" content="Work | LaB Media">
-    <meta property="og:description" content="Documentary, music videos, and commercial production by LaB Media.">
+    <meta property="og:title" content="Case Studies | Studio Work & Production Reference | LaB Media">
+    <meta property="og:description" content="Selected case studies and reference projects from LaB Media, a Metro Detroit creative studio.">
     <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://labmedia.work/portfolio.html">
-    <meta name="twitter:title" content="Work | LaB Media">
-    <meta name="twitter:description" content="Documentary, music videos, and commercial production by LaB Media.">
+    <meta name="twitter:title" content="Case Studies | Studio Work & Production Reference | LaB Media">
+    <meta name="twitter:description" content="Selected case studies and reference projects from LaB Media, a Metro Detroit creative studio.">
     <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
 
     <!-- Fonts -->
@@ -32,6 +32,23 @@
 
     <!-- Prototype Design System -->
     <link rel="stylesheet" href="prototype-theme.css">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "LaB Media",
+      "url": "https://labmedia.work",
+      "logo": "https://labmedia.work/images/TheLaB.png",
+      "description": "Metro Detroit creative studio and community hub sharing filmmaking resources, local events, and production knowledge.",
+      "areaServed": "Metro Detroit, Michigan",
+      "sameAs": [
+        "https://www.instagram.com/labmedia.work/",
+        "https://www.youtube.com/@labmediawork"
+      ]
+    }
+    </script>
 
     <style>
         :root {
@@ -151,6 +168,50 @@
 
         .nav-links a:hover {
             opacity: 0.5;
+        }
+
+        .portfolio-intro {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 4rem 4rem;
+        }
+
+        .portfolio-intro .intro-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-intro h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            color: var(--white);
+            margin: 0 0 1rem;
+        }
+
+        .portfolio-intro .intro-text {
+            max-width: 640px;
+            color: var(--gray-400);
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+        }
+
+        .portfolio-intro .intro-links {
+            color: var(--gray-400);
+            line-height: 1.7;
+        }
+
+        .portfolio-intro a {
+            color: var(--white);
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .portfolio-intro a:hover {
+            border-bottom-color: var(--white);
         }
         
         /* Project Counter */
@@ -1114,6 +1175,10 @@
                 padding: 1.5rem 2rem;
             }
 
+            .portfolio-intro {
+                padding: 7rem 2rem 3rem;
+            }
+
             .project-counter {
                 right: 2rem;
             }
@@ -1148,6 +1213,10 @@
         @media (max-width: 640px) {
             nav {
                 padding: 1rem 1.5rem;
+            }
+
+            .portfolio-intro {
+                padding: 6rem 1.5rem 2rem;
             }
 
             .project-counter {
@@ -1278,10 +1347,17 @@
             <li><a href="events.html">Events</a></li>
             <li><a href="ideas.html">Story Generator</a></li>
             <li><a href="plan-your-project.html">Plan</a></li>
-            <li><a href="portfolio.html">Work</a></li>
+            <li><a href="portfolio.html">Case Studies</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
+
+    <header class="portfolio-intro">
+        <div class="intro-label">Studio Work (Reference)</div>
+        <h1>Case Studies</h1>
+        <p class="intro-text">Selected projects included as reference from our work as a creative studio.</p>
+        <p class="intro-links">Need tools or collaborators? Explore the <a href="resources.html">resources hub</a> or see <a href="events.html">local events</a>.</p>
+    </header>
     
     <!-- Project Counter -->
     <div class="project-counter">
@@ -1635,10 +1711,10 @@
             <a href="contact.html">Contact</a>
         </nav>
         <div class="footer-social">
-            <a href="https://www.instagram.com/labmediaproductions/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <a href="https://www.instagram.com/labmedia.work/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                 <img src="images/Instagram_Glyph_Gradient.png" alt="Instagram">
             </a>
-            <a href="https://www.youtube.com/@LaB_Media" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <a href="https://www.youtube.com/@labmediawork" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
                 <img src="images/yt_logo_fullcolor_white_digital.png" alt="YouTube">
             </a>
         </div>

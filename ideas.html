@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
-    <title>Ideas | LaB Media - Short Film Prompt Generator</title>
+    <title>Ideas | Short Film Prompts & Filmmaking Tools | LaB Media</title>
     <link rel="canonical" href="https://labmedia.work/ideas.html">
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Roll the die and spark your next short film. An interactive prompt generator for filmmakers with concepts, constraints, locations, and bonus challenges.">
-    <meta name="keywords" content="short film ideas, film prompts, filmmaking inspiration, story generator, indie film concepts, screenplay ideas, creative writing prompts">
+    <meta name="description" content="Short film prompts and creative constraints from a Metro Detroit studio hub to spark new projects and production-ready ideas.">
+    <meta name="keywords" content="short film ideas, film prompts, Metro Detroit filmmaking tools, story generator, indie film concepts">
     <meta name="author" content="LaB Media">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://labmedia.work/ideas.html">
-    <meta property="og:title" content="Ideas | LaB Media - Short Film Prompt Generator">
-    <meta property="og:description" content="Roll the die and spark your next short film. An interactive prompt generator for filmmakers.">
+    <meta property="og:title" content="Ideas | Short Film Prompts & Filmmaking Tools | LaB Media">
+    <meta property="og:description" content="Short film prompts and creative constraints from a Metro Detroit studio hub to spark new projects.">
     <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://labmedia.work/ideas.html">
-    <meta name="twitter:title" content="Ideas | LaB Media - Short Film Prompt Generator">
-    <meta name="twitter:description" content="Roll the die and spark your next short film. An interactive prompt generator for filmmakers.">
+    <meta name="twitter:title" content="Ideas | Short Film Prompts & Filmmaking Tools | LaB Media">
+    <meta name="twitter:description" content="Short film prompts and creative constraints from a Metro Detroit studio hub to spark new projects.">
     <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,6 +34,23 @@
 
     <!-- Prototype Design System -->
     <link rel="stylesheet" href="prototype-theme.css">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "LaB Media",
+      "url": "https://labmedia.work",
+      "logo": "https://labmedia.work/images/TheLaB.png",
+      "description": "Metro Detroit creative studio and community hub sharing filmmaking resources, local events, and production knowledge.",
+      "areaServed": "Metro Detroit, Michigan",
+      "sameAs": [
+        "https://www.instagram.com/labmedia.work/",
+        "https://www.youtube.com/@labmediawork"
+      ]
+    }
+    </script>
 
     <!-- Ideas Data -->
     <script src="ideas-data.js"></script>
@@ -193,6 +210,23 @@
             color: var(--gray-600);
             line-height: 1.7;
             font-size: 0.95rem;
+        }
+
+        .page-orientation {
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            color: var(--gray-500);
+            line-height: 1.7;
+            font-size: 0.9rem;
+        }
+
+        .page-orientation a {
+            color: var(--white);
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .page-orientation a:hover {
+            border-bottom-color: var(--white);
         }
 
         /* ============================================
@@ -1073,6 +1107,29 @@
             color: var(--white);
         }
 
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-social a {
+            display: block;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            opacity: 1;
+        }
+
+        .footer-social img {
+            height: 24px;
+            width: auto;
+            display: block;
+        }
+
         .footer-credit {
             font-size: 0.7rem;
             color: var(--gray-600);
@@ -1578,7 +1635,7 @@
                 <li><a href="events.html">Events</a></li>
                 <li><a href="ideas.html" class="active">Ideas</a></li>
                 <li><a href="plan-your-project.html">Plan</a></li>
-                <li><a href="portfolio.html">Work</a></li>
+                <li><a href="portfolio.html">Case Studies</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
             <button class="saved-prompts-trigger" id="savedPromptsTrigger" aria-label="View saved prompts">
@@ -1593,6 +1650,7 @@
         <section class="hero-section">
             <h1 class="page-title">Ideas</h1>
             <p class="page-subtitle">Roll the die. Spark a film.</p>
+            <p class="page-orientation">Built by a Metro Detroit creative studio to share filmmaker tools and prompts. Explore <a href="resources.html">resources</a> or see <a href="events.html">local events</a>.</p>
             <p class="page-description">
                 A repeat-use tool for sketching short films you can actually shoot.
                 Each roll gives you a concept, a constraint, and a twist you can build on.
@@ -1776,10 +1834,19 @@
         <footer class="footer">
             <div class="footer-links">
                 <a href="index.html">Home</a>
-                <a href="portfolio.html">Work</a>
+                <a href="portfolio.html">Case Studies</a>
                 <a href="resources.html">Resources</a>
+                <a href="events.html">Events</a>
                 <a href="https://ai.studio/apps/drive/1h-3BvBuLgnF0kRHx43_GWVIlwwWC31od?fullscreenApplet=true" target="_blank" rel="noopener noreferrer">LaB Talk (Beta)</a>
                 <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-social" aria-label="LaB social links">
+                <a href="https://www.instagram.com/labmedia.work/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <img src="images/Instagram_Glyph_Gradient.png" alt="Instagram">
+                </a>
+                <a href="https://www.youtube.com/@labmediawork" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                    <img src="images/yt_logo_fullcolor_white_digital.png" alt="YouTube">
+                </a>
             </div>
             <p class="footer-credit">Made in Shelby Twp, MI with ❤️</p>
         </footer>

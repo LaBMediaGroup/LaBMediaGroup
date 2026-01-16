@@ -4,32 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
-    <title>Past Events Archive | LaB Media</title>
+    <title>Past Events Archive | Detroit Film Community — LaB Media</title>
     <link rel="canonical" href="https://labmedia.work/past-events.html">
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Past LaB Media community events, screenings, workshops, and filmmaker meetups across Metro Detroit.">
-    <meta name="keywords" content="Detroit film events archive, past filmmaker meetups, screenings Detroit, LaB Media events">
+    <meta name="description" content="Archive of Metro Detroit film events, screenings, and workshops tracked by LaB Media for the local filmmaking community.">
+    <meta name="keywords" content="Detroit film events archive, Metro Detroit screenings, Michigan filmmaker meetups, LaB Media events">
     <meta name="author" content="LaB Media">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://labmedia.work/past-events.html">
-    <meta property="og:title" content="Past Events Archive | LaB Media">
-    <meta property="og:description" content="Past LaB Media community events and filmmaker meetups across Metro Detroit.">
+    <meta property="og:title" content="Past Events Archive | Detroit Film Community — LaB Media">
+    <meta property="og:description" content="Archive of Metro Detroit film events, screenings, and workshops tracked by LaB Media.">
     <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://labmedia.work/past-events.html">
-    <meta name="twitter:title" content="Past Events Archive | LaB Media">
-    <meta name="twitter:description" content="Past LaB Media community events and filmmaker meetups across Metro Detroit.">
+    <meta name="twitter:title" content="Past Events Archive | Detroit Film Community — LaB Media">
+    <meta name="twitter:description" content="Archive of Metro Detroit film events, screenings, and workshops tracked by LaB Media.">
     <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="prototype-theme.css">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "LaB Media",
+      "url": "https://labmedia.work",
+      "logo": "https://labmedia.work/images/TheLaB.png",
+      "description": "Metro Detroit creative studio and community hub sharing filmmaking resources, local events, and production knowledge.",
+      "areaServed": "Metro Detroit, Michigan",
+      "sameAs": [
+        "https://www.instagram.com/labmedia.work/",
+        "https://www.youtube.com/@labmediawork"
+      ]
+    }
+    </script>
 
     <style>
         :root {
@@ -121,6 +138,15 @@
             max-width: 720px;
             line-height: 1.7;
             font-size: 0.95rem;
+        }
+
+        .archive-header p a {
+            color: var(--white);
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .archive-header p a:hover {
+            border-bottom-color: var(--white);
         }
 
         .archive-actions {
@@ -250,6 +276,31 @@
 
         .footer-nav a:hover { color: var(--white); }
 
+        .footer-social {
+            position: absolute;
+            right: 2rem;
+            top: 3rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .footer-social a {
+            display: block;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            opacity: 1;
+        }
+
+        .footer-social img {
+            height: 24px;
+            width: auto;
+            display: block;
+        }
+
         .footer-credit {
             font-size: 0.7rem;
             color: var(--gray-600);
@@ -258,6 +309,11 @@
         @media (max-width: 768px) {
             .site-nav { padding: 1.5rem; }
             .page-shell { padding: 7rem 1.5rem 3rem; }
+            .footer-social {
+                position: static;
+                justify-content: center;
+                margin-top: 1.25rem;
+            }
         }
     </style>
 </head>
@@ -271,7 +327,7 @@
             <li><a href="events.html">Events</a></li>
             <li><a href="ideas.html">Story Generator</a></li>
             <li><a href="plan-your-project.html">Plan</a></li>
-            <li><a href="portfolio.html">Work</a></li>
+            <li><a href="portfolio.html">Case Studies</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
@@ -279,7 +335,8 @@
     <div class="page-shell">
         <header class="archive-header">
             <h1>Past Events Archive</h1>
-            <p>Proof of time, shared milestones, and community momentum. These are the gatherings that shaped the LaB Media filmmaker orbit.</p>
+            <p>LaB is a Metro Detroit–based creative studio sharing community events and filmmaking resources for local creators.</p>
+            <p>Looking for upcoming dates or tools? Return to the <a href="events.html">events calendar</a> or browse <a href="resources.html">resources</a>.</p>
             <div class="archive-actions">
                 <a href="events.html">Back to Calendar</a>
                 <a href="events.html#suggest">Suggest an Event</a>
@@ -354,12 +411,21 @@
     <footer class="site-footer">
         <nav class="footer-nav">
             <a href="index.html">Home</a>
-            <a href="portfolio.html">Work</a>
+            <a href="portfolio.html">Case Studies</a>
             <a href="resources.html">Resources</a>
+            <a href="events.html">Events</a>
             <a href="ideas.html">Story Generator</a>
             <a href="https://ai.studio/apps/drive/1h-3BvBuLgnF0kRHx43_GWVIlwwWC31od?fullscreenApplet=true" target="_blank" rel="noopener noreferrer">LaB Talk (Beta)</a>
             <a href="contact.html">Contact</a>
         </nav>
+        <div class="footer-social" aria-label="LaB social links">
+            <a href="https://www.instagram.com/labmedia.work/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <img src="images/Instagram_Glyph_Gradient.png" alt="Instagram">
+            </a>
+            <a href="https://www.youtube.com/@labmediawork" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                <img src="images/yt_logo_fullcolor_white_digital.png" alt="YouTube">
+            </a>
+        </div>
         <p class="footer-credit">Made in Shelby Twp, MI with ❤️</p>
     </footer>
 </body>

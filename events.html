@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
-    <title>Events | LaB Media</title>
+    <title>Events | Detroit Film Events & Michigan Film Festivals | LaB Media</title>
     <link rel="canonical" href="https://labmedia.work/events.html">
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Film festivals, filmmaker meetups, workshops, and screenings in Michigan and Metro Detroit. Community events for filmmakers and creators.">
-    <meta name="keywords" content="Detroit film events, Michigan filmmaker meetups, film festivals Detroit, filmmaker workshops, screening events">
+    <meta name="description" content="Local film festivals, screenings, workshops, and meetups in Metro Detroit and across Michigan. Updated community events for filmmakers.">
+    <meta name="keywords" content="Detroit film events, Michigan film festivals, Metro Detroit screenings, filmmaker meetups, local film workshops">
     <meta name="author" content="LaB Media">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://labmedia.work/events.html">
-    <meta property="og:title" content="Events | LaB Media">
-    <meta property="og:description" content="Film festivals, filmmaker meetups, and workshops in Michigan and Metro Detroit.">
+    <meta property="og:title" content="Events | Detroit Film Events & Michigan Film Festivals | LaB Media">
+    <meta property="og:description" content="Local film festivals, screenings, workshops, and meetups in Metro Detroit and across Michigan.">
     <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://labmedia.work/events.html">
-    <meta name="twitter:title" content="Events | LaB Media">
-    <meta name="twitter:description" content="Film festivals, filmmaker meetups, and workshops in Michigan and Metro Detroit.">
+    <meta name="twitter:title" content="Events | Detroit Film Events & Michigan Film Festivals | LaB Media">
+    <meta name="twitter:description" content="Local film festivals, screenings, workshops, and meetups in Metro Detroit and across Michigan.">
     <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,6 +31,23 @@
 
     <!-- Prototype Design System -->
     <link rel="stylesheet" href="prototype-theme.css">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "LaB Media",
+      "url": "https://labmedia.work",
+      "logo": "https://labmedia.work/images/TheLaB.png",
+      "description": "Metro Detroit creative studio and community hub sharing filmmaking resources, local events, and production knowledge.",
+      "areaServed": "Metro Detroit, Michigan",
+      "sameAs": [
+        "https://www.instagram.com/labmedia.work/",
+        "https://www.youtube.com/@labmediawork"
+      ]
+    }
+    </script>
 
     <style>
         :root {
@@ -128,6 +145,15 @@
             max-width: 720px;
             line-height: 1.6;
             font-size: 0.95rem;
+        }
+
+        .hero p a {
+            color: var(--white);
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .hero p a:hover {
+            border-bottom-color: var(--white);
         }
 
         .hero-local {
@@ -1379,7 +1405,7 @@
             <li><a href="events.html">Events</a></li>
             <li><a href="ideas.html">Story Generator</a></li>
             <li><a href="plan-your-project.html">Plan</a></li>
-            <li><a href="portfolio.html">Work</a></li>
+            <li><a href="portfolio.html">Case Studies</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
@@ -1388,7 +1414,8 @@
 
         <section class="hero">
             <h1>Events</h1>
-            <p>Screenings, meetups, and deadlines keeping the Detroit creative community connected.</p>
+            <p>LaB is a Metro Detroit–based creative studio sharing local screenings, meetups, and festivals for filmmakers.</p>
+            <p>Need tools or collaborators? Visit the <a href="resources.html">resources hub</a>.</p>
             <p class="hero-local">Metro Detroit only — roughly 50 miles from Shelby Township.</p>
 
             <div class="hero-actions" id="suggest">
@@ -1532,6 +1559,41 @@
     </div>
 
     <script src="events-data.js"></script>
+    <script>
+        const eventSchemaItems = (eventsData || []).map((evt) => {
+            if (!evt || !evt.title || !evt.startDate) return null;
+            const start = evt.startTime ? `${evt.startDate}T${evt.startTime}` : evt.startDate;
+            const endDate = evt.endDate || evt.startDate;
+            const end = evt.endTime ? `${endDate}T${evt.endTime}` : endDate;
+            return {
+                "@context": "https://schema.org",
+                "@type": "Event",
+                "name": evt.title,
+                "startDate": start,
+                "endDate": end,
+                "eventStatus": "https://schema.org/EventScheduled",
+                "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+                "location": evt.location ? {
+                    "@type": "Place",
+                    "name": evt.venue || evt.location,
+                    "address": evt.location
+                } : undefined,
+                "description": evt.description || undefined,
+                "organizer": evt.organizer ? {
+                    "@type": "Organization",
+                    "name": evt.organizer
+                } : undefined,
+                "url": evt.url || undefined
+            };
+        }).filter(Boolean);
+
+        if (eventSchemaItems.length) {
+            const schemaScript = document.createElement('script');
+            schemaScript.type = 'application/ld+json';
+            schemaScript.textContent = JSON.stringify(eventSchemaItems);
+            document.head.appendChild(schemaScript);
+        }
+    </script>
     <script>
         const eventsSplitView = document.getElementById('eventsSplitView');
         const pastEventsSection = document.getElementById('pastEventsSection');
@@ -2367,17 +2429,17 @@ END:VCALENDAR`;
     <footer class="site-footer">
         <nav class="footer-nav">
             <a href="index.html">Home</a>
-            <a href="portfolio.html">Work</a>
+            <a href="portfolio.html">Case Studies</a>
             <a href="resources.html">Resources</a>
             <a href="ideas.html">Story Generator</a>
             <a href="https://ai.studio/apps/drive/1h-3BvBuLgnF0kRHx43_GWVIlwwWC31od?fullscreenApplet=true" target="_blank" rel="noopener noreferrer">LaB Talk (Beta)</a>
             <a href="contact.html">Contact</a>
         </nav>
         <div class="footer-social">
-            <a href="https://www.instagram.com/labmediaproductions/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <a href="https://www.instagram.com/labmedia.work/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                 <img src="images/Instagram_Glyph_Gradient.png" alt="Instagram">
             </a>
-            <a href="https://www.youtube.com/@LaB_Media" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <a href="https://www.youtube.com/@labmediawork" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
                 <img src="images/yt_logo_fullcolor_white_digital.png" alt="YouTube">
             </a>
         </div>

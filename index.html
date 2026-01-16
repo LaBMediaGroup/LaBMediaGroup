@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.youtube.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: http:; frame-src https://www.youtube.com; connect-src 'self';">
-    <title>LaB Media | Detroit Film Production & Creative Studio</title>
+    <title>LaB Media | Metro Detroit Creative Studio & Filmmaking Hub</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="LaB Media is a Detroit-based creative studio specializing in documentary, music videos, commercial production, and FPV drone cinematography.">
-    <meta name="keywords" content="Detroit film production, video production Detroit, documentary filmmaker, music videos, FPV drone, commercial video, creative studio Michigan">
+    <meta name="description" content="LaB is a Metro Detroit creative studio and community hub sharing filmmaking resources, local events, and production knowledge alongside studio case studies.">
+    <meta name="keywords" content="Metro Detroit creative studio, Detroit filmmaking resources, Michigan film events, short film tools, local film community">
     <meta name="author" content="LaB Media">
     <link rel="canonical" href="https://labmedia.work/">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://labmedia.work/">
-    <meta property="og:title" content="LaB Media | Detroit Film Production & Creative Studio">
-    <meta property="og:description" content="Detroit-based creative studio specializing in documentary, music videos, and commercial production.">
+    <meta property="og:title" content="LaB Media | Metro Detroit Creative Studio & Filmmaking Hub">
+    <meta property="og:description" content="Metro Detroit creative studio and community hub sharing filmmaking resources, events, and production knowledge.">
     <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://labmedia.work/">
-    <meta name="twitter:title" content="LaB Media | Detroit Film Production">
-    <meta name="twitter:description" content="Detroit-based creative studio specializing in documentary, music videos, and commercial production.">
+    <meta name="twitter:title" content="LaB Media | Metro Detroit Creative Studio & Filmmaking Hub">
+    <meta name="twitter:description" content="Metro Detroit creative studio and community hub sharing filmmaking resources, events, and production knowledge.">
     <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,13 +43,14 @@
       "name": "LaB Media",
       "url": "https://labmedia.work",
       "logo": "https://labmedia.work/images/TheLaB.png",
-      "description": "Detroit-based creative studio specializing in documentary, music videos, commercial production, and FPV drone cinematography.",
+      "description": "Metro Detroit creative studio and community hub sharing filmmaking resources, local events, and production knowledge.",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Shelby Township",
         "addressRegion": "MI",
         "addressCountry": "US"
       },
+      "areaServed": "Metro Detroit, Michigan",
       "contactPoint": {
         "@type": "ContactPoint",
         "contactType": "customer service",
@@ -412,6 +413,61 @@
             letter-spacing: 1px;
             text-transform: uppercase;
             color: var(--gray-600);
+        }
+
+        .hero-title {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(1.5rem, 3vw, 2.3rem);
+            font-weight: 400;
+            text-align: center;
+            color: var(--white);
+            letter-spacing: -0.5px;
+            margin: 0.75rem 0 0.5rem;
+        }
+
+        .start-here {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 3rem 1.5rem;
+        }
+
+        .start-here h2 {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            margin-bottom: 1rem;
+        }
+
+        .start-here-list {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding: 0;
+            margin: 0;
+        }
+
+        .start-here-list a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid var(--gray-800);
+            padding: 0.55rem 0.9rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--white);
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.02);
+            transition: border-color 0.3s ease, color 0.3s ease;
+        }
+
+        .start-here-list a:hover {
+            border-color: var(--white);
+            color: var(--white);
         }
         
         .scroll-indicator {
@@ -1593,6 +1649,28 @@
             letter-spacing: 1px;
         }
 
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .footer-social a {
+            display: block;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            opacity: 1;
+        }
+
+        .footer-social img {
+            height: 22px;
+            width: auto;
+            display: block;
+        }
+
         /* ============================================
            RESPONSIVE
         ============================================ */
@@ -1775,6 +1853,16 @@
                 transition-duration: 0.01ms !important;
             }
         }
+
+        @media (max-width: 768px) {
+            .start-here {
+                padding: 2rem 1.5rem 1rem;
+            }
+
+            .footer-social {
+                order: 3;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1798,7 +1886,7 @@
             <li><a href="events.html">Events</a></li>
             <li><a href="ideas.html">Story Generator</a></li>
             <li><a href="plan-your-project.html">Plan</a></li>
-            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="portfolio.html">Case Studies</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
@@ -1825,7 +1913,8 @@
                 <span class="hero-pill">Story Generator</span>
                 <span class="hero-pill">Events + Resources</span>
             </div>
-            <div class="hero-mission">A local hub for Detroit filmmakers to find tools, ideas, and events.</div>
+            <h1 class="hero-title">LaB Media — Metro Detroit Creative Studio & Filmmaking Hub</h1>
+            <div class="hero-mission">LaB is a Metro Detroit–based creative studio sharing filmmaking resources, local events, and production knowledge for filmmakers and collaborators.</div>
         </div>
 
         <div class="hero-tagline proto-text-mono">A Creative Studio</div>
@@ -1834,6 +1923,16 @@
             <span>Scroll</span>
             <div class="scroll-line"></div>
         </div>
+    </section>
+
+    <section class="start-here">
+        <h2>New here? Start with:</h2>
+        <ul class="start-here-list">
+            <li><a href="resources.html">Filmmaking Resources (Detroit &amp; beyond)</a></li>
+            <li><a href="events.html">Local Film Events &amp; Festivals</a></li>
+            <li><a href="ideas.html">Short Film Ideas &amp; Tools</a></li>
+            <li><a href="portfolio.html">Studio Work / Case Studies</a></li>
+        </ul>
     </section>
 
     <!-- Portfolio -->
@@ -2000,6 +2099,14 @@
     <!-- Footer -->
     <footer>
         <span class="footer-text">Made in Shelby Twp, MI with ❤️</span>
+        <div class="footer-social" aria-label="LaB social links">
+            <a href="https://www.instagram.com/labmedia.work/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <img src="images/Instagram_Glyph_Gradient.png" alt="Instagram">
+            </a>
+            <a href="https://www.youtube.com/@labmediawork" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                <img src="images/yt_logo_fullcolor_white_digital.png" alt="YouTube">
+            </a>
+        </div>
         <span class="footer-text">© 2026 LaB Media</span>
     </footer>
 

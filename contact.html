@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
-    <title>Contact | LaB Media</title>
+    <title>Contact | LaB Media Studio + Community Hub</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Get in touch with LaB Media for film production, video projects, and creative collaborations in Detroit and Metro Detroit.">
-    <meta name="keywords" content="contact LaB Media, Detroit film production contact, video production inquiry, Bobby Labinski">
+    <meta name="description" content="Connect with LaB Media, a Metro Detroit creative studio and filmmaking community hub for resources, events, and collaborations.">
+    <meta name="keywords" content="contact LaB Media, Metro Detroit creative studio, filmmaking community hub, Detroit film production">
     <meta name="author" content="LaB Media">
     <link rel="canonical" href="https://labmedia.work/contact.html">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://labmedia.work/contact.html">
-    <meta property="og:title" content="Contact | LaB Media">
-    <meta property="og:description" content="Get in touch with LaB Media for film production and creative collaborations.">
+    <meta property="og:title" content="Contact | LaB Media Studio + Community Hub">
+    <meta property="og:description" content="Connect with LaB Media, a Metro Detroit creative studio and filmmaking community hub.">
     <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://labmedia.work/contact.html">
-    <meta name="twitter:title" content="Contact | LaB Media">
-    <meta name="twitter:description" content="Get in touch with LaB Media for film production and creative collaborations.">
+    <meta name="twitter:title" content="Contact | LaB Media Studio + Community Hub">
+    <meta name="twitter:description" content="Connect with LaB Media, a Metro Detroit creative studio and filmmaking community hub.">
     <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,6 +33,23 @@
 
     <!-- Prototype Design System -->
     <link rel="stylesheet" href="prototype-theme.css">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "LaB Media",
+      "url": "https://labmedia.work",
+      "logo": "https://labmedia.work/images/TheLaB.png",
+      "description": "Metro Detroit creative studio and community hub sharing filmmaking resources, local events, and production knowledge.",
+      "areaServed": "Metro Detroit, Michigan",
+      "sameAs": [
+        "https://www.instagram.com/labmedia.work/",
+        "https://www.youtube.com/@labmediawork"
+      ]
+    }
+    </script>
 
     <style>
         :root {
@@ -175,12 +192,26 @@
             align-items: center;
         }
 
+        .contact-heading {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
         .contact-system-label {
             font-family: 'Space Mono', monospace;
             font-size: 0.55rem;
             color: var(--gray-600);
             letter-spacing: 2px;
             text-transform: uppercase;
+        }
+
+        .contact-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--white);
+            margin: 0;
         }
 
         .contact-status {
@@ -453,6 +484,29 @@
             color: var(--white);
         }
 
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-social a {
+            display: block;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            opacity: 1;
+        }
+
+        .footer-social img {
+            height: 24px;
+            width: auto;
+            display: block;
+        }
+
         .footer-cta {
             display: inline-block;
             margin-bottom: 1.5rem;
@@ -513,7 +567,7 @@
             <li><a href="events.html">Events</a></li>
             <li><a href="ideas.html">Story Generator</a></li>
             <li><a href="plan-your-project.html">Plan</a></li>
-            <li><a href="portfolio.html">Work</a></li>
+            <li><a href="portfolio.html">Case Studies</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
@@ -532,7 +586,10 @@
         <div class="contact-container">
             <!-- Header -->
             <div class="contact-header">
-                <div class="contact-system-label">Contact Protocol</div>
+                <div class="contact-heading">
+                    <div class="contact-system-label">Contact Protocol</div>
+                    <h1 class="contact-title">Contact LaB Media</h1>
+                </div>
                 <div class="contact-status">Available</div>
             </div>
 
@@ -558,8 +615,8 @@
                     <div class="info-row">
                         <div class="info-label">Network</div>
                         <div class="info-value social-links">
-                            <a href="https://www.instagram.com/thisislabmedia/" target="_blank" rel="noopener">Instagram</a>
-                            <a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" rel="noopener">YouTube</a>
+                            <a href="https://www.instagram.com/labmedia.work/" target="_blank" rel="noopener">Instagram</a>
+                            <a href="https://www.youtube.com/@labmediawork" target="_blank" rel="noopener">YouTube</a>
                         </div>
                     </div>
                 </div>
@@ -644,12 +701,20 @@
     <footer class="site-footer">
         <nav class="footer-nav">
             <a href="index.html">Home</a>
-            <a href="portfolio.html">Work</a>
+            <a href="portfolio.html">Case Studies</a>
             <a href="resources.html">Resources</a>
             <a href="events.html">Events</a>
             <a href="ideas.html">Story Generator</a>
             <a href="https://ai.studio/apps/drive/1h-3BvBuLgnF0kRHx43_GWVIlwwWC31od?fullscreenApplet=true" target="_blank" rel="noopener noreferrer">LaB Talk (Beta)</a>
         </nav>
+        <div class="footer-social" aria-label="LaB social links">
+            <a href="https://www.instagram.com/labmedia.work/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <img src="images/Instagram_Glyph_Gradient.png" alt="Instagram">
+            </a>
+            <a href="https://www.youtube.com/@labmediawork" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                <img src="images/yt_logo_fullcolor_white_digital.png" alt="YouTube">
+            </a>
+        </div>
         <a href="plan-your-project.html" class="footer-cta">Start a Project</a>
         <p class="footer-credit">Made in Shelby Twp, MI with ❤️</p>
     </footer>
