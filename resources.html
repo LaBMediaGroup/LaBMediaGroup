@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://dfwgjbjrkwikvqmnzcxx.supabase.co; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com;">
     <title>Resources | Filmmaking Tools & Community Hub — Metro Detroit | LaB Media</title>
     <link rel="canonical" href="https://labmedia.work/resources.html">
 
@@ -3824,35 +3824,47 @@
             }, 300);
         }
 
-        function handleSuggestSubmit(e) {
+        const SUPABASE_URL = 'https://dfwgjbjrkwikvqmnzcxx.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable__Mrv6qhUoPwuzpFl4b4baA_BQcWgd6e';
+
+        async function handleSuggestSubmit(e) {
             e.preventDefault();
             const form = e.target;
-            const name = form.querySelector('#suggestName').value;
-            const url = form.querySelector('#suggestUrl').value;
-            const category = form.querySelector('#suggestCategory').value;
-            const reason = form.querySelector('#suggestReason').value;
+            const name = form.querySelector('#suggestName').value.trim();
+            const urlRaw = form.querySelector('#suggestUrl').value.trim();
+            const category = form.querySelector('#suggestCategory').value.trim();
+            const reason = form.querySelector('#suggestReason').value.trim();
 
-            // Build mailto link
-            const subject = encodeURIComponent('Resource Suggestion: ' + name);
-            const body = encodeURIComponent(
-                'Resource Suggestion\n' +
-                '==================\n\n' +
-                'Name: ' + name + '\n' +
-                'URL: ' + (url || 'Not provided') + '\n' +
-                'Category: ' + (category || 'Not specified') + '\n\n' +
-                'Why it\'s useful:\n' + (reason || 'Not provided')
-            );
+            const payload = {
+                name,
+                url: (urlRaw && urlRaw !== 'https://') ? urlRaw : null,
+                category: category || null,
+                reason: reason || null,
+                companyWebsite: ''
+            };
 
-            // Open mailto
-            window.location.href = 'mailto:r.baldwin@me.com?subject=' + subject + '&body=' + body;
+            const res = await fetch(`${SUPABASE_URL}/functions/v1/submit-resource`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    apikey: SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || !data.ok) {
+                throw new Error(data.error || `Request failed (${res.status})`);
+            }
 
             // Show success state
             const formBody = suggestModal.querySelector('.modal-body');
             formBody.innerHTML = `
                 <div class="suggest-success">
                     <div class="suggest-success-icon">+</div>
-                    <p class="suggest-success-text">Opening your email client...</p>
-                    <p class="suggest-success-sub">Thanks for the suggestion!</p>
+                    <p class="suggest-success-text">Thanks! Submitted for review.</p>
+                    <p class="suggest-success-sub">We’ll add it if it’s a good fit.</p>
                 </div>
             `;
 
