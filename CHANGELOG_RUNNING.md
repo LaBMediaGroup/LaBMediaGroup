@@ -4,46 +4,6 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-16 | 5:57PM EST
-———————————————————————
-Change: Added extra fields to event submissions and fixed callboard modal focus handling.
-Files touched: events.html, callboard.html, CHANGELOG_RUNNING.md
-Notes: Event submissions now include name/url fields and surface API errors; callboard closes without aria-hidden focus warnings.
-Quick test checklist:
-1. Submit an event in events.html and confirm it no longer returns a 400 error.
-2. Open and close the callboard modal, then confirm no aria-hidden warnings appear in DevTools.
-3. Verify the callboard modal focuses the first field on open.
-
-2026-01-16 | 5:45PM EST
-———————————————————————
-Change: Added a suggest shortcut on resources and tightened event submission payloads.
-Files touched: resources.html, events.html, CHANGELOG_RUNNING.md
-Notes: The quick filter row now includes a Suggest button and event submissions send normalized optional fields plus source.
-Quick test checklist:
-1. Open resources.html and click Suggest to confirm the modal opens.
-2. Submit a test event on events.html and confirm it completes without a 400 error.
-3. Open DevTools console on resources.html and events.html and verify no errors.
-
-2026-01-16 | 5:30PM EST
-———————————————————————
-Change: Added a Callboard link to the main navigation across key pages.
-Files touched: index.html, resources.html, events.html, ideas.html, plan-your-project.html, portfolio.html, contact.html, past-events.html, CHANGELOG_RUNNING.md
-Notes: Kept the nav link minimal to avoid clutter while making the callboard discoverable.
-Quick test checklist:
-1. Open index.html and confirm the Callboard link appears in the nav.
-2. Click the Callboard link from a few pages (resources, events) and confirm it opens callboard.html.
-3. Open DevTools console on one updated page and verify no errors.
-
-2026-01-16 | 5:25PM EST
-———————————————————————
-Change: Routed resource suggestions through Supabase instead of mailto and allowed the endpoint in the CSP.
-Files touched: resources.html, CHANGELOG_RUNNING.md
-Notes: The suggest modal now posts to the submit-resource function and shows the review success state.
-Quick test checklist:
-1. Open resources.html, submit a suggestion, and confirm the success message appears.
-2. Verify the suggestion submits without CSP errors in DevTools.
-3. Refresh resources.html, reopen the modal, and ensure the form resets properly.
-
 2026-01-16 | 5:19PM EST
 ———————————————————————
 Change: Softened the Anthony Brass overlay and muted the Lookout color wash to a darker, greener palette.
