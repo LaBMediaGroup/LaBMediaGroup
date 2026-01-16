@@ -1,0 +1,3479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
+    <title>Ideas | Short Film Prompts & Filmmaking Tools | LaB Media</title>
+    <link rel="canonical" href="https://labmedia.work/ideas.html">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Short film prompts and creative constraints from a Metro Detroit studio hub to spark new projects and production-ready ideas.">
+    <meta name="keywords" content="short film ideas, film prompts, Metro Detroit filmmaking tools, story generator, indie film concepts">
+    <meta name="author" content="LaB Media">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://labmedia.work/ideas.html">
+    <meta property="og:title" content="Ideas | Short Film Prompts & Filmmaking Tools | LaB Media">
+    <meta property="og:description" content="Short film prompts and creative constraints from a Metro Detroit studio hub to spark new projects.">
+    <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://labmedia.work/ideas.html">
+    <meta name="twitter:title" content="Ideas | Short Film Prompts & Filmmaking Tools | LaB Media">
+    <meta name="twitter:description" content="Short film prompts and creative constraints from a Metro Detroit studio hub to spark new projects.">
+    <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Prototype Design System -->
+    <link rel="stylesheet" href="prototype-theme.css">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "LaB Media",
+      "url": "https://labmedia.work",
+      "logo": "https://labmedia.work/images/TheLaB.png",
+      "description": "Metro Detroit creative studio and community hub sharing filmmaking resources, local events, and production knowledge.",
+      "areaServed": "Metro Detroit, Michigan",
+      "sameAs": [
+        "https://www.instagram.com/labmedia.work/",
+        "https://www.youtube.com/@labmediawork"
+      ]
+    }
+    </script>
+
+    <!-- Ideas Data -->
+    <script src="ideas-data.js"></script>
+
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-400: #888888;
+            --gray-600: #555555;
+            --gray-800: #1A1A1A;
+            --gray-900: #0D0D0D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--black);
+            color: var(--gray-400);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* ============================================
+           NAVIGATION
+        ============================================ */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+
+        .nav-logo {
+            height: 22px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.5;
+        }
+
+        .nav-links a.active {
+            opacity: 1;
+            border-bottom: 1px solid var(--white);
+            padding-bottom: 2px;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            padding: 0.75rem;
+            min-width: 44px;
+            min-height: 44px;
+            z-index: 1001;
+            background: none;
+            border: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .menu-toggle span {
+            width: 22px;
+            height: 2px;
+            background: var(--white);
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(3px, 3px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(3px, -3px);
+        }
+
+        /* ============================================
+           PAGE SHELL
+        ============================================ */
+        .page-shell {
+            min-height: 100vh;
+            padding: clamp(6rem, 12vw, 10rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 8vw, 6rem);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ============================================
+           HERO SECTION
+        ============================================ */
+        .hero-section {
+            text-align: center;
+            margin-bottom: clamp(3rem, 8vw, 6rem);
+        }
+
+        .page-title {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: var(--gray-400);
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+        }
+
+        .page-description {
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--gray-600);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .page-orientation {
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            color: var(--gray-500);
+            line-height: 1.7;
+            font-size: 0.9rem;
+        }
+
+        .page-orientation a {
+            color: var(--white);
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .page-orientation a:hover {
+            border-bottom-color: var(--white);
+        }
+
+        /* ============================================
+           MAIN GENERATOR
+        ============================================ */
+        .generator-section {
+            margin-bottom: clamp(4rem, 10vw, 8rem);
+        }
+
+        .roll-container {
+            text-align: center;
+            margin-bottom: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .flow-hint {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            opacity: 0.8;
+        }
+
+        .roll-button {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem 3rem;
+            background: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .roll-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .roll-button:hover {
+            color: var(--black);
+        }
+
+        .roll-button:hover::before {
+            left: 0;
+        }
+
+        .roll-button:active {
+            transform: scale(0.98);
+        }
+
+        .die-icon {
+            font-size: 1.5rem;
+            display: inline-block;
+        }
+
+        .roll-button.rolling .die-icon {
+            animation: dieRoll 0.6s ease-out;
+        }
+
+        @keyframes dieRoll {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(360deg) scale(1.2); }
+            100% { transform: rotate(720deg) scale(1); }
+        }
+
+        .roll-all-btn {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .roll-all-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .roll-all-btn.rolling .roll-all-icon {
+            animation: spin-jolt 0.6s ease-in-out;
+        }
+
+        .roll-all-btn.rolling {
+            animation: shake-lines 0.6s ease-in-out;
+        }
+
+        .roll-all-btn.is-used {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @keyframes spin-jolt {
+            0% { transform: rotate(0deg) scale(1); }
+            40% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes shake-lines {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-4px); }
+            40% { transform: translateX(4px); }
+            60% { transform: translateX(-3px); }
+            80% { transform: translateX(3px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* ============================================
+           GENRE TOGGLES
+        ============================================ */
+        .genre-toggles {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+
+        .toggle-checkbox {
+            display: none;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 26px;
+            background: var(--gray-800);
+            border: 1px solid var(--gray-600);
+            border-radius: 13px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            opacity: 0;
+            transition: opacity 0.3s ease, border-color 0.3s ease;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--gray-600);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-checkbox:checked + .toggle-switch.horror {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(127, 29, 29, 0.2) 100%);
+            border-color: #EF4444;
+        }
+
+        .toggle-checkbox:checked + .toggle-switch.horror::before {
+            opacity: 1;
+            border-color: rgba(239, 68, 68, 0.6);
+        }
+
+        .toggle-checkbox:checked + .toggle-switch.horror::after {
+            left: 26px;
+            background: #EF4444;
+        }
+
+        .toggle-checkbox:checked + .toggle-switch.comedy {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.3) 0%, rgba(6, 95, 70, 0.2) 100%);
+            border-color: #22C55E;
+        }
+
+        .toggle-checkbox:checked + .toggle-switch.comedy::before {
+            opacity: 1;
+            border-color: rgba(34, 197, 94, 0.6);
+        }
+
+        .toggle-checkbox:checked + .toggle-switch.comedy::after {
+            left: 26px;
+            background: #22C55E;
+        }
+
+        .toggle-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-400);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Dynamic button styling based on toggle state */
+        .roll-button.horror-mode {
+            background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%);
+            border-color: #EF4444;
+        }
+
+        .roll-button.horror-mode::before {
+            background: #EF4444;
+        }
+
+        .roll-button.comedy-mode {
+            background: linear-gradient(135deg, #065f46 0%, #064e3b 100%);
+            border-color: #22C55E;
+        }
+
+        .roll-button.comedy-mode::before {
+            background: #22C55E;
+        }
+
+        .roll-button.both-mode {
+            background: linear-gradient(135deg, #7f1d1d 0%, #065f46 100%);
+            border-color: #F59E0B;
+        }
+
+        .roll-button.both-mode::before {
+            background: #F59E0B;
+        }
+
+        /* ============================================
+           PROMPTS CONTAINER
+        ============================================ */
+        .prompts-container {
+            display: none;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .prompts-container.visible {
+            display: flex;
+        }
+
+        .prompts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-800);
+            flex-wrap: wrap;
+        }
+
+        .prompts-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .prompts-hint {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gray-600);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .prompts-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: auto;
+            flex-wrap: wrap;
+        }
+
+        .roll-again-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .roll-again-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .roll-again-btn.primary {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        /* ============================================
+           PROMPT CARDS
+        ============================================ */
+        .prompts-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .prompt-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--gray-800);
+            padding: 2rem;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .prompt-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--gray-600);
+        }
+
+        .prompt-card.is-selected {
+            border-color: var(--white);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .prompt-card.is-selected .prompt-number {
+            color: var(--gray-600);
+        }
+
+        /* Hide unselected cards when one is selected */
+        .prompt-card.is-hidden {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            max-height: 0;
+            margin: 0;
+            padding: 0;
+            border: none;
+            overflow: hidden;
+        }
+
+        .prompt-number {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-600);
+            line-height: 1;
+        }
+
+        .prompt-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .prompt-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .prompt-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .prompt-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .prompt-reroll-btn {
+            border: 1px solid var(--gray-600);
+            background: transparent;
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            letter-spacing: 0;
+            padding: 0.35rem 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            line-height: 1;
+        }
+
+        .prompt-reroll-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .prompt-text {
+            color: var(--white);
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .prompt-text.concept {
+            font-size: 1.1rem;
+        }
+
+        .prompt-text.constraint {
+            color: var(--gray-400);
+            font-style: italic;
+        }
+
+        .prompt-text.twist {
+            color: var(--gray-400);
+        }
+
+        .prompt-flavor {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-800);
+        }
+
+        .flavor-badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.3rem 0.6rem;
+            background: var(--gray-900);
+            border: 1px solid var(--gray-800);
+            color: var(--gray-400);
+        }
+
+        .flavor-badge.genre {
+            border-color: var(--proto-orange, #FF8C42);
+            color: var(--proto-orange, #FF8C42);
+        }
+
+        .flavor-badge.visual {
+            border-color: var(--proto-cyan, #00D9FF);
+            color: var(--proto-cyan, #00D9FF);
+        }
+
+        .flavor-badge.emotion {
+            border-color: var(--proto-green, #2ECC71);
+            color: var(--proto-green, #2ECC71);
+        }
+
+        /* Optional genre-specific details */
+        .prompt-section.genre-detail {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 2px solid var(--gray-600);
+            margin-top: 1rem;
+        }
+
+        .prompt-section.genre-detail.creepy {
+            border-left-color: #EF4444;
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .prompt-section.genre-detail.comedy {
+            border-left-color: #22C55E;
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .prompt-section.genre-detail .prompt-label {
+            color: var(--white);
+        }
+
+        /* ============================================
+           BONUS CHALLENGE SECTION
+        ============================================ */
+        .bonus-section {
+            margin-bottom: clamp(4rem, 10vw, 8rem);
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--gray-800);
+        }
+
+        .bonus-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .bonus-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--white);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .bonus-subtitle {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            margin-top: 0.25rem;
+        }
+
+        .bonus-roll-btn {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bonus-roll-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .bonus-result {
+            padding: 1.5rem;
+            background: var(--gray-900);
+            border-left: 2px solid var(--proto-orange, #FF8C42);
+            color: var(--white);
+            font-size: 1rem;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .bonus-result.visible {
+            display: block;
+        }
+
+        .bonus-placeholder {
+            color: var(--gray-600);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* ============================================
+           MINI ROLLERS SECTION
+        ============================================ */
+        .mini-rollers-section {
+            margin-bottom: clamp(4rem, 10vw, 8rem);
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--white);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+        }
+
+        .mini-rollers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .mini-roller {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--gray-800);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mini-roller:hover {
+            border-color: var(--gray-600);
+        }
+
+        .mini-roller-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .mini-roller-icon {
+            font-size: 1.5rem;
+        }
+
+        .mini-roller-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-400);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .mini-roll-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mini-roller-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .mini-clear-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--gray-600);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mini-clear-btn:hover {
+            border-color: var(--gray-600);
+            color: var(--gray-400);
+        }
+
+        .mini-roll-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .mini-roller-result {
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            color: var(--white);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .mini-roller-result.empty {
+            color: var(--gray-600);
+            font-style: italic;
+            font-size: 0.8rem;
+        }
+
+        /* ============================================
+           CURRENT RESULTS SECTION
+        ============================================ */
+        .results-section {
+            display: none;
+            margin-bottom: clamp(4rem, 10vw, 8rem);
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--gray-800);
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-800);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .results-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--white);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .results-btn {
+            padding: 0.75rem 1.25rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .results-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .results-btn.primary {
+            background: var(--white);
+            border-color: var(--white);
+            color: var(--black);
+        }
+
+        .results-btn.primary:hover {
+            background: var(--gray-400);
+            border-color: var(--gray-400);
+        }
+
+        .save-feedback {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .results-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .results-group {
+            padding: 1.5rem;
+            background: var(--gray-900);
+            border-left: 2px solid var(--gray-600);
+        }
+
+        .results-group-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-400);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .results-group-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .results-item {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--gray-800);
+        }
+
+        .results-item-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-item-text {
+            color: var(--white);
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        .results-prompt-card {
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--gray-800);
+            margin-bottom: 1rem;
+        }
+
+        .results-prompt-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .results-prompt-number {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+
+        .results-prompt-section {
+            margin-bottom: 0.75rem;
+        }
+
+        .results-prompt-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .results-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .results-empty {
+            color: var(--gray-600);
+            font-style: italic;
+            font-size: 0.85rem;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        @media (max-width: 640px) {
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .results-mini-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============================================
+           FOOTER
+        ============================================ */
+        .footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--gray-800);
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-social a {
+            display: block;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            opacity: 1;
+        }
+
+        .footer-social img {
+            height: 24px;
+            width: auto;
+            display: block;
+        }
+
+        .footer-credit {
+            font-size: 0.7rem;
+            color: var(--gray-600);
+        }
+
+        /* ============================================
+           SAVED PROMPTS UI
+        ============================================ */
+        .saved-prompts-trigger {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 2rem;
+        }
+
+        .saved-prompts-trigger:hover {
+            border-color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .saved-icon {
+            font-size: 1rem;
+        }
+
+        .saved-count {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            background: var(--white);
+            color: var(--black);
+            font-size: 0.65rem;
+            font-weight: 700;
+            border-radius: 10px;
+        }
+
+        .save-prompt-btn {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.6;
+        }
+
+        .save-prompt-btn:hover {
+            opacity: 1;
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .save-prompt-btn.saved {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        .saved-prompts-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 600px;
+            height: 100vh;
+            background: var(--black);
+            border-left: 1px solid var(--gray-800);
+            z-index: 10000;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .saved-prompts-drawer.open {
+            right: 0;
+        }
+
+        .saved-drawer-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .saved-drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .saved-drawer-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .saved-drawer-close {
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-size: 1.2rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .saved-drawer-close:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .saved-drawer-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .saved-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .saved-action-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .saved-action-btn.danger:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .saved-prompts-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .saved-empty {
+            text-align: center;
+            color: var(--gray-600);
+            font-style: italic;
+            padding: 3rem 1rem;
+        }
+
+        .saved-prompt-item {
+            position: relative;
+            padding: 1.5rem;
+            background: var(--gray-900);
+            border: 1px solid var(--gray-800);
+            transition: all 0.3s ease;
+        }
+
+        .saved-prompt-item:hover {
+            border-color: var(--gray-600);
+        }
+
+        .saved-prompt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .saved-date {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .delete-saved-btn {
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--gray-600);
+            font-size: 1rem;
+            padding: 0.25rem 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .delete-saved-btn:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .saved-prompt-body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .saved-field {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--gray-400);
+        }
+
+        .saved-field strong {
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .saved-detail {
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 2px solid var(--gray-600);
+            margin-top: 0.5rem;
+        }
+
+        .saved-detail.creepy {
+            border-left-color: #ef4444;
+        }
+
+        .saved-detail.comedy {
+            border-left-color: #22c55e;
+        }
+
+        .saved-flavor {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .saved-drawer-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .saved-drawer-backdrop.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* ============================================
+           STREAK TRACKER (subtle notification badge)
+        ============================================ */
+        .streak-badge {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 900;
+            animation: slideInRight 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+        }
+
+        .streak-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            background: var(--gray-900);
+            border: 1px solid var(--gray-800);
+            border-left: 3px solid var(--white);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .streak-content:hover {
+            border-left-color: #f59e0b;
+            transform: translateX(-4px);
+        }
+
+        .streak-icon {
+            font-size: 1.5rem;
+            animation: flicker 2s ease-in-out infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .streak-message {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            color: var(--gray-400);
+            line-height: 1.4;
+        }
+
+        .streak-message strong {
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 1024px) {
+            .mini-rollers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 100%;
+                max-width: 300px;
+                background: rgba(0, 0, 0, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.4s ease;
+                mix-blend-mode: normal;
+                border-left: 1px solid var(--gray-800);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links a {
+                opacity: 1;
+                font-size: 0.9rem;
+                color: var(--white) !important;
+                mix-blend-mode: normal;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .prompts-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .saved-prompts-trigger {
+                margin-left: auto;
+                padding: 0.4rem 0.75rem;
+                font-size: 0.65rem;
+            }
+
+            .saved-prompts-drawer {
+                max-width: 100%;
+            }
+
+            .saved-drawer-actions {
+                flex-direction: column;
+            }
+
+            .streak-badge {
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+            }
+
+            .streak-content {
+                padding: 0.75rem 1rem;
+            }
+
+            .streak-message {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .mini-rollers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .prompt-card {
+                padding: 1.5rem;
+            }
+
+            .prompt-number {
+                font-size: 1.5rem;
+                top: 0.75rem;
+                right: 1rem;
+            }
+
+            .roll-button {
+                padding: 1.25rem 2rem;
+                font-size: 0.85rem;
+            }
+
+            .bonus-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .streak-icon {
+                animation: none;
+            }
+
+            .streak-badge {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB" class="nav-logo">
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div style="display: flex; align-items: center; gap: 0;">
+            <ul class="nav-links" id="navLinks">
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="ideas.html" class="active">Ideas</a></li>
+                <li><a href="plan-your-project.html">Plan</a></li>
+                <li><a href="portfolio.html">Reel</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="saved-prompts-trigger" id="savedPromptsTrigger" aria-label="View saved prompts">
+                <span class="saved-icon">📌</span>
+                <span class="saved-count" id="savedCount">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="page-shell proto-grid">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="page-title">Ideas</h1>
+            <p class="page-subtitle">Roll the die. Spark a film.</p>
+            <p class="page-description">
+                A repeat-use tool for sketching short films you can actually shoot.
+                Each roll gives you a concept, a constraint, and a twist you can build on.
+                Low-budget friendly, cliche-free, and made for real production momentum.
+            </p>
+        </section>
+
+        <!-- Streak Badge (subtle, non-intrusive) -->
+        <div class="streak-badge" id="streakBadge" style="display: none;">
+            <div class="streak-content">
+                <span class="streak-icon">🔥</span>
+                <span class="streak-message" id="streakMessage"></span>
+            </div>
+        </div>
+
+        <!-- Main Generator -->
+        <section class="generator-section">
+            <!-- Genre Toggles -->
+            <div class="genre-toggles">
+                <label class="toggle-label">
+                    <input type="checkbox" id="toggleHorror" class="toggle-checkbox">
+                    <span class="toggle-switch horror"></span>
+                    <span class="toggle-text">Horror</span>
+                </label>
+                <label class="toggle-label">
+                    <input type="checkbox" id="toggleComedy" class="toggle-checkbox">
+                    <span class="toggle-switch comedy"></span>
+                    <span class="toggle-text">Comedy</span>
+                </label>
+            </div>
+
+            <div class="roll-container">
+                <button class="roll-button" id="mainRollBtn">
+                    <span class="die-icon">&#x2680;</span>
+                    <span class="roll-button-text">Roll the Die</span>
+                </button>
+                <button class="roll-all-btn" id="rollAllBtn">
+                    <span class="roll-all-icon">&#x2726;</span>
+                    <span>Roll All (One-Time)</span>
+                </button>
+                <p class="flow-hint">Start here: roll, pick a prompt, build the short.</p>
+            </div>
+
+            <div class="prompts-container" id="promptsContainer">
+                <div class="prompts-header">
+                    <span class="prompts-title">Your Prompts</span>
+                    <span class="prompts-hint">Select One</span>
+                    <div class="prompts-actions">
+                        <button class="roll-again-btn" id="rollAgainBtn">Roll Again</button>
+                        <button class="roll-again-btn primary" id="rollKeepConstraintBtn">Roll Again (Keep Constraint)</button>
+                    </div>
+                </div>
+                <div class="prompts-grid" id="promptsGrid">
+                    <!-- Prompt cards will be inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Bonus Challenge -->
+        <section class="bonus-section proto-corners">
+            <span class="proto-corner-tl"></span>
+            <span class="proto-corner-tr"></span>
+            <span class="proto-corner-bl"></span>
+            <span class="proto-corner-br"></span>
+
+            <div class="bonus-header">
+                <div>
+                    <h2 class="bonus-title">Extra Points</h2>
+                    <p class="bonus-subtitle">Add a bonus challenge to your film</p>
+                </div>
+                <button class="bonus-roll-btn" id="bonusRollBtn">
+                    <span>&#x2680;</span>
+                    <span>Roll Bonus</span>
+                </button>
+            </div>
+            <div class="bonus-result" id="bonusResult"></div>
+            <p class="bonus-placeholder" id="bonusPlaceholder">Roll to reveal a bonus challenge...</p>
+        </section>
+
+        <!-- Mini Rollers -->
+        <section class="mini-rollers-section">
+            <div class="section-header">
+                <h2 class="section-title">Quick Rollers</h2>
+                <p class="section-subtitle">Need a specific element? Roll individually.</p>
+            </div>
+
+            <div class="mini-rollers-grid">
+                <!-- Places Roller -->
+                <div class="mini-roller proto-corners">
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="mini-roller-header">
+                        <span class="mini-roller-icon">&#x1F3E0;</span>
+                        <span class="mini-roller-label">Place</span>
+                    </div>
+                    <div class="mini-roller-actions">
+                        <button class="mini-roll-btn" data-type="places">Roll</button>
+                        <button class="mini-clear-btn" data-type="places">Clear</button>
+                    </div>
+                    <div class="mini-roller-result empty" data-result="places">Click roll to reveal...</div>
+                </div>
+
+                <!-- Objects Roller -->
+                <div class="mini-roller proto-corners">
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="mini-roller-header">
+                        <span class="mini-roller-icon">&#x1F511;</span>
+                        <span class="mini-roller-label">Object</span>
+                    </div>
+                    <div class="mini-roller-actions">
+                        <button class="mini-roll-btn" data-type="objects">Roll</button>
+                        <button class="mini-clear-btn" data-type="objects">Clear</button>
+                    </div>
+                    <div class="mini-roller-result empty" data-result="objects">Click roll to reveal...</div>
+                </div>
+
+                <!-- Characters Roller -->
+                <div class="mini-roller proto-corners">
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="mini-roller-header">
+                        <span class="mini-roller-icon">&#x1F464;</span>
+                        <span class="mini-roller-label">Character</span>
+                    </div>
+                    <div class="mini-roller-actions">
+                        <button class="mini-roll-btn" data-type="characters">Roll</button>
+                        <button class="mini-clear-btn" data-type="characters">Clear</button>
+                    </div>
+                    <div class="mini-roller-result empty" data-result="characters">Click roll to reveal...</div>
+                </div>
+
+                <!-- Genre Roller -->
+                <div class="mini-roller proto-corners">
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="mini-roller-header">
+                        <span class="mini-roller-icon">&#x1F3AC;</span>
+                        <span class="mini-roller-label">Genre</span>
+                    </div>
+                    <div class="mini-roller-actions">
+                        <button class="mini-roll-btn" data-type="genres">Roll</button>
+                        <button class="mini-clear-btn" data-type="genres">Clear</button>
+                    </div>
+                    <div class="mini-roller-result empty" data-result="genres">Click roll to reveal...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Current Results Section -->
+        <section class="results-section proto-corners" id="resultsSection">
+            <span class="proto-corner-tl"></span>
+            <span class="proto-corner-tr"></span>
+            <span class="proto-corner-bl"></span>
+            <span class="proto-corner-br"></span>
+
+            <div class="results-header">
+                <h2 class="results-title">Current Results</h2>
+                <div class="results-actions">
+                    <button class="results-btn primary" id="sharePromptBtn">
+                        <span>📋</span>
+                        <span>Share Prompt</span>
+                    </button>
+                    <button class="results-btn primary" id="downloadPdfBtn">
+                        <span>📄</span>
+                        <span>Download PDF</span>
+                    </button>
+                    <button class="results-btn" id="clearResultsBtn">
+                        <span>🗑️</span>
+                        <span>Clear All</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="results-content" id="resultsContent">
+                <p class="results-empty">Roll some dice to see your results here...</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="portfolio.html">Reel</a>
+                <a href="resources.html">Resources</a>
+                <a href="events.html">Events</a>
+                <a href="https://ai.studio/apps/drive/1h-3BvBuLgnF0kRHx43_GWVIlwwWC31od?fullscreenApplet=true" target="_blank" rel="noopener noreferrer">LaB Talk (Beta)</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-social" aria-label="LaB social links">
+                <a href="https://www.instagram.com/labmedia.work/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <img src="images/Instagram_Glyph_Gradient.png" alt="Instagram">
+                </a>
+                <a href="https://www.youtube.com/@labmediawork" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                    <img src="images/yt_logo_fullcolor_white_digital.png" alt="YouTube">
+                </a>
+            </div>
+            <p class="footer-credit">Made in Shelby Twp, MI with ❤️</p>
+        </footer>
+    </main>
+
+    <!-- Saved Prompts Drawer -->
+    <div class="saved-prompts-drawer" id="savedPromptsDrawer">
+        <div class="saved-drawer-content">
+            <div class="saved-drawer-header">
+                <h2 class="saved-drawer-title">Saved Prompts</h2>
+                <button class="saved-drawer-close" id="savedDrawerClose" aria-label="Close saved prompts">✕</button>
+            </div>
+            <div class="saved-drawer-actions">
+                <button class="saved-action-btn secondary" id="exportSavedBtn">
+                    <span>📄</span>
+                    <span>Export to PDF</span>
+                </button>
+                <button class="saved-action-btn danger" id="clearAllSavedBtn">
+                    <span>🗑️</span>
+                    <span>Clear All</span>
+                </button>
+            </div>
+            <div class="saved-prompts-list" id="savedPromptsList">
+                <p class="saved-empty">No saved prompts yet. Roll the dice and save your favorites!</p>
+            </div>
+        </div>
+    </div>
+    <div class="saved-drawer-backdrop" id="savedDrawerBackdrop"></div>
+
+    <script>
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        function getEntryText(entry) {
+            if (entry == null) return '';
+            if (typeof entry === 'string') return entry;
+            if (typeof entry.text === 'string') return entry.text;
+            return String(entry);
+        }
+
+        function getRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function getRandomItems(array, count, unique = true) {
+            if (!unique) {
+                return Array.from({ length: count }, () => getRandomItem(array));
+            }
+            const shuffled = [...array].sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, count);
+        }
+
+        function normalizeIdeaEntryLocal(entry) {
+            if (typeof entry === 'string') {
+                return { text: entry, tags: { tone: ['neutral'], cast: [], budget: [] } };
+            }
+            const tags = entry.tags || {};
+            const tone = Array.isArray(tags.tone) && tags.tone.length ? tags.tone : ['neutral'];
+            const cast = Array.isArray(tags.cast) ? tags.cast : [];
+            const budget = Array.isArray(tags.budget) ? tags.budget : [];
+            const normalized = {
+                ...entry,
+                tags: {
+                    tone,
+                    cast,
+                    budget
+                }
+            };
+            if (typeof tags.intensity === 'number') {
+                normalized.tags.intensity = tags.intensity;
+            }
+            return normalized;
+        }
+
+        function entryMaxCast(entry) {
+            const normalized = normalizeIdeaEntryLocal(entry);
+            const cast = normalized.tags.cast || [];
+            if (cast.includes('solo')) return 1;
+            if (cast.includes('two')) return 2;
+            if (cast.includes('ensemble')) return 3;
+            return null;
+        }
+
+        function filterByMaxCast(entries, maxCast) {
+            if (!maxCast) return entries.map(normalizeIdeaEntryLocal);
+            const normalized = entries.map(normalizeIdeaEntryLocal);
+            const filtered = normalized.filter(entry => {
+                const max = entryMaxCast(entry);
+                return max == null || max <= maxCast;
+            });
+            return filtered.length ? filtered : normalized;
+        }
+
+        function filterByTone(entries, selectedTone, minimumCount) {
+            return filterByTones(entries, [selectedTone], minimumCount);
+        }
+
+        function filterByTones(entries, selectedTones, minimumCount) {
+            const normalizedEntries = entries.map(normalizeIdeaEntryLocal);
+            const tones = Array.isArray(selectedTones) ? selectedTones.filter(Boolean) : [];
+            if (!tones.length) {
+                return normalizedEntries;
+            }
+            const filteredEntries = normalizedEntries.filter(entry => {
+                const entryTones = entry.tags.tone || [];
+                return entryTones.includes('neutral') || entryTones.some(tone => tones.includes(tone));
+            });
+            if (filteredEntries.length < minimumCount) {
+                return normalizedEntries;
+            }
+            return filteredEntries;
+        }
+
+        // Dice face characters
+        const diceFaces = ['\u2680', '\u2681', '\u2682', '\u2683', '\u2684', '\u2685'];
+
+        function getRandomDieFace() {
+            return diceFaces[Math.floor(Math.random() * diceFaces.length)];
+        }
+
+        // ============================================
+        // RESULTS STATE
+        // ============================================
+        const resultsState = {
+            prompts: [],
+            generatedPrompts: [],
+            selectedPromptIndex: null,
+            bonus: null,
+            miniRollers: {
+                places: null,
+                objects: null,
+                characters: null,
+                genres: null
+            }
+        };
+
+        // Pre-load the logo image for PDF
+        let logoImage = null;
+        let logoPromise = null;
+
+        function loadLogoDataUrl() {
+            if (logoImage) {
+                return Promise.resolve(logoImage);
+            }
+            if (logoPromise) {
+                return logoPromise;
+            }
+            logoPromise = new Promise((resolve) => {
+                const logoImg = new Image();
+                logoImg.crossOrigin = 'anonymous';
+                logoImg.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = logoImg.width;
+                    canvas.height = logoImg.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(logoImg, 0, 0);
+                    logoImage = canvas.toDataURL('image/png');
+                    resolve(logoImage);
+                };
+                logoImg.onerror = function() {
+                    resolve(null);
+                };
+                logoImg.src = 'images/WhiteBeakerLogo.png';
+            });
+            return logoPromise;
+        }
+
+        loadLogoDataUrl();
+
+        // ============================================
+        // SAVED PROMPTS (localStorage)
+        // ============================================
+        const SAVED_PROMPTS_KEY = 'lab_savedPrompts';
+
+        function getSavedPrompts() {
+            try {
+                const raw = localStorage.getItem(SAVED_PROMPTS_KEY);
+                return raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                console.error('Error loading saved prompts:', e);
+                return [];
+            }
+        }
+
+        function savePrompt(prompt) {
+            const saved = getSavedPrompts();
+            const newPrompt = {
+                id: Date.now(),
+                timestamp: new Date().toISOString(),
+                prompt: {
+                    concept: prompt.concept,
+                    constraint: getEntryText(prompt.constraint),
+                    twist: prompt.twist,
+                    genre: prompt.genre ? getEntryText(prompt.genre) : null,
+                    visualStyle: prompt.visualStyle ? getEntryText(prompt.visualStyle) : null,
+                    emotion: prompt.emotion ? getEntryText(prompt.emotion) : null,
+                    creepyDetail: prompt.creepyDetail || null,
+                    comedyBeat: prompt.comedyBeat || null
+                }
+            };
+            saved.unshift(newPrompt);
+            localStorage.setItem(SAVED_PROMPTS_KEY, JSON.stringify(saved));
+            updateSavedCount();
+            return newPrompt;
+        }
+
+        function deleteSavedPrompt(id) {
+            const saved = getSavedPrompts();
+            const filtered = saved.filter(p => p.id !== id);
+            localStorage.setItem(SAVED_PROMPTS_KEY, JSON.stringify(filtered));
+            updateSavedCount();
+        }
+
+        function clearAllSaved() {
+            localStorage.removeItem(SAVED_PROMPTS_KEY);
+            updateSavedCount();
+        }
+
+        function updateSavedCount() {
+            const count = getSavedPrompts().length;
+            const countEl = document.getElementById('savedCount');
+            if (countEl) {
+                countEl.textContent = count;
+                countEl.style.display = count > 0 ? 'flex' : 'none';
+            }
+        }
+
+        function renderSavedPrompts() {
+            const saved = getSavedPrompts();
+            const listEl = document.getElementById('savedPromptsList');
+            if (!listEl) return;
+
+            if (saved.length === 0) {
+                listEl.innerHTML = '<p class="saved-empty">No saved prompts yet. Roll the dice and save your favorites!</p>';
+                return;
+            }
+
+            listEl.innerHTML = saved.map(item => {
+                const p = item.prompt;
+                const date = new Date(item.timestamp).toLocaleDateString('en-US', {
+                    month: 'short', day: 'numeric', year: 'numeric'
+                });
+
+                let flavorHTML = '';
+                if (p.genre || p.visualStyle || p.emotion) {
+                    flavorHTML = '<div class="saved-flavor">';
+                    if (p.genre) flavorHTML += `<span class="flavor-badge genre">${p.genre}</span>`;
+                    if (p.visualStyle) flavorHTML += `<span class="flavor-badge visual">${p.visualStyle}</span>`;
+                    if (p.emotion) flavorHTML += `<span class="flavor-badge emotion">${p.emotion}</span>`;
+                    flavorHTML += '</div>';
+                }
+
+                let genreDetailsHTML = '';
+                if (p.creepyDetail) {
+                    genreDetailsHTML += `<div class="saved-detail creepy"><strong>Creepy Detail:</strong> ${p.creepyDetail}</div>`;
+                }
+                if (p.comedyBeat) {
+                    genreDetailsHTML += `<div class="saved-detail comedy"><strong>Comedy Beat:</strong> ${p.comedyBeat}</div>`;
+                }
+
+                return `
+                    <div class="saved-prompt-item proto-corners" data-id="${item.id}">
+                        <span class="proto-corner-tl"></span>
+                        <span class="proto-corner-br"></span>
+                        <div class="saved-prompt-header">
+                            <span class="saved-date">${date}</span>
+                            <button class="delete-saved-btn" data-id="${item.id}" aria-label="Delete saved prompt">✕</button>
+                        </div>
+                        <div class="saved-prompt-body">
+                            <div class="saved-field"><strong>Concept:</strong> ${p.concept}</div>
+                            <div class="saved-field"><strong>Constraint:</strong> ${p.constraint}</div>
+                            <div class="saved-field"><strong>Twist:</strong> ${p.twist}</div>
+                            ${genreDetailsHTML}
+                        </div>
+                        ${flavorHTML}
+                    </div>
+                `;
+            }).join('');
+
+            // Attach delete handlers
+            listEl.querySelectorAll('.delete-saved-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = parseInt(e.target.dataset.id);
+                    deleteSavedPrompt(id);
+                    renderSavedPrompts();
+                });
+            });
+        }
+
+        function toggleSavedDrawer(open) {
+            const drawer = document.getElementById('savedPromptsDrawer');
+            const backdrop = document.getElementById('savedDrawerBackdrop');
+            if (open) {
+                renderSavedPrompts();
+                drawer.classList.add('open');
+                backdrop.classList.add('visible');
+                document.body.style.overflow = 'hidden';
+            } else {
+                drawer.classList.remove('open');
+                backdrop.classList.remove('visible');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Initialize saved count on load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSavedCount();
+
+            // Saved drawer triggers
+            document.getElementById('savedPromptsTrigger')?.addEventListener('click', () => {
+                toggleSavedDrawer(true);
+            });
+
+            document.getElementById('savedDrawerClose')?.addEventListener('click', () => {
+                toggleSavedDrawer(false);
+            });
+
+            document.getElementById('savedDrawerBackdrop')?.addEventListener('click', () => {
+                toggleSavedDrawer(false);
+            });
+
+            document.getElementById('clearAllSavedBtn')?.addEventListener('click', () => {
+                if (confirm('Clear all saved prompts? This cannot be undone.')) {
+                    clearAllSaved();
+                    renderSavedPrompts();
+                }
+            });
+
+            document.getElementById('exportSavedBtn')?.addEventListener('click', () => {
+                exportSavedPromptsToPDF();
+            });
+        });
+
+        // ============================================
+        // STREAK TRACKER (Visit Tracking)
+        // ============================================
+        const STREAK_KEY = 'lab_visitStreak';
+
+        function getStreakData() {
+            try {
+                const raw = localStorage.getItem(STREAK_KEY);
+                return raw ? JSON.parse(raw) : {
+                    visitDates: [],
+                    currentStreak: 0,
+                    longestStreak: 0,
+                    lastVisit: null,
+                    totalVisits: 0
+                };
+            } catch (e) {
+                console.error('Error loading streak data:', e);
+                return { visitDates: [], currentStreak: 0, longestStreak: 0, lastVisit: null, totalVisits: 0 };
+            }
+        }
+
+        function saveStreakData(data) {
+            localStorage.setItem(STREAK_KEY, JSON.stringify(data));
+        }
+
+        function getTodayDateString() {
+            return new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+        }
+
+        function calculateStreak(visitDates) {
+            if (!visitDates.length) return 0;
+
+            const sortedDates = [...visitDates].sort().reverse(); // Most recent first
+            let streak = 1;
+
+            for (let i = 0; i < sortedDates.length - 1; i++) {
+                const current = new Date(sortedDates[i]);
+                const next = new Date(sortedDates[i + 1]);
+                const diffDays = Math.floor((current - next) / (1000 * 60 * 60 * 24));
+
+                if (diffDays === 1) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+
+            return streak;
+        }
+
+        function getStreakMessage(data) {
+            const streak = data.currentStreak;
+            const isNewVisitor = data.totalVisits === 1;
+            const isReturning = data.totalVisits > 1 && streak === 1;
+            const hasStreak = streak > 1;
+
+            // Cheeky messages based on streak
+            const messages = {
+                newVisitor: [
+                    "Welcome to the idea factory.",
+                    "First roll's free. After that, you're hooked.",
+                    "Let's make something weird."
+                ],
+                returning: [
+                    "Back for more chaos? Smart.",
+                    "Miss us? We missed you too.",
+                    "Welcome back, filmmaker.",
+                    "The dice have been waiting.",
+                    "Ready to roll?"
+                ],
+                streak3: [
+                    "3 days in a row. You're committed.",
+                    "3-day streak. The momentum is real.",
+                    "That's 3 days of creative fuel."
+                ],
+                streak5: [
+                    "5 days straight. You're on fire.",
+                    "5-day streak! Somebody stop you.",
+                    "5 days. This is becoming a habit."
+                ],
+                streak7: [
+                    "A full week. Legend status.",
+                    "7 days, 7 films? Let's go.",
+                    "Week-long streak. You're unstoppable."
+                ],
+                streak14: [
+                    "Two weeks. You're a regular.",
+                    "14 days. The LaB is your second home.",
+                    "Two-week streak. We're impressed."
+                ],
+                streak30: [
+                    "30 days. You're part of the furniture.",
+                    "A month straight. This is dedication.",
+                    "30-day streak. Hall of fame material."
+                ],
+                streakDefault: [
+                    `${streak}-day streak. Keep it rolling.`,
+                    `Day ${streak}. You're building something here.`,
+                    `${streak} days and counting.`
+                ]
+            };
+
+            if (isNewVisitor) {
+                return messages.newVisitor[Math.floor(Math.random() * messages.newVisitor.length)];
+            }
+
+            if (isReturning) {
+                return messages.returning[Math.floor(Math.random() * messages.returning.length)];
+            }
+
+            if (hasStreak) {
+                if (streak >= 30) {
+                    return messages.streak30[Math.floor(Math.random() * messages.streak30.length)];
+                } else if (streak >= 14) {
+                    return messages.streak14[Math.floor(Math.random() * messages.streak14.length)];
+                } else if (streak >= 7) {
+                    return messages.streak7[Math.floor(Math.random() * messages.streak7.length)];
+                } else if (streak >= 5) {
+                    return messages.streak5[Math.floor(Math.random() * messages.streak5.length)];
+                } else if (streak >= 3) {
+                    return messages.streak3[Math.floor(Math.random() * messages.streak3.length)];
+                } else {
+                    return messages.streakDefault[Math.floor(Math.random() * messages.streakDefault.length)];
+                }
+            }
+
+            return null;
+        }
+
+        function showStreakBadge() {
+            const data = getStreakData();
+            const today = getTodayDateString();
+
+            // Check if already visited today
+            if (data.visitDates.includes(today)) {
+                return; // Don't show badge if already seen today
+            }
+
+            // Record today's visit
+            const updatedDates = [...data.visitDates, today];
+            const currentStreak = calculateStreak(updatedDates);
+            const longestStreak = Math.max(currentStreak, data.longestStreak);
+
+            const updatedData = {
+                visitDates: updatedDates.slice(-90), // Keep last 90 days
+                currentStreak,
+                longestStreak,
+                lastVisit: today,
+                totalVisits: data.totalVisits + 1
+            };
+
+            saveStreakData(updatedData);
+
+            // Show badge with message
+            const message = getStreakMessage(updatedData);
+            if (!message) return;
+
+            const badge = document.getElementById('streakBadge');
+            const messageEl = document.getElementById('streakMessage');
+
+            if (badge && messageEl) {
+                messageEl.innerHTML = message;
+                badge.style.display = 'block';
+
+                // Auto-hide after 6 seconds
+                setTimeout(() => {
+                    badge.style.animation = 'slideOutRight 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                    setTimeout(() => {
+                        badge.style.display = 'none';
+                        badge.style.animation = '';
+                    }, 600);
+                }, 6000);
+
+                // Manual close on click
+                badge.addEventListener('click', () => {
+                    badge.style.animation = 'slideOutRight 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                    setTimeout(() => {
+                        badge.style.display = 'none';
+                        badge.style.animation = '';
+                    }, 600);
+                }, { once: true });
+            }
+        }
+
+        // Show streak badge on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => showStreakBadge(), 1000); // Delay 1s for smooth entrance
+        });
+
+        // ============================================
+        // PROMPT GENERATION
+        // ============================================
+        const selectedTone = 'neutral';
+        const localMode = true;
+        const maxCast = localMode ? 2 : null;
+
+        function getActiveTones() {
+            const tones = [];
+            const horrorToggle = document.getElementById('toggleHorror');
+            const comedyToggle = document.getElementById('toggleComedy');
+            if (horrorToggle && horrorToggle.checked) {
+                tones.push('horror');
+            }
+            if (comedyToggle && comedyToggle.checked) {
+                tones.push('comedy');
+            }
+            if (!tones.length) {
+                tones.push(selectedTone);
+            }
+            return tones;
+        }
+
+        function getConstraintPool() {
+            return filterByTones(ideasData.constraints, getActiveTones(), 3);
+        }
+
+        function getTwistPool() {
+            return filterByTones(ideasData.twists, getActiveTones(), 3);
+        }
+
+        function generatePrompts(previousPrompts = []) {
+            const prompts = [];
+            const usedConcepts = new Set();
+            const usedConstraints = new Set();
+            const usedTwists = new Set();
+            let conceptPool = filterByTones(ideasData.concepts, getActiveTones(), 3);
+            conceptPool = filterByMaxCast(conceptPool, maxCast);
+            const constraintPool = getConstraintPool();
+            const twistPool = getTwistPool();
+
+            // Check toggle states
+            const horrorToggle = document.getElementById('toggleHorror');
+            const comedyToggle = document.getElementById('toggleComedy');
+            const isHorrorMode = horrorToggle && horrorToggle.checked;
+            const isComedyMode = comedyToggle && comedyToggle.checked;
+
+            for (let i = 0; i < 3; i++) {
+                // Get unique concept
+                let concept;
+                do {
+                    concept = getRandomItem(conceptPool);
+                } while (usedConcepts.has(concept.text) && usedConcepts.size < conceptPool.length);
+                usedConcepts.add(concept.text);
+
+                // Get unique constraint - may use comedy mechanics if comedy mode active
+                let constraint;
+                const comedyMechanics = isComedyMode && Array.isArray(ideasData.comedyMechanics) ? ideasData.comedyMechanics : [];
+                const constraintSourcePool = (isComedyMode && Math.random() > 0.5 && comedyMechanics.length)
+                    ? comedyMechanics
+                    : constraintPool;
+                do {
+                    constraint = getRandomItem(constraintSourcePool);
+                } while (usedConstraints.has(getEntryText(constraint)) && usedConstraints.size < constraintSourcePool.length);
+                usedConstraints.add(getEntryText(constraint));
+
+                // Get unique twist - may use comedy twists if comedy mode active
+                let twist;
+                const comedyTwists = isComedyMode && Array.isArray(ideasData.comedyTwists) ? ideasData.comedyTwists : [];
+                const twistSourcePool = (isComedyMode && Math.random() > 0.5 && comedyTwists.length)
+                    ? comedyTwists
+                    : twistPool;
+                do {
+                    twist = getRandomItem(twistSourcePool);
+                } while (usedTwists.has(getEntryText(twist)) && usedTwists.size < twistSourcePool.length);
+                usedTwists.add(getEntryText(twist));
+
+                // Optional flavor elements (rotate, don't force all)
+                const prompt = {
+                    concept: concept.text,
+                    constraint: normalizeIdeaEntryLocal(constraint),
+                    twist: getEntryText(twist),
+                    genre: Math.random() > 0.5 ? getRandomItem(ideasData.genres) : null,
+                    visualStyle: Math.random() > 0.6 ? getRandomItem(ideasData.visualStyles) : null,
+                    emotion: Math.random() > 0.6 ? getRandomItem(ideasData.emotions) : null
+                };
+
+                // Add optional creepy detail if horror mode or genre matches
+                if (ideasData.creepyEerie && ideasData.creepyEerie.length > 0) {
+                    const genreText = getEntryText(prompt.genre).toLowerCase();
+                    const shouldAddCreepy = isHorrorMode ||
+                                           genreText.includes('horror') ||
+                                           genreText.includes('thriller') ||
+                                           genreText.includes('mystery');
+                    if (shouldAddCreepy && Math.random() > 0.3) {
+                        prompt.creepyDetail = getEntryText(getRandomItem(ideasData.creepyEerie));
+                    }
+                }
+
+                // Add optional comedy beat if comedy mode or genre matches
+                if (ideasData.comedyComplications && ideasData.comedyComplications.length > 0) {
+                    const genreText = getEntryText(prompt.genre).toLowerCase();
+                    const shouldAddComedy = isComedyMode ||
+                                           genreText.includes('comedy') ||
+                                           genreText.includes('satire') ||
+                                           genreText.includes('rom-com');
+                    if (shouldAddComedy && Math.random() > 0.3) {
+                        prompt.comedyBeat = getEntryText(getRandomItem(ideasData.comedyComplications));
+                    }
+                }
+
+                prompts.push(prompt);
+            }
+            return prompts;
+        }
+
+        function getDifferentItem(pool, currentText) {
+            if (!pool.length) return null;
+            let next = getRandomItem(pool);
+            let attempts = 0;
+            while (pool.length > 1 && getEntryText(next) === currentText && attempts < 10) {
+                next = getRandomItem(pool);
+                attempts++;
+            }
+            return next;
+        }
+
+        function rerollPromptField(index, field) {
+            const prompt = resultsState.generatedPrompts[index];
+            if (!prompt) return;
+            const isComedyMode = comedyToggle && comedyToggle.checked;
+
+            if (field === 'constraint') {
+                const constraintPool = getConstraintPool();
+                const comedyMechanics = isComedyMode && Array.isArray(ideasData.comedyMechanics) ? ideasData.comedyMechanics : [];
+                const combinedConstraints = comedyMechanics.length ? [...constraintPool, ...comedyMechanics] : constraintPool;
+                const nextConstraint = getDifferentItem(combinedConstraints, getEntryText(prompt.constraint));
+                if (!nextConstraint) return;
+                prompt.constraint = normalizeIdeaEntryLocal(nextConstraint);
+
+                const card = document.querySelector(`.prompt-card[data-prompt-index="${index}"]`);
+                if (card) {
+                    card.querySelector('.prompt-text.constraint').textContent = getEntryText(prompt.constraint);
+                }
+            }
+
+            if (field === 'twist') {
+                const twistPool = getTwistPool();
+                const comedyTwists = isComedyMode && Array.isArray(ideasData.comedyTwists) ? ideasData.comedyTwists : [];
+                const combinedTwists = comedyTwists.length ? [...twistPool, ...comedyTwists] : twistPool;
+                const nextTwist = getDifferentItem(combinedTwists, prompt.twist);
+                if (!nextTwist) return;
+                prompt.twist = getEntryText(nextTwist);
+
+                const card = document.querySelector(`.prompt-card[data-prompt-index="${index}"]`);
+                if (card) {
+                    card.querySelector('.prompt-text.twist').textContent = prompt.twist;
+                }
+            }
+
+            updateResultsDisplay();
+        }
+
+        function renderPrompts(prompts) {
+            const grid = document.getElementById('promptsGrid');
+            grid.innerHTML = '';
+
+            prompts.forEach((prompt, index) => {
+                const card = document.createElement('div');
+                card.className = 'prompt-card proto-corners';
+                card.dataset.promptIndex = index;
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
+
+                let flavorHTML = '';
+                if (prompt.genre || prompt.visualStyle || prompt.emotion) {
+                    flavorHTML = '<div class="prompt-flavor">';
+                    if (prompt.genre) {
+                        flavorHTML += `<span class="flavor-badge genre">${getEntryText(prompt.genre)}</span>`;
+                    }
+                    if (prompt.visualStyle) {
+                        flavorHTML += `<span class="flavor-badge visual">${getEntryText(prompt.visualStyle)}</span>`;
+                    }
+                    if (prompt.emotion) {
+                        flavorHTML += `<span class="flavor-badge emotion">${getEntryText(prompt.emotion)}</span>`;
+                    }
+                    flavorHTML += '</div>';
+                }
+
+                let genreDetailsHTML = '';
+                if (prompt.creepyDetail) {
+                    genreDetailsHTML += `
+                        <div class="prompt-section genre-detail creepy">
+                            <span class="prompt-label">CREEPY DETAIL</span>
+                            <p class="prompt-text">${prompt.creepyDetail}</p>
+                        </div>
+                    `;
+                }
+                if (prompt.comedyBeat) {
+                    genreDetailsHTML += `
+                        <div class="prompt-section genre-detail comedy">
+                            <span class="prompt-label">COMEDY BEAT</span>
+                            <p class="prompt-text">${prompt.comedyBeat}</p>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="prompt-number">0${index + 1}</div>
+                    <div class="prompt-content">
+                        <div class="prompt-section">
+                            <div class="prompt-section-header">
+                                <span class="prompt-label">Concept</span>
+                            </div>
+                            <p class="prompt-text concept">${prompt.concept}</p>
+                        </div>
+                        <div class="prompt-section">
+                            <div class="prompt-section-header">
+                                <span class="prompt-label">Constraint</span>
+                                <button class="prompt-reroll-btn" type="button" data-action="constraint">↻</button>
+                            </div>
+                            <p class="prompt-text constraint">${getEntryText(prompt.constraint)}</p>
+                        </div>
+                        <div class="prompt-section">
+                            <div class="prompt-section-header">
+                                <span class="prompt-label">Twist</span>
+                                <button class="prompt-reroll-btn" type="button" data-action="twist">↻</button>
+                            </div>
+                            <p class="prompt-text twist">${prompt.twist}</p>
+                        </div>
+                        ${genreDetailsHTML}
+                    </div>
+                    ${flavorHTML}
+                    <button class="save-prompt-btn" data-prompt-index="${index}" aria-label="Save this prompt">
+                        <span>📌</span>
+                        <span>Save</span>
+                    </button>
+                `;
+
+                card.addEventListener('click', (event) => {
+                    // Don't select card if clicking on a button
+                    if (event.target.closest('.prompt-reroll-btn') || event.target.closest('.save-prompt-btn')) {
+                        return;
+                    }
+                    selectPrompt(index);
+                });
+
+                card.addEventListener('keydown', (event) => {
+                    if (event.target.classList.contains('prompt-reroll-btn')) {
+                        return;
+                    }
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        selectPrompt(index);
+                    }
+                });
+
+                card.querySelectorAll('.prompt-reroll-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        rerollPromptField(index, button.dataset.action);
+                    });
+                });
+
+                // Save prompt button handler
+                const saveBtn = card.querySelector('.save-prompt-btn');
+                if (saveBtn) {
+                    saveBtn.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        savePrompt(prompt);
+                        saveBtn.innerHTML = '<span>✓</span><span>Saved!</span>';
+                        saveBtn.classList.add('saved');
+                        setTimeout(() => {
+                            saveBtn.innerHTML = '<span>📌</span><span>Save</span>';
+                            saveBtn.classList.remove('saved');
+                        }, 2000);
+                    });
+                }
+
+                grid.appendChild(card);
+            });
+
+            // Animate cards in
+            animateCardsIn();
+        }
+
+        function animateCardsIn() {
+            const cards = document.querySelectorAll('.prompt-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+        }
+
+        // ============================================
+        // EVENT HANDLERS
+        // ============================================
+        const mainRollBtn = document.getElementById('mainRollBtn');
+        const rollAllBtn = document.getElementById('rollAllBtn');
+        const rollAgainBtn = document.getElementById('rollAgainBtn');
+        const rollKeepConstraintBtn = document.getElementById('rollKeepConstraintBtn');
+        const promptsContainer = document.getElementById('promptsContainer');
+        const bonusRollBtn = document.getElementById('bonusRollBtn');
+        const bonusResult = document.getElementById('bonusResult');
+        const bonusPlaceholder = document.getElementById('bonusPlaceholder');
+
+        function handleMainRoll() {
+            const dieIcon = mainRollBtn.querySelector('.die-icon');
+
+            // Add rolling class for animation
+            mainRollBtn.classList.add('rolling');
+
+            // Cycle through die faces during animation
+            let rollCount = 0;
+            const rollInterval = setInterval(() => {
+                dieIcon.textContent = getRandomDieFace();
+                rollCount++;
+                if (rollCount > 10) {
+                    clearInterval(rollInterval);
+                }
+            }, 50);
+
+            setTimeout(() => {
+                mainRollBtn.classList.remove('rolling');
+                dieIcon.textContent = getRandomDieFace();
+
+                // Generate and show prompts
+                const prompts = generatePrompts(resultsState.generatedPrompts);
+                renderPrompts(prompts);
+
+                // Save to state
+                resultsState.generatedPrompts = prompts;
+                resultsState.prompts = prompts;
+                resultsState.selectedPromptIndex = null;
+                updateResultsDisplay();
+
+                // Show prompts container
+                promptsContainer.classList.add('visible');
+
+                // Scroll to prompts
+                promptsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 600);
+        }
+
+        mainRollBtn.addEventListener('click', handleMainRoll);
+        rollAgainBtn.addEventListener('click', handleMainRoll);
+
+        function handleRollKeepConstraint() {
+            const selectedPrompt = resultsState.selectedPromptIndex != null
+                ? resultsState.generatedPrompts[resultsState.selectedPromptIndex]
+                : null;
+
+            if (!selectedPrompt || !selectedPrompt.constraint) {
+                alert('Select a prompt first so we can keep its constraint.');
+                return;
+            }
+
+            const keptConstraint = normalizeIdeaEntryLocal(selectedPrompt.constraint);
+            const prompts = generatePrompts(resultsState.generatedPrompts);
+            prompts.forEach((prompt) => {
+                prompt.constraint = keptConstraint;
+            });
+
+            renderPrompts(prompts);
+            resultsState.generatedPrompts = prompts;
+            resultsState.prompts = prompts;
+            resultsState.selectedPromptIndex = null;
+            updateResultsDisplay();
+
+            promptsContainer.classList.add('visible');
+            promptsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        rollKeepConstraintBtn?.addEventListener('click', handleRollKeepConstraint);
+
+        function triggerBonusRoll() {
+            const bonus = getRandomItem(ideasData.bonuses);
+            const bonusText = getEntryText(bonus);
+            bonusResult.textContent = bonusText;
+            bonusResult.classList.add('visible');
+            bonusPlaceholder.style.display = 'none';
+
+            // Save to state
+            resultsState.bonus = bonusText;
+            updateResultsDisplay();
+
+            // Animate
+            bonusResult.style.opacity = '0';
+            bonusResult.style.transform = 'translateX(-10px)';
+            setTimeout(() => {
+                bonusResult.style.transition = 'all 0.4s ease';
+                bonusResult.style.opacity = '1';
+                bonusResult.style.transform = 'translateX(0)';
+            }, 10);
+        }
+
+        // Bonus roll handler
+        bonusRollBtn.addEventListener('click', triggerBonusRoll);
+
+        // Mini rollers
+        const miniPlaceholderText = 'Click roll to reveal...';
+
+        function rollMini(type) {
+            const resultEl = document.querySelector(`[data-result="${type}"]`);
+
+            let result;
+            if (type === 'places') {
+                result = getRandomItem(ideasData.places);
+            } else if (type === 'objects') {
+                result = getRandomItem(ideasData.objects);
+            } else if (type === 'characters') {
+                result = getRandomItem(ideasData.characters);
+            } else if (type === 'genres') {
+                result = getRandomItem(ideasData.genres);
+            }
+
+            const resultText = getEntryText(result);
+            resultsState.miniRollers[type] = resultText;
+            updateResultsDisplay();
+
+            if (resultEl) {
+                resultEl.classList.remove('empty');
+                resultEl.textContent = resultText;
+
+                resultEl.style.opacity = '0';
+                resultEl.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    resultEl.style.transition = 'all 0.3s ease';
+                    resultEl.style.opacity = '1';
+                    resultEl.style.transform = 'translateY(0)';
+                }, 10);
+            }
+        }
+
+        document.querySelectorAll('.mini-roll-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                rollMini(btn.dataset.type);
+            });
+        });
+
+        function handleRollAll() {
+            if (rollAllBtn.classList.contains('is-used')) {
+                return;
+            }
+
+            rollAllBtn.classList.add('rolling');
+            handleMainRoll();
+
+            setTimeout(() => {
+                triggerBonusRoll();
+                ['places', 'objects', 'characters', 'genres'].forEach(rollMini);
+                rollAllBtn.classList.remove('rolling');
+                rollAllBtn.classList.add('is-used');
+                rollAllBtn.setAttribute('disabled', 'disabled');
+                rollAllBtn.querySelector('span:last-child').textContent = 'Challenge Locked';
+            }, 700);
+        }
+
+        rollAllBtn.addEventListener('click', handleRollAll);
+
+        document.querySelectorAll('.mini-clear-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const type = btn.dataset.type;
+                const resultEl = document.querySelector(`[data-result="${type}"]`);
+
+                resultsState.miniRollers[type] = null;
+                updateResultsDisplay();
+
+                resultEl.classList.add('empty');
+                resultEl.textContent = miniPlaceholderText;
+            });
+        });
+
+        // ============================================
+        // RESULTS DISPLAY & PDF
+        // ============================================
+        const resultsSection = document.getElementById('resultsSection');
+        const resultsContent = document.getElementById('resultsContent');
+        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+        const clearResultsBtn = document.getElementById('clearResultsBtn');
+
+        function hasAnyResults() {
+            return resultsState.prompts.length > 0 ||
+                   resultsState.bonus !== null ||
+                   Object.values(resultsState.miniRollers).some(v => v !== null);
+        }
+
+        function updateResultsDisplay() {
+            if (!hasAnyResults()) {
+                resultsSection.classList.remove('visible');
+                resultsContent.innerHTML = '<p class="results-empty">Roll some dice to see your results here...</p>';
+                return;
+            }
+
+            resultsSection.classList.add('visible');
+            let html = '';
+
+            // Prompts
+            if (resultsState.prompts.length > 0) {
+                html += '<div class="results-group">';
+                html += '<h3 class="results-group-title">Film Prompts</h3>';
+                html += '<div class="results-group-items">';
+                resultsState.prompts.forEach((prompt, idx) => {
+                    let flavorHtml = '';
+                    if (prompt.genre) flavorHtml += `<span style="color: #FF8C42;">${getEntryText(prompt.genre)}</span> `;
+                    if (prompt.visualStyle) flavorHtml += `<span style="color: #00D9FF;">${getEntryText(prompt.visualStyle)}</span> `;
+                    if (prompt.emotion) flavorHtml += `<span style="color: #2ECC71;">${getEntryText(prompt.emotion)}</span>`;
+
+                    let genreDetailsResultsHtml = '';
+                    if (prompt.creepyDetail) {
+                        genreDetailsResultsHtml += `
+                            <div class="results-prompt-section">
+                                <div class="results-item-label" style="color: #EF4444;">CREEPY DETAIL</div>
+                                <div class="results-item-text">${prompt.creepyDetail}</div>
+                            </div>
+                        `;
+                    }
+                    if (prompt.comedyBeat) {
+                        genreDetailsResultsHtml += `
+                            <div class="results-prompt-section">
+                                <div class="results-item-label" style="color: #22C55E;">COMEDY BEAT</div>
+                                <div class="results-item-text">${prompt.comedyBeat}</div>
+                            </div>
+                        `;
+                    }
+
+                    html += `<div class="results-prompt-card">
+                        <div class="results-prompt-number">PROMPT 0${idx + 1}</div>
+                        <div class="results-prompt-section">
+                            <div class="results-item-label">Concept</div>
+                            <div class="results-item-text">${prompt.concept}</div>
+                        </div>
+                        <div class="results-prompt-section">
+                            <div class="results-item-label">Constraint</div>
+                            <div class="results-item-text" style="color: #888;">${getEntryText(prompt.constraint)}</div>
+                        </div>
+                        <div class="results-prompt-section">
+                            <div class="results-item-label">Twist</div>
+                            <div class="results-item-text" style="color: #888;">${prompt.twist}</div>
+                        </div>
+                        ${genreDetailsResultsHtml}
+                        ${flavorHtml ? `<div style="margin-top: 0.5rem; font-size: 0.7rem;">${flavorHtml}</div>` : ''}
+                    </div>`;
+                });
+                html += '</div></div>';
+            }
+
+            // Bonus
+            if (resultsState.bonus) {
+                html += '<div class="results-group" style="border-left-color: #FF8C42;">';
+                html += '<h3 class="results-group-title">Bonus Challenge</h3>';
+                html += '<div class="results-item">';
+                html += `<div class="results-item-text">${resultsState.bonus}</div>`;
+                html += '</div></div>';
+            }
+
+            // Mini Rollers
+            const miniResults = Object.entries(resultsState.miniRollers).filter(([k, v]) => v !== null);
+            if (miniResults.length > 0) {
+                html += '<div class="results-group">';
+                html += '<h3 class="results-group-title">Quick Roll Results</h3>';
+                html += '<div class="results-mini-grid">';
+                miniResults.forEach(([type, value]) => {
+                    const label = type.charAt(0).toUpperCase() + type.slice(1, -1);
+                    html += `<div class="results-item">
+                        <div class="results-item-label">${label}</div>
+                        <div class="results-item-text">${value}</div>
+                    </div>`;
+                });
+                html += '</div></div>';
+            }
+
+            resultsContent.innerHTML = html;
+        }
+
+        function selectPrompt(index) {
+            const selected = resultsState.generatedPrompts[index];
+            if (!selected) return;
+
+            resultsState.prompts = [selected];
+            resultsState.selectedPromptIndex = index;
+            updateResultsDisplay();
+
+            document.querySelectorAll('.prompt-card').forEach((card) => {
+                const cardIndex = Number(card.dataset.promptIndex);
+                const isSelected = cardIndex === index;
+                card.classList.toggle('is-selected', isSelected);
+                // Hide unselected cards
+                card.classList.toggle('is-hidden', !isSelected);
+            });
+        }
+
+        async function exportSavedPromptsToPDF() {
+            const saved = getSavedPrompts();
+            if (saved.length === 0) {
+                alert('No saved prompts to export.');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            let yPos = 20;
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const margin = 20;
+            const contentWidth = pageWidth - (margin * 2);
+
+            // Add logo if loaded
+            const logoData = await loadLogoDataUrl();
+            if (logoData) {
+                const logoWidth = 30;
+                const logoHeight = 30;
+                doc.addImage(logoData, 'PNG', (pageWidth - logoWidth) / 2, yPos, logoWidth, logoHeight);
+                yPos += logoHeight + 10;
+            }
+
+            // Title
+            doc.setFontSize(24);
+            doc.setFont('helvetica', 'bold');
+            doc.text('SAVED FILM PROMPTS', pageWidth / 2, yPos, { align: 'center' });
+            yPos += 10;
+
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(128);
+            doc.text(`LaB Media Ideas Generator - ${saved.length} saved prompts`, pageWidth / 2, yPos, { align: 'center' });
+            yPos += 15;
+            doc.setTextColor(0);
+
+            // Saved prompts
+            saved.forEach((item, idx) => {
+                const p = item.prompt;
+                const date = new Date(item.timestamp).toLocaleDateString('en-US', {
+                    month: 'short', day: 'numeric', year: 'numeric'
+                });
+
+                if (yPos > 240) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`Prompt #${idx + 1} - Saved ${date}`, margin, yPos);
+                yPos += 6;
+
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Concept:', margin, yPos);
+                doc.setFont('helvetica', 'normal');
+                const conceptLines = doc.splitTextToSize(p.concept, contentWidth - 20);
+                doc.text(conceptLines, margin + 20, yPos);
+                yPos += conceptLines.length * 5 + 4;
+
+                doc.setFont('helvetica', 'bold');
+                doc.text('Constraint:', margin, yPos);
+                doc.setFont('helvetica', 'normal');
+                const constraintLines = doc.splitTextToSize(p.constraint, contentWidth - 22);
+                doc.text(constraintLines, margin + 22, yPos);
+                yPos += constraintLines.length * 5 + 4;
+
+                doc.setFont('helvetica', 'bold');
+                doc.text('Twist:', margin, yPos);
+                doc.setFont('helvetica', 'normal');
+                const twistLines = doc.splitTextToSize(p.twist, contentWidth - 20);
+                doc.text(twistLines, margin + 14, yPos);
+                yPos += twistLines.length * 5 + 4;
+
+                if (p.creepyDetail) {
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(239, 68, 68);
+                    doc.text('Creepy Detail:', margin, yPos);
+                    doc.setTextColor(0);
+                    doc.setFont('helvetica', 'normal');
+                    const creepyLines = doc.splitTextToSize(p.creepyDetail, contentWidth - 28);
+                    doc.text(creepyLines, margin + 28, yPos);
+                    yPos += creepyLines.length * 5 + 4;
+                }
+
+                if (p.comedyBeat) {
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(34, 197, 94);
+                    doc.text('Comedy Beat:', margin, yPos);
+                    doc.setTextColor(0);
+                    doc.setFont('helvetica', 'normal');
+                    const comedyLines = doc.splitTextToSize(p.comedyBeat, contentWidth - 26);
+                    doc.text(comedyLines, margin + 26, yPos);
+                    yPos += comedyLines.length * 5 + 4;
+                }
+
+                let flavors = [];
+                if (p.genre) flavors.push(`Genre: ${p.genre}`);
+                if (p.visualStyle) flavors.push(`Style: ${p.visualStyle}`);
+                if (p.emotion) flavors.push(`Emotion: ${p.emotion}`);
+
+                if (flavors.length > 0) {
+                    doc.setFontSize(9);
+                    doc.setTextColor(100);
+                    doc.text(flavors.join(' • '), margin, yPos);
+                    doc.setTextColor(0);
+                    yPos += 5;
+                }
+
+                yPos += 8;
+            });
+
+            // Footer
+            const timestamp = new Date().toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit'
+            });
+            doc.setFontSize(8);
+            doc.setTextColor(128);
+            doc.text(`Exported ${timestamp} from labmedia.work/ideas.html`, pageWidth / 2, 285, { align: 'center' });
+
+            doc.save('LaB-Media-Saved-Prompts.pdf');
+        }
+
+        async function generatePDF() {
+            if (!hasAnyResults()) return;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            let yPos = 20;
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const margin = 20;
+            const contentWidth = pageWidth - (margin * 2);
+
+            // Add logo if loaded
+            const logoData = await loadLogoDataUrl();
+            if (logoData) {
+                const logoWidth = 30;
+                const logoHeight = 30;
+                doc.addImage(logoData, 'PNG', (pageWidth - logoWidth) / 2, yPos, logoWidth, logoHeight);
+                yPos += logoHeight + 10;
+            }
+
+            // Title
+            doc.setFontSize(24);
+            doc.setFont('helvetica', 'bold');
+            doc.text('SHORT FILM IDEAS', pageWidth / 2, yPos, { align: 'center' });
+            yPos += 10;
+
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(128);
+            doc.text('Generated by LaB Media Ideas Generator', pageWidth / 2, yPos, { align: 'center' });
+            yPos += 15;
+            doc.setTextColor(0);
+
+            // Prompts
+            if (resultsState.prompts.length > 0) {
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                doc.text('FILM PROMPTS', margin, yPos);
+                yPos += 8;
+
+                resultsState.prompts.forEach((prompt, idx) => {
+                    if (yPos > 250) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(`Prompt 0${idx + 1}`, margin, yPos);
+                    yPos += 6;
+
+                    doc.setFontSize(10);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Concept:', margin, yPos);
+                    doc.setFont('helvetica', 'normal');
+                    const conceptLines = doc.splitTextToSize(prompt.concept, contentWidth - 20);
+                    doc.text(conceptLines, margin + 20, yPos);
+                    yPos += conceptLines.length * 5 + 4;
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Constraint:', margin, yPos);
+                    doc.setFont('helvetica', 'normal');
+                    const constraintLines = doc.splitTextToSize(getEntryText(prompt.constraint), contentWidth - 20);
+                    doc.text(constraintLines, margin + 22, yPos);
+                    yPos += constraintLines.length * 5 + 4;
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Twist:', margin, yPos);
+                    doc.setFont('helvetica', 'normal');
+                    const twistLines = doc.splitTextToSize(prompt.twist, contentWidth - 20);
+                    doc.text(twistLines, margin + 14, yPos);
+                    yPos += twistLines.length * 5 + 4;
+
+                    // Optional genre-specific details
+                    if (prompt.creepyDetail) {
+                        doc.setFont('helvetica', 'bold');
+                        doc.setTextColor(239, 68, 68);
+                        doc.text('Creepy Detail:', margin, yPos);
+                        doc.setTextColor(0);
+                        doc.setFont('helvetica', 'normal');
+                        const creepyLines = doc.splitTextToSize(prompt.creepyDetail, contentWidth - 28);
+                        doc.text(creepyLines, margin + 28, yPos);
+                        yPos += creepyLines.length * 5 + 4;
+                    }
+
+                    if (prompt.comedyBeat) {
+                        doc.setFont('helvetica', 'bold');
+                        doc.setTextColor(34, 197, 94);
+                        doc.text('Comedy Beat:', margin, yPos);
+                        doc.setTextColor(0);
+                        doc.setFont('helvetica', 'normal');
+                        const comedyLines = doc.splitTextToSize(prompt.comedyBeat, contentWidth - 26);
+                        doc.text(comedyLines, margin + 26, yPos);
+                        yPos += comedyLines.length * 5 + 4;
+                    }
+
+                    // Flavor badges
+                    let flavors = [];
+                    if (prompt.genre) flavors.push(`Genre: ${getEntryText(prompt.genre)}`);
+                    if (prompt.visualStyle) flavors.push(`Style: ${getEntryText(prompt.visualStyle)}`);
+                    if (prompt.emotion) flavors.push(`Emotion: ${getEntryText(prompt.emotion)}`);
+                    if (flavors.length > 0) {
+                        doc.setFontSize(9);
+                        doc.setTextColor(100);
+                        doc.text(flavors.join('  |  '), margin, yPos);
+                        doc.setTextColor(0);
+                        yPos += 6;
+                    }
+
+                    yPos += 8;
+                });
+            }
+
+            // Bonus
+            if (resultsState.bonus) {
+                if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                doc.text('BONUS CHALLENGE', margin, yPos);
+                yPos += 8;
+
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'normal');
+                const bonusLines = doc.splitTextToSize(resultsState.bonus, contentWidth);
+                doc.text(bonusLines, margin, yPos);
+                yPos += bonusLines.length * 5 + 12;
+            }
+
+            // Mini Rollers
+            const miniResults = Object.entries(resultsState.miniRollers).filter(([k, v]) => v !== null);
+            if (miniResults.length > 0) {
+                if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                doc.text('QUICK ROLL RESULTS', margin, yPos);
+                yPos += 8;
+
+                miniResults.forEach(([type, value]) => {
+                    const label = type.charAt(0).toUpperCase() + type.slice(1, -1);
+                    doc.setFontSize(10);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(`${label}:`, margin, yPos);
+                    doc.setFont('helvetica', 'normal');
+                    const valueLines = doc.splitTextToSize(value, contentWidth - 30);
+                    doc.text(valueLines, margin + 25, yPos);
+                    yPos += valueLines.length * 5 + 4;
+                });
+            }
+
+            // Footer
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(150);
+                doc.text('labmedia.work/ideas', pageWidth / 2, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
+            }
+
+            // Download
+            const timestamp = new Date().toISOString().slice(0, 10);
+            doc.save(`lab-ideas-${timestamp}.pdf`);
+        }
+
+        function clearResults() {
+            resultsState.prompts = [];
+            resultsState.generatedPrompts = [];
+            resultsState.selectedPromptIndex = null;
+            resultsState.bonus = null;
+            resultsState.miniRollers = {
+                places: null,
+                objects: null,
+                characters: null,
+                genres: null
+            };
+
+            // Reset UI
+            promptsContainer.classList.remove('visible');
+            document.getElementById('promptsGrid').innerHTML = '';
+            bonusResult.classList.remove('visible');
+            bonusPlaceholder.style.display = '';
+            document.querySelectorAll('.mini-roller-result').forEach(el => {
+                el.classList.add('empty');
+                el.textContent = miniPlaceholderText;
+            });
+
+            rollAllBtn.classList.remove('is-used');
+            rollAllBtn.removeAttribute('disabled');
+            rollAllBtn.querySelector('span:last-child').textContent = 'Roll All (One-Time)';
+
+            updateResultsDisplay();
+        }
+
+        downloadPdfBtn.addEventListener('click', generatePDF);
+        clearResultsBtn.addEventListener('click', clearResults);
+
+        function getPrimaryPrompt() {
+            if (resultsState.selectedPromptIndex != null) {
+                return resultsState.generatedPrompts[resultsState.selectedPromptIndex];
+            }
+            if (resultsState.prompts.length > 0) {
+                return resultsState.prompts[0];
+            }
+            return null;
+        }
+
+        // Share Prompt button - Copy prompt to clipboard with site link
+        const sharePromptBtn = document.getElementById('sharePromptBtn');
+        sharePromptBtn.addEventListener('click', () => {
+            if (!hasAnyResults()) {
+                alert('Roll the dice first to generate a prompt!');
+                return;
+            }
+
+            const prompt = getPrimaryPrompt();
+            // Build shareable text
+            let shareText = `🎬 Film Prompt from LaB Media Ideas Generator:\n\n`;
+            if (prompt) {
+                shareText += `Concept: ${prompt.concept}\n`;
+                shareText += `Constraint: ${getEntryText(prompt.constraint)}\n`;
+                shareText += `Twist: ${prompt.twist}\n`;
+                if (prompt.genre) shareText += `Genre: ${getEntryText(prompt.genre)}\n`;
+                if (prompt.visualStyle) shareText += `Style: ${getEntryText(prompt.visualStyle)}\n`;
+                if (prompt.emotion) shareText += `Emotion: ${getEntryText(prompt.emotion)}\n`;
+                if (prompt.creepyDetail) shareText += `Creepy Detail: ${prompt.creepyDetail}\n`;
+                if (prompt.comedyBeat) shareText += `Comedy Beat: ${prompt.comedyBeat}\n`;
+            }
+            if (resultsState.bonus) shareText += `Bonus Challenge: ${resultsState.bonus}\n`;
+            const miniResults = Object.entries(resultsState.miniRollers).filter(([, value]) => value !== null);
+            if (miniResults.length > 0) {
+                shareText += '\nQuick Roll Results:\n';
+                miniResults.forEach(([type, value]) => {
+                    const label = type.charAt(0).toUpperCase() + type.slice(1, -1);
+                    shareText += `${label}: ${value}\n`;
+                });
+            }
+            shareText += `\n🎲 Generate your own: https://labmedia.work/ideas.html`;
+
+            // Copy to clipboard
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(shareText)
+                    .then(() => {
+                        alert('Prompt copied to clipboard! Share it on social media.');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy:', err);
+                        alert('Copy failed - try again');
+                    });
+            } else {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = shareText;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    alert('Prompt copied to clipboard! Share it on social media.');
+                } catch (err) {
+                    console.error('Fallback copy failed:', err);
+                    alert('Copy failed - try again');
+                }
+                document.body.removeChild(textarea);
+            }
+        });
+
+        // ============================================
+        // TOGGLE SYSTEM - Dynamic Button Styling
+        // ============================================
+        const horrorToggle = document.getElementById('toggleHorror');
+        const comedyToggle = document.getElementById('toggleComedy');
+
+        function updateRollButtonStyle() {
+            const isHorror = horrorToggle.checked;
+            const isComedy = comedyToggle.checked;
+            const buttonText = mainRollBtn.querySelector('.roll-button-text');
+
+            // Remove all mode classes
+            mainRollBtn.classList.remove('horror-mode', 'comedy-mode', 'both-mode');
+
+            // Update button style and text based on active toggles
+            if (isHorror && isComedy) {
+                mainRollBtn.classList.add('both-mode');
+                buttonText.textContent = 'Roll Mixed Genre';
+            } else if (isHorror) {
+                mainRollBtn.classList.add('horror-mode');
+                buttonText.textContent = 'Roll Horror';
+            } else if (isComedy) {
+                mainRollBtn.classList.add('comedy-mode');
+                buttonText.textContent = 'Roll Comedy';
+            } else {
+                buttonText.textContent = 'Roll the Die';
+            }
+        }
+
+        // Attach toggle listeners
+        if (horrorToggle) {
+            horrorToggle.addEventListener('change', updateRollButtonStyle);
+        }
+        if (comedyToggle) {
+            comedyToggle.addEventListener('change', updateRollButtonStyle);
+        }
+
+        // Initialize button style on page load
+        updateRollButtonStyle();
+
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close menu when clicking a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !menuToggle.contains(e.target) && navLinks.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+
+    <!-- Global Error Handler -->
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            console.error('[Global Error Handler]', {
+                message: message,
+                source: source,
+                line: lineno,
+                column: colno,
+                error: error
+            });
+            return false;
+        };
+
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('[Unhandled Promise Rejection]', event.reason);
+        });
+    </script>
+</body>
+</html>
