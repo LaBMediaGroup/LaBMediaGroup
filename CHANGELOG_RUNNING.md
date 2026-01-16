@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 5:19PM EST
+———————————————————————
+Change: Softened the Anthony Brass overlay and muted the Lookout color wash to a darker, greener palette.
+Files touched: portfolio.html, CHANGELOG_RUNNING.md
+Notes: Reduced the white overlay opacity on Anthony Brass and adjusted Lookout gradients to be less intense.
+Quick test checklist:
+1. Open portfolio.html and confirm the Anthony Brass overlay is lighter without washing out the background.
+2. Scroll to Lookout and confirm the color wash is darker/greener and still readable.
+3. Open DevTools console on portfolio.html and verify no errors.
+
 2026-01-16 | 5:13PM EST
 ———————————————————————
 Change: Updated Supabase submission pages to allow the Supabase endpoint in CSP connect-src.
