@@ -4,6 +4,36 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-16 | 5:48AM EST
+———————————————————————
+Change: Restored the hero PNG size and increased the nav logo size instead.
+Files touched: index.html, CHANGELOG_RUNNING.md
+Notes: Reverted hero logo sizing to its original clamp values and bumped the nav logo height to better match the new asset.
+Quick test checklist:
+1. Open index.html and confirm the hero PNG size matches the prior layout.
+2. Verify the top navigation logo appears larger without overlapping the nav links.
+3. Open DevTools Console and confirm there are no errors on load.
+
+2026-01-16 | 5:45AM EST
+———————————————————————
+Change: Increased the hero PNG size to better match the layout proportions.
+Files touched: index.html, CHANGELOG_RUNNING.md
+Notes: Enlarged the hero logo clamp sizing to make the PNG more prominent.
+Quick test checklist:
+1. Open index.html and confirm the hero PNG appears larger without overlapping the pill row or mission line.
+2. Resize the browser to verify the hero logo still scales smoothly at smaller widths.
+3. Open DevTools Console and confirm there are no errors on load.
+
+2026-01-16 | 5:41AM EST
+———————————————————————
+Change: Updated the homepage hero copy and nav logo to match the latest brand presentation.
+Files touched: index.html, CHANGELOG_RUNNING.md
+Notes: Removed the hero title text under the PNG, adjusted the mission line, and swapped the nav logo to LaBMedia.png with a larger size.
+Quick test checklist:
+1. Open index.html and confirm the hero logo no longer has “LaB Media” beneath it and the mission line starts with “A Creative Studio.”
+2. Verify the top navigation logo uses LaBMedia.png and appears larger without layout overlap.
+3. Open DevTools Console and confirm there are no errors on load.
+
 2026-01-16 | 2:53AM EST
 ———————————————————————
 Change: Simplified the homepage hero headline to keep the intro minimal.
