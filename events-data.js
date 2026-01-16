@@ -106,3 +106,23 @@ const eventsData = [
         deadlineDate: '2026-01-31'
     }
 ];
+
+const eventsPosterData = [
+    {
+        id: 'frames-fabrics-2026',
+        title: "Frames & Fabrics: The Art of Film in Detroit",
+        type: 'screening',
+        startDate: '2026-01-31',
+        startTime: '15:00',
+        endTime: '20:00',
+        location: 'Detroit, MI',
+        venue: 'Heilmann Rec Center',
+        organizer: 'Film Detroit',
+        description: 'A Film Detroit community showcase celebrating local filmmakers with screenings, fabric-inspired set pieces, and creative workshops.',
+        url: 'https://detroitmi.gov/',
+        website: 'https://detroitmi.gov/',
+        verification: 'tbd',
+        verificationLabel: 'Check site',
+        posterImage: 'images/events/frames-fabrics-2026.svg'
+    }
+];
