@@ -221,6 +221,22 @@
             border-color: rgba(255,255,255,0.5);
         }
 
+        @keyframes announcementNudge {
+            0%, 94%, 100% {
+                transform: translateY(0);
+            }
+            96% {
+                transform: translateY(-3px);
+            }
+            98% {
+                transform: translateY(2px);
+            }
+        }
+
+        .announcement-toggle.nudge {
+            animation: announcementNudge 20s ease-in-out infinite;
+        }
+
         .announcement-content {
             display: grid;
             grid-template-columns: 1.5fr 1fr;
@@ -335,6 +351,12 @@
 
         .featured-announcement.is-collapsed {
             padding-bottom: 1.1rem;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .announcement-toggle.nudge {
+                animation: none;
+            }
         }
 
         /* Event Type Legend */
@@ -1605,11 +1627,11 @@
         </section>
 
         <!-- Featured Announcement: DFA x Detroit Public Access TV Partnership -->
-        <section class="featured-announcement" id="dfaAnnouncement">
+        <section class="featured-announcement is-collapsed" id="dfaAnnouncement">
             <div class="announcement-header">
                 <div class="announcement-header-top">
                     <div class="announcement-eyebrow">NEW PARTNERSHIP</div>
-                    <button class="announcement-toggle" type="button" id="announcementToggle" aria-expanded="true" aria-controls="announcementContent">Collapse</button>
+                    <button class="announcement-toggle nudge" type="button" id="announcementToggle" aria-expanded="false" aria-controls="announcementContent">Expand</button>
                 </div>
                 <h2 class="announcement-headline">DFA Films Now Air on Detroit Public Access TV</h2>
             </div>
@@ -1916,6 +1938,7 @@
                 const isCollapsed = announcementSection.classList.toggle('is-collapsed');
                 announcementToggle.textContent = isCollapsed ? 'Expand' : 'Collapse';
                 announcementToggle.setAttribute('aria-expanded', String(!isCollapsed));
+                announcementToggle.classList.toggle('nudge', isCollapsed);
             });
         }
 
