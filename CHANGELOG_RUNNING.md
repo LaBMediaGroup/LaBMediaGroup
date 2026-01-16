@@ -4,19 +4,6 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-16 | 11:23PM EST
-———————————————————————
-Change: Removed the duplicate “New here” block from the homepage; adjusted Events poster rendering and modal flyer preview sizing.
-Files touched: index.html, events.html, CHANGELOG_RUNNING.md
-Notes:
-1. Homepage intro now relies on the main nav without the extra quick links.
-2. Poster cards preserve full poster art and the modal shows a smaller flyer preview in the bio area.
-Quick test checklist:
-1. Open index.html → confirm the “New here? Start with” section is gone.
-2. Open events.html → confirm poster cards display full artwork without cropping.
-3. Click a poster card → confirm the flyer image appears smaller in the modal bio section.
-4. Open DevTools console on index.html and events.html → confirm no errors.
-
 2026-01-16 | 10:55PM EST
 ———————————————————————
 Change: Removed the Events page footer CTA and aligned footer links; updated callboard query to use approved listings.
