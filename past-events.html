@@ -348,6 +348,8 @@
 
     <script src="events-data.js"></script>
     <script>
+        const eventsDataset = typeof eventsData !== 'undefined' ? eventsData : [];
+
         function formatDate(dateStr) {
             if (!dateStr) return '';
             const date = new Date(dateStr + 'T00:00:00');
@@ -372,7 +374,7 @@
             const grid = document.getElementById('pastEventsGrid');
             if (!grid) return;
 
-            const pastEvents = eventsData.filter(isEventPast).sort((a, b) => {
+            const pastEvents = eventsDataset.filter(isEventPast).sort((a, b) => {
                 return new Date(b.startDate) - new Date(a.startDate);
             });
 
