@@ -4,17 +4,6 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-16 | 2:05PM EST
-———————————————————————
-Change: Guarded events pages against missing events data so the calendar/list UI still renders.
-Files touched: events.html, past-events.html, CHANGELOG_RUNNING.md
-Notes: Uses a safe events dataset fallback to prevent script errors when events-data.js is unavailable.
-Quick test checklist:
-1. Open events.html and confirm the calendar grid and list panes render beneath the featured announcement.
-2. Use the month navigation arrows and confirm the calendar updates without errors.
-3. Open past-events.html and confirm the archive renders (or shows the empty state message).
-4. Open DevTools console on both pages and verify no errors.
-
 2026-01-16 | 1:32PM EST
 ———————————————————————
 Change: Made the DFA partnership callout open an on-page modal with full details and tuned the DFA resource bio image metadata.
