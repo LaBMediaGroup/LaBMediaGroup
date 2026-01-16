@@ -2429,7 +2429,9 @@
                         body: JSON.stringify(payload)
                     });
 
-                    if (response.ok) {
+                    const data = await response.json().catch(() => ({}));
+
+                    if (response.ok && data.ok !== false) {
                         suggestForm.reset();
                         if (suggestConfirmation) {
                             suggestConfirmation.textContent = 'Submitted for review.';
@@ -2437,7 +2439,7 @@
                         closeSuggestModal();
                     } else {
                         if (suggestConfirmation) {
-                            suggestConfirmation.textContent = 'Submission failed. Please try again shortly.';
+                            suggestConfirmation.textContent = data.error || 'Submission failed. Please try again shortly.';
                         }
                     }
                 } catch (error) {
