@@ -1,0 +1,2249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.youtube.com https://www.youtube-nocookie.com;">
+    <title>Reel | Studio Work & Production Reference | LaB Media</title>
+    <link rel="canonical" href="https://labmedia.work/portfolio.html">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Selected work and reference projects from LaB Media, a Metro Detroit creative studio and community filmmaking hub.">
+    <meta name="keywords"
+        content="LaB Media reel, Metro Detroit creative studio, Detroit filmmaker work, production reference">
+    <meta name="author" content="LaB Media">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://labmedia.work/portfolio.html">
+    <meta property="og:title" content="Reel | Studio Work & Production Reference | LaB Media">
+    <meta property="og:description"
+        content="Selected work and reference projects from LaB Media, a Metro Detroit creative studio.">
+    <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://labmedia.work/portfolio.html">
+    <meta name="twitter:title" content="Reel | Studio Work & Production Reference | LaB Media">
+    <meta name="twitter:description"
+        content="Selected work and reference projects from LaB Media, a Metro Detroit creative studio.">
+    <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Prototype Design System -->
+    <link rel="stylesheet" href="prototype-theme.css">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "LaB Media",
+      "url": "https://labmedia.work",
+      "logo": "https://labmedia.work/images/TheLaB.png",
+      "description": "Metro Detroit creative studio and community hub sharing filmmaking resources, local events, and production knowledge.",
+      "areaServed": "Metro Detroit, Michigan",
+      "sameAs": [
+        "https://www.instagram.com/labmedia.work/",
+        "https://www.youtube.com/@labmediawork"
+      ]
+    }
+    </script>
+
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --white: #fafafa;
+            --gray-400: #a3a3a3;
+            --gray-600: #525252;
+            --gray-800: #262626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            overscroll-behavior: contain;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--black);
+            color: var(--gray-400);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Touch device detection - soften scroll-snap on mobile */
+        @media (hover: none) and (pointer: coarse) {
+            html {
+                scroll-snap-type: none;
+                /* Remove aggressive snapping on touch devices */
+                scroll-behavior: smooth;
+            }
+
+            section {
+                scroll-snap-align: none;
+                scroll-snap-stop: normal;
+            }
+        }
+
+        /* Improved touch tap targets for mobile */
+        @media (max-width: 768px) {
+
+            .nav-links a,
+            .nav-back {
+                padding: 0.5rem 0.25rem;
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+            }
+
+            .video-placeholder {
+                -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        /* Navigation */
+        .site-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+
+        .nav-logo {
+            height: 22px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            opacity: 0.6;
+        }
+
+        .nav-back {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-back:hover {
+            opacity: 0.5;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.5;
+        }
+
+        .portfolio-intro {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 4rem 4rem;
+        }
+
+        .portfolio-intro .intro-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-intro h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            color: var(--white);
+            margin: 0 0 1rem;
+        }
+
+        .portfolio-intro .intro-text {
+            max-width: 640px;
+            color: var(--gray-400);
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+        }
+
+        .portfolio-intro .intro-links {
+            color: var(--gray-400);
+            line-height: 1.7;
+        }
+
+        .portfolio-intro a {
+            color: var(--white);
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .portfolio-intro a:hover {
+            border-bottom-color: var(--white);
+        }
+
+        /* Project Counter */
+        .project-counter {
+            position: fixed;
+            right: 3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+            font-family: 'Space Mono', monospace;
+            mix-blend-mode: difference;
+        }
+
+        .counter-current {
+            font-size: 2.5rem;
+            color: var(--white);
+            display: block;
+            font-weight: 400;
+            line-height: 1;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .counter-total {
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+        }
+
+        .project-map {
+            position: fixed;
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-20%);
+            z-index: 998;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            mix-blend-mode: difference;
+        }
+
+        /* Hide project map on smaller screens to prevent overlap */
+        @media (max-width: 1400px) {
+            .project-map {
+                display: none;
+            }
+        }
+
+        .project-map-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-600);
+        }
+
+        .project-map-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .project-map-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            text-align: left;
+            transition: color 0.3s ease;
+        }
+
+        .project-map-link.active,
+        .project-map-link:hover {
+            color: var(--white);
+        }
+
+        /* Base Section */
+        section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 4rem;
+            position: relative;
+            scroll-snap-align: start;
+            transition: background 1s ease;
+        }
+
+        .section-inner {
+            max-width: 1400px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        /* Ensure content has breathing room from sidebar */
+        @media (min-width: 1401px) {
+            .section-inner {
+                padding-left: 8rem;
+            }
+        }
+
+        .reversed .section-inner {
+            grid-template-columns: 1fr 1.2fr;
+        }
+
+        .reversed .video-side {
+            order: 2;
+        }
+
+        .reversed .info-side {
+            order: 1;
+        }
+
+        /* Video Side */
+        .video-side {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: var(--video-max, 640px);
+            margin: 0 auto;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: transparent;
+            border-radius: 18px;
+        }
+
+        .video-container iframe,
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-container iframe {
+            border: 0;
+            display: block;
+            background: transparent;
+        }
+
+        .video-aspect-wrapper {
+            background: transparent;
+        }
+
+        .video-placeholder {
+            border: none;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .video-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.9);
+            transition: transform 0.2s ease, filter 0.2s ease;
+            display: block;
+        }
+
+        .video-placeholder:hover .video-thumb {
+            transform: scale(1.01);
+            filter: brightness(1);
+        }
+
+        .video-play {
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            display: grid;
+            place-items: center;
+            color: var(--white);
+            background: rgba(0, 0, 0, 0.4);
+            font-size: 1.35rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .video-placeholder:hover .video-play {
+            transform: scale(1.05);
+            border-color: var(--white);
+        }
+
+        /* Info Side - Default hidden state for animation */
+        .info-side {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .info-side>* {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Animated in-view state */
+        section.in-view .info-side>*:nth-child(1) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.15s;
+        }
+
+        section.in-view .info-side>*:nth-child(2) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.25s;
+        }
+
+        section.in-view .info-side>*:nth-child(3) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.35s;
+        }
+
+        section.in-view .info-side>*:nth-child(4) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.45s;
+        }
+
+        section.in-view .info-side>*:nth-child(5) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.55s;
+        }
+
+        .project-index {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+        }
+
+        .project-title {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            color: var(--white);
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+        }
+
+        .project-subtitle {
+            font-size: 0.95rem;
+            color: var(--gray-400);
+            line-height: 1.7;
+            max-width: 450px;
+        }
+
+        /* Ensure text doesn't overlap on smaller viewports */
+        @media (max-width: 1024px) {
+            .project-subtitle {
+                max-width: 100%;
+                margin-bottom: 1rem;
+            }
+        }
+
+        .project-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-800);
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 1.5rem;
+            align-items: baseline;
+        }
+
+        .detail-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .detail-value {
+            font-size: 0.85rem;
+            color: var(--gray-400);
+            line-height: 1.5;
+        }
+
+        .award-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--white);
+            letter-spacing: 0.5px;
+        }
+
+        .award-badge::before {
+            content: '★';
+            color: #fbbf24;
+        }
+
+        /* ============================================
+           SECTION 1: ANTHONY BRASS - Vibrant Nature Art
+           Inspired by his actual site: soft pinks, coral,
+           organic shapes, nature colors, rounded corners
+        ============================================ */
+        #artist {
+            background: #f5e6dd;
+            position: relative;
+            overflow: hidden;
+            --video-max: 720px;
+        }
+
+        #artist::before {
+            content: '';
+            position: absolute;
+            top: -6%;
+            left: -6%;
+            width: 112%;
+            height: 112%;
+            background-image: url('images/BrassShoot2.jpg');
+            background-size: cover;
+            background-position: 65% center;
+            /* Shift notes right where video will cover them */
+            background-repeat: no-repeat;
+            animation: kenBurnsZoom 24s ease-in-out infinite alternate;
+            z-index: 1;
+        }
+
+        #artist::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            /* Horizontal gradient: stronger opacity left (text area) → lighter right (video area) */
+            background: linear-gradient(90deg, rgba(245, 230, 221, 0.75) 0%, rgba(249, 237, 230, 0.55) 40%, rgba(253, 244, 239, 0.30) 100%);
+            z-index: 2;
+        }
+
+        #artist .section-inner {
+            grid-template-columns: 1fr 1.1fr;
+            /* Text left, video right */
+            gap: 5rem;
+            /* Increase gap for separation */
+            position: relative;
+            z-index: 3;
+        }
+
+        #artist .video-side {
+            order: 2;
+            /* Video on right */
+        }
+
+        #artist .info-side {
+            order: 1;
+            /* Text on left */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #artist .video-container {
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(180, 100, 80, 0.15);
+            max-width: 720px;
+        }
+
+        #artist .project-index {
+            color: #c96b5a;
+        }
+
+        #artist .project-title {
+            color: #5c2219;
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            font-style: normal;
+            letter-spacing: -1px;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            /* Reduced max for less competition with background */
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+        }
+
+        #artist .project-subtitle {
+            color: #7a3d30;
+            font-style: italic;
+        }
+
+        #artist .detail-label {
+            color: #c4907f;
+        }
+
+        #artist .detail-value {
+            color: #8b5a4a;
+        }
+
+        #artist .project-details {
+            border-top-color: rgba(200, 120, 100, 0.25);
+        }
+
+        /* ============================================
+           SECTION 2: MOZ INTERIORS - Editorial Magazine Treatment
+           Full-bleed background with glass-morphism overlay
+           Fashion editorial aesthetic with Ken Burns effect
+        ============================================ */
+        #moz {
+            background: #000;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        /* Background Image with Ken Burns Zoom */
+        #moz::before {
+            content: '';
+            position: absolute;
+            top: -5%;
+            left: -5%;
+            width: 110%;
+            height: 110%;
+            background-image: url('images/MOZPage.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: kenBurnsZoom 25s ease-in-out infinite alternate;
+            z-index: 1;
+        }
+
+        @keyframes kenBurnsZoom {
+            0% {
+                transform: scale(1.0);
+                transform-origin: 65% 40%;
+            }
+
+            100% {
+                transform: scale(1.08);
+                transform-origin: 45% 60%;
+            }
+        }
+
+        /* Gradient Overlay - Radial centered on staircase */
+        #moz::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 65% 40%, rgba(0, 0, 0, 0.3) 0%, rgba(40, 35, 30, 0.75) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Content Layer Above Background */
+        #moz .section-inner {
+            position: relative;
+            z-index: 3;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding-right: 3%;
+            align-items: center;
+        }
+
+        /* Masthead Treatment */
+        #moz .moz-masthead {
+            position: absolute;
+            top: 8%;
+            left: 8%;
+            z-index: 4;
+        }
+
+        #moz .moz-logo {
+            height: clamp(180px, 20vw, 320px);
+            width: auto;
+            display: block;
+            filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.4));
+        }
+
+        #moz .moz-masthead-line {
+            display: none;
+        }
+
+        /* Video Container - Matted Frame */
+        #moz .video-side {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Video Container - Clean frameless display */
+        #moz .video-container {
+            background: transparent;
+            padding: 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border-radius: 0;
+            position: relative;
+            width: 100%;
+            max-width: 85%;
+            padding-bottom: 0 !important;
+            height: auto !important;
+            overflow: visible;
+        }
+
+        /* Aspect ratio wrapper - maintains 16:9 ratio */
+        #moz .video-aspect-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #000;
+            overflow: hidden;
+        }
+
+        /* Video placeholder button - fills the aspect ratio container */
+        #moz .video-container .video-placeholder {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            border: none;
+            background: #000;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #moz .video-container .video-thumb {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #moz .video-container .video-play {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        #moz .video-container:hover {
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7);
+            transform: scale(1.02);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Info Card - Glass-Morphism */
+        #moz .info-side {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px) saturate(180%);
+            -webkit-backdrop-filter: blur(10px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            padding: 2.5rem;
+            border-radius: 4px;
+            align-self: center;
+            max-width: 450px;
+        }
+
+        #moz .project-index {
+            color: #B8966D;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+        }
+
+        #moz .project-title {
+            color: #FFFFFF;
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            line-height: 1.1;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+            margin-bottom: 0.8rem;
+        }
+
+        #moz .project-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            letter-spacing: 0.02em;
+        }
+
+        #moz .project-details {
+            border-top: 1px solid rgba(184, 150, 109, 0.3);
+            padding-top: 1.2rem;
+            margin-top: 1.2rem;
+        }
+
+        #moz .detail-label {
+            color: #B8966D;
+            font-size: 0.5rem;
+            letter-spacing: 2px;
+        }
+
+        #moz .detail-value {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.8rem;
+        }
+
+        /* Featured Publications - Elegant Treatment */
+        #moz .featured-block {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 1.2rem 1.5rem;
+            border-left: 2px solid #B8966D;
+            margin-top: 1.2rem;
+        }
+
+        #moz .featured-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.45rem;
+            color: #B8966D;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+
+        #moz .featured-list {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        #moz .award-badge {
+            background: rgba(184, 150, 109, 0.2);
+            border: 1px solid rgba(184, 150, 109, 0.4);
+            color: #FFFFFF;
+            font-size: 0.65rem;
+        }
+
+        #moz .award-badge::before {
+            color: #B8966D;
+        }
+
+        /* Pull Quote */
+        #moz .pull-quote {
+            position: absolute;
+            bottom: 9%;
+            left: 8%;
+            z-index: 4;
+            max-width: 900px;
+        }
+
+        #moz .pull-quote-text {
+            font-family: 'Playfair Display', serif;
+            font-style: normal;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #FFFFFF;
+            line-height: 1.2;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
+            background: rgba(40, 35, 30, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 1.5rem 2.5rem;
+            border-left: 4px solid #B8966D;
+            white-space: nowrap;
+            word-spacing: 0.5em;
+        }
+
+        /* Photo Credit */
+        #moz .photo-credit {
+            position: absolute;
+            bottom: 3%;
+            right: 3%;
+            z-index: 4;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: #B8966D;
+            letter-spacing: 1px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #moz:hover .photo-credit {
+            opacity: 0.7;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            #moz .moz-masthead {
+                top: 5%;
+                left: 5%;
+            }
+
+            #moz .moz-logo {
+                height: 140px;
+            }
+
+            #moz .section-inner {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2rem;
+            }
+
+            #moz .info-side {
+                padding: 2rem;
+            }
+
+            #moz .pull-quote {
+                position: static;
+                margin-top: 2rem;
+                max-width: 100%;
+            }
+
+            #moz .pull-quote-text {
+                font-size: 0.9rem;
+                letter-spacing: 0.15em;
+                padding: 1.2rem 1.5rem;
+                white-space: normal;
+                word-spacing: normal;
+            }
+
+            #moz::before {
+                animation: none;
+                transform: scale(1.0);
+            }
+        }
+
+        @media (max-width: 640px) {
+            #moz .video-container {
+                padding: 0;
+            }
+
+            #moz .info-side {
+                padding: 1.5rem;
+            }
+
+            #moz .moz-logo {
+                height: 100px;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            #artist::before {
+                animation: none !important;
+            }
+
+            #moz::before {
+                animation: none !important;
+            }
+
+            #pandys::before {
+                animation: none !important;
+            }
+
+            #horror::before {
+                animation: none !important;
+            }
+
+            #comedy::before {
+                animation: none !important;
+            }
+        }
+
+        /* ============================================
+           SECTION 3: THE PANDYS - Raw, Purple Energy
+        ============================================ */
+        #pandys {
+            background: #1a0f1f;
+            position: relative;
+            overflow: hidden;
+            --video-max: 600px;
+        }
+
+        #pandys::before {
+            content: '';
+            position: absolute;
+            top: -6%;
+            left: -6%;
+            width: 112%;
+            height: 112%;
+            background-image: url('images/Pandys.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: kenBurnsZoom 24s ease-in-out infinite alternate;
+            z-index: 1;
+        }
+
+        #pandys::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(26, 15, 31, 0.65) 0%, rgba(13, 7, 16, 0.70) 100%);
+            z-index: 2;
+        }
+
+        #pandys .section-inner {
+            position: relative;
+            z-index: 3;
+        }
+
+        #pandys .project-title {
+            color: #e9d5ff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #pandys .project-subtitle {
+            color: #a78bfa;
+        }
+
+        #pandys .detail-value {
+            color: #c4b5fd;
+        }
+
+        #pandys .project-details {
+            border-top-color: rgba(167, 139, 250, 0.2);
+        }
+
+        /* ============================================
+           SECTION 4: TRAIL DEAD - Horror Treatment
+        ============================================ */
+        #horror {
+            background: #000;
+            position: relative;
+            overflow: hidden;
+            --video-max: 1040px;
+        }
+
+        /* Background Image + subtle noise with Ken Burns Zoom */
+        #horror::before {
+            content: '';
+            position: absolute;
+            top: -6%;
+            left: -6%;
+            width: 112%;
+            height: 112%;
+            background-image:
+                url('images/TrailDead.jpg'),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-size: cover, 260px 260px;
+            background-position: center, center;
+            background-repeat: no-repeat, repeat;
+            animation: kenBurnsZoom 26s ease-in-out infinite alternate;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Mood overlay + red accent line (combined) */
+        #horror::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.85), transparent) bottom / 100% 2px no-repeat,
+                radial-gradient(circle at 60% 45%, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.88) 70%, rgba(0, 0, 0, 0.95) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        #horror .project-index {
+            color: #7f1d1d;
+        }
+
+        #horror .project-title {
+            color: #fecaca;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        #horror .project-subtitle {
+            color: #a3a3a3;
+            font-style: italic;
+        }
+
+        #horror .detail-label {
+            color: #7f1d1d;
+        }
+
+        #horror .detail-value {
+            color: #a3a3a3;
+        }
+
+        #horror .project-details {
+            border-top-color: rgba(220, 38, 38, 0.2);
+        }
+
+        #horror .section-inner {
+            grid-template-columns: 0.9fr 1.35fr;
+            position: relative;
+            z-index: 3;
+        }
+
+        #horror .info-side {
+            padding-left: clamp(4rem, 6vw, 7rem);
+        }
+
+        #horror .video-container {
+            box-shadow: none;
+            background: transparent;
+            padding: 0;
+            border: 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            max-width: var(--video-max);
+            height: auto;
+        }
+
+        #horror .video-container::before {
+            content: none !important;
+            display: none !important;
+        }
+
+        #horror .video-aspect-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 41.84%;
+            /* 2.39:1 cinemascope aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: inherit;
+        }
+
+        #horror .video-aspect-wrapper iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+
+        #horror .video-placeholder {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+        }
+
+        #horror .video-thumb {
+            object-fit: contain;
+            background: #000;
+        }
+
+        #horror .award-badge {
+            background: rgba(220, 38, 38, 0.1);
+            border-color: rgba(220, 38, 38, 0.3);
+            color: #fecaca;
+        }
+
+        #horror .award-badge::before {
+            color: #dc2626;
+        }
+
+        /* Creepy detail */
+        #horror .horror-note {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: #7f1d1d;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 1rem;
+            opacity: 0.7;
+        }
+
+        /* ============================================
+           SECTION 5: LOOKOUT - Comedy, Bright Energy
+        ============================================ */
+        #comedy {
+            background: linear-gradient(135deg, #ead9a2 0%, #c9bb6d 100%);
+            position: relative;
+            overflow: hidden;
+            --video-max: 660px;
+        }
+
+        #comedy::before {
+            content: '';
+            position: absolute;
+            top: -6%;
+            left: -6%;
+            width: 112%;
+            height: 112%;
+            background-image: url('images/Lookout.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: kenBurnsZoom 22s ease-in-out infinite alternate;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        #comedy::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                    rgba(234, 217, 162, 0.40) 0%,
+                    rgba(183, 190, 120, 0.35) 45%,
+                    rgba(72, 81, 33, 0.22) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        #comedy .section-inner {
+            position: relative;
+            z-index: 3;
+        }
+
+        #comedy .project-index {
+            color: #92400e;
+        }
+
+        #comedy .project-title {
+            color: #78350f;
+            position: relative;
+        }
+
+        /* Fun underline accent */
+        #comedy .project-title::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: #f59e0b;
+            border-radius: 2px;
+        }
+
+        #comedy .project-subtitle {
+            color: #92400e;
+        }
+
+        #comedy .detail-label {
+            color: #b45309;
+        }
+
+        #comedy .detail-value {
+            color: #78350f;
+        }
+
+        #comedy .project-details {
+            border-top-color: rgba(120, 53, 15, 0.2);
+        }
+
+        #comedy .award-badge {
+            background: #78350f;
+            border-color: #78350f;
+            color: #fef3c7;
+        }
+
+        #comedy .award-badge::before {
+            color: #fde68a;
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 1024px) {
+            html {
+                scroll-snap-type: y proximity;
+            }
+
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .portfolio-intro {
+                padding: 7rem 2rem 3rem;
+            }
+
+            .project-counter {
+                right: 2rem;
+            }
+
+            .project-map {
+                display: none;
+            }
+
+            section {
+                padding: 5rem 2rem;
+            }
+
+            .section-inner {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .reversed .section-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .reversed .video-side,
+            .reversed .info-side {
+                order: unset;
+            }
+
+            #horror .info-side {
+                padding-left: 0;
+            }
+
+            #artist .video-side,
+            #artist .info-side {
+                order: unset;
+                /* Reset order on mobile */
+            }
+        }
+
+        /* ============================================
+           MOBILE PORTFOLIO LAYOUT (DEDICATED MODE)
+           Rule: Video-first vertical hierarchy
+           Max-width: 768px = Phone/tablet portrait
+        ============================================ */
+        @media (max-width: 768px) {
+
+            /* Kill scroll-snap on mobile - already handled above but reinforce */
+            html {
+                scroll-snap-type: none !important;
+            }
+
+            section {
+                padding: 3rem 1.25rem;
+                scroll-snap-align: none;
+            }
+
+            /* FORCE SINGLE-COLUMN VERTICAL STACK */
+            .section-inner {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1.25rem !important;
+                grid-template-columns: unset !important;
+                padding: 0 !important;
+            }
+
+            .reversed .section-inner {
+                flex-direction: column !important;
+            }
+
+            /* VIDEO COMES FIRST - ALWAYS */
+            .video-side {
+                order: -1 !important;
+                /* Force video to top */
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+            }
+
+            .info-side {
+                order: 1 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+
+            /* Full-width video container */
+            .video-container {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                border-radius: 16px !important;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+            }
+
+            /* DEMOTE BACKGROUNDS TO AMBIENT TEXTURE */
+            section::before,
+            section::after {
+                opacity: 0.12 !important;
+                animation: none !important;
+            }
+
+            /* Specific background overrides */
+            #horror::before,
+            #horror::after {
+                opacity: 0.18 !important;
+            }
+
+            #comedy::before,
+            #comedy::after {
+                opacity: 0.2 !important;
+            }
+
+            #pandys::before {
+                opacity: 0.22 !important;
+            }
+
+            #artist::before {
+                opacity: 0.18 !important;
+            }
+
+            /* LEFT-ALIGN ALL TEXT (no centered poetry) */
+            .project-title,
+            .project-subtitle,
+            .project-index,
+            .detail-row,
+            .info-side,
+            .project-description {
+                text-align: left !important;
+            }
+
+            /* STACK METADATA VERTICALLY */
+            .project-details {
+                border-top: 1px solid var(--gray-800);
+                padding-top: 1rem;
+                margin-top: 1rem;
+            }
+
+            .detail-row {
+                display: flex;
+                flex-direction: row;
+                gap: 1rem;
+                align-items: flex-start;
+                margin-bottom: 0.75rem;
+            }
+
+            .detail-label {
+                min-width: 80px;
+                flex-shrink: 0;
+            }
+
+            .detail-value {
+                flex: 1;
+            }
+
+            /* Awards become stacked credentials */
+            .award-badge,
+            .status-chip {
+                width: fit-content;
+                margin-top: 0.5rem;
+                display: inline-block;
+            }
+
+            /* Project-specific mobile fixes */
+            #horror .info-side {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+
+            #artist .video-side,
+            #artist .info-side {
+                order: unset !important;
+            }
+
+            #artist .video-side {
+                order: -1 !important;
+                /* Video first */
+            }
+
+            #artist .info-side {
+                text-align: left !important;
+            }
+
+            #artist .video-container {
+                max-width: 100% !important;
+            }
+
+            /* MOZ Mobile: Compact vertical stack layout */
+            #moz {
+                padding-top: 2.5rem !important;
+                padding-bottom: 2rem !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                min-height: auto !important;
+            }
+
+            #moz .moz-masthead {
+                position: static !important;
+                order: 1 !important;
+                margin: 0 1.25rem 0.5rem !important;
+                text-align: left !important;
+                z-index: 5 !important;
+            }
+
+            #moz .moz-logo {
+                height: 44px !important;
+            }
+
+            #moz .section-inner {
+                order: 2 !important;
+                padding: 0 1.25rem !important;
+                gap: 1rem !important;
+                z-index: 5 !important;
+            }
+
+            #moz .video-side {
+                order: -1 !important;
+            }
+
+            #moz .video-container {
+                max-width: 100% !important;
+                padding: 0 !important;
+                border-radius: 8px !important;
+                overflow: hidden !important;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4) !important;
+            }
+
+            #moz .info-side {
+                padding: 1rem !important;
+                max-width: 100% !important;
+                background: rgba(0, 0, 0, 0.85) !important;
+                border: 1px solid rgba(184, 150, 109, 0.3) !important;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3) !important;
+                backdrop-filter: none !important;
+                border-radius: 4px !important;
+            }
+
+            #moz .project-title {
+                letter-spacing: 0.06em !important;
+                font-size: 1rem !important;
+                margin-bottom: 0.2rem !important;
+            }
+
+            #moz .project-subtitle {
+                font-size: 0.8rem !important;
+                line-height: 1.4 !important;
+            }
+
+            #moz .project-details {
+                padding-top: 0.75rem !important;
+                margin-top: 0.75rem !important;
+            }
+
+            #moz .detail-row {
+                margin-bottom: 0.5rem !important;
+            }
+
+            #moz .award-badge {
+                font-size: 0.65rem !important;
+                padding: 0.35rem 0.6rem !important;
+                margin: 0.25rem 0.25rem 0 0 !important;
+            }
+
+            #moz .featured-block {
+                padding: 0.6rem !important;
+                margin-top: 0.75rem !important;
+            }
+
+            #moz .featured-label {
+                font-size: 0.55rem !important;
+                margin-bottom: 0.25rem !important;
+            }
+
+            #moz .featured-list {
+                font-size: 0.75rem !important;
+                line-height: 1.3 !important;
+            }
+
+            #moz .pull-quote {
+                position: static !important;
+                order: 3 !important;
+                margin: 0.5rem 1.25rem 0 !important;
+                max-width: 100% !important;
+                text-align: left !important;
+                z-index: 5 !important;
+            }
+
+            #moz .pull-quote-text {
+                font-size: 0.7rem !important;
+                letter-spacing: 0.08em !important;
+                padding: 0.5rem 0.75rem !important;
+                background: rgba(40, 35, 30, 0.6) !important;
+            }
+
+            #moz .photo-credit {
+                position: static !important;
+                order: 4 !important;
+                margin: 0.25rem 1.25rem 0 !important;
+                text-align: left !important;
+                opacity: 0.6 !important;
+                z-index: 5 !important;
+                font-size: 0.6rem !important;
+            }
+
+            #horror .video-aspect-wrapper {
+                padding-bottom: 56.25% !important;
+            }
+
+            #horror .video-thumb {
+                object-fit: cover !important;
+            }
+
+            #horror {
+                min-height: 100svh;
+            }
+
+            #horror .video-container {
+                border-radius: 0 !important;
+            }
+
+            #comedy .video-side {
+                order: 1 !important;
+            }
+
+            #comedy .info-side {
+                order: -1 !important;
+            }
+
+            #pandys .project-title,
+            #pandys .project-subtitle {
+                text-align: left !important;
+            }
+
+            #comedy .project-title::after {
+                display: none;
+                /* Remove decorative underline on mobile */
+            }
+
+            /* Typography adjustments for mobile */
+            .project-title {
+                font-size: clamp(1.5rem, 5vw, 2rem) !important;
+                line-height: 1.2 !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .project-subtitle {
+                font-size: 0.9rem !important;
+                line-height: 1.5 !important;
+            }
+
+            .project-description {
+                font-size: 0.95rem !important;
+                line-height: 1.6 !important;
+                margin-top: 1rem !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .portfolio-intro {
+                padding: 6rem 1.5rem 2rem;
+            }
+
+            .project-counter {
+                display: none;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .detail-row {
+                grid-template-columns: 80px 1fr;
+                gap: 1rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            html {
+                scroll-behavior: auto;
+                scroll-snap-type: none;
+            }
+        }
+
+        /* Footer */
+        .site-footer {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--gray-800);
+            text-align: center;
+            background: var(--black);
+            position: relative;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-nav a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .footer-nav a:hover {
+            color: var(--white);
+        }
+
+        /* Social icons in footer */
+        .footer-social {
+            position: absolute;
+            right: 2rem;
+            top: 3rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .footer-social a {
+            display: block;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            opacity: 1;
+        }
+
+        .footer-social img {
+            height: 24px;
+            width: auto;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .footer-social {
+                position: static;
+                justify-content: center;
+                margin-top: 1.5rem;
+            }
+        }
+
+        .footer-cta {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--black);
+            background: var(--white);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .footer-cta:hover {
+            background: transparent;
+            color: var(--white);
+            outline: 1px solid var(--white);
+        }
+
+        .footer-credit {
+            font-size: 0.7rem;
+            color: var(--gray-600);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="site-nav">
+        <a href="index.html">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB Media" class="nav-logo">
+        </a>
+        <ul class="nav-links">
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="callboard.html">Callboard</a></li>
+            <li><a href="ideas.html">Story Generator</a></li>
+            <li><a href="plan-your-project.html">Plan</a></li>
+            <li><a href="portfolio.html">Reel</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Project Counter -->
+    <div class="project-counter">
+        <span class="counter-current">01</span>
+        <span class="counter-total">/ 05</span>
+    </div>
+
+    <aside class="project-map" aria-label="Project map">
+        <div class="project-map-title">Project Map</div>
+        <div class="project-map-list">
+            <button class="project-map-link active" data-target="artist">Anthony Brass</button>
+            <button class="project-map-link" data-target="moz">MOZ Interiors</button>
+            <button class="project-map-link" data-target="pandys">The Pandys</button>
+            <button class="project-map-link" data-target="horror">Trail Dead</button>
+            <button class="project-map-link" data-target="comedy">Lookout</button>
+        </div>
+    </aside>
+
+    <!-- SECTION 1: ANTHONY BRASS -->
+    <section id="artist" class="proto-grid" data-index="1">
+        <div class="section-inner">
+            <div class="video-side">
+                <div class="video-container">
+                    <button class="video-placeholder" type="button" data-video-id="CPvxM8GrCg8"
+                        aria-label="Play Anthony Brass video">
+                        <img class="video-thumb" src="https://img.youtube.com/vi/CPvxM8GrCg8/hqdefault.jpg"
+                            alt="Anthony Brass thumbnail" loading="lazy">
+                        <span class="video-play">▶</span>
+                    </button>
+                </div>
+            </div>
+            <div class="info-side">
+                <div class="project-index proto-text-mono">001</div>
+                <div>
+                    <h2 class="project-title">Anthony Brass</h2>
+                    <p class="project-subtitle">An artist's journey through paint, place, and passion. Intimate
+                        storytelling captured in his home studio.</p>
+                </div>
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Artist Spotlight</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2024</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Approach</div>
+                        <div class="detail-value">Natural light, minimal crew, authentic moments</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: MOZ INTERIORS - Editorial Magazine Treatment -->
+    <section id="moz" class="proto-grid" data-index="2">
+        <!-- Masthead -->
+        <div class="moz-masthead">
+            <img src="images/MOZLOGOREAL.png" alt="MOZ Interiors" class="moz-logo">
+            <div class="moz-masthead-line"></div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="section-inner">
+            <!-- Video Player - Matted Frame -->
+            <div class="video-side">
+                <div class="video-container">
+                    <div class="video-aspect-wrapper">
+                        <button class="video-placeholder" type="button" data-video-id="HtF4L9RpkaU"
+                            aria-label="Play MOZ Interiors video">
+                            <img class="video-thumb" src="https://img.youtube.com/vi/HtF4L9RpkaU/hqdefault.jpg"
+                                alt="MOZ Interiors thumbnail" loading="lazy">
+                            <span class="video-play">▶</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Card - Glass-Morphism -->
+            <div class="info-side">
+                <div class="project-index proto-text-mono">002</div>
+                <div>
+                    <h3 class="project-title">Designer Spotlight</h3>
+                    <p class="project-subtitle">Where luxury meets livability. Showcasing the refined vision behind
+                        award-winning interior design.</p>
+                </div>
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Commercial · Brand Film</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2024</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Recognition</div>
+                        <div class="detail-value">
+                            <span class="award-badge">Best Fireplace · Detroit Design Awards 2025</span>
+                            <span class="award-badge">Best Staircase · Detroit Design Awards 2025</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="featured-block">
+                    <div class="featured-label">As Featured In</div>
+                    <div class="featured-list">Vanity Fair · Architectural Digest · Hour Detroit · The World of
+                        Interiors</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pull Quote - MOZ Slogan -->
+        <div class="pull-quote">
+            <p class="pull-quote-text">Vintage Vibes with Modern Modality</p>
+        </div>
+
+        <!-- Photo Credit -->
+        <div class="photo-credit">Photography: Shelby Dubin Photography</div>
+    </section>
+
+    <!-- SECTION 3: THE PANDYS -->
+    <section id="pandys" class="proto-grid" data-index="3">
+        <div class="section-inner">
+            <div class="video-side">
+                <div class="video-container">
+                    <button class="video-placeholder" type="button" data-video-id="ZXYtZmIRiRI"
+                        aria-label="Play Driven Interiors video">
+                        <img class="video-thumb" src="https://img.youtube.com/vi/ZXYtZmIRiRI/hqdefault.jpg"
+                            alt="Driven Interiors thumbnail" loading="lazy">
+                        <span class="video-play">▶</span>
+                    </button>
+                </div>
+            </div>
+            <div class="info-side">
+                <div class="project-index proto-text-mono">003</div>
+                <div>
+                    <h2 class="project-title">The Pandys</h2>
+                    <p class="project-subtitle">Raw band practice energy captured live. Authentic performance from the
+                        studio sessions.</p>
+                </div>
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Music Video / Live Session</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2024</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Track</div>
+                        <div class="detail-value">"Old Guy" from Nothing's Getting Better, It's Going to Be Fine</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: TRAIL DEAD -->
+    <section id="horror" class="reversed proto-grid" data-index="4">
+        <div class="section-inner">
+            <div class="video-side">
+                <div class="video-container">
+                    <div class="video-aspect-wrapper">
+                        <button class="video-placeholder" type="button" data-video-id="rtEs8chuDlM"
+                            aria-label="Play Backyard Sessions video">
+                            <img class="video-thumb" src="https://img.youtube.com/vi/rtEs8chuDlM/maxresdefault.jpg"
+                                alt="Backyard Sessions thumbnail" loading="lazy">
+                            <span class="video-play">▶</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="info-side">
+                <div class="project-index proto-text-mono">004</div>
+                <div>
+                    <h2 class="project-title">Trail Dead</h2>
+                    <p class="project-subtitle">Invisible threat. Visible dread. A horror short exploring tension and
+                        atmosphere.</p>
+                </div>
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Short Film / Horror</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2025</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Recognition</div>
+                        <div class="detail-value">
+                            <span class="award-badge">Best Editing — Horror Film Roulette 2025</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="horror-note">Don't watch alone.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: LOOKOUT -->
+    <section id="comedy" class="proto-grid" data-index="5">
+        <div class="section-inner">
+            <div class="info-side">
+                <div class="project-index proto-text-mono">005</div>
+                <div>
+                    <h2 class="project-title">Lookout</h2>
+                    <p class="project-subtitle">Smart writing meets sharp timing. A comedy short that proves funny is
+                        hard.</p>
+                </div>
+                <div class="project-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">Short Film / Comedy</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value">2025</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Recognition</div>
+                        <div class="detail-value">
+                            <span class="award-badge">Top 25 — Comedy Roll Film Festival 2025</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="video-side">
+                <div class="video-container">
+                    <button class="video-placeholder" type="button" data-video-id="G0zfFWwQuZA"
+                        aria-label="Play Comedy Roll video">
+                        <img class="video-thumb" src="https://img.youtube.com/vi/G0zfFWwQuZA/hqdefault.jpg"
+                            alt="Comedy Roll thumbnail" loading="lazy">
+                        <span class="video-play">▶</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const sections = document.querySelectorAll('section');
+        const counterCurrent = document.querySelector('.counter-current');
+
+        function loadVideo(container, videoId) {
+            if (!videoId) return;
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&enablejsapi=1`;
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.allowFullscreen = true;
+            iframe.loading = 'lazy';
+            const target = container.querySelector('.video-aspect-wrapper') || container;
+            target.innerHTML = '';
+            target.appendChild(iframe);
+        }
+
+        function pauseSectionVideo(section) {
+            const iframe = section.querySelector('iframe');
+            if (!iframe || !iframe.contentWindow) return;
+            iframe.contentWindow.postMessage(JSON.stringify({
+                event: 'command',
+                func: 'pauseVideo',
+                args: []
+            }), '*');
+        }
+
+        document.querySelectorAll('.video-container').forEach(container => {
+            const placeholder = container.querySelector('.video-placeholder');
+            if (!placeholder) return;
+            const videoId = placeholder.dataset.videoId;
+            placeholder.addEventListener('click', () => loadVideo(container, videoId));
+        });
+
+        // Intersection Observer for section reveals
+        const observerOptions = {
+            threshold: 0.4,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Add in-view class
+                    entry.target.classList.add('in-view');
+
+                    // Update counter with smoother animation
+                    const index = entry.target.dataset.index;
+                    if (index && counterCurrent) {
+                        // Fade out
+                        counterCurrent.style.opacity = '0';
+                        counterCurrent.style.transform = 'translateY(-8px)';
+
+                        // Update and fade in after smooth delay
+                        setTimeout(() => {
+                            counterCurrent.textContent = index.padStart(2, '0');
+                            counterCurrent.style.opacity = '1';
+                            counterCurrent.style.transform = 'translateY(0)';
+                        }, 250);
+                    }
+
+                    const sectionId = entry.target.id;
+                    document.querySelectorAll('.project-map-link').forEach(link => {
+                        link.classList.toggle('active', link.dataset.target === sectionId);
+                    });
+                } else {
+                    pauseSectionVideo(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        document.querySelectorAll('.project-map-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const targetId = link.dataset.target;
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Trigger first section immediately
+        setTimeout(() => {
+            if (sections.length > 0) {
+                sections[0].classList.add('in-view');
+            }
+        }, 100);
+
+        // Smooth scroll snap enhancement
+        let isScrolling = false;
+        let scrollTimeout;
+
+        window.addEventListener('scroll', () => {
+            if (isScrolling) return;
+
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                // Find nearest section
+                const viewportCenter = window.scrollY + (window.innerHeight / 2);
+                let nearest = sections[0];
+                let nearestDist = Infinity;
+
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    const sectionCenter = rect.top + window.scrollY + (rect.height / 2);
+                    const dist = Math.abs(viewportCenter - sectionCenter);
+
+                    if (dist < nearestDist) {
+                        nearestDist = dist;
+                        nearest = section;
+                    }
+                });
+
+                // Snap if not aligned, but skip for long sections we are currently reading
+                const rect = nearest.getBoundingClientRect();
+                const viewportHeight = window.innerHeight;
+                const isLongSection = rect.height > viewportHeight + 100;
+                const isNearTop = Math.abs(rect.top) < 100;
+
+                if (Math.abs(rect.top) > 50) {
+                    if (!isLongSection || isNearTop) {
+                        isScrolling = true;
+                        nearest.scrollIntoView({ behavior: 'smooth' });
+                        setTimeout(() => { isScrolling = false; }, 1000);
+                    }
+                }
+            }, 150);
+        }, { passive: true });
+    </script>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <nav class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="resources.html">Resources</a>
+            <a href="events.html">Events</a>
+            <a href="ideas.html">Story Generator</a>
+            <a href="https://ai.studio/apps/drive/1h-3BvBuLgnF0kRHx43_GWVIlwwWC31od?fullscreenApplet=true"
+                target="_blank" rel="noopener noreferrer">LaB Talk (Beta)</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="footer-social">
+            <a href="https://www.instagram.com/labmedia.work/" target="_blank" rel="noopener noreferrer"
+                aria-label="Instagram">
+                <img src="images/Instagram_Glyph_Gradient.png" alt="Instagram">
+            </a>
+            <a href="https://www.youtube.com/@labmediawork" target="_blank" rel="noopener noreferrer"
+                aria-label="YouTube">
+                <img src="images/yt_logo_fullcolor_white_digital.png" alt="YouTube">
+            </a>
+        </div>
+        <p class="footer-credit">Made in Shelby Twp, MI with ❤️</p>
+    </footer>
+
+    <!-- Global Error Handler -->
+    <script>
+        window.onerror = function (message, source, lineno, colno, error) {
+            console.error('[Global Error Handler]', {
+                message: message,
+                source: source,
+                line: lineno,
+                column: colno,
+                error: error
+            });
+            return false;
+        };
+
+        window.addEventListener('unhandledrejection', function (event) {
+            console.error('[Unhandled Promise Rejection]', event.reason);
+        });
+    </script>
+</body>
+
+</html>
