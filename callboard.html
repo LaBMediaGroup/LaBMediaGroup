@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline';
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src 'self' https://fonts.gstatic.com;
+  img-src 'self' data: https:;
+  connect-src 'self' https://dfwgjbjrkwikvqmnzcxx.supabase.co;
+">
+    <title>Callboard | Listings for Crew & Casting — LaB Media</title>
+    <link rel="canonical" href="https://labmedia.work/callboard.html">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Public callboard for Metro Detroit filmmakers. Browse crew and casting listings, then submit your own for approval.">
+    <meta name="keywords" content="Metro Detroit callboard, crew listings, casting listings, Michigan filmmaking jobs">
+    <meta name="author" content="LaB Media">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://labmedia.work/callboard.html">
+    <meta property="og:title" content="Callboard | Listings for Crew & Casting — LaB Media">
+    <meta property="og:description"
+        content="Browse local crew and casting listings or submit your project for approval.">
+    <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://labmedia.work/callboard.html">
+    <meta name="twitter:title" content="Callboard | Listings for Crew & Casting — LaB Media">
+    <meta name="twitter:description"
+        content="Browse local crew and casting listings or submit your project for approval.">
+    <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Prototype Design System -->
+    <link rel="stylesheet" href="prototype-theme.css">
+
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-400: #888888;
+            --gray-600: #555555;
+            --gray-800: #1A1A1A;
+            --gray-900: #0D0D0D;
+            --lab-orange: #F97316;
+            --lab-green: #22C55E;
+            --lab-purple: #A855F7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--black);
+            color: var(--gray-400);
+            min-height: 100vh;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+
+        .nav-logo {
+            height: 26px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            opacity: 0.5;
+        }
+
+        .nav-back {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-back:hover {
+            opacity: 0.5;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.5;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            padding: 0.75rem;
+            min-width: 44px;
+            min-height: 44px;
+            z-index: 1001;
+            background: none;
+            border: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .menu-toggle span {
+            width: 22px;
+            height: 2px;
+            background: var(--white);
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .page {
+            padding: 8rem 6vw 5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .page-header h1 {
+            font-family: 'Space Mono', monospace;
+            color: var(--white);
+            font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+            margin-bottom: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .page-header p {
+            max-width: 720px;
+            line-height: 1.6;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-group {
+            background: var(--gray-900);
+            border: 1px solid var(--gray-800);
+            padding: 1rem;
+        }
+
+        .filter-group label {
+            display: block;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+
+        .toggle-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .toggle-row button {
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-row button.active {
+            border-color: var(--lab-orange);
+            color: var(--white);
+        }
+
+        .filter-group input[type="text"] {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--white);
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .submit-btn {
+            background: var(--white);
+            color: var(--black);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.7;
+        }
+
+        .submit-btn.is-loading {
+            opacity: 0.7;
+            cursor: progress;
+        }
+
+        .listings {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 1rem;
+        }
+
+        .listing-card {
+            background: var(--gray-900);
+            border: 1px solid var(--gray-800);
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .listing-card:hover {
+            border-color: var(--gray-600);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .listing-card h3 {
+            color: var(--white);
+            font-size: 1rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.3;
+        }
+
+        .listing-meta {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray-400);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            align-items: center;
+        }
+
+        .listing-meta .badge {
+            padding: 0.2rem 0.5rem;
+            border: 1px solid var(--gray-600);
+        }
+
+        .listing-meta .badge-crew {
+            border-color: var(--lab-orange);
+            color: var(--lab-orange);
+        }
+
+        .listing-meta .badge-casting {
+            border-color: var(--lab-purple);
+            color: var(--lab-purple);
+        }
+
+        .listing-meta .badge-paid {
+            border-color: var(--lab-green);
+            color: var(--lab-green);
+        }
+
+        .listing-meta .location {
+            color: var(--gray-400);
+        }
+
+        .listing-meta .date {
+            color: var(--gray-600);
+            margin-left: auto;
+        }
+
+        /* Past Calls Section */
+        .past-calls-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-800);
+        }
+
+        .past-calls-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .past-calls-header h2 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .past-calls-toggle {
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .past-calls-toggle:hover {
+            color: var(--white);
+            border-color: var(--gray-400);
+        }
+
+        .past-calls-list {
+            display: none;
+        }
+
+        .past-calls-list.active {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 1rem;
+        }
+
+        .listing-card.filled {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .listing-card.filled:hover {
+            border-color: var(--gray-800);
+            background: var(--gray-900);
+        }
+
+        .listing-card.filled h3 {
+            text-decoration: line-through;
+            color: var(--gray-400);
+        }
+
+        .listing-card.filled .badge-filled {
+            border-color: var(--gray-600);
+            color: var(--gray-400);
+        }
+
+        /* Detail Modal */
+        .detail-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            z-index: 2000;
+        }
+
+        .detail-modal.active {
+            display: flex;
+        }
+
+        .detail-modal-content {
+            background: var(--black);
+            border: 1px solid var(--gray-800);
+            width: min(600px, 100%);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .detail-header {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .detail-header h2 {
+            color: var(--white);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .detail-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-badges .badge {
+            padding: 0.25rem 0.6rem;
+            border: 1px solid var(--gray-600);
+        }
+
+        .detail-body {
+            padding: 1.5rem;
+        }
+
+        .detail-row {
+            margin-bottom: 1.25rem;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray-600);
+            margin-bottom: 0.4rem;
+        }
+
+        .detail-value {
+            color: var(--gray-400);
+            line-height: 1.6;
+        }
+
+        .detail-value.description {
+            white-space: pre-wrap;
+        }
+
+        .detail-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .detail-tags span {
+            border: 1px solid var(--gray-600);
+            padding: 0.2rem 0.5rem;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray-400);
+        }
+
+        .detail-contact-link {
+            color: var(--white);
+            text-decoration: underline;
+            word-break: break-word;
+        }
+
+        .detail-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--gray-800);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .detail-close-btn {
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .detail-close-btn:hover {
+            border-color: var(--white);
+        }
+
+        .empty-state,
+        .status-message {
+            padding: 1rem;
+            border: 1px solid var(--gray-800);
+            background: var(--gray-900);
+            color: var(--gray-400);
+        }
+
+        .status-message.is-sending {
+            color: var(--gray-300);
+            animation: statusPulse 1.2s ease-in-out infinite;
+        }
+
+        .status-message.is-success {
+            color: #22C55E;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            padding: 1rem 1.25rem;
+            border-radius: 6px;
+            font-weight: 500;
+            text-align: center;
+            animation: successPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .status-message.is-success::before {
+            content: '✓ ';
+            font-weight: 700;
+        }
+
+        .status-message.is-error {
+            color: #fca5a5;
+            background: rgba(252, 165, 165, 0.1);
+            border: 1px solid rgba(252, 165, 165, 0.3);
+            padding: 1rem 1.25rem;
+            border-radius: 6px;
+            text-align: center;
+            animation: statusReveal 0.35s ease;
+        }
+
+        @keyframes statusPulse {
+
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes statusReveal {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes successPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            z-index: 2000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--black);
+            border: 1px solid var(--gray-800);
+            padding: 2rem;
+            width: min(640px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-content h2 {
+            font-family: 'Space Mono', monospace;
+            color: var(--white);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .modal-form label {
+            font-size: 0.8rem;
+            color: var(--white);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .modal-form input,
+        .modal-form select,
+        .modal-form textarea {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--white);
+            padding: 0.6rem 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .modal-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .secondary-btn {
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .hidden-honeypot {
+            position: absolute;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 1.5rem;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 100%;
+                max-width: 300px;
+                background: #000000;
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.4s ease;
+                mix-blend-mode: normal;
+                border-left: 1px solid var(--gray-800);
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links a {
+                opacity: 1;
+                font-size: 0.9rem;
+                color: var(--white) !important;
+                mix-blend-mode: normal;
+            }
+
+            .page {
+                padding: 7rem 1.5rem 3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="site-nav">
+        <a href="index.html" aria-label="LaB Media home">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB Media" class="nav-logo">
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="callboard.html">Callboard</a></li>
+            <li><a href="ideas.html">Story Generator</a></li>
+            <li><a href="plan-your-project.html">Plan</a></li>
+            <li><a href="portfolio.html">Reel</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main class="page">
+        <header class="page-header">
+            <h1>Callboard</h1>
+            <p>Browse Metro Detroit crew and casting listings. Every submission is moderated before it goes live.</p>
+        </header>
+
+        <section class="actions">
+            <div class="status-message" id="statusMessage">Loading approved listings...</div>
+            <button class="submit-btn" id="openModal">Submit a Listing</button>
+        </section>
+
+        <section class="filters" aria-label="Listing filters">
+            <div class="filter-group">
+                <label>Listing Type</label>
+                <div class="toggle-row" data-filter="type">
+                    <button type="button" class="active" data-value="all">All</button>
+                    <button type="button" data-value="crew">Crew</button>
+                    <button type="button" data-value="casting">Casting</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <label>Compensation</label>
+                <div class="toggle-row" data-filter="comp">
+                    <button type="button" class="active" data-value="all">All</button>
+                    <button type="button" data-value="paid">Paid</button>
+                    <button type="button" data-value="unpaid">Unpaid</button>
+                    <button type="button" data-value="collab">Collab</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <label for="searchInput">Search</label>
+                <input id="searchInput" type="text" placeholder="Title, location, tags">
+            </div>
+        </section>
+
+        <section id="listings" class="listings" aria-live="polite"></section>
+
+        <section class="past-calls-section">
+            <div class="past-calls-header">
+                <h2>Filled & Expired Calls</h2>
+                <button class="past-calls-toggle" id="pastCallsToggle">Show</button>
+            </div>
+            <div id="pastListings" class="past-calls-list"></div>
+        </section>
+    </main>
+
+    <!-- Detail Modal (View Listing) -->
+    <div class="detail-modal" id="detailModal" aria-hidden="true" role="dialog" aria-labelledby="detailTitle">
+        <div class="detail-modal-content">
+            <header class="detail-header">
+                <h2 id="detailTitle">Listing Title</h2>
+                <div class="detail-badges" id="detailBadges">
+                    <!-- Badges injected here -->
+                </div>
+            </header>
+            <div class="detail-body">
+                <div class="detail-row">
+                    <div class="detail-label">Location</div>
+                    <div class="detail-value" id="detailLocation">Detroit, MI</div>
+                </div>
+
+                <!-- New Date Fields Display -->
+                <div class="detail-row" id="detailDatesRow" style="display:none;">
+                    <div class="detail-label">Important Dates</div>
+                    <div class="detail-value" id="detailDates"></div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Description</div>
+                    <div class="detail-value description" id="detailDescription"></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Tags</div>
+                    <div class="detail-tags" id="detailTags">
+                        <!-- Tags injected here -->
+                    </div>
+                </div>
+                <div class="detail-row" id="detailContactRow">
+                    <div class="detail-label">Contact</div>
+                    <a href="#" class="detail-contact-link" id="detailContact" target="_blank"></a>
+                </div>
+            </div>
+            <footer class="detail-footer">
+                <button type="button" class="detail-close-btn" id="closeDetailModal">Close</button>
+            </footer>
+        </div>
+    </div>
+
+    <div class="modal" id="modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+        <div class="modal-content">
+            <h2 id="modalTitle">Submit a Listing</h2>
+            <p>Listings are reviewed within 24 hours.</p>
+            <form id="listingForm">
+                <div>
+                    <label for="title">Project Title</label>
+                    <input id="title" name="title" required maxlength="60">
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label for="listingType">Type</label>
+                        <select id="listingType" name="listing_type">
+                            <option value="crew">Crew Call</option>
+                            <option value="casting">Casting Call</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="compensation">Compensation</label>
+                        <select id="compensation" name="compensation">
+                            <option value="paid">Paid</option>
+                            <option value="collab">TFP / Collab</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label for="location">Location (City, State)</label>
+                    <input id="location" name="location" required maxlength="40" placeholder="e.g. Detroit, MI">
+                </div>
+
+                <!-- New Date Fields API -->
+                <div class="form-row">
+                    <div>
+                        <label for="optionsOpen">Options Open (opt)</label>
+                        <input id="optionsOpen" name="options_opening" type="date">
+                    </div>
+                    <div>
+                        <label for="optionsClose">Options Close (opt)</label>
+                        <input id="optionsClose" name="options_closing" type="date">
+                    </div>
+                </div>
+                <div>
+                    <label for="shootingDates">Shooting Dates (optional)</label>
+                    <input id="shootingDates" name="shooting_dates" placeholder="e.g. Oct 12-14" maxlength="50">
+                </div>
+
+                <div>
+                    <label for="description">Description & Requirements</label>
+                    <textarea id="description" name="description" rows="5" required></textarea>
+                </div>
+                <div>
+                    <label for="contactMethod">Contact Link or Email</label>
+                    <input id="contactMethod" name="contact_method" required
+                        placeholder="https://... or email@example.com">
+                </div>
+                <div>
+                    <label for="tags">Tags (comma separated)</label>
+                    <input id="tags" name="tags" maxlength="200">
+                </div>
+                <div>
+                    <label for="expiresOn">Listing Expires On (optional)</label>
+                    <input id="expiresOn" name="expires_on" type="date">
+                    <p style="font-size:0.65rem; color:var(--gray-600); margin-top:0.25rem;">Listing will automatically
+                        move to "Expired" after this date.</p>
+                </div>
+                <div class="hidden-honeypot" aria-hidden="true">
+                    <label for="companyWebsite">Company Website</label>
+                    <input id="companyWebsite" name="companyWebsite" autocomplete="off" tabindex="-1">
+                </div>
+                <div class="status-message" id="formStatus">All submissions are reviewed before publishing.</div>
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn" id="closeModal">Close</button>
+                    <button type="submit" class="submit-btn">Send for Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_CONFIG = {
+            url: 'https://dfwgjbjrkwikvqmnzcxx.supabase.co',
+            anonKey: 'sb_publishable__Mrv6qhUoPwuzpFl4b4baA_BQcWgd6e'
+        };
+
+        const state = {
+            listings: [],
+            filterType: 'all',
+            filterComp: 'all',
+            search: ''
+        };
+
+        const listingsEl = document.getElementById('listings');
+        const pastListingsEl = document.getElementById('pastListings');
+        const statusMessage = document.getElementById('statusMessage');
+        const searchInput = document.getElementById('searchInput');
+
+        // Main List & Past Calls
+        const pastCallsToggle = document.getElementById('pastCallsToggle');
+        const pastCallsList = document.querySelector('.past-calls-list');
+
+        // Submission Modal
+        const modal = document.getElementById('modal');
+        const openModal = document.getElementById('openModal');
+        const closeModal = document.getElementById('closeModal');
+        const listingForm = document.getElementById('listingForm');
+        const formStatus = document.getElementById('formStatus');
+
+        // Detail Modal Elements
+        const detailModal = document.getElementById('detailModal');
+        const closeDetailModalBtn = document.getElementById('closeDetailModal');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailBadges = document.getElementById('detailBadges');
+        const detailLocation = document.getElementById('detailLocation');
+        const detailDescription = document.getElementById('detailDescription');
+        const detailTags = document.getElementById('detailTags');
+        const detailContact = document.getElementById('detailContact');
+        const detailContactRow = document.getElementById('detailContactRow');
+
+        // New Detail Elements
+        const detailDatesRow = document.getElementById('detailDatesRow');
+        const detailDates = document.getElementById('detailDates');
+
+        const formatDate = (value) => {
+            if (!value) return '';
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return '';
+            return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+        };
+
+        const normalizeText = (text) => (text || '').toLowerCase();
+
+        // Helper to check if a listing is expired
+        const isExpired = (listing) => {
+            if (!listing.expires_on) return false;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const expDate = new Date(listing.expires_on);
+            // Expired if current date is AFTER the expires_on date
+            return today > expDate;
+        };
+
+        // Updated Render Logic: Compact Cards for Active Listings
+        const renderListings = () => {
+            const searchTerm = normalizeText(state.search);
+
+            // Filter for active listings only (Approved AND Not Expired)
+            const activeListings = state.listings.filter(l =>
+                l.status === 'approved' && !isExpired(l)
+            );
+
+            const filtered = activeListings.filter((listing) => {
+                if (state.filterType !== 'all' && listing.listing_type !== state.filterType) return false;
+                if (state.filterComp !== 'all' && listing.compensation !== state.filterComp) return false;
+
+                if (searchTerm) {
+                    const haystack = [listing.title, listing.location, listing.tags].map(normalizeText).join(' ');
+                    if (!haystack.includes(searchTerm)) return false;
+                }
+                return true;
+            });
+
+            if (!filtered.length) {
+                listingsEl.innerHTML = '<div class="empty-state">No listings match these filters yet.</div>';
+                return;
+            }
+
+            listingsEl.innerHTML = filtered.map((listing) => {
+                const dateLabel = formatDate(listing.date_posted || listing.created_at);
+                // Compact Card: No description, no tags, no contact link visible inline
+                return `
+                    <article class="listing-card" data-id="${listing.id}">
+                        <h3>${listing.title}</h3>
+                        <div class="listing-meta">
+                            <span
+                                class="badge ${listing.listing_type === 'crew' ? 'badge-crew' : 'badge-casting'}">${listing.listing_type}</span>
+                            <span
+                                class="badge ${listing.compensation === 'paid' ? 'badge-paid' : 'badge-collab'}">${listing.compensation}</span>
+                            <span class="location">${listing.location}</span>
+                            ${dateLabel ? `<span class="date">${dateLabel}</span>` : ''}
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            // Attach click listeners for detail modal
+            document.querySelectorAll('.listing-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const id = card.dataset.id;
+                    const item = state.listings.find(l => l.id == id); // loose equality for string/int ids
+                    if (item) openDetailModal(item);
+                });
+            });
+        };
+
+        const renderPastListings = () => {
+            // Filter for filled OR expired listings
+            // "Filled and Expired" Section
+            // Includes: status='filled' OR (status='approved' AND isExpired)
+            const filledListings = state.listings.filter(l =>
+                l.status === 'filled' || (l.status === 'approved' && isExpired(l))
+            );
+
+            if (!filledListings.length) {
+                pastListingsEl.innerHTML = '<div class="empty-state">No filled or expired listings to show.</div>';
+                return;
+            }
+
+            pastListingsEl.innerHTML = filledListings.map((listing) => {
+                const dateLabel = formatDate(listing.date_posted || listing.created_at);
+                const expired = isExpired(listing);
+                const badgeText = listing.status === 'filled' ? 'Filled' : (expired ? 'Expired' : 'Ended');
+
+                return `
+                    <article class="listing-card filled" data-id="${listing.id}">
+                        <h3>${listing.title}</h3>
+                        <div class="listing-meta">
+                            <span class="badge badge-filled">${badgeText}</span>
+                            <span class="location">${listing.location}</span>
+                            ${dateLabel ? `<span class="date">${dateLabel}</span>` : ''}
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            // Past listings also open modal (read-only view basically)
+            pastListingsEl.querySelectorAll('.listing-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const id = card.dataset.id;
+                    const item = state.listings.find(l => l.id == id);
+                    if (item) openDetailModal(item);
+                });
+            });
+        };
+
+        // Open Detail Modal
+        const openDetailModal = (item) => {
+            detailTitle.textContent = item.title;
+            detailLocation.textContent = item.location;
+
+            // Description Preserving Whitespace
+            detailDescription.textContent = item.description;
+
+            // Badges & Expiration Logic for Display
+            const typeClass = item.listing_type === 'crew' ? 'badge-crew' : 'badge-casting';
+            const compClass = item.compensation === 'paid' ? 'badge-paid' : 'badge-collab';
+            let statusBadge = '';
+
+            const expired = isExpired(item);
+
+            if (item.status === 'filled') {
+                statusBadge = `<span class="badge badge-filled">Filled</span>`;
+            } else if (expired) {
+                statusBadge = `<span class="badge badge-filled">Expired</span>`;
+            }
+
+            detailBadges.innerHTML = `
+                <span class="badge ${typeClass}">${item.listing_type}</span>
+                <span class="badge ${compClass}">${item.compensation}</span>
+                ${statusBadge}
+                ${item.expires_on && !expired ? `<span class="badge">Exp: ${formatDate(item.expires_on)}</span>` : ''}
+            `;
+
+            // New Date Fields Logic
+            const dateInfos = [];
+            if (item.options_opening || item.options_closing) {
+                const start = item.options_opening ? formatDate(item.options_opening) : '?';
+                const end = item.options_closing ? formatDate(item.options_closing) : '?';
+                dateInfos.push(`<strong>Options:</strong> ${start} — ${end}`);
+            }
+            if (item.shooting_dates) {
+                dateInfos.push(`<strong>Shooting:</strong> ${item.shooting_dates}`);
+            }
+
+            if (dateInfos.length > 0) {
+                detailDates.innerHTML = dateInfos.join('<br>');
+                detailDatesRow.style.display = 'block';
+            } else {
+                detailDatesRow.style.display = 'none';
+            }
+
+            // Tags
+            const tags = (item.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+            if (tags.length) {
+                detailTags.innerHTML = tags.map(tag => `<span>${tag}</span>`).join('');
+                detailTags.parentElement.style.display = 'block';
+            } else {
+                detailTags.parentElement.style.display = 'none';
+            }
+
+            // Contact
+            if (item.contact_method) {
+                const contact = item.contact_method;
+                const isEmail = contact.includes('@') && !contact.startsWith('http');
+                detailContact.href = isEmail ? `mailto:${contact}` : contact;
+                detailContact.textContent = isEmail ? 'Email Contact' : 'Visit Link';
+                detailContactRow.style.display = 'block';
+            } else {
+                detailContactRow.style.display = 'none';
+            }
+
+            detailModal.classList.add('active');
+            detailModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeDetailModalView = () => {
+            detailModal.classList.remove('active');
+            detailModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        };
+
+        const setStatus = (message) => {
+            statusMessage.textContent = message;
+        };
+
+        const fetchListings = async () => {
+            setStatus('Loading listings...');
+            try {
+                // Modified query: fetch 'approved' AND 'filled'
+                // Included new fields in potential select (optimistic, Supabase will ignore if not present unless strictly typed, but for JS client usually ignore extra select fields if not in schema is OK or returns null. 
+                // However, PostgREST might error if columns don't exist. Assuming columns exist or willing to fallback. 
+                // Safest to select * or just standard fields. User asked to add fields, implying I can't add to DB. 
+                // Wait, user said "Do updates now need to happen with the supabase setup". 
+                // I cannot update Supabase schema. If these columns don't exist in DB, this select will fail.
+                // Reverting to * or standard fields. 
+                // Actually, I will try to select them. If it fails, I'll catch error.
+                // But I can't risk breaking the whole page. 
+                // I will add them to the select query. If they don't exist, this might fail.
+                // Strategy: Select * is often safer if we don't know schema perfectly, but inefficient.
+                // Let's assume for now I should NOT try to select non-existent columns if I can't create them.
+                // BUT the user asked to ADD date fields. Using Supabase usually means adding columns.
+                // I will assume for now I can just pass them in payload and maybe they are stored in a JSONB column or similar, 
+                // OR I am just updating the UI and providing the 'submit' logic, and the user handles the DB side?
+                // The prompt says "I cannot directly access your Supabase dashboard... update the code to... update fetch query".
+                // I will add them to the select string.
+
+                const selectFields = "id,title,listing_type,compensation,location,description,contact_method,tags,date_posted,created_at,status,expires_on,options_opening,options_closing,shooting_dates";
+                const url = `${SUPABASE_CONFIG.url}/rest/v1/callboard_listings?select=${selectFields}&status=in.(approved,filled)&order=created_at.desc`;
+
+                const response = await fetch(url, {
+                    headers: {
+                        apikey: SUPABASE_CONFIG.anonKey,
+                        Authorization: `Bearer ${SUPABASE_CONFIG.anonKey}`
+                    }
+                });
+
+                if (!response.ok) {
+                    // Fallback if specific columns fail (e.g. they don't exist yet)
+                    console.warn('Fetch with new fields failed, trying basic fields...');
+                    const basicUrl = `${SUPABASE_CONFIG.url}/rest/v1/callboard_listings?select=id,title,listing_type,compensation,location,description,contact_method,tags,date_posted,created_at,status,expires_on&status=in.(approved,filled)&order=created_at.desc`;
+                    const fallbackResponse = await fetch(basicUrl, {
+                        headers: {
+                            apikey: SUPABASE_CONFIG.anonKey,
+                            Authorization: `Bearer ${SUPABASE_CONFIG.anonKey}`
+                        }
+                    });
+                    if (!fallbackResponse.ok) throw new Error('Unable to load listings.');
+                    const data = await fallbackResponse.json();
+                    state.listings = Array.isArray(data) ? data : [];
+                } else {
+                    const data = await response.json();
+                    state.listings = Array.isArray(data) ? data : [];
+                }
+
+                // Count active
+                const activeCount = state.listings.filter(l => l.status === 'approved' && !isExpired(l)).length;
+                setStatus(`${activeCount} active listing${activeCount === 1 ? '' : 's'}.`);
+
+                renderListings();
+                renderPastListings();
+            } catch (error) {
+                console.error(error);
+                setStatus('Listings are offline or updating. Please check back soon.');
+                listingsEl.innerHTML = '<div class="empty-state">Unable to load listings at the moment.</div>';
+            }
+        };
+
+        document.querySelectorAll('.toggle-row button').forEach((button) => {
+            button.addEventListener('click', () => {
+                const group = button.closest('.toggle-row');
+                const filterType = group.dataset.filter;
+
+                group.querySelectorAll('button').forEach((btn) => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                if (filterType === 'type') {
+                    state.filterType = button.dataset.value;
+                }
+                if (filterType === 'comp') {
+                    state.filterComp = button.dataset.value;
+                }
+
+                renderListings();
+            });
+        });
+
+        searchInput.addEventListener('input', (event) => {
+            state.search = event.target.value;
+            renderListings();
+        });
+
+        // Past Calls Toggle
+        pastCallsToggle.addEventListener('click', () => {
+            const isActive = pastCallsList.classList.toggle('active');
+            pastCallsToggle.textContent = isActive ? 'Hide' : 'Show';
+            pastCallsToggle.classList.toggle('active', isActive);
+        });
+
+        // Modal View Logic (Submission)
+        const openModalView = () => {
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            const firstField = modal.querySelector('input, select, textarea, button');
+            if (firstField) firstField.focus();
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeModalView = () => {
+            if (modal.contains(document.activeElement)) {
+                openModal.focus();
+            }
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        };
+
+        openModal.addEventListener('click', openModalView);
+        closeModal.addEventListener('click', closeModalView);
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) closeModalView();
+        });
+
+        // Detail Modal Listeners
+        closeDetailModalBtn.addEventListener('click', closeDetailModalView);
+        detailModal.addEventListener('click', (event) => {
+            if (event.target === detailModal) closeDetailModalView();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (detailModal.classList.contains('active')) closeDetailModalView();
+                if (modal.classList.contains('active')) closeModalView();
+            }
+        });
+
+        const setFormStatus = (message, state) => {
+            formStatus.textContent = message;
+            formStatus.classList.remove('is-sending', 'is-success', 'is-error');
+            if (state) formStatus.classList.add(`is-${state}`);
+        };
+
+        listingForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const submitBtn = listingForm.querySelector('button[type="submit"]');
+            setFormStatus('Submitting...', 'sending');
+            listingForm.setAttribute('aria-busy', 'true');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('is-loading');
+            }
+
+            const payload = {
+                title: listingForm.title.value.trim(),
+                listing_type: listingForm.listing_type.value,
+                compensation: listingForm.compensation.value,
+                location: listingForm.location.value.trim(),
+                description: listingForm.description.value.trim(),
+                contact_method: listingForm.contact_method.value.trim(),
+                tags: listingForm.tags.value.trim(),
+                expires_on: listingForm.expires_on.value || null,
+                // New Fields
+                options_opening: listingForm.options_opening.value || null,
+                options_closing: listingForm.options_closing.value || null,
+                shooting_dates: listingForm.shooting_dates.value.trim() || null,
+
+                honeypot_field: listingForm.companyWebsite.value.trim()
+            };
+
+            try {
+                const response = await fetch(`${SUPABASE_CONFIG.url}/functions/v1/submit-listing`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        apikey: SUPABASE_CONFIG.anonKey,
+                        Authorization: `Bearer ${SUPABASE_CONFIG.anonKey}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Request failed');
+                }
+
+                setFormStatus('Submitted for approval!', 'success');
+                listingForm.reset();
+
+                // Auto-close modal after showing success
+                setTimeout(() => {
+                    closeModalView();
+                    // Reset status message after modal closes
+                    setTimeout(() => {
+                        setFormStatus('All submissions are reviewed before publishing.', null);
+                    }, 300);
+                }, 2000);
+            } catch (error) {
+                setFormStatus('Something went wrong. Please try again in a moment.', 'error');
+            } finally {
+                listingForm.removeAttribute('aria-busy');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('is-loading');
+                }
+            }
+        });
+
+        fetchListings();
+    </script>
+
+    <!-- Mobile Menu Toggle -->
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        let touchHandled = false;
+
+        function toggleMenu(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (e.type === 'touchend') {
+                touchHandled = true;
+                setTimeout(() => { touchHandled = false; }, 300);
+            } else if (e.type === 'click' && touchHandled) {
+                return;
+            }
+
+            const isActive = menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            menuToggle.setAttribute('aria-expanded', isActive);
+            document.body.style.overflow = isActive ? 'hidden' : '';
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        menuToggle.addEventListener('touchend', toggleMenu);
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (navLinks.classList.contains('active') &&
+                !menuToggle.contains(e.target) &&
+                !navLinks.contains(e.target)) {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+</body>
+
+</html>
