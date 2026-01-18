@@ -1,0 +1,4812 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://dfwgjbjrkwikvqmnzcxx.supabase.co; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com;">
+    <title>Resources | Filmmaking Tools & Community Hub — Metro Detroit | LaB Media</title>
+    <link rel="canonical" href="https://labmedia.work/resources.html">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Curated filmmaking resources, collaborators, and production tools for Metro Detroit and Michigan filmmakers. Find local groups, gear, and services.">
+    <meta name="keywords"
+        content="Metro Detroit filmmaking resources, film production tools Michigan, Detroit film collaborators, local film community">
+    <meta name="author" content="LaB Media">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://labmedia.work/resources.html">
+    <meta property="og:title" content="Resources | Filmmaking Tools & Community Hub — Metro Detroit | LaB Media">
+    <meta property="og:description"
+        content="Curated filmmaking resources, collaborators, and production tools for Metro Detroit and Michigan filmmakers.">
+    <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://labmedia.work/resources.html">
+    <meta name="twitter:title" content="Resources | Filmmaking Tools & Community Hub — Metro Detroit | LaB Media">
+    <meta name="twitter:description"
+        content="Curated filmmaking resources, collaborators, and production tools for Metro Detroit and Michigan filmmakers.">
+    <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- GSAP for subtle animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+        integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Prototype Design System -->
+    <link rel="stylesheet" href="prototype-theme.css">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "LaB Media",
+      "url": "https://labmedia.work",
+      "logo": "https://labmedia.work/images/TheLaB.png",
+      "description": "Metro Detroit creative studio and community hub sharing filmmaking resources, local events, and production knowledge.",
+      "areaServed": "Metro Detroit, Michigan",
+      "sameAs": [
+        "https://www.instagram.com/labmedia.work/",
+        "https://www.youtube.com/@labmediawork"
+      ]
+    }
+    </script>
+
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-400: #888888;
+            --gray-600: #555555;
+            --gray-800: #1A1A1A;
+            --gray-900: #0D0D0D;
+            --lab-orange: #F97316;
+            --lab-green: #22C55E;
+            --lab-purple: #A855F7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--black);
+            color: var(--gray-400);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+
+        .nav-logo {
+            height: 26px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            opacity: 0.5;
+        }
+
+        .nav-back {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-back:hover {
+            opacity: 0.5;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.5;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            padding: 0.75rem;
+            min-width: 44px;
+            min-height: 44px;
+            z-index: 1001;
+            background: none;
+            border: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .menu-toggle span {
+            width: 22px;
+            height: 2px;
+            background: var(--white);
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ============================================
+           HERO SECTION
+        ============================================ */
+        .resources-hero {
+            position: relative;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .hero-links {
+            margin-top: 0.6rem;
+        }
+
+        .hero-links a {
+            color: var(--white);
+            text-decoration: none;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .hero-links a:hover {
+            border-bottom-color: var(--white);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 3rem 4rem;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 1rem;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1.5rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .header h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            color: var(--white);
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            line-height: 1;
+        }
+
+        .header-count {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        /* Search */
+        .search-row {
+            padding: 0.75rem 0 1rem;
+            border-bottom: 1px solid var(--gray-800);
+            margin-bottom: 1.25rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 240px;
+            max-width: 400px;
+            padding: 0.75rem 1rem;
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--gray-600);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--white);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Sort Controls */
+        .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sort-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .sort-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.5rem 0.85rem;
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--gray-600);
+            cursor: pointer;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .sort-btn:hover {
+            color: var(--white);
+            border-color: var(--gray-600);
+        }
+
+        .sort-btn.active {
+            color: var(--black);
+            background: var(--white);
+            border-color: var(--white);
+        }
+
+        .filter-hint {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            margin-bottom: 0.75rem;
+            opacity: 0.85;
+        }
+
+        .section-tip {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            margin-bottom: 1.25rem;
+            border: 1px solid var(--gray-800);
+            background: rgba(255, 255, 255, 0.02);
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--gray-400);
+        }
+
+        .section-tip strong {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--white);
+            white-space: nowrap;
+        }
+
+        /* Label flicker animation */
+        @keyframes labelFlicker {
+
+            0%,
+            100% {
+                color: var(--gray-600);
+            }
+
+            10%,
+            12% {
+                color: var(--white);
+            }
+
+            14% {
+                color: var(--gray-600);
+            }
+
+            16%,
+            18% {
+                color: var(--white);
+            }
+
+            20%,
+            100% {
+                color: var(--gray-600);
+            }
+        }
+
+        /* Category Filter */
+        .filter-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .subfilter-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: -0.75rem 0 1.5rem;
+            padding: 0.6rem 0.85rem;
+            border: 1px solid var(--gray-800);
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .subfilter-row[hidden] {
+            display: none;
+        }
+
+        .subfilter-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            animation: labelFlicker 2.5s infinite;
+            color: var(--gray-600);
+            text-transform: uppercase;
+        }
+
+        .subfilter-buttons {
+            display: flex;
+            gap: 0.35rem;
+        }
+
+        .subfilter-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.45rem 0.8rem;
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--gray-600);
+            cursor: pointer;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .subfilter-btn:hover {
+            color: var(--white);
+            border-color: var(--gray-600);
+        }
+
+        .subfilter-btn.active {
+            color: var(--black);
+            background: var(--white);
+            border-color: var(--white);
+        }
+
+        .filter-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.6rem 1rem;
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--gray-400);
+            color: var(--white);
+        }
+
+        .filter-btn.active {
+            border-color: var(--white);
+            color: var(--black);
+        }
+
+        .filter-btn.active::before {
+            left: 0;
+        }
+
+        /* Special filter buttons */
+        .filter-btn[data-category="collaborators"] {
+            border-color: var(--lab-orange);
+            color: var(--lab-orange);
+        }
+
+        .filter-btn[data-category="collaborators"]:hover {
+            background: rgba(249, 115, 22, 0.1);
+        }
+
+        .filter-btn[data-category="collaborators"].active {
+            background: var(--lab-orange);
+            border-color: var(--lab-orange);
+            color: var(--black);
+        }
+
+        .filter-btn[data-category="collaborators"].active::before {
+            background: var(--lab-orange);
+        }
+
+        .filter-btn[data-category="community"] {
+            border-color: var(--lab-green);
+            color: var(--lab-green);
+        }
+
+        .filter-btn[data-category="community"]:hover {
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .filter-btn[data-category="community"].active {
+            background: var(--lab-green);
+            border-color: var(--lab-green);
+            color: var(--black);
+        }
+
+        .filter-btn[data-category="community"].active::before {
+            background: var(--lab-green);
+        }
+
+        .filter-btn[data-category="film-festivals"] {
+            border-color: #F59E0B;
+            color: #F59E0B;
+        }
+
+        .filter-btn[data-category="film-festivals"]:hover {
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        .filter-btn[data-category="film-festivals"].active {
+            background: #F59E0B;
+            border-color: #F59E0B;
+            color: var(--black);
+        }
+
+        .filter-btn[data-category="film-festivals"].active::before {
+            background: #F59E0B;
+        }
+
+        .filter-btn[data-category="inspiration"] {
+            border-color: var(--lab-purple);
+            color: var(--lab-purple);
+        }
+
+        .filter-btn[data-category="inspiration"]:hover {
+            background: rgba(168, 85, 247, 0.1);
+        }
+
+        .filter-btn[data-category="inspiration"].active {
+            background: var(--lab-purple);
+            border-color: var(--lab-purple);
+            color: var(--white);
+        }
+
+        .filter-btn[data-category="inspiration"].active::before {
+            background: var(--lab-purple);
+        }
+
+        .filter-btn[data-category="drone"] {
+            border-color: #06B6D4;
+            color: #06B6D4;
+        }
+
+        .filter-btn[data-category="drone"]:hover {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .filter-btn[data-category="drone"].active {
+            background: #06B6D4;
+            border-color: #06B6D4;
+            color: var(--black);
+        }
+
+        .filter-btn[data-category="drone"].active::before {
+            background: #06B6D4;
+        }
+
+        .filter-btn[data-category="references"] {
+            border-color: #EC4899;
+            color: #EC4899;
+        }
+
+        .filter-btn[data-category="references"]:hover {
+            background: rgba(236, 72, 153, 0.1);
+        }
+
+        .filter-btn[data-category="references"].active {
+            background: #EC4899;
+            border-color: #EC4899;
+            color: var(--white);
+        }
+
+        .filter-btn[data-category="references"].active::before {
+            background: #EC4899;
+        }
+
+        /* ============================================
+           RESOURCES GRID - ADAPTIVE COLUMN SYSTEM
+           Grid intelligently reflows based on item count
+        ============================================ */
+        .resources-grid {
+            display: grid;
+            gap: 1px;
+            background: var(--gray-800);
+            border: 1px solid var(--gray-800);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            /* Default: auto-fill with minimum tile width */
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        }
+
+        /* Adaptive grid based on item count (set via data attribute) */
+        .resources-grid[data-count="1"] {
+            grid-template-columns: 1fr;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .resources-grid[data-count="2"] {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .resources-grid[data-count="3"] {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .resources-grid[data-count="4"],
+        .resources-grid[data-count="5"],
+        .resources-grid[data-count="6"] {
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        }
+
+        /* For larger counts, use standard auto-fill */
+        .resources-grid[data-count="7"],
+        .resources-grid[data-count="8"],
+        .resources-grid[data-count="9"],
+        .resources-grid[data-count="10"],
+        .resources-grid[data-count="11"],
+        .resources-grid[data-count="12"] {
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            padding: 4rem 2rem;
+            text-align: center;
+            background: var(--black);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .no-results-icon {
+            font-size: 2rem;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .no-results-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            color: var(--gray-400);
+            margin: 0;
+        }
+
+        .no-results-subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            margin: 0;
+        }
+
+        .no-results-btn {
+            margin-top: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .no-results-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .no-results-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+
+        /* ============================================
+           GHOST TILE - Editorial Empty State
+           Only rendered for partial rows
+        ============================================ */
+        .ghost-tile {
+            background: var(--black);
+            min-height: 200px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        /* Animated border - single slow sweep */
+        .ghost-tile::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid transparent;
+            background: linear-gradient(var(--black), var(--black)) padding-box,
+                linear-gradient(90deg,
+                    transparent 0%,
+                    var(--gray-800) 25%,
+                    var(--gray-600) 50%,
+                    var(--gray-800) 75%,
+                    transparent 100%) border-box;
+            background-size: 200% 100%;
+            animation: borderSweep 20s linear infinite;
+            opacity: 0.4;
+        }
+
+        @keyframes borderSweep {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* Corner marks - matches poster aesthetic */
+        .ghost-tile .corner {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--gray-800);
+            opacity: 0.3;
+            transition: opacity 0.6s ease, border-color 0.6s ease;
+        }
+
+        .ghost-tile:hover .corner {
+            opacity: 0.6;
+            border-color: var(--gray-600);
+        }
+
+        .ghost-tile .corner.tl {
+            top: 1rem;
+            left: 1rem;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .ghost-tile .corner.tr {
+            top: 1rem;
+            right: 1rem;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .ghost-tile .corner.bl {
+            bottom: 1rem;
+            left: 1rem;
+            border-right: none;
+            border-top: none;
+        }
+
+        .ghost-tile .corner.br {
+            bottom: 1rem;
+            right: 1rem;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* Ghost tile content - editorial typography */
+        .ghost-content {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .ghost-tile:hover .ghost-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .ghost-index {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.5rem;
+            color: var(--gray-800);
+            letter-spacing: 3px;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .ghost-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Subtle noise texture overlay */
+        .ghost-tile::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.015;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
+        /* ============================================
+           GHOST TILE VARIANTS
+        ============================================ */
+
+        /* Suggest variant - interactive CTA */
+        .ghost-tile--suggest {
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .ghost-tile--suggest .ghost-icon {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+            transition: all 0.4s ease;
+        }
+
+        .ghost-tile--suggest .ghost-text {
+            color: var(--gray-600);
+            transition: all 0.4s ease;
+        }
+
+        .ghost-tile--suggest:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .ghost-tile--suggest:hover .ghost-icon {
+            color: var(--white);
+            transform: scale(1.1);
+        }
+
+        .ghost-tile--suggest:hover .ghost-text {
+            color: var(--white);
+        }
+
+        .ghost-tile--suggest:hover .corner {
+            opacity: 0.8;
+            border-color: var(--white);
+        }
+
+        .ghost-tile--suggest:hover::before {
+            opacity: 0.6;
+        }
+
+        /* ============================================
+           SUGGEST MODAL FORM STYLES
+        ============================================ */
+        .suggest-modal-content {
+            max-width: 500px;
+        }
+
+        .suggest-subtitle {
+            font-size: 0.85rem;
+            color: var(--gray-400);
+            margin-top: 0.5rem;
+        }
+
+        .suggest-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-400);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.75rem 1rem;
+            background: var(--gray-900);
+            border: 1px solid var(--gray-800);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--gray-600);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--white);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        .form-group select option {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .suggest-submit {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 1rem 1.5rem;
+            background: var(--white);
+            color: var(--black);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .suggest-submit.is-loading {
+            opacity: 0.7;
+            cursor: progress;
+        }
+
+        .suggest-submit span {
+            transition: transform 0.3s ease;
+        }
+
+        .suggest-submit:hover {
+            background: var(--gray-400);
+        }
+
+        .suggest-submit:hover span {
+            transform: translateX(4px);
+        }
+
+        .suggest-submit:active {
+            transform: scale(0.98);
+        }
+
+        .suggest-status {
+            min-height: 1.2rem;
+            font-size: 0.8rem;
+            color: var(--gray-400);
+        }
+
+        .suggest-status.is-sending {
+            color: var(--gray-300);
+            animation: statusPulse 1.2s ease-in-out infinite;
+        }
+
+        .suggest-status.is-success {
+            color: var(--white);
+            animation: statusReveal 0.35s ease;
+        }
+
+        .suggest-status.is-error {
+            color: #fca5a5;
+            animation: statusReveal 0.35s ease;
+        }
+
+        .suggest-success {
+            text-align: center;
+            padding: 2rem 0;
+            border: 1px solid var(--gray-800);
+            background: var(--gray-900);
+            animation: statusReveal 0.35s ease;
+        }
+
+        .suggest-success-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .suggest-success-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .suggest-success-sub {
+            font-size: 0.85rem;
+            color: var(--gray-400);
+        }
+
+        @keyframes statusPulse {
+
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes statusReveal {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Minimal variant - just the border animation, no text */
+        .ghost-tile--minimal .ghost-content {
+            display: none;
+        }
+
+        .ghost-tile--minimal .corner {
+            opacity: 0.15;
+        }
+
+        /* ============================================
+           RESOURCE CARD (existing styles preserved)
+        ============================================ */
+        .resource-card {
+            background: var(--black);
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 200px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================
+           SKELETON LOADING (cards)
+        ============================================ */
+        .resource-card.is-skeleton {
+            cursor: default;
+            pointer-events: none;
+            opacity: 1;
+            animation: none;
+        }
+
+        .resource-card.is-skeleton .card-index,
+        .resource-card.is-skeleton .card-name,
+        .resource-card.is-skeleton .card-description,
+        .resource-card.is-skeleton .card-badges,
+        .resource-card.is-skeleton .card-arrow {
+            visibility: hidden;
+        }
+
+        .resource-card.is-skeleton::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg,
+                    rgba(255, 255, 255, 0.04),
+                    rgba(255, 255, 255, 0.08),
+                    rgba(255, 255, 255, 0.04));
+            transform: translateX(-60%);
+            animation: skeletonShimmer 1.2s ease-in-out infinite;
+            opacity: 0.9;
+        }
+
+        @keyframes skeletonShimmer {
+            0% {
+                transform: translateX(-60%);
+            }
+
+            100% {
+                transform: translateX(60%);
+            }
+        }
+
+        /* ============================================
+           QUICK FILTERS (multi-toggle)
+        ============================================ */
+        .quickfilter-row {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .quickfilter-btn {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--gray-300);
+            padding: 0.5rem 0.75rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: transform 0.12s ease, border-color 0.2s ease, background 0.2s ease;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quickfilter-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .quickfilter-btn.is-active {
+            border-color: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--white);
+        }
+
+        .saved-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 0.35rem;
+            background: #F59E0B;
+            color: #000;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            line-height: 1;
+            transition: all 0.2s ease;
+        }
+
+        .saved-badge:empty {
+            display: none;
+        }
+
+        .quickfilter-btn[data-qf="saved"]:hover .saved-badge {
+            transform: scale(1.1);
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--white);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .resource-card:hover {
+            background: var(--gray-900);
+        }
+
+        .resource-card:hover::before {
+            width: 100%;
+        }
+
+        .resource-card:active {
+            transform: scale(0.98);
+        }
+
+        /* Card outline accents — crisp, no glow */
+        .resource-card {
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            background: var(--black);
+        }
+
+        .resource-card.is-film-festival {
+            border-color: rgba(255, 140, 66, 0.35);
+        }
+
+        .resource-card.is-community {
+            border-color: rgba(0, 217, 255, 0.28);
+        }
+
+        .resource-card.is-collaborator {
+            border-color: rgba(74, 158, 255, 0.30);
+        }
+
+        .resource-card.is-inspiration {
+            border-color: rgba(46, 204, 113, 0.25);
+        }
+
+        .resource-card.is-stock-hub {
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .resource-card.is-tools-hub {
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .resource-card,
+        .resource-card::before,
+        .resource-card::after {
+            box-shadow: none !important;
+            filter: none !important;
+        }
+
+        /* LaB Pick indicator */
+        .resource-card.is-lab-pick::after {
+            content: 'LaB Pick';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.3rem 0.6rem;
+            background: var(--white);
+            color: var(--black);
+            font-weight: 700;
+        }
+
+        .card-index {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .card-name {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--white);
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+            padding-right: 4rem;
+        }
+
+        .card-badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            font-family: 'Space Mono', monospace;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: 1px solid;
+        }
+
+        .badge-free {
+            border-color: #22C55E;
+            color: #22C55E;
+        }
+
+        .badge-paid {
+            border-color: var(--gray-400);
+            color: var(--gray-400);
+        }
+
+        .badge-ai {
+            border-color: #EC4899;
+            color: #EC4899;
+        }
+
+        .badge-coding {
+            border-color: #38BDF8;
+            color: #38BDF8;
+        }
+
+        .badge-subscription {
+            border-color: #3B82F6;
+            color: #3B82F6;
+        }
+
+        .badge-lifetime {
+            border-color: #A855F7;
+            color: #A855F7;
+        }
+
+        .badge-perpetual {
+            border-color: #A855F7;
+            color: #A855F7;
+        }
+
+        .badge-michigan {
+            border-color: #F97316;
+            color: #F97316;
+        }
+
+        .badge-4k {
+            border-color: #0EA5E9;
+            color: #0EA5E9;
+        }
+
+        .badge-community {
+            border-color: #22C55E;
+            color: #22C55E;
+        }
+
+        .badge-rental {
+            border-color: #8B5CF6;
+            color: #8B5CF6;
+        }
+
+        .badge-detroit {
+            border-color: #F97316;
+            color: #F97316;
+        }
+
+        .badge-pro-quality {
+            border-color: #0EA5E9;
+            color: #0EA5E9;
+        }
+
+        .badge-cc-license {
+            border-color: #F59E0B;
+            color: #F59E0B;
+        }
+
+        .badge-marketplace {
+            border-color: #6366F1;
+            color: #6366F1;
+        }
+
+        .badge-tool {
+            border-color: var(--gray-400);
+            color: var(--gray-400);
+        }
+
+        .badge-challenge {
+            border-color: #EF4444;
+            color: #EF4444;
+        }
+
+        .badge-festival {
+            border-color: #F59E0B;
+            color: #F59E0B;
+        }
+
+        .badge-design {
+            border-color: #6366F1;
+            color: #6366F1;
+        }
+
+        .badge-artist {
+            border-color: #EC4899;
+            color: #EC4899;
+        }
+
+        .badge-music {
+            border-color: #A855F7;
+            color: #A855F7;
+        }
+
+        .badge-voice {
+            border-color: #06B6D4;
+            color: #06B6D4;
+        }
+
+        .badge-comedy {
+            border-color: #FBBF24;
+            color: #FBBF24;
+        }
+
+        .badge-non-local {
+            border-color: #EF4444;
+            color: #EF4444;
+            font-weight: bold;
+        }
+
+        .badge-northern-ohio {
+            border-color: #A855F7;
+            color: #A855F7;
+        }
+
+        /* Analytics badges */
+        .badge-views {
+            border-color: rgba(59, 130, 246, 0.4);
+            color: #3B82F6;
+            opacity: 0.7;
+        }
+
+        .badge-trending {
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #EF4444;
+            background: rgba(239, 68, 68, 0.08);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .card-trending-indicator {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            z-index: 2;
+        }
+
+        /* Move trending badge down when Lab Pick badge is present */
+        .resource-card.is-lab-pick .card-trending-indicator {
+            top: 3rem;
+        }
+
+        .badge-networking {
+            border-color: #3B82F6;
+            color: #3B82F6;
+        }
+
+        .badge-casting {
+            border-color: #EC4899;
+            color: #EC4899;
+        }
+
+        .badge-submissions {
+            border-color: #EF4444;
+            color: #EF4444;
+        }
+
+        .badge-collaborator {
+            border-color: #F97316;
+            color: #F97316;
+            background: rgba(249, 115, 22, 0.1);
+        }
+
+        .badge-animation {
+            border-color: #EC4899;
+            color: #EC4899;
+        }
+
+        .badge-motion {
+            border-color: #8B5CF6;
+            color: #8B5CF6;
+        }
+
+        .badge-inspiration {
+            border-color: #A855F7;
+            color: #A855F7;
+        }
+
+        .badge-storytelling {
+            border-color: #EC4899;
+            color: #EC4899;
+        }
+
+        .badge-directing {
+            border-color: #F59E0B;
+            color: #F59E0B;
+        }
+
+        .badge-education {
+            border-color: #3B82F6;
+            color: #3B82F6;
+        }
+
+        .badge-experimental {
+            border-color: #EF4444;
+            color: #EF4444;
+        }
+
+        .badge-visual-art {
+            border-color: #EC4899;
+            color: #EC4899;
+        }
+
+        .badge-lighting {
+            border-color: #FBBF24;
+            color: #FBBF24;
+        }
+
+        .badge-post-production {
+            border-color: #6366F1;
+            color: #6366F1;
+        }
+
+        .badge-filmmaking {
+            border-color: #F97316;
+            color: #F97316;
+        }
+
+        .badge-creative-process {
+            border-color: #A855F7;
+            color: #A855F7;
+        }
+
+        .badge-behind-the-scenes {
+            border-color: #06B6D4;
+            color: #06B6D4;
+        }
+
+        .badge-horror {
+            border-color: #EF4444;
+            color: #EF4444;
+        }
+
+        .badge-short-films {
+            border-color: #F59E0B;
+            color: #F59E0B;
+        }
+
+        .badge-vfx {
+            border-color: #EC4899;
+            color: #EC4899;
+        }
+
+        .badge-editing {
+            border-color: #3B82F6;
+            color: #3B82F6;
+        }
+
+        .badge-visual-language {
+            border-color: #A855F7;
+            color: #A855F7;
+        }
+
+        .badge-cinematography {
+            border-color: #F97316;
+            color: #F97316;
+        }
+
+        .badge-analysis {
+            border-color: #6366F1;
+            color: #6366F1;
+        }
+
+        .card-description {
+            font-size: 0.85rem;
+            color: var(--gray-400);
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .card-arrow {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--gray-800);
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            align-self: flex-end;
+        }
+
+        .resource-card:hover .card-arrow {
+            color: var(--white);
+            transform: translateX(5px);
+        }
+
+        /* ============================================
+           MODAL (preserved from original)
+        ============================================ */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            z-index: 2000;
+            overflow-y: auto;
+            transition: background 0.4s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 4rem 2rem;
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        .modal-content {
+            background: var(--black);
+            border: 1px solid var(--gray-800);
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px) scale(0.98);
+            animation: modalSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes modalSlideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal.closing .modal-content {
+            animation: modalSlideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes modalSlideOut {
+            to {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.98);
+            }
+        }
+
+        .modal-content.is-collaborator {
+            border-color: var(--lab-orange);
+            border-width: 2px;
+        }
+
+        .modal-content.is-community {
+            border-color: var(--lab-green);
+            border-width: 2px;
+        }
+
+        .modal-content.is-film-festival {
+            border-color: #F59E0B;
+            border-width: 2px;
+        }
+
+        .modal-content.is-inspiration {
+            border-color: var(--lab-purple);
+            border-width: 2px;
+        }
+
+        .modal-content.is-lab-pick {
+            border-color: var(--white);
+            border-width: 2px;
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--gray-800);
+            position: relative;
+        }
+
+        .modal-lab-pick {
+            position: absolute;
+            top: 1.5rem;
+            right: 6.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.4rem 0.8rem;
+            background: var(--white);
+            color: var(--black);
+            font-weight: 700;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-400);
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 1px;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            border-color: var(--white);
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+        }
+
+        .modal-close:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Favorite (Saved) toggle in modal */
+        .modal-fav {
+            position: absolute;
+            top: 4rem;
+            right: 1.5rem;
+            width: auto;
+            height: auto;
+            border: 1px solid var(--gray-600);
+            background: transparent;
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+
+        .modal-fav .star-icon {
+            font-size: 1rem;
+            transition: transform 0.2s ease;
+        }
+
+        .modal-fav:not(.is-saved) .star-icon {
+            opacity: 0.6;
+        }
+
+        .modal-fav.is-saved {
+            border-color: #F59E0B;
+            color: #F59E0B;
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        .modal-fav.is-saved .star-icon {
+            opacity: 1;
+            color: #F59E0B;
+        }
+
+        .modal-fav:hover {
+            border-color: var(--white);
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .modal-fav:hover .star-icon {
+            transform: scale(1.1);
+        }
+
+        .modal-fav:active {
+            transform: translateY(0) scale(0.98);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Animation for saving */
+        @keyframes savePulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 rgba(245, 158, 11, 0);
+            }
+
+            50% {
+                transform: scale(1.08);
+                box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 rgba(245, 158, 11, 0);
+            }
+        }
+
+        @keyframes fillIn {
+            0% {
+                background: transparent;
+                border-color: var(--gray-600);
+            }
+
+            100% {
+                background: rgba(245, 158, 11, 0.08);
+                border-color: #F59E0B;
+            }
+        }
+
+        @keyframes starPop {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+
+            50% {
+                transform: scale(1.5) rotate(12deg);
+            }
+
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .modal-fav.saving-animation {
+            animation: savePulse 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-fav.saving-animation.is-saved {
+            animation: fillIn 0.4s ease-out forwards;
+        }
+
+        .modal-fav.saving-animation .star-icon {
+            animation: starPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--white);
+            font-weight: 400;
+            margin-bottom: 1rem;
+            padding-right: 8rem;
+        }
+
+        .modal-badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-description {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--gray-400);
+            margin-bottom: 2rem;
+        }
+
+        .modal-section {
+            margin-bottom: 2rem;
+        }
+
+        /* Video Player Styles */
+        .video-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            /* 16:9 aspect ratio */
+            background: var(--gray-900);
+            border: 1px solid var(--gray-800);
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Inspiration modal video styling */
+        .modal-content.is-inspiration .video-container {
+            border-color: var(--lab-purple);
+            box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.2);
+        }
+
+        .section-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .pricing-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .pricing-row:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-plan {
+            font-size: 0.85rem;
+            color: var(--gray-400);
+        }
+
+        .pricing-amount {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--white);
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--gray-400);
+        }
+
+        .feature-bullet {
+            font-family: 'Space Mono', monospace;
+            color: var(--gray-600);
+            font-size: 0.7rem;
+        }
+
+        .key-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .key-info-item {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--gray-300);
+        }
+
+        .key-info-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: #F59E0B;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Two-column layout for inspiration modals */
+        .modal-two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .modal-two-col .modal-section {
+            margin-bottom: 0;
+        }
+
+        .modal-two-col .features-col {
+            padding-right: 1rem;
+            border-right: 1px solid var(--gray-800);
+        }
+
+        .modal-two-col .links-col {
+            padding-left: 1rem;
+        }
+
+        .modal-feature-media {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .modal-feature-media .modal-section {
+            margin-bottom: 0;
+        }
+
+        .modal-image-col {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-image-col img {
+            width: 100%;
+            max-width: 320px;
+            border: 1px solid var(--gray-800);
+            border-radius: 6px;
+            background: var(--black);
+            object-fit: contain;
+        }
+
+        /* Mobile: stack columns */
+        @media (max-width: 768px) {
+            .modal-two-col {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .modal-two-col .features-col {
+                padding-right: 0;
+                border-right: none;
+                padding-bottom: 1.5rem;
+                border-bottom: 1px solid var(--gray-800);
+            }
+
+            .modal-two-col .links-col {
+                padding-left: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .modal-feature-media {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-image-col {
+                justify-content: flex-start;
+            }
+
+            .modal-image-col img {
+                max-width: 100%;
+            }
+        }
+
+        .cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        /* Vertical CTA layout for inspiration links column */
+        .cta-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .cta-col .btn {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            text-transform: uppercase;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--white);
+        }
+
+        .btn:focus-visible {
+            outline: 2px solid var(--white);
+            outline-offset: 2px;
+        }
+
+        .btn span {
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover span {
+            transform: translateX(2px);
+        }
+
+        .btn-icon {
+            width: 16px;
+            height: 16px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .btn--outline {
+            background: transparent;
+        }
+
+        .btn--outline-white {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .btn--outline-white:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn--outline-purple {
+            border-color: var(--lab-purple);
+            color: var(--lab-purple);
+        }
+
+        .btn--outline-purple:hover {
+            background: rgba(168, 85, 247, 0.12);
+        }
+
+        /* Social Media - Image Only Buttons */
+        .btn--filmfreeway,
+        .btn--instagram-icon,
+        .btn--youtube-icon,
+        .btn--facebook-icon,
+        .btn--spotify-icon {
+            padding: 0;
+            border: none;
+            background: transparent;
+            border-radius: 0;
+            transition: all 0.3s ease;
+        }
+
+        .btn--filmfreeway .btn-icon,
+        .btn--instagram-icon .btn-icon,
+        .btn--youtube-icon .btn-icon,
+        .btn--facebook-icon .btn-icon,
+        .btn--spotify-icon .btn-icon {
+            width: auto;
+            height: 40px;
+            display: block;
+            opacity: 0.9;
+        }
+
+        /* Instagram is square, make it slightly smaller for balance */
+        .btn--instagram-icon .btn-icon {
+            height: 36px;
+        }
+
+        .btn--filmfreeway:hover,
+        .btn--instagram-icon:hover,
+        .btn--youtube-icon:hover,
+        .btn--facebook-icon:hover,
+        .btn--spotify-icon:hover {
+            background: transparent;
+            transform: scale(1.05);
+        }
+
+        .btn--filmfreeway:hover .btn-icon,
+        .btn--instagram-icon:hover .btn-icon,
+        .btn--youtube-icon:hover .btn-icon,
+        .btn--facebook-icon:hover .btn-icon,
+        .btn--spotify-icon:hover .btn-icon {
+            opacity: 1;
+        }
+
+        .btn--filmfreeway .btn-text,
+        .btn--instagram-icon .btn-text,
+        .btn--youtube-icon .btn-text,
+        .btn--facebook-icon .btn-text,
+        .btn--spotify-icon .btn-text {
+            display: none;
+        }
+
+        /* Icon buttons with labels - show text alongside icon */
+        .btn--facebook-icon.btn--with-label,
+        .btn--instagram-icon.btn--with-label,
+        .btn--youtube-icon.btn--with-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.65rem 1.1rem;
+            border: 1px solid var(--gray-800);
+            border-radius: 8px;
+            background: transparent;
+        }
+
+        .btn--facebook-icon.btn--with-label:hover {
+            border-color: #316FF6;
+            background: rgba(49, 111, 246, 0.08);
+        }
+
+        .btn--facebook-icon.btn--with-label .btn-icon {
+            height: 24px;
+        }
+
+        .btn--facebook-icon.btn--with-label .btn-text,
+        .btn--instagram-icon.btn--with-label .btn-text,
+        .btn--youtube-icon.btn--with-label .btn-text {
+            display: inline;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: var(--white);
+            text-transform: uppercase;
+        }
+
+        .btn--outline-youtube {
+            border-color: #ff4d4d;
+            color: #ff4d4d;
+        }
+
+        .btn--outline-youtube:hover {
+            background: rgba(255, 77, 77, 0.12);
+        }
+
+        .btn--outline-instagram {
+            border-color: #e4405f;
+            color: #e4405f;
+        }
+
+        .btn--outline-instagram:hover {
+            background: rgba(228, 64, 95, 0.12);
+        }
+
+        .btn--outline-facebook {
+            border-color: #316FF6;
+            color: #316FF6;
+        }
+
+        .btn--outline-facebook:hover {
+            background: rgba(49, 111, 246, 0.12);
+        }
+
+        .btn--outline-spotify {
+            border-color: #1DB954;
+            color: #1DB954;
+        }
+
+        .btn--outline-spotify:hover {
+            background: rgba(29, 185, 84, 0.12);
+        }
+
+        .link-notes {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .link-note {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--gray-300);
+        }
+
+        .link-note-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            color: var(--gray-600);
+            text-transform: uppercase;
+        }
+
+        .resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .resource-link span {
+            transition: transform 0.3s ease;
+        }
+
+        .resource-link:hover span {
+            transform: translateX(3px);
+        }
+
+        .resource-link--website {
+            background: var(--white);
+            color: var(--black);
+        }
+
+        .resource-link--website:hover {
+            background: var(--gray-400);
+            transform: translateX(5px);
+        }
+
+        .modal-content.is-collaborator .resource-link--website {
+            background: var(--lab-orange);
+            color: var(--white);
+        }
+
+        .modal-content.is-collaborator .resource-link--website:hover {
+            background: #ea580c;
+        }
+
+        .modal-content.is-community .resource-link--website {
+            background: var(--lab-green);
+            color: var(--white);
+        }
+
+        .modal-content.is-community .resource-link--website:hover {
+            background: #16a34a;
+        }
+
+        .modal-content.is-film-festival .resource-link--website {
+            background: #F59E0B;
+            color: var(--black);
+        }
+
+        .modal-content.is-film-festival .resource-link--website:hover {
+            background: #d97706;
+            color: var(--black);
+        }
+
+        .modal-content.is-inspiration .resource-link--website {
+            background: var(--lab-purple);
+            color: var(--white);
+        }
+
+        .modal-content.is-inspiration .resource-link--website:hover {
+            background: #9333ea;
+        }
+
+        .resource-link--filmfreeway {
+            background: transparent;
+            color: var(--lab-purple);
+            border: 1px solid var(--lab-purple);
+            box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.2);
+        }
+
+        .resource-link--filmfreeway:hover {
+            background: rgba(168, 85, 247, 0.15);
+            box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.4), 0 10px 30px rgba(168, 85, 247, 0.15);
+            transform: translateX(5px);
+        }
+
+        /* ============================================
+           SAVED DRAWER
+        ============================================ */
+        .saved-drawer {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: var(--black);
+            border-left: 1px solid var(--gray-800);
+            z-index: 2000;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .saved-drawer.is-open {
+            right: 0;
+        }
+
+        .saved-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--gray-800);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .saved-header h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            color: var(--white);
+            margin: 0;
+        }
+
+        .saved-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .saved-count {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--gray-400);
+        }
+
+        .saved-share,
+        .saved-export {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--gray-800);
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .saved-share:hover,
+        .saved-export:hover {
+            border-color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .saved-export {
+            border-color: var(--lab-orange);
+            color: var(--lab-orange);
+        }
+
+        .saved-export:hover {
+            border-color: var(--lab-orange);
+            background: rgba(249, 115, 22, 0.08);
+        }
+
+        .saved-search {
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .saved-search input {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--gray-900);
+            border: 1px solid var(--gray-800);
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .saved-search input:focus {
+            outline: none;
+            border-color: var(--white);
+        }
+
+        .saved-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 2rem;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--gray-800);
+            text-align: center;
+            background: var(--black);
+            margin-top: 4rem;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-nav a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .footer-nav a:hover {
+            color: var(--white);
+        }
+
+        .footer-social {
+            position: absolute;
+            left: 2rem;
+            top: 3rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .footer-social a {
+            display: block;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            opacity: 1;
+        }
+
+        .footer-social img {
+            height: 24px;
+            width: auto;
+            display: block;
+        }
+
+        .footer-cta {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--black);
+            background: var(--white);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .footer-cta:hover {
+            background: transparent;
+            color: var(--white);
+            outline: 1px solid var(--white);
+        }
+
+        .footer-credit {
+            font-size: 0.7rem;
+            color: var(--gray-600);
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 1024px) {
+
+            .resources-grid[data-count="2"],
+            .resources-grid[data-count="3"] {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            nav {
+                padding: 1.5rem;
+            }
+
+            .container {
+                padding: 6rem 1.5rem 2rem;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 100%;
+                max-width: 300px;
+                background: rgba(0, 0, 0, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.4s ease;
+                mix-blend-mode: normal;
+                border-left: 1px solid var(--gray-800);
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links a {
+                opacity: 1;
+                font-size: 0.9rem;
+                color: var(--white) !important;
+                mix-blend-mode: normal;
+            }
+
+            .filter-row {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 1rem;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .filter-btn {
+                flex-shrink: 0;
+            }
+
+            .resources-grid,
+            .resources-grid[data-count="1"],
+            .resources-grid[data-count="2"],
+            .resources-grid[data-count="3"] {
+                grid-template-columns: 1fr;
+                max-width: none;
+            }
+
+            /* Hide ghost tiles on mobile - full-width cards are better */
+            .ghost-tile {
+                display: none;
+            }
+
+            .modal.active {
+                padding: 2rem 1rem;
+            }
+
+            .modal-header,
+            .modal-body {
+                padding: 1.5rem;
+            }
+
+            .footer-social {
+                position: static;
+                justify-content: center;
+                margin-top: 1.25rem;
+            }
+
+            /* Video responsive adjustments */
+            .video-section {
+                margin-bottom: 2rem;
+            }
+
+            .modal-description {
+                margin-bottom: 1.5rem;
+            }
+
+            .footer-nav {
+                gap: 1rem;
+            }
+        }
+
+        /* ============================================
+           TOAST NOTIFICATION
+        ============================================ */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            background: var(--white);
+            color: var(--black);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            border: 1px solid var(--white);
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .toast.is-show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .ghost-tile::before {
+                animation: none;
+                background: linear-gradient(var(--black), var(--black)) padding-box,
+                    linear-gradient(90deg, var(--gray-800), var(--gray-800)) border-box;
+            }
+
+            .ghost-content {
+                opacity: 0.5;
+                transform: none;
+            }
+
+            .ghost-tile:hover .ghost-content {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="site-nav">
+        <a href="index.html">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB" class="nav-logo">
+        </a>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="callboard.html">Callboard</a></li>
+            <li><a href="ideas.html">Story Generator</a></li>
+            <li><a href="plan-your-project.html">Plan</a></li>
+            <li><a href="portfolio.html">Reel</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="container proto-grid">
+        <div class="resources-hero proto-corners">
+            <!-- Corner brackets for Prototype aesthetic -->
+            <span class="proto-corner-tl"></span>
+            <span class="proto-corner-tr"></span>
+            <span class="proto-corner-bl"></span>
+            <span class="proto-corner-br"></span>
+
+            <div class="header">
+                <div class="header-row">
+                    <h1 class="proto-text-mono">Resources</h1>
+                    <span class="header-count proto-text-mono" id="resourceCount">000</span>
+                </div>
+            </div>
+            <p class="hero-subtitle">Browse, filter, and save what you need. Everything here has been tested or vetted.
+            </p>
+        </div>
+
+        <!-- Search -->
+        <div class="search-row">
+            <input type="text" class="search-input proto-card" id="searchInput" placeholder="Search resources..."
+                autocomplete="off">
+            <div class="sort-controls">
+                <span class="sort-label">Sort:</span>
+                <button class="sort-btn active" data-sort="alpha">A–Z</button>
+                <button class="sort-btn" data-sort="recent">Recent</button>
+            </div>
+        </div>
+
+        <div class="filter-hint">Start with a category, then refine with subfilters.</div>
+        <div class="section-tip" id="sectionTip" aria-live="polite">
+            <strong>Hot tip</strong>
+            <span>Film festival links lead to programmer-approved submissions and the best local fit.</span>
+        </div>
+
+        <!-- Main Category Filter Row -->
+        <div class="filter-row">
+            <button class="filter-btn active" data-group="film-festivals">Film Festivals</button>
+            <button class="filter-btn" data-group="community">Community</button>
+            <button class="filter-btn" data-group="stock">Stock</button>
+            <button class="filter-btn" data-group="tools">Tools</button>
+            <button class="filter-btn" data-group="collaborators">Friends</button>
+            <button class="filter-btn" data-group="references">References</button>
+            <button class="filter-btn" data-group="drones">Drones</button>
+            <button class="filter-btn" data-group="all">All</button>
+        </div>
+
+        <!-- Community Subcategories (shown when Community is active) -->
+        <div class="subfilter-row" id="communityGroupBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Community:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn" data-community="events">Events</button>
+                <button class="subfilter-btn" data-community="casting">Casting</button>
+                <button class="subfilter-btn" data-community="groups">Groups/Meetups</button>
+                <button class="subfilter-btn active" data-community="all">All</button>
+            </div>
+        </div>
+
+        <!-- Stock Subcategories (shown when Stock is active) -->
+        <div class="subfilter-row" id="stockGroupBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Stock:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn active" data-stock="3d">3D</button>
+                <button class="subfilter-btn" data-stock="fonts">Fonts</button>
+                <button class="subfilter-btn" data-stock="stock">Footage</button>
+                <button class="subfilter-btn" data-stock="music">Music</button>
+                <button class="subfilter-btn" data-stock="soundfx">SoundFX</button>
+                <button class="subfilter-btn active" data-stock="all-stock">All</button>
+            </div>
+        </div>
+
+        <!-- Tools Subcategories (shown when Tools is active) -->
+        <div class="subfilter-row" id="toolsGroupBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Tools:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn active" data-tools="ai">AI</button>
+                <button class="subfilter-btn" data-tools="coding">Coding</button>
+                <button class="subfilter-btn" data-tools="drone">Drone</button>
+                <button class="subfilter-btn" data-tools="gear">Gear</button>
+                <button class="subfilter-btn" data-tools="casting">Casting</button>
+                <button class="subfilter-btn active" data-tools="all-tools">All</button>
+            </div>
+        </div>
+
+        <!-- References Subcategories (shown when References is active) -->
+        <div class="subfilter-row" id="referencesGroupBar" aria-live="polite" hidden>
+            <span class="subfilter-label">References:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn active" data-references="inspiration">Inspiration</button>
+                <button class="subfilter-btn" data-references="color">Color</button>
+                <button class="subfilter-btn" data-references="art">Art</button>
+                <button class="subfilter-btn" data-references="editing">Editing</button>
+                <button class="subfilter-btn" data-references="filming">Filming</button>
+                <button class="subfilter-btn" data-references="music">Music</button>
+                <button class="subfilter-btn" data-references="comedy">Comedy</button>
+                <button class="subfilter-btn" data-references="all">All</button>
+            </div>
+        </div>
+
+        <!-- Drone Subcategories (shown when Tools → Drone is active) -->
+        <div class="subfilter-row" id="droneTypeBar" aria-live="polite" hidden>
+            <span class="subfilter-label">Drone:</span>
+            <div class="subfilter-buttons">
+                <button class="subfilter-btn" data-type="part107">Part 107</button>
+                <button class="subfilter-btn" data-type="channels">Channels</button>
+                <button class="subfilter-btn" data-type="stores">Stores</button>
+                <button class="subfilter-btn" data-type="software">Software</button>
+                <button class="subfilter-btn active" data-type="all">All</button>
+            </div>
+        </div>
+
+        <!-- Quick Filters Row -->
+        <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
+            <button class="quickfilter-btn" type="button" id="suggestQuick">
+                + Suggest
+            </button>
+            <button class="quickfilter-btn" type="button" data-qf="saved">
+                Saved
+                <span class="saved-badge" id="savedBadge"></span>
+            </button>
+            <button class="quickfilter-btn" type="button" data-qf="free">Free</button>
+            <button class="quickfilter-btn" type="button" data-qf="paid">Paid</button>
+        </div>
+
+        <!-- Resources Grid -->
+        <div class="resources-grid" id="resourcesGrid"></div>
+
+        <aside class="saved-drawer" id="savedDrawer" aria-label="Saved resources">
+            <div class="saved-header">
+                <h3 class="proto-text-mono">Saved</h3>
+                <div class="saved-actions">
+                    <span class="saved-count" id="savedCount">0</span>
+                    <button class="saved-share" id="shareSavedBtn" type="button">Share Saved</button>
+                    <button class="saved-export" id="copyLinksBtn" type="button"
+                        title="Copy all saved links to clipboard">Copy Links</button>
+                    <button class="saved-export" id="exportBookmarksBtn" type="button"
+                        title="Export as browser bookmarks">Export Bookmarks</button>
+                </div>
+            </div>
+            <div class="saved-search">
+                <input type="text" id="savedSearch" placeholder="Search saved...">
+            </div>
+            <div class="saved-list" id="savedList" aria-live="polite"></div>
+        </aside>
+    </div>
+    </div>
+
+    <footer>
+        <div class="footer-nav" aria-label="Footer navigation">
+            <a href="index.html">Home</a>
+            <a href="portfolio.html">Reel</a>
+            <a href="events.html">Events</a>
+            <a href="ideas.html">Story Generator</a>
+            <a href="https://ai.studio/apps/drive/1h-3BvBuLgnF0kRHx43_GWVIlwwWC31od?fullscreenApplet=true"
+                target="_blank" rel="noopener noreferrer">LaB Talk (Beta)</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-social" aria-label="LaB social links">
+            <a href="https://www.instagram.com/labmedia.work/" target="_blank" rel="noopener noreferrer"
+                aria-label="Instagram">
+                <img src="images/Instagram_Glyph_Gradient.png" alt="Instagram" loading="lazy">
+            </a>
+            <a href="https://www.youtube.com/@labmediawork" target="_blank" rel="noopener noreferrer"
+                aria-label="YouTube">
+                <img src="images/yt_logo_fullcolor_white_digital.png" alt="YouTube" loading="lazy">
+            </a>
+        </div>
+        <p class="footer-credit">Made in Shelby Twp, MI with ❤️</p>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content" id="modalContent">
+            <button class="modal-close" id="closeModal">ESC</button>
+
+            <!-- Favorite toggle -->
+            <button class="modal-fav" id="toggleFavorite" type="button" aria-label="Save resource">
+                <span class="star-icon">★</span>
+                <span class="fav-label">SAVE</span>
+            </button>
+
+            <div class="modal-header">
+                <div class="modal-lab-pick" id="modalLabPick" style="display: none;">LaB Pick</div>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <div class="modal-badges" id="modalBadges"></div>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Suggest Modal -->
+    <div class="modal" id="suggestModal">
+        <div class="modal-content suggest-modal-content">
+            <button class="modal-close" id="closeSuggestModal">ESC</button>
+            <div class="modal-header">
+                <h2 class="modal-title">Suggest a Resource</h2>
+                <p class="suggest-subtitle">Know a tool or service that should be here?</p>
+            </div>
+            <div class="modal-body">
+                <form id="suggestForm" class="suggest-form">
+                    <div class="form-group">
+                        <label for="suggestName">Resource Name</label>
+                        <input type="text" id="suggestName" name="name" required placeholder="e.g. Premiere Pro">
+                    </div>
+                    <div class="form-group">
+                        <label for="suggestUrl">Website URL</label>
+                        <input type="url" id="suggestUrl" name="url" placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label for="suggestCategory">Category</label>
+                        <select id="suggestCategory" name="category">
+                            <option value="">Select a category</option>
+                            <option value="music">Music</option>
+                            <option value="soundfx">Sound FX</option>
+                            <option value="ai">AI</option>
+                            <option value="stock">Stock</option>
+                            <option value="equipment">Gear</option>
+                            <option value="3d">3D</option>
+                            <option value="fonts">Fonts</option>
+                            <option value="community">Community</option>
+                            <option value="film-festivals">Film Festivals</option>
+                            <option value="references">References</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="suggestReason">Why is it useful?</label>
+                        <textarea id="suggestReason" name="reason" rows="3"
+                            placeholder="What makes this resource valuable..."></textarea>
+                    </div>
+                    <button type="submit" class="suggest-submit">Send Suggestion <span>→</span></button>
+                    <p class="suggest-status" id="suggestStatus" role="status" aria-live="polite"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="shareToast" role="status" aria-live="polite">Link copied</div>
+
+    <script src="resources-data.js"></script>
+    <script>
+        const grid = document.getElementById('resourcesGrid');
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modalContent');
+        const closeModalBtn = document.getElementById('closeModal');
+        const countEl = document.getElementById('resourceCount');
+        const searchInput = document.getElementById('searchInput');
+        const toastEl = document.getElementById('shareToast');
+        const sectionTip = document.getElementById('sectionTip');
+
+        // Filter buttons
+        const groupButtons = document.querySelectorAll('.filter-btn');
+        const filters = document.querySelectorAll('.filter-btn');
+
+        // Subfilter bars and buttons
+        const communityGroupBar = document.getElementById('communityGroupBar');
+        const communityGroupButtons = communityGroupBar ? communityGroupBar.querySelectorAll('.subfilter-btn') : [];
+        const stockGroupBar = document.getElementById('stockGroupBar');
+        const stockGroupButtons = stockGroupBar ? stockGroupBar.querySelectorAll('.subfilter-btn') : [];
+        const toolsGroupBar = document.getElementById('toolsGroupBar');
+        const toolsGroupButtons = toolsGroupBar ? toolsGroupBar.querySelectorAll('.subfilter-btn') : [];
+        const referencesGroupBar = document.getElementById('referencesGroupBar');
+        const referencesGroupButtons = referencesGroupBar ? referencesGroupBar.querySelectorAll('.subfilter-btn') : [];
+
+        const musicTierBar = document.getElementById('musicTierBar');
+        const musicTierButtons = musicTierBar ? musicTierBar.querySelectorAll('.subfilter-btn') : [];
+        const aiTypeBar = document.getElementById('aiTypeBar');
+        const aiTypeButtons = aiTypeBar ? aiTypeBar.querySelectorAll('.subfilter-btn') : [];
+        const droneTypeBar = document.getElementById('droneTypeBar');
+        const droneTypeButtons = droneTypeBar ? droneTypeBar.querySelectorAll('.subfilter-btn') : [];
+
+        const quickFilterBar = document.getElementById('quickFilterBar');
+        const quickFilterButtons = quickFilterBar ? quickFilterBar.querySelectorAll('.quickfilter-btn') : [];
+        const suggestQuickBtn = document.getElementById('suggestQuick');
+        const quickFilters = {
+            saved: false,
+            labPick: false,
+            free: false,
+            paid: false
+        };
+
+        const referenceTypeValues = new Set(['inspiration', 'color', 'art', 'editing', 'filming', 'music', 'references', 'comedy']);
+        const REFERENCES_DEBUG = false;
+
+        // Saved drawer elements
+        const savedDrawer = document.getElementById('savedDrawer');
+        const savedList = document.getElementById('savedList');
+        const savedSearch = document.getElementById('savedSearch');
+        const savedCountLabel = document.getElementById('savedCount');
+        const shareSavedBtn = document.getElementById('shareSavedBtn');
+        const openSavedDrawerBtn = document.getElementById('openSavedDrawer');
+        const savedClose = document.getElementById('savedClose');
+        const savedBackdrop = document.getElementById('savedBackdrop');
+
+        // Current filter state
+        let currentGroup = 'film-festivals';
+        let communitySubcategory = 'all';
+        let stockSubcategory = 'all-stock';
+        let toolsSubcategory = 'all-tools';
+        let referencesSubcategory = 'all';
+        let musicTier = 'all';
+        let aiType = 'all';
+        let droneType = 'all';
+        let searchQuery = '';
+        let currentSort = 'alpha'; // 'alpha' or 'recent'
+
+        // ============================================
+        // FAVORITES (Saved)
+        // ============================================
+        const FAVORITES_KEY = 'lab_favorites_v1';
+        let favorites = new Set();
+        let activeResourceId = null;
+        let lastFocusEl = null;
+
+        function loadFavorites() {
+            try {
+                const raw = localStorage.getItem(FAVORITES_KEY);
+                const arr = raw ? JSON.parse(raw) : [];
+                favorites = new Set(Array.isArray(arr) ? arr : []);
+            } catch { favorites = new Set(); }
+        }
+        function saveFavorites() {
+            try {
+                const arr = Array.from(favorites);
+                localStorage.setItem(FAVORITES_KEY, JSON.stringify(arr));
+            } catch (e) {
+                console.error('[SAVE] Failed to save favorites:', e);
+            }
+        }
+        function getResourceId(r) { return r.id || normalizeValue(r.name); }
+        function isFavoriteId(id) { return favorites.has(id); }
+
+        function showToast(msg) {
+            if (!toastEl) {
+                console.error('[TOAST] Toast element not found!');
+                return;
+            }
+            toastEl.textContent = msg;
+            toastEl.classList.add('is-show');
+            clearTimeout(showToast._t);
+            showToast._t = setTimeout(() => {
+                toastEl.classList.remove('is-show');
+            }, 1600);
+        }
+
+        // init favorites early
+        loadFavorites();
+
+        // ============================================
+        // ANALYTICS TRACKING
+        // ============================================
+        const ANALYTICS_KEY = 'lab_analytics_v1';
+        let analytics = {};
+
+        function loadAnalytics() {
+            try {
+                const raw = localStorage.getItem(ANALYTICS_KEY);
+                analytics = raw ? JSON.parse(raw) : {};
+            } catch {
+                analytics = {};
+            }
+        }
+
+        function saveAnalytics() {
+            try {
+                localStorage.setItem(ANALYTICS_KEY, JSON.stringify(analytics));
+            } catch { }
+        }
+
+        function trackResourceClick(resourceId) {
+            if (!resourceId) return;
+
+            if (!analytics[resourceId]) {
+                analytics[resourceId] = {
+                    views: 0,
+                    lastViewed: null,
+                    firstViewed: Date.now()
+                };
+            }
+
+            analytics[resourceId].views++;
+            analytics[resourceId].lastViewed = Date.now();
+            saveAnalytics();
+        }
+
+        function getResourceViews(resourceId) {
+            return analytics[resourceId]?.views || 0;
+        }
+
+        function getTopResources(limit = 10) {
+            return Object.entries(analytics)
+                .map(([id, data]) => ({ id, ...data }))
+                .sort((a, b) => b.views - a.views)
+                .slice(0, limit);
+        }
+
+        function isTrending(resourceId) {
+            const views = getResourceViews(resourceId);
+            const data = analytics[resourceId];
+            if (!data || views < 3) return false;
+
+            // Trending if viewed 3+ times in last 7 days
+            const weekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+            return data.lastViewed > weekAgo;
+        }
+
+        // Initialize analytics
+        loadAnalytics();
+
+        function setFavoriteUI(id) {
+            const btn = document.getElementById('toggleFavorite');
+            if (!btn) {
+                return;
+            }
+            const saved = id && isFavoriteId(id);
+            const starIcon = btn.querySelector('.star-icon');
+            const label = btn.querySelector('.fav-label');
+
+            btn.classList.toggle('is-saved', saved);
+            if (starIcon) starIcon.textContent = saved ? '★' : '☆';
+            if (label) label.textContent = saved ? 'SAVED' : 'SAVE';
+            btn.setAttribute('aria-label', saved ? 'Remove from saved' : 'Save resource');
+        }
+
+        // Favorite button handler
+        const favBtn = document.getElementById('toggleFavorite');
+        if (favBtn) {
+            favBtn.addEventListener('click', () => {
+                if (!activeResourceId) {
+                    return;
+                }
+
+                // Add animation class
+                favBtn.classList.add('saving-animation');
+
+                // Update favorites
+                const wasRemoved = favorites.has(activeResourceId);
+                if (wasRemoved) {
+                    favorites.delete(activeResourceId);
+                    showToast('Removed from saved');
+                } else {
+                    favorites.add(activeResourceId);
+                    showToast('Added to saved');
+                }
+
+                saveFavorites();
+                setFavoriteUI(activeResourceId);
+                updateSavedBadge();
+
+                if (quickFilters && quickFilters.saved) renderResources(true);
+                renderSavedDrawer();
+
+                // Remove animation class after animation completes
+                setTimeout(() => {
+                    favBtn.classList.remove('saving-animation');
+                }, 600);
+            });
+        } else {
+            console.error('[SAVE] Toggle favorite button not found!');
+        }
+
+        function getSavedParam() {
+            const p = new URLSearchParams(location.search);
+            const raw = p.get('saved');
+            if (!raw) return null;
+            return raw.split(',').map(s => s.trim()).filter(Boolean);
+        }
+
+        function mergeSavedFromUrl() {
+            const ids = getSavedParam();
+            if (!ids || !ids.length) return;
+            ids.forEach(id => favorites.add(id));
+            saveFavorites();
+            if (quickFilters) quickFilters.saved = true;
+            const savedBtn = document.querySelector('.quickfilter-btn[data-qf="saved"]');
+            if (savedBtn) savedBtn.classList.add('is-active');
+            showToast('Imported saved list');
+        }
+        mergeSavedFromUrl();
+
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                const ok = document.execCommand('copy');
+                ta.remove();
+                return ok;
+            }
+        }
+
+        if (shareSavedBtn) {
+            shareSavedBtn.addEventListener('click', async () => {
+                const ids = Array.from(favorites);
+                if (!ids.length) { showToast('No saved items yet'); return; }
+                const url = new URL(location.href);
+                url.searchParams.set('saved', ids.join(','));
+                const ok = await copyToClipboard(url.toString());
+                showToast(ok ? 'Saved link copied' : 'Copy failed');
+            });
+        }
+
+        // Export favorites as HTML bookmarks file
+        // Copy all saved links to clipboard
+        const copyLinksBtn = document.getElementById('copyLinksBtn');
+        if (copyLinksBtn) {
+            copyLinksBtn.addEventListener('click', () => {
+                const ids = Array.from(favorites);
+                if (!ids.length) {
+                    showToast('No saved items to copy');
+                    return;
+                }
+
+                const favResources = resources
+                    .map(r => ({ r, id: getResourceId(r) }))
+                    .filter(x => favorites.has(x.id))
+                    .map(x => x.r);
+
+                // Generate plain text list
+                const textList = favResources
+                    .map(r => `${r.name || 'Untitled'}: ${r.url || '#'}`)
+                    .join('\n\n');
+
+                // Copy to clipboard
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(textList)
+                        .then(() => {
+                            showToast(`Copied ${favResources.length} links to clipboard`);
+                        })
+                        .catch(err => {
+                            console.error('Failed to copy:', err);
+                            showToast('Copy failed - try again');
+                        });
+                } else {
+                    // Fallback for older browsers
+                    const textarea = document.createElement('textarea');
+                    textarea.value = textList;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        showToast(`Copied ${favResources.length} links to clipboard`);
+                    } catch (err) {
+                        console.error('Fallback copy failed:', err);
+                        showToast('Copy failed - try again');
+                    }
+                    document.body.removeChild(textarea);
+                }
+            });
+        }
+
+        const exportBookmarksBtn = document.getElementById('exportBookmarksBtn');
+        if (exportBookmarksBtn) {
+            exportBookmarksBtn.addEventListener('click', () => {
+                const ids = Array.from(favorites);
+                if (!ids.length) {
+                    showToast('No saved items to export');
+                    return;
+                }
+
+                const favResources = resources
+                    .map(r => ({ r, id: getResourceId(r) }))
+                    .filter(x => favorites.has(x.id))
+                    .map(x => x.r);
+
+                // Generate HTML bookmarks file
+                const timestamp = new Date().toISOString();
+                let html = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
+<!-- This is an automatically generated file.
+     It will be read and overwritten.
+     DO NOT EDIT! -->
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<TITLE>LaB Media Resources - Saved</TITLE>
+<H1>LaB Media Resources - Saved</H1>
+<DL><p>
+    <DT><H3 ADD_DATE="${Math.floor(Date.now() / 1000)}" LAST_MODIFIED="${Math.floor(Date.now() / 1000)}">LaB Media Resources</H3>
+    <DL><p>
+`;
+
+                favResources.forEach(resource => {
+                    const url = resource.url || '#';
+                    const name = resource.name || 'Untitled';
+                    const description = (resource.desc || '').replace(/"/g, '&quot;');
+
+                    html += `        <DT><A HREF="${url}" ADD_DATE="${Math.floor(Date.now() / 1000)}">${name}</A>\n`;
+                    if (description) {
+                        html += `        <DD>${description}\n`;
+                    }
+                });
+
+                html += `    </DL><p>
+</DL><p>`;
+
+                // Create download link
+                const blob = new Blob([html], { type: 'text/html' });
+                const downloadUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                a.download = `lab-media-resources-${new Date().toISOString().split('T')[0]}.html`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(downloadUrl);
+
+                showToast(`Exported ${favResources.length} bookmarks`);
+            });
+        }
+
+        function updateSavedBadge() {
+            const savedBadge = document.getElementById('savedBadge');
+            if (!savedBadge) return;
+            const count = favorites.size;
+            savedBadge.textContent = count > 0 ? count : '';
+        }
+
+        function renderSavedDrawer() {
+            if (!savedList) return;
+            const q = (savedSearch && savedSearch.value ? savedSearch.value.trim().toLowerCase() : '');
+            const favResources = resources
+                .map(r => ({ r, id: getResourceId(r) }))
+                .filter(x => favorites.has(x.id))
+                .filter(x => !q || (x.r.name || '').toLowerCase().includes(q) || (x.r.desc || '').toLowerCase().includes(q));
+
+            if (savedCountLabel) savedCountLabel.textContent = `${favResources.length} saved`;
+
+            // Update badge count
+            updateSavedBadge();
+
+            if (!favResources.length) {
+                savedList.innerHTML = `<div class="proto-text-mono" style="opacity:.7;">No saved items yet.</div>`;
+                return;
+            }
+
+            savedList.innerHTML = favResources.map(({ r, id }) => `
+                <div class="saved-item" data-id="${id}">
+                    <div class="saved-item-top">
+                        <div class="saved-item-name">${r.name}</div>
+                        <button class="saved-remove" type="button" data-remove="${id}">Remove</button>
+                    </div>
+                    <div class="saved-item-desc">${(r.desc || '').slice(0, 120)}</div>
+                </div>
+            `).join('');
+        }
+
+        function openSavedDrawer() {
+            lastFocusEl = document.activeElement;
+            savedBackdrop.classList.add('is-open');
+            savedBackdrop.setAttribute('aria-hidden', 'false');
+            renderSavedDrawer();
+            setTimeout(() => (savedSearch ? savedSearch.focus() : savedDrawer.focus()), 0);
+        }
+        function closeSavedDrawer() {
+            savedBackdrop.classList.remove('is-open');
+            savedBackdrop.setAttribute('aria-hidden', 'true');
+            if (lastFocusEl && lastFocusEl.focus) lastFocusEl.focus();
+        }
+
+        if (openSavedDrawerBtn) openSavedDrawerBtn.addEventListener('click', openSavedDrawer);
+        if (savedClose) savedClose.addEventListener('click', closeSavedDrawer);
+        if (savedBackdrop) {
+            savedBackdrop.addEventListener('click', (e) => { if (e.target === savedBackdrop) closeSavedDrawer(); });
+        }
+        document.addEventListener('keydown', (e) => {
+            if (!savedBackdrop || !savedBackdrop.classList.contains('is-open')) return;
+            if (e.key === 'Escape') { e.preventDefault(); closeSavedDrawer(); return; }
+            if (e.key !== 'Tab') return;
+
+            const focusables = Array.from(savedDrawer.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])'))
+                .filter(el => el.offsetParent !== null);
+            if (!focusables.length) return;
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        });
+
+        if (savedSearch) {
+            savedSearch.addEventListener('input', () => renderSavedDrawer());
+        }
+
+        if (savedList) {
+            savedList.addEventListener('click', (e) => {
+                const removeBtn = e.target.closest('button[data-remove]');
+                if (removeBtn) {
+                    const id = removeBtn.dataset.remove;
+                    favorites.delete(id);
+                    saveFavorites();
+                    renderSavedDrawer();
+                    renderResources(true);
+                    return;
+                }
+
+                const item = e.target.closest('.saved-item');
+                if (!item) return;
+                const id = item.dataset.id;
+                const resource = resources.find(r => getResourceId(r) === id);
+                if (resource) {
+                    closeSavedDrawer();
+                    openModal(resource);
+                }
+            });
+        }
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+
+        function normalizeValue(value) {
+            return (value || '')
+                .toString()
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, ' ')
+                .replace(/\/+$/, '');
+        }
+
+        function normalizeReferenceSelection(value) {
+            const normalized = normalizeValue(value);
+            if (!normalized || normalized === 'all' || normalized === 'all-ref' || normalized === 'all_ref' || normalized === 'all references') {
+                return 'all';
+            }
+            return referenceTypeValues.has(normalized) ? normalized : 'all';
+        }
+
+        function getCategoryList(resource) {
+            const categories = Array.isArray(resource.category) ? resource.category : [resource.category];
+            const normalized = categories.map(normalizeValue).filter(Boolean);
+            if (normalized.includes('inspiration') && !normalized.includes('references')) {
+                normalized.push('references');
+            }
+            return normalized;
+        }
+
+        function logReferencesDebug(filteredCount) {
+            if (!REFERENCES_DEBUG || currentGroup !== 'references') return;
+            const totalResources = Array.isArray(resources) ? resources.length : 0;
+            const referencesTotal = Array.isArray(resources) ? resources.filter(r => getCategoryList(r).includes('references')).length : 0;
+            const refSelection = normalizeReferenceSelection(referencesSubcategory);
+        }
+
+        function getResourceKey(resource) {
+            if (resource.id) return `id:${normalizeValue(resource.id)}`;
+            if (resource.slug) return `slug:${normalizeValue(resource.slug)}`;
+            const nameKey = normalizeValue(resource.name);
+            const urlKey = normalizeValue(resource.url || resource.websiteUrl || resource.website);
+            return `fallback:${nameKey}|${urlKey}`;
+        }
+
+        function dedupeResources(resourceList) {
+            const seen = new Set();
+            return resourceList.filter(resource => {
+                const key = getResourceKey(resource);
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+        }
+
+        function resourceMatchesGroup(resource) {
+            const cats = getCategoryList(resource);
+            const primary = cats[0];
+            if (currentGroup === 'all') return true;
+            if (currentGroup === 'film-festivals') return cats.includes('film-festivals');
+            if (currentGroup === 'community') {
+                if (!cats.includes('community')) return false;
+                if (communitySubcategory === 'all') return true;
+                return normalizeValue(resource.communityType) === normalizeValue(communitySubcategory);
+            }
+            if (currentGroup === 'collaborators') return cats.includes('collaborators');
+            if (currentGroup === 'references') {
+                const matchesCategory = cats.includes('references');
+                if (!matchesCategory) return false;
+                const normalizedRefSubcat = normalizeReferenceSelection(referencesSubcategory);
+                if (normalizedRefSubcat === 'all') return true;
+                return normalizeValue(resource.refType) === normalizeValue(referencesSubcategory);
+            }
+            if (currentGroup === 'drones') return cats.includes('drone');
+
+            if (currentGroup === 'stock') {
+                const stockCats = ['music', 'soundfx', 'stock', 'fonts', '3d'];
+                if (!cats.some(c => stockCats.includes(c))) return false;
+                if (stockSubcategory === 'all-stock') return true;
+                return cats.includes(stockSubcategory);
+            }
+
+            if (currentGroup === 'tools') {
+                const toolCats = ['ai', 'software', 'equipment', 'casting', 'coding'];
+                if (!cats.some(c => toolCats.includes(c))) return false;
+                if (toolsSubcategory === 'all-tools') return true;
+                if (toolsSubcategory === 'gear') return cats.includes('equipment');
+                return cats.includes(toolsSubcategory);
+            }
+
+            return cats.includes(primary);
+        }
+
+        function getPrimaryCategory(resource) {
+            const cats = getCategoryList(resource);
+            return cats[0];
+        }
+
+        // Generate badges from resource properties if badges array not present
+        function generateBadges(r) {
+            const badges = [];
+            const cat = getPrimaryCategory(r);
+
+            // Non-local alert badge
+            if (r.nonLocal) badges.push('non-local');
+
+            // Specific location badge
+            if (r.locationBadge) {
+                // Normalize for CSS class: "Northern Ohio" -> "northern-ohio"
+                badges.push(r.locationBadge.toLowerCase().replace(/\s+/g, '-'));
+            }
+
+            if (cat !== 'collaborators') {
+                if (r.paid === false) badges.push('free');
+                else if (r.paid === true) badges.push('paid');
+            }
+            if (r.labPick === true) badges.push('lab-pick');
+            if (cat && cat !== 'other' && !badges.includes(cat)) badges.push(cat);
+            return badges;
+        }
+
+        function isYouTubeLink(url) {
+            return /youtube\.com|youtu\.be/.test(url || '');
+        }
+
+        function isFacebookLink(url) {
+            return /facebook\.com/.test(url || '');
+        }
+
+        function getYouTubeVideoId(value) {
+            if (!value) return '';
+            const input = String(value).trim();
+            if (/^[\w-]{11}$/.test(input)) return input;
+            const match = input.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/i);
+            return match ? match[1] : '';
+        }
+
+        function getVimeoVideoId(value) {
+            if (!value) return '';
+            const input = String(value).trim();
+            if (/^\d+$/.test(input)) return input;
+            const match = input.match(/vimeo\.com\/(?:video\/)?(\d+)/i);
+            return match ? match[1] : '';
+        }
+
+        function getCtaPreset(type = 'website') {
+            const presets = {
+                website: { variant: 'btn--outline-white', icon: '', label: 'Website' },
+                youtube: { variant: 'btn--youtube-icon', icon: 'images/yt_logo_fullcolor_white_digital.png', label: 'YouTube' },
+                instagram: { variant: 'btn--instagram-icon', icon: 'images/Instagram_Glyph_Gradient.png', label: 'Instagram' },
+                facebook: { variant: 'btn--facebook-icon', icon: 'images/Facebook_Logo_Primary.png', label: 'Facebook' },
+                spotify: { variant: 'btn--spotify-icon', icon: 'images/Spotify_Primary_Logo_RGB_Green.png', label: 'Spotify' },
+                filmfreeway: { variant: 'btn--filmfreeway', icon: 'images/filmfreeway-logo-hires-white.png', label: 'FilmFreeway' }
+            };
+            return presets[type] || presets.website;
+        }
+
+        function getKeyInfoLink(resource, label) {
+            if (!resource.keyInfo) return null;
+            const matchLabel = normalizeValue(label);
+            const match = resource.keyInfo.find(item => normalizeValue(item.label) === matchLabel);
+            return match ? match.value : null;
+        }
+
+        function buildCtaButton(href, label, variant = 'btn--outline-white', icon = '', showLabel = false) {
+            const iconHTML = icon ? '<img class="btn-icon" src="' + icon + '" alt="">' : '';
+            const withLabelClass = showLabel ? ' btn--with-label' : '';
+            return '<a href="' + href + '" target="_blank" rel="noopener noreferrer" class="btn btn--outline ' + variant + withLabelClass + '">' +
+                iconHTML +
+                '<span class="btn-text">' + label + '</span>' +
+                '</a>';
+        }
+
+        function matchesSearch(resource, query) {
+            if (!query) return true;
+            const q = query.toLowerCase();
+            const badges = resource.badges || generateBadges(resource);
+            const searchFields = [
+                resource.name,
+                resource.shortDesc || resource.desc,
+                resource.fullDesc,
+                ...badges,
+                ...getCategoryList(resource)
+            ].filter(Boolean).join(' ').toLowerCase();
+            return searchFields.includes(q);
+        }
+
+        function getFilteredResources() {
+            let filtered = resources.filter(r =>
+                resourceMatchesGroup(r) && matchesSearch(r, searchQuery)
+            );
+
+            if (currentGroup === 'stock' && stockSubcategory === 'music') {
+                filtered = filtered.filter(r => {
+                    if (musicTier === 'free') return r.paid === false;
+                    if (musicTier === 'paid') return r.paid === true;
+                    return true;
+                });
+            }
+
+            if (currentGroup === 'tools' && toolsSubcategory === 'ai') {
+                filtered = filtered.filter(r => {
+                    if (aiType === 'chat') return r.aiType === 'chat';
+                    if (aiType === 'music') return r.aiType === 'music';
+                    if (aiType === 'video') return r.aiType === 'video';
+                    if (aiType === 'image') return r.aiType === 'image';
+                    if (aiType === 'voice') return r.aiType === 'voice';
+                    return true;
+                });
+            }
+
+            if ((currentGroup === 'tools' && toolsSubcategory === 'drone') || currentGroup === 'drones') {
+                filtered = filtered.filter(r => {
+                    const droneSubType = normalizeValue(r.droneSubType || r.droneType);
+                    if (droneType === 'all') return true;
+                    if (droneType === 'channels') return droneSubType === 'channels';
+                    if (droneType === 'stores') return droneSubType === 'stores';
+                    if (droneType === 'part107') return droneSubType === 'part107' || droneSubType === 'part-107';
+                    if (droneType === 'software') return droneSubType === 'software';
+                    return true;
+                });
+            }
+
+            // Quick filters (multi-toggle)
+            const wantsSaved = quickFilters.saved;
+            const wantsLabPick = quickFilters.labPick;
+            const wantsFree = quickFilters.free;
+            const wantsPaid = quickFilters.paid;
+
+            if (wantsSaved) {
+                filtered = filtered.filter(r => isFavoriteId(getResourceId(r)));
+            }
+
+            if (wantsLabPick) {
+                filtered = filtered.filter(r => r.labPick === true);
+            }
+
+            // Free/Paid toggles work across categories when r.paid is present.
+            // If both are off, allow all. If one is on, filter accordingly.
+            if (wantsFree !== wantsPaid) {
+                if (wantsFree) filtered = filtered.filter(r => r.paid === false);
+                if (wantsPaid) filtered = filtered.filter(r => r.paid === true);
+            }
+
+            // Dedupe before sorting
+            filtered = dedupeResources(filtered);
+
+            // Sort: LaB Picks first, then by selected sort method
+            filtered.sort((a, b) => {
+                const aIsLabPick = a.labPick === true;
+                const bIsLabPick = b.labPick === true;
+
+                // Lab Picks always first
+                if (aIsLabPick && !bIsLabPick) return -1;
+                if (!aIsLabPick && bIsLabPick) return 1;
+
+                // Then apply user-selected sort
+                if (currentSort === 'alpha') {
+                    // Alphabetical (A-Z)
+                    return (a.name || '').localeCompare(b.name || '');
+                } else if (currentSort === 'recent') {
+                    // Recently added (if addedDate exists, otherwise fallback to alpha)
+                    const dateA = a.addedDate ? new Date(a.addedDate).getTime() : 0;
+                    const dateB = b.addedDate ? new Date(b.addedDate).getTime() : 0;
+                    if (dateA !== dateB) {
+                        return dateB - dateA; // Most recent first
+                    }
+                    // Fallback to alpha if no dates
+                    return (a.name || '').localeCompare(b.name || '');
+                }
+
+                return 0;
+            });
+
+            return filtered;
+        }
+
+        function updateSectionTip() {
+            if (!sectionTip) return;
+            const tips = {
+                'film-festivals': 'Film festivals are sorted for filmmaker-friendly deadlines and programming that welcomes Midwest stories. Start here to find the right home for your cut.',
+                community: 'Community entries map to real local meetups, casting calls, and groups. We highlight spots that actually respond and keep Detroit creators connected.',
+                stock: {
+                    'all-stock': 'Stock tools cover footage, music, SFX, fonts, and 3D assets. These picks balance quality and usable licenses for indie budgets.',
+                    '3d': '3D assets help you block shots or build sets fast. We prioritize lightweight libraries that don’t lock you into paid tiers.',
+                    fonts: 'Fonts sets are curated for title cards and posters with permissive licensing. These are clean, readable, and quick to deploy.',
+                    stock: 'Footage libraries here offer usable B-roll without bloated subscriptions. We favor packs with clear licensing for short films.',
+                    music: 'Music picks are split by paid/free tiers so you can score quickly without copyright anxiety.',
+                    soundfx: 'SoundFX libraries are picked for clean downloads and clear licensing. Great for quick layers and atmosphere.'
+                },
+                tools: {
+                    'all-tools': 'Tools cover gear, casting, coding, and AI helpers. Each pick is tested for workflow speed and value on a zero-budget run.',
+                    ai: 'AI helpers here are about speed: ideation, notes, and clean-up. We keep the list lean and only share tools we actually use.',
+                    coding: 'Coding tools are for micro-sites, landing pages, and automation. We pick the ones that ship fast without subscriptions.',
+                    drone: 'Drone tools include FAA basics, training, and vendors. We focus on safety-first resources with local relevance.',
+                    gear: 'Gear picks are practical and repeatable in the field. We skip the hype and list dependable tools.',
+                    casting: 'Casting tools are chosen for response rate and local reach so you can find talent fast.'
+                },
+                collaborators: 'Friends are trusted local collaborators who have already delivered. Expect real people, real work, and fair rates.',
+                references: {
+                    all: 'Reference libraries are for taste, color, and technique. We curated the ones that inspire strong creative direction.',
+                    inspiration: 'Inspiration feeds for mood, story, and vibe. Use these to reset your creative compass.',
+                    color: 'Color references help lock palette decisions fast. We favor archives with clear, scrollable stills.',
+                    art: 'Art references support production design and poster direction. These are dense and curated.',
+                    editing: 'Editing references showcase rhythm, pacing, and transitions. Great for tightening your cut.',
+                    filming: 'Filming references focus on lighting and framing. Use them to match visual targets.',
+                    music: 'Music references help tone-set your score with clean, legal listening.',
+                    comedy: 'Comedy references are a quick gut-check for timing and punchline structure.'
+                },
+                drones: 'Drone resources cover Part 107, local vendors, and training. We keep this list lean so you fly legal and safe.'
+            };
+
+            let tipText = tips[currentGroup] || tips['film-festivals'];
+            if (currentGroup === 'stock' && tips.stock) {
+                tipText = tips.stock[stockSubcategory] || tips.stock['all-stock'];
+            }
+            if (currentGroup === 'tools' && tips.tools) {
+                tipText = tips.tools[toolsSubcategory] || tips.tools['all-tools'];
+            }
+            if (currentGroup === 'references' && tips.references) {
+                tipText = tips.references[referencesSubcategory] || tips.references.all;
+            }
+
+            sectionTip.querySelector('span').textContent = tipText;
+        }
+
+        // ============================================
+        // GHOST TILE LOGIC
+        // Calculate how many ghost tiles needed to complete the row
+        // ============================================
+
+        function getColumnsPerRow() {
+            const gridWidth = grid.offsetWidth;
+            const minTileWidth = 320;
+            const gap = 1;
+
+            // Calculate columns based on current viewport
+            let cols = Math.floor((gridWidth + gap) / (minTileWidth + gap));
+            return Math.max(1, Math.min(cols, 4)); // Cap at 4 columns
+        }
+
+        function calculateGhostTiles(itemCount) {
+            // If mobile (1 column), no ghost tiles
+            if (window.innerWidth < 768) return 0;
+
+            // Adaptive grid logic - fewer ghosts for small counts
+            if (itemCount <= 2) return 0; // Single/double items expand
+            if (itemCount === 3) return 0; // Three items expand
+
+            const cols = getColumnsPerRow();
+            const remainder = itemCount % cols;
+
+            // If remainder is 0, row is complete - no ghosts
+            if (remainder === 0) return 0;
+
+            // Otherwise, fill the partial row
+            return cols - remainder;
+        }
+
+        function createGhostTile(index) {
+            // First ghost tile is interactive "Suggest" CTA, rest are minimal
+            if (index === 0) {
+                return `
+                    <div class="ghost-tile ghost-tile--suggest" id="suggestTile">
+                        <div class="corner tl"></div>
+                        <div class="corner tr"></div>
+                        <div class="corner bl"></div>
+                        <div class="corner br"></div>
+                        <div class="ghost-content">
+                            <div class="ghost-icon">+</div>
+                            <div class="ghost-text">Suggest</div>
+                        </div>
+                    </div>
+                `;
+            }
+            return `
+                <div class="ghost-tile ghost-tile--minimal">
+                    <div class="corner tl"></div>
+                    <div class="corner tr"></div>
+                    <div class="corner bl"></div>
+                    <div class="corner br"></div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // RENDER LOGIC
+        // ============================================
+
+        function buildSkeletonGrid(count = 8) {
+            const skeletonCount = Math.max(6, Math.min(count, 12));
+            let html = '';
+            for (let i = 0; i < skeletonCount; i++) {
+                html += `
+                    <div class="resource-card is-skeleton">
+                        <span class="card-index">${String(i + 1).padStart(3, '0')}</span>
+                        <h3 class="card-name">Loading</h3>
+                        <div class="card-badges"></div>
+                        <p class="card-description">Loading</p>
+                        <span class="card-arrow">→</span>
+                    </div>
+                `;
+            }
+            grid.innerHTML = html;
+        }
+
+        function renderResources(animate = false) {
+            const isCommunity = currentGroup === 'community';
+            const isStock = currentGroup === 'stock';
+            const isTools = currentGroup === 'tools';
+            const isReferences = currentGroup === 'references';
+            const isDrones = currentGroup === 'drones';
+
+            if (communityGroupBar) {
+                communityGroupBar.toggleAttribute('hidden', !isCommunity);
+            }
+            if (stockGroupBar) {
+                stockGroupBar.toggleAttribute('hidden', !isStock);
+            }
+            if (toolsGroupBar) {
+                toolsGroupBar.toggleAttribute('hidden', !isTools);
+            }
+            if (referencesGroupBar) {
+                referencesGroupBar.toggleAttribute('hidden', !isReferences);
+            }
+
+            if (musicTierBar) {
+                musicTierBar.toggleAttribute('hidden', !(isStock && stockSubcategory === 'music'));
+            }
+
+            if (aiTypeBar) {
+                aiTypeBar.toggleAttribute('hidden', !(isTools && toolsSubcategory === 'ai'));
+            }
+
+            if (droneTypeBar) {
+                const showDroneFilters = (isTools && toolsSubcategory === 'drone') || isDrones;
+                droneTypeBar.toggleAttribute('hidden', !showDroneFilters);
+            }
+
+            const filtered = getFilteredResources();
+            const count = filtered.length;
+
+            logReferencesDebug(count);
+            updateSectionTip();
+
+            // Update count with animation
+            animateCount(count);
+
+            // Set data-count attribute for CSS adaptive grid
+            grid.setAttribute('data-count', Math.min(count, 12));
+
+            if (animate) {
+                // Show skeletons immediately for a modern loading feel
+                grid.style.transition = 'none';
+                buildSkeletonGrid();
+                grid.style.opacity = '1';
+                grid.style.transform = 'translateY(0)';
+                // Force reflow so the next transition applies cleanly
+                void grid.offsetHeight;
+
+                setTimeout(() => {
+                    buildGrid(filtered);
+                    grid.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                    grid.style.opacity = '1';
+                    grid.style.transform = 'translateY(0)';
+                }, 200);
+            } else {
+                buildGrid(filtered);
+                grid.style.opacity = '1';
+                grid.style.transform = 'translateY(0)';
+            }
+        }
+
+        function buildGrid(filtered) {
+            if (filtered.length === 0) {
+                const emptyStateHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">✦</div>
+                        <p class="no-results-title">No resources found</p>
+                        <p class="no-results-subtitle">Try different keywords or browse all resources</p>
+                        ${searchQuery ? '<button class="no-results-btn" onclick="document.getElementById(\'searchInput\').value = \'\'; searchQuery = \'\'; renderResources();">Clear Search</button>' : ''}
+                    </div>
+                `;
+                grid.innerHTML = emptyStateHTML;
+                return;
+            }
+
+            // Ghost tile count depends on final filtered length
+            const ghostCount = calculateGhostTiles(filtered.length);
+
+            grid.innerHTML = '';
+            let i = 0;
+            const BATCH = 24;
+
+            function renderBatch() {
+                const slice = filtered.slice(i, i + BATCH);
+                let html = slice.map((r, idx) => {
+                    const primaryCat = getPrimaryCategory(r);
+                    const isCollaborator = primaryCat === 'collaborators';
+                    const isCommunity = primaryCat === 'community';
+                    const isFilmFestival = primaryCat === 'film-festivals';
+                    const isInspiration = primaryCat === 'inspiration';
+                    const isLabPick = r.labPick === true;
+
+                    const badges = r.badges || generateBadges(r);
+                    const badgeHTML = badges.slice(0, 4).map(badge =>
+                        '<span class="badge badge-' + badge + '">' + badge + '</span>'
+                    ).join('');
+
+                    let cardClass = 'resource-card';
+                    if (isCollaborator) cardClass += ' is-collaborator';
+                    if (isCommunity) cardClass += ' is-community';
+                    if (isFilmFestival) cardClass += ' is-film-festival';
+                    if (isInspiration) cardClass += ' is-inspiration';
+                    if (isLabPick) cardClass += ' is-lab-pick';
+
+                    const resourceId = r.id || normalizeValue(r.name);
+                    const shortDesc = r.shortDesc || r.desc || '';
+                    const absoluteIndex = i + idx;
+
+                    // Analytics data
+                    const viewCount = getResourceViews(resourceId);
+                    const trending = isTrending(resourceId);
+                    const viewBadge = viewCount > 0 ? `<span class="badge badge-views">${viewCount} views</span>` : '';
+                    const trendingBadge = trending ? '<span class="badge badge-trending">🔥 Trending</span>' : '';
+
+                    return '<div class="' + cardClass + '" data-id="' + resourceId + '" style="animation-delay: ' + (absoluteIndex * 0.03) + 's">' +
+                        '<span class="card-index">' + String(absoluteIndex + 1).padStart(3, '0') + '</span>' +
+                        (trendingBadge ? '<div class="card-trending-indicator">' + trendingBadge + '</div>' : '') +
+                        '<h3 class="card-name">' + r.name + '</h3>' +
+                        '<div class="card-badges">' + badgeHTML + viewBadge + '</div>' +
+                        '<p class="card-description">' + shortDesc + '</p>' +
+                        '<span class="card-arrow">→</span>' +
+                        '</div>';
+                }).join('');
+
+                grid.insertAdjacentHTML('beforeend', html);
+                i += BATCH;
+
+                if (i < filtered.length) {
+                    requestAnimationFrame(renderBatch);
+                } else {
+                    for (let g = 0; g < ghostCount; g++) {
+                        grid.insertAdjacentHTML('beforeend', createGhostTile(g));
+                    }
+                    initGhostAnimations();
+                }
+            }
+
+            requestAnimationFrame(renderBatch);
+        }
+
+        // ============================================
+        // GHOST TILE GSAP ANIMATIONS
+        // Extremely subtle - almost imperceptible
+        // ============================================
+
+        function initGhostAnimations() {
+            const ghostTiles = document.querySelectorAll('.ghost-tile');
+
+            ghostTiles.forEach((tile, i) => {
+                // Fade in with slight delay
+                gsap.fromTo(tile,
+                    { opacity: 0 },
+                    {
+                        opacity: 1,
+                        duration: 0.8,
+                        delay: 0.3 + (i * 0.1),
+                        ease: 'power2.out'
+                    }
+                );
+
+                // Subtle corner pulse on hover (only if not reduced motion)
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    const corners = tile.querySelectorAll('.corner');
+
+                    tile.addEventListener('mouseenter', () => {
+                        gsap.to(corners, {
+                            opacity: 0.7,
+                            duration: 0.6,
+                            ease: 'power2.out',
+                            stagger: 0.05
+                        });
+                    });
+
+                    tile.addEventListener('mouseleave', () => {
+                        gsap.to(corners, {
+                            opacity: 0.3,
+                            duration: 0.8,
+                            ease: 'power2.out',
+                            stagger: 0.05
+                        });
+                    });
+                }
+            });
+
+            // Attach click handler to suggest tile
+            const suggestTile = document.getElementById('suggestTile');
+            if (suggestTile) {
+                suggestTile.addEventListener('click', openSuggestModal);
+            }
+        }
+
+        // ============================================
+        // COUNT ANIMATION
+        // ============================================
+
+        function animateCount(target) {
+            const duration = 300;
+            const start = parseInt(countEl.textContent);
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(start + (target - start) * eased);
+                countEl.textContent = String(current).padStart(3, '0');
+                if (progress < 1) requestAnimationFrame(update);
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        // ============================================
+        // MODAL (preserved from original)
+        // ============================================
+
+        function openModal(r) {
+            const primaryCat = getPrimaryCategory(r);
+            const isCollaborator = primaryCat === 'collaborators';
+            const isCommunity = primaryCat === 'community';
+            const isFilmFestival = primaryCat === 'film-festivals';
+            const isInspiration = primaryCat === 'inspiration';
+            const isLabPick = r.labPick === true;
+
+            modalContent.classList.remove('is-collaborator', 'is-community', 'is-film-festival', 'is-inspiration', 'is-lab-pick');
+            if (isCollaborator) modalContent.classList.add('is-collaborator');
+            else if (isCommunity) modalContent.classList.add('is-community');
+            else if (isFilmFestival) modalContent.classList.add('is-film-festival');
+            else if (isInspiration) modalContent.classList.add('is-inspiration');
+            if (isLabPick) modalContent.classList.add('is-lab-pick');
+
+            document.getElementById('modalLabPick').style.display = isLabPick ? 'block' : 'none';
+            document.getElementById('modalTitle').textContent = r.name;
+            activeResourceId = r.id || normalizeValue(r.name);
+            setFavoriteUI(activeResourceId);
+
+            const badges = r.badges || generateBadges(r);
+            document.getElementById('modalBadges').innerHTML = badges.map(badge =>
+                '<span class="badge badge-' + badge + '">' + badge + '</span>'
+            ).join('');
+
+            let pricingHTML = '';
+            if (r.pricing) {
+                pricingHTML = '<div class="modal-section"><h3 class="section-title">Pricing</h3>' +
+                    r.pricing.map(p =>
+                        '<div class="pricing-row"><span class="pricing-plan">' + p.plan + '</span><span class="pricing-amount">' + p.price + '</span></div>'
+                    ).join('') + '</div>';
+            }
+
+            let keyInfoHTML = '';
+            if (r.keyInfo && !r.hideKeyInfo) {
+                keyInfoHTML = '<div class="modal-section"><h3 class="section-title">Key Info</h3><div class="key-info">' +
+                    r.keyInfo.map(item =>
+                        '<div class="key-info-item"><span class="key-info-label">' + item.label + '</span><span>' + (item.detail || item.value) + '</span></div>'
+                    ).join('') + '</div></div>';
+            }
+
+            let featuresHTML = '';
+            if (r.features) {
+                featuresHTML = '<div class="modal-section"><h3 class="section-title">Features</h3><div class="feature-list">' +
+                    r.features.map(f =>
+                        '<div class="feature-item"><span class="feature-bullet">→</span><span>' + f + '</span></div>'
+                    ).join('') + '</div></div>';
+            }
+
+            let featuresWithMediaHTML = featuresHTML;
+            if (r.bioImage) {
+                const bioAltText = r.bioImageAlt || (r.name + ' image');
+                const bioImageHTML = '<div class="modal-image-col"><img src="' + r.bioImage + '" alt="' + bioAltText + '"></div>';
+                if (featuresHTML) {
+                    featuresWithMediaHTML = '<div class="modal-feature-media">' +
+                        '<div class="modal-feature-col">' + featuresHTML + '</div>' +
+                        bioImageHTML +
+                        '</div>';
+                } else {
+                    featuresWithMediaHTML = '<div class="modal-feature-media">' + bioImageHTML + '</div>';
+                }
+            }
+
+            const ctas = [];
+            const addedLinks = new Set();
+            const filmFreewayLink = r.filmFreewayUrl || getKeyInfoLink(r, 'filmfreeway');
+            const instagramLink = r.instagramUrl || getKeyInfoLink(r, 'instagram');
+            const facebookLink = r.facebookUrl;
+            const youtubeLink = r.youtubeUrl;
+            const spotifyLink = r.spotifyUrl;
+            const additionalLinks = r.additionalLinks || [];
+
+            const primaryUrl = r.url;
+            if (primaryUrl) {
+                const isYouTube = isYouTubeLink(primaryUrl);
+                const isFacebook = isFacebookLink(primaryUrl);
+                const label = isYouTube ? 'Watch on YouTube' : isFacebook ? 'Facebook' : 'Website';
+                const primaryType = isYouTube ? 'youtube' : isFacebook ? 'facebook' : 'website';
+                const preset = getCtaPreset(primaryType);
+                ctas.push(buildCtaButton(primaryUrl, label || preset.label, preset.variant, preset.icon));
+                addedLinks.add(primaryUrl);
+            }
+
+            function addCtaLink(link, label, type = 'website', showLabel = false) {
+                if (!link || addedLinks.has(link)) return;
+                const preset = getCtaPreset(type);
+                const finalLabel = label || preset.label;
+                ctas.push(buildCtaButton(link, finalLabel, preset.variant, preset.icon, showLabel));
+                addedLinks.add(link);
+            }
+
+            addCtaLink(filmFreewayLink, 'FilmFreeway', 'filmfreeway');
+            addCtaLink(instagramLink, 'Instagram', 'instagram');
+            addCtaLink(youtubeLink, 'YouTube', 'youtube');
+            addCtaLink(facebookLink, 'Facebook', 'facebook');
+            addCtaLink(spotifyLink, 'Spotify', 'spotify');
+
+            const linkNotes = [];
+            additionalLinks.forEach(link => {
+                if (!link || !link.url) return;
+                const preset = getCtaPreset(link.type);
+                // Show label for icon buttons (facebook, instagram, youtube) when they have descriptions
+                const needsLabel = (link.type === 'facebook' || link.type === 'instagram' || link.type === 'youtube') && link.description;
+                addCtaLink(link.url, link.label, link.type, needsLabel);
+                if (link.description) {
+                    linkNotes.push('<div class="link-note"><span class="link-note-label">' + (link.label || preset.label) + '</span><span class="link-note-desc">' + link.description + '</span></div>');
+                }
+            });
+
+            const relatedLinksHTML = linkNotes.length ? '<div class="modal-section"><h3 class="section-title">More Links</h3><div class="link-notes">' + linkNotes.join('') + '</div></div>' : '';
+
+            // Video embed for inspiration, references, drone, and collaborators categories
+            const isDrone = primaryCat === 'drone';
+            const isReferences = primaryCat === 'references';
+            const videoLink = additionalLinks.find(link => link && link.type === 'video' && link.url);
+            const vimeoVideoId = getVimeoVideoId(r.vimeoVideo || (videoLink && videoLink.url));
+            const youtubeVideoId = getYouTubeVideoId(r.featuredVideo || (videoLink && videoLink.url));
+            const showVideo = (isInspiration || isDrone || isReferences || isCollaborator) && (youtubeVideoId || vimeoVideoId);
+
+            let videoHTML = '';
+            if (showVideo) {
+                let embedSrc = '';
+                if (vimeoVideoId) {
+                    // Vimeo embed
+                    embedSrc = 'https://player.vimeo.com/video/' + vimeoVideoId + '?title=0&byline=0&portrait=0';
+                } else if (youtubeVideoId) {
+                    // YouTube embed
+                    embedSrc = 'https://www.youtube-nocookie.com/embed/' + youtubeVideoId + '?rel=0&modestbranding=1';
+                }
+
+                if (embedSrc) {
+                    videoHTML = '<div class="modal-section video-section">' +
+                        '<div class="video-container">' +
+                        '<iframe src="' + embedSrc + '" ' +
+                        'frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+                        'allowfullscreen></iframe>' +
+                        '</div>' +
+                        '</div>';
+                }
+            }
+
+            // Two-column layout for inspiration, references, drone, and collaborators with videos
+            let contentHTML = '';
+            const useTwoColLayout = (isInspiration || isDrone || isReferences || isCollaborator) && (featuresHTML || ctas.length);
+
+            if (useTwoColLayout) {
+                // Build links column with section title
+                const linksColHTML = ctas.length ?
+                    '<div class="links-col">' +
+                    '<div class="modal-section">' +
+                    '<h3 class="section-title">Links</h3>' +
+                    '<div class="cta-col">' + ctas.join('') + '</div>' +
+                    '</div>' +
+                    '</div>' : '';
+
+                // Build features column
+                const featuresColHTML = featuresHTML ?
+                    '<div class="features-col">' + featuresHTML + '</div>' : '';
+
+                // Two-column grid
+                const twoColHTML = (featuresColHTML || linksColHTML) ?
+                    '<div class="modal-two-col">' +
+                    featuresColHTML +
+                    linksColHTML +
+                    '</div>' : '';
+
+                contentHTML =
+                    '<p class="modal-description">' + r.fullDesc + '</p>' +
+                    videoHTML +
+                    keyInfoHTML +
+                    pricingHTML +
+                    twoColHTML +
+                    relatedLinksHTML;
+            } else {
+                // Standard layout for non-inspiration or items without features
+                const ctaHTML = ctas.length ? '<div class="cta-row">' + ctas.join('') + '</div>' : '';
+                contentHTML =
+                    '<p class="modal-description">' + r.fullDesc + '</p>' +
+                    videoHTML +
+                    keyInfoHTML +
+                    pricingHTML +
+                    featuresWithMediaHTML +
+                    relatedLinksHTML +
+                    ctaHTML;
+            }
+
+            document.getElementById('modalBody').innerHTML = contentHTML;
+
+            modal.classList.remove('closing');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.add('closing');
+            setTimeout(() => {
+                modal.classList.remove('active', 'closing');
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
+        // Modal event handlers
+        closeModalBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeModal();
+        });
+
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Event delegation for resource cards
+        grid.addEventListener('click', (e) => {
+            const card = e.target.closest('.resource-card');
+            if (!card || !grid.contains(card)) return;
+
+            if (card.classList.contains('is-skeleton')) return;
+            if (card.classList.contains('ghost-tile')) return;
+
+            const id = card.dataset.id;
+            if (!id) return;
+
+            // Track click analytics
+            trackResourceClick(id);
+
+            const resource = resources.find(r => (r.id || normalizeValue(r.name)) === id);
+            if (resource) openModal(resource);
+        });
+
+        // Track CTA button clicks in modal
+        modalContent.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn');
+            if (btn && activeResourceId) {
+                trackResourceClick(activeResourceId);
+            }
+        });
+
+        // ============================================
+        // FILTER & SEARCH
+        // ============================================
+
+        function setGroup(newGroup) {
+            const previousGroup = currentGroup;
+            if (previousGroup === newGroup) {
+                filters.forEach(b => b.classList.toggle('active', b.dataset.group === newGroup));
+                return;
+            }
+
+            filters.forEach(b => b.classList.remove('active'));
+            const targetBtn = Array.from(filters).find(b => b.dataset.group === newGroup);
+            if (targetBtn) targetBtn.classList.add('active');
+            currentGroup = newGroup;
+
+            if (newGroup !== 'stock') {
+                stockSubcategory = '3d';
+                stockGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.stock === stockSubcategory));
+            }
+            if (newGroup !== 'community') {
+                communitySubcategory = 'all';
+                communityGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.community === communitySubcategory));
+            }
+            if (newGroup !== 'tools') {
+                toolsSubcategory = 'ai';
+                toolsGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.tools === toolsSubcategory));
+            }
+            if (newGroup !== 'references') {
+                referencesSubcategory = 'inspiration';
+                referencesGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.references === referencesSubcategory));
+            }
+
+            if (!(newGroup === 'stock' && stockSubcategory === 'music') && musicTier !== 'all') {
+                musicTier = 'all';
+                musicTierButtons.forEach(b => b.classList.toggle('active', b.dataset.tier === 'all'));
+            }
+
+            if (!(newGroup === 'tools' && toolsSubcategory === 'ai') && aiType !== 'all') {
+                aiType = 'all';
+                aiTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
+            }
+
+            if (!(newGroup === 'tools' && toolsSubcategory === 'drone') && newGroup !== 'drones' && droneType !== 'all') {
+                droneType = 'all';
+                droneTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
+            }
+        }
+
+        groupButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                setGroup(btn.dataset.group);
+
+                // Deactivate "Saved" filter when user manually changes category
+                if (quickFilters.saved) {
+                    quickFilters.saved = false;
+                    const savedBtn = document.querySelector('.quickfilter-btn[data-qf="saved"]');
+                    if (savedBtn) savedBtn.classList.remove('is-active');
+                }
+
+                renderResources(true);
+            });
+        });
+
+        // Quick filters (multi-toggle)
+        if (quickFilterButtons.length) {
+            quickFilterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const key = btn.dataset.qf;
+                    if (!key || !(key in quickFilters)) return;
+                    quickFilters[key] = !quickFilters[key];
+                    btn.classList.toggle('is-active', quickFilters[key]);
+
+                    // When "Saved" is activated, switch to "All" category to show all saved items
+                    if (key === 'saved' && quickFilters[key] === true) {
+                        setGroup('all');
+                    }
+
+                    renderResources(true);
+                });
+            });
+        }
+
+        communityGroupButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                communityGroupButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                communitySubcategory = btn.dataset.community;
+                renderResources(true);
+            });
+        });
+
+        stockGroupButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                stockGroupButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                stockSubcategory = btn.dataset.stock;
+                renderResources(true);
+            });
+        });
+
+        toolsGroupButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                toolsGroupButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                toolsSubcategory = btn.dataset.tools;
+                if (toolsSubcategory === 'drone' && droneType !== 'all') {
+                    droneType = 'all';
+                    droneTypeButtons.forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
+                }
+                renderResources(true);
+            });
+        });
+
+        referencesGroupButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                referencesGroupButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                referencesSubcategory = btn.dataset.references;
+                renderResources(true);
+            });
+        });
+
+        // Keyboard shortcut: / focuses search (like a real app)
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== '/') return;
+            const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+            if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+            e.preventDefault();
+            searchInput.focus();
+        });
+
+        if (musicTierButtons.length) {
+            musicTierButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.classList.contains('active')) return;
+                    musicTierButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    musicTier = btn.dataset.tier;
+                    renderResources(true);
+                });
+            });
+        }
+
+        if (aiTypeButtons.length) {
+            aiTypeButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.classList.contains('active')) return;
+                    aiTypeButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    aiType = btn.dataset.type;
+                    renderResources(true);
+                });
+            });
+        }
+
+        if (droneTypeButtons.length) {
+            droneTypeButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.classList.contains('active')) return;
+                    droneTypeButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    droneType = btn.dataset.type;
+                    renderResources(true);
+                });
+            });
+        }
+
+        let searchTimeout;
+        searchInput.addEventListener('input', function (e) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                searchQuery = e.target.value.trim();
+                if (searchQuery) {
+                    setGroup('all');
+                }
+                renderResources(true);
+            }, 150);
+        });
+
+        searchInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && searchQuery) {
+                e.stopPropagation();
+                searchInput.value = '';
+                searchQuery = '';
+                renderResources(true);
+            }
+        });
+
+        // ============================================
+        // SORT CONTROLS
+        // ============================================
+        const sortButtons = document.querySelectorAll('.sort-btn');
+        sortButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const sortType = btn.dataset.sort;
+                if (currentSort === sortType) return; // Already active
+
+                currentSort = sortType;
+                sortButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                renderResources(true);
+            });
+        });
+
+        // ============================================
+        // RESIZE HANDLER
+        // Recalculate ghost tiles on window resize
+        // ============================================
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                renderResources(false);
+            }, 150);
+        });
+
+        // ============================================
+        // SUGGEST MODAL
+        // ============================================
+
+        const suggestModal = document.getElementById('suggestModal');
+        const closeSuggestModalBtn = document.getElementById('closeSuggestModal');
+        const suggestForm = document.getElementById('suggestForm');
+
+        function openSuggestModal() {
+            suggestModal.classList.remove('closing');
+            suggestModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Focus first input
+            setTimeout(() => document.getElementById('suggestName').focus(), 100);
+        }
+
+        if (suggestQuickBtn) {
+            suggestQuickBtn.addEventListener('click', openSuggestModal);
+        }
+
+        function closeSuggestModal() {
+            suggestModal.classList.add('closing');
+            setTimeout(() => {
+                suggestModal.classList.remove('active', 'closing');
+                document.body.style.overflow = '';
+                // Reset form
+                suggestForm.reset();
+                // Restore form if showing success
+                const formBody = suggestModal.querySelector('.modal-body');
+                if (!formBody.querySelector('.suggest-form')) {
+                    formBody.innerHTML = `
+                        <form id="suggestForm" class="suggest-form">
+                            <div class="form-group">
+                                <label for="suggestName">Resource Name</label>
+                                <input type="text" id="suggestName" name="name" required placeholder="e.g. Premiere Pro">
+                            </div>
+                            <div class="form-group">
+                                <label for="suggestUrl">Website URL</label>
+                                <input type="url" id="suggestUrl" name="url" placeholder="https://...">
+                            </div>
+                            <div class="form-group">
+                                <label for="suggestCategory">Category</label>
+                                <select id="suggestCategory" name="category">
+                                    <option value="">Select a category</option>
+                                    <option value="music">Music</option>
+                                    <option value="soundfx">Sound FX</option>
+                                    <option value="ai">AI</option>
+                                    <option value="stock">Stock</option>
+                                    <option value="equipment">Gear</option>
+                                    <option value="3d">3D</option>
+                                    <option value="fonts">Fonts</option>
+                                    <option value="community">Community</option>
+                                    <option value="film-festivals">Film Festivals</option>
+                                    <option value="inspiration">Inspiration</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="suggestReason">Why is it useful?</label>
+                                <textarea id="suggestReason" name="reason" rows="3" placeholder="What makes this resource valuable..."></textarea>
+                            </div>
+                            <button type="submit" class="suggest-submit">Send Suggestion <span>→</span></button>
+                            <p class="suggest-status" id="suggestStatus" role="status" aria-live="polite"></p>
+                        </form>
+                    `;
+                    // Re-attach submit handler
+                    suggestModal.querySelector('#suggestForm').addEventListener('submit', handleSuggestSubmit);
+                }
+            }, 300);
+        }
+
+        const SUPABASE_URL = 'https://dfwgjbjrkwikvqmnzcxx.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable__Mrv6qhUoPwuzpFl4b4baA_BQcWgd6e';
+
+        async function handleSuggestSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const statusEl = form.querySelector('#suggestStatus');
+            const submitBtn = form.querySelector('.suggest-submit');
+            const name = form.querySelector('#suggestName').value.trim();
+            const urlRaw = form.querySelector('#suggestUrl').value.trim();
+            const category = form.querySelector('#suggestCategory').value.trim();
+            const reason = form.querySelector('#suggestReason').value.trim();
+
+            const setStatus = (message, state) => {
+                if (!statusEl) return;
+                statusEl.textContent = message;
+                statusEl.classList.remove('is-sending', 'is-success', 'is-error');
+                if (state) statusEl.classList.add(`is-${state}`);
+            };
+
+            setStatus('Sending...', 'sending');
+            form.setAttribute('aria-busy', 'true');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('is-loading');
+            }
+
+            const payload = {
+                name,
+                url: (urlRaw && urlRaw !== 'https://') ? urlRaw : null,
+                category: category || null,
+                reason: reason || null,
+                companyWebsite: ''
+            };
+
+            try {
+                const res = await fetch(`${SUPABASE_URL}/functions/v1/submit-resource`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        apikey: SUPABASE_ANON_KEY,
+                        Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.ok) {
+                    throw new Error(data.error || `Request failed (${res.status})`);
+                }
+
+                setStatus('Submitted for review.', 'success');
+
+                // Show success state
+                const formBody = suggestModal.querySelector('.modal-body');
+                formBody.innerHTML = `
+                    <div class="suggest-success" role="status" aria-live="polite">
+                        <div class="suggest-success-icon">+</div>
+                        <p class="suggest-success-text">Thanks! Submitted for review.</p>
+                        <p class="suggest-success-sub">We’ll add it if it’s a good fit.</p>
+                    </div>
+                `;
+
+                // Auto-close after delay
+                setTimeout(closeSuggestModal, 2500);
+            } catch (error) {
+                setStatus(error.message || 'Submission failed. Please try again shortly.', 'error');
+            } finally {
+                form.removeAttribute('aria-busy');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('is-loading');
+                }
+            }
+        }
+
+        // Suggest modal event handlers
+        closeSuggestModalBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeSuggestModal();
+        });
+
+        suggestModal.addEventListener('click', function (e) {
+            if (e.target === suggestModal) {
+                closeSuggestModal();
+            }
+        });
+
+        suggestForm.addEventListener('submit', handleSuggestSubmit);
+
+        // Update escape key handler to also close suggest modal
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                if (suggestModal.classList.contains('active')) {
+                    closeSuggestModal();
+                } else if (modal.classList.contains('active')) {
+                    closeModal();
+                }
+            }
+        });
+
+        // ============================================
+        // INIT
+        // ============================================
+
+        renderResources();
+        updateSavedBadge();
+    </script>
+
+    <!-- Global Error Handler -->
+    <script>
+        window.onerror = function (message, source, lineno, colno, error) {
+            console.error('[Global Error Handler]', {
+                message: message,
+                source: source,
+                line: lineno,
+                column: colno,
+                error: error
+            });
+            return false;
+        };
+
+        window.addEventListener('unhandledrejection', function (event) {
+            console.error('[Unhandled Promise Rejection]', event.reason);
+        });
+    </script>
+
+    <!-- Mobile Menu Toggle -->
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        let touchHandled = false;
+
+        function toggleMenu(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // Prevent double-firing on touch devices (touchend + click)
+            if (e.type === 'touchend') {
+                touchHandled = true;
+                setTimeout(() => { touchHandled = false; }, 300);
+            } else if (e.type === 'click' && touchHandled) {
+                return;
+            }
+
+            const isActive = menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            menuToggle.setAttribute('aria-expanded', isActive);
+            document.body.style.overflow = isActive ? 'hidden' : '';
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        menuToggle.addEventListener('touchend', toggleMenu);
+
+        // Close menu when clicking a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (navLinks.classList.contains('active') &&
+                !menuToggle.contains(e.target) &&
+                !navLinks.contains(e.target)) {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+</body>
+
+</html>
