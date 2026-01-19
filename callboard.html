@@ -1646,30 +1646,20 @@
 
                 if (!response.ok) {
                     let errorMessage = 'Something went wrong. Please try again in a moment.';
-                    let errorDetail = '';
                     try {
                         const errorBody = await response.json();
                         if (errorBody && errorBody.message) {
                             errorMessage = errorBody.message;
                         }
-                        errorDetail = JSON.stringify(errorBody);
                     } catch (parseError) {
                         const errorText = await response.text();
                         if (errorText) {
                             errorMessage = errorText;
-                            errorDetail = errorText;
                         }
-                    }
-                    if (response.status === 404) {
-                        errorMessage = 'Submission service is offline. Please try again later.';
-                    }
-                    if (response.status === 401 || response.status === 403) {
-                        errorMessage = 'Submission blocked. Please refresh the page and try again.';
                     }
                     if (response.status === 429) {
                         errorMessage = 'Too many submissions in a short time. Please wait a minute and try again.';
                     }
-                    console.error('Callboard submission failed:', response.status, errorDetail);
                     throw new Error(errorMessage);
                 }
 
