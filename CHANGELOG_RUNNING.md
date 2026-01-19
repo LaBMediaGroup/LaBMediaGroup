@@ -4,6 +4,61 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-19 | 3:18AM EST
+———————————————————————
+Change: Documented case-sensitive status values for directory listings
+Files touched: SUPABASE_DIRECTORY_SETUP.md, CHANGELOG_RUNNING.md
+Notes:
+1. Added guidance to use lowercase status values and provided a constraint update option.
+Quick test checklist:
+1. Update a directory_listings row to status = approved (lowercase)
+2. Refresh directory.html and confirm the listing appears
+3. Check DevTools Console for errors on directory.html
+
+
+
+2026-01-19 | 3:14AM EST
+———————————————————————
+Change: Added CORS allow-methods for directory submit-profile edge function
+Files touched: supabase/functions/submit-profile/index.ts, CHANGELOG_RUNNING.md
+Notes:
+1. Added Access-Control-Allow-Methods to support preflight POST requests.
+Quick test checklist:
+1. Open directory.html → Join the Directory and submit a profile
+2. Confirm submission succeeds without CORS errors in DevTools Console
+3. Verify a new row appears in directory_listings with status = pending
+
+
+
+2026-01-19 | 3:10AM EST
+———————————————————————
+Change: Allow approved or accepted directory listings to render
+Files touched: directory.html, SUPABASE_DIRECTORY_SETUP.md, CHANGELOG_RUNNING.md
+Notes:
+1. Directory listings now fetch approved or accepted statuses.
+2. Supabase schema guidance updated to allow accepted status.
+Quick test checklist:
+1. Submit a profile and set status to accepted or approved in Supabase
+2. Refresh directory.html and confirm the listing appears
+3. Check DevTools Console for errors on directory.html
+
+
+
+2026-01-19 | 3:00AM EST
+———————————————————————
+Change: Added Supabase setup documentation and edge function for directory submissions
+Files touched: SUPABASE_DIRECTORY_SETUP.md, supabase/functions/submit-profile/index.ts, CHANGELOG_RUNNING.md
+Notes:
+1. Documented SQL schema, RLS policy, and deployment steps for directory submissions.
+2. Added submit-profile edge function to insert pending listings and ignore honeypot spam.
+Quick test checklist:
+1. Open directory.html → Join the Directory and submit a profile (required fields only)
+2. In Supabase, confirm a new row appears in directory_listings with status = pending
+3. Mark the row approved and refresh directory.html to see the card appear
+4. Check DevTools Console for errors on directory.html
+
+
+
 2026-01-18 | 9:25PM EST
 ———————————————————————
 Change: Restyled directory submission form with dark theme and success animation

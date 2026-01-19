@@ -1535,7 +1535,7 @@
             // Use directory_listings table
             // This table needs to be created by the user.
             // Fields: id, name, role, location, bio, website, instagram, imdb, email, created_at, status, roles_worked, past_work
-            const url = `${SUPABASE_CONFIG.url}/rest/v1/directory_listings?select=*&status=eq.approved&order=created_at.desc`;
+            const url = `${SUPABASE_CONFIG.url}/rest/v1/directory_listings?select=*&status=in.(approved,accepted)&order=created_at.desc`;
 
             try {
                 const response = await fetch(url, {
