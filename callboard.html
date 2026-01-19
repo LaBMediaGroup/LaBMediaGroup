@@ -1300,7 +1300,8 @@
             }
 
             listingsEl.innerHTML = filtered.map((listing) => {
-                const dateLabel = formatDate(listing.date_posted || listing.created_at);
+                const postedLabel = formatDate(listing.date_posted || listing.created_at);
+                const expiresLabel = formatDate(listing.expires_on);
                 // Compact Card: No description, no tags, no contact link visible inline
                 return `
                     <article class="listing-card" data-id="${listing.id}">
@@ -1311,7 +1312,8 @@
                             <span
                                 class="badge ${listing.compensation === 'paid' ? 'badge-paid' : 'badge-collab'}">${listing.compensation}</span>
                             <span class="location">${listing.location}</span>
-                            ${dateLabel ? `<span class="date">${dateLabel}</span>` : ''}
+                            ${postedLabel ? `<span class="date">Posted: ${postedLabel}</span>` : ''}
+                            ${expiresLabel ? `<span class="date">Expires: ${expiresLabel}</span>` : ''}
                         </div>
                     </article>
                 `;
@@ -1341,7 +1343,8 @@
             }
 
             pastListingsEl.innerHTML = filledListings.map((listing) => {
-                const dateLabel = formatDate(listing.date_posted || listing.created_at);
+                const postedLabel = formatDate(listing.date_posted || listing.created_at);
+                const expiresLabel = formatDate(listing.expires_on);
                 const expired = isExpired(listing);
                 const badgeText = listing.status === 'filled' ? 'Filled' : (expired ? 'Expired' : 'Ended');
 
@@ -1351,7 +1354,8 @@
                         <div class="listing-meta">
                             <span class="badge badge-filled">${badgeText}</span>
                             <span class="location">${listing.location}</span>
-                            ${dateLabel ? `<span class="date">${dateLabel}</span>` : ''}
+                            ${postedLabel ? `<span class="date">Posted: ${postedLabel}</span>` : ''}
+                            ${expiresLabel ? `<span class="date">Expires: ${expiresLabel}</span>` : ''}
                         </div>
                     </article>
                 `;
@@ -1584,6 +1588,17 @@
             formStatus.classList.remove('is-sending', 'is-success', 'is-error');
             if (state) formStatus.classList.add(`is-${state}`);
         };
+
+        listingForm.addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter') return;
+            const target = event.target;
+            const tag = target.tagName.toLowerCase();
+            const isTextarea = tag === 'textarea';
+            const isSubmitButton = tag === 'button' && target.type === 'submit';
+            if (!isTextarea && !isSubmitButton) {
+                event.preventDefault();
+            }
+        });
 
         listingForm.addEventListener('submit', async (event) => {
             event.preventDefault();
