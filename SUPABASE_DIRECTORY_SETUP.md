@@ -19,7 +19,7 @@ create table if not exists public.directory_listings (
   website text,
   instagram text,
   imdb text,
-  status text not null default 'pending' check (status in ('pending', 'approved', 'accepted', 'rejected')),
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected')),
   created_at timestamptz not null default now()
 );
 
@@ -28,7 +28,7 @@ alter table public.directory_listings enable row level security;
 create policy "directory_public_read"
   on public.directory_listings
   for select
-  using (status in ('approved', 'accepted'));
+  using (status = 'approved');
 ```
 
 ## 2) Add the edge function
@@ -59,18 +59,5 @@ supabase functions deploy submit-profile
 1. Open `directory.html` → “Join the Directory”.
 2. Submit a new profile with valid required fields.
 3. Confirm a new row appears in `directory_listings` with `status = 'pending'`.
-4. Manually set the row to `approved` or `accepted` (lowercase) to see it appear on the directory page.
-
-### Status updates reminder (case-sensitive)
-
-The status check constraint is case-sensitive. Use lowercase values (`approved`, `accepted`, `rejected`, `pending`). If you already created the table and want to allow capitalized inputs, update the constraint with:
-
-```sql
-alter table public.directory_listings
-  drop constraint if exists directory_listings_status_check;
-
-alter table public.directory_listings
-  add constraint directory_listings_status_check
-  check (lower(status) in ('pending', 'approved', 'accepted', 'rejected'));
-```
+4. Manually set the row to `approved` to see it appear on the directory page.
 ```
