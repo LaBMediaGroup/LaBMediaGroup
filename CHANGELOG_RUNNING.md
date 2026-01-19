@@ -4,20 +4,6 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-18 | 10:56PM EST
-———————————————————————
-Change: Matched callboard submission modal styling to directory form layout
-Files touched: callboard.html, CHANGELOG_RUNNING.md
-Notes:
-1. Restructured the submission modal with header/body/footer sections and form-group layout.
-2. Applied dark input styling, custom selects, and optional tag labels to remove white fields.
-3. Tuned modal spacing to align with the directory form presentation.
-Quick test checklist:
-1. Open callboard.html → click "Submit a Listing" and confirm dark inputs/selects match the directory style.
-2. Verify form rows align neatly on desktop and stack cleanly on smaller screens.
-3. Submit the form (use test values) and confirm success highlight animation still appears.
-4. Open DevTools Console on callboard.html and confirm no errors.
-
 2026-01-18 | 10:50PM EST
 ———————————————————————
 Change: Restyled callboard submission form and added success animation polish
