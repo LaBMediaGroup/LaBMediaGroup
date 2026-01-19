@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-19 | 6:28AM EST
+———————————————————————
+Change: Reordered the Community nav dropdown to list Callboard, Directory, then Events.
+Files touched: 404.html, callboard.html, contact.html, directory.html, events.html, ideas.html, index.html, past-events.html, plan-your-project.html, portfolio.html, resources.html, CHANGELOG_RUNNING.md
+Notes:
+Quick test checklist:
+1. Open any page → Community dropdown shows Callboard, Directory, Events in that order.
+2. Repeat on events.html to confirm mobile nav dropdown order matches.
+3. Open DevTools Console on index.html and confirm no errors.
+
 2026-01-19 | 1:07AM EST
 ———————————————————————
 Change: Refined resources listings, references subfilters, and community labels to match updated curation.
