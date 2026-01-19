@@ -4,6 +4,21 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-19 | 3:00AM EST
+———————————————————————
+Change: Added Supabase setup documentation and edge function for directory submissions
+Files touched: SUPABASE_DIRECTORY_SETUP.md, supabase/functions/submit-profile/index.ts, CHANGELOG_RUNNING.md
+Notes:
+1. Documented SQL schema, RLS policy, and deployment steps for directory submissions.
+2. Added submit-profile edge function to insert pending listings and ignore honeypot spam.
+Quick test checklist:
+1. Open directory.html → Join the Directory and submit a profile (required fields only)
+2. In Supabase, confirm a new row appears in directory_listings with status = pending
+3. Mark the row approved and refresh directory.html to see the card appear
+4. Check DevTools Console for errors on directory.html
+
+
+
 2026-01-18 | 9:25PM EST
 ———————————————————————
 Change: Restyled directory submission form with dark theme and success animation
