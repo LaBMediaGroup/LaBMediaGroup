@@ -4,20 +4,6 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-19 | 3:10AM EST
-———————————————————————
-Change: Allow approved or accepted directory listings to render
-Files touched: directory.html, SUPABASE_DIRECTORY_SETUP.md, CHANGELOG_RUNNING.md
-Notes:
-1. Directory listings now fetch approved or accepted statuses.
-2. Supabase schema guidance updated to allow accepted status.
-Quick test checklist:
-1. Submit a profile and set status to accepted or approved in Supabase
-2. Refresh directory.html and confirm the listing appears
-3. Check DevTools Console for errors on directory.html
-
-
-
 2026-01-19 | 3:00AM EST
 ———————————————————————
 Change: Added Supabase setup documentation and edge function for directory submissions

@@ -19,7 +19,7 @@ create table if not exists public.directory_listings (
   website text,
   instagram text,
   imdb text,
-  status text not null default 'pending' check (status in ('pending', 'approved', 'accepted', 'rejected')),
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected')),
   created_at timestamptz not null default now()
 );
 
@@ -28,7 +28,7 @@ alter table public.directory_listings enable row level security;
 create policy "directory_public_read"
   on public.directory_listings
   for select
-  using (status in ('approved', 'accepted'));
+  using (status = 'approved');
 ```
 
 ## 2) Add the edge function
