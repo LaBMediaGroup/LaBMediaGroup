@@ -81,6 +81,7 @@ const resources = [
     {
         name: 'Royal Starr Arts Institute',
         category: 'community',
+        communityType: 'groups',
         desc: 'Michigan nonprofit building filmmaker community through mixers, events, and festival programming.',
         fullDesc: 'Royal Starr Arts Institute serves Michigan\'s creative community through networking, education, and events—anchored by Royal Starr Film Festival and recurring filmmaker mixers in Metro Detroit.',
         url: 'https://www.royalstarr.org',
@@ -108,6 +109,7 @@ const resources = [
     {
         name: 'Michigan Filmmaker Community (Facebook Group)',
         category: 'community',
+        communityType: 'facebook',
         desc: 'Facebook networking group for Michigan filmmakers, cast, and crew.',
         fullDesc: 'Active Facebook group for connecting Michigan filmmakers with actors, crew, and collaborators. Useful for posting gigs, staffing up, sharing resources, and finding local production support.',
         url: 'https://www.facebook.com/groups/mifilmcommunity',
@@ -154,6 +156,7 @@ const resources = [
     {
         name: 'Mograph Mondays Detroit',
         category: 'community',
+        communityType: 'meetups',
         desc: 'Monthly Detroit meetup for motion designers, animators, and CG artists.',
         fullDesc: 'Mograph Mondays Detroit is a recurring meetup for motion designers, animators, CG artists, and adjacent creatives—an easy on-ramp to post, VFX, and design collaborators.',
         url: 'https://www.mographmondays.com/det',
@@ -166,6 +169,7 @@ const resources = [
     {
         name: 'Michigan Crew Calls',
         category: 'community',
+        communityType: 'facebook',
         desc: 'Facebook group for Michigan crew opportunities and on-set needs.',
         fullDesc: 'Michigan Crew Calls is a Facebook community built for posting and finding crew gigs, last-minute hires, and on-set opportunities across the state.',
         url: 'https://www.facebook.com/groups/micrewcalls/',
@@ -176,6 +180,7 @@ const resources = [
     {
         name: 'Michigan Talent Casting',
         category: 'community',
+        communityType: 'facebook',
         desc: 'Facebook group dedicated to casting calls for Michigan talent.',
         fullDesc: 'Michigan Talent Casting connects producers and directors with Michigan actors and performers—centralized casting posts and opportunities.',
         url: 'https://www.facebook.com/groups/micasting/',
@@ -186,6 +191,7 @@ const resources = [
     {
         name: 'Fiverr',
         category: 'community',
+        communityType: 'hiring',
         desc: 'Freelance marketplace for creative services.',
         fullDesc: 'Find freelancers for specific tasks: logo animation, subtitles, voice-over, etc. Variable quality - vet carefully. Useful for specialized one-off needs.',
         url: 'https://www.fiverr.com',
@@ -196,6 +202,7 @@ const resources = [
     {
         name: 'Mandy',
         category: 'community',
+        communityType: 'hiring',
         desc: 'Crew and talent hiring platform for production.',
         fullDesc: 'Find crew, actors, and production professionals. Job postings and crew profiles. UK-focused but growing internationally. Good for finding local talent.',
         url: 'https://www.mandy.com',
@@ -209,6 +216,7 @@ const resources = [
     {
         name: 'ProductionHub',
         category: 'community',
+        communityType: 'hiring',
         desc: 'US-focused production job board and directory.',
         fullDesc: 'Find and post production jobs. Searchable directory of crew and vendors by location. Useful for staffing up local shoots and finding specialists.',
         url: 'https://www.productionhub.com',
@@ -224,17 +232,6 @@ const resources = [
         desc: 'City of Detroit film office supporting local film production and community events.',
         fullDesc: 'Film Detroit is the official film office for the City of Detroit, supporting local productions and hosting community events like Frames & Fabrics.',
         url: 'https://detroitmi.gov/departments/media-services-department',
-        paid: false
-    },
-
-    {
-        id: 'movies-plus-tv',
-        name: 'Movies Plus TV',
-        category: 'community',
-        communityType: 'groups',
-        desc: 'Film and TV community resource for local productions and industry connections.',
-        fullDesc: 'Movies Plus TV provides resources and connections for film and television productions in the region.',
-        url: 'https://moviesplustv.com',
         paid: false
     },
 
@@ -428,30 +425,6 @@ const resources = [
     },
 
     {
-        id: 'botgrinder',
-        name: 'Botgrinder',
-        category: 'drone',
-        droneType: 'channels',
-        desc: 'Unfiltered FPV culture, builds, and commentary.',
-        fullDesc: 'Botgrinder brings an authentic, distinctive voice to the FPV community. Known for "grinder" builds, blind flying challenges, and no-nonsense commentary on the state of the hobby.',
-        url: 'https://www.youtube.com/@BOTGRINDER',
-        paid: false,
-        features: ['FPV Culture', 'Builds', 'Commentary', 'Entertainment']
-    },
-
-    {
-        id: 'captain-drone',
-        name: 'Captain Drone',
-        category: 'drone',
-        droneType: 'channels',
-        desc: 'Comprehensive reviews of camera drones and quadcopters.',
-        fullDesc: 'Captain Drone covers the consumer and prosumer camera drone market (DJI, Autel, Potensic) with in-depth reviews, flight tests, and news. Excellent for keeping up with the latest ready-to-fly gear.',
-        url: 'https://www.youtube.com/@CaptainDrone',
-        paid: false,
-        features: ['Camera Drones', 'Gear Reviews', 'Flight Tests', 'News']
-    },
-
-    {
         name: 'DJI',
         category: 'drone',
         droneType: 'stores',
@@ -555,7 +528,7 @@ const resources = [
     {
         name: 'CAPTAIN DRONE',
         category: 'drone',
-        droneType: 'channel',
+        droneType: 'channels',
         desc: 'FPV tutorials, reviews, and flight content.',
         fullDesc: 'YouTube channel focused on FPV drone flying, gear reviews, tutorials, and flight footage. Practical insights for pilots at all levels with an emphasis on real-world flying and equipment recommendations.',
         url: 'https://www.youtube.com/@CAPTAINDRONE798',
@@ -615,7 +588,7 @@ const resources = [
     {
         name: 'BOTGRINDER',
         category: 'drone',
-        droneType: 'channel',
+        droneType: 'channels',
         desc: 'High-energy FPV freestyle and creative drone cinematography.',
         fullDesc: 'BOTGRINDER delivers aggressive, technical FPV freestyle with creative cinematography and unique locations. Known for pushing the limits of FPV movement and visual storytelling—great reference for dynamic aerial work and bold flying.',
         url: 'https://www.youtube.com/@BOTGRINDER',
@@ -811,7 +784,7 @@ const resources = [
 
     {
         name: 'Z.ai',
-        category: 'ai',
+        category: ['ai', 'coding'],
         aiType: 'chat',
         desc: 'AI chat platform powered by top-tier models including GLM-4.7 and GPT-5.2.',
         fullDesc: 'Z.ai provides a clean AI chat interface powered by multiple leading AI models including GLM-4.7 and GPT-5.2. Supports brainstorming, coding help, writing assistance, and quick problem-solving with developer-friendly pricing and MCP tools integration.',
@@ -827,7 +800,7 @@ const resources = [
 
     {
         name: 'OpenRouter',
-        category: 'ai',
+        category: ['ai', 'coding'],
         aiType: 'chat',
         desc: 'Unified API for 500+ AI models across 60+ providers with pay-as-you-go pricing.',
         fullDesc: 'OpenRouter aggregates access to 500+ AI models from providers like OpenAI, Anthropic, Google, and Meta through a single OpenAI-compatible API. Features automatic fallback for reliability, flexible credit-based pricing with no subscriptions, and customizable data policies. Ideal for developers who want to test and switch between models without architectural changes.',
@@ -841,13 +814,33 @@ const resources = [
 
     {
         name: 'Google AI Studio',
-        category: 'ai',
+        category: ['ai', 'coding'],
         aiType: 'chat',
         desc: 'Playground for Gemini models with API keys and quick testing.',
         fullDesc: 'AI Studio makes it easy to prototype with Gemini models—test prompts, generate code snippets, and grab API keys for integrating generative AI into apps or production pipelines.',
         url: 'https://aistudio.google.com',
         paid: false,
         features: ['Gemini Playground', 'API Keys', 'Prompt Testing', 'Code Snippets']
+    },
+
+    {
+        name: 'Claude Code',
+        category: 'coding',
+        desc: 'CLI and editor tooling for Claude-powered coding workflows.',
+        fullDesc: 'Claude Code provides command-line and editor integrations for AI-assisted coding, refactors, and code reviews—built for long context work and paired with Claude’s model family.',
+        url: 'https://claude.ai/',
+        paid: true,
+        features: ['CLI Workflow', 'Editor Integrations', 'Refactors', 'Code Reviews']
+    },
+
+    {
+        name: 'Google Antigravity',
+        category: 'coding',
+        desc: 'Google research sandbox for fast prototyping and creative coding experiments.',
+        fullDesc: 'Google Antigravity is an experimental playground for rapid prototyping, code generation, and creative exploration with Google models. Useful for testing ideas and prototyping in a lightweight environment.',
+        url: 'https://antigravity.google/',
+        paid: false,
+        features: ['Rapid Prototyping', 'Creative Coding', 'Google Models', 'Experiment Sandbox']
     },
 
     {
@@ -884,24 +877,13 @@ const resources = [
 
     {
         name: 'Opal (Google)',
-        category: 'ai',
+        category: ['ai', 'coding'],
         aiType: 'video',
         desc: 'Google Opal for fast, high-quality video generation and edits.',
         fullDesc: 'Opal pairs Google research models with video-forward controls for turning prompts into polished motion quickly. Useful for look previews, motion tests, and stylized transitions.',
         url: 'https://opal.google/landing/',
         paid: false,
         features: ['Video Generation', 'Style Controls', 'Fast Iteration', 'Google Models']
-    },
-
-    {
-        name: 'Sora by OpenAI',
-        category: 'ai',
-        aiType: 'video',
-        desc: 'Text-to-video generation focused on cinematic, photoreal results.',
-        fullDesc: 'Sora converts prompts into detailed video sequences with realistic motion, camera moves, and environments—great for previz, concept tests, and mood films when paired with clear prompt references.',
-        url: 'https://sora.chatgpt.com',
-        paid: false,
-        features: ['Text-to-Video', 'Cinematic Motion', 'Camera Control', 'Previsualization']
     },
 
     {
@@ -951,13 +933,13 @@ const resources = [
 
 
     // ============================================
-    // REFERENCES / INSPIRATION
+    // REFERENCES
     // ============================================
 
     {
         name: 'Hillier Smith',
-        category: 'inspiration',
-        inspirationType: 'editing',
+        category: 'references',
+        refType: 'editing',
         desc: 'High-level breakdowns on editing momentum for YouTube storytelling.',
         fullDesc: 'Film editor Hillier Smith dissects pacing, structure, and storytelling choices for creator-led projects—practical, advanced insight for cutting modern YouTube narratives.',
         url: 'https://www.youtube.com/@HillierSmith',
@@ -968,9 +950,21 @@ const resources = [
     },
 
     {
+        name: 'paul_et',
+        category: 'references',
+        refType: 'editing',
+        desc: 'Design, motion, and digital craft inspiration with a modern aesthetic.',
+        fullDesc: 'A modern visual sensibility—useful reference for minimal, clean design decisions and motion-forward thinking.',
+        url: 'https://www.youtube.com/@paul_et',
+        paid: false,
+        featuredVideo: '5mWtaTlSvww',
+        features: ['Design', 'Motion', 'Modern Aesthetic', 'Digital Craft']
+    },
+
+    {
         name: 'Gawx Art',
-        category: 'inspiration',
-        inspirationType: 'art',
+        category: 'references',
+        refType: 'art',
         desc: 'Experimental digital artist blending illustration, animation, and texture.',
         fullDesc: 'Expressive digital illustration through animation, texture, and surreal motion—great reference for stylized visual language.',
         url: 'https://www.youtube.com/@GawxArt',
@@ -981,147 +975,9 @@ const resources = [
     },
 
     {
-        name: 'Dodford',
-        category: 'inspiration',
-        inspirationType: 'filming',
-        desc: 'Visual storytelling experiments with a creator-first, process-forward approach.',
-        fullDesc: 'A channel built around creative experimentation—useful for seeing how simple ideas evolve into polished visual narratives.',
-        url: 'https://www.youtube.com/@DodfordYT',
-        paid: false,
-        featuredVideo: 'NKYH738UihQ',
-        additionalVideos: ['dujnjw_s8bY'],
-        features: ['Creative Process', 'Visual Storytelling', 'Experimentation']
-    },
-
-    {
-        name: 'Chuck Lee MBM',
-        category: 'inspiration',
-        inspirationType: 'filming',
-        desc: 'Creative filmmaking and craft-focused storytelling references.',
-        fullDesc: 'Practical creative inspiration centered on making, refining, and finishing work—good fuel for momentum.',
-        url: 'https://www.youtube.com/@ChuckLeeMBM',
-        paid: false,
-        featuredVideo: 'iGTif3RG42U',
-        features: ['Filmmaking', 'Creative Process', 'Storytelling', 'Craft']
-    },
-
-    {
-        name: 'Joris Hermans',
-        category: 'inspiration',
-        inspirationType: 'filming',
-        desc: 'Design-forward filmmaking and visual craft inspiration.',
-        fullDesc: 'A clean, intentional approach to visuals—useful reference for composition, pacing, and taste.',
-        url: 'https://www.youtube.com/@JorisHermans',
-        paid: false,
-        featuredVideo: 'N2EelRBlwtQ',
-        features: ['Visual Craft', 'Composition', 'Pacing', 'Taste']
-    },
-
-    {
-        name: 'ALTER',
-        category: 'inspiration',
-        inspirationType: 'references',
-        desc: 'Award-winning short horror films and genre storytelling.',
-        fullDesc: 'Curated horror shorts from filmmakers around the world—a consistent reference for pacing, atmosphere, and short-form genre execution. Useful for studying structure, tension building, and visual storytelling in tight formats.',
-        url: 'https://www.youtube.com/WatchALTER',
-        instagramUrl: 'https://www.instagram.com/watch_alter/',
-        paid: false,
-        featuredVideo: 'EBGwY0bOjsU',
-        features: ['Horror Shorts', 'Genre Storytelling', 'Pacing Reference', 'Short Form']
-    },
-
-    {
-        name: 'paul_et',
-        category: 'inspiration',
-        inspirationType: 'art',
-        desc: 'Design, motion, and digital craft inspiration with a modern aesthetic.',
-        fullDesc: 'A modern visual sensibility—useful reference for minimal, clean design decisions and motion-forward thinking.',
-        url: 'https://www.youtube.com/@paul_et',
-        paid: false,
-        featuredVideo: '5mWtaTlSvww',
-        features: ['Design', 'Motion', 'Modern Aesthetic', 'Digital Craft']
-    },
-
-    {
-        name: 'Sean Kitching',
-        category: 'inspiration',
-        inspirationType: 'filming',
-        desc: 'Creator workflow and filmmaking momentum inspiration.',
-        fullDesc: 'A reference point for staying consistent—workflow, output, and pushing projects over the finish line.',
-        url: 'https://www.youtube.com/@seankitching',
-        paid: false,
-        featuredVideo: 'tqdWtSnoRws',
-        features: ['Workflow', 'Consistency', 'Filmmaking', 'Output']
-    },
-
-    {
-        name: 'Casey Neistat',
-        category: 'inspiration',
-        inspirationType: 'filming',
-        desc: 'High-energy personal filmmaking and creative momentum.',
-        fullDesc: 'A reference for rhythm, structure, and creative confidence—motion-first storytelling with editorial instinct.',
-        url: 'https://www.youtube.com/@casey',
-        paid: false,
-        featuredVideo: '-jCQerxzF48',
-        features: ['Personal Filmmaking', 'Editing Rhythm', 'Creative Process']
-    },
-
-    {
-        name: 'Lofi Girl',
-        category: 'inspiration',
-        inspirationType: 'music',
-        desc: 'Iconic lo-fi music channel with strong visual identity.',
-        fullDesc: 'A reference point for branding, tone, and ambient storytelling through consistent visual language.',
-        url: 'https://www.youtube.com/@LofiGirl',
-        paid: false,
-        featuredVideo: '8b3fqIBrNW0',
-        features: ['Music Channel', 'Visual Identity', 'Brand Consistency']
-    },
-
-    {
-        name: 'Viva La Dirt League',
-        category: 'inspiration',
-        inspirationType: 'filming',
-        desc: 'Narrative comedy sketches rooted in gaming and pop culture.',
-        fullDesc: 'High-output narrative comedy with strong character consistency and efficient production workflows.',
-        url: 'https://www.youtube.com/@VivaLaDirtLeague',
-        instagramUrl: 'https://www.instagram.com/vivaladirtleague/',
-        paid: false,
-        featuredVideo: 'tM2L1Je92w0',
-        features: ['Comedy', 'Sketch Writing', 'Narrative Shorts', 'High Output']
-    },
-
-    {
-        name: 'Crypt TV',
-        category: 'inspiration',
-        inspirationType: 'references',
-        desc: 'Short horror films and monster-driven genre content.',
-        fullDesc: 'Crypt TV produces short horror films and episodic monster content with recurring creatures and interconnected lore. Their work focuses on practical creature effects, atmospheric horror, and building tension in short formats—useful reference for genre filmmaking and franchise-building storytelling.',
-        url: 'https://www.youtube.com/@Crypttv/videos',
-        paid: false,
-        featuredVideo: 'GISm-KB4voo',
-        features: ['Horror Shorts', 'Monster Content', 'Practical Effects', 'Franchise Lore']
-    },
-
-    {
-        name: 'PandaHouse',
-        category: 'inspiration',
-        inspirationType: 'music',
-        desc: 'Detroit-based music project blending indie, alternative, and expressive songwriting.',
-        fullDesc: 'Mood-driven songwriting with an atmospheric edge—useful inspiration for music-led visual tone and emotional pacing. Features Anthony Brass (collaborator) on drums alongside emotive indie arrangements.',
-        url: 'https://www.pandahousedetroit.com',
-        youtubeUrl: 'https://www.youtube.com/channel/UCIPj80TPOAufdvsm666GQng',
-        spotifyUrl: 'https://open.spotify.com/artist/0HuGjGGYSPTGINTZpc6ziy',
-        paid: false,
-        featuredVideo: '5gKjeyHaH6o',
-        hideKeyInfo: true,
-        features: ['Indie Music', 'Detroit Artist', 'Mood-Driven Sound', 'Atmospheric Tone']
-    },
-
-    {
         name: 'TenHundred',
-        category: 'inspiration',
-        inspirationType: 'art',
+        category: 'references',
+        refType: 'art',
         desc: 'Multidisciplinary artist working across painting, murals, illustration, and YouTube.',
         fullDesc: 'TenHundred is a creative based in Southwest Michigan whose work spans painting, murals, illustration, and design. Their YouTube channel documents the creative process, offering insights into making work with momentum and intention—useful inspiration for project-driven creativity.',
         url: 'https://tenhundredart.com',
@@ -1133,9 +989,95 @@ const resources = [
     },
 
     {
+        name: 'Chuck Lee MBM',
+        category: 'references',
+        refType: 'art',
+        desc: 'Creative filmmaking and craft-focused storytelling references.',
+        fullDesc: 'Practical creative inspiration centered on making, refining, and finishing work—good fuel for momentum.',
+        url: 'https://www.youtube.com/@ChuckLeeMBM',
+        paid: false,
+        featuredVideo: 'iGTif3RG42U',
+        features: ['Filmmaking', 'Creative Process', 'Storytelling', 'Craft']
+    },
+
+    {
+        name: 'Dodford',
+        category: 'references',
+        refType: 'filming',
+        desc: 'Visual storytelling experiments with a creator-first, process-forward approach.',
+        fullDesc: 'A channel built around creative experimentation—useful for seeing how simple ideas evolve into polished visual narratives.',
+        url: 'https://www.youtube.com/@DodfordYT',
+        paid: false,
+        featuredVideo: 'NKYH738UihQ',
+        additionalVideos: ['dujnjw_s8bY'],
+        features: ['Creative Process', 'Visual Storytelling', 'Experimentation']
+    },
+
+    {
+        name: 'Joris Hermans',
+        category: 'references',
+        refType: 'filming',
+        desc: 'Design-forward filmmaking and visual craft inspiration.',
+        fullDesc: 'A clean, intentional approach to visuals—useful reference for composition, pacing, and taste.',
+        url: 'https://www.youtube.com/@JorisHermans',
+        paid: false,
+        featuredVideo: 'N2EelRBlwtQ',
+        features: ['Visual Craft', 'Composition', 'Pacing', 'Taste']
+    },
+
+    {
+        name: 'Sean Kitching',
+        category: 'references',
+        refType: 'filming',
+        desc: 'Creator workflow and filmmaking momentum inspiration.',
+        fullDesc: 'A reference point for staying consistent—workflow, output, and pushing projects over the finish line.',
+        url: 'https://www.youtube.com/@seankitching',
+        paid: false,
+        featuredVideo: 'tqdWtSnoRws',
+        features: ['Workflow', 'Consistency', 'Filmmaking', 'Output']
+    },
+
+    {
+        name: 'Casey Neistat',
+        category: 'references',
+        refType: 'filming',
+        desc: 'High-energy personal filmmaking and creative momentum.',
+        fullDesc: 'A reference for rhythm, structure, and creative confidence—motion-first storytelling with editorial instinct.',
+        url: 'https://www.youtube.com/@casey',
+        paid: false,
+        featuredVideo: '-jCQerxzF48',
+        features: ['Personal Filmmaking', 'Editing Rhythm', 'Creative Process']
+    },
+
+    {
+        name: 'ALTER',
+        category: 'references',
+        refType: 'references',
+        desc: 'Award-winning short horror films and genre storytelling.',
+        fullDesc: 'Curated horror shorts from filmmakers around the world—a consistent reference for pacing, atmosphere, and short-form genre execution. Useful for studying structure, tension building, and visual storytelling in tight formats.',
+        url: 'https://www.youtube.com/WatchALTER',
+        instagramUrl: 'https://www.instagram.com/watch_alter/',
+        paid: false,
+        featuredVideo: 'EBGwY0bOjsU',
+        features: ['Horror Shorts', 'Genre Storytelling', 'Pacing Reference', 'Short Form']
+    },
+
+    {
+        name: 'Crypt TV',
+        category: 'references',
+        refType: 'references',
+        desc: 'Short horror films and monster-driven genre content.',
+        fullDesc: 'Crypt TV produces short horror films and episodic monster content with recurring creatures and interconnected lore. Their work focuses on practical creature effects, atmospheric horror, and building tension in short formats—useful reference for genre filmmaking and franchise-building storytelling.',
+        url: 'https://www.youtube.com/@Crypttv/videos',
+        paid: false,
+        featuredVideo: 'GISm-KB4voo',
+        features: ['Horror Shorts', 'Monster Content', 'Practical Effects', 'Franchise Lore']
+    },
+
+    {
         name: 'Omeleto',
-        category: 'inspiration',
-        inspirationType: 'references',
+        category: 'references',
+        refType: 'references',
         desc: 'Award-winning short films across all genres—drama, comedy, sci-fi, thriller.',
         fullDesc: 'Omeleto curates and showcases the best short films from festivals and independent filmmakers worldwide. Their catalog spans every genre with consistently high production values and compelling storytelling—essential reference for studying narrative structure, pacing, and cinematic craft in 5-20 minute formats.',
         url: 'https://www.youtube.com/@Omeleto',
@@ -1147,8 +1089,8 @@ const resources = [
 
     {
         name: 'Short of the Week',
-        category: 'inspiration',
-        inspirationType: 'references',
+        category: 'references',
+        refType: 'references',
         desc: 'Curated short film platform highlighting the best in independent short cinema.',
         fullDesc: 'Short of the Week is a tastemaker platform that hand-picks exceptional short films across narrative, documentary, animation, and experimental formats. Each film is thoughtfully curated and includes editorial insights—ideal for discovering cutting-edge storytelling and unique visual approaches.',
         url: 'https://www.shortoftheweek.com',
@@ -1161,8 +1103,8 @@ const resources = [
 
     {
         name: 'Film Shortage',
-        category: 'inspiration',
-        inspirationType: 'references',
+        category: 'references',
+        refType: 'references',
         desc: 'International short films with a focus on narrative and experimental cinema.',
         fullDesc: 'Film Shortage showcases boundary-pushing short films from around the world, often highlighting experimental techniques and bold narrative choices. Their selection leans artistic and unconventional—great for studying non-traditional storytelling and visual risk-taking.',
         url: 'https://www.youtube.com/@FilmShortage',
@@ -1174,7 +1116,8 @@ const resources = [
     {
         id: 'every-frame-a-painting',
         name: 'Every Frame a Painting',
-        category: ['references', 'inspiration'],
+        category: 'references',
+        refType: 'references',
         desc: 'Video essays on film form and technique.',
         fullDesc: 'Classic YouTube video essay series analyzing film techniques, editing, and cinematography. Essential viewing for filmmakers.',
         youtubeUrl: 'https://www.youtube.com/@everyframeapainting',
@@ -1185,12 +1128,65 @@ const resources = [
     {
         id: 'nerdwriter',
         name: 'Nerdwriter1',
-        category: ['references', 'inspiration'],
+        category: 'references',
+        refType: 'references',
         desc: 'Video essays on film, art, and culture.',
         fullDesc: 'Nerdwriter1 creates thoughtful video essays analyzing films, art, music, and culture with a focus on craft and meaning.',
         youtubeUrl: 'https://www.youtube.com/@Nerdwriter1',
         url: 'https://www.youtube.com/@Nerdwriter1',
         paid: false
+    },
+
+    {
+        name: 'Viva La Dirt League',
+        category: 'references',
+        refType: 'comedy',
+        desc: 'Narrative comedy sketches rooted in gaming and pop culture.',
+        fullDesc: 'High-output narrative comedy with strong character consistency and efficient production workflows.',
+        url: 'https://www.youtube.com/@VivaLaDirtLeague',
+        instagramUrl: 'https://www.instagram.com/vivaladirtleague/',
+        paid: false,
+        featuredVideo: 'tM2L1Je92w0',
+        features: ['Comedy', 'Sketch Writing', 'Narrative Shorts', 'High Output']
+    },
+
+    {
+        name: 'That\'s a Bad Idea',
+        category: 'references',
+        refType: 'comedy',
+        desc: 'Short-form comedy sketches and punchy scripted bits.',
+        fullDesc: 'That\'s a Bad Idea delivers fast, scripted comedy sketches with clear comedic structure and tight timing—solid reference for pacing and punchlines.',
+        url: 'https://www.youtube.com/@ThatsABadIdea',
+        paid: false,
+        featuredVideo: 'lLZP1E4U2lc',
+        features: ['Sketch Comedy', 'Tight Timing', 'Punchlines', 'Short Form']
+    },
+
+    {
+        name: 'Lofi Girl',
+        category: 'references',
+        refType: 'music',
+        desc: 'Iconic lo-fi music channel with strong visual identity.',
+        fullDesc: 'A reference point for branding, tone, and ambient storytelling through consistent visual language.',
+        url: 'https://www.youtube.com/@LofiGirl',
+        paid: false,
+        featuredVideo: '8b3fqIBrNW0',
+        features: ['Music Channel', 'Visual Identity', 'Brand Consistency']
+    },
+
+    {
+        name: 'PandaHouse',
+        category: 'references',
+        refType: 'music',
+        desc: 'Detroit-based music project blending indie, alternative, and expressive songwriting.',
+        fullDesc: 'Mood-driven songwriting with an atmospheric edge—useful inspiration for music-led visual tone and emotional pacing. Features Anthony Brass (collaborator) on drums alongside emotive indie arrangements.',
+        url: 'https://www.pandahousedetroit.com',
+        youtubeUrl: 'https://www.youtube.com/channel/UCIPj80TPOAufdvsm666GQng',
+        spotifyUrl: 'https://open.spotify.com/artist/0HuGjGGYSPTGINTZpc6ziy',
+        paid: false,
+        featuredVideo: '5gKjeyHaH6o',
+        hideKeyInfo: true,
+        features: ['Indie Music', 'Detroit Artist', 'Mood-Driven Sound', 'Atmospheric Tone']
     },
 
 
@@ -1747,13 +1743,4 @@ const resources = [
         features: ['Production Planning', 'Call Sheets', 'Team Collaboration', 'Free Tier']
     },
 
-    {
-        id: 'adobe-premiere',
-        name: 'Adobe Premiere Pro',
-        category: ['tools', 'software'],
-        desc: 'Industry-standard video editing software.',
-        fullDesc: 'Adobe Premiere Pro is an industry-standard video editing application used in professional film and video production.',
-        url: 'https://www.adobe.com/products/premiere.html',
-        paid: true
-    },
 ];

@@ -4,6 +4,20 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-19 | 1:07AM EST
+———————————————————————
+Change: Refined resources listings, references subfilters, and community labels to match updated curation.
+Files touched: resources-data.js, resources.html, CHANGELOG_RUNNING.md
+Notes:
+1. Updated community types and drone channels, removing outdated entries.
+2. Reworked references data to use ref types and removed inspiration/color subfilters.
+3. Added coding tools and cleaned AI/software removals per latest list.
+Quick test checklist:
+1. Open resources.html → Community filter and verify Groups/Orgs, Meetups, Facebook Groups, Hiring, Training show expected cards.
+2. Open resources.html → References filter and confirm subfilters (References, Art, Editing, Filming, Music, Comedy, All) filter correctly.
+3. Open resources.html → Verify removed items (Movies Plus TV, Sora, Adobe Premiere Pro) no longer appear.
+4. Open DevTools Console on resources.html and confirm no errors.
+
 2026-01-19 | 5:09AM EST
 ———————————————————————
 Change: Removed callboard option dates and made directory location free text
