@@ -4,19 +4,6 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-19 | 5:19AM EST
-———————————————————————
-Change: Prevented enter-key form submits and clarified callboard dates
-Files touched: callboard.html, directory.html, CHANGELOG_RUNNING.md
-Notes:
-1. Added enter-key guards to prevent accidental submits while typing in inputs.
-2. Updated callboard listing cards to show Posted and Expires dates separately.
-Quick test checklist:
-1. Open callboard.html → focus an input and press Enter; confirm the form does not submit.
-2. Open directory.html → focus an input and press Enter; confirm the form does not submit.
-3. Verify callboard listings display Posted and Expires dates in the meta row.
-4. Open DevTools Console on callboard.html and directory.html and confirm no errors.
-
 2026-01-19 | 5:09AM EST
 ———————————————————————
 Change: Removed callboard option dates and made directory location free text
