@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline';
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src 'self' https://fonts.gstatic.com;
+  img-src 'self' data: https:;
+  connect-src 'self' https://dfwgjbjrkwikvqmnzcxx.supabase.co;
+">
+    <title>Directory | Michigan Filmmakers — LaB Media</title>
+    <link rel="canonical" href="https://labmedia.work/directory.html">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Directory of Michigan filmmakers, crew, and talent. Find local DPs, directors, editors, and more.">
+    <meta name="keywords" content="Michigan filmmaker directory, Detroit film crew, Michigan talent, film jobs">
+    <meta name="author" content="LaB Media">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://labmedia.work/directory.html">
+    <meta property="og:title" content="Directory | Michigan Filmmakers — LaB Media">
+    <meta property="og:description" content="Connect with local Michigan film talent.">
+    <meta property="og:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://labmedia.work/directory.html">
+    <meta name="twitter:title" content="Directory | Michigan Filmmakers — LaB Media">
+    <meta name="twitter:description" content="Connect with local Michigan film talent.">
+    <meta name="twitter:image" content="https://labmedia.work/images/TheLaB.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Prototype Design System -->
+    <link rel="stylesheet" href="prototype-theme.css">
+
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-400: #888888;
+            --gray-600: #555555;
+            --gray-800: #1A1A1A;
+            --gray-900: #0D0D0D;
+            --lab-orange: #F97316;
+            --lab-green: #22C55E;
+            --lab-purple: #A855F7;
+            --lab-blue: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--black);
+            color: var(--gray-400);
+            min-height: 100vh;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+
+        .nav-logo {
+            height: 26px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            opacity: 0.5;
+        }
+
+        .nav-back {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-back:hover {
+            opacity: 0.5;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.5;
+        }
+
+        /* Nav Dropdown Styles */
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .nav-dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-dropdown-toggle:hover {
+            opacity: 0.5;
+        }
+
+        .nav-dropdown-toggle svg {
+            width: 10px;
+            height: 10px;
+            transition: transform 0.2s ease;
+        }
+
+        .nav-dropdown.active .nav-dropdown-toggle svg {
+            transform: rotate(180deg);
+        }
+
+        .nav-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 0.75rem);
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid var(--gray-800);
+            padding: 0.75rem 0;
+            min-width: 160px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 1001;
+        }
+
+        .nav-dropdown.active .nav-dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .nav-dropdown-menu a {
+            display: block;
+            padding: 0.6rem 1.25rem;
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: color 0.2s ease, background 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav-dropdown-menu a:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+            opacity: 1;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            padding: 0.75rem;
+            min-width: 44px;
+            min-height: 44px;
+            z-index: 1001;
+            background: none;
+            border: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .menu-toggle span {
+            width: 22px;
+            height: 2px;
+            background: var(--white);
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .page {
+            padding: 8rem 6vw 5rem;
+            max-width: 1400px;
+            /* Wider for directory grid */
+            margin: 0 auto;
+        }
+
+        .page-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .page-header h1 {
+            font-family: 'Space Mono', monospace;
+            color: var(--white);
+            font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+            margin-bottom: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .page-header p {
+            max-width: 720px;
+            line-height: 1.6;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-group {
+            background: var(--gray-900);
+            border: 1px solid var(--gray-800);
+            padding: 1rem;
+        }
+
+        .filter-group label {
+            display: block;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+
+        .toggle-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .toggle-row button {
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-row button.active {
+            border-color: var(--lab-blue);
+            color: var(--white);
+        }
+
+        .filter-group input[type="text"] {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--white);
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .submit-btn {
+            background: var(--white);
+            color: var(--black);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.7;
+        }
+
+        .submit-btn.is-loading {
+            opacity: 0.7;
+            cursor: progress;
+        }
+
+        .listings {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 1rem;
+        }
+
+        .listing-card {
+            background: var(--gray-900);
+            border: 1px solid var(--gray-800);
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .listing-card:hover {
+            border-color: var(--gray-600);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .listing-card h3 {
+            color: var(--white);
+            font-size: 1rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.3;
+        }
+
+        .listing-meta {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray-400);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            align-items: center;
+        }
+
+        .listing-meta .badge {
+            padding: 0.2rem 0.5rem;
+            border: 1px solid var(--gray-600);
+        }
+
+        .listing-meta .badge-crew {
+            border-color: var(--lab-orange);
+            color: var(--lab-orange);
+        }
+
+        .listing-meta .badge-casting {
+            border-color: var(--lab-purple);
+            color: var(--lab-purple);
+        }
+
+        .listing-meta .badge-paid {
+            border-color: var(--lab-green);
+            color: var(--lab-green);
+        }
+
+        .listing-meta .location {
+            color: var(--gray-400);
+        }
+
+        .listing-meta .date {
+            color: var(--gray-600);
+            margin-left: auto;
+        }
+
+        /* Past Calls Section */
+        .past-calls-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-800);
+        }
+
+        .past-calls-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .past-calls-header h2 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .past-calls-toggle {
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .past-calls-toggle:hover {
+            color: var(--white);
+            border-color: var(--gray-400);
+        }
+
+        .past-calls-list {
+            display: none;
+        }
+
+        .past-calls-list.active {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 1rem;
+        }
+
+        .listing-card.filled {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .listing-card.filled:hover {
+            border-color: var(--gray-800);
+            background: var(--gray-900);
+        }
+
+        .listing-card.filled h3 {
+            text-decoration: line-through;
+            color: var(--gray-400);
+        }
+
+        .listing-card.filled .badge-filled {
+            border-color: var(--gray-600);
+            color: var(--gray-400);
+        }
+
+        /* Detail Modal */
+        .detail-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            z-index: 2000;
+        }
+
+        .detail-modal.active {
+            display: flex;
+        }
+
+        .detail-modal-content {
+            background: var(--black);
+            border: 1px solid var(--gray-800);
+            width: min(600px, 100%);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .detail-header {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .detail-header h2 {
+            color: var(--white);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .detail-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-badges .badge {
+            padding: 0.25rem 0.6rem;
+            border: 1px solid var(--gray-600);
+        }
+
+        .detail-body {
+            padding: 1.5rem;
+        }
+
+        .detail-row {
+            margin-bottom: 1.25rem;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray-600);
+            margin-bottom: 0.4rem;
+        }
+
+        .detail-value {
+            color: var(--gray-400);
+            line-height: 1.6;
+        }
+
+        .detail-value.description {
+            white-space: pre-wrap;
+        }
+
+        .detail-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .detail-tags span {
+            border: 1px solid var(--gray-600);
+            padding: 0.2rem 0.5rem;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray-400);
+        }
+
+        .detail-contact-link {
+            color: var(--white);
+            text-decoration: underline;
+            word-break: break-word;
+        }
+
+        .detail-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--gray-800);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .detail-close-btn {
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .detail-close-btn:hover {
+            border-color: var(--white);
+        }
+
+        .empty-state,
+        .status-message {
+            padding: 1rem;
+            border: 1px solid var(--gray-800);
+            background: var(--gray-900);
+            color: var(--gray-400);
+        }
+
+        .status-message.is-sending {
+            color: var(--gray-300);
+            animation: statusPulse 1.2s ease-in-out infinite;
+        }
+
+        .status-message.is-success {
+            color: #22C55E;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            padding: 1rem 1.25rem;
+            border-radius: 6px;
+            font-weight: 500;
+            text-align: center;
+            animation: successPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .status-message.is-success::before {
+            content: '✓ ';
+            font-weight: 700;
+        }
+
+        .status-message.is-error {
+            color: #fca5a5;
+            background: rgba(252, 165, 165, 0.1);
+            border: 1px solid rgba(252, 165, 165, 0.3);
+            padding: 1rem 1.25rem;
+            border-radius: 6px;
+            text-align: center;
+            animation: statusReveal 0.35s ease;
+        }
+
+        @keyframes statusPulse {
+
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes statusReveal {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes successPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            z-index: 2000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--black);
+            border: 1px solid var(--gray-800);
+            padding: 2rem;
+            width: min(640px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-content h2 {
+            font-family: 'Space Mono', monospace;
+            color: var(--white);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .modal-form label {
+            font-size: 0.8rem;
+            color: var(--white);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .modal-form input,
+        .modal-form select,
+        .modal-form textarea {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--white);
+            padding: 0.6rem 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .modal-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .secondary-btn {
+            background: transparent;
+            border: 1px solid var(--gray-600);
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .hidden-honeypot {
+            position: absolute;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 1.5rem;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 100%;
+                max-width: 300px;
+                background: #000000;
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.4s ease;
+                mix-blend-mode: normal;
+                border-left: 1px solid var(--gray-800);
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links a {
+                opacity: 1;
+                font-size: 0.9rem;
+                color: var(--white) !important;
+                mix-blend-mode: normal;
+            }
+
+            /* Mobile dropdown styles */
+            .nav-dropdown {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-dropdown-toggle {
+                font-size: 0.9rem;
+                color: var(--white) !important;
+            }
+
+            .nav-dropdown-menu {
+                position: static;
+                transform: none;
+                background: transparent;
+                border: none;
+                padding: 0.5rem 0 0 0;
+                min-width: auto;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 1;
+                visibility: visible;
+                transition: max-height 0.3s ease, padding 0.3s ease;
+            }
+
+            .nav-dropdown.active .nav-dropdown-menu {
+                max-height: 300px;
+                padding: 0.75rem 0 0 0;
+            }
+
+            .nav-dropdown-menu a {
+                padding: 0.5rem 0;
+                font-size: 0.75rem;
+                color: var(--gray-400) !important;
+                text-align: center;
+            }
+
+            .nav-dropdown-menu a:hover {
+                background: transparent;
+                color: var(--white) !important;
+            }
+
+            .page {
+                padding: 7rem 1.5rem 3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="nav-back">← Back</a>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="menu-toggle" aria-label="Toggle Navigation" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <ul class="nav-links" id="navLinks">
+            <li class="nav-dropdown">
+                <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                    Community
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 4.5L6 7.5L9 4.5"/>
+                    </svg>
+                </button>
+                <div class="nav-dropdown-menu">
+                    <a href="events.html">Events</a>
+                    <a href="callboard.html">Callboard</a>
+                    <a href="directory.html">Directory</a>
+                </div>
+            </li>
+            <li class="nav-dropdown">
+                <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                    Tools
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 4.5L6 7.5L9 4.5"/>
+                    </svg>
+                </button>
+                <div class="nav-dropdown-menu">
+                    <a href="resources.html">Resources</a>
+                    <a href="ideas.html">Story Generator</a>
+                    <a href="plan-your-project.html">Plan</a>
+                </div>
+            </li>
+            <li><a href="portfolio.html">Reel</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main class="page">
+        <header class="page-header">
+            <h1>Filmmaker Directory</h1>
+            <p>Connect with Michigan's local talent. Find collaborators for your next project.</p>
+        </header>
+
+        <section class="actions">
+            <button class="submit-btn" id="openModal">Join Directory</button>
+        </section>
+
+        <section class="filters">
+            <div class="filter-group">
+                <label>Primary Role</label>
+                <div class="toggle-row" data-filter="role">
+                    <button class="active" data-value="all">All</button>
+                    <button data-value="director">Director</button>
+                    <button data-value="producer">Producer</button>
+                    <button data-value="dp">DP</button>
+                    <button data-value="editor">Editor</button>
+                    <button data-value="sound">Sound</button>
+                    <button data-value="art">Art Dept</button>
+                    <button data-value="actor">Actor</button>
+                    <button data-value="writer">Writer</button>
+                    <button data-value="other">Other</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <label>Location</label>
+                <div class="toggle-row" data-filter="area">
+                    <button class="active" data-value="all">All MI</button>
+                    <button data-value="detroit">Detroit</button>
+                    <button data-value="grand-rapids">Grand Rapids</button>
+                    <button data-value="lansing">Lansing</button>
+                    <button data-value="ann-arbor">Ann Arbor</button>
+                    <button data-value="northern">Northern MI</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <label>Search</label>
+                <input type="text" id="searchInput" placeholder="Name, role, keywords...">
+            </div>
+        </section>
+
+        <section id="listings" class="listings" aria-live="polite"></section>
+    </main>
+
+    <!-- Detail Modal (View Profile) -->
+    <div class="detail-modal" id="detailModal" aria-hidden="true" role="dialog" aria-labelledby="detailTitle">
+        <div class="detail-modal-content">
+            <header class="detail-header">
+                <h2 id="detailTitle">Name</h2>
+                <div class="detail-badges" id="detailBadges">
+                    <!-- Badges injected here -->
+                </div>
+            </header>
+            <div class="detail-body">
+                <div class="detail-row">
+                    <div class="detail-label">Location</div>
+                    <div class="detail-value" id="detailLocation"></div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Bio</div>
+                    <div class="detail-value description" id="detailDescription"></div>
+                </div>
+
+                <div class="detail-row" id="detailLinksRow">
+                    <div class="detail-label">Links</div>
+                    <div class="detail-tags" id="detailLinks" style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                        <!-- Links injected here -->
+                    </div>
+                </div>
+
+                <div class="detail-row" id="detailContactRow">
+                    <div class="detail-label">Contact</div>
+                    <a href="#" class="detail-contact-link" id="detailContact" target="_blank"></a>
+                </div>
+            </div>
+            <footer class="detail-footer">
+                <button type="button" class="detail-close-btn" id="closeDetailModal">Close</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Submission Modal -->
+    <div class="modal" id="modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+        <div class="modal-content">
+            <h2 id="modalTitle">Create Profile</h2>
+            <p>Join the directory. Profiles are reviewed within 24 hours.</p>
+            <form id="listingForm">
+                <div>
+                    <label for="name">Full Name / Entity Name</label>
+                    <input id="name" name="name" required maxlength="60">
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <label for="role">Primary Role</label>
+                        <select id="role" name="role" required>
+                            <option value="director">Director</option>
+                            <option value="producer">Producer</option>
+                            <option value="dp">DP / Cinematographer</option>
+                            <option value="editor">Editor</option>
+                            <option value="sound">Sound Mixer / Design</option>
+                            <option value="art">Art Director / PD</option>
+                            <option value="actor">Actor</option>
+                            <option value="writer">Writer</option>
+                            <option value="gaffer">Gaffer / Grip</option>
+                            <option value="colorist">Colorist</option>
+                            <option value="makeup">Makeup / Hair</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="location">Base Location</label>
+                        <select id="location" name="location" required>
+                            <option value="detroit">Metro Detroit</option>
+                            <option value="grand-rapids">Grand Rapids</option>
+                            <option value="lansing">Lansing</option>
+                            <option value="ann-arbor">Ann Arbor</option>
+                            <option value="traverse-city">Traverse City</option>
+                            <option value="flint">Flint / Saginaw</option>
+                            <option value="kalamazoo">Kalamazoo</option>
+                            <option value="remote">Remote / Any</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="bio">Short Bio (Experience, Style, Equipment)</label>
+                    <textarea id="bio" name="bio" rows="4" required maxlength="400"></textarea>
+                </div>
+
+                <!-- New Fields -->
+                <div>
+                    <label for="rolesWorked">Roles Worked (Comma separated, e.g. Gaffer, Grip, PA)</label>
+                    <input id="rolesWorked" name="roles_worked" placeholder="Secondary roles you can fill...">
+                </div>
+
+                <div>
+                    <label for="pastWork">Past Work / Credits (Brief list)</label>
+                    <textarea id="pastWork" name="past_work" rows="3"
+                        placeholder="Project Name (Role), Another Project (Role)..."></textarea>
+                </div>
+                <!-- End New Fields -->
+
+                <div class="form-row">
+                    <div>
+                        <label for="website">Website / Portfolio URL</label>
+                        <input id="website" name="website" placeholder="https://...">
+                    </div>
+                    <div>
+                        <label for="instagram">Instagram (optional)</label>
+                        <input id="instagram" name="instagram" placeholder="@handle">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="imdb">IMDb URL (optional)</label>
+                    <input id="imdb" name="imdb" placeholder="https://imdb.com/name/...">
+                </div>
+
+                <div>
+                    <label for="email">Contact Email</label>
+                    <input id="email" name="email" required type="email">
+                    <p style="font-size:0.65rem; color:var(--gray-600); margin-top:0.25rem;">Visible to logged in users
+                        (or public depending on settings).</p>
+                </div>
+
+                <div class="hidden-honeypot" aria-hidden="true">
+                    <label for="companyWebsite">Company Website</label>
+                    <input id="companyWebsite" name="companyWebsite" autocomplete="off" tabindex="-1">
+                </div>
+                <div class="status-message" id="formStatus">All profiles are reviewed before publishing.</div>
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn" id="closeModal">Close</button>
+                    <button type="submit" class="submit-btn" style="background: var(--lab-blue);">Submit
+                        Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_CONFIG = {
+            url: 'https://dfwgjbjrkwikvqmnzcxx.supabase.co',
+            anonKey: 'sb_publishable__Mrv6qhUoPwuzpFl4b4baA_BQcWgd6e'
+        };
+
+        const state = {
+            listings: [],
+            filterRole: 'all',
+            filterArea: 'all',
+            search: ''
+        };
+
+        const listingsEl = document.getElementById('listings');
+        const searchInput = document.getElementById('searchInput');
+
+        // Submission Modal
+        const modal = document.getElementById('modal');
+        const openModal = document.getElementById('openModal');
+        const closeModal = document.getElementById('closeModal');
+        const listingForm = document.getElementById('listingForm');
+        const formStatus = document.getElementById('formStatus');
+
+        // Detail Modal Elements
+        const detailModal = document.getElementById('detailModal');
+        const closeDetailModalBtn = document.getElementById('closeDetailModal');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailBadges = document.getElementById('detailBadges'); // Primary Role
+        const detailLocation = document.getElementById('detailLocation');
+        const detailDescription = document.getElementById('detailDescription'); // Bio
+        const detailLinks = document.getElementById('detailLinks');
+        const detailContact = document.getElementById('detailContact');
+        const detailContactRow = document.getElementById('detailContactRow');
+
+        // New Detail Elements, injected dynamically or create placeholders?
+        // Using existing structure, I'll inject credit info into detail-body
+        // Need to add placeholders in HTML first? Or just append to bio.
+        // Let's create specific containers in the HTML if possible, or just insert HTML string. 
+        // I will update the HTML above in the Detail Modal section too if I could, but replace_file_content works on contiguous blocks.
+        // I will do JS injection/manipulation in openDetailModal.
+
+        // ... (Script Logic Below) ...
+
+        const normalizeText = (text) => (text || '').toLowerCase();
+
+        // Render Profiles
+        const renderListings = () => {
+            const searchTerm = normalizeText(state.search);
+
+            const filtered = state.listings.filter((item) => {
+                // Filter Role
+                if (state.filterRole !== 'all' && item.role !== state.filterRole) return false;
+
+                // Filter Location
+                // "All MI" (all) vs specific city.
+                // The form is a Select, so single value.
+                if (state.filterArea !== 'all' && item.location !== state.filterArea) return false;
+
+                // Search
+                if (searchTerm) {
+                    const haystack = [item.name, item.role, item.location, item.bio, item.roles_worked, item.past_work].map(normalizeText).join(' ');
+                    if (!haystack.includes(searchTerm)) return false;
+                }
+                return true;
+            });
+
+            if (!filtered.length) {
+                listingsEl.innerHTML = '<div class="empty-state">No profiles found matching these filters.</div>';
+                return;
+            }
+
+            listingsEl.innerHTML = filtered.map((item) => {
+                // Map role to display text if needed, or just use value capitalized
+                const roleDisplay = item.role.charAt(0).toUpperCase() + item.role.slice(1);
+
+                // Directory Card
+                return `
+                    <article class="listing-card" data-id="${item.id}">
+                        <h3>${item.name}</h3>
+                        <div class="listing-meta">
+                            <span class="badge" style="border-color: var(--white); color: var(--white);">${roleDisplay}</span>
+                            <span class="location">${item.location}</span>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            // Attach click listeners
+            document.querySelectorAll('.listing-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const id = card.dataset.id;
+                    const item = state.listings.find(l => l.id == id);
+                    if (item) openDetailModal(item);
+                });
+            });
+        };
+
+        // Open Detail Modal
+        const openDetailModal = (item) => {
+            detailTitle.textContent = item.name;
+            detailLocation.textContent = item.location.charAt(0).toUpperCase() + item.location.slice(1);
+            detailDescription.innerHTML = `<strong>Bio:</strong><br>${item.bio}`;
+
+            // Add Past Work & Roles Worked to Description Area (or create new elements if I could edit HTML easily)
+            // I'll append them to detailDescription for simplicity without changing HTML structure drastically.
+
+            if (item.roles_worked) {
+                detailDescription.innerHTML += `<br><br><strong>Also Works As:</strong><br>${item.roles_worked}`;
+            }
+
+            if (item.past_work) {
+                detailDescription.innerHTML += `<br><br><strong>Selected Credits:</strong><br>${item.past_work.replace(/\n/g, '<br>')}`;
+            }
+
+            // Badges (Role)
+            const roleDisplay = item.role.charAt(0).toUpperCase() + item.role.slice(1);
+            detailBadges.innerHTML = `<span class="badge" style="border-color: var(--white); color: var(--white);">${roleDisplay}</span>`;
+
+            // Links (Website, IMDB, Instagram)
+            let linksHtml = '';
+            if (item.website) linksHtml += `<a href="${item.website}" target="_blank" class="badge">Website</a>`;
+            if (item.instagram) linksHtml += `<a href="https://instagram.com/${item.instagram.replace('@', '')}" target="_blank" class="badge">Instagram</a>`;
+            if (item.imdb) linksHtml += `<a href="${item.imdb}" target="_blank" class="badge">IMDb</a>`;
+
+            if (linksHtml) {
+                detailLinks.innerHTML = linksHtml;
+                detailLinks.parentElement.style.display = 'block';
+            } else {
+                detailLinks.parentElement.style.display = 'none';
+            }
+
+            // Contact
+            if (item.email) {
+                detailContact.href = `mailto:${item.email}`;
+                detailContact.textContent = 'Send Email';
+                detailContactRow.style.display = 'block';
+            } else {
+                detailContactRow.style.display = 'none';
+            }
+
+            detailModal.classList.add('active');
+            detailModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeDetailModalView = () => {
+            detailModal.classList.remove('active');
+            detailModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        };
+
+        // Fetch Data
+        const fetchListings = async () => {
+            // Use directory_listings table
+            // This table needs to be created by the user.
+            // Fields: id, name, role, location, bio, website, instagram, imdb, email, created_at, status, roles_worked, past_work
+            const url = `${SUPABASE_CONFIG.url}/rest/v1/directory_listings?select=*&status=eq.approved&order=created_at.desc`;
+
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        apikey: SUPABASE_CONFIG.anonKey,
+                        Authorization: `Bearer ${SUPABASE_CONFIG.anonKey}`
+                    }
+                });
+
+                if (!response.ok) {
+                    // Fail silently or show empty state if table doesn't exist yet
+                    console.warn('Directory table unavailable or schema mismatch.');
+                    state.listings = [];
+                    renderListings();
+                    return;
+                }
+
+                const data = await response.json();
+                state.listings = Array.isArray(data) ? data : [];
+                renderListings();
+            } catch (error) {
+                console.error(error);
+                listingsEl.innerHTML = '<div class="empty-state">Directory is currently offline.</div>';
+            }
+        };
+
+        // Filter Listeners
+        document.querySelectorAll('.toggle-row button').forEach((button) => {
+            button.addEventListener('click', () => {
+                const group = button.closest('.toggle-row');
+                const filterType = group.dataset.filter;
+
+                group.querySelectorAll('button').forEach((btn) => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                if (filterType === 'role') {
+                    state.filterRole = button.dataset.value;
+                }
+                if (filterType === 'area') {
+                    state.filterArea = button.dataset.value;
+                }
+
+                renderListings();
+            });
+        });
+
+        searchInput.addEventListener('input', (event) => {
+            state.search = event.target.value;
+            renderListings();
+        });
+
+        // Modal Views
+        const openModalView = () => {
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            const firstField = modal.querySelector('input, select, textarea, button');
+            if (firstField) firstField.focus();
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeModalView = () => {
+            if (modal.contains(document.activeElement)) openModal.focus();
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        };
+
+        openModal.addEventListener('click', openModalView);
+        closeModal.addEventListener('click', closeModalView);
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) closeModalView();
+        });
+
+        closeDetailModalBtn.addEventListener('click', closeDetailModalView);
+        detailModal.addEventListener('click', (event) => {
+            if (event.target === detailModal) closeDetailModalView();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (detailModal.classList.contains('active')) closeDetailModalView();
+                if (modal.classList.contains('active')) closeModalView();
+            }
+        });
+
+        const setFormStatus = (message, state) => {
+            formStatus.textContent = message;
+            formStatus.classList.remove('is-sending', 'is-success', 'is-error');
+            if (state) formStatus.classList.add(`is-${state}`);
+        };
+
+        // Submission Logic
+        listingForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const submitBtn = listingForm.querySelector('button[type="submit"]');
+            setFormStatus('Submitting...', 'sending');
+            listingForm.setAttribute('aria-busy', 'true');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('is-loading');
+            }
+
+            const payload = {
+                name: listingForm.name.value.trim(),
+                role: listingForm.role.value,
+                location: listingForm.location.value,
+                bio: listingForm.bio.value.trim(),
+                // New Fields
+                roles_worked: listingForm.roles_worked.value.trim(),
+                past_work: listingForm.past_work.value.trim(),
+
+                website: listingForm.website.value.trim() || null,
+                instagram: listingForm.instagram.value.trim() || null,
+                imdb: listingForm.imdb.value.trim() || null,
+                email: listingForm.email.value.trim(),
+                honeypot_field: listingForm.companyWebsite.value.trim()
+            };
+
+            try {
+                // Using a specific endpoint for profiles
+                // User needs to create this Supabase Edge Function: `submit-profile`
+                const response = await fetch(`${SUPABASE_CONFIG.url}/functions/v1/submit-profile`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        apikey: SUPABASE_CONFIG.anonKey,
+                        Authorization: `Bearer ${SUPABASE_CONFIG.anonKey}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Request failed');
+                }
+
+                setFormStatus('Submitted for approval!', 'success');
+                listingForm.reset();
+
+                setTimeout(() => {
+                    closeModalView();
+                    setTimeout(() => {
+                        setFormStatus('All profiles are reviewed before publishing.', null);
+                    }, 300);
+                }, 2000);
+            } catch (error) {
+                setFormStatus('Something went wrong. Please try again in a moment.', 'error');
+            } finally {
+                listingForm.removeAttribute('aria-busy');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('is-loading');
+                }
+            }
+        });
+
+        fetchListings();
+    </script>
+
+    <!-- Mobile Menu Toggle -->
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.getElementById('navLinks');
+        let touchHandled = false;
+
+        function toggleMenu(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (e.type === 'touchend') {
+                touchHandled = true;
+                setTimeout(() => { touchHandled = false; }, 300);
+            } else if (e.type === 'click' && touchHandled) {
+                return;
+            }
+
+            const isActive = menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            menuToggle.setAttribute('aria-expanded', isActive);
+            document.body.style.overflow = isActive ? 'hidden' : '';
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        menuToggle.addEventListener('touchend', toggleMenu);
+
+        // NAV DROPDOWNS
+        const dropdowns = document.querySelectorAll('.nav-dropdown');
+
+        dropdowns.forEach(dropdown => {
+            const toggle = dropdown.querySelector('.nav-dropdown-toggle');
+
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Close other dropdowns
+                dropdowns.forEach(d => {
+                    if (d !== dropdown) {
+                        d.classList.remove('active');
+                        d.querySelector('.nav-dropdown-toggle').setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                // Toggle this dropdown
+                const isActive = dropdown.classList.toggle('active');
+                toggle.setAttribute('aria-expanded', isActive);
+            });
+        });
+
+        // Close dropdowns when clicking outside (desktop)
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-dropdown')) {
+                dropdowns.forEach(d => {
+                    d.classList.remove('active');
+                    d.querySelector('.nav-dropdown-toggle').setAttribute('aria-expanded', 'false');
+                });
+            }
+        });
+
+        // Close menu and dropdowns when clicking nav links
+        navLinks.querySelectorAll('.nav-dropdown-menu a, .nav-links > li > a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+                // Close all dropdowns
+                dropdowns.forEach(d => {
+                    d.classList.remove('active');
+                    d.querySelector('.nav-dropdown-toggle').setAttribute('aria-expanded', 'false');
+                });
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (navLinks.classList.contains('active') &&
+                !menuToggle.contains(e.target) &&
+                !navLinks.contains(e.target)) {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+                // Close all dropdowns
+                dropdowns.forEach(d => {
+                    d.classList.remove('active');
+                    d.querySelector('.nav-dropdown-toggle').setAttribute('aria-expanded', 'false');
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
