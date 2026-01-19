@@ -1292,16 +1292,7 @@
                         </div>
                         <div class="form-group">
                             <label for="location" class="form-label">Base Location</label>
-                            <select id="location" name="location" required>
-                                <option value="detroit">Metro Detroit</option>
-                                <option value="grand-rapids">Grand Rapids</option>
-                                <option value="lansing">Lansing</option>
-                                <option value="ann-arbor">Ann Arbor</option>
-                                <option value="traverse-city">Traverse City</option>
-                                <option value="flint">Flint / Saginaw</option>
-                                <option value="kalamazoo">Kalamazoo</option>
-                                <option value="remote">Remote / Any</option>
-                            </select>
+                            <input id="location" name="location" required maxlength="60" placeholder="e.g. Detroit, MI">
                         </div>
                     </div>
 
@@ -1434,8 +1425,11 @@
 
                 // Filter Location
                 // "All MI" (all) vs specific city.
-                // The form is a Select, so single value.
-                if (state.filterArea !== 'all' && item.location !== state.filterArea) return false;
+                const normalizedLocation = normalizeText(item.location).replace(/-/g, ' ');
+                if (state.filterArea !== 'all') {
+                    const normalizedArea = normalizeText(state.filterArea).replace(/-/g, ' ');
+                    if (!normalizedLocation || !normalizedLocation.includes(normalizedArea)) return false;
+                }
 
                 // Search
                 if (searchTerm) {

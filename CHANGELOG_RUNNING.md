@@ -4,6 +4,19 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-19 | 5:09AM EST
+———————————————————————
+Change: Removed callboard option dates and made directory location free text
+Files touched: callboard.html, directory.html, CHANGELOG_RUNNING.md
+Notes:
+1. Removed Options Open/Close fields from the callboard submission form and payload.
+2. Swapped directory location dropdown for a free-text input while keeping location filters usable.
+Quick test checklist:
+1. Open callboard.html → open the submission modal and confirm Options Open/Close fields are gone.
+2. Open directory.html → open Join Directory and confirm Base Location is a text field; submit and verify success.
+3. Filter directory listings by location buttons and confirm results still match text locations.
+4. Open DevTools Console on callboard.html and directory.html and confirm no errors.
+
 2026-01-19 | 4:17AM EST
 ———————————————————————
 Change: Improved callboard submission error handling and honeypot feedback
