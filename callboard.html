@@ -1171,17 +1171,6 @@
                     <input id="location" name="location" required maxlength="40" placeholder="e.g. Detroit, MI">
                 </div>
 
-                <!-- New Date Fields API -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label" for="optionsOpen">Options Open <span class="optional-tag">(opt)</span></label>
-                        <input id="optionsOpen" name="options_opening" type="date">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="optionsClose">Options Close <span class="optional-tag">(opt)</span></label>
-                        <input id="optionsClose" name="options_closing" type="date">
-                    </div>
-                </div>
                 <div class="form-group">
                     <label class="form-label" for="shootingDates">Shooting Dates <span class="optional-tag">(optional)</span></label>
                     <input id="shootingDates" name="shooting_dates" placeholder="e.g. Oct 12-14" maxlength="50">
@@ -1615,9 +1604,6 @@
                 contact_method: listingForm.contact_method.value.trim(),
                 tags: listingForm.tags.value.trim(),
                 expires_on: listingForm.expires_on.value || null,
-                // New Fields
-                options_opening: listingForm.options_opening.value || null,
-                options_closing: listingForm.options_closing.value || null,
                 shooting_dates: listingForm.shooting_dates.value.trim() || null,
 
                 honeypot_field: listingForm.companyWebsite.value.trim()
