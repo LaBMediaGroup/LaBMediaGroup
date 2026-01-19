@@ -4,6 +4,18 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-19 | 4:17AM EST
+———————————————————————
+Change: Improved callboard submission error handling and honeypot feedback
+Files touched: callboard.html, CHANGELOG_RUNNING.md
+Notes:
+1. Added early honeypot detection to avoid false failures from autofill.
+2. Surfaced server error details and rate-limit messaging to users.
+Quick test checklist:
+1. Open callboard.html → submit with the hidden honeypot filled and confirm a spam/autofill warning appears.
+2. Submit with valid fields and confirm success message appears and the modal auto-closes.
+3. Open DevTools Console on callboard.html and confirm no errors.
+
 2026-01-18 | 10:50PM EST
 ———————————————————————
 Change: Restyled callboard submission form and added success animation polish
