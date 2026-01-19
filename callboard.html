@@ -704,11 +704,11 @@
         .modal {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 1.5rem;
             z-index: 2000;
         }
 
@@ -717,10 +717,10 @@
         }
 
         .modal-content {
-            background: var(--black);
+            background: var(--gray-900);
             border: 1px solid var(--gray-800);
-            padding: 2rem;
-            width: min(640px, 100%);
+            padding: 0;
+            width: min(620px, 100%);
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
@@ -746,11 +746,31 @@
             animation: successLine 0.6s ease forwards;
         }
 
-        .modal-content h2 {
+        .modal-content.is-success::after {
+            animation: successLine 0.6s ease forwards;
+        }
+
+        .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--gray-800);
+        }
+
+        .modal-header h2 {
             font-family: 'Space Mono', monospace;
             color: var(--white);
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .modal-header p {
+            color: var(--gray-400);
+            margin: 0;
+            font-size: 0.85rem;
+        }
+
+        .modal-body {
+            padding: 1.5rem 2rem;
         }
 
         .modal-content p {
@@ -760,7 +780,20 @@
         }
 
         .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-row {
             display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
         }
 
@@ -796,8 +829,8 @@
         .modal-form select,
         .modal-form textarea {
             width: 100%;
-            background: transparent;
-            border: 1px solid var(--gray-600);
+            background: var(--black);
+            border: 1px solid var(--gray-800);
             color: var(--white);
             padding: 0.6rem 0.8rem;
             font-size: 0.85rem;
@@ -820,6 +853,7 @@
         .modal-form textarea {
             min-height: 120px;
             resize: vertical;
+            line-height: 1.5;
         }
 
         .modal-form .help-text {
@@ -833,7 +867,12 @@
             justify-content: space-between;
             gap: 1rem;
             flex-wrap: wrap;
-            margin-top: 0.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-left: auto;
         }
 
         .secondary-btn {
@@ -1101,76 +1140,82 @@
 
     <div class="modal" id="modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
         <div class="modal-content">
-            <h2 id="modalTitle">Submit a Listing</h2>
-            <p>Listings are reviewed within 24 hours.</p>
-            <form id="listingForm">
-                <div>
-                    <label for="title">Project Title</label>
+            <div class="modal-header">
+                <h2 id="modalTitle">Submit a Listing</h2>
+                <p>Listings are reviewed within 24 hours.</p>
+            </div>
+            <form id="listingForm" class="modal-form">
+                <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label" for="title">Project Title</label>
                     <input id="title" name="title" required maxlength="60">
                 </div>
                 <div class="form-row">
-                    <div>
-                        <label for="listingType">Type</label>
+                    <div class="form-group">
+                        <label class="form-label" for="listingType">Type</label>
                         <select id="listingType" name="listing_type">
                             <option value="crew">Crew Call</option>
                             <option value="casting">Casting Call</option>
                         </select>
                     </div>
-                    <div>
-                        <label for="compensation">Compensation</label>
+                    <div class="form-group">
+                        <label class="form-label" for="compensation">Compensation</label>
                         <select id="compensation" name="compensation">
                             <option value="paid">Paid</option>
                             <option value="collab">TFP / Collab</option>
                         </select>
                     </div>
                 </div>
-                <div>
-                    <label for="location">Location (City, State)</label>
+                <div class="form-group">
+                    <label class="form-label" for="location">Location (City, State)</label>
                     <input id="location" name="location" required maxlength="40" placeholder="e.g. Detroit, MI">
                 </div>
 
                 <!-- New Date Fields API -->
                 <div class="form-row">
-                    <div>
-                        <label for="optionsOpen">Options Open (opt)</label>
+                    <div class="form-group">
+                        <label class="form-label" for="optionsOpen">Options Open <span class="optional-tag">(opt)</span></label>
                         <input id="optionsOpen" name="options_opening" type="date">
                     </div>
-                    <div>
-                        <label for="optionsClose">Options Close (opt)</label>
+                    <div class="form-group">
+                        <label class="form-label" for="optionsClose">Options Close <span class="optional-tag">(opt)</span></label>
                         <input id="optionsClose" name="options_closing" type="date">
                     </div>
                 </div>
-                <div>
-                    <label for="shootingDates">Shooting Dates (optional)</label>
+                <div class="form-group">
+                    <label class="form-label" for="shootingDates">Shooting Dates <span class="optional-tag">(optional)</span></label>
                     <input id="shootingDates" name="shooting_dates" placeholder="e.g. Oct 12-14" maxlength="50">
                 </div>
 
-                <div>
-                    <label for="description">Description & Requirements</label>
+                <div class="form-group">
+                    <label class="form-label" for="description">Description & Requirements</label>
                     <textarea id="description" name="description" rows="5" required></textarea>
                 </div>
-                <div>
-                    <label for="contactMethod">Contact Link or Email</label>
+                <div class="form-group">
+                    <label class="form-label" for="contactMethod">Contact Link or Email</label>
                     <input id="contactMethod" name="contact_method" required
                         placeholder="https://... or email@example.com">
                 </div>
-                <div>
-                    <label for="tags">Tags (comma separated)</label>
+                <div class="form-group">
+                    <label class="form-label" for="tags">Tags <span class="optional-tag">(comma separated)</span></label>
                     <input id="tags" name="tags" maxlength="200">
                 </div>
-                <div>
-                    <label for="expiresOn">Listing Expires On (optional)</label>
+                <div class="form-group">
+                    <label class="form-label" for="expiresOn">Listing Expires On <span class="optional-tag">(optional)</span></label>
                     <input id="expiresOn" name="expires_on" type="date">
                     <p class="help-text">Listing will automatically move to "Expired" after this date.</p>
                 </div>
                 <div class="hidden-honeypot" aria-hidden="true">
-                    <label for="companyWebsite">Company Website</label>
+                    <label class="form-label" for="companyWebsite">Company Website</label>
                     <input id="companyWebsite" name="companyWebsite" autocomplete="off" tabindex="-1">
                 </div>
-                <div class="status-message" id="formStatus">All submissions are reviewed before publishing.</div>
-                <div class="modal-actions">
-                    <button type="button" class="secondary-btn" id="closeModal">Close</button>
-                    <button type="submit" class="submit-btn">Send for Review</button>
+                </div>
+                <div class="modal-footer">
+                    <div class="status-message" id="formStatus">All submissions are reviewed before publishing.</div>
+                    <div class="modal-actions">
+                        <button type="button" class="secondary-btn" id="closeModal">Close</button>
+                        <button type="submit" class="submit-btn">Send for Review</button>
+                    </div>
                 </div>
             </form>
         </div>
