@@ -4,6 +4,42 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-19 | 4:39AM EST
+———————————————————————
+Change: Prevented double-reading callboard error bodies to preserve friendly messages
+Files touched: callboard.html, CHANGELOG_RUNNING.md
+Notes:
+1. Switched error parsing to read the response text once, then JSON-parse if possible.
+2. Preserved status-specific messaging when the server returns plain text or HTML.
+Quick test checklist:
+1. Open callboard.html → trigger a failing submission and confirm the message is human-friendly (no "body stream already read").
+2. Open DevTools Console on callboard.html and confirm failed submissions still log status details.
+3. Submit with valid fields and confirm success message appears and the modal auto-closes.
+
+2026-01-19 | 4:30AM EST
+———————————————————————
+Change: Added clearer callboard submission error guidance for offline or blocked requests
+Files touched: callboard.html, CHANGELOG_RUNNING.md
+Notes:
+1. Expanded submission error handling to map common HTTP statuses to user-friendly prompts.
+2. Logged response details to the console to aid debugging when the edge function fails.
+Quick test checklist:
+1. Open callboard.html → submit a listing and confirm the error message changes based on server response status.
+2. Open DevTools Console on callboard.html and confirm failed submissions log status details.
+3. Submit with valid fields and confirm success message appears and the modal auto-closes.
+
+2026-01-19 | 4:17AM EST
+———————————————————————
+Change: Improved callboard submission error handling and honeypot feedback
+Files touched: callboard.html, CHANGELOG_RUNNING.md
+Notes:
+1. Added early honeypot detection to avoid false failures from autofill.
+2. Surfaced server error details and rate-limit messaging to users.
+Quick test checklist:
+1. Open callboard.html → submit with the hidden honeypot filled and confirm a spam/autofill warning appears.
+2. Submit with valid fields and confirm success message appears and the modal auto-closes.
+3. Open DevTools Console on callboard.html and confirm no errors.
+
 2026-01-18 | 10:50PM EST
 ———————————————————————
 Change: Restyled callboard submission form and added success animation polish

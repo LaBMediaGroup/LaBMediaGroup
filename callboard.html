@@ -1623,6 +1623,16 @@
                 honeypot_field: listingForm.companyWebsite.value.trim()
             };
 
+            if (payload.honeypot_field) {
+                setFormStatus('Submission blocked. Please disable autofill for hidden fields and try again.', 'error');
+                listingForm.removeAttribute('aria-busy');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('is-loading');
+                }
+                return;
+            }
+
             try {
                 const response = await fetch(`${SUPABASE_CONFIG.url}/functions/v1/submit-listing`, {
                     method: 'POST',
@@ -1635,7 +1645,33 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('Request failed');
+                    let errorMessage = 'Something went wrong. Please try again in a moment.';
+                    let errorDetail = '';
+                    const errorText = await response.text();
+                    if (errorText) {
+                        errorMessage = errorText;
+                        errorDetail = errorText;
+                        try {
+                            const parsedError = JSON.parse(errorText);
+                            if (parsedError && parsedError.message) {
+                                errorMessage = parsedError.message;
+                            }
+                            errorDetail = JSON.stringify(parsedError);
+                        } catch (parseError) {
+                            // Non-JSON response body, keep text message as-is.
+                        }
+                    }
+                    if (response.status === 404) {
+                        errorMessage = 'Submission service is offline. Please try again later.';
+                    }
+                    if (response.status === 401 || response.status === 403) {
+                        errorMessage = 'Submission blocked. Please refresh the page and try again.';
+                    }
+                    if (response.status === 429) {
+                        errorMessage = 'Too many submissions in a short time. Please wait a minute and try again.';
+                    }
+                    console.error('Callboard submission failed:', response.status, errorDetail);
+                    throw new Error(errorMessage);
                 }
 
                 setFormStatus('Submitted for approval!', 'success');
@@ -1651,7 +1687,7 @@
                     }, 300);
                 }, 2000);
             } catch (error) {
-                setFormStatus('Something went wrong. Please try again in a moment.', 'error');
+                setFormStatus(error.message || 'Something went wrong. Please try again in a moment.', 'error');
             } finally {
                 listingForm.removeAttribute('aria-busy');
                 if (submitBtn) {
