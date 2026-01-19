@@ -4,6 +4,20 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-18 | 10:50PM EST
+———————————————————————
+Change: Restyled callboard submission form and added success animation polish
+Files touched: callboard.html, CHANGELOG_RUNNING.md
+Notes:
+1. Unified form layout with grid-based rows, uppercase labels, and consistent spacing.
+2. Added clean focus states and helper text styling to match site aesthetic.
+3. Added a success animation that highlights the modal on completed submission.
+Quick test checklist:
+1. Open callboard.html → click "Submit a Listing" and confirm the modal layout/labels align with site style.
+2. Submit the form (use test values) and confirm success message + modal success animation appears before auto-close.
+3. Reopen the modal and confirm the success styling resets.
+4. Open DevTools Console on callboard.html and confirm no errors.
+
 2026-01-19 | 3:00AM EST
 ———————————————————————
 Change: Added Supabase setup documentation and edge function for directory submissions
