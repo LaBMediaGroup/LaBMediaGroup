@@ -1646,31 +1646,20 @@
 
                 if (!response.ok) {
                     let errorMessage = 'Something went wrong. Please try again in a moment.';
-                    let errorDetail = '';
-                    const errorText = await response.text();
-                    if (errorText) {
-                        errorMessage = errorText;
-                        errorDetail = errorText;
-                        try {
-                            const parsedError = JSON.parse(errorText);
-                            if (parsedError && parsedError.message) {
-                                errorMessage = parsedError.message;
-                            }
-                            errorDetail = JSON.stringify(parsedError);
-                        } catch (parseError) {
-                            // Non-JSON response body, keep text message as-is.
+                    try {
+                        const errorBody = await response.json();
+                        if (errorBody && errorBody.message) {
+                            errorMessage = errorBody.message;
                         }
-                    }
-                    if (response.status === 404) {
-                        errorMessage = 'Submission service is offline. Please try again later.';
-                    }
-                    if (response.status === 401 || response.status === 403) {
-                        errorMessage = 'Submission blocked. Please refresh the page and try again.';
+                    } catch (parseError) {
+                        const errorText = await response.text();
+                        if (errorText) {
+                            errorMessage = errorText;
+                        }
                     }
                     if (response.status === 429) {
                         errorMessage = 'Too many submissions in a short time. Please wait a minute and try again.';
                     }
-                    console.error('Callboard submission failed:', response.status, errorDetail);
                     throw new Error(errorMessage);
                 }
 
