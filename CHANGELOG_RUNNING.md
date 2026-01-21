@@ -4,15 +4,6 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-21 | 10:00PM EST
-———————————————————————
-Change: Removed the DRL Simulator listing from the SkyBound simulators section.
-Files touched: skybound.html, CHANGELOG_RUNNING.md
-Notes:
-Quick test checklist:
-1. Open skybound.html → confirm the Simulators list no longer includes DRL Simulator.
-2. Open DevTools Console on skybound.html and confirm no errors.
-
 2026-01-21 | 9:50PM EST
 ———————————————————————
 Change: Overhauled SkyBound layout with new intro flow, simulators section, updated hero copy, and reordered sections.
