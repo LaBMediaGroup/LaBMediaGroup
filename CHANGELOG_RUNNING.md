@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-21 | 9:33PM EST
+———————————————————————
+Change: Moved the SkyBound gear section below the learning and Part 107 guidance to guide visitors through the content flow.
+Files touched: skybound.html, CHANGELOG_RUNNING.md
+Notes:
+Quick test checklist:
+1. Open skybound.html → confirm Learn & Watch, Shops, and Part 107 sections appear before Gear.
+2. Open skybound.html → click Gear filters and confirm the cards update.
+3. Open DevTools Console on skybound.html and confirm no errors.
+
 2026-01-21 | 9:17PM EST
 ———————————————————————
 Change: Added SkyBound to the Tools dropdown across the site and inserted the standard nav on skybound.html.
