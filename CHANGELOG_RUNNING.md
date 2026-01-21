@@ -4,6 +4,17 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-21 | 9:17PM EST
+———————————————————————
+Change: Added SkyBound to the Tools dropdown across the site and inserted the standard nav on skybound.html.
+Files touched: 404.html, callboard.html, contact.html, directory.html, events.html, ideas.html, index.html, past-events.html, plan-your-project.html, portfolio.html, resources.html, skybound.html, CHANGELOG_RUNNING.md
+Notes: Removed glow styling from SkyBound card hover to keep the crisp line aesthetic.
+Quick test checklist:
+1. Open index.html → Tools dropdown shows Resources, Story Generator, Plan, SkyBound in that order.
+2. Open skybound.html → nav appears and dropdown links navigate correctly.
+3. Open skybound.html → hover a card and confirm no glow halo appears.
+4. Open DevTools Console on skybound.html and confirm no errors.
+
 2026-01-19 | 6:28AM EST
 ———————————————————————
 Change: Reordered the Community nav dropdown to list Callboard, Directory, then Events.
