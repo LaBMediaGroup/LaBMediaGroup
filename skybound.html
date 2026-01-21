@@ -712,27 +712,29 @@
         <p class="section-subtitle">Train your reflexes before buying hardware. Sim time makes every first flight safer.</p>
 
         <div class="resource-list" id="simulators-list">
-            <div class="resource-item">
-                <div class="resource-info">
-                    <h4>Liftoff</h4>
-                    <p>The most popular FPV sim for freestyle and muscle memory training.</p>
-                </div>
-                <a href="https://store.steampowered.com/app/410340/Liftoff_FPV_Drone_Racing/" target="_blank" class="resource-link-btn">Visit</a>
-            </div>
-            <div class="resource-item">
-                <div class="resource-info">
-                    <h4>VelociDrone</h4>
-                    <p>Racing-focused sim with deep tuning and multiplayer options.</p>
-                </div>
-                <a href="https://www.velocidrone.com" target="_blank" class="resource-link-btn">Visit</a>
-            </div>
-            <div class="resource-item">
-                <div class="resource-info">
-                    <h4>Uncrashed</h4>
-                    <p>Freestyle-heavy sim with fast load times and smooth feel.</p>
-                </div>
-                <a href="https://store.steampowered.com/app/1682970/Uncrashed__FPV_Drone_Simulator/" target="_blank" class="resource-link-btn">Visit</a>
-            </div>
+            <!-- Simulators will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Resources Section -->
+    <div class="container">
+        <h2 class="section-title">Watch & Learn</h2>
+        <p class="section-subtitle">Learn from the best, then dive into focused watch and study tracks.</p>
+
+        <div class="resource-list" id="featured-channel">
+            <!-- Featured channel will be inserted here by JavaScript -->
+        </div>
+
+        <h3 class="section-title" style="margin-top: 3rem; font-size: 2rem;">Watch</h3>
+        <p class="section-subtitle">Freestyle, reviews, and inspiration to sharpen your eye.</p>
+        <div class="resource-list" id="watch-list">
+            <!-- Watch channels will be inserted here by JavaScript -->
+        </div>
+
+        <h3 class="section-title" style="margin-top: 3rem; font-size: 2rem;">Learn</h3>
+        <p class="section-subtitle">Study-first channels to prep for knowledge tests and airspace rules.</p>
+        <div class="resource-list" id="learn-list">
+            <!-- Learn channels will be inserted here by JavaScript -->
         </div>
     </div>
 
@@ -750,67 +752,6 @@
 
         <div class="grid grid-3" id="products-grid">
             <!-- Products will be inserted here by JavaScript -->
-        </div>
-    </div>
-
-    <!-- Watch & Learn Section -->
-    <div class="container">
-        <h2 class="section-title">Watch & Learn</h2>
-        <p class="section-subtitle">Learn from the best, then dive into focused watch and study tracks.</p>
-
-        <div class="resource-list" id="featured-channel">
-            <div class="resource-item">
-                <div class="resource-info">
-                    <h4>Joshua Bardwell</h4>
-                    <p>The "Godfather" of FPV. Deep dives into gear, building, and troubleshooting.</p>
-                </div>
-                <a href="https://www.youtube.com/@JoshuaBardwell" target="_blank" class="resource-link-btn">Visit</a>
-            </div>
-        </div>
-
-        <h3 class="section-title" style="margin-top: 3rem; font-size: 2rem;">Watch</h3>
-        <p class="section-subtitle">Freestyle, reviews, and inspiration to sharpen your eye.</p>
-        <div class="resource-list" id="watch-list">
-            <div class="resource-item">
-                <div class="resource-info">
-                    <h4>CAPTAIN DRONE</h4>
-                    <p>Comprehensive FPV tutorials, reviews, and high-quality flight content.</p>
-                </div>
-                <a href="https://www.youtube.com/@CAPTAINDRONE798" target="_blank" class="resource-link-btn">Visit</a>
-            </div>
-            <div class="resource-item">
-                <div class="resource-info">
-                    <h4>Mr Steele</h4>
-                    <p>Legendary FPV freestyle. The gold standard for cinematic movement.</p>
-                </div>
-                <a href="https://www.youtube.com/@MrSteeleFPV" target="_blank" class="resource-link-btn">Visit</a>
-            </div>
-            <div class="resource-item">
-                <div class="resource-info">
-                    <h4>BOTGRINDER</h4>
-                    <p>Aggressive freestyle, raw energy, and pure FPV inspiration.</p>
-                </div>
-                <a href="https://www.youtube.com/@BOTGRINDER" target="_blank" class="resource-link-btn">Visit</a>
-            </div>
-        </div>
-
-        <h3 class="section-title" style="margin-top: 3rem; font-size: 2rem;">Learn</h3>
-        <p class="section-subtitle">Study-first channels to prep for knowledge tests and airspace rules.</p>
-        <div class="resource-list" id="learn-list">
-            <div class="resource-item">
-                <div class="resource-info">
-                    <h4>Mike Sytes (Part 107)</h4>
-                    <p>Walkthroughs and practical guidance for the Part 107 exam.</p>
-                </div>
-                <a href="https://www.youtube.com/@mikesytes" target="_blank" class="resource-link-btn">Visit</a>
-            </div>
-            <div class="resource-item">
-                <div class="resource-info">
-                    <h4>Mr. Migs Classroom</h4>
-                    <p>Structured classroom-style lessons covering everything in the Part 107.</p>
-                </div>
-                <a href="https://www.youtube.com/@MrMigsClassroom" target="_blank" class="resource-link-btn">Visit</a>
-            </div>
         </div>
     </div>
 
@@ -890,6 +831,27 @@
             { id: 'qavs2', name: 'QAV-S 2 Sub-250 Bardwell SE', description: 'The definitive 3" DIY kit by Joshua Bardwell. Sub-250g weight. (Does not include O4 Pro Unit).', link: 'https://www.getfpv.com/beginner-diy-fpv-drone-kit-qav-s-2-sub-250-joshua-bardwell-se-3-hd-ready.html', category: 'drone' }
         ];
 
+        const CHANNELS = [
+            { name: 'Joshua Bardwell', description: 'The "Godfather" of FPV. Deep dives into gear, building, and troubleshooting.', url: 'https://www.youtube.com/@JoshuaBardwell' },
+            { name: 'DJI', description: 'Official channel for the industry-leading camera drone ecosystem.', url: 'https://www.dji.com/camera-drones' },
+            { name: 'BetaFPV', description: 'Masters of the micro drone. Great for compact systems and learning builds.', url: 'https://betafpv.com' },
+            { name: 'CAPTAIN DRONE', description: 'Comprehensive FPV tutorials, reviews, and high-quality flight content.', url: 'https://www.youtube.com/@CAPTAINDRONE798' },
+            { name: 'Mr Steele', description: 'Legendary FPV freestyle. The gold standard for cinematic movement.', url: 'https://www.youtube.com/@MrSteeleFPV' },
+            { name: 'BOTGRINDER', description: 'Aggressive freestyle, raw energy, and pure FPV inspiration.', url: 'https://www.youtube.com/@BOTGRINDER' }
+        ];
+
+        const LEARN_CHANNELS = [
+            { name: 'Mike Sytes (Part 107)', description: 'Walkthroughs and practical guidance for the Part 107 exam.', url: 'https://www.youtube.com/@mikesytes' },
+            { name: 'Mr. Migs Classroom', description: 'Structured classroom-style lessons covering everything in the Part 107.', url: 'https://www.youtube.com/@MrMigsClassroom' }
+        ];
+
+        const SIMULATORS = [
+            { name: 'Liftoff', description: 'The most popular FPV sim for freestyle and muscle memory training.', url: 'https://store.steampowered.com/app/410340/Liftoff_FPV_Drone_Racing/' },
+            { name: 'VelociDrone', description: 'Racing-focused sim with deep tuning and multiplayer options.', url: 'https://www.velocidrone.com' },
+            { name: 'DRL Simulator', description: 'Beginner-friendly, with structured training modes and real-world tracks.', url: 'https://store.steampowered.com/app/641780/The_DRL_Simulator/' },
+            { name: 'Uncrashed', description: 'Freestyle-heavy sim with fast load times and smooth feel.', url: 'https://store.steampowered.com/app/1682970/Uncrashed__FPV_Drone_Simulator/' }
+        ];
+
         const SHOPS = [
             { name: 'GetFPV', description: 'Major US retailer for all things FPV.', url: 'https://www.getfpv.com' },
             { name: 'RaceDayQuads', description: 'Fast shipping and a massive inventory.', url: 'https://www.racedayquads.com' },
@@ -945,6 +907,8 @@
 
         // Initial render
         renderProducts('radio');
+        renderResourceList(CHANNELS, 'channels-list');
+        renderResourceList(SIMULATORS, 'simulators-list');
         renderResourceList(SHOPS, 'shops-list');
         renderResourceList(OFFICIAL_LINKS, 'official-links');
 
