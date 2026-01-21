@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-21 | 11:14PM EST
+———————————————————————
+Change: Restored SkyBound resource lists by wiring featured/watch/learn and simulator data to the current sections.
+Files touched: skybound.html, CHANGELOG_RUNNING.md
+Notes: Reinstated missing resources from the prior version and re-enabled the LaB Pick badge on the featured channel.
+Quick test checklist:
+1. Open skybound.html → confirm Featured, Watch, and Learn lists populate with channels.
+2. Open skybound.html → confirm Simulators list shows Liftoff, VelociDrone, DRL Simulator, and Uncrashed.
+3. Open DevTools Console on skybound.html and confirm no errors.
+
 2026-01-21 | 9:50PM EST
 ———————————————————————
 Change: Overhauled SkyBound layout with new intro flow, simulators section, updated hero copy, and reordered sections.
