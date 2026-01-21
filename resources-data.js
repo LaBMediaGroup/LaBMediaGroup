@@ -824,6 +824,17 @@ const resources = [
     },
 
     {
+        name: 'Whisk (Google Labs)',
+        category: 'ai',
+        aiType: 'image',
+        desc: 'AI image generator and exploration tool from Google Labs.',
+        fullDesc: 'Whisk is a Google Labs image generation sandbox for quick visual experiments, style exploration, and prompt iteration. Useful for fast concepting, mood boards, and creative exploration.',
+        url: 'https://labs.google/fx/tools/whisk/',
+        paid: false,
+        features: ['Image Generation', 'Style Exploration', 'Prompt Iteration', 'Concepting']
+    },
+
+    {
         name: 'Claude Code',
         category: 'coding',
         desc: 'CLI and editor tooling for Claude-powered coding workflows.',
