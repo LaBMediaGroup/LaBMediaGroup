@@ -716,24 +716,7 @@
         </div>
     </div>
 
-    <!-- Gear Section -->
-    <div class="container">
-        <h2 class="section-title">Gear</h2>
-        <p class="section-subtitle">Curated equipment for FPV and drone work</p>
-
-        <div class="filter-tabs">
-            <button class="filter-tab active" data-filter="radio">Radios</button>
-            <button class="filter-tab" data-filter="goggles">Goggles</button>
-            <button class="filter-tab" data-filter="drone">Drones</button>
-            <button class="filter-tab" data-filter="all">All</button>
-        </div>
-
-        <div class="grid grid-3" id="products-grid">
-            <!-- Products will be inserted here by JavaScript -->
-        </div>
-    </div>
-
-    <!-- Watch & Learn Section -->
+    <!-- Resources Section -->
     <div class="container">
         <h2 class="section-title">Watch & Learn</h2>
         <p class="section-subtitle">Learn from the best, then dive into focused watch and study tracks.</p>
@@ -752,6 +735,23 @@
         <p class="section-subtitle">Study-first channels to prep for knowledge tests and airspace rules.</p>
         <div class="resource-list" id="learn-list">
             <!-- Learn channels will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Gear Section -->
+    <div class="container">
+        <h2 class="section-title">Gear</h2>
+        <p class="section-subtitle">Curated equipment for FPV and drone work</p>
+
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="radio">Radios</button>
+            <button class="filter-tab" data-filter="goggles">Goggles</button>
+            <button class="filter-tab" data-filter="drone">Drones</button>
+            <button class="filter-tab" data-filter="all">All</button>
+        </div>
+
+        <div class="grid grid-3" id="products-grid">
+            <!-- Products will be inserted here by JavaScript -->
         </div>
     </div>
 
@@ -831,11 +831,10 @@
             { id: 'qavs2', name: 'QAV-S 2 Sub-250 Bardwell SE', description: 'The definitive 3" DIY kit by Joshua Bardwell. Sub-250g weight. (Does not include O4 Pro Unit).', link: 'https://www.getfpv.com/beginner-diy-fpv-drone-kit-qav-s-2-sub-250-joshua-bardwell-se-3-hd-ready.html', category: 'drone' }
         ];
 
-        const FEATURED_CHANNEL = [
-            { name: 'Joshua Bardwell', description: 'The "Godfather" of FPV. Deep dives into gear, building, and troubleshooting.', url: 'https://www.youtube.com/@JoshuaBardwell' }
-        ];
-
-        const WATCH_CHANNELS = [
+        const CHANNELS = [
+            { name: 'Joshua Bardwell', description: 'The "Godfather" of FPV. Deep dives into gear, building, and troubleshooting.', url: 'https://www.youtube.com/@JoshuaBardwell' },
+            { name: 'DJI', description: 'Official channel for the industry-leading camera drone ecosystem.', url: 'https://www.dji.com/camera-drones' },
+            { name: 'BetaFPV', description: 'Masters of the micro drone. Great for compact systems and learning builds.', url: 'https://betafpv.com' },
             { name: 'CAPTAIN DRONE', description: 'Comprehensive FPV tutorials, reviews, and high-quality flight content.', url: 'https://www.youtube.com/@CAPTAINDRONE798' },
             { name: 'Mr Steele', description: 'Legendary FPV freestyle. The gold standard for cinematic movement.', url: 'https://www.youtube.com/@MrSteeleFPV' },
             { name: 'BOTGRINDER', description: 'Aggressive freestyle, raw energy, and pure FPV inspiration.', url: 'https://www.youtube.com/@BOTGRINDER' }
@@ -849,6 +848,7 @@
         const SIMULATORS = [
             { name: 'Liftoff', description: 'The most popular FPV sim for freestyle and muscle memory training.', url: 'https://store.steampowered.com/app/410340/Liftoff_FPV_Drone_Racing/' },
             { name: 'VelociDrone', description: 'Racing-focused sim with deep tuning and multiplayer options.', url: 'https://www.velocidrone.com' },
+            { name: 'DRL Simulator', description: 'Beginner-friendly, with structured training modes and real-world tracks.', url: 'https://store.steampowered.com/app/641780/The_DRL_Simulator/' },
             { name: 'Uncrashed', description: 'Freestyle-heavy sim with fast load times and smooth feel.', url: 'https://store.steampowered.com/app/1682970/Uncrashed__FPV_Drone_Simulator/' }
         ];
 
@@ -907,9 +907,7 @@
 
         // Initial render
         renderProducts('radio');
-        renderResourceList(FEATURED_CHANNEL, 'featured-channel');
-        renderResourceList(WATCH_CHANNELS, 'watch-list');
-        renderResourceList(LEARN_CHANNELS, 'learn-list');
+        renderResourceList(CHANNELS, 'channels-list');
         renderResourceList(SIMULATORS, 'simulators-list');
         renderResourceList(SHOPS, 'shops-list');
         renderResourceList(OFFICIAL_LINKS, 'official-links');
