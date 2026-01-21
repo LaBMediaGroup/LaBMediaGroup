@@ -4,6 +4,17 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-21 | 11:55PM EST
+———————————————————————
+Change: Removed the DRL Simulator entry and cleared the LaB Pick tag from the Joshua Bardwell channel on SkyBound.
+Files touched: skybound.html, CHANGELOG_RUNNING.md
+Notes: Header nav links already matched the site-standard dropdown structure.
+Quick test checklist:
+1. Open skybound.html → confirm the Simulators list excludes DRL Simulator.
+2. Open skybound.html → confirm Joshua Bardwell no longer shows a LaB Pick tag.
+3. Open skybound.html → click Community and Tools dropdowns in the header nav to confirm links open.
+4. Open DevTools Console on skybound.html and confirm no errors.
+
 2026-01-21 | 11:14PM EST
 ———————————————————————
 Change: Restored SkyBound resource lists by wiring featured/watch/learn and simulator data to the current sections.
