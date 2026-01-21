@@ -885,6 +885,15 @@
 
         function renderResourceList(items, containerId) {
             const container = document.getElementById(containerId);
+            if (!container) {
+                return;
+            }
+
+            const existingItems = container.querySelectorAll('.resource-item');
+            if (existingItems.length) {
+                return;
+            }
+
             container.innerHTML = items.map(item => `
                 <div class="resource-item ${item.isLaBPick ? 'lab-pick' : ''}">
                     <div class="resource-info">
@@ -904,6 +913,27 @@
                 renderProducts(tab.dataset.filter);
             });
         });
+
+        const FEATURED_CHANNEL = [
+            { name: 'Joshua Bardwell', description: 'The "Godfather" of FPV. Deep dives into gear, building, and troubleshooting.', url: 'https://www.youtube.com/@JoshuaBardwell' }
+        ];
+
+        const WATCH_CHANNELS = [
+            { name: 'CAPTAIN DRONE', description: 'Comprehensive FPV tutorials, reviews, and high-quality flight content.', url: 'https://www.youtube.com/@CAPTAINDRONE798' },
+            { name: 'Mr Steele', description: 'Legendary FPV freestyle. The gold standard for cinematic movement.', url: 'https://www.youtube.com/@MrSteeleFPV' },
+            { name: 'BOTGRINDER', description: 'Aggressive freestyle, raw energy, and pure FPV inspiration.', url: 'https://www.youtube.com/@BOTGRINDER' }
+        ];
+
+        const LEARN_CHANNELS = [
+            { name: 'Mike Sytes (Part 107)', description: 'Walkthroughs and practical guidance for the Part 107 exam.', url: 'https://www.youtube.com/@mikesytes' },
+            { name: 'Mr. Migs Classroom', description: 'Structured classroom-style lessons covering everything in the Part 107.', url: 'https://www.youtube.com/@MrMigsClassroom' }
+        ];
+
+        const SIMULATORS = [
+            { name: 'Liftoff', description: 'The most popular FPV sim for freestyle and muscle memory training.', url: 'https://store.steampowered.com/app/410340/Liftoff_FPV_Drone_Racing/' },
+            { name: 'VelociDrone', description: 'Racing-focused sim with deep tuning and multiplayer options.', url: 'https://www.velocidrone.com' },
+            { name: 'Uncrashed', description: 'Freestyle-heavy sim with fast load times and smooth feel.', url: 'https://store.steampowered.com/app/1682970/Uncrashed__FPV_Drone_Simulator/' }
+        ];
 
         // Initial render
         renderProducts('radio');
