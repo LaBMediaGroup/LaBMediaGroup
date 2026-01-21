@@ -718,11 +718,23 @@
 
     <!-- Resources Section -->
     <div class="container">
-        <h2 class="section-title">Learn & Watch</h2>
-        <p class="section-subtitle">YouTube channels and resources worth following</p>
+        <h2 class="section-title">Watch & Learn</h2>
+        <p class="section-subtitle">Learn from the best, then dive into focused watch and study tracks.</p>
 
-        <div class="resource-list" id="channels-list">
-            <!-- Channels will be inserted here by JavaScript -->
+        <div class="resource-list" id="featured-channel">
+            <!-- Featured channel will be inserted here by JavaScript -->
+        </div>
+
+        <h3 class="section-title" style="margin-top: 3rem; font-size: 2rem;">Watch</h3>
+        <p class="section-subtitle">Freestyle, reviews, and inspiration to sharpen your eye.</p>
+        <div class="resource-list" id="watch-list">
+            <!-- Watch channels will be inserted here by JavaScript -->
+        </div>
+
+        <h3 class="section-title" style="margin-top: 3rem; font-size: 2rem;">Learn</h3>
+        <p class="section-subtitle">Study-first channels to prep for knowledge tests and airspace rules.</p>
+        <div class="resource-list" id="learn-list">
+            <!-- Learn channels will be inserted here by JavaScript -->
         </div>
     </div>
 
@@ -825,7 +837,10 @@
             { name: 'BetaFPV', description: 'Masters of the micro drone. Great for compact systems and learning builds.', url: 'https://betafpv.com' },
             { name: 'CAPTAIN DRONE', description: 'Comprehensive FPV tutorials, reviews, and high-quality flight content.', url: 'https://www.youtube.com/@CAPTAINDRONE798' },
             { name: 'Mr Steele', description: 'Legendary FPV freestyle. The gold standard for cinematic movement.', url: 'https://www.youtube.com/@MrSteeleFPV' },
-            { name: 'BOTGRINDER', description: 'Aggressive freestyle, raw energy, and pure FPV inspiration.', url: 'https://www.youtube.com/@BOTGRINDER' },
+            { name: 'BOTGRINDER', description: 'Aggressive freestyle, raw energy, and pure FPV inspiration.', url: 'https://www.youtube.com/@BOTGRINDER' }
+        ];
+
+        const LEARN_CHANNELS = [
             { name: 'Mike Sytes (Part 107)', description: 'Walkthroughs and practical guidance for the Part 107 exam.', url: 'https://www.youtube.com/@mikesytes' },
             { name: 'Mr. Migs Classroom', description: 'Structured classroom-style lessons covering everything in the Part 107.', url: 'https://www.youtube.com/@MrMigsClassroom' }
         ];
