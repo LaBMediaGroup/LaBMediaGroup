@@ -4,16 +4,6 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-21 | 9:35PM EST
-———————————————————————
-Change: Removed the LaB Pick badge from the Bardwell QAV-S 2 gear card.
-Files touched: skybound.html, CHANGELOG_RUNNING.md
-Notes:
-Quick test checklist:
-1. Open skybound.html → scroll to Gear and confirm the Bardwell QAV-S 2 card has no LaB Pick badge.
-2. Open skybound.html → click gear filters and confirm cards still update.
-3. Open DevTools Console on skybound.html and confirm no errors.
-
 2026-01-21 | 9:33PM EST
 ———————————————————————
 Change: Moved the SkyBound gear section below the learning and Part 107 guidance to guide visitors through the content flow.
