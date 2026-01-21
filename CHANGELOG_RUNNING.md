@@ -4,6 +4,75 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-21 | 10:53PM EST
+———————————————————————
+Change: Added Google Labs Whisk to the AI resources list.
+Files touched: resources-data.js, CHANGELOG_RUNNING.md
+Notes:
+Quick test checklist:
+1. Open resources.html → filter AI resources and confirm Whisk (Google Labs) appears.
+2. Click Whisk → confirm it navigates to labs.google/fx/tools/whisk.
+3. Open DevTools Console on resources.html and confirm no errors.
+
+2026-01-21 | 10:45PM EST
+———————————————————————
+Change: Restored SkyBound simulators and Watch/Learn list rendering with a fallback that preserves existing HTML.
+Files touched: skybound.html, CHANGELOG_RUNNING.md
+Notes:
+Quick test checklist:
+1. Open skybound.html → confirm Simulators and Watch & Learn sections render items.
+2. Refresh skybound.html → confirm the lists remain visible after reload.
+3. Open DevTools Console on skybound.html and confirm no errors.
+
+2026-01-21 | 10:18PM EST
+———————————————————————
+Change: Hardcoded SkyBound simulators and Watch/Learn channel lists to ensure they render reliably.
+Files touched: skybound.html, CHANGELOG_RUNNING.md
+Notes:
+Quick test checklist:
+1. Open skybound.html → confirm Simulators shows Liftoff, VelociDrone, and Uncrashed.
+2. Open skybound.html → confirm Watch & Learn lists Joshua Bardwell, Watch channels, and Learn channels.
+3. Open DevTools Console on skybound.html and confirm no errors.
+
+2026-01-21 | 10:03PM EST
+———————————————————————
+Change: Reordered SkyBound content so Gear appears before Watch & Learn and split Watch & Learn into Watch/Learn lists.
+Files touched: skybound.html, CHANGELOG_RUNNING.md
+Notes: Removed DJI and BetaFPV from channels since they are shops, not channels.
+Quick test checklist:
+1. Open skybound.html → confirm Gear appears before Watch & Learn.
+2. Open skybound.html → confirm Watch & Learn shows Joshua Bardwell, Watch list, and Learn list in that order.
+3. Open DevTools Console on skybound.html and confirm no errors.
+
+2026-01-21 | 10:03PM EST
+———————————————————————
+Change: Moved Gear above Watch & Learn and split Watch & Learn into dedicated Watch and Learn sections with updated channels.
+Files touched: skybound.html, CHANGELOG_RUNNING.md
+Notes: Removed DJI/BetaFPV from channels since they are shops, not channels.
+Quick test checklist:
+1. Open skybound.html → confirm Gear now appears before Watch & Learn.
+2. Open skybound.html → confirm Watch & Learn shows Joshua Bardwell, Watch list, and Learn list in that order.
+3. Open DevTools Console on skybound.html and confirm no errors.
+
+2026-01-21 | 10:00PM EST
+———————————————————————
+Change: Removed the DRL Simulator listing from the SkyBound simulators section.
+Files touched: skybound.html, CHANGELOG_RUNNING.md
+Notes:
+Quick test checklist:
+1. Open skybound.html → confirm the Simulators list no longer includes DRL Simulator.
+2. Open DevTools Console on skybound.html and confirm no errors.
+
+2026-01-21 | 9:50PM EST
+———————————————————————
+Change: Overhauled SkyBound layout with new intro flow, simulators section, updated hero copy, and reordered sections.
+Files touched: skybound.html, CHANGELOG_RUNNING.md
+Notes: Updated the SkyBound nav logo and removed the LaB Pick badge from Joshua Bardwell.
+Quick test checklist:
+1. Open skybound.html → confirm intro, simulators, Learn & Watch, Gear, Shops, Part 107, and Official FAA Links appear in that order.
+2. Open skybound.html → click Gear filters and confirm the radios filter is active by default and updates the grid.
+3. Open DevTools Console on skybound.html and confirm no errors.
+
 2026-01-21 | 9:33PM EST
 ———————————————————————
 Change: Moved the SkyBound gear section below the learning and Part 107 guidance to guide visitors through the content flow.
