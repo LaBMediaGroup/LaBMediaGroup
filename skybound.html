@@ -205,6 +205,21 @@
             margin-bottom: 1rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .hero .hero-tagline {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--light-gray);
+            border: 1px solid var(--gray);
+            padding: 0.35rem 0.75rem;
         }
 
         .hero p {
@@ -248,6 +263,10 @@
 
         .grid-2 {
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         }
 
         /* Cards */
@@ -308,6 +327,14 @@
 
         .card-link:hover::after {
             margin-left: 1rem;
+        }
+
+        .card-meta {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--light-gray);
         }
 
         /* Filter Tabs */
@@ -554,6 +581,11 @@
                 padding: 6rem 1.5rem 3rem;
             }
 
+            .hero h1 {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
             .container {
                 padding: 3rem 1.5rem;
             }
@@ -592,7 +624,7 @@
     <!-- Navigation -->
     <nav class="site-nav">
         <a href="index.html">
-            <img src="images/LaBMedia.png" alt="LaB Media" class="nav-logo">
+            <img src="images/WhiteBeakerLogo.png" alt="LaB Media" class="nav-logo">
         </a>
         <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
             <span></span>
@@ -634,17 +666,92 @@
 
     <!-- Hero -->
     <section class="hero">
-        <h1>SkyBound</h1>
+        <h1>
+            SkyBound
+            <span class="hero-tagline">a resource by LaB Media</span>
+        </h1>
         <p>Drone gear, FPV resources, and your path to Part 107 certification.</p>
     </section>
 
-    <!-- Resources Section -->
+    <!-- Explanation Section -->
     <div class="container">
-        <h2 class="section-title">Learn & Watch</h2>
-        <p class="section-subtitle">YouTube channels and resources worth following</p>
+        <h2 class="section-title">Start Here</h2>
+        <p class="section-subtitle">SkyBound is a guided path: learn the basics, simulate before you buy, then build your kit and certification plan.</p>
 
-        <div class="resource-list" id="channels-list">
-            <!-- Channels will be inserted here by JavaScript -->
+        <div class="grid grid-4">
+            <div class="card">
+                <div class="card-badge">01</div>
+                <h3>Simulators</h3>
+                <p>Fly safely, build muscle memory, and save money before you invest in hardware.</p>
+                <div class="card-meta">Confidence → Control</div>
+            </div>
+            <div class="card">
+                <div class="card-badge">02</div>
+                <h3>Learn & Watch</h3>
+                <p>Follow trusted pilots and training channels that explain the why, not just the how.</p>
+                <div class="card-meta">Knowledge → Skill</div>
+            </div>
+            <div class="card">
+                <div class="card-badge">03</div>
+                <h3>Gear & Shops</h3>
+                <p>Start with radios, then goggles and drones. Buy from reputable vendors.</p>
+                <div class="card-meta">Setup → Flight</div>
+            </div>
+            <div class="card">
+                <div class="card-badge">04</div>
+                <h3>Part 107</h3>
+                <p>Go legit with the FAA path and official resources to fly commercially.</p>
+                <div class="card-meta">Practice → Certification</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simulators Section -->
+    <div class="container">
+        <h2 class="section-title">Simulators</h2>
+        <p class="section-subtitle">Train your reflexes before buying hardware. Sim time makes every first flight safer.</p>
+
+        <div class="resource-list" id="simulators-list">
+            <!-- Simulators will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Gear Section -->
+    <div class="container">
+        <h2 class="section-title">Gear</h2>
+        <p class="section-subtitle">Curated equipment for FPV and drone work</p>
+
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="radio">Radios</button>
+            <button class="filter-tab" data-filter="goggles">Goggles</button>
+            <button class="filter-tab" data-filter="drone">Drones</button>
+            <button class="filter-tab" data-filter="all">All</button>
+        </div>
+
+        <div class="grid grid-3" id="products-grid">
+            <!-- Products will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Watch & Learn Section -->
+    <div class="container">
+        <h2 class="section-title">Watch & Learn</h2>
+        <p class="section-subtitle">Learn from the best, then dive into focused watch and study tracks.</p>
+
+        <div class="resource-list" id="featured-channel">
+            <!-- Featured channel will be inserted here by JavaScript -->
+        </div>
+
+        <h3 class="section-title" style="margin-top: 3rem; font-size: 2rem;">Watch</h3>
+        <p class="section-subtitle">Freestyle, reviews, and inspiration to sharpen your eye.</p>
+        <div class="resource-list" id="watch-list">
+            <!-- Watch channels will be inserted here by JavaScript -->
+        </div>
+
+        <h3 class="section-title" style="margin-top: 3rem; font-size: 2rem;">Learn</h3>
+        <p class="section-subtitle">Study-first channels to prep for knowledge tests and airspace rules.</p>
+        <div class="resource-list" id="learn-list">
+            <!-- Learn channels will be inserted here by JavaScript -->
         </div>
     </div>
 
@@ -698,29 +805,15 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <h3 class="section-title" style="margin-top: 3rem; font-size: 2rem;">Official FAA Links</h3>
+    <!-- Official Links Section -->
+    <div class="container">
+        <h2 class="section-title">Official FAA Links</h2>
         <p class="section-subtitle">Government resources for certification</p>
 
         <div class="resource-list" id="official-links">
             <!-- Official links will be inserted here by JavaScript -->
-        </div>
-    </div>
-
-    <!-- Gear Section -->
-    <div class="container">
-        <h2 class="section-title">Gear</h2>
-        <p class="section-subtitle">Curated equipment for FPV and drone work</p>
-
-        <div class="filter-tabs">
-            <button class="filter-tab active" data-filter="all">All</button>
-            <button class="filter-tab" data-filter="goggles">Goggles</button>
-            <button class="filter-tab" data-filter="radio">Radios</button>
-            <button class="filter-tab" data-filter="drone">Drones</button>
-        </div>
-
-        <div class="grid grid-3" id="products-grid">
-            <!-- Products will be inserted here by JavaScript -->
         </div>
     </div>
 
@@ -738,15 +831,25 @@
             { id: 'qavs2', name: 'QAV-S 2 Sub-250 Bardwell SE', description: 'The definitive 3" DIY kit by Joshua Bardwell. Sub-250g weight. (Does not include O4 Pro Unit).', link: 'https://www.getfpv.com/beginner-diy-fpv-drone-kit-qav-s-2-sub-250-joshua-bardwell-se-3-hd-ready.html', category: 'drone' }
         ];
 
-        const CHANNELS = [
-            { name: 'Joshua Bardwell', description: 'The "Godfather" of FPV. Deep dives into gear, building, and troubleshooting.', url: 'https://www.youtube.com/@JoshuaBardwell', isLaBPick: true },
-            { name: 'DJI', description: 'Official channel for the industry-leading camera drone ecosystem.', url: 'https://www.dji.com/camera-drones' },
-            { name: 'BetaFPV', description: 'Masters of the micro drone. Great for compact systems and learning builds.', url: 'https://betafpv.com' },
+        const FEATURED_CHANNEL = [
+            { name: 'Joshua Bardwell', description: 'The "Godfather" of FPV. Deep dives into gear, building, and troubleshooting.', url: 'https://www.youtube.com/@JoshuaBardwell' }
+        ];
+
+        const WATCH_CHANNELS = [
             { name: 'CAPTAIN DRONE', description: 'Comprehensive FPV tutorials, reviews, and high-quality flight content.', url: 'https://www.youtube.com/@CAPTAINDRONE798' },
             { name: 'Mr Steele', description: 'Legendary FPV freestyle. The gold standard for cinematic movement.', url: 'https://www.youtube.com/@MrSteeleFPV' },
-            { name: 'BOTGRINDER', description: 'Aggressive freestyle, raw energy, and pure FPV inspiration.', url: 'https://www.youtube.com/@BOTGRINDER' },
+            { name: 'BOTGRINDER', description: 'Aggressive freestyle, raw energy, and pure FPV inspiration.', url: 'https://www.youtube.com/@BOTGRINDER' }
+        ];
+
+        const LEARN_CHANNELS = [
             { name: 'Mike Sytes (Part 107)', description: 'Walkthroughs and practical guidance for the Part 107 exam.', url: 'https://www.youtube.com/@mikesytes' },
             { name: 'Mr. Migs Classroom', description: 'Structured classroom-style lessons covering everything in the Part 107.', url: 'https://www.youtube.com/@MrMigsClassroom' }
+        ];
+
+        const SIMULATORS = [
+            { name: 'Liftoff', description: 'The most popular FPV sim for freestyle and muscle memory training.', url: 'https://store.steampowered.com/app/410340/Liftoff_FPV_Drone_Racing/' },
+            { name: 'VelociDrone', description: 'Racing-focused sim with deep tuning and multiplayer options.', url: 'https://www.velocidrone.com' },
+            { name: 'Uncrashed', description: 'Freestyle-heavy sim with fast load times and smooth feel.', url: 'https://store.steampowered.com/app/1682970/Uncrashed__FPV_Drone_Simulator/' }
         ];
 
         const SHOPS = [
@@ -803,8 +906,11 @@
         });
 
         // Initial render
-        renderProducts();
-        renderResourceList(CHANNELS, 'channels-list');
+        renderProducts('radio');
+        renderResourceList(FEATURED_CHANNEL, 'featured-channel');
+        renderResourceList(WATCH_CHANNELS, 'watch-list');
+        renderResourceList(LEARN_CHANNELS, 'learn-list');
+        renderResourceList(SIMULATORS, 'simulators-list');
         renderResourceList(SHOPS, 'shops-list');
         renderResourceList(OFFICIAL_LINKS, 'official-links');
 
