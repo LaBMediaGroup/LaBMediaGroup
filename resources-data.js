@@ -973,6 +973,18 @@ const resources = [
     },
 
     {
+        name: 'Zane Hoyer',
+        category: 'references',
+        refType: 'editing',
+        desc: 'Editor-focused YouTube channel covering pacing, structure, and storytelling.',
+        fullDesc: 'Zane Hoyer shares editing insights for narrative and creator-led projects, with breakdowns on pacing, story structure, and decision-making in the cut.',
+        url: 'https://www.youtube.com/@zanehoyer',
+        paid: false,
+        featuredVideo: 'zDhau3u5NbY',
+        features: ['Editing', 'Pacing', 'Story Structure', 'YouTube Craft']
+    },
+
+    {
         name: 'Gawx Art',
         category: 'references',
         refType: 'art',
