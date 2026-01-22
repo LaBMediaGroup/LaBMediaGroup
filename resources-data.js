@@ -973,6 +973,18 @@ const resources = [
     },
 
     {
+        name: 'Zane Hoyer',
+        category: 'references',
+        refType: 'editing',
+        desc: 'Editor-focused YouTube channel covering pacing, structure, and storytelling.',
+        fullDesc: 'Zane Hoyer shares editing insights for narrative and creator-led projects, with breakdowns on pacing, story structure, and decision-making in the cut.',
+        url: 'https://www.youtube.com/@zanehoyer',
+        paid: false,
+        featuredVideo: 'zDhau3u5NbY',
+        features: ['Editing', 'Pacing', 'Story Structure', 'YouTube Craft']
+    },
+
+    {
         name: 'Gawx Art',
         category: 'references',
         refType: 'art',
@@ -1282,6 +1294,25 @@ const resources = [
         url: 'https://ende.app',
         paid: false,
         features: ['Cinematic Focus', 'Clear Usage Notes', 'Ambient & Trailer Ready', 'Attribution Guidance']
+    },
+
+    {
+        name: 'Isaac Haines',
+        category: 'music',
+        desc: 'Composer sharing tracks and downloads via Gumroad.',
+        fullDesc: 'Isaac Haines offers music downloads through Gumroad, with additional releases and listening options on SoundCloud and Instagram.',
+        url: 'https://isaachaines.gumroad.com/l/vxmswi',
+        instagramUrl: 'https://www.instagram.com/lsaachaines/?hl=en',
+        additionalLinks: [
+            {
+                label: 'SoundCloud',
+                url: 'https://soundcloud.com/isaachaines',
+                type: 'website',
+                description: 'Stream Isaac Haines tracks on SoundCloud.'
+            }
+        ],
+        paid: true,
+        features: ['Composer', 'Digital Downloads', 'SoundCloud Streams']
     },
 
     {
