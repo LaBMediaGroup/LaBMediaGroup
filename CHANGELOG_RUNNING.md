@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-21 | 9:29PM EST
+———————————————————————
+Change: Added Isaac Haines music resource entry with Gumroad, SoundCloud, and Instagram links.
+Files touched: resources-data.js, CHANGELOG_RUNNING.md
+Notes: None.
+Quick test checklist:
+1. Open resources.html → filter to Tools > Resources > Music and confirm Isaac Haines appears with Gumroad link.
+2. Open Isaac Haines modal → confirm SoundCloud and Instagram links open correctly.
+3. Open DevTools Console on resources.html and confirm no errors.
+
 2026-01-21 | 11:55PM EST
 ———————————————————————
 Change: Removed the DRL Simulator entry and cleared the LaB Pick tag from the Joshua Bardwell channel on SkyBound.
