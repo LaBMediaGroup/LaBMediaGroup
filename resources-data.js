@@ -1285,6 +1285,25 @@ const resources = [
     },
 
     {
+        name: 'Isaac Haines',
+        category: 'music',
+        desc: 'Composer sharing tracks and downloads via Gumroad.',
+        fullDesc: 'Isaac Haines offers music downloads through Gumroad, with additional releases and listening options on SoundCloud and Instagram.',
+        url: 'https://isaachaines.gumroad.com/l/vxmswi',
+        instagramUrl: 'https://www.instagram.com/lsaachaines/?hl=en',
+        additionalLinks: [
+            {
+                label: 'SoundCloud',
+                url: 'https://soundcloud.com/isaachaines',
+                type: 'website',
+                description: 'Stream Isaac Haines tracks on SoundCloud.'
+            }
+        ],
+        paid: true,
+        features: ['Composer', 'Digital Downloads', 'SoundCloud Streams']
+    },
+
+    {
         name: 'ProductionCrate Music',
         category: 'music',
         desc: 'Free and premium music library tied to ProductionCrate assets.',
