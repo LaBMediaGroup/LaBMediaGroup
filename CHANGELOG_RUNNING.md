@@ -4,16 +4,6 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-21 | 9:35PM EST
-———————————————————————
-Change: Added Zane Hoyer editing reference entry with YouTube channel and featured video.
-Files touched: resources-data.js, CHANGELOG_RUNNING.md
-Notes: None.
-Quick test checklist:
-1. Open resources.html → filter to References > Editing and confirm Zane Hoyer appears.
-2. Open Zane Hoyer modal → confirm the YouTube link opens and the featured video embeds.
-3. Open DevTools Console on resources.html and confirm no errors.
-
 2026-01-21 | 9:29PM EST
 ———————————————————————
 Change: Added Isaac Haines music resource entry with Gumroad, SoundCloud, and Instagram links.
