@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-23 | 4:01AM EST
+———————————————————————
+Change: Added Tryp FPV and FPV Logic to FPV simulator resources and SkyBound simulator list.
+Files touched: resources-data.js, skybound.html, CHANGELOG_RUNNING.md
+Notes: None.
+Quick test checklist:
+1. Open resources.html → filter to Drone resources and confirm Tryp FPV + FPV Logic appear under software/simulators.
+2. Open skybound.html → scroll to Simulators list and confirm both entries appear with working links.
+3. Open DevTools Console on resources.html and skybound.html and confirm no errors.
+
 2026-01-21 | 9:29PM EST
 ———————————————————————
 Change: Added Isaac Haines music resource entry with Gumroad, SoundCloud, and Instagram links.

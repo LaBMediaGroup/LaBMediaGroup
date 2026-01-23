@@ -654,6 +654,28 @@ const resources = [
         features: ['FPV Simulator', 'Realistic Physics', 'Multiplayer Racing', 'Practice Tool']
     },
 
+    {
+        name: 'Tryp FPV',
+        category: 'drone',
+        droneType: 'software',
+        desc: 'Freestyle-focused FPV simulator with cinematic environments.',
+        fullDesc: 'Tryp FPV emphasizes smooth freestyle flying with handcrafted environments and a focus on flow. A solid option for building muscle memory and exploring cinematic lines before risking real gear.',
+        url: 'https://trypfpv.com',
+        paid: true,
+        features: ['FPV Simulator', 'Freestyle Practice', 'Cinematic Maps', 'Muscle Memory']
+    },
+
+    {
+        name: 'FPV Logic',
+        category: 'drone',
+        droneType: 'software',
+        desc: 'FPV simulator built around practice and tuneable flight feel.',
+        fullDesc: 'FPV Logic offers an approachable FPV sim experience with multiple tracks and settings to adjust feel as you train. Great for practice sessions that sharpen throttle control, timing, and line choice.',
+        url: 'https://fpvlogic.com',
+        paid: true,
+        features: ['FPV Simulator', 'Adjustable Feel', 'Practice Tracks', 'Training Tool']
+    },
+
 
     // ============================================
     // AI TOOLS
