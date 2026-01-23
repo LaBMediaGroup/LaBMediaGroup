@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-23 | 4:24AM EST
+———————————————————————
+Change: Removed BetaFPV from the SkyBound watch list since it is already listed in shops.
+Files touched: skybound.html, CHANGELOG_RUNNING.md
+Notes: None.
+Quick test checklist:
+1. Open skybound.html → confirm BetaFPV no longer appears in the Watch list.
+2. Open skybound.html → confirm BetaFPV still appears in the Shops list.
+3. Open DevTools Console on skybound.html and confirm no errors.
+
 2026-01-23 | 4:01AM EST
 ———————————————————————
 Change: Added Tryp FPV and FPV Logic to FPV simulator resources and SkyBound simulator list.
