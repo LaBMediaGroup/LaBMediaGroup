@@ -266,6 +266,20 @@ const resources = [
     },
 
     {
+        id: 'detroit-independent-film-festival',
+        name: 'Detroit Independent Film Festival',
+        category: 'film-festivals',
+        desc: 'Detroit festival celebrating independent film with screenings and filmmaker visibility.',
+        fullDesc: 'Detroit Independent Film Festival spotlights independent films with a Detroit backdrop, offering local and visiting filmmakers a platform for screenings, recognition, and community visibility.',
+        filmFreewayUrl: 'https://filmfreeway.com/DetroitIndependentFilmFestival',
+        paid: true,
+        keyInfo: [
+            { label: 'Location', value: 'Detroit, MI' }
+        ],
+        features: ['Detroit-Based', 'Independent Film', 'Screenings', 'FilmFreeway Submissions']
+    },
+
+    {
         name: 'Cinetopia Film Festival',
         category: 'film-festivals',
         desc: 'Ann Arbor festival showcasing independent cinema.',

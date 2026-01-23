@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-24 | 10:12AM EST
+———————————————————————
+Change: Added Detroit Independent Film Festival to the resources film festivals list.
+Files touched: resources-data.js, CHANGELOG_RUNNING.md
+Notes: Added FilmFreeway link and Detroit location metadata.
+Quick test checklist:
+1. Open resources.html → filter to Film Festivals and confirm Detroit Independent Film Festival appears.
+2. Open the Detroit Independent Film Festival modal → confirm the FilmFreeway link works.
+3. Open DevTools Console on resources.html and confirm no errors.
+
 2026-01-23 | 4:24AM EST
 ———————————————————————
 Change: Removed BetaFPV from the SkyBound watch list since it is already listed in shops.
