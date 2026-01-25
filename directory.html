@@ -624,10 +624,39 @@
 
         .empty-state,
         .status-message {
-            padding: 1rem;
+            padding: 1.25rem;
             border: 1px solid var(--gray-800);
             background: var(--gray-900);
             color: var(--gray-400);
+        }
+
+        .empty-title {
+            font-family: 'Space Mono', monospace;
+            color: var(--white);
+            letter-spacing: 1px;
+            margin-bottom: 0.35rem;
+        }
+
+        .empty-sub {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .empty-cta {
+            width: 100%;
+            background: var(--white);
+            color: var(--black);
+            border: none;
+            padding: 0.85rem 1rem;
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .empty-cta:hover {
+            opacity: 0.8;
         }
 
         .status-message.is-sending {
@@ -1133,7 +1162,9 @@
 
 <body>
     <nav>
-        <a href="index.html" class="nav-back">← Back</a>
+        <a href="index.html" aria-label="LaB Media home">
+            <img src="images/LaBMedia.png" alt="LaB Media" class="nav-logo">
+        </a>
 
         <!-- Mobile Menu Toggle -->
         <button class="menu-toggle" aria-label="Toggle Navigation" aria-expanded="false">
@@ -1452,7 +1483,16 @@
             });
 
             if (!filtered.length) {
-                listingsEl.innerHTML = '<div class="empty-state">No profiles found matching these filters.</div>';
+                const isInitialEmpty = (state.listings && state.listings.length <= 1) && state.filterRole === 'all' && state.filterArea === 'all' && !searchTerm;
+                listingsEl.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-title">${isInitialEmpty ? 'Be one of the first in the directory.' : 'No profiles found matching these filters.'}</div>
+                        <div class="empty-sub">${isInitialEmpty ? 'Join up and help make this useful for Michigan creators.' : 'Try a different role, location, or search term.'}</div>
+                        <button class="empty-cta" type="button" id="emptyJoinCta">Join Directory →</button>
+                    </div>
+                `;
+                const cta = document.getElementById('emptyJoinCta');
+                if (cta) cta.addEventListener('click', () => openModal.click());
                 return;
             }
 
