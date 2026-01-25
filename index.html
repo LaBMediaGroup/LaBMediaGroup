@@ -3201,18 +3201,21 @@
             ease: 'power3.out'
         });
 
-        gsap.from('.event-preview-card', {
-            scrollTrigger: {
-                trigger: '.events-preview-grid',
-                start: 'top 75%'
-            },
-            opacity: 0,
-            x: -40,
-            duration: 0.7,
-            stagger: 0.12,
-            ease: 'power2.out',
-            delay: 0.3
-        });
+        // Guard: cards are injected dynamically; only animate if they exist.
+        if (document.querySelector('.event-preview-card')) {
+            gsap.from('.event-preview-card', {
+                scrollTrigger: {
+                    trigger: '.events-preview-grid',
+                    start: 'top 75%'
+                },
+                opacity: 0,
+                x: -40,
+                duration: 0.7,
+                stagger: 0.12,
+                ease: 'power2.out',
+                delay: 0.3
+            });
+        }
 
         gsap.from('.events-preview .view-all', {
             scrollTrigger: {
