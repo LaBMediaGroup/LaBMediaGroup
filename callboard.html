@@ -272,6 +272,14 @@
             line-height: 1.6;
         }
 
+        .how-it-works {
+            margin-top: 0.75rem;
+            color: var(--gray-600);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
         .filters {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -1055,6 +1063,7 @@
         <header class="page-header">
             <h1>Callboard</h1>
             <p>Browse Metro Detroit crew and casting listings. Every submission is moderated before it goes live.</p>
+            <p class="how-it-works">How it works: Submit → moderation → goes live → expires automatically.</p>
         </header>
 
         <section class="actions">
@@ -1078,6 +1087,13 @@
                     <button type="button" data-value="paid">Paid</button>
                     <button type="button" data-value="unpaid">Unpaid</button>
                     <button type="button" data-value="collab">Collab</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <label>Sort</label>
+                <div class="toggle-row" data-filter="sort">
+                    <button type="button" class="active" data-value="newest">Newest</button>
+                    <button type="button" data-value="expiring">Expiring soon</button>
                 </div>
             </div>
             <div class="filter-group">
@@ -1221,6 +1237,7 @@
             listings: [],
             filterType: 'all',
             filterComp: 'all',
+            sort: 'newest', // newest | expiring
             search: ''
         };
 
@@ -1284,7 +1301,7 @@
                 l.status === 'approved' && !isExpired(l)
             );
 
-            const filtered = activeListings.filter((listing) => {
+            let filtered = activeListings.filter((listing) => {
                 if (state.filterType !== 'all' && listing.listing_type !== state.filterType) return false;
                 if (state.filterComp !== 'all' && listing.compensation !== state.filterComp) return false;
 
@@ -1294,6 +1311,26 @@
                 }
                 return true;
             });
+
+            // Sort
+            if (state.sort === 'expiring') {
+                // Expiring soon first (items without an expires date fall to the bottom)
+                filtered = filtered.slice().sort((a, b) => {
+                    const aExp = a.expires_on ? new Date(a.expires_on).getTime() : Number.POSITIVE_INFINITY;
+                    const bExp = b.expires_on ? new Date(b.expires_on).getTime() : Number.POSITIVE_INFINITY;
+                    if (aExp !== bExp) return aExp - bExp;
+                    const aCreated = a.created_at ? new Date(a.created_at).getTime() : 0;
+                    const bCreated = b.created_at ? new Date(b.created_at).getTime() : 0;
+                    return bCreated - aCreated;
+                });
+            } else {
+                // Newest first (created_at desc)
+                filtered = filtered.slice().sort((a, b) => {
+                    const aCreated = a.created_at ? new Date(a.created_at).getTime() : 0;
+                    const bCreated = b.created_at ? new Date(b.created_at).getTime() : 0;
+                    return bCreated - aCreated;
+                });
+            }
 
             if (!filtered.length) {
                 listingsEl.innerHTML = '<div class="empty-state">No listings match these filters yet.</div>';
@@ -1528,6 +1565,9 @@
                 }
                 if (filterType === 'comp') {
                     state.filterComp = button.dataset.value;
+                }
+                if (filterType === 'sort') {
+                    state.sort = button.dataset.value;
                 }
 
                 renderListings();

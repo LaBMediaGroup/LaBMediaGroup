@@ -4,6 +4,44 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-25 | 3:48PM EST
+———————————————————————
+Change: Polished Callboard sorting + clarified submission flow.
+Files touched: callboard.html, CHANGELOG_RUNNING.md
+Notes:
+1. Added “How it works” line under Callboard header.
+2. Added Sort toggle: Newest / Expiring soon.
+Quick test checklist:
+1. Open callboard.html → confirm “How it works…” line appears under the header.
+2. Toggle Sort → “Expiring soon” brings listings with the soonest expires_on to the top.
+3. Toggle Sort back → “Newest” sorts by created_at desc.
+4. Open DevTools Console on callboard.html and confirm no errors.
+
+2026-01-25 | 3:48PM EST
+———————————————————————
+Change: Improved Directory nav consistency + recruiting empty state.
+Files touched: directory.html, CHANGELOG_RUNNING.md
+Notes:
+1. Replaced “← Back” with the standard LaB logo home link.
+2. Added a more welcoming empty state with a “Join Directory” CTA.
+Quick test checklist:
+1. Open directory.html → confirm header shows LaB logo (home link) not “← Back”.
+2. Set filters/search to produce zero results → confirm empty state shows CTA.
+3. Click “Join Directory →” from the empty state → confirms it opens the Join Directory modal.
+4. Open DevTools Console on directory.html and confirm no errors.
+
+2026-01-25 | 3:48PM EST
+———————————————————————
+Change: Homepage clarity + Resources return hooks.
+Files touched: index.html, resources.html, CHANGELOG_RUNNING.md
+Notes:
+1. Homepage: added “Start here” quick actions under hero (Events / Resources / Story Generator).
+2. Resources: added “Recent” quick filter (recently viewed or saved) + improved Suggest CTA copy.
+Quick test checklist:
+1. Open index.html → click each Start here card and confirm navigation.
+2. Open resources.html → click some resources, then toggle Recent.
+3. Open DevTools Console and confirm no errors.
+
 2026-01-24 | 10:12AM EST
 ———————————————————————
 Change: Added Detroit Independent Film Festival to the resources film festivals list.
