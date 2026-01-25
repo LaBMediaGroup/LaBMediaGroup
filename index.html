@@ -628,6 +628,108 @@
         }
         
         /* ============================================
+           START HERE (HOMEPAGE QUICK ACTIONS)
+        ============================================ */
+        .start-here {
+            padding: 3rem clamp(1.5rem, 4vw, 3.5rem) 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .start-here-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .start-here-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1.25rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .start-here-title {
+            font-family: 'Space Mono', monospace;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .start-here-desc {
+            margin-top: 0.5rem;
+            color: var(--gray-400);
+            line-height: 1.55;
+            max-width: 520px;
+        }
+
+        .start-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.25rem;
+        }
+
+        .start-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding: 1.25rem 1.25rem 1.1rem;
+            border-radius: 18px;
+            text-decoration: none;
+            color: var(--white);
+            min-height: 140px;
+        }
+
+        .start-card-kicker {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-600);
+        }
+
+        .start-card-name {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+        }
+
+        .start-card-copy {
+            color: var(--gray-400);
+            line-height: 1.5;
+            font-size: 0.95rem;
+            max-width: 42ch;
+        }
+
+        .start-card-cta {
+            margin-top: auto;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.9);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .start-card:focus-visible {
+            outline: 2px solid rgba(74, 158, 255, 0.65);
+            outline-offset: 4px;
+        }
+
+        @media (max-width: 900px) {
+            .start-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .start-card {
+                min-height: unset;
+            }
+        }
+
+        /* ============================================
            WORK SECTION
         ============================================ */
         .work {
@@ -2156,6 +2258,54 @@
         <div class="scroll-indicator">
             <span>Scroll</span>
             <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Start Here (Quick Actions) -->
+    <section class="start-here">
+        <div class="start-here-inner">
+            <div class="start-here-head">
+                <div>
+                    <div class="section-label proto-text-mono">Start here</div>
+                    <div class="start-here-desc">This is the hub. Three quick jumps to get you moving.</div>
+                </div>
+                <div class="section-count proto-text-mono">03</div>
+            </div>
+
+            <div class="start-grid">
+                <a class="start-card proto-card proto-corners" href="events.html">
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-tr"></span>
+                    <span class="proto-corner-bl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="start-card-kicker">Community</div>
+                    <div class="start-card-name">Find events</div>
+                    <div class="start-card-copy">Metro Detroit calendar. Dates change—links included so you can verify fast.</div>
+                    <div class="start-card-cta">Open calendar <span aria-hidden="true">→</span></div>
+                </a>
+
+                <a class="start-card proto-card proto-corners" href="resources.html">
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-tr"></span>
+                    <span class="proto-corner-bl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="start-card-kicker">Toolkit</div>
+                    <div class="start-card-name">Find resources</div>
+                    <div class="start-card-copy">Browse + filter. Save the stuff you actually use and come back later.</div>
+                    <div class="start-card-cta">Browse resources <span aria-hidden="true">→</span></div>
+                </a>
+
+                <a class="start-card proto-card proto-corners" href="ideas.html">
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-tr"></span>
+                    <span class="proto-corner-bl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="start-card-kicker">Core tool</div>
+                    <div class="start-card-name">Get unstuck</div>
+                    <div class="start-card-copy">Roll a constraint and build something shootable. Momentum over scripts.</div>
+                    <div class="start-card-cta">Generate an idea <span aria-hidden="true">→</span></div>
+                </a>
+            </div>
         </div>
     </section>
 
