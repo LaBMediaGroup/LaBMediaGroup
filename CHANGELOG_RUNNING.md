@@ -4,6 +4,19 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-25 | 4:54PM EST
+———————————————————————
+Change: Directory privacy + availability (no schema change).
+Files touched: directory.html, CHANGELOG_RUNNING.md
+Notes:
+1. Directory form now treats email as private (“used for contact + moderation”).
+2. Added Availability checkboxes; stored into the bio field as “Available for: …” so the existing Supabase schema continues to work.
+3. Public profile contact button now routes through contact.html as “Request Contact” instead of exposing a mailto.
+Quick test checklist:
+1. Open directory.html → Join Directory → select availability options → submit → confirm submission still succeeds.
+2. Open a profile modal → confirm Contact shows “Request Contact” and does not reveal an email.
+3. Open DevTools Console on directory.html and confirm no errors.
+
 2026-01-25 | 4:46PM EST
 ———————————————————————
 Change: Tightened homepage “Start here” module for faster onboarding.

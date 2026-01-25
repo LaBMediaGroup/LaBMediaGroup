@@ -863,6 +863,34 @@
             margin-top: 0.25rem;
         }
 
+        .availability-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.5rem 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .availability-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.55rem 0.7rem;
+        }
+
+        .availability-item input {
+            accent-color: rgba(255, 255, 255, 0.9);
+        }
+
+        @media (max-width: 560px) {
+            .availability-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .modal-footer {
             padding: 1.25rem 2rem;
             border-top: 1px solid var(--gray-800);
@@ -1331,7 +1359,20 @@
                     <div class="form-group">
                         <label for="email" class="form-label">Contact Email</label>
                         <input id="email" name="email" required type="email" placeholder="you@email.com">
-                        <span class="form-hint">Shown on your public profile for collaborators to reach you.</span>
+                        <span class="form-hint">Used for contact + moderation. Not displayed publicly.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Availability <span class="optional-tag">(optional)</span></label>
+                        <div class="availability-grid" role="group" aria-label="Availability">
+                            <label class="availability-item"><input type="checkbox" name="avail" value="Paid gigs"> Paid gigs</label>
+                            <label class="availability-item"><input type="checkbox" name="avail" value="Collabs"> Collabs</label>
+                            <label class="availability-item"><input type="checkbox" name="avail" value="Weekends"> Weekends</label>
+                            <label class="availability-item"><input type="checkbox" name="avail" value="Short notice"> Short notice</label>
+                            <label class="availability-item"><input type="checkbox" name="avail" value="Travel"> Travel</label>
+                            <label class="availability-item"><input type="checkbox" name="avail" value="Student sets"> Student sets</label>
+                        </div>
+                        <span class="form-hint">This will appear on your profile as a short “Available for…” line.</span>
                     </div>
 
                     <div class="form-group">
@@ -1556,10 +1597,14 @@
                 detailLinks.parentElement.style.display = 'none';
             }
 
-            // Contact
-            if (item.email) {
-                detailContact.href = `mailto:${item.email}`;
-                detailContact.textContent = 'Send Email';
+            // Contact (privacy-first)
+            // We do NOT expose raw emails publicly; route via the LaB contact page.
+            const hasAnyContact = !!(item.website || item.instagram || item.imdb || item.email);
+            if (hasAnyContact) {
+                const subject = encodeURIComponent(`Directory contact request: ${item.name}`);
+                const body = encodeURIComponent(`Hi LaB,\n\nI’m trying to reach ${item.name} from the Filmmaker Directory.\n\nMy message:\n`);
+                detailContact.href = `contact.html?subject=${subject}&body=${body}`;
+                detailContact.textContent = 'Request Contact';
                 detailContactRow.style.display = 'block';
             } else {
                 detailContactRow.style.display = 'none';
@@ -1699,11 +1744,18 @@
                 submitBtn.textContent = 'Submitting...';
             }
 
+            // Availability is stored inside bio (no schema change required)
+            const avail = Array.from(listingForm.querySelectorAll('input[name="avail"]:checked')).map(i => i.value);
+            const bioBase = listingForm.bio.value.trim();
+            const bioWithAvail = avail.length
+                ? [bioBase, `Available for: ${avail.join(' · ')}`].filter(Boolean).join('\n\n')
+                : (bioBase || null);
+
             const payload = {
                 name: listingForm.name.value.trim(),
                 role: listingForm.role.value,
                 location: listingForm.location.value,
-                bio: listingForm.bio.value.trim() || null,
+                bio: bioWithAvail,
                 roles_worked: listingForm.roles_worked.value.trim() || null,
                 past_work: listingForm.past_work.value.trim() || null,
                 website: listingForm.website.value.trim() || null,
