@@ -4,6 +4,37 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-25 | 3:36PM EST
+———————————————————————
+Change: Added “Recent” return hook + improved Suggest CTA on Resources page.
+Files touched: resources.html, CHANGELOG_RUNNING.md
+Notes:
+1. Added a new Quick Filter button: Recent (shows items viewed or saved within the last 7 days).
+2. Recent sets sort to activity so users can pick up where they left off.
+3. Tweaked Suggest language (tooltip + ghost tile text) to feel more community-contribution oriented.
+Quick test checklist:
+1. Open resources.html → click a few resources to generate “recently viewed”.
+2. Save a resource (star) → confirm it appears in Saved drawer and registers as recent.
+3. Click “Recent” → confirm list filters down and is ordered by activity.
+4. Click “+ Suggest” and confirm tooltip reads “Help keep this useful — suggest one link”.
+5. Open DevTools Console on resources.html and confirm no errors.
+
+2026-01-25 | 3:22PM EST
+———————————————————————
+Change: Added “Start here” quick actions module to homepage.
+Files touched: index.html, CHANGELOG_RUNNING.md
+Notes:
+1. Adds a small “Start here” section directly under the hero with 3 primary actions:
+   - Events (calendar)
+   - Resources (filters + saved)
+   - Story Generator (get unstuck)
+2. Hero design (pills + mission copy) intentionally left unchanged.
+Quick test checklist:
+1. Open index.html → confirm “Start here” appears under the hero.
+2. Click each card → confirm it navigates to events.html, resources.html, ideas.html.
+3. Test mobile width → confirm the Start here cards stack cleanly.
+4. Open DevTools Console on index.html and confirm no errors.
+
 2026-01-24 | 10:12AM EST
 ———————————————————————
 Change: Added Detroit Independent Film Festival to the resources film festivals list.
