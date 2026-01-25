@@ -4,6 +4,21 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-25 | 4:05PM EST
+———————————————————————
+Change: SkyBound layout compacted with collapsible sections; removed blue accents.
+Files touched: skybound.html, CHANGELOG_RUNNING.md
+Notes:
+1. Replaced blue accent styling with monochrome accents to match the rest of labmedia.work.
+2. Converted long SkyBound sections into collapsible “details/summary” sections to reduce scroll fatigue while keeping all content.
+3. Kept Bebas Neue typography and existing resources/data intact.
+Quick test checklist:
+1. Open skybound.html → confirm no obvious blue UI accents remain (buttons/badges/tabs).
+2. Toggle each section (Simulators / Watch & Learn / Gear / Shops / Part 107 / Official FAA Links).
+3. Confirm Gear filter tabs still work inside the collapsible.
+4. Confirm resource lists still populate (Simulators, channels, shops, FAA links).
+5. Open DevTools Console on skybound.html and confirm no errors.
+
 2026-01-25 | 3:48PM EST
 ———————————————————————
 Change: Polished Callboard sorting + clarified submission flow.
