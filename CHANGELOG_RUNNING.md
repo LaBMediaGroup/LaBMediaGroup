@@ -4,6 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-25 | 5:11PM EST
+———————————————————————
+Change: Homepage GSAP warning cleanup for event preview cards.
+Files touched: index.html, CHANGELOG_RUNNING.md
+Notes:
+1. Guards the GSAP animation so it only runs when .event-preview-card elements exist.
+Quick test checklist:
+1. Open index.html → scroll to Events preview → confirm animations still occur.
+2. Check DevTools Console → confirm GSAP “target not found” warnings are gone.
+
 2026-01-25 | 5:00PM EST
 ———————————————————————
 Change: Resources “Collections” (curated bundles as preset filters).
