@@ -3011,12 +3011,15 @@
 
         <!-- Quick Filters Row -->
         <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
-            <button class="quickfilter-btn" type="button" id="suggestQuick">
+            <button class="quickfilter-btn" type="button" id="suggestQuick" title="Help keep this useful — suggest one link">
                 + Suggest
             </button>
             <button class="quickfilter-btn" type="button" data-qf="saved">
                 Saved
                 <span class="saved-badge" id="savedBadge"></span>
+            </button>
+            <button class="quickfilter-btn" type="button" data-qf="recent" title="Recently viewed or recently saved">
+                Recent
             </button>
             <button class="quickfilter-btn" type="button" data-qf="free">Free</button>
             <button class="quickfilter-btn" type="button" data-qf="paid">Paid</button>
@@ -3174,6 +3177,7 @@
         const suggestQuickBtn = document.getElementById('suggestQuick');
         const quickFilters = {
             saved: false,
+            recent: false,
             labPick: false,
             free: false,
             paid: false
@@ -3208,7 +3212,9 @@
         // FAVORITES (Saved)
         // ============================================
         const FAVORITES_KEY = 'lab_favorites_v1';
+        const FAVORITES_META_KEY = 'lab_favorites_meta_v1'; // { [id]: savedAtMs }
         let favorites = new Set();
+        let favoriteMeta = {};
         let activeResourceId = null;
         let lastFocusEl = null;
 
@@ -3218,11 +3224,26 @@
                 const arr = raw ? JSON.parse(raw) : [];
                 favorites = new Set(Array.isArray(arr) ? arr : []);
             } catch { favorites = new Set(); }
+
+            // Load saved timestamps (optional)
+            try {
+                const metaRaw = localStorage.getItem(FAVORITES_META_KEY);
+                const obj = metaRaw ? JSON.parse(metaRaw) : {};
+                favoriteMeta = (obj && typeof obj === 'object') ? obj : {};
+            } catch { favoriteMeta = {}; }
+
+            // Prune meta for items no longer saved
+            try {
+                Object.keys(favoriteMeta).forEach(id => {
+                    if (!favorites.has(id)) delete favoriteMeta[id];
+                });
+            } catch { }
         }
         function saveFavorites() {
             try {
                 const arr = Array.from(favorites);
                 localStorage.setItem(FAVORITES_KEY, JSON.stringify(arr));
+                localStorage.setItem(FAVORITES_META_KEY, JSON.stringify(favoriteMeta || {}));
             } catch (e) {
                 console.error('[SAVE] Failed to save favorites:', e);
             }
@@ -3337,9 +3358,12 @@
                 const wasRemoved = favorites.has(activeResourceId);
                 if (wasRemoved) {
                     favorites.delete(activeResourceId);
+                    if (favoriteMeta) delete favoriteMeta[activeResourceId];
                     showToast('Removed from saved');
                 } else {
                     favorites.add(activeResourceId);
+                    favoriteMeta = favoriteMeta || {};
+                    favoriteMeta[activeResourceId] = Date.now();
                     showToast('Added to saved');
                 }
 
@@ -3369,7 +3393,12 @@
         function mergeSavedFromUrl() {
             const ids = getSavedParam();
             if (!ids || !ids.length) return;
-            ids.forEach(id => favorites.add(id));
+            ids.forEach(id => {
+                favorites.add(id);
+                favoriteMeta = favoriteMeta || {};
+                // If it came from a share link, treat it as "saved now" so it shows up in Recent.
+                if (!favoriteMeta[id]) favoriteMeta[id] = Date.now();
+            });
             saveFavorites();
             if (quickFilters) quickFilters.saved = true;
             const savedBtn = document.querySelector('.quickfilter-btn[data-qf="saved"]');
@@ -3830,6 +3859,7 @@
 
             // Quick filters (multi-toggle)
             const wantsSaved = quickFilters.saved;
+            const wantsRecent = quickFilters.recent;
             const wantsLabPick = quickFilters.labPick;
             const wantsFree = quickFilters.free;
             const wantsPaid = quickFilters.paid;
@@ -3840,6 +3870,17 @@
 
             if (wantsLabPick) {
                 filtered = filtered.filter(r => r.labPick === true);
+            }
+
+            // Recent: recently viewed or recently saved (last 7 days)
+            if (wantsRecent) {
+                const cutoff = Date.now() - (7 * 24 * 60 * 60 * 1000);
+                filtered = filtered.filter(r => {
+                    const id = getResourceId(r);
+                    const viewed = analytics && analytics[id] && analytics[id].lastViewed ? analytics[id].lastViewed : 0;
+                    const savedAt = favoriteMeta && favoriteMeta[id] ? favoriteMeta[id] : 0;
+                    return (viewed && viewed >= cutoff) || (savedAt && savedAt >= cutoff);
+                });
             }
 
             // Free/Paid toggles work across categories when r.paid is present.
@@ -3873,6 +3914,17 @@
                         return dateB - dateA; // Most recent first
                     }
                     // Fallback to alpha if no dates
+                    return (a.name || '').localeCompare(b.name || '');
+                } else if (currentSort === 'activity') {
+                    const idA = getResourceId(a);
+                    const idB = getResourceId(b);
+                    const viewedA = analytics && analytics[idA] && analytics[idA].lastViewed ? analytics[idA].lastViewed : 0;
+                    const viewedB = analytics && analytics[idB] && analytics[idB].lastViewed ? analytics[idB].lastViewed : 0;
+                    const savedA = favoriteMeta && favoriteMeta[idA] ? favoriteMeta[idA] : 0;
+                    const savedB = favoriteMeta && favoriteMeta[idB] ? favoriteMeta[idB] : 0;
+                    const scoreA = Math.max(viewedA, savedA);
+                    const scoreB = Math.max(viewedB, savedB);
+                    if (scoreA !== scoreB) return scoreB - scoreA;
                     return (a.name || '').localeCompare(b.name || '');
                 }
 
@@ -3974,7 +4026,7 @@
                         <div class="corner br"></div>
                         <div class="ghost-content">
                             <div class="ghost-icon">+</div>
-                            <div class="ghost-text">Suggest</div>
+                            <div class="ghost-text">Suggest a link</div>
                         </div>
                     </div>
                 `;
@@ -4548,6 +4600,17 @@
                     // When "Saved" is activated, switch to "All" category to show all saved items
                     if (key === 'saved' && quickFilters[key] === true) {
                         setGroup('all');
+                    }
+
+                    // When "Recent" is activated, switch to "All" and sort by activity
+                    if (key === 'recent') {
+                        if (quickFilters[key] === true) {
+                            setGroup('all');
+                            currentSort = 'activity';
+                            showToast('Showing recent activity');
+                        } else {
+                            currentSort = 'alpha';
+                        }
                     }
 
                     renderResources(true);
