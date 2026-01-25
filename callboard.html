@@ -425,6 +425,21 @@
             color: var(--lab-green);
         }
 
+        .listing-meta .badge-new {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .listing-meta .badge-closing {
+            border-color: rgba(255, 255, 255, 0.45);
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .listing-meta .badge-days {
+            border-color: var(--gray-600);
+            color: var(--gray-300);
+        }
+
         .listing-meta .location {
             color: var(--gray-400);
         }
@@ -1282,6 +1297,26 @@
 
         const normalizeText = (text) => (text || '').toLowerCase();
 
+        const MS_DAY = 24 * 60 * 60 * 1000;
+
+        const daysUntil = (dateValue) => {
+            if (!dateValue) return null;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const d = new Date(dateValue);
+            if (Number.isNaN(d.getTime())) return null;
+            const delta = d.getTime() - today.getTime();
+            return Math.ceil(delta / MS_DAY);
+        };
+
+        const isNewListing = (listing) => {
+            const d = listing.date_posted || listing.created_at;
+            const days = daysUntil(d);
+            if (days === null) return false;
+            // daysUntil for past dates will be <= 0
+            return days >= -3; // within last 3 days
+        };
+
         // Helper to check if a listing is expired
         const isExpired = (listing) => {
             if (!listing.expires_on) return false;
@@ -1340,6 +1375,17 @@
             listingsEl.innerHTML = filtered.map((listing) => {
                 const postedLabel = formatDate(listing.date_posted || listing.created_at);
                 const expiresLabel = formatDate(listing.expires_on);
+
+                const expDays = daysUntil(listing.expires_on);
+                const closingSoon = (typeof expDays === 'number') && expDays >= 0 && expDays <= 3;
+                const newFlag = isNewListing(listing);
+
+                const urgencyBadges = [
+                    newFlag ? '<span class="badge badge-new">New</span>' : '',
+                    closingSoon ? '<span class="badge badge-closing">Closing soon</span>' : '',
+                    (typeof expDays === 'number' && expDays >= 0) ? `<span class="badge badge-days">${expDays}d left</span>` : ''
+                ].filter(Boolean).join('');
+
                 // Compact Card: No description, no tags, no contact link visible inline
                 return `
                     <article class="listing-card" data-id="${listing.id}">
@@ -1349,6 +1395,7 @@
                                 class="badge ${listing.listing_type === 'crew' ? 'badge-crew' : 'badge-casting'}">${listing.listing_type}</span>
                             <span
                                 class="badge ${listing.compensation === 'paid' ? 'badge-paid' : 'badge-collab'}">${listing.compensation}</span>
+                            ${urgencyBadges}
                             <span class="location">${listing.location}</span>
                             ${postedLabel ? `<span class="date">Posted: ${postedLabel}</span>` : ''}
                             ${expiresLabel ? `<span class="date">Expires: ${expiresLabel}</span>` : ''}
