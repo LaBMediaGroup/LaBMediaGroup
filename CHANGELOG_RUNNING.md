@@ -4,6 +4,17 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-25 | 5:08PM EST
+———————————————————————
+Change: SkyBound default state = all collapsible sections closed.
+Files touched: skybound.html, CHANGELOG_RUNNING.md
+Notes:
+1. Removes default `open` state from Step 1/3/5 so SkyBound loads fully collapsed.
+Quick test checklist:
+1. Open skybound.html in a private window → confirm all sections are collapsed.
+2. Expand/collapse a few sections → confirm content renders inside each.
+3. Open DevTools Console on skybound.html and confirm no errors.
+
 2026-01-25 | 5:00PM EST
 ———————————————————————
 Change: Resources “Collections” (curated bundles as preset filters).
