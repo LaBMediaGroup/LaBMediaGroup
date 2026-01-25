@@ -4,15 +4,16 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-25 | 5:11PM EST
+2026-01-25 | 5:08PM EST
 ———————————————————————
-Change: Homepage GSAP warning cleanup for event preview cards.
-Files touched: index.html, CHANGELOG_RUNNING.md
+Change: SkyBound default state = all collapsible sections closed.
+Files touched: skybound.html, CHANGELOG_RUNNING.md
 Notes:
-1. Guards the GSAP animation so it only runs when .event-preview-card elements exist.
+1. Removes default `open` state from Step 1/3/5 so SkyBound loads fully collapsed.
 Quick test checklist:
-1. Open index.html → scroll to Events preview → confirm animations still occur.
-2. Check DevTools Console → confirm GSAP “target not found” warnings are gone.
+1. Open skybound.html in a private window → confirm all sections are collapsed.
+2. Expand/collapse a few sections → confirm content renders inside each.
+3. Open DevTools Console on skybound.html and confirm no errors.
 
 2026-01-25 | 5:00PM EST
 ———————————————————————
