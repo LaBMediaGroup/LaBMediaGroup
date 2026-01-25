@@ -4,18 +4,29 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
-2026-01-25 | 4:54PM EST
+2026-01-25 | 5:00PM EST
 ———————————————————————
-Change: Directory privacy + availability (no schema change).
-Files touched: directory.html, CHANGELOG_RUNNING.md
+Change: Resources “Collections” (curated bundles as preset filters).
+Files touched: resources.html, CHANGELOG_RUNNING.md
 Notes:
-1. Directory form now treats email as private (“used for contact + moderation”).
-2. Added Availability checkboxes; stored into the bio field as “Available for: …” so the existing Supabase schema continues to work.
-3. Public profile contact button now routes through contact.html as “Request Contact” instead of exposing a mailto.
+1. Adds a Collections row with curated presets (Starter Short Kit / Festival Stack / Local Network).
+2. Implemented as preset filter states (no backend / no schema changes).
 Quick test checklist:
-1. Open directory.html → Join Directory → select availability options → submit → confirm submission still succeeds.
-2. Open a profile modal → confirm Contact shows “Request Contact” and does not reveal an email.
-3. Open DevTools Console on directory.html and confirm no errors.
+1. Open resources.html → click each Collection button → confirm it jumps to the intended category/filters.
+2. Click Clear → returns to default view.
+3. Open DevTools Console and confirm no errors.
+
+2026-01-25 | 4:49PM EST
+———————————————————————
+Change: Callboard urgency badges (New / Closing soon / X days left).
+Files touched: callboard.html, CHANGELOG_RUNNING.md
+Notes:
+1. Adds computed urgency badges to active listing cards.
+2. “New” = posted within last 3 days. “Closing soon” = expires within 3 days.
+Quick test checklist:
+1. Open callboard.html → confirm badges appear when applicable.
+2. Confirm listings with expires_on show “Xd left”.
+3. Open DevTools Console and confirm no errors.
 
 2026-01-25 | 4:46PM EST
 ———————————————————————
