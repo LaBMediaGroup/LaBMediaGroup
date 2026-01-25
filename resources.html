@@ -3009,6 +3009,14 @@
             </div>
         </div>
 
+        <!-- Collections Row (curated bundles) -->
+        <div class="quickfilter-row" id="collectionBar" aria-label="Collections">
+            <button class="quickfilter-btn" type="button" data-collection="starter-short">Starter Short Kit</button>
+            <button class="quickfilter-btn" type="button" data-collection="festival-stack">Festival Stack</button>
+            <button class="quickfilter-btn" type="button" data-collection="local-network">Local Network</button>
+            <button class="quickfilter-btn" type="button" data-collection="reset">Clear</button>
+        </div>
+
         <!-- Quick Filters Row -->
         <div class="quickfilter-row" id="quickFilterBar" aria-label="Quick filters">
             <button class="quickfilter-btn" type="button" id="suggestQuick" title="Help keep this useful — suggest one link">
@@ -3172,6 +3180,9 @@
         const droneTypeBar = document.getElementById('droneTypeBar');
         const droneTypeButtons = droneTypeBar ? droneTypeBar.querySelectorAll('.subfilter-btn') : [];
 
+        const collectionBar = document.getElementById('collectionBar');
+        const collectionButtons = collectionBar ? collectionBar.querySelectorAll('.quickfilter-btn') : [];
+
         const quickFilterBar = document.getElementById('quickFilterBar');
         const quickFilterButtons = quickFilterBar ? quickFilterBar.querySelectorAll('.quickfilter-btn') : [];
         const suggestQuickBtn = document.getElementById('suggestQuick');
@@ -3196,6 +3207,24 @@
         const savedClose = document.getElementById('savedClose');
         const savedBackdrop = document.getElementById('savedBackdrop');
 
+        // Collections (curated bundles)
+        // Implemented as preset filter states (no backend / no schema changes).
+        const COLLECTIONS = {
+            'starter-short': {
+                label: 'Starter Short Kit',
+                group: 'tools',
+                toolsSubcategory: 'gear'
+            },
+            'festival-stack': {
+                label: 'Festival Stack',
+                group: 'film-festivals'
+            },
+            'local-network': {
+                label: 'Local Network',
+                group: 'community',
+                communitySubcategory: 'all'
+            }
+        };
         // Current filter state
         let currentGroup = 'film-festivals';
         let communitySubcategory = 'all';
@@ -4587,6 +4616,44 @@
                 renderResources(true);
             });
         });
+
+        // Collections (preset filter states)
+        if (collectionButtons.length) {
+            collectionButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const key = btn.dataset.collection;
+                    if (!key) return;
+
+                    // Clear quick filters
+                    Object.keys(quickFilters).forEach(k => quickFilters[k] = false);
+                    quickFilterButtons.forEach(b => b.classList.remove('is-active'));
+                    currentSort = 'alpha';
+
+                    if (key === 'reset') {
+                        setGroup('film-festivals');
+                        showToast('Cleared collection');
+                        renderResources(true);
+                        return;
+                    }
+
+                    const preset = COLLECTIONS[key];
+                    if (!preset) return;
+
+                    setGroup(preset.group);
+                    if (preset.group === 'tools' && preset.toolsSubcategory) {
+                        toolsSubcategory = preset.toolsSubcategory;
+                        toolsGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.tools === toolsSubcategory));
+                    }
+                    if (preset.group === 'community' && preset.communitySubcategory) {
+                        communitySubcategory = preset.communitySubcategory;
+                        communityGroupButtons.forEach(b => b.classList.toggle('active', b.dataset.community === communitySubcategory));
+                    }
+
+                    showToast(preset.label);
+                    renderResources(true);
+                });
+            });
+        }
 
         // Quick filters (multi-toggle)
         if (quickFilterButtons.length) {

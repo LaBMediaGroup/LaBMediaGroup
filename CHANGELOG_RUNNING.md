@@ -4,6 +4,18 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-25 | 5:00PM EST
+———————————————————————
+Change: Resources “Collections” (curated bundles as preset filters).
+Files touched: resources.html, CHANGELOG_RUNNING.md
+Notes:
+1. Adds a Collections row with curated presets (Starter Short Kit / Festival Stack / Local Network).
+2. Implemented as preset filter states (no backend / no schema changes).
+Quick test checklist:
+1. Open resources.html → click each Collection button → confirm it jumps to the intended category/filters.
+2. Click Clear → returns to default view.
+3. Open DevTools Console and confirm no errors.
+
 2026-01-25 | 4:49PM EST
 ———————————————————————
 Change: Callboard urgency badges (New / Closing soon / X days left).
