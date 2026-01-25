@@ -4,6 +4,18 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-25 | 4:46PM EST
+———————————————————————
+Change: Tightened homepage “Start here” module for faster onboarding.
+Files touched: index.html, CHANGELOG_RUNNING.md
+Notes:
+1. Reduced visual weight/padding so the section reads as a quick control panel.
+2. Shortened copy to be more scannable.
+Quick test checklist:
+1. Open index.html → confirm Start here appears under hero and reads cleanly.
+2. Confirm the three actions are obvious and still route to events/resources/ideas.
+3. Open DevTools Console on index.html and confirm no errors.
+
 2026-01-25 | 4:05PM EST
 ———————————————————————
 Change: SkyBound layout compacted with collapsible sections; removed blue accents.
