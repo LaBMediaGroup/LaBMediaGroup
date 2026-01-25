@@ -4,6 +4,18 @@ Purpose: compressed memory of shipped changes. Keep it short. Add newest at top.
 
 **IMPORTANT:** This changelog MUST be updated with every code change, no matter how small. Before committing or deploying, add an entry documenting what was changed, which files were touched, and how to verify the change works.
 
+2026-01-25 | 4:49PM EST
+———————————————————————
+Change: Callboard urgency badges (New / Closing soon / X days left).
+Files touched: callboard.html, CHANGELOG_RUNNING.md
+Notes:
+1. Adds computed urgency badges to active listing cards.
+2. “New” = posted within last 3 days. “Closing soon” = expires within 3 days.
+Quick test checklist:
+1. Open callboard.html → confirm badges appear when applicable.
+2. Confirm listings with expires_on show “Xd left”.
+3. Open DevTools Console and confirm no errors.
+
 2026-01-25 | 4:46PM EST
 ———————————————————————
 Change: Tightened homepage “Start here” module for faster onboarding.
