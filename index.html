@@ -666,8 +666,20 @@
 
         .start-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            /* 5-card layout:
+               - Row 1: 3 equal cards
+               - Row 2: 2 equal wider cards
+            */
+            grid-template-columns: repeat(6, minmax(0, 1fr));
             gap: 1.25rem;
+        }
+
+        .start-card {
+            grid-column: span 2;
+        }
+
+        .start-card:nth-child(n + 4) {
+            grid-column: span 3;
         }
 
         .start-card {
@@ -724,6 +736,7 @@
             }
 
             .start-card {
+                grid-column: auto;
                 min-height: unset;
             }
         }
@@ -2266,9 +2279,9 @@
             <div class="start-here-head">
                 <div>
                     <div class="section-label proto-text-mono">Start here</div>
-                    <div class="start-here-desc">Three quick jumps. No scrolling required.</div>
+                    <div class="start-here-desc">Five quick jumps. No scrolling required.</div>
                 </div>
-                <div class="section-count proto-text-mono">03</div>
+                <div class="section-count proto-text-mono">05</div>
             </div>
 
             <div class="start-grid">
@@ -2303,6 +2316,28 @@
                     <div class="start-card-name">Get unstuck</div>
                     <div class="start-card-copy">Roll a constraint and build something shootable.</div>
                     <div class="start-card-cta">Generate an idea <span aria-hidden="true">→</span></div>
+                </a>
+
+                <a class="start-card proto-card proto-corners" href="skybound.html">
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-tr"></span>
+                    <span class="proto-corner-bl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="start-card-kicker">SkyBound</div>
+                    <div class="start-card-name">Drones + aerial</div>
+                    <div class="start-card-copy">Pilots, gear, and flight-safe notes for clean aerial work.</div>
+                    <div class="start-card-cta">Open SkyBound <span aria-hidden="true">→</span></div>
+                </a>
+
+                <a class="start-card proto-card proto-corners" href="directory.html">
+                    <span class="proto-corner-tl"></span>
+                    <span class="proto-corner-tr"></span>
+                    <span class="proto-corner-bl"></span>
+                    <span class="proto-corner-br"></span>
+                    <div class="start-card-kicker">Directory</div>
+                    <div class="start-card-name">Hotspots</div>
+                    <div class="start-card-copy">Quick access to the best local shoot spots. Scout faster.</div>
+                    <div class="start-card-cta">Browse directory <span aria-hidden="true">→</span></div>
                 </a>
             </div>
         </div>
