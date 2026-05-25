@@ -505,87 +505,6 @@
             margin: 0.75rem 0 0.5rem;
         }
 
-        /* DFA Partnership Callout (Temporary) */
-        .dfa-partnership-callout {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 3rem 1rem;
-        }
-
-        .dfa-callout-content {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            padding: 1.25rem 1.5rem;
-            border: 1px solid rgba(255,255,255,0.12);
-            background: rgba(255,255,255,0.02);
-            transition: border-color 0.2s ease;
-            width: 100%;
-            text-align: left;
-            cursor: pointer;
-            appearance: none;
-            color: inherit;
-            font: inherit;
-        }
-
-        .dfa-callout-content:hover {
-            border-color: rgba(255,255,255,0.2);
-        }
-
-        .dfa-callout-content:focus-visible {
-            outline: none;
-            border-color: rgba(255,255,255,0.35);
-        }
-
-        .dfa-callout-image {
-            width: 80px;
-            height: auto;
-            display: block;
-            flex-shrink: 0;
-        }
-
-        .dfa-callout-text {
-            display: flex;
-            flex-direction: column;
-            gap: 0.35rem;
-            flex: 1;
-        }
-
-        .dfa-callout-label {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.55rem;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--gray-600);
-            font-weight: 700;
-        }
-
-        .dfa-callout-headline {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--white);
-            margin: 0;
-            line-height: 1.3;
-        }
-
-        .dfa-callout-link {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.65rem;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            color: var(--gray-400);
-            text-decoration: none;
-            transition: color 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            margin-top: 0.15rem;
-        }
-
-        .dfa-callout-link:hover {
-            color: var(--white);
-        }
-
         .scroll-indicator {
             position: absolute;
             bottom: 3rem;
@@ -627,120 +546,6 @@
             100% { left: 100%; }
         }
         
-        /* ============================================
-           START HERE (HOMEPAGE QUICK ACTIONS)
-        ============================================ */
-        .start-here {
-            padding: 2.25rem clamp(1.5rem, 4vw, 3.5rem) 1rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .start-here-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .start-here-head {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 1.25rem;
-            margin-bottom: 1.75rem;
-        }
-
-        .start-here-title {
-            font-family: 'Space Mono', monospace;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .start-here-desc {
-            margin-top: 0.5rem;
-            color: var(--gray-400);
-            line-height: 1.55;
-            max-width: 520px;
-        }
-
-        .start-grid {
-            display: grid;
-            /* 5-card layout:
-               - Row 1: 3 equal cards
-               - Row 2: 2 equal wider cards
-            */
-            grid-template-columns: repeat(6, minmax(0, 1fr));
-            gap: 1.25rem;
-        }
-
-        .start-card {
-            grid-column: span 2;
-        }
-
-        .start-card:nth-child(n + 4) {
-            grid-column: span 3;
-        }
-
-        .start-card {
-            display: flex;
-            flex-direction: column;
-            gap: 0.65rem;
-            padding: 1.1rem 1.15rem 1.05rem;
-            border-radius: 18px;
-            text-decoration: none;
-            color: var(--white);
-        }
-
-        .start-card-kicker {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.65rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--gray-600);
-        }
-
-        .start-card-name {
-            font-family: 'Space Mono', monospace;
-            font-size: 1.05rem;
-            letter-spacing: 0.5px;
-        }
-
-        .start-card-copy {
-            color: var(--gray-400);
-            line-height: 1.5;
-            font-size: 0.95rem;
-            max-width: 42ch;
-        }
-
-        .start-card-cta {
-            margin-top: auto;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.9);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .start-card:focus-visible {
-            outline: 2px solid rgba(74, 158, 255, 0.65);
-            outline-offset: 4px;
-        }
-
-        @media (max-width: 900px) {
-            .start-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .start-card {
-                grid-column: auto;
-                min-height: unset;
-            }
-        }
-
         /* ============================================
            WORK SECTION
         ============================================ */
@@ -1424,42 +1229,6 @@
         .event-modal-link.calendar-btn:hover {
             background: rgba(59, 130, 246, 0.1);
             border-color: #60A5FA;
-        }
-
-        .dfa-modal-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-            gap: 1.5rem;
-            align-items: start;
-        }
-
-        .dfa-modal-image {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .dfa-modal-image img {
-            width: 100%;
-            max-width: 280px;
-            border: 1px solid var(--gray-800);
-            border-radius: 6px;
-            background: var(--black);
-            object-fit: contain;
-        }
-
-        @media (max-width: 768px) {
-            .dfa-modal-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .dfa-modal-image {
-                justify-content: flex-start;
-            }
-
-            .dfa-modal-image img {
-                max-width: 100%;
-            }
         }
 
         .status-chip {
@@ -2164,27 +1933,6 @@
         }
 
         @media (max-width: 768px) {
-            .dfa-partnership-callout {
-                padding: 1.5rem 1.5rem 0.75rem;
-            }
-
-            .dfa-callout-content {
-                padding: 1rem;
-                gap: 1rem;
-            }
-
-            .dfa-callout-image {
-                width: 60px;
-            }
-
-            .dfa-callout-headline {
-                font-size: 0.75rem;
-            }
-
-            .start-here {
-                padding: 2rem 1.5rem 1rem;
-            }
-
             .footer-social {
                 order: 3;
             }
@@ -2409,52 +2157,6 @@
         Weekly filmmaker brief signup placeholder.
     </section>
 
-    <!-- DFA Partnership Modal -->
-    <div class="event-preview-backdrop" id="dfaCalloutBackdrop" aria-hidden="true">
-        <div class="event-preview-modal" id="dfaCalloutModal" role="dialog" aria-modal="true" aria-labelledby="dfaCalloutTitle" tabindex="-1">
-            <div class="event-modal-header">
-                <button class="event-modal-close" id="dfaCalloutClose" type="button">ESC</button>
-                <div class="event-modal-chip-row">
-                    <span class="status-chip">Partnership Update</span>
-                </div>
-                <h2 class="event-modal-title" id="dfaCalloutTitle">DFA films now air on Detroit Public Access TV</h2>
-            </div>
-            <div class="event-modal-body">
-                <div class="dfa-modal-grid">
-                    <div>
-                        <div class="event-modal-section">
-                            <h3 class="event-modal-section-title">Details</h3>
-                            <div class="event-info-grid">
-                                <div class="event-info-item">
-                                    <div class="event-info-label">Broadcast</div>
-                                    <div class="event-info-value">Detroit Public Access TV</div>
-                                </div>
-                                <div class="event-info-item">
-                                    <div class="event-info-label">Partner</div>
-                                    <div class="event-info-value">Film Detroit</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="event-modal-section">
-                            <h3 class="event-modal-section-title">About</h3>
-                            <p class="event-modal-description">Detroit Filmmaker Awards films are now airing on Detroit Public Access TV, giving local filmmakers a new broadcast home through DFA's partnership with Film Detroit.</p>
-                        </div>
-                        <div class="event-modal-section">
-                            <h3 class="event-modal-section-title">Links</h3>
-                            <a href="https://detroitfilmmakerawards.com/" target="_blank" rel="noopener noreferrer" class="event-modal-link">
-                                Visit Detroit Filmmaker Awards
-                                <span>→</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="dfa-modal-image">
-                        <img src="images/DFAXDFM.JPG" alt="DFA x Film Detroit">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Event Preview Modal -->
     <div class="event-preview-backdrop" id="eventPreviewBackdrop" aria-hidden="true">
         <div class="event-preview-modal" id="eventPreviewModal" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle" tabindex="-1">
@@ -2577,16 +2279,10 @@
         // ============================================
         // EVENT PREVIEW MODAL
         // ============================================
-        const dfaCalloutTrigger = document.getElementById('dfaCalloutTrigger');
-        const dfaCalloutBackdrop = document.getElementById('dfaCalloutBackdrop');
-        const dfaCalloutModal = document.getElementById('dfaCalloutModal');
-        const dfaCalloutClose = document.getElementById('dfaCalloutClose');
-
         const eventPreviewBackdrop = document.getElementById('eventPreviewBackdrop');
         const eventPreviewModal = document.getElementById('eventPreviewModal');
         const eventModalClose = document.getElementById('eventModalClose');
 
-        let lastDfaFocusEl = null;
         let lastEventFocusEl = null;
         let currentEventData = null;
 
@@ -2803,42 +2499,8 @@
             if (lastEventFocusEl && lastEventFocusEl.focus) lastEventFocusEl.focus();
         }
 
-        function openDfaCallout() {
-            if (!dfaCalloutBackdrop) return;
-            lastDfaFocusEl = document.activeElement;
-            dfaCalloutBackdrop.classList.add('is-open');
-            dfaCalloutBackdrop.setAttribute('aria-hidden', 'false');
-            setTimeout(() => {
-                if (dfaCalloutModal) dfaCalloutModal.focus();
-            }, 100);
-        }
-
-        function closeDfaCallout() {
-            if (!dfaCalloutBackdrop) return;
-            dfaCalloutBackdrop.classList.remove('is-open');
-            dfaCalloutBackdrop.setAttribute('aria-hidden', 'true');
-            if (lastDfaFocusEl && lastDfaFocusEl.focus) lastDfaFocusEl.focus();
-        }
-
-        if (dfaCalloutTrigger) {
-            dfaCalloutTrigger.addEventListener('click', openDfaCallout);
-        }
-
-        if (dfaCalloutClose) {
-            dfaCalloutClose.addEventListener('click', closeDfaCallout);
-        }
-
-        if (dfaCalloutBackdrop) {
-            dfaCalloutBackdrop.addEventListener('click', (e) => {
-                if (e.target === dfaCalloutBackdrop) closeDfaCallout();
-            });
-        }
-
-        if (eventModalClose) {
-            eventModalClose.addEventListener('click', closeEventPreview);
-        }
-
         if (eventPreviewBackdrop) {
+            eventModalClose.addEventListener('click', closeEventPreview);
             eventPreviewBackdrop.addEventListener('click', (e) => {
                 if (e.target === eventPreviewBackdrop) closeEventPreview();
             });
@@ -2848,9 +2510,6 @@
             if (e.key !== 'Escape') return;
             if (eventPreviewBackdrop && eventPreviewBackdrop.classList.contains('is-open')) {
                 closeEventPreview();
-            }
-            if (dfaCalloutBackdrop && dfaCalloutBackdrop.classList.contains('is-open')) {
-                closeDfaCallout();
             }
         });
 
