@@ -1,9 +1,0 @@
-# LaB Media - Metro Detroit Creative Resource Hub
-# Allow all crawlers; see sitemap for site structure
-
-User-agent: *
-Allow: /
-Disallow: /404.html
-
-# Sitemap location
-Sitemap: https://labmedia.work/sitemap.xml
