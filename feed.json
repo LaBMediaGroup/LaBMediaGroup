@@ -1,0 +1,120 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "LaB Media",
+  "home_page_url": "https://labmedia.work",
+  "feed_url": "https://labmedia.work/feed.json",
+  "description": "A small film studio and a public notebook, run out of Shelby Township, Michigan.",
+  "icon": "https://labmedia.work/images/favicon-512.png",
+  "items": [
+    {
+      "id": "https://www.facebook.com/events/2520859208335856",
+      "url": "https://www.facebook.com/events/2520859208335856",
+      "title": "Detroit New Wave: The Rise of Cinema Culture",
+      "content_text": "A live-recorded panel bringing Metro Detroit’s independent cinema owners, audiences, and filmmakers into the same room — at least three theaters and microcinemas per night, followed by a social hour with food and drinks. If you want to actually meet the people programming film in this city, this is the room. — The Congregation, Detroit",
+      "date_published": "2026-08-27T12:00:00Z",
+      "tags": [
+        "Event"
+      ]
+    },
+    {
+      "id": "https://www.facebook.com/events/1531184581974584",
+      "url": "https://www.facebook.com/events/1531184581974584",
+      "title": "Adam & Eva’s: An Intimate Film Experience",
+      "content_text": "A live projection of A Man Called Adam — Sammy Davis Jr., from The Black Canon collection — paired with curated music and signature drinks built around the film. Designed as more than a screening: an evening staged inside the mood and sound of the picture, celebrating Black film history and legacy. — Miss Eva’s, Detroit",
+      "date_published": "2026-08-05T12:00:00Z",
+      "tags": [
+        "Event"
+      ]
+    },
+    {
+      "id": "https://labmedia.work/resources.html#le-juice-rochester",
+      "url": "https://labmedia.work/resources.html#le-juice-rochester",
+      "title": "Le Juicé",
+      "content_text": "Cold-pressed juice bar in downtown Rochester, in a space designed by MOZ Interiors.",
+      "date_published": "2026-07-27T12:00:00Z",
+      "tags": [
+        "Resource"
+      ]
+    },
+    {
+      "id": "https://labmedia.work/portfolio.html#scattered",
+      "url": "https://labmedia.work/portfolio.html#scattered",
+      "title": "Scattered",
+      "content_text": "Made for the Detroit 48 Hour Film Project. Assignment Friday night, shot and cut over the weekend.",
+      "date_published": "2026-07-25T12:00:00Z",
+      "tags": [
+        "Film"
+      ]
+    },
+    {
+      "id": "https://labmedia.work/portfolio.html#lejuice",
+      "url": "https://labmedia.work/portfolio.html#lejuice",
+      "title": "Le Juicé",
+      "content_text": "A juice bar in Rochester, shot for Le Juicé and MOZ Interiors.",
+      "date_published": "2026-06-01T12:00:00Z",
+      "tags": [
+        "Film"
+      ]
+    },
+    {
+      "id": "https://labmedia.work/portfolio.html#horror",
+      "url": "https://labmedia.work/portfolio.html#horror",
+      "title": "Trail Dead",
+      "content_text": "Invisible threat. Visible dread. A horror short exploring tension and atmosphere. — won Best Editing.",
+      "date_published": "2025-09-05T12:00:00Z",
+      "tags": [
+        "Film"
+      ]
+    },
+    {
+      "id": "https://labmedia.work/portfolio.html#comedy",
+      "url": "https://labmedia.work/portfolio.html#comedy",
+      "title": "Lookout",
+      "content_text": "Smart writing meets sharp timing. A comedy short that proves funny is hard.",
+      "date_published": "2025-05-01T12:00:00Z",
+      "tags": [
+        "Film"
+      ]
+    },
+    {
+      "id": "https://labmedia.work/portfolio.html#itsaboy",
+      "url": "https://labmedia.work/portfolio.html#itsaboy",
+      "title": "It's a Boy",
+      "content_text": "A late entry to The Comedy Roll, shot across four days in a Michigan spring.",
+      "date_published": "2025-04-25T12:00:00Z",
+      "tags": [
+        "Film"
+      ]
+    },
+    {
+      "id": "https://labmedia.work/portfolio.html#moz",
+      "url": "https://labmedia.work/portfolio.html#moz",
+      "title": "MOZ Interiors",
+      "content_text": "Where luxury meets livability. A brand film for a Detroit interior design studio.",
+      "date_published": "2024-07-01T12:00:00Z",
+      "tags": [
+        "Film"
+      ]
+    },
+    {
+      "id": "https://labmedia.work/portfolio.html#artist",
+      "url": "https://labmedia.work/portfolio.html#artist",
+      "title": "Anthony Brass",
+      "content_text": "An artist's journey through paint, place, and passion. Intimate storytelling captured in his home studio.",
+      "date_published": "2024-03-04T12:00:00Z",
+      "tags": [
+        "Film"
+      ]
+    },
+    {
+      "id": "https://labmedia.work/portfolio.html#pandys",
+      "url": "https://labmedia.work/portfolio.html#pandys",
+      "title": "The Pandys",
+      "content_text": "Raw band practice energy captured live. Authentic performance from the studio floor.",
+      "date_published": "2024-01-01T12:00:00Z",
+      "tags": [
+        "Film"
+      ]
+    }
+  ]
+}

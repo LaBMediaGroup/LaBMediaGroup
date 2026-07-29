@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
+    <title>Page Not Found | LaB Media</title>
+<meta name="description" content="That page moved or no longer exists.">
+<link rel="canonical" href="https://labmedia.work/404.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://labmedia.work/404.html">
+<meta property="og:site_name" content="LaB Media">
+<meta property="og:title" content="Page Not Found | LaB Media">
+<meta property="og:description" content="That page moved or no longer exists.">
+<meta property="og:image" content="https://labmedia.work/images/favicon-512.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Page Not Found | LaB Media">
+<meta name="twitter:description" content="That page moved or no longer exists.">
+<meta name="twitter:image" content="https://labmedia.work/images/favicon-512.png">
+
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+
+    <!-- SEO Meta Tags -->
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Prototype Design System -->
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--black);
+            color: var(--gray-300);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Navigation */
+        .site-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+
+        .nav-logo {
+            height: 26px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.5;
+        }
+
+        /* Nav Dropdown Styles */
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .nav-dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-dropdown-toggle:hover {
+            opacity: 0.5;
+        }
+
+        .nav-dropdown-toggle svg {
+            width: 10px;
+            height: 10px;
+            transition: transform 0.2s ease;
+        }
+
+        .nav-dropdown.active .nav-dropdown-toggle svg {
+            transform: rotate(180deg);
+        }
+
+        .nav-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 0.75rem);
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid var(--gray-800);
+            padding: 0.75rem 0;
+            min-width: 160px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 1001;
+        }
+
+        .nav-dropdown.active .nav-dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .nav-dropdown-menu a {
+            display: block;
+            padding: 0.6rem 1.25rem;
+            color: var(--gray-400);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: color 0.2s ease, background 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav-dropdown-menu a:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+            opacity: 1;
+        }
+
+        /* 404 Content */
+        .error-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+        }
+
+        .error-code {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(6rem, 20vw, 12rem);
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1;
+            margin: 0;
+            letter-spacing: -0.05em;
+            position: relative;
+        }
+
+        .error-code::before {
+            content: '404';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: var(--lab-orange);
+            opacity: 0.15;
+            transform: translate(4px, 4px);
+            z-index: -1;
+        }
+
+        .error-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--gray-800);
+        }
+
+        .error-message {
+            font-size: 1.1rem;
+            color: var(--gray-300);
+            margin-top: 2rem;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+
+        .error-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 3rem;
+            justify-content: center;
+        }
+
+        .error-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--gray-600);
+            transition: all 0.3s ease;
+        }
+
+        .error-link:hover {
+            background: var(--white);
+            color: var(--black);
+            border-color: var(--white);
+        }
+
+        .error-link.primary {
+            background: var(--white);
+            color: var(--black);
+        }
+
+        .error-link.primary:hover {
+            background: transparent;
+            color: var(--white);
+        }
+
+        /* Decorative elements */
+        .glitch-line {
+            width: 60px;
+            height: 2px;
+            background: var(--lab-orange);
+            margin: 2rem auto 0;
+            opacity: 0.6;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 640px) {
+            .site-nav {
+                padding: 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            /* Mobile dropdown styles */
+            .nav-dropdown {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-dropdown-toggle {
+                font-size: 0.9rem;
+                color: var(--white) !important;
+            }
+
+            .nav-dropdown-menu {
+                position: static;
+                transform: none;
+                background: transparent;
+                border: none;
+                padding: 0.5rem 0 0 0;
+                min-width: auto;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 1;
+                visibility: visible;
+                transition: max-height 0.3s ease, padding 0.3s ease;
+            }
+
+            .nav-dropdown.active .nav-dropdown-menu {
+                max-height: 300px;
+                padding: 0.75rem 0 0 0;
+            }
+
+            .nav-dropdown-menu a {
+                padding: 0.5rem 0;
+                font-size: 0.75rem;
+                color: var(--gray-400) !important;
+                text-align: center;
+            }
+
+            .nav-dropdown-menu a:hover {
+                background: transparent;
+                color: var(--white) !important;
+            }
+
+            .error-container {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .error-links {
+                flex-direction: column;
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .error-link {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="alternate" type="application/rss+xml" title="LaB Media" href="/feed.xml">
+<link rel="alternate" type="application/feed+json" title="LaB Media" href="/feed.json">
+<link rel="stylesheet" href="lab.css">
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+    <!-- Navigation -->
+    <header class="nav">
+  <div class="nav-in">
+    <a class="nav-brand" href="index.html" aria-label="LaB Media — home">
+      <img class="nav-logo is-mark" src="images/TheLaB-mark.png" alt="LaB Media — back to the LaB" width="61" height="26">
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="portfolio.html">Reel</a></li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Tools
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="ideas.html">Story Generator</a>
+          <a href="skybound.html">SkyBound — Drone</a>
+          <a href="gear.html">The Kit</a>
+        </div>
+      </li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="contact.html">About</a></li>
+    </ul>
+    <div class="theme" role="group" aria-label="Colour theme">
+      <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
+      <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
+      <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div id="main">
+
+    <!-- 404 Content -->
+    <main class="error-container">
+        <h1 class="error-code">404</h1>
+        <h2 class="error-label">Signal Lost</h2>
+        <div class="glitch-line"></div>
+        <p class="error-message">
+            The page you're looking for has either moved, been deleted, or never existed. Let's get you back on track.
+        </p>
+        <div class="error-links">
+            <a href="index.html" class="error-link primary">Back to Home</a>
+            <a href="resources.html" class="error-link">Browse Resources</a>
+            <a href="events.html" class="error-link">View Events</a>
+        </div>
+    </main>
+
+    <script>
+        /* The old nav's dropdown JS lived here — .nav-dropdown hasn't existed
+           since the shared nav landed, so it was a no-op. The replacement nav
+           has its own handler below. */
+    </script>
+</div>
+<footer class="foot">
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <img class="foot-mark" src="images/TheLaB-mark.png" alt="The LaB" width="122" height="52" loading="lazy" decoding="async">
+        <p class="foot-blurb">A small film studio and a public notebook, run out of Shelby Township, Michigan.</p>
+      </div>
+      <div class="foot-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="portfolio.html">Reel</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="ideas.html">Story Generator</a></li>
+          <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="gear.html">The Kit</a></li>
+          <li><a href="events.html">Events</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Elsewhere</h3>
+        <ul>
+          <li><a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://instagram.com/thisislabmedia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/in/baldwinrobert" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="contact.html">About &amp; Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>Made in Shelby Twp, MI</span>
+      <span>© 2026 LaB Media</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var t=document.getElementById('navToggle'),l=document.getElementById('navLinks');
+  var desktop=function(){return window.innerWidth>760};
+
+  if(t&&l){t.addEventListener('click',function(e){
+    e.stopPropagation();
+    var open=t.getAttribute('aria-expanded')==='true';
+    t.setAttribute('aria-expanded',String(!open));
+    l.setAttribute('data-open',String(!open));
+  });}
+
+  function setOpen(d,on){
+    d.setAttribute('data-open',String(on));
+    d.querySelector('.nav-drop-btn').setAttribute('aria-expanded',String(on));
+    if(!on) d.removeAttribute('data-pinned');
+  }
+  function closeAll(except){
+    document.querySelectorAll('.nav-drop').forEach(function(o){ if(o!==except) setOpen(o,false); });
+  }
+
+  document.querySelectorAll('.nav-drop').forEach(function(d){
+    var b=d.querySelector('.nav-drop-btn');
+
+    /* Click pins it open, so hovering away can't yank it shut mid-reach. */
+    b.addEventListener('click',function(e){
+      e.stopPropagation();
+      var open=d.getAttribute('data-open')==='true';
+      var pinned=d.hasAttribute('data-pinned');
+      closeAll(d);
+      if(open&&pinned){ setOpen(d,false); }
+      else { setOpen(d,true); d.setAttribute('data-pinned','1'); }
+    });
+
+    d.addEventListener('mouseenter',function(){ if(desktop()){ closeAll(d); setOpen(d,true); } });
+    d.addEventListener('mouseleave',function(){
+      if(desktop() && !d.hasAttribute('data-pinned')) setOpen(d,false);
+    });
+
+    /* following a link should never leave a menu hanging open */
+    d.querySelectorAll('.nav-drop-menu a').forEach(function(a){
+      a.addEventListener('click',function(){ setOpen(d,false); });
+    });
+  });
+
+  document.addEventListener('click',function(){ closeAll(null); });
+
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Escape')return;
+    closeAll(null);
+    if(t){t.setAttribute('aria-expanded','false');l.setAttribute('data-open','false');}
+  });
+})();
+</script>
+
+<script>
+/* Theme switch — remembers the choice, falls back to dark */
+(function(){
+  var root=document.documentElement, KEY='lab-theme';
+  var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
+  if(!btns.length)return;
+
+  function apply(t,save){
+    if(t==='dark') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme',t);
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.themeSet===t))});
+    if(save){try{localStorage.setItem(KEY,t)}catch(e){}}
+  }
+
+  var saved='dark';
+  try{saved=localStorage.getItem(KEY)||'dark'}catch(e){}
+  apply(saved,false);
+
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){apply(b.dataset.themeSet,true)});
+  });
+})();
+</script>
+</body>
+
+</html>
