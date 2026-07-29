@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LaB Media — Films, and the tools that made them</title>
+<meta name="description" content="A small film studio in Shelby Township, Michigan. Award-winning shorts, free filmmaking tools, and 130+ vetted resources — kept public for anyone who needs them.">
+<link rel="canonical" href="https://labmedia.work/">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://labmedia.work/">
+<meta property="og:site_name" content="LaB Media">
+<meta property="og:title" content="LaB Media — Films, and the tools that made them">
+<meta property="og:description" content="A small film studio in Shelby Township, Michigan. Award-winning shorts, free filmmaking tools, and 130+ vetted resources.">
+<meta property="og:image" content="https://labmedia.work/images/og/index.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LaB Media — Films, and the tools that made them">
+<meta name="twitter:description" content="Award-winning shorts, free filmmaking tools, and 130+ vetted resources from a Metro Detroit studio.">
+<meta name="twitter:image" content="https://labmedia.work/images/og/index.jpg">
+
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="images/favicon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="alternate" type="application/rss+xml" title="LaB Media" href="/feed.xml">
+<link rel="alternate" type="application/feed+json" title="LaB Media" href="/feed.json">
+<link rel="stylesheet" href="lab.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://labmedia.work/#org",
+      "name": "LaB Media",
+      "url": "https://labmedia.work",
+      "logo": "https://labmedia.work/images/TheLaB-mark.png",
+      "description": "A small film studio and a public notebook, run out of Shelby Township, Michigan.",
+      "founder": {
+        "@type": "Person",
+        "name": "Robert Baldwin",
+        "sameAs": [
+          "https://www.linkedin.com/in/baldwinrobert"
+        ]
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Shelby Township",
+        "addressRegion": "MI",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        "https://www.youtube.com/@ThisIsLabMedia",
+        "https://instagram.com/thisislabmedia",
+        "https://www.linkedin.com/in/baldwinrobert"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://labmedia.work/#site",
+      "url": "https://labmedia.work",
+      "name": "LaB Media",
+      "publisher": {
+        "@id": "https://labmedia.work/#org"
+      }
+    }
+  ]
+}
+</script>
+
+
+<style>
+/* ---- Home hero: headline → mark → lede → reel ----
+   The statement leads, The LaB signs it, the line underneath says
+   what that means. Headline, mark and lede read as one block. */
+.hero{
+  padding-block:clamp(26px,3.5vw,var(--s-6)) 0;
+  border-bottom:1px solid var(--line);
+  text-align:center;
+  display:flex;flex-direction:column;align-items:center;
+}
+.hero .rule{width:100%}
+
+.hero h1{
+  font-family:var(--f-display);font-weight:400;
+  font-size:clamp(34px,5.6vw,74px);
+  line-height:1.04;letter-spacing:-.028em;
+  max-width:18ch;margin:clamp(30px,5vh,64px) auto 0;
+}
+.hero h1 em{font-style:italic;color:var(--accent)}
+
+/* the signature between the statement and its explanation —
+   tucked in tight to both so the three read as one unit */
+.masthead{
+  height:clamp(58px,6.4vw,88px);width:auto;
+  margin:clamp(20px,3vh,var(--s-6)) 0 clamp(16px,2.2vh,var(--s-5));
+  opacity:1;
+}
+
+.hero-lede{
+  color:var(--dim);font-size:var(--t-lg);line-height:1.7;
+  max-width:52ch;margin:0 auto;
+}
+
+/* The reel — the centrepiece */
+.reel{
+  width:100%;max-width:1180px;
+  margin:clamp(30px,5vh,var(--s-8)) auto 0;
+  position:relative;
+  aspect-ratio:2.39/1;            /* scope — crops the letterbox off the poster */
+  background:var(--paper-3);border:1px solid var(--line);overflow:hidden;
+  transition:aspect-ratio var(--mid) var(--ease);
+}
+.reel.playing{aspect-ratio:16/9}  /* YouTube delivers 16:9; give the player its room */
+.reel-btn{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:pointer}
+.reel-btn img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transition:filter var(--slow) var(--ease),transform var(--slow) var(--ease)}
+.reel-btn:hover img,.reel-btn:focus-visible img{filter:grayscale(0) contrast(1);transform:scale(1.02)}
+.reel-play{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:clamp(64px,7vw,88px);aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(244,241,236,.55);background:rgba(11,11,12,.5);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:grid;place-items:center;
+  transition:background var(--mid) var(--ease),border-color var(--mid) var(--ease),transform var(--mid) var(--ease);
+}
+.reel-play svg{width:22px;height:22px;fill:var(--ink);margin-left:5px;transition:fill var(--mid) var(--ease)}
+.reel-btn:hover .reel-play,.reel-btn:focus-visible .reel-play{background:var(--accent);border-color:var(--accent);transform:translate(-50%,-50%) scale(1.06)}
+.reel-btn:hover .reel-play svg,.reel-btn:focus-visible .reel-play svg{fill:var(--paper)}
+/* bottom-RIGHT: the film burns its own title into the bottom-left corner */
+.reel-tag{
+  position:absolute;right:var(--s-4);bottom:var(--s-4);z-index:2;pointer-events:none;
+  font-family:var(--f-mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--dim);background:rgba(11,11,12,.62);backdrop-filter:blur(6px);padding:6px 11px;
+}
+.reel.playing .reel-tag{display:none}
+.reel iframe{width:100%;height:100%;border:0;display:block}
+
+.hero-cta{display:flex;gap:var(--s-3);flex-wrap:wrap;justify-content:center;margin-top:clamp(24px,3.5vh,var(--s-6))}
+
+/* Stat bar pinned to the base of the hero */
+.hero-stats{
+  margin-top:auto;width:100%;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--line);
+}
+.hero-stats div{
+  display:flex;flex-direction:column;gap:6px;align-items:center;
+  padding:var(--s-5) var(--s-3);
+  border-right:1px solid var(--line);
+}
+.hero-stats div:last-child{border-right:0}
+.hero-stats dt{
+  font-family:var(--f-mono);font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--faint);order:2;
+}
+.hero-stats .unit{font-size:.42em;letter-spacing:.1em;margin-left:3px;color:var(--faint);text-transform:uppercase}
+.hero-stats dd{font-family:var(--f-display);font-size:clamp(24px,3vw,34px);color:var(--ink);line-height:1;order:1}
+
+.note{background:var(--accent-bg);border:1px solid var(--accent-dim);margin-top:var(--s-7);
+  padding:clamp(26px,3vw,var(--s-6));display:grid;gap:15px}
+.note p{color:var(--dim);font-size:var(--t-sm);line-height:1.72}
+.note strong{color:var(--ink);font-weight:400}
+/* Two paragraphs stacked in a half-width box left the right side of the page
+   empty. Side by side, the box spans the full measure and each column still
+   reads at ~68 characters — widening it to one column would have meant 90+. */
+@media (min-width:880px){
+  .note{grid-template-columns:1fr 1fr;gap:0;padding:var(--s-7) 0}
+  .note p{font-size:var(--t-base);line-height:1.8;max-width:68ch;
+    padding-inline:clamp(30px,3.4vw,var(--s-7))}
+  .note p + p{border-left:1px solid var(--accent-dim)}
+}
+
+@media (max-width:760px){
+  .hero{min-height:0;padding-bottom:0}
+  .masthead{height:clamp(56px,14vw,80px)}
+  .hero-stats{grid-template-columns:repeat(2,1fr);margin-top:var(--s-8)}
+  .hero-stats div:nth-child(2n){border-right:0}
+  .hero-stats div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .hero-cta{width:100%}
+  .hero-cta .btn{flex:1;justify-content:center}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="nav-in">
+    <a class="nav-brand" href="index.html" aria-label="LaB Media — home">
+      <img class="nav-logo" src="images/LaBMedia-mark.png" alt="LaB Media" width="136" height="26">
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="portfolio.html">Reel</a></li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Tools
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="ideas.html">Story Generator</a>
+          <a href="skybound.html">SkyBound — Drone</a>
+          <a href="gear.html">The Kit</a>
+          <a href="colophon.html">How it's built</a>
+        </div>
+      </li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="contact.html">About</a></li>
+    </ul>
+    <div class="theme" role="group" aria-label="Colour theme">
+      <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
+      <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
+      <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============ HERO ============ -->
+<section class="hero wrap">
+  <div class="rule"><span class="mono">LaB Media</span><i></i><span class="mono">Est. Shelby Twp, MI</span></div>
+
+  <h1>Films, and the tools <em>that made them.</em></h1>
+
+  <img class="masthead" src="images/TheLaB-mark.png" alt="The LaB" width="309" height="132" fetchpriority="high" decoding="async">
+
+  <p class="hero-lede">A small studio, a working notebook, and live reference material.</p>
+
+  <div class="reel" id="reel" data-video="UAFQ5KU-6Jg">
+    <button class="reel-btn" type="button" aria-label="Play the LaB Media reel">
+      <img id="reelPoster" src="https://i.ytimg.com/vi/UAFQ5KU-6Jg/maxresdefault.jpg"
+           alt="" decoding="async" width="1280" height="720">
+      <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
+    </button>
+    <span class="reel-tag">The Reel · 2024 work</span>
+  </div>
+
+  <div class="hero-cta">
+    <a class="btn btn-accent" href="portfolio.html">See every film <span class="arw">→</span></a>
+    <a class="btn" href="resources.html">Browse resources <span class="arw">→</span></a>
+  </div>
+
+  <!-- Counting films and links says the same thing every other studio site
+       says. The production data is the part nobody else shows. -->
+  <dl class="hero-stats">
+    <div><dt>Films</dt><dd>08</dd></div>
+    <div><dt>Fastest, roll to screen</dt><dd>48<span class="unit">hrs</span></dd></div>
+    <div><dt>Dated production notes</dt><dd>23</dd></div>
+    <div><dt>Behind-the-scenes frames</dt><dd>81</dd></div>
+  </dl>
+</section>
+
+<!-- ============ WORK ============ -->
+<section class="sec wrap" id="work">
+  <div class="sec-head">
+    <h2>Selected Work</h2><i></i>
+    <a class="more" href="portfolio.html">All eight films →</a>
+  </div>
+
+  <div class="grid-work">
+    <a class="card reveal" href="portfolio.html#horror">
+      <div class="card-thumb">
+        <img onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/rtEs8chuDlM/hqdefault.jpg'" src="https://i.ytimg.com/vi/rtEs8chuDlM/maxresdefault.jpg" alt="Still from Trail Dead" loading="lazy" decoding="async" width="1280" height="720">
+        <span class="card-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
+      </div>
+      <div class="card-body">
+        <div class="card-idx">004 / Horror</div>
+        <h3>Trail Dead</h3>
+        <p>Invisible threat, visible dread. Tension built almost entirely in the cut.</p>
+        <div class="card-award">Best Editing — Horror Film Roulette 2025</div>
+      </div>
+    </a>
+
+    <a class="card reveal" href="portfolio.html#comedy">
+      <div class="card-thumb">
+        <img onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/G0zfFWwQuZA/hqdefault.jpg'" src="https://i.ytimg.com/vi/G0zfFWwQuZA/maxresdefault.jpg" alt="Still from Lookout" loading="lazy" decoding="async" width="1280" height="720">
+        <span class="card-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
+      </div>
+      <div class="card-body">
+        <div class="card-idx">005 / Comedy</div>
+        <h3>Lookout</h3>
+        <p>Smart writing, sharp timing, and proof that funny is genuinely hard.</p>
+        <div class="card-award">Top 25 — Comedy Roll Film Festival 2025</div>
+      </div>
+    </a>
+
+    <a class="card reveal" href="portfolio.html#moz">
+      <div class="card-thumb">
+        <img onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/HtF4L9RpkaU/hqdefault.jpg'" src="https://i.ytimg.com/vi/HtF4L9RpkaU/maxresdefault.jpg" alt="Still from the MOZ Interiors brand film" loading="lazy" decoding="async" width="1280" height="720">
+        <span class="card-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
+      </div>
+      <div class="card-body">
+        <div class="card-idx">002 / Brand Film</div>
+        <h3>MOZ Interiors</h3>
+        <p>Where luxury meets livability. Two Detroit Design Awards out of one shoot.</p>
+        <div class="card-award">Vanity Fair · Architectural Digest</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ============ TOOLS ============ -->
+<section class="sec wrap" id="tools">
+  <div class="sec-head">
+    <h2>Things I Built</h2><i></i>
+    <span class="mono" style="color:var(--faint)">Free · No signup</span>
+  </div>
+
+  <div class="grid-tools">
+    <a class="tool reveal" href="ideas.html">
+      <div class="tool-idx">Tool 01</div>
+      <h3>Story <em>Generator</em></h3>
+      <p>Roll for a genre, a character, a setting, and one constraint you have to honor. Built for the night you want to shoot something but can't decide what.</p>
+      <span class="tlink">Roll the dice <span class="arw">→</span></span>
+    </a>
+
+    <a class="tool reveal" href="skybound.html">
+      <div class="tool-idx">Tool 02</div>
+      <h3><em>SkyBound</em></h3>
+      <p>The drone path, in order: simulate before you buy, learn from pilots worth learning from, build the kit, then go get your Part 107.</p>
+      <span class="tlink">Start at step one <span class="arw">→</span></span>
+    </a>
+  </div>
+</section>
+
+<!-- ============ RESOURCES ============ -->
+<section class="sec wrap" id="resources">
+  <div class="sec-head">
+    <h2>The Notebook</h2><i></i>
+    <a class="more" href="resources.html">Everything →</a>
+  </div>
+
+  <div class="rows">
+    <a class="row" href="resources.html#references">
+      <span class="row-idx">01</span>
+      <span><h3>References &amp; Craft</h3><p>The stuff I go back to — shot breakdowns, editing theory, color, and the channels that explain <em>why</em> instead of just how.</p></span>
+      <span class="row-meta">21 links</span>
+    </a>
+    <a class="row" href="resources.html#drone">
+      <span class="row-idx">02</span>
+      <span><h3>Drone &amp; FPV</h3><p>Sims, gear, reputable shops, and the full Part 107 path. This one got big enough that it became its own page.</p></span>
+      <span class="row-meta">19 links</span>
+    </a>
+    <a class="row" href="resources.html#ai">
+      <span class="row-idx">03</span>
+      <span><h3>AI Tools</h3><p>The handful that actually earn a spot in a real workflow, and honest notes on where each one falls apart.</p></span>
+      <span class="row-meta">17 links</span>
+    </a>
+    <a class="row" href="resources.html#music">
+      <span class="row-idx">04</span>
+      <span><h3>Music &amp; Sound</h3><p>Score, licensing, and sound effects libraries that won't get your video muted three days after upload.</p></span>
+      <span class="row-meta">21 links</span>
+    </a>
+    <a class="row" href="resources.html#film-festivals">
+      <span class="row-idx">05</span>
+      <span><h3>Film Fests</h3><p>Michigan-first, plus the national ones worth the entry fee. If you’ve never submitted anything, the timed competitions are the friendliest door.</p></span>
+      <span class="row-meta">7 links</span>
+    </a>
+  </div>
+
+  <div class="note">
+    <p><strong>Why this exists.</strong> This is a hobby, not a business. I work full time and I'm not really looking for jobs — I just kept a folder of good links and figured it was more useful public than private. Nothing here costs anything and nothing asks for your email.</p>
+    <p><strong>And yes, I built this.</strong> Plain HTML and CSS on free hosting — one stylesheet, no framework, no build step, no backend. If you want to know how any part of it works, <a href="contact.html" style="color:var(--accent)">just ask</a>.</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <img class="foot-mark" src="images/TheLaB-mark.png" alt="The LaB" width="122" height="52" loading="lazy" decoding="async">
+        <p class="foot-blurb">A small film studio and a public notebook, run out of Shelby Township, Michigan.</p>
+      </div>
+      <div class="foot-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="portfolio.html">Reel</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="ideas.html">Story Generator</a></li>
+          <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="gear.html">The Kit</a></li>
+          <li><a href="colophon.html">How it's built</a></li>
+          <li><a href="events.html">Events</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Elsewhere</h3>
+        <ul>
+          <li><a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://instagram.com/thisislabmedia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/in/baldwinrobert" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="contact.html">About &amp; Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span class="made">Made in Shelby Twp, MI<span class="hrt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span>
+      <span class="visits" id="visitCount" hidden></span>
+      <span>© 2026 LaB Media</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Nav: mobile toggle + dropdown (shared behaviour, all pages) */
+(function(){
+  var t=document.getElementById('navToggle'),l=document.getElementById('navLinks');
+  var desktop=function(){return window.innerWidth>760};
+
+  if(t&&l){t.addEventListener('click',function(e){
+    e.stopPropagation();
+    var open=t.getAttribute('aria-expanded')==='true';
+    t.setAttribute('aria-expanded',String(!open));
+    l.setAttribute('data-open',String(!open));
+  });}
+
+  function setOpen(d,on){
+    d.setAttribute('data-open',String(on));
+    d.querySelector('.nav-drop-btn').setAttribute('aria-expanded',String(on));
+    if(!on) d.removeAttribute('data-pinned');
+  }
+  function closeAll(except){
+    document.querySelectorAll('.nav-drop').forEach(function(o){ if(o!==except) setOpen(o,false); });
+  }
+
+  document.querySelectorAll('.nav-drop').forEach(function(d){
+    var b=d.querySelector('.nav-drop-btn');
+
+    /* Click pins it open, so hovering away can't yank it shut mid-reach. */
+    b.addEventListener('click',function(e){
+      e.stopPropagation();
+      var open=d.getAttribute('data-open')==='true';
+      var pinned=d.hasAttribute('data-pinned');
+      closeAll(d);
+      if(open&&pinned){ setOpen(d,false); }
+      else { setOpen(d,true); d.setAttribute('data-pinned','1'); }
+    });
+
+    d.addEventListener('mouseenter',function(){ if(desktop()){ closeAll(d); setOpen(d,true); } });
+    d.addEventListener('mouseleave',function(){
+      if(desktop() && !d.hasAttribute('data-pinned')) setOpen(d,false);
+    });
+
+    /* following a link should never leave a menu hanging open */
+    d.querySelectorAll('.nav-drop-menu a').forEach(function(a){
+      a.addEventListener('click',function(){ setOpen(d,false); });
+    });
+  });
+
+  document.addEventListener('click',function(){ closeAll(null); });
+
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Escape')return;
+    closeAll(null);
+    if(t){t.setAttribute('aria-expanded','false');l.setAttribute('data-open','false');}
+  });
+})();
+
+/* Poster fallback: try maxres, then hq, then drop the image entirely so a
+   failed load shows a clean panel with the play button, not a broken icon. */
+(function(){
+  var img=document.getElementById('reelPoster');
+  if(!img)return;
+  var tried=0;
+  img.addEventListener('error',function(){
+    tried++;
+    if(tried===1){ img.src='https://i.ytimg.com/vi/UAFQ5KU-6Jg/hqdefault.jpg'; }
+    else { img.remove(); }
+  });
+})();
+
+/* Reel facade — nothing loads from YouTube until you press play */
+(function(){
+  var box=document.getElementById('reel');if(!box)return;
+  var btn=box.querySelector('.reel-btn');if(!btn)return;
+  btn.addEventListener('click',function(){
+    var f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+box.dataset.video+'?autoplay=1&rel=0';
+    f.title='LaB Media reel';
+    f.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    f.allowFullscreen=true;
+    box.innerHTML='';box.classList.add('playing');box.appendChild(f);
+  });
+})();
+
+/* Reveal on scroll — respects reduced-motion */
+(function(){
+  var els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)||(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)){
+    els.forEach(function(e){e.classList.add('in')});return;
+  }
+  var io=new IntersectionObserver(function(en){
+    en.forEach(function(x,i){if(x.isIntersecting){setTimeout(function(){x.target.classList.add('in')},i*70);io.unobserve(x.target)}})
+  },{rootMargin:'0px 0px -12% 0px'});
+  els.forEach(function(e){io.observe(e)});
+})();
+</script>
+
+<script>
+/* Theme switch — remembers the choice, falls back to dark */
+(function(){
+  var root=document.documentElement, KEY='lab-theme';
+  var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
+  if(!btns.length)return;
+
+  function apply(t,save){
+    if(t==='dark') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme',t);
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.themeSet===t))});
+    if(save){try{localStorage.setItem(KEY,t)}catch(e){}}
+  }
+
+  var saved='dark';
+  try{saved=localStorage.getItem(KEY)||'dark'}catch(e){}
+  apply(saved,false);
+
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){apply(b.dataset.themeSet,true)});
+  });
+})();
+</script>
+
+<!-- ============================================================
+     Visitor counting — GoatCounter.
+     No cookies, no persistent identifiers, no personal data, and
+     ~3.5 KB. Their own docs say it needs no GDPR notice, which is
+     why this site still has no consent banner.
+
+     Live at labmedia.goatcounter.com. Local and file:// visits are
+     skipped so opening a page from Finder never counts as traffic.
+     ============================================================ -->
+<script>
+(function(){
+  var CODE = 'labmedia';                       // labmedia.goatcounter.com
+  if (location.hostname === 'localhost' || location.protocol === 'file:') return;
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = '//gc.zgo.at/count.js';
+  s.setAttribute('data-goatcounter', 'https://' + CODE + '.goatcounter.com/count');
+  document.head.appendChild(s);
+
+  /* Show the site total in the footer, drawn ourselves rather than using
+     GoatCounter's own widget — theirs is a 200x80 bordered box with its own
+     branding, which would look like somebody else's furniture in this room.
+     The JSON endpoint just returns a formatted number.
+
+     Requires "Allow adding visitor counts on your website" in the site
+     settings; it defaults to OFF. If it's off, the request fails and the
+     element stays hidden, so nothing breaks and no empty label appears.
+     Their responses are cached up to four hours, so it lags reality. */
+  var el = document.getElementById('visitCount');
+  if (!el || !window.fetch) return;
+  fetch('https://' + CODE + '.goatcounter.com/counter/TOTAL.json')
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(j){
+      if (!j || !j.count) return;
+      el.innerHTML = '<b>' + j.count + '</b> visits';
+      el.hidden = false;
+    })
+    .catch(function(){ /* stay hidden */ });
+})();
+</script>
+</body>
+</html>

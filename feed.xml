@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>LaB Media</title>
+  <link>https://labmedia.work</link>
+  <description>A small film studio and a public notebook, run out of Shelby Township, Michigan.</description>
+  <language>en-us</language>
+  <lastBuildDate>Wed, 29 Jul 2026 17:27:37 GMT</lastBuildDate>
+  <atom:link href="https://labmedia.work/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Detroit New Wave: The Rise of Cinema Culture</title>
+    <link>https://www.facebook.com/events/2520859208335856</link>
+    <guid isPermaLink="false">https://www.facebook.com/events/2520859208335856</guid>
+    <pubDate>Thu, 27 Aug 2026 12:00:00 GMT</pubDate>
+    <category>Event</category>
+    <description>A live-recorded panel bringing Metro Detroit’s independent cinema owners, audiences, and filmmakers into the same room — at least three theaters and microcinemas per night, followed by a social hour with food and drinks. If you want to actually meet the people programming film in this city, this is the room. — The Congregation, Detroit</description>
+  </item>
+  <item>
+    <title>Adam &amp; Eva’s: An Intimate Film Experience</title>
+    <link>https://www.facebook.com/events/1531184581974584</link>
+    <guid isPermaLink="false">https://www.facebook.com/events/1531184581974584</guid>
+    <pubDate>Wed, 05 Aug 2026 12:00:00 GMT</pubDate>
+    <category>Event</category>
+    <description>A live projection of A Man Called Adam — Sammy Davis Jr., from The Black Canon collection — paired with curated music and signature drinks built around the film. Designed as more than a screening: an evening staged inside the mood and sound of the picture, celebrating Black film history and legacy. — Miss Eva’s, Detroit</description>
+  </item>
+  <item>
+    <title>Le Juicé</title>
+    <link>https://labmedia.work/resources.html#le-juice-rochester</link>
+    <guid isPermaLink="false">https://labmedia.work/resources.html#le-juice-rochester</guid>
+    <pubDate>Mon, 27 Jul 2026 12:00:00 GMT</pubDate>
+    <category>Resource</category>
+    <description>Cold-pressed juice bar in downtown Rochester, in a space designed by MOZ Interiors.</description>
+  </item>
+  <item>
+    <title>Scattered</title>
+    <link>https://labmedia.work/portfolio.html#scattered</link>
+    <guid isPermaLink="false">https://labmedia.work/portfolio.html#scattered</guid>
+    <pubDate>Sat, 25 Jul 2026 12:00:00 GMT</pubDate>
+    <category>Film</category>
+    <description>Made for the Detroit 48 Hour Film Project. Assignment Friday night, shot and cut over the weekend.</description>
+  </item>
+  <item>
+    <title>Le Juicé</title>
+    <link>https://labmedia.work/portfolio.html#lejuice</link>
+    <guid isPermaLink="false">https://labmedia.work/portfolio.html#lejuice</guid>
+    <pubDate>Mon, 01 Jun 2026 12:00:00 GMT</pubDate>
+    <category>Film</category>
+    <description>A juice bar in Rochester, shot for Le Juicé and MOZ Interiors.</description>
+  </item>
+  <item>
+    <title>It's a Boy</title>
+    <link>https://labmedia.work/portfolio.html#itsaboy</link>
+    <guid isPermaLink="false">https://labmedia.work/portfolio.html#itsaboy</guid>
+    <pubDate>Sat, 25 Apr 2026 12:00:00 GMT</pubDate>
+    <category>Film</category>
+    <description>A late entry to The Comedy Roll, shot across four days in a Michigan spring.</description>
+  </item>
+  <item>
+    <title>Trail Dead</title>
+    <link>https://labmedia.work/portfolio.html#horror</link>
+    <guid isPermaLink="false">https://labmedia.work/portfolio.html#horror</guid>
+    <pubDate>Fri, 05 Sep 2025 12:00:00 GMT</pubDate>
+    <category>Film</category>
+    <description>Invisible threat. Visible dread. A horror short exploring tension and atmosphere. — won Best Editing.</description>
+  </item>
+  <item>
+    <title>Lookout</title>
+    <link>https://labmedia.work/portfolio.html#comedy</link>
+    <guid isPermaLink="false">https://labmedia.work/portfolio.html#comedy</guid>
+    <pubDate>Thu, 01 May 2025 12:00:00 GMT</pubDate>
+    <category>Film</category>
+    <description>Smart writing meets sharp timing. A comedy short that proves funny is hard.</description>
+  </item>
+  <item>
+    <title>MOZ Interiors</title>
+    <link>https://labmedia.work/portfolio.html#moz</link>
+    <guid isPermaLink="false">https://labmedia.work/portfolio.html#moz</guid>
+    <pubDate>Mon, 01 Jul 2024 12:00:00 GMT</pubDate>
+    <category>Film</category>
+    <description>Where luxury meets livability. A brand film for a Detroit interior design studio.</description>
+  </item>
+  <item>
+    <title>Anthony Brass</title>
+    <link>https://labmedia.work/portfolio.html#artist</link>
+    <guid isPermaLink="false">https://labmedia.work/portfolio.html#artist</guid>
+    <pubDate>Mon, 04 Mar 2024 12:00:00 GMT</pubDate>
+    <category>Film</category>
+    <description>An artist's journey through paint, place, and passion. Intimate storytelling captured in his home studio.</description>
+  </item>
+  <item>
+    <title>The Pandys</title>
+    <link>https://labmedia.work/portfolio.html#pandys</link>
+    <guid isPermaLink="false">https://labmedia.work/portfolio.html#pandys</guid>
+    <pubDate>Mon, 01 Jan 2024 12:00:00 GMT</pubDate>
+    <category>Film</category>
+    <description>Raw band practice energy captured live. Authentic performance from the studio floor.</description>
+  </item>
+</channel>
+</rss>
