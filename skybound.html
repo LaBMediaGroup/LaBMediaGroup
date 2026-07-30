@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyBound — Drone &amp; FPV, Step by Step | LaB Media</title>
+<meta name="description" content="A guided path into drone and FPV flying: simulate before you buy, learn from pilots worth following, build your kit, then get your Part 107.">
+<link rel="canonical" href="https://labmedia.work/skybound.html">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="images/favicon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://labmedia.work/skybound.html">
+<meta property="og:site_name" content="LaB Media">
+<meta property="og:title" content="SkyBound — Drone &amp; FPV, Step by Step | LaB Media">
+<meta property="og:description" content="A guided path into drone and FPV flying: simulate before you buy, learn from pilots worth following, build your kit, then get your Part 107.">
+<meta property="og:image" content="https://labmedia.work/images/og/skybound.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SkyBound — Drone &amp; FPV, Step by Step | LaB Media">
+<meta name="twitter:description" content="A guided path into drone and FPV flying: simulate before you buy, learn from pilots worth following, build your kit, then get your Part 107.">
+<meta name="twitter:image" content="https://labmedia.work/images/og/skybound.jpg">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--light-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--f-display);
+            color: var(--white);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(180deg, var(--near-black) 0%, var(--black) 100%);
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 7rem);
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+            line-height: 1;
+            color: var(--sky);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .hero .hero-tagline {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--faint);
+            border: 1px solid var(--line);
+            padding: 0.4rem 0.8rem;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--light-gray);
+        }
+
+        .hero .hero-mine {
+            font-size: 0.95rem;
+            color: var(--faint);
+            margin-top: 1.25rem;
+        }
+        .hero .hero-mine a {
+            color: var(--sky);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(169,205,228,.35);
+            padding-bottom: 1px;
+            transition: border-color var(--fast) var(--ease);
+        }
+        .hero .hero-mine a:hover { border-bottom-color: var(--sky); }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Collapsible sections (to reduce scroll length) */
+        details.section {
+            border-top: 1px solid var(--gray);
+            padding-top: 2rem;
+            margin-top: 2rem;
+        }
+
+        details.section[open] {
+            padding-bottom: 1.5rem;
+        }
+
+        summary.section-summary {
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1.5rem;
+            user-select: none;
+        }
+
+        summary.section-summary::-webkit-details-marker { display: none; }
+
+        .summary-left {
+            display: grid;
+            gap: 0.35rem;
+        }
+
+        .summary-kicker {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--light-gray);
+        }
+
+        .summary-title {
+            font-family: var(--f-display);
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            letter-spacing: -0.02em;
+            color: var(--white);
+            line-height: 1;
+        }
+
+        .summary-right {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            border: 1px solid var(--accent-strong);
+            padding: 0.35rem 0.6rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        details.section[open] .summary-right::after { content: '–'; }
+        details.section:not([open]) .summary-right::after { content: '+'; }
+
+        /* Section Titles */
+        h2.section-title {
+            color: var(--accent);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 0.5rem;
+            line-height: 1.05;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--light-gray);
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        /* Grid Layouts */
+        .grid {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 6rem;
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+
+        /* Cards */
+        .card {
+            background: var(--dark-gray);
+            border: 1px solid var(--gray);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .card:hover {
+            border-color: var(--accent-strong);
+            transform: translateY(-2px);
+        }
+
+        .card-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--accent-strong);
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--light-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .card-link:hover {
+            color: var(--white);
+            opacity: 0.8;
+        }
+
+        .card-link::after {
+            content: '→';
+            margin-left: 0.5rem;
+            transition: margin-left 0.2s ease;
+        }
+
+        .card-link:hover::after {
+            margin-left: 1rem;
+        }
+
+        .card-meta {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--light-gray);
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            background: transparent;
+            border: 1px solid var(--gray);
+            color: var(--light-gray);
+            padding: 0.75rem 1.5rem;
+            font-family: var(--f-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .filter-tab:hover,
+        .filter-tab.active {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--accent-strong);
+            color: var(--white);
+        }
+
+        /* Part 107 Steps */
+        .steps {
+            counter-reset: step;
+        }
+
+        .step-card {
+            background: var(--paper-2);
+            border: 1px solid var(--line);
+            border-left: 2px solid var(--accent);
+            padding: 1.75rem 2rem;
+            margin-bottom: 1px;
+            position: relative;
+            transition: background var(--fast) var(--ease);
+        }
+        .step-card:hover { background: var(--paper-3); }
+
+        /* Numbered the same way every other page on the site numbers things:
+           a mono index, not a floating circle that hangs off the card edge. */
+        .step-card::before {
+            counter-increment: step;
+            content: counter(step, decimal-leading-zero);
+            display: block;
+            font-family: var(--f-mono);
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .step-card h3 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            margin-left: 0;
+            line-height: 1.1;
+        }
+
+        .step-card p {
+            margin-left: 0;
+            margin-bottom: 1.25rem;
+            color: var(--dim);
+            max-width: 64ch;
+            line-height: 1.7;
+        }
+
+        .step-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-left: 0;
+        }
+
+        .step-link {
+            background: transparent;
+            border: 1px solid var(--line-2);
+            color: var(--ink);
+            padding: 11px 18px;
+            text-decoration: none;
+            font-family: var(--f-mono);
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            transition: background var(--fast) var(--ease), color var(--fast) var(--ease), border-color var(--fast) var(--ease);
+        }
+
+        .step-link:hover {
+            border-color: var(--accent-strong);
+            color: var(--white);
+        }
+
+        /* Resource Links */
+        .resource-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .resource-item {
+            background: var(--dark-gray);
+            border: 1px solid var(--gray);
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .resource-item:hover {
+            border-color: var(--accent-strong);
+        }
+
+        .resource-info h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+        }
+
+        .resource-info p {
+            font-size: 0.9rem;
+            color: var(--light-gray);
+        }
+
+        .resource-link-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--accent-strong);
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .resource-link-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Lab Pick Badge */
+        .lab-pick {
+            position: relative;
+        }
+
+        .lab-pick::after {
+            content: '★ LaB Pick';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--accent-strong);
+            color: var(--white);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .hero h1 {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .container {
+                padding: 3rem 1.5rem;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .step-card::before {
+                position: static;
+                margin-bottom: 1rem;
+            }
+
+            .step-card h3,
+            .step-card p,
+            .step-links {
+                margin-left: 0;
+            }
+
+            .resource-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* The four Start Here tiles were <div>s that lifted and glowed on
+           hover but did nothing. They're anchors now — these rules keep the
+           look identical while making the affordance honest. */
+        a.card {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+        }
+        a.card:hover h3 { color: var(--accent); }
+        a.card:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+        .card-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .card-go {
+            color: var(--accent);
+            font-size: 0.85rem;
+            transition: transform 0.3s ease;
+        }
+        a.card:hover .card-go { transform: translateY(3px); }
+
+        /* the accordion target needs somewhere to land under the sticky nav */
+        details.section { scroll-margin-top: 76px; }
+    </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="alternate" type="application/rss+xml" title="LaB Media" href="/feed.xml">
+<link rel="alternate" type="application/feed+json" title="LaB Media" href="/feed.json">
+<link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+    <!-- Navigation -->
+    <header class="nav">
+  <div class="nav-in">
+    <a class="nav-brand" href="index.html" aria-label="LaB Media — home">
+      <img class="nav-logo is-mark" src="images/TheLaB-mark.png" alt="LaB Media — back to the LaB" width="61" height="26">
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="portfolio.html">Reel</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Resources
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="resources.html">Resources</a>
+          <a href="gear.html">LaB&rsquo;s Kit</a>
+          <a href="mykit.html">Your Kit</a>
+        </div>
+      </li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Tools
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="ideas.html">Story Generator</a>
+          <a href="skybound.html">SkyBound — Drone</a>
+        </div>
+      </li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">About
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="contact.html">About LaB</a>
+          <a href="colophon.html">About the Site</a>
+        </div>
+      </li>
+      </ul>
+    <div class="theme" role="group" aria-label="Colour theme">
+      <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
+      <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
+      <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<main id="main">
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>
+            SkyBound
+            <span class="hero-tagline">a resource by LaB Media</span>
+        </h1>
+        <p>Drone gear, FPV resources, and your path to Part 107 certification.</p>
+        <p class="hero-mine">This is the path I actually walked — you can watch me still walking it over at
+          <a href="https://www.youtube.com/@BobtastiCFPV" target="_blank" rel="noopener">BobtastiC FPV&nbsp;↗</a>.</p>
+    </section>
+
+    <!-- Explanation Section -->
+    <div class="container">
+        <h2 class="section-title">Start Here</h2>
+        <p class="section-subtitle">SkyBound is a guided path: learn the basics, simulate before you buy, then build your kit and certification plan.</p>
+
+        <div class="grid grid-4">
+            <a class="card" href="#simulators">
+                <div class="card-badge">01</div>
+                <h3>Simulators</h3>
+                <p>Fly safely, build muscle memory, and save money before you invest in hardware.</p>
+                <div class="card-meta">Confidence → Control<span class="card-go" aria-hidden="true">↓</span></div>
+            </a>
+            <a class="card" href="#watch-learn">
+                <div class="card-badge">02</div>
+                <h3>Watch &amp; Learn</h3>
+                <p>Follow trusted pilots and training channels that explain the why, not just the how.</p>
+                <div class="card-meta">Knowledge → Skill<span class="card-go" aria-hidden="true">↓</span></div>
+            </a>
+            <a class="card" href="#gear">
+                <div class="card-badge">03–04</div>
+                <h3>Gear &amp; Shops</h3>
+                <p>Start with radios, then goggles and drones. Buy from reputable vendors.</p>
+                <div class="card-meta">Setup → Flight<span class="card-go" aria-hidden="true">↓</span></div>
+            </a>
+            <a class="card" href="#part107">
+                <div class="card-badge">05</div>
+                <h3>Part 107</h3>
+                <p>Go legit with the FAA path and official resources to fly commercially.</p>
+                <div class="card-meta">Practice → Certification<span class="card-go" aria-hidden="true">↓</span></div>
+            </a>
+        </div>
+        </div>
+
+    <!-- Simulators Section -->
+    <div class="container">
+        <details class="section" id="simulators">
+            <summary class="section-summary">
+                <div class="summary-left">
+                    <div class="summary-kicker">Step 1</div>
+                    <div class="summary-title">Simulators</div>
+                    <div class="section-subtitle" style="margin: 0;">Train your reflexes before buying hardware. Sim time makes every first flight safer.</div>
+                </div>
+                <div class="summary-right">Toggle</div>
+            </summary>
+
+            <div style="margin-top: 2rem;">
+                <div class="resource-list" id="simulators-list">
+                    <!-- Simulators will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </details>
+
+        <details class="section" id="watch-learn">
+            <summary class="section-summary">
+                <div class="summary-left">
+                    <div class="summary-kicker">Step 2</div>
+                    <div class="summary-title">Watch & Learn</div>
+                    <div class="section-subtitle" style="margin: 0;">Learn from the best, then dive into focused watch and study tracks.</div>
+                </div>
+                <div class="summary-right">Toggle</div>
+            </summary>
+
+            <div style="margin-top: 2rem;">
+                <div class="resource-list" id="featured-channel">
+                    <!-- Featured channel will be inserted here by JavaScript -->
+                </div>
+
+                <h3 class="section-title" style="margin-top: 2.5rem; font-size: 2rem;">Watch</h3>
+                <p class="section-subtitle">Freestyle, reviews, and inspiration to sharpen your eye.</p>
+                <div class="resource-list" id="watch-list">
+                    <!-- Watch channels will be inserted here by JavaScript -->
+                </div>
+
+                <h3 class="section-title" style="margin-top: 2.5rem; font-size: 2rem;">Learn</h3>
+                <p class="section-subtitle">Study-first channels to prep for knowledge tests and airspace rules.</p>
+                <div class="resource-list" id="learn-list">
+                    <!-- Learn channels will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </details>
+
+        <details class="section" id="gear">
+            <summary class="section-summary">
+                <div class="summary-left">
+                    <div class="summary-kicker">Step 3</div>
+                    <div class="summary-title">Gear</div>
+                    <div class="section-subtitle" style="margin: 0;">Curated equipment for FPV and drone work.</div>
+                </div>
+                <div class="summary-right">Toggle</div>
+            </summary>
+
+            <div style="margin-top: 2rem;">
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="radio">Radios</button>
+                    <button class="filter-tab" data-filter="goggles">Goggles</button>
+                    <button class="filter-tab" data-filter="drone">Drones</button>
+                    <button class="filter-tab" data-filter="all">All</button>
+                </div>
+
+                <div class="grid grid-3" id="products-grid">
+                    <!-- Products will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </details>
+
+        <details class="section" id="shops">
+            <summary class="section-summary">
+                <div class="summary-left">
+                    <div class="summary-kicker">Step 4</div>
+                    <div class="summary-title">Shops</div>
+                    <div class="section-subtitle" style="margin: 0;">Where to buy FPV gear (reputable vendors).</div>
+                </div>
+                <div class="summary-right">Toggle</div>
+            </summary>
+
+            <div style="margin-top: 2rem;">
+                <div class="resource-list" id="shops-list">
+                    <!-- Shops will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </details>
+
+        <details class="section" id="part107">
+            <summary class="section-summary">
+                <div class="summary-left">
+                    <div class="summary-kicker">Step 5</div>
+                    <div class="summary-title">Part 107 Path</div>
+                    <div class="section-subtitle" style="margin: 0;">Your roadmap to commercial drone certification.</div>
+                </div>
+                <div class="summary-right">Toggle</div>
+            </summary>
+
+            <div style="margin-top: 2rem;">
+                <div class="steps">
+                    <div class="step-card">
+                        <h3>Register on IACRA</h3>
+                        <p>Create an account on the Integrated Airman Certification and Rating Application to get your FAA Tracking Number (FTN).</p>
+                        <div class="step-links">
+                            <a href="https://iacra.faa.gov/IACRA/Default.aspx" target="_blank" class="step-link" rel="noopener">Go to IACRA</a>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <h3>Study the ACS</h3>
+                        <p>Review the Airman Certification Standards to know exactly what concepts will be tested.</p>
+                        <div class="step-links">
+                            <a href="https://www.faa.gov/sites/faa.gov/files/training_testing/testing/acs/uas_acs.pdf" target="_blank" class="step-link" rel="noopener">Download ACS PDF</a>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <h3>Prep with Experts</h3>
+                        <p>Master aviation weather, sectional charts, and laws. Choose a path that fits your budget.</p>
+                        <div class="step-links">
+                            <a href="https://www.youtube.com/@MrMigsClassroom" target="_blank" class="step-link" rel="noopener">Free: Mr. Migs (YT)</a>
+                            <a href="https://www.youtube.com/@mikesytes" target="_blank" class="step-link" rel="noopener">Free: Mike Sytes (YT)</a>
+                            <a href="https://kingschools.com/drone-pilot-license-test-prep-course" target="_blank" class="step-link" rel="noopener">Paid: King Schools</a>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <h3>Schedule PSI Test</h3>
+                        <p>Book your in-person knowledge exam at a certified testing center via the official portal.</p>
+                        <div class="step-links">
+                            <a href="https://faa.psiexams.com/faa/login" target="_blank" class="step-link" rel="noopener">Schedule via PSI</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <details class="section" id="faa">
+            <summary class="section-summary">
+                <div class="summary-left">
+                    <div class="summary-kicker">Reference</div>
+                    <div class="summary-title">Official FAA Links</div>
+                    <div class="section-subtitle" style="margin: 0;">Government resources for certification.</div>
+                </div>
+                <div class="summary-right">Toggle</div>
+            </summary>
+
+            <div style="margin-top: 2rem;">
+                <div class="resource-list" id="official-links">
+                    <!-- Official links will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <script>
+        // Data from constants
+        const PRODUCTS = [
+            { id: 'g3', name: 'DJI Goggles 3', description: 'High-definition digital FPV goggles with real-view PiP and ultra-low latency transmission.', link: 'https://amzn.to/4pTmOR3', category: 'goggles' },
+            { id: 'gn3', name: 'DJI Goggles N3', description: 'Immersive digital FPV experience from DJI, designed for comfort and clarity.', link: 'https://amzn.to/4bcB2c8', category: 'goggles' },
+            { id: 'rpocket', name: 'RadioMaster Pocket', description: 'Portable, powerful, and affordable. The perfect entry point for any FPV pilot.', link: 'https://www.amazon.com/RadioMaster-Pocket-Portable-Remote-Controller/dp/B0DF45P8B6?', category: 'radio', badge: 'Beginner Choice' },
+            { id: 'rcboxer', name: 'RadioMaster Boxer Crush', description: 'High-performance ELRS radio with full-size gimbals and incredible range.', link: 'https://amzn.to/4jOt4Ig', category: 'radio' },
+            { id: 'tx15', name: 'RadioMaster TX15 2.4GHz', description: 'A solid, versatile radio controller for standard drone connectivity.', link: 'https://amzn.to/4pUCGmm', category: 'radio' },
+            { id: 'femto', name: 'BetaFPV Pavo Femto', description: 'Ultra-light brushless whoop. Note: Requires DJI O4 Air Unit for digital FPV.', link: 'https://betafpv.com/collections/betafpv-naked-camera-series/products/pavo-femto-brushless-whoop-quadcopter', category: 'drone', badge: 'Micro King' },
+            { id: 'pavo20pro', name: 'BetaFPV Pavo 20 Pro', description: 'Cinewhoop for DJI O4 Air Unit. Pro-grade performance in a compact frame.', link: 'https://betafpv.com/collections/betafpv-naked-camera-series/products/pavo20-pro-brushless-whoop-quadcopter?variant=42022567477382', category: 'drone' },
+            { id: 'pavo20pro2', name: 'BetaFPV Pavo 20 Pro II', description: 'Next-gen Pavo 20. Note: Requires DJI O4 Pro Unit for maximum imaging quality.', link: 'https://betafpv.com/collections/betafpv-naked-camera-series/products/pavo20-pro-ii-brushless-whoop-quadcopter', category: 'drone' },
+            { id: 'qavs2', name: 'QAV-S 2 Sub-250 Bardwell SE', description: 'The definitive 3" DIY kit by Joshua Bardwell. Sub-250g weight. (Does not include O4 Pro Unit).', link: 'https://www.getfpv.com/beginner-diy-fpv-drone-kit-qav-s-2-sub-250-joshua-bardwell-se-3-hd-ready.html', category: 'drone' }
+        ];
+
+        const SHOPS = [
+            { name: 'GetFPV', description: 'Major US retailer for all things FPV.', url: 'https://www.getfpv.com' },
+            { name: 'RaceDayQuads', description: 'Fast shipping and a massive inventory.', url: 'https://www.racedayquads.com' },
+            { name: 'Pyrodrone', description: 'Premium FPV components and parts.', url: 'https://pyrodrone.com' },
+            { name: 'BetaFPV', description: 'Direct from the micro drone specialists.', url: 'https://betafpv.com' },
+            { name: 'DJI Store', description: 'Official source for DJI drones and gear.', url: 'https://www.dji.com' }
+        ];
+
+        const OFFICIAL_LINKS = [
+            { name: 'FAA Drone Certification', description: 'Official FAA path for Part 107.', url: 'https://www.faa.gov/uas/commercial_operators/become_a_drone_pilot' },
+            { name: 'FAA PSI Exams', description: 'Login and schedule your knowledge test.', url: 'https://faa.psiexams.com/faa/login' },
+            { name: 'IACRA System', description: 'Official application for your certificate.', url: 'https://iacra.faa.gov/IACRA/Default.aspx' },
+            { name: 'FAA Safety Course', description: 'TRUST and Recurrent training portal.', url: 'https://www.faasafety.gov/gslac/ALC/CourseLanding.aspx?cID=677' },
+            { name: 'UAS ACS PDF', description: 'Airman Certification Standards (The Syllabus).', url: 'https://www.faa.gov/sites/faa.gov/files/training_testing/testing/acs/uas_acs.pdf' }
+        ];
+
+        // Render functions
+        function renderProducts(filter = 'all') {
+            const grid = document.getElementById('products-grid');
+            const filtered = filter === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.category === filter);
+
+            grid.innerHTML = filtered.map(product => `
+                <div class="card" data-category="${product.category}">
+                    ${product.badge ? `<div class="card-badge">${product.badge}</div>` : ''}
+                    <h3>${product.name}</h3>
+                    <p>${product.description}</p>
+                    <a href="${product.link}" target="_blank" class="card-link" rel="noopener">View Product</a>
+                </div>
+            `).join('');
+        }
+
+        function renderResourceList(items, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) {
+                return;
+            }
+
+            const existingItems = container.querySelectorAll('.resource-item');
+            if (existingItems.length) {
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="resource-item ${item.isLaBPick ? 'lab-pick' : ''}">
+                    <div class="resource-info">
+                        <h4>${item.name}</h4>
+                        <p>${item.description}</p>
+                    </div>
+                    <a href="${item.url}" target="_blank" class="resource-link-btn" rel="noopener">Visit</a>
+                </div>
+            `).join('');
+        }
+
+        // Filter tabs
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                renderProducts(tab.dataset.filter);
+            });
+        });
+
+        const FEATURED_CHANNEL = [
+            { name: 'Joshua Bardwell', description: 'The "Godfather" of FPV. Deep dives into gear, building, and troubleshooting.', url: 'https://www.youtube.com/@JoshuaBardwell' }
+        ];
+
+        const WATCH_CHANNELS = [
+            { name: 'DJI', description: 'Official channel for the industry-leading camera drone ecosystem.', url: 'https://www.dji.com/camera-drones' },
+            { name: 'CAPTAIN DRONE', description: 'Comprehensive FPV tutorials, reviews, and high-quality flight content.', url: 'https://www.youtube.com/@CAPTAINDRONE798' },
+            { name: 'Mr Steele', description: 'Legendary FPV freestyle. The gold standard for cinematic movement.', url: 'https://www.youtube.com/@MrSteeleFPV' },
+            { name: 'BOTGRINDER', description: 'Aggressive freestyle, raw energy, and pure FPV inspiration.', url: 'https://www.youtube.com/@BOTGRINDER' }
+        ];
+
+        const LEARN_CHANNELS = [
+            { name: 'Mike Sytes (Part 107)', description: 'Walkthroughs and practical guidance for the Part 107 exam.', url: 'https://www.youtube.com/@mikesytes' },
+            { name: 'Mr. Migs Classroom', description: 'Structured classroom-style lessons covering everything in the Part 107.', url: 'https://www.youtube.com/@MrMigsClassroom' }
+        ];
+
+        const SIMULATORS = [
+            { name: 'Liftoff', description: 'The most popular FPV sim for freestyle and muscle memory training.', url: 'https://store.steampowered.com/app/410340/Liftoff_FPV_Drone_Racing/' },
+            { name: 'Tryp FPV', description: 'Freestyle-first sim with cinematic environments and flow-focused flying.', url: 'https://trypfpv.com' },
+            { name: 'VelociDrone', description: 'Racing-focused sim with deep tuning and multiplayer options.', url: 'https://www.velocidrone.com' },
+            { name: 'Uncrashed', description: 'Freestyle-heavy sim with fast load times and smooth feel.', url: 'https://store.steampowered.com/app/1682970/Uncrashed__FPV_Drone_Simulator/' },
+            { name: 'FPV Logic', description: 'Adjustable sim for practice sessions, throttle control, and line choice.', url: 'https://fpvlogic.com' }
+        ];
+
+        // Initial render
+        renderProducts('radio');
+        renderResourceList(FEATURED_CHANNEL, 'featured-channel');
+        renderResourceList(WATCH_CHANNELS, 'watch-list');
+        renderResourceList(LEARN_CHANNELS, 'learn-list');
+        renderResourceList(SIMULATORS, 'simulators-list');
+        renderResourceList(SHOPS, 'shops-list');
+        renderResourceList(OFFICIAL_LINKS, 'official-links');
+
+        /* The old nav's JS lived here — ~80 lines driving #menuToggle and
+           .nav-dropdown, neither of which exists since the shared nav landed.
+           It threw a TypeError on every page load and killed the rest of this
+           script block. The replacement nav has its own handler further down. */
+    </script>
+    </main>
+</div>
+<footer class="foot">
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <img class="foot-mark" src="images/TheLaB-mark.png" alt="The LaB" width="122" height="52" loading="lazy" decoding="async">
+        <p class="foot-blurb">A small film studio and a public notebook, run out of Shelby Township, Michigan.</p>
+      </div>
+      <div class="foot-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="portfolio.html">Reel</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="ideas.html">Story Generator</a></li>
+          <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
+          <li><a href="mykit.html">Your Kit</a></li>
+          <li><a href="colophon.html">How it's built</a></li>
+          <li><a href="events.html">Events</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Elsewhere</h3>
+        <ul>
+          <li><a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://instagram.com/thisislabmedia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/in/baldwinrobert" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="contact.html">About &amp; Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span class="made">Made in Shelby Twp, MI<span class="hrt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span>
+      <span class="visits" id="visitCount" hidden></span>
+      <span>© 2026 LaB Media</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var t=document.getElementById('navToggle'),l=document.getElementById('navLinks');
+  var desktop=function(){return window.innerWidth>760};
+
+  if(t&&l){t.addEventListener('click',function(e){
+    e.stopPropagation();
+    var open=t.getAttribute('aria-expanded')==='true';
+    t.setAttribute('aria-expanded',String(!open));
+    l.setAttribute('data-open',String(!open));
+  });}
+
+  function setOpen(d,on){
+    d.setAttribute('data-open',String(on));
+    d.querySelector('.nav-drop-btn').setAttribute('aria-expanded',String(on));
+    if(!on) d.removeAttribute('data-pinned');
+  }
+  function closeAll(except){
+    document.querySelectorAll('.nav-drop').forEach(function(o){ if(o!==except) setOpen(o,false); });
+  }
+
+  document.querySelectorAll('.nav-drop').forEach(function(d){
+    var b=d.querySelector('.nav-drop-btn');
+
+    /* Click pins it open, so hovering away can't yank it shut mid-reach. */
+    b.addEventListener('click',function(e){
+      e.stopPropagation();
+      var open=d.getAttribute('data-open')==='true';
+      var pinned=d.hasAttribute('data-pinned');
+      closeAll(d);
+      if(open&&pinned){ setOpen(d,false); }
+      else { setOpen(d,true); d.setAttribute('data-pinned','1'); }
+    });
+
+    d.addEventListener('mouseenter',function(){ if(desktop()){ closeAll(d); setOpen(d,true); } });
+    d.addEventListener('mouseleave',function(){
+      if(desktop() && !d.hasAttribute('data-pinned')) setOpen(d,false);
+    });
+
+    /* Keyboard, handled in JS rather than by a CSS :focus-within rule.
+       That rule used to force the menu visible whenever anything inside the
+       drop had focus — which meant clicking the button to CLOSE it set
+       data-open="false" and aria-expanded="false" while the menu stayed on
+       screen, because the button you just clicked still had focus. The menu
+       then hung there until you clicked somewhere else entirely. Routing
+       focus through the same setOpen() the mouse uses keeps one source of
+       truth. focusin fires before click, so the toggle still works: the
+       first click opens and pins, the second closes for real. */
+    d.addEventListener('focusin',function(){ closeAll(d); setOpen(d,true); });
+    d.addEventListener('focusout',function(){
+      setTimeout(function(){
+        if(!d.contains(document.activeElement)) setOpen(d,false);
+      },0);
+    });
+
+    /* following a link should never leave a menu hanging open */
+    d.querySelectorAll('.nav-drop-menu a').forEach(function(a){
+      a.addEventListener('click',function(){ setOpen(d,false); });
+    });
+  });
+
+  document.addEventListener('click',function(){ closeAll(null); });
+
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Escape')return;
+    closeAll(null);
+    if(t){t.setAttribute('aria-expanded','false');l.setAttribute('data-open','false');}
+  });
+})();
+</script>
+
+<script>
+/* Theme switch — remembers the choice, falls back to dark */
+(function(){
+  var root=document.documentElement, KEY='lab-theme';
+  var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
+  if(!btns.length)return;
+
+  function apply(t,save){
+    if(t==='dark') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme',t);
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.themeSet===t))});
+    if(save){try{localStorage.setItem(KEY,t)}catch(e){}}
+  }
+
+  var saved='dark';
+  try{saved=localStorage.getItem(KEY)||'dark'}catch(e){}
+  apply(saved,false);
+
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){apply(b.dataset.themeSet,true)});
+  });
+})();
+</script>
+
+<script>
+/* Start Here tiles point at <details> sections, which are closed by default —
+   a bare anchor jump would scroll you to a shut accordion and look broken.
+   Open the target first, then let the browser scroll to it. Also covers a
+   hash typed straight into the address bar or arriving from another page. */
+(function(){
+  function reveal(hash, smooth){
+    if(!hash || hash.length < 2) return false;
+    var el;
+    try { el = document.querySelector(hash); } catch(e){ return false; }
+    if(!el) return false;
+    if(el.tagName === 'DETAILS') el.open = true;
+    var p = el.parentElement;
+    while(p){ if(p.tagName === 'DETAILS') p.open = true; p = p.parentElement; }
+    if(smooth){
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      el.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'start'});
+    }
+    return true;
+  }
+
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if(!a) return;
+    var hash = a.getAttribute('href');
+    if(hash === '#' || hash === '#main') return;
+    if(reveal(hash, true)){
+      e.preventDefault();
+      history.pushState(null, '', hash);
+    }
+  });
+
+  window.addEventListener('hashchange', function(){ reveal(location.hash, true); });
+  if(location.hash) setTimeout(function(){ reveal(location.hash, false); }, 0);
+})();
+</script>
+
+<!-- ============================================================
+     Visitor counting — GoatCounter.
+     No cookies, no persistent identifiers, no personal data, and
+     ~3.5 KB. Their own docs say it needs no GDPR notice, which is
+     why this site still has no consent banner.
+
+     Live at labmedia.goatcounter.com. Local and file:// visits are
+     skipped so opening a page from Finder never counts as traffic.
+     ============================================================ -->
+<script>
+(function(){
+  var CODE = 'labmedia';                       // labmedia.goatcounter.com
+  if (location.hostname === 'localhost' || location.protocol === 'file:') return;
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = '//gc.zgo.at/count.js';
+  s.setAttribute('data-goatcounter', 'https://' + CODE + '.goatcounter.com/count');
+  document.head.appendChild(s);
+
+  /* Show the site total in the footer, drawn ourselves rather than using
+     GoatCounter's own widget — theirs is a 200x80 bordered box with its own
+     branding, which would look like somebody else's furniture in this room.
+     The JSON endpoint just returns a formatted number.
+
+     Requires "Allow adding visitor counts on your website" in the site
+     settings; it defaults to OFF. If it's off, the request fails and the
+     element stays hidden, so nothing breaks and no empty label appears.
+     Their responses are cached up to four hours, so it lags reality. */
+  var el = document.getElementById('visitCount');
+  if (!el || !window.fetch) return;
+  fetch('https://' + CODE + '.goatcounter.com/counter/TOTAL.json')
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(j){
+      if (!j || !j.count) return;
+      el.innerHTML = '<b>' + j.count + '</b> visits';
+      el.hidden = false;
+    })
+    .catch(function(){ /* stay hidden */ });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Kit — Saved Resources | LaB Media</title>
+<meta name="description" content="The resources you've starred, kept in your own browser. No account, nothing stored on my end, and the whole list encodes into a link you can send to someone.">
+<link rel="canonical" href="https://labmedia.work/mykit.html">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://labmedia.work/mykit.html">
+<meta property="og:site_name" content="LaB Media">
+<meta property="og:title" content="Your Kit">
+<meta property="og:description" content="Resources you've saved, kept in your browser and shareable as a link.">
+<meta property="og:image" content="https://labmedia.work/images/og/resources.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your Kit">
+<meta name="twitter:description" content="Resources you've saved, kept in your browser and shareable as a link.">
+<meta name="twitter:image" content="https://labmedia.work/images/og/resources.jpg">
+
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="images/favicon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="alternate" type="application/rss+xml" title="LaB Media" href="/feed.xml">
+<link rel="alternate" type="application/feed+json" title="LaB Media" href="/feed.json">
+<link rel="stylesheet" href="lab.css">
+<style>
+/* ---------- Your kit ----------
+   Lifted out of the top of the resources page, where it sat above 128 entries
+   that most visitors came for. Its own page means the list can breathe and the
+   resources page starts where people expect it to.
+
+   Nothing here is stored on the server. The kit is an array of resource keys in
+   localStorage, and the share link is those same keys in a URL fragment — so a
+   link works for someone who has never been here, and I never see it. */
+.kit-hero{padding-block:clamp(48px,7vw,var(--s-9)) var(--s-6)}
+.kit-hero h1{font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;letter-spacing:-.02em;line-height:1.04;margin-top:var(--s-4)}
+.kit-hero h1 em{font-style:italic;color:var(--accent)}
+.kit-hero .lede{color:var(--dim);font-size:var(--t-base);line-height:1.75;max-width:56ch;margin-top:var(--s-4)}
+
+.kit-count{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+
+.k-rows{border-top:1px solid var(--line);margin-top:var(--s-6)}
+.k-row{display:grid;grid-template-columns:34px 1fr auto;gap:var(--s-4);align-items:baseline;
+  padding:var(--s-5) 0;border-bottom:1px solid var(--line)}
+.k-n{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;color:var(--faint)}
+.k-name{font-family:var(--f-display);font-size:21px;font-weight:400;letter-spacing:-.01em}
+.k-row a.k-name:hover{color:var(--accent)}
+.k-desc{color:var(--dim);font-size:var(--t-sm);line-height:1.65;max-width:64ch;margin-top:5px}
+.k-tags{margin-top:9px;display:flex;gap:6px;flex-wrap:wrap}
+.k-tag{font-family:var(--f-mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--faint);border:1px solid var(--line);padding:3px 8px}
+.k-tag.free{color:var(--good);border-color:var(--good-dim)}
+.k-tag.paid{color:var(--dim)}
+.k-tag.inlab{color:var(--accent);border-color:var(--accent-dim)}
+.k-drop{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--faint);border:1px solid var(--line);padding:7px 11px;white-space:nowrap;
+  transition:color var(--fast) var(--ease),border-color var(--fast) var(--ease)}
+.k-drop:hover{color:var(--accent);border-color:var(--accent-dim)}
+
+.k-acts{display:flex;gap:var(--s-2);flex-wrap:wrap;margin-top:var(--s-6)}
+.k-acts button{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink);border:1px solid var(--line-2);padding:11px 16px;
+  transition:background var(--fast) var(--ease),color var(--fast) var(--ease),border-color var(--fast) var(--ease)}
+.k-acts button:hover{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.k-acts .ghost{color:var(--faint);border-color:var(--line)}
+.k-acts .ghost:hover{background:transparent;color:var(--ink);border-color:var(--line-2)}
+
+/* Empty is the state most first-time visitors land in, so it does real work
+   rather than just saying "nothing here". */
+.k-empty{border:1px solid var(--line);background:var(--paper-2);padding:clamp(26px,4vw,var(--s-7));margin-top:var(--s-6)}
+.k-empty h2{font-family:var(--f-display);font-size:26px;font-weight:400;margin-bottom:var(--s-3)}
+.k-empty p{color:var(--dim);font-size:var(--t-sm);line-height:1.75;max-width:58ch}
+.k-empty .btns{display:flex;gap:var(--s-3);flex-wrap:wrap;margin-top:var(--s-5)}
+
+.kit-bar{background:var(--accent-bg);border:1px solid var(--accent-dim);padding:var(--s-4) var(--s-5);
+  display:flex;gap:var(--s-4);align-items:center;flex-wrap:wrap;margin-top:var(--s-6)}
+.kit-bar p{font-size:var(--t-sm);color:var(--dim);flex:1;min-width:220px}
+.kit-bar strong{color:var(--ink);font-weight:400}
+.kit-bar button{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--accent);border:1px solid var(--accent-dim);padding:9px 14px}
+.kit-bar button:hover{background:var(--accent);color:var(--paper)}
+.kit-bar .ghost{color:var(--faint);border-color:var(--line)}
+.kit-bar .ghost:hover{background:transparent;color:var(--ink)}
+
+.kit-toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);z-index:800;
+  background:var(--ink);color:var(--paper);font-family:var(--f-mono);font-size:10px;
+  letter-spacing:.13em;text-transform:uppercase;padding:12px 18px;
+  opacity:0;pointer-events:none;transition:opacity var(--fast) var(--ease),transform var(--fast) var(--ease)}
+.kit-toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:640px){
+  .k-row{grid-template-columns:1fr;gap:var(--s-2)}
+  .k-n{display:none}
+  .k-drop{justify-self:start}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="nav-brand" href="index.html" aria-label="LaB Media — home">
+      <img class="nav-logo is-mark" src="images/TheLaB-mark.png" alt="LaB Media — back to the LaB" width="61" height="26">
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="portfolio.html">Reel</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Resources
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="resources.html">Resources</a>
+          <a href="gear.html">LaB&rsquo;s Kit</a>
+          <a href="mykit.html">Your Kit</a>
+        </div>
+      </li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Tools
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="ideas.html">Story Generator</a>
+          <a href="skybound.html">SkyBound — Drone</a>
+        </div>
+      </li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">About
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="contact.html">About LaB</a>
+          <a href="colophon.html">About the Site</a>
+        </div>
+      </li>
+      </ul>
+    <div class="theme" role="group" aria-label="Colour theme">
+      <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
+      <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
+      <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<main id="main">
+
+<section class="kit-hero wrap">
+  <div class="rule"><span class="mono">Your kit</span><i></i><span class="mono kit-count" id="kitCount"></span></div>
+  <h1>The ones you <em>kept.</em></h1>
+  <p class="lede">Saved in this browser only &mdash; no account, and nothing stored on my end. The whole
+  list also encodes into a link, so you can send it to someone or move it to another device.</p>
+</section>
+
+<section class="wrap" id="kitBody">
+  <noscript>
+    <div class="k-empty">
+      <h2>This one needs JavaScript</h2>
+      <p>Your kit lives in your own browser rather than on a server, which means the page has to read
+      it locally &mdash; there is nothing for me to send you. The
+      <a href="resources.html" style="color:var(--accent)">resources list</a> itself reads fine either way.</p>
+    </div>
+  </noscript>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <img class="foot-mark" src="images/TheLaB-mark.png" alt="The LaB" width="122" height="52" loading="lazy" decoding="async">
+        <p class="foot-blurb">A small film studio and a public notebook, run out of Shelby Township, Michigan.</p>
+      </div>
+      <div class="foot-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="portfolio.html">Reel</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="ideas.html">Story Generator</a></li>
+          <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
+          <li><a href="mykit.html">Your Kit</a></li>
+          <li><a href="colophon.html">How it's built</a></li>
+          <li><a href="events.html">Events</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Elsewhere</h3>
+        <ul>
+          <li><a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://instagram.com/thisislabmedia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/in/baldwinrobert" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="contact.html">About &amp; Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span class="made">Made in Shelby Twp, MI<span class="hrt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span>
+      <span class="visits" id="visitCount" hidden></span>
+      <span>© 2026 LaB Media</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     Visitor counting — GoatCounter.
+     No cookies, no persistent identifiers, no personal data, and
+     ~3.5 KB. Their own docs say it needs no GDPR notice, which is
+     why this site still has no consent banner.
+
+     Live at labmedia.goatcounter.com. Local and file:// visits are
+     skipped so opening a page from Finder never counts as traffic.
+     ============================================================ -->
+<script>
+(function(){
+  var CODE = 'labmedia';                       // labmedia.goatcounter.com
+  if (location.hostname === 'localhost' || location.protocol === 'file:') return;
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = '//gc.zgo.at/count.js';
+  s.setAttribute('data-goatcounter', 'https://' + CODE + '.goatcounter.com/count');
+  document.head.appendChild(s);
+
+  /* Show the site total in the footer, drawn ourselves rather than using
+     GoatCounter's own widget — theirs is a 200x80 bordered box with its own
+     branding, which would look like somebody else's furniture in this room.
+     The JSON endpoint just returns a formatted number.
+
+     Requires "Allow adding visitor counts on your website" in the site
+     settings; it defaults to OFF. If it's off, the request fails and the
+     element stays hidden, so nothing breaks and no empty label appears.
+     Their responses are cached up to four hours, so it lags reality. */
+  var el = document.getElementById('visitCount');
+  if (!el || !window.fetch) return;
+  fetch('https://' + CODE + '.goatcounter.com/counter/TOTAL.json')
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(j){
+      if (!j || !j.count) return;
+      el.innerHTML = '<b>' + j.count + '</b> visits';
+      el.hidden = false;
+    })
+    .catch(function(){ /* stay hidden */ });
+})();
+</script>
+<script>
+/* Nav */
+(function(){
+  var t=document.getElementById('navToggle'),l=document.getElementById('navLinks');
+  var desktop=function(){return window.innerWidth>760};
+
+  if(t&&l){t.addEventListener('click',function(e){
+    e.stopPropagation();
+    var open=t.getAttribute('aria-expanded')==='true';
+    t.setAttribute('aria-expanded',String(!open));
+    l.setAttribute('data-open',String(!open));
+  });}
+
+  function setOpen(d,on){
+    d.setAttribute('data-open',String(on));
+    d.querySelector('.nav-drop-btn').setAttribute('aria-expanded',String(on));
+    if(!on) d.removeAttribute('data-pinned');
+  }
+  function closeAll(except){
+    document.querySelectorAll('.nav-drop').forEach(function(o){ if(o!==except) setOpen(o,false); });
+  }
+
+  document.querySelectorAll('.nav-drop').forEach(function(d){
+    var b=d.querySelector('.nav-drop-btn');
+
+    /* Click pins it open, so hovering away can't yank it shut mid-reach. */
+    b.addEventListener('click',function(e){
+      e.stopPropagation();
+      var open=d.getAttribute('data-open')==='true';
+      var pinned=d.hasAttribute('data-pinned');
+      closeAll(d);
+      if(open&&pinned){ setOpen(d,false); }
+      else { setOpen(d,true); d.setAttribute('data-pinned','1'); }
+    });
+
+    d.addEventListener('mouseenter',function(){ if(desktop()){ closeAll(d); setOpen(d,true); } });
+    d.addEventListener('mouseleave',function(){
+      if(desktop() && !d.hasAttribute('data-pinned')) setOpen(d,false);
+    });
+
+    /* Keyboard, handled in JS rather than by a CSS :focus-within rule.
+       That rule used to force the menu visible whenever anything inside the
+       drop had focus — which meant clicking the button to CLOSE it set
+       data-open="false" and aria-expanded="false" while the menu stayed on
+       screen, because the button you just clicked still had focus. The menu
+       then hung there until you clicked somewhere else entirely. Routing
+       focus through the same setOpen() the mouse uses keeps one source of
+       truth. focusin fires before click, so the toggle still works: the
+       first click opens and pins, the second closes for real. */
+    d.addEventListener('focusin',function(){ closeAll(d); setOpen(d,true); });
+    d.addEventListener('focusout',function(){
+      setTimeout(function(){
+        if(!d.contains(document.activeElement)) setOpen(d,false);
+      },0);
+    });
+
+    /* following a link should never leave a menu hanging open */
+    d.querySelectorAll('.nav-drop-menu a').forEach(function(a){
+      a.addEventListener('click',function(){ setOpen(d,false); });
+    });
+  });
+
+  document.addEventListener('click',function(){ closeAll(null); });
+
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Escape')return;
+    closeAll(null);
+    if(t){t.setAttribute('aria-expanded','false');l.setAttribute('data-open','false');}
+  });
+})();
+</script>
+
+<script>
+/* Theme switch — remembers the choice, falls back to dark.
+   This page shipped with the three buttons and the early-boot reader in
+   <head>, but never the handler, so Light and Sepia were decoration: they
+   looked live, changed nothing, and a choice made here didn't survive to
+   the next page either. Same omission as the nav — both of these pages were
+   built from a template captured before this block existed. */
+(function(){
+  var root=document.documentElement, KEY='lab-theme';
+  var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
+  if(!btns.length)return;
+
+  function apply(t,save){
+    if(t==='dark') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme',t);
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.themeSet===t))});
+    if(save){try{localStorage.setItem(KEY,t)}catch(e){}}
+  }
+
+  var saved='dark';
+  try{saved=localStorage.getItem(KEY)||'dark'}catch(e){}
+  apply(saved,false);
+
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){apply(b.dataset.themeSet,true)});
+  });
+})();
+</script>
+
+<script src="resources-data.js"></script>
+<script>
+/* ============================================================
+   YOUR KIT
+   The kit is an array of resource keys in localStorage. Nothing
+   is stored server-side, so this page reads it locally and the
+   share link carries the same keys in a URL fragment — which
+   means a link resolves for someone who has never been here,
+   and I never see what anyone saved.
+
+   Keys are derived from each entry's name, not its position, so
+   adding entries or reordering the data never breaks a kit or a
+   link already out in the world.
+   ============================================================ */
+(function(){
+  var KEY='lab-kit', SEP='.';
+  var body=document.getElementById('kitBody'), countEl=document.getElementById('kitCount');
+  if(!body)return;
+
+  /* resources-data.js declares a top-level `const resources`, which lives in
+     the global lexical scope and is NOT reachable as window.resources — so it
+     has to be read by bare name, exactly as the resources page does it. */
+  var ALL = (typeof resources!=='undefined' && Array.isArray(resources)) ? resources : [];
+  if(!ALL.length){
+    body.innerHTML='<div class="k-empty"><h2>The resource list didn\u2019t load</h2>'
+      +'<p>Your kit is safe \u2014 it lives in your browser, not in that file. But this page needs '
+      +'<code>resources-data.js</code> to know what the saved keys refer to. A reload usually fixes it.</p></div>';
+    return;
+  }
+
+  function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c] }) }
+  function keyOf(r){
+    return (r.id || String(r.name||'')).toLowerCase()
+      .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  }
+  function catsOf(r){ return String(r.category||'').split(',').map(function(x){return x.trim()}).filter(Boolean) }
+
+  var byKey={}; ALL.forEach(function(r){ byKey[keyOf(r)]=r });
+
+  function read(){ try{ var v=JSON.parse(localStorage.getItem(KEY)||'[]'); return Array.isArray(v)?v:[] }catch(e){ return [] } }
+  function write(a){ try{ localStorage.setItem(KEY,JSON.stringify(a)) }catch(e){} }
+  var kit=read();
+
+  function toast(msg){
+    var t=document.querySelector('.kit-toast');
+    if(!t){ t=document.createElement('div'); t.className='kit-toast'; t.setAttribute('role','status'); document.body.appendChild(t); }
+    t.textContent=msg; t.classList.add('on');
+    clearTimeout(t._x); t._x=setTimeout(function(){ t.classList.remove('on') },2200);
+  }
+  function shareURL(){ return location.origin+location.pathname+'#kit='+kit.join(SEP) }
+
+  function rowHTML(r,i){
+    var isPerson = catsOf(r).indexOf('collaborators')>-1;
+    var tags='';
+    if(r.inLab) tags+='<span class="k-tag inlab">In the LaB</span>';
+    var where=r.locationBadge||r.location;
+    if(where) tags+='<span class="k-tag">'+esc(where)+'</span>';
+    if(!isPerson) tags+= r.paid?'<span class="k-tag paid">Paid</span>':'<span class="k-tag free">Free</span>';
+
+    var name = r.url
+      ? '<a class="k-name" href="'+esc(r.url)+'" target="_blank" rel="noopener">'+esc(r.name)+'</a>'
+      : '<span class="k-name">'+esc(r.name)+'</span>';
+
+    return '<div class="k-row">'
+      + '<span class="k-n">'+String(i+1).padStart(2,'0')+'</span>'
+      + '<div>'+name
+      +   (r.desc?'<p class="k-desc">'+esc(r.desc)+'</p>':'')
+      +   (tags?'<div class="k-tags">'+tags+'</div>':'')
+      + '</div>'
+      + '<button class="k-drop" type="button" data-drop="'+esc(keyOf(r))+'" '
+      +   'aria-label="Remove '+esc(r.name)+' from your kit">Remove</button>'
+      + '</div>';
+  }
+
+  function paint(){
+    /* drop any key that no longer resolves — an entry can be retired later, and
+       a kit should quietly survive that rather than render a blank row */
+    kit=kit.filter(function(k){ return byKey[k] });
+    write(kit);
+    countEl.textContent = kit.length ? kit.length+(kit.length===1?' item':' items') : 'empty';
+
+    if(!kit.length){
+      body.innerHTML=
+        '<div class="k-empty">'
+        +'<h2>Nothing saved yet</h2>'
+        +'<p>Every entry on the resources list has a star beside it. Anything you star lands here, '
+        +'stays in this browser, and can be sent to somebody as a single link. If you would rather '
+        +'start from what actually gets used on a shoot, the kit page has a button that loads the '
+        +'whole thing in one go.</p>'
+        +'<div class="btns">'
+        +'<a class="btn btn-accent" href="resources.html">Browse resources <span class="arw">&rarr;</span></a>'
+        +'<a class="btn" href="gear.html">See LaB&rsquo;s kit <span class="arw">&rarr;</span></a>'
+        +'</div></div>';
+      return;
+    }
+
+    body.innerHTML='<div class="k-rows">'+kit.map(function(k,i){ return rowHTML(byKey[k],i) }).join('')+'</div>'
+      +'<div class="k-acts">'
+      +'<button type="button" data-a="link">Copy link to this kit</button>'
+      +'<button type="button" data-a="text" class="ghost">Copy as text</button>'
+      +'<button type="button" data-a="clear" class="ghost">Clear all</button>'
+      +'</div>';
+  }
+
+  function copy(text,msg){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){toast(msg)},function(){fallback(text,msg)});
+    } else fallback(text,msg);
+  }
+  function fallback(text,msg){
+    var ta=document.createElement('textarea');
+    ta.value=text; ta.setAttribute('readonly',''); ta.style.cssText='position:absolute;left:-9999px';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); toast(msg) }catch(e){ toast('Copy failed') }
+    document.body.removeChild(ta);
+  }
+
+  body.addEventListener('click',function(e){
+    var d=e.target.closest && e.target.closest('[data-drop]');
+    if(d){
+      var i=kit.indexOf(d.dataset.drop);
+      if(i>-1){ kit.splice(i,1); write(kit); paint(); toast('Removed'); }
+      return;
+    }
+    var b=e.target.closest && e.target.closest('[data-a]');
+    if(!b)return;
+    if(b.dataset.a==='link'){ copy(shareURL(),'Link copied'); }
+    else if(b.dataset.a==='text'){
+      var lines=kit.map(function(k){ var r=byKey[k];
+        return '- '+r.name+(r.url?' \u2014 '+r.url:'')+(r.desc?'\n  '+r.desc:''); });
+      copy('My kit \u2014 from labmedia.work\n\n'+lines.join('\n'),'Copied as text');
+    }
+    else if(b.dataset.a==='clear'){ kit=[]; write(kit); paint(); toast('Kit cleared'); }
+  });
+
+  /* An incoming #kit= link never silently overwrites what you already have. */
+  (function incoming(){
+    var m=/[#&]kit=([^&]+)/.exec(location.hash);
+    if(!m){ paint(); return; }
+    var keys=decodeURIComponent(m[1]).split(SEP).filter(function(k){ return byKey[k] });
+    /* read this BEFORE the hash is scrubbed, or it is always false */
+    var fromLab=/[#&]from=lab\b/.test(location.hash);
+    history.replaceState(null,'',location.pathname);
+    paint();
+    if(!keys.length)return;
+
+    var fresh=keys.filter(function(k){ return kit.indexOf(k)<0 });
+    if(!fresh.length){ toast('You already have all '+keys.length); return; }
+
+    var lead = fromLab
+      ? '<strong>This is what LaB actually runs.</strong> '
+      : '<strong>Someone shared a kit with you.</strong> ';
+
+    var bar=document.createElement('div');
+    bar.className='kit-bar';
+    bar.innerHTML='<p>'+lead+keys.length+' item'+(keys.length>1?'s':'')
+      +', '+fresh.length+' you don\u2019t have yet.</p>'
+      +'<button type="button" data-i="add">Add to my kit</button>'
+      +'<button type="button" data-i="only" class="ghost">Replace mine</button>'
+      +'<button type="button" data-i="no" class="ghost">No thanks</button>';
+    body.parentNode.insertBefore(bar,body);
+
+    bar.addEventListener('click',function(e){
+      var b=e.target.closest && e.target.closest('[data-i]');
+      if(!b)return;
+      if(b.dataset.i==='add'){ fresh.forEach(function(k){kit.push(k)}); write(kit); paint(); toast('Added '+fresh.length); }
+      else if(b.dataset.i==='only'){ kit=keys.slice(); write(kit); paint(); toast('Kit replaced'); }
+      bar.remove();
+    });
+  })();
+})();
+</script>
+
+</body>
+</html>
