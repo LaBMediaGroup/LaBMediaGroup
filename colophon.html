@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How This Site Is Built | LaB Media</title>
+<meta name="description" content="Ten pages, one stylesheet, no framework, no build step, no cookies. What it took and what broke along the way.">
+<link rel="canonical" href="https://labmedia.work/colophon.html">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://labmedia.work/colophon.html">
+<meta property="og:site_name" content="LaB Media">
+<meta property="og:title" content="How This Site Is Built">
+<meta property="og:description" content="Ten pages, one stylesheet, no framework, no build step, no cookies.">
+<meta property="og:image" content="https://labmedia.work/images/og/colophon.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How This Site Is Built">
+<meta name="twitter:description" content="Ten pages, one stylesheet, no framework, no build step, no cookies.">
+<meta name="twitter:image" content="https://labmedia.work/images/og/colophon.jpg">
+
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="images/favicon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="alternate" type="application/rss+xml" title="LaB Media" href="/feed.xml">
+<link rel="alternate" type="application/feed+json" title="LaB Media" href="/feed.json">
+<link rel="stylesheet" href="lab.css">
+<style>
+.pg-hero{padding-block:clamp(44px,6vw,var(--s-8)) clamp(36px,5vw,var(--s-7));border-bottom:1px solid var(--line)}
+.pg-hero h1{font-family:var(--f-display);font-size:var(--t-3xl);font-weight:400;line-height:.95;letter-spacing:-.025em;margin-top:var(--s-6);max-width:18ch}
+.pg-hero h1 em{font-style:italic;color:var(--accent)}
+.pg-hero .lede{color:var(--dim);font-size:var(--t-lg);line-height:1.75;max-width:60ch;margin-top:var(--s-5)}
+
+/* the numbers, stated once */
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);
+  border-block:1px solid var(--line);margin-top:clamp(34px,4vw,var(--s-7))}
+.fig{background:var(--paper);padding:var(--s-5) var(--s-4);display:flex;flex-direction:column;gap:7px;align-items:center;text-align:center}
+.fig dt{font-family:var(--f-mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);order:2}
+.fig dd{font-family:var(--f-display);font-size:clamp(26px,3.4vw,38px);color:var(--ink);line-height:1;order:1}
+.fig dd span{font-size:.4em;letter-spacing:.1em;color:var(--faint);margin-left:3px;text-transform:uppercase}
+
+.sec-c{padding-block:clamp(40px,5vw,var(--s-8));border-bottom:1px solid var(--line)}
+.sec-c:last-of-type{border-bottom:0}
+.sec-c h2{font-family:var(--f-display);font-size:clamp(24px,3.2vw,34px);font-weight:400;letter-spacing:-.02em;line-height:1.05;margin-bottom:var(--s-5)}
+.sec-c h2 em{font-style:italic;color:var(--accent)}
+.sec-c p{color:var(--dim);font-size:var(--t-base);line-height:1.8;max-width:66ch;margin-bottom:var(--s-4)}
+.sec-c p strong{color:var(--ink);font-weight:400}
+.sec-c code{font-family:var(--f-mono);font-size:.88em;color:var(--sky);background:color-mix(in srgb,var(--sky) 8%,transparent);padding:2px 6px}
+.sec-c a{color:var(--accent);border-bottom:1px solid var(--accent-dim)}
+
+.bugs{border-top:1px solid var(--line);margin-top:var(--s-2)}
+.bug{border-bottom:1px solid var(--line);padding:var(--s-5) 0;display:grid;grid-template-columns:auto 1fr;gap:var(--s-5);align-items:start}
+.bug-n{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;color:var(--accent);padding-top:5px;min-width:26px}
+.bug h3{font-family:var(--f-display);font-size:21px;font-weight:400;letter-spacing:-.01em;margin-bottom:7px}
+.bug p{color:var(--dim);font-size:var(--t-sm);line-height:1.75;max-width:64ch;margin:0}
+
+.plain{color:var(--dim);font-size:var(--t-sm);line-height:1.8;max-width:62ch}
+.plain li{margin-bottom:9px;list-style:none;padding-left:var(--s-4);position:relative}
+.plain li::before{content:'—';position:absolute;left:0;color:var(--faint)}
+
+@media (max-width:700px){ .bug{grid-template-columns:1fr;gap:var(--s-2)} }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="nav-brand" href="index.html" aria-label="LaB Media — home">
+      <img class="nav-logo is-mark" src="images/TheLaB-mark.png" alt="LaB Media — back to the LaB" width="61" height="26">
+    </a>
+    <nav class="nav-primary" aria-label="Primary"><ul class="nav-links" id="navLinks">
+      <li><a href="portfolio.html">Reel</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Resources
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="resources.html">Learn &amp; Make</a>
+          <a href="people.html">People &amp; Community</a>
+          <a href="sourcing.html">Gear &amp; Flight</a>
+          <a href="gear.html">LaB&rsquo;s Kit</a>
+          <a href="mykit.html">Your Kit</a>
+        </div>
+      </li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Tools
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="ideas.html">Story Generator</a>
+          <a href="skybound.html">SkyBound — Drone</a>
+        </div>
+      </li>
+      <li class="nav-drop" data-current="true">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">About
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="contact.html">About LaB</a>
+          <a href="colophon.html" aria-current="page">About the Site</a>
+        </div>
+      </li>
+      </ul></nav>
+    <div class="theme" role="group" aria-label="Colour theme">
+      <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
+      <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
+      <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<main id="main">
+
+<section class="pg-hero wrap">
+  <div class="rule"><span class="mono">Colophon</span><i></i><span class="mono" style="color:var(--faint)">Updated July 2026</span></div>
+  <h1>Ten pages, one <em>stylesheet.</em></h1>
+  <p class="lede">This site has no framework, no build step, no backend and no dependencies. It's
+  hand-written HTML and CSS on free hosting, put together with a lot of help from AI tools. If
+  you're a filmmaker who also tinkers, this is the part you might find useful.</p>
+
+  <dl class="figs">
+    <div class="fig"><dt>Pages</dt><dd>10</dd></div>
+    <div class="fig"><dt>Stylesheet</dt><dd>28<span>kb</span></dd></div>
+    <div class="fig"><dt>Design tokens</dt><dd>67</dd></div>
+    <div class="fig"><dt>Dependencies</dt><dd>00</dd></div>
+    <div class="fig"><dt>Cookies</dt><dd>00</dd></div>
+  </dl>
+</section>
+
+<section class="sec-c wrap">
+  <h2>One stylesheet, <em>everything</em></h2>
+  <p><code>lab.css</code> is 672 lines and governs all ten pages — every colour, every
+  typeface, the navigation and the footer. Change a value in the one token block and it changes
+  in ten places at once. It replaced eleven divergent colour blocks and nine separate navigation
+  markups, which is a polite way of saying every page had quietly become its own website.</p>
+  <p>Sixty-seven design tokens cover colour, type, spacing and motion. Three themes — dark, light
+  and sepia — are per-theme overrides of the same tokens, applied by an inline script in the
+  <code>&lt;head&gt;</code> before first paint so there's no flash of the wrong colours.</p>
+</section>
+
+<section class="sec-c wrap">
+  <h2>What needs <em>JavaScript,</em> and what doesn't</h2>
+  <p>The films are plain HTML. All eight, every production timeline and all 81 behind-the-scenes
+  photographs are in the page itself, inside native <code>&lt;details&gt;</code> elements. Turn
+  JavaScript off and the portfolio still reads completely — <strong>1,564 words of it</strong>.
+  Same for SkyBound.</p>
+  <p>The resources, the gear list and the story generator do <strong>not</strong>. Those three are
+  built at runtime from data files, so with scripts disabled they fall back to a heading and a
+  short explanation instead of 128 links, 66 items and 1,334 prompts.</p>
+  <p>That's a real trade, made deliberately. Keeping 128 resources as one data file rather than
+  hand-written HTML is the only reason a one-person site can carry that much and stay correct —
+  the counts, the search, the kit and the feeds all read from the same source. The cost is that
+  those pages need scripts to draw themselves, so each one ships a <code>&lt;noscript&gt;</code>
+  fallback that says so plainly rather than showing an empty shell.</p>
+  <p>Videos are click-to-load. A poster image stands in until you press play, and only then does a
+  <code>youtube-nocookie.com</code> iframe get injected. <strong>Nothing contacts YouTube before
+  you ask it to.</strong></p>
+</section>
+
+<section class="sec-c wrap">
+  <h2>Details worth <em>stealing</em></h2>
+  <p>None of these are clever. They're the small decisions that separate a site that works from
+  one that only looks like it does &mdash; and every one of them is a few lines you could lift
+  into your own thing this afternoon.</p>
+
+  <div class="bugs">
+    <div class="bug">
+      <span class="bug-n">01</span>
+      <div>
+        <h3>A frame that doesn&rsquo;t flinch when you press play</h3>
+        <p>The reel is a 2.39&#58;1 film exported inside a 16&#58;9 YouTube frame, so the black bars
+        are baked into the video. The poster hides them with <code>object-fit&#58;cover</code>, and the
+        player used to expose them by opening out to 16&#58;9 &mdash; the frame jumped taller and the
+        bars appeared. Now it doesn&rsquo;t move at all&#58; the iframe is sized to 16&#58;9 <em>by
+        width</em> &mdash; 134.44% of the container&rsquo;s height &mdash; and centred, so what
+        overflows top and bottom is exactly 7.205% of the width each side. The true letterbox on a
+        2.39 film is 7.204%. <strong>It crops to the pixel.</strong></p>
+        <p>The catch is that YouTube draws its own furniture in those bars &mdash; the title
+        overlay, the &ldquo;Watch on YouTube&rdquo; strip and the control bar &mdash; so cropping
+        them means replacing them. There&rsquo;s a small bar of our own instead&#58; pause, close,
+        and a fullscreen button that hands over to the native player, where the full 16&#58;9 frame
+        and the real scrubber are waiting. Close destroys the iframe rather than hiding it, so
+        playback genuinely stops. <em>Worth knowing if you ever embed scope footage&#58; the
+        letterbox is in the file, not in the page.</em></p>
+      </div>
+    </div>
+    <div class="bug">
+      <span class="bug-n">02</span>
+      <div>
+        <h3>Nothing contacts YouTube until you press play</h3>
+        <p>Every video is a poster image and a button. The <code>youtube-nocookie.com</code> iframe
+        is injected on click and not before, so simply reading a page sets no third-party cookies
+        and costs no third-party requests. It is also dramatically faster, because a page with six
+        films embeds zero players until you want one.</p>
+      </div>
+    </div>
+    <div class="bug">
+      <span class="bug-n">03</span>
+      <div>
+        <h3>A finger cannot hover</h3>
+        <p>106 photographs on this site are grayscale until you hover them, which is the entire
+        visual idea. On a touchscreen that reveal can never fire. Under
+        <code>@media (hover:none)</code> the photographs simply arrive in colour instead.
+        <em>Worth checking on anything where hover carries meaning rather than decoration &mdash;
+        for a long time every phone visitor here saw grey.</em></p>
+      </div>
+    </div>
+    <div class="bug">
+      <span class="bug-n">04</span>
+      <div>
+        <h3>Colour solved numerically, and per theme</h3>
+        <p>No text colour here was eyeballed. Each was moved until it cleared WCAG AA &mdash;
+        4.5:1 &mdash; against all three backgrounds. The tertiary grey is <code>#857F76</code>
+        because that is the first value that passes on both the page and the raised surfaces.
+        Contrast-sensitive colours have to be per-theme tokens: one green cannot clear 4.5:1 on a
+        near-black page <em>and</em> a near-white one. <em>The single hardcoded green this replaced
+        measured 1.89:1 on the light theme &mdash; invisible, and live.</em></p>
+      </div>
+    </div>
+    <div class="bug">
+      <span class="bug-n">05</span>
+      <div>
+        <h3>Animations that cost nothing when idle</h3>
+        <p>Hover the line at the bottom of any page. The hearts are five elements sharing one
+        keyframe, each handed its own drift and delay as a custom property so none of them move in
+        lockstep. They ship <code>animation-play-state: paused</code> and only run while you're
+        actually there &mdash; no loop spinning behind an invisible layer, and nothing at all under
+        <code>prefers-reduced-motion</code>.</p>
+      </div>
+    </div>
+    <div class="bug">
+      <span class="bug-n">06</span>
+      <div>
+        <h3>Native elements before libraries</h3>
+        <p>Every expandable section &mdash; the production timelines, the gear categories, the
+        resource groups &mdash; is a plain <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code>.
+        No accordion library, no JavaScript, and keyboard support, screen-reader semantics and
+        find-in-page all work for free. Browsers will even open a collapsed
+        <code>&lt;details&gt;</code> to show a search match inside it, which no hand-rolled
+        accordion does.</p>
+      </div>
+    </div>
+    <div class="bug">
+      <span class="bug-n">07</span>
+      <div>
+        <h3>Share links keyed by content, not position</h3>
+        <p>A brief you send someone is encoded as a short hash of its own text, never its position
+        in the list. So the prompt library can grow from 1,218 entries to 1,334, or be reordered
+        entirely, and a link already out in the world still opens the same brief. Saved kits on the
+        gear page work the same way. <em>Index-based links would have silently rotted the first
+        time the data changed.</em></p>
+      </div>
+    </div>
+    <div class="bug">
+      <span class="bug-n">08</span>
+      <div>
+        <h3>The one page nobody plans to visit</h3>
+        <p>The zero on the <a href="404.html">missing page</a> is an eye &mdash; drawn, not typeset,
+        because a font&rsquo;s counter isn&rsquo;t knowable from CSS and Space Mono&rsquo;s zero has
+        a mark inside it that read as a second pupil. One path with <code>fill-rule: evenodd</code>
+        makes the counter a real hole, so the page shows through in any theme and the pupil stays
+        clipped inside the letter. It follows your cursor, wanders when you sit still, and gives up
+        on you entirely if you poke at it five times.</p>
+        <p>The message rerolls from two pools: one is funny about the page being gone, the other is
+        filmmaking encouragement that never mentions the site.
+        <em>Doing both jobs in one sentence was the first attempt&rsquo;s mistake.</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-c wrap">
+  <h2>What it <em>doesn't</em> do</h2>
+  <ul class="plain">
+    <li>No cookies, and therefore no consent banner.</li>
+    <li>No accounts, no sign-up, no email capture anywhere.</li>
+    <li>No affiliate links. Nothing on the gear page was sent free.</li>
+    <li>Saved kits and prompts live in your own browser and are never sent anywhere.</li>
+    <li>Every animation stops under <code>prefers-reduced-motion</code>.</li>
+  </ul>
+  <p style="margin-top:var(--s-5)">There is <strong>one</strong> exception worth stating plainly:
+  a visitor counter, <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>.
+  It is open source, sets no cookies, stores no personal data and doesn't identify you across
+  sites — it counts that a page was opened. That's the whole thing. It's here because after
+  building all this it seemed worth knowing whether anyone actually reads it, and it was the only
+  option that didn't require putting a banner in front of you first. The numbers are at
+  <a href="https://labmedia.goatcounter.com" target="_blank" rel="noopener">labmedia.goatcounter.com</a>
+  — whether that stays public is a decision for another day.</p>
+</section>
+
+<section class="sec-c wrap">
+  <h2>If you want to <em>build one</em></h2>
+  <p>The honest version: it is plain HTML and CSS, and the hard parts were never the code. They
+  were deciding what to cut, and then actually checking rather than assuming &mdash; two pages and
+  four resource entries came out of this rebuild for not earning their place. Though
+  &ldquo;not the code&rdquo; doesn&rsquo;t mean the code is nothing.</p>
+  <p>Hosting is free and the domain is the only cost. The free tools on the
+  <a href="resources.html">resources list</a> are where I&rsquo;d start. Have a go first &mdash;
+  then if you get stuck on something specific, <a href="contact.html">ask me</a>. That offer is
+  real, it is just worth a great deal more once you have hit the wall yourself.</p>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <img class="foot-mark" src="images/TheLaB-mark.png" alt="The LaB" width="122" height="52" loading="lazy" decoding="async">
+        <p class="foot-blurb">A small film studio and a public notebook, run out of Shelby Township, Michigan.</p>
+      </div>
+      <div class="foot-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="portfolio.html">Reel</a></li>
+          <li><a href="resources.html">Learn &amp; Make</a></li>
+          <li><a href="people.html">People &amp; Community</a></li>
+          <li><a href="sourcing.html">Gear &amp; Flight</a></li>
+          <li><a href="ideas.html">Story Generator</a></li>
+          <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
+          <li><a href="mykit.html">Your Kit</a></li>
+          <li><a href="colophon.html">How it's built</a></li>
+          <li><a href="events.html">Events</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Elsewhere</h3>
+        <ul>
+          <li><a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://instagram.com/thisislabmedia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/in/baldwinrobert" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="contact.html">About &amp; Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span class="made">Made in Shelby Twp, MI<span class="hrt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span>
+      <span class="visits" id="visitCount" hidden></span>
+      <span>© 2026 LaB Media</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     Visitor counting — GoatCounter.
+     No cookies, no persistent identifiers, no personal data, and
+     ~3.5 KB. Their own docs say it needs no GDPR notice, which is
+     why this site still has no consent banner.
+
+     Live at labmedia.goatcounter.com. Local and file:// visits are
+     skipped so opening a page from Finder never counts as traffic.
+     ============================================================ -->
+<script>
+(function(){
+  var CODE = 'labmedia';                       // labmedia.goatcounter.com
+  if (location.hostname === 'localhost' || location.protocol === 'file:') return;
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = '//gc.zgo.at/count.js';
+  s.setAttribute('data-goatcounter', 'https://' + CODE + '.goatcounter.com/count');
+  document.head.appendChild(s);
+
+  /* Show the site total in the footer, drawn ourselves rather than using
+     GoatCounter's own widget — theirs is a 200x80 bordered box with its own
+     branding, which would look like somebody else's furniture in this room.
+     The JSON endpoint just returns a formatted number.
+
+     Requires "Allow adding visitor counts on your website" in the site
+     settings; it defaults to OFF. If it's off, the request fails and the
+     element stays hidden, so nothing breaks and no empty label appears.
+     Their responses are cached up to four hours, so it lags reality. */
+  var el = document.getElementById('visitCount');
+  if (!el || !window.fetch) return;
+  fetch('https://' + CODE + '.goatcounter.com/counter/TOTAL.json')
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(j){
+      if (!j || !j.count) return;
+      el.innerHTML = '<b>' + j.count + '</b> visits';
+      el.hidden = false;
+    })
+    .catch(function(){ /* stay hidden */ });
+})();
+</script>
+<script>
+/* Nav */
+(function(){
+  var t=document.getElementById('navToggle'),l=document.getElementById('navLinks');
+  var desktop=function(){return window.innerWidth>760};
+
+  if(t&&l){t.addEventListener('click',function(e){
+    e.stopPropagation();
+    var open=t.getAttribute('aria-expanded')==='true';
+    t.setAttribute('aria-expanded',String(!open));
+    l.setAttribute('data-open',String(!open));
+  });}
+
+  function setOpen(d,on){
+    d.setAttribute('data-open',String(on));
+    d.querySelector('.nav-drop-btn').setAttribute('aria-expanded',String(on));
+    if(!on) d.removeAttribute('data-pinned');
+  }
+  function closeAll(except){
+    document.querySelectorAll('.nav-drop').forEach(function(o){ if(o!==except) setOpen(o,false); });
+  }
+
+  document.querySelectorAll('.nav-drop').forEach(function(d){
+    var b=d.querySelector('.nav-drop-btn');
+
+    /* Click pins it open, so hovering away can't yank it shut mid-reach. */
+    b.addEventListener('click',function(e){
+      e.stopPropagation();
+      var open=d.getAttribute('data-open')==='true';
+      var pinned=d.hasAttribute('data-pinned');
+      closeAll(d);
+      if(open&&pinned){ setOpen(d,false); }
+      else { setOpen(d,true); d.setAttribute('data-pinned','1'); }
+    });
+
+    d.addEventListener('mouseenter',function(){ if(desktop()){ closeAll(d); setOpen(d,true); } });
+    d.addEventListener('mouseleave',function(){
+      if(desktop() && !d.hasAttribute('data-pinned')) setOpen(d,false);
+    });
+
+    /* Keyboard, handled in JS rather than by a CSS :focus-within rule.
+       That rule used to force the menu visible whenever anything inside the
+       drop had focus — which meant clicking the button to CLOSE it set
+       data-open="false" and aria-expanded="false" while the menu stayed on
+       screen, because the button you just clicked still had focus. The menu
+       then hung there until you clicked somewhere else entirely. Routing
+       focus through the same setOpen() the mouse uses keeps one source of
+       truth. focusin fires before click, so the toggle still works: the
+       first click opens and pins, the second closes for real. */
+    d.addEventListener('focusin',function(){ closeAll(d); setOpen(d,true); });
+    d.addEventListener('focusout',function(){
+      setTimeout(function(){
+        if(!d.contains(document.activeElement)) setOpen(d,false);
+      },0);
+    });
+
+    /* following a link should never leave a menu hanging open */
+    d.querySelectorAll('.nav-drop-menu a').forEach(function(a){
+      a.addEventListener('click',function(){ setOpen(d,false); });
+    });
+  });
+
+  document.addEventListener('click',function(){ closeAll(null); });
+
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Escape')return;
+    closeAll(null);
+    if(t){t.setAttribute('aria-expanded','false');l.setAttribute('data-open','false');}
+  });
+})();
+</script>
+
+<script>
+/* Theme switch — remembers the choice, falls back to dark.
+   This page shipped with the three buttons and the early-boot reader in
+   <head>, but never the handler, so Light and Sepia were decoration: they
+   looked live, changed nothing, and a choice made here didn't survive to
+   the next page either. Same omission as the nav — both of these pages were
+   built from a template captured before this block existed. */
+(function(){
+  var root=document.documentElement, KEY='lab-theme';
+  var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
+  if(!btns.length)return;
+
+  function apply(t,save){
+    if(t==='dark') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme',t);
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.themeSet===t))});
+    if(save){try{localStorage.setItem(KEY,t)}catch(e){}}
+  }
+
+  var saved='dark';
+  try{saved=localStorage.getItem(KEY)||'dark'}catch(e){}
+  apply(saved,false);
+
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){apply(b.dataset.themeSet,true)});
+  });
+})();
+</script>
+
+</body>
+</html>
