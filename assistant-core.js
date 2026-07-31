@@ -385,11 +385,13 @@
         return {note:note,score:scored.score,coverage:scored.coverage};
       }).sort(function(a,b){return b.score-a.score;});
       if(!ranked.length||ranked[0].score<10||ranked[0].coverage<.6)return null;
+      var n=ranked[0].note;
+      var sources=n.sources ? n.sources.map(function(s){ return source(s.title,s.url,s.note); }) : [source(n.title,n.url,'Curated LaB field note')];
       return {
         kind:'field-note',
         confidence:1,
-        answer:ranked[0].note.answer,
-        sources:[source(ranked[0].note.title,ranked[0].note.url,'Curated LaB field note')]
+        answer:n.answer,
+        sources:sources
       };
     }
     function ask(query,options){
