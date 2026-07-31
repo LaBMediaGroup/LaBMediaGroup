@@ -102,7 +102,7 @@
           return {
             ok:true,mode:'retrieval',fallback:'busy',
             answer:baseline.answer,sources:baseline.sources,
-            notice:'The local model is busy; this is the sourced answer.'
+            notice:'The Ollama model is busy; this is the sourced answer.'
           };
         }
         gatewayState='offline';
@@ -110,7 +110,7 @@
         return {
           ok:true,mode:'retrieval',fallback:'offline',
           answer:baseline.answer,sources:baseline.sources,
-          notice:'Local phrasing is offline; this is the sourced answer.'
+          notice:'Ollama phrasing is offline; this is the sourced answer.'
         };
       });
     }

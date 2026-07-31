@@ -5,7 +5,7 @@
 
   var SESSION_KEY='lab-assistant-widget-session-v1';
   var MAX_MESSAGES=8;
-  var client=null,loading=null,busy=false,elapsedTimer=null,elapsedStarted=0;
+  var client=null,loading=null,busy=false,elapsedTimer=null,elapsedStarted=0,activeModel='';
 
   var shell=document.createElement('div');
   shell.className='lab-chat';
@@ -82,8 +82,11 @@
     }).slice(-MAX_MESSAGES);
     try{sessionStorage.setItem(SESSION_KEY,JSON.stringify(records));}catch(error){}
   }
+  function modelLabel(){
+    return /:cloud$/i.test(activeModel)?'Ollama Cloud':'local Ollama';
+  }
   function badgeFor(mode){
-    if(mode==='ollama')return 'Local Ollama · verified';
+    if(mode==='ollama')return modelLabel()+' · verified';
     if(mode==='grounding')return 'Sourced fallback · model rejected';
     if(mode==='offline')return 'Sourced fallback · Ollama offline';
     if(mode==='busy')return 'Sourced fallback · model busy';
@@ -133,20 +136,21 @@
   }
   function setState(phase,detail){
     clearInterval(elapsedTimer);elapsedTimer=null;
+    if((phase==='model'||phase==='ready')&&detail)activeModel=String(detail);
     state.dataset.phase=phase;
     if(phase==='loading')state.textContent='Loading the local index…';
     else if(phase==='searching')state.textContent='Searching the LaB…';
     else if(phase==='model'){
       elapsedStarted=Date.now();
-      state.textContent='Asking local Ollama · 0s';
+      state.textContent='Asking '+modelLabel()+' · 0s';
       elapsedTimer=setInterval(function(){
-        state.textContent='Asking local Ollama · '+Math.floor((Date.now()-elapsedStarted)/1000)+'s';
+        state.textContent='Asking '+modelLabel()+' · '+Math.floor((Date.now()-elapsedStarted)/1000)+'s';
       },1000);
-    }else if(phase==='verified')state.textContent='Ollama answer verified';
+    }else if(phase==='verified')state.textContent=modelLabel()+' answer verified';
     else if(phase==='grounding')state.textContent='Model rewrite rejected · sourced answer';
     else if(phase==='offline')state.textContent='Ollama offline · sourced answer ready';
     else if(phase==='busy')state.textContent='Ollama busy · sourced answer ready';
-    else if(phase==='ready')state.textContent=detail?'Local Ollama ready · '+detail:'Local Ollama ready';
+    else if(phase==='ready')state.textContent=detail?modelLabel()+' ready · '+detail:modelLabel()+' ready';
     else state.textContent='Sourced local search ready';
   }
   function setBusy(on){
@@ -228,6 +232,7 @@
     client.ask(question,{
       onPhase:function(phase,detail){setState(phase,detail&&detail.model);}
     }).then(function(result){
+      if(result.model)activeModel=result.model;
       var mode=result.mode==='ollama'?'ollama':result.fallback||'retrieval';
       addMessage('assistant',result.answer,result.sources,mode);
       var modelState=client.getModelState();
