@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aspect Ratio &amp; Scope Crop Previewer | Filmmaking Tools | LaB Media</title>
+  <meta name="description" content="Interactive aspect ratio, framing, and letterbox crop previewer for filmmakers and editors. Preview 2.39:1 scope, 1.85:1 flat, 16:9, 4:3, and 9:16 vertical.">
+  <link rel="canonical" href="https://labmedia.work/aspect.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="lab.css">
+
+  <script>
+    (function(){
+      var root=document.documentElement, KEY='lab-theme';
+      try{
+        var saved=localStorage.getItem(KEY);
+        if(saved && saved!=='dark') root.setAttribute('data-theme',saved);
+      }catch(e){}
+    })();
+  </script>
+
+  <style>
+    .aspect-stage {
+      position: relative;
+      width: 100%;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      padding: clamp(16px, 3vw, 28px);
+      margin-block: var(--s-6);
+      border-radius: 4px;
+    }
+    .viewfinder {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line-2);
+    }
+    .viewfinder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .matte-top, .matte-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.92);
+      transition: height 0.25s var(--ease);
+      z-index: 10;
+    }
+    .matte-top { top: 0; }
+    .matte-bottom { bottom: 0; }
+    
+    .matte-left, .matte-right {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.92);
+      transition: width 0.25s var(--ease);
+      z-index: 10;
+    }
+    .matte-left { left: 0; }
+    .matte-right { right: 0; }
+
+    .ratio-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-block: var(--s-5);
+    }
+    .r-pill {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--dim);
+      cursor: pointer;
+      transition: all var(--fast) var(--ease);
+    }
+    .r-pill:hover, .r-pill.active {
+      background: var(--accent);
+      color: var(--paper);
+      border-color: var(--accent);
+    }
+
+    .frame-select {
+      display: flex;
+      gap: var(--s-3);
+      align-items: center;
+      margin-bottom: var(--s-4);
+    }
+    .frame-select label {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+    .frame-select select {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      padding: 6px 12px;
+      font-size: var(--t-sm);
+      color: var(--ink);
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: var(--s-4);
+      margin-top: var(--s-5);
+    }
+    .spec-card {
+      border: 1px solid var(--line);
+      padding: var(--s-4);
+      background: var(--paper);
+    }
+    .spec-card .k {
+      font-family: var(--f-mono);
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 4px;
+    }
+    .spec-card .v {
+      font-family: var(--f-display);
+      font-size: clamp(20px, 2.5vw, 26px);
+      color: var(--ink);
+    }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="nav-brand" href="index.html" aria-label="LaB Media : home">
+      <img class="nav-logo is-mark" src="images/TheLaB-mark.png" alt="LaB Media : back to the LaB" width="61" height="26">
+    </a>
+    <nav class="nav-primary" aria-label="Primary"><ul class="nav-links" id="navLinks">
+      <li><a href="portfolio.html">Reel</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Resources
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="learn.html">Watch &amp; Learn</a>
+          <a href="resources.html">Software &amp; Assets</a>
+          <a href="sourcing.html">Gear &amp; Flight</a>
+          <a href="people.html">People &amp; Community</a>
+          <hr class="nav-sep" aria-hidden="true">
+          <a href="gear.html">LaB&rsquo;s Kit</a>
+          <a href="mykit.html">Your Kit</a>
+        </div>
+      </li>
+      <li class="nav-drop" data-current="true">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Tools
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="ideas.html">Story Generator</a>
+          <a href="skybound.html">SkyBound : Drone</a>
+          <a href="sun.html">Golden Hour Helper</a>
+          <a href="aspect.html" aria-current="page">Aspect Ratio Previewer</a>
+          <a href="assistant.html">LaB Assistant</a>
+        </div>
+      </li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">About
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="contact.html">About LaB</a>
+          <a href="colophon.html">About the Site</a>
+        </div>
+      </li>
+    </ul></nav>
+    <div class="theme" role="group" aria-label="Colour theme">
+      <button type="button" data-theme-set="dark" aria-pressed="true" title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
+      <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
+      <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="pg-hero wrap">
+  <div class="rule"><span class="mono">Framing &amp; Scope</span><i></i><span class="mono">Crop Calculator</span></div>
+  <h1>Preview your <em>aspect ratio.</em></h1>
+  <p class="lede">Test letterboxing, anamorphic scope crops, and vertical social reframing against real sample stills. Calculates exact active pixel dimensions for 1080p and 4K UHD timelines.</p>
+</section>
+
+<section class="wrap">
+  <div class="frame-select">
+    <label for="stillSelect">Sample Frame:</label>
+    <select id="stillSelect">
+      <option value="images/moz/moz-01.jpg">MOZ Interiors (Architectural)</option>
+      <option value="images/brass.jpg">Anthony Brass (Artist Studio)</option>
+      <option value="images/support.jpg">RS 3 Mini Gimbal (Set Photo)</option>
+      <option value="images/camera.jpg">EOS R50 Rig (Camera Build)</option>
+    </select>
+  </div>
+
+  <div class="ratio-pills" id="ratioPills">
+    <button class="r-pill active" data-ratio="2.39" data-name="2.39:1 Anamorphic Scope">2.39:1 Scope</button>
+    <button class="r-pill" data-ratio="1.85" data-name="1.85:1 DCI Flat">1.85:1 Flat</button>
+    <button class="r-pill" data-ratio="1.77" data-name="16:9 Widescreen (Native)">16:9 HD Native</button>
+    <button class="r-pill" data-ratio="1.33" data-name="4:3 Academy Ratio">4:3 Academy</button>
+    <button class="r-pill" data-ratio="0.5625" data-name="9:16 Vertical Reel">9:16 Vertical</button>
+  </div>
+
+  <div class="aspect-stage">
+    <div class="viewfinder" id="viewfinder">
+      <img id="sampleImg" src="images/moz/moz-01.jpg" alt="Sample frame for aspect ratio preview">
+      <div class="matte-top" id="mTop"></div>
+      <div class="matte-bottom" id="mBottom"></div>
+      <div class="matte-left" id="mLeft"></div>
+      <div class="matte-right" id="mRight"></div>
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec-card">
+        <div class="k">Format</div>
+        <div class="v" id="formatName">2.39:1 Scope</div>
+      </div>
+      <div class="spec-card">
+        <div class="k">1080p Active Pixels</div>
+        <div class="v" id="pix1080">1920 × 803</div>
+      </div>
+      <div class="spec-card">
+        <div class="k">4K UHD Pixels</div>
+        <div class="v" id="pix4K">3840 × 1607</div>
+      </div>
+      <div class="spec-card">
+        <div class="k">Letterbox Crop</div>
+        <div class="v" id="cropPct">7.20%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <img class="foot-mark" src="images/TheLaB-mark.png" alt="The LaB" width="122" height="52" loading="lazy" decoding="async">
+        <p class="foot-blurb">A small film studio and a public notebook, run out of Shelby Township, Michigan.</p>
+      </div>
+      <div class="foot-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="portfolio.html">Reel</a></li>
+          <li><a href="learn.html">Watch &amp; Learn</a></li>
+          <li><a href="resources.html">Software &amp; Assets</a></li>
+          <li><a href="people.html">People &amp; Community</a></li>
+          <li><a href="sourcing.html">Gear &amp; Flight</a></li>
+          <li><a href="ideas.html">Story Generator</a></li>
+          <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="sun.html">Golden Hour Helper</a></li>
+          <li><a href="aspect.html" aria-current="page">Aspect Ratio Previewer</a></li>
+          <li><a href="assistant.html">LaB Assistant</a></li>
+          <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
+          <li><a href="mykit.html">Your Kit</a></li>
+          <li><a href="colophon.html">How it's built</a></li>
+          <li><a href="events.html">Events</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Elsewhere</h3>
+        <ul>
+          <li><a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://instagram.com/thisislabmedia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/in/baldwinrobert" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="contact.html">About &amp; Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span class="made">Made in Shelby Twp, MI<span class="hrt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span>
+      <span class="made">© 2026 LaB Media<span class="hrt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var pills = document.querySelectorAll('.r-pill');
+  var mTop = document.getElementById('mTop');
+  var mBottom = document.getElementById('mBottom');
+  var mLeft = document.getElementById('mLeft');
+  var mRight = document.getElementById('mRight');
+  var sampleImg = document.getElementById('sampleImg');
+  var stillSelect = document.getElementById('stillSelect');
+  var formatName = document.getElementById('formatName');
+  var pix1080 = document.getElementById('pix1080');
+  var pix4K = document.getElementById('pix4K');
+  var cropPct = document.getElementById('cropPct');
+
+  stillSelect.addEventListener('change', function(){
+    sampleImg.src = this.value;
+  });
+
+  function applyRatio(r, name) {
+    formatName.textContent = name;
+    var nativeRatio = 16 / 9; // 1.777
+
+    mTop.style.height = '0px';
+    mBottom.style.height = '0px';
+    mLeft.style.width = '0px';
+    mRight.style.width = '0px';
+
+    if (r > nativeRatio) {
+      // Top/bottom letterboxing (e.g. 2.39:1 scope)
+      var activeH = 100 / (r / nativeRatio);
+      var marginPct = (100 - activeH) / 2;
+      mTop.style.height = marginPct + '%';
+      mBottom.style.height = marginPct + '%';
+
+      var h1080 = Math.round(1920 / r);
+      var h4K = Math.round(3840 / r);
+      pix1080.textContent = '1920 × ' + h1080;
+      pix4K.textContent = '3840 × ' + h4K;
+      cropPct.textContent = marginPct.toFixed(2) + '%';
+    } else if (r < nativeRatio) {
+      // Side pillarboxing (e.g. 4:3 or 9:16)
+      var activeW = (r / nativeRatio) * 100;
+      var marginPct = (100 - activeW) / 2;
+      mLeft.style.width = marginPct + '%';
+      mRight.style.width = marginPct + '%';
+
+      var w1080 = Math.round(1080 * r);
+      var w4K = Math.round(2160 * r);
+      pix1080.textContent = w1080 + ' × 1080';
+      pix4K.textContent = w4K + ' × 2160';
+      cropPct.textContent = marginPct.toFixed(2) + '%';
+    } else {
+      pix1080.textContent = '1920 × 1080';
+      pix4K.textContent = '3840 × 2160';
+      cropPct.textContent = '0.00%';
+    }
+  }
+
+  pills.forEach(function(p){
+    p.addEventListener('click', function(){
+      pills.forEach(function(x){ x.classList.remove('active'); });
+      p.classList.add('active');
+      var r = parseFloat(p.dataset.ratio);
+      applyRatio(r, p.dataset.name);
+    });
+  });
+
+  applyRatio(2.39, '2.39:1 Anamorphic Scope');
+})();
+</script>
+</body>
+</html>
