@@ -60,18 +60,22 @@
     .viewfinder {
       position: relative;
       width: 100%;
+      max-width: 100%;
       aspect-ratio: 16/9;
+      max-height: 70vh;
+      margin: 0 auto;
       background: #000;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       border: 1px solid var(--line-2);
+      transition: aspect-ratio 0.25s var(--ease);
     }
-    .viewfinder img {
+    .viewfinder img, .viewfinder video {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
     }
     .matte-top, .matte-bottom {
       position: absolute;
@@ -111,12 +115,20 @@
       background: var(--paper);
       color: var(--dim);
       cursor: pointer;
-      transition: all var(--fast) var(--ease);
+      transition: background var(--fast) var(--ease), color var(--fast) var(--ease), border-color var(--fast) var(--ease);
     }
-    .r-pill:hover, .r-pill.active {
-      background: var(--accent);
-      color: var(--paper);
-      border-color: var(--accent);
+    .r-pill:hover {
+      color: var(--ink);
+      border-color: var(--line-2);
+    }
+    .r-pill.active {
+      color: var(--accent);
+      border-color: var(--accent-dim);
+      background: var(--accent-bg);
+    }
+
+    .aspect-stage {
+      margin-block: var(--s-6);
     }
 
     .frame-select {
@@ -142,14 +154,14 @@
 
     .specs-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: var(--s-4);
-      margin-top: var(--s-5);
+      margin-top: var(--s-6);
     }
     .spec-card {
+      background: var(--paper);
       border: 1px solid var(--line);
       padding: var(--s-4);
-      background: var(--paper);
     }
     .spec-card .k {
       font-family: var(--f-mono);
@@ -157,7 +169,6 @@
       letter-spacing: .14em;
       text-transform: uppercase;
       color: var(--faint);
-      margin-bottom: 4px;
     }
     .spec-card .v {
       font-family: var(--f-display);
@@ -180,11 +191,6 @@
     .custom-file-btn:hover {
       background: var(--accent-bg);
       border-color: var(--accent);
-    }
-    .viewfinder video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
     }
   </style>
 </head>
@@ -264,8 +270,8 @@
       <select id="stillSelect">
         <option value="images/moz/moz-01.jpg">MOZ Interiors (Architectural)</option>
         <option value="images/brass.jpg">Anthony Brass (Artist Studio)</option>
-        <option value="images/support.jpg">RS 3 Mini Gimbal (Set Photo)</option>
-        <option value="images/camera.jpg">EOS R50 Rig (Camera Build)</option>
+        <option value="images/kit/support.jpg">RS 3 Mini Gimbal (Set Photo)</option>
+        <option value="images/kit/camera.jpg">EOS R50 Rig (Camera Build)</option>
       </select>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
@@ -441,6 +447,34 @@
   var pix4K = document.getElementById('pix4K');
   var cropPct = document.getElementById('cropPct');
 
+  var currentMediaRatio = 16 / 9;
+  var currentRatioVal = 2.39;
+  var currentRatioName = '2.39:1 Anamorphic Scope';
+
+  function updateMediaDimensions() {
+    var nw = 0, nh = 0;
+    if (sampleVid.style.display !== 'none' && sampleVid.videoWidth) {
+      nw = sampleVid.videoWidth;
+      nh = sampleVid.videoHeight;
+    } else if (sampleImg.naturalWidth) {
+      nw = sampleImg.naturalWidth;
+      nh = sampleImg.naturalHeight;
+    }
+    if (nw > 0 && nh > 0) {
+      currentMediaRatio = nw / nh;
+    } else {
+      currentMediaRatio = 16 / 9;
+    }
+    var vf = document.getElementById('viewfinder');
+    if (vf) {
+      vf.style.aspectRatio = currentMediaRatio;
+    }
+    applyRatio(currentRatioVal, currentRatioName);
+  }
+
+  sampleImg.addEventListener('load', updateMediaDimensions);
+  sampleVid.addEventListener('loadedmetadata', updateMediaDimensions);
+
   stillSelect.addEventListener('change', function(){
     if (this.value !== 'custom') {
       sampleVid.pause();
@@ -481,17 +515,18 @@
   }
 
   function applyRatio(r, name) {
-    formatName.textContent = name;
-    var nativeRatio = 16 / 9; // 1.777
+    if (name) currentRatioName = name;
+    currentRatioVal = r;
+    formatName.textContent = currentRatioName;
 
     mTop.style.height = '0px';
     mBottom.style.height = '0px';
     mLeft.style.width = '0px';
     mRight.style.width = '0px';
 
-    if (r > nativeRatio) {
-      // Top/bottom letterboxing (e.g. 2.39:1 scope)
-      var activeH = 100 / (r / nativeRatio);
+    if (r > currentMediaRatio + 0.001) {
+      // Target is wider than media: top/bottom letterbox mattes
+      var activeH = 100 / (r / currentMediaRatio);
       var marginPct = (100 - activeH) / 2;
       mTop.style.height = marginPct + '%';
       mBottom.style.height = marginPct + '%';
@@ -501,9 +536,9 @@
       pix1080.textContent = '1920 × ' + h1080;
       pix4K.textContent = '3840 × ' + h4K;
       cropPct.textContent = marginPct.toFixed(2) + '%';
-    } else if (r < nativeRatio) {
-      // Side pillarboxing (e.g. 4:3 or 9:16)
-      var activeW = (r / nativeRatio) * 100;
+    } else if (r < currentMediaRatio - 0.001) {
+      // Target is narrower/taller than media: left/right pillarbox mattes
+      var activeW = (r / currentMediaRatio) * 100;
       var marginPct = (100 - activeW) / 2;
       mLeft.style.width = marginPct + '%';
       mRight.style.width = marginPct + '%';
@@ -514,8 +549,17 @@
       pix4K.textContent = w4K + ' × 2160';
       cropPct.textContent = marginPct.toFixed(2) + '%';
     } else {
-      pix1080.textContent = '1920 × 1080';
-      pix4K.textContent = '3840 × 2160';
+      if (r < 1) {
+        var w1080 = Math.round(1080 * r);
+        var w4K = Math.round(2160 * r);
+        pix1080.textContent = w1080 + ' × 1080';
+        pix4K.textContent = w4K + ' × 2160';
+      } else {
+        var h1080 = Math.round(1920 / r);
+        var h4K = Math.round(3840 / r);
+        pix1080.textContent = '1920 × ' + h1080;
+        pix4K.textContent = '3840 × ' + h4K;
+      }
       cropPct.textContent = '0.00%';
     }
   }
@@ -529,7 +573,7 @@
     });
   });
 
-  applyRatio(2.39, '2.39:1 Anamorphic Scope');
+  updateMediaDimensions();
 })();
 </script>
 </body>
