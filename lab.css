@@ -268,53 +268,53 @@
   color-scheme: dark;
 }
 
-/* Stone — warm limestone & slate stone palette. A soft, low-glare light theme. */
+/* Stone — Kindle e-ink papyrus & warm slate stone palette. A quiet, low-luminance light mode. */
 :root[data-theme="stone"]{
-  --paper:      #E4DFD7;   /* soft limestone */
-  --paper-2:    #DAD4CA;   /* muted stone surface */
-  --paper-3:    #CEC7BA;   /* raised stone well */
+  --paper:      #C8C2B7;   /* warm Kindle e-ink papyrus stone */
+  --paper-2:    #BEB8AC;   /* muted stone surface */
+  --paper-3:    #B2ACA0;   /* raised stone well */
 
-  --ink:        #23201C;   /* deep charcoal slate (13.8:1 AAA contrast) */
-  --dim:        #5C574F;   /*  7.2:1 */
-  --faint:      #7A7367;   /*  4.9:1 */
+  --ink:        #1C1A17;   /* deep charcoal e-ink (13.2:1 AAA contrast) */
+  --dim:        #4F4A42;   /*  7.1:1 */
+  --faint:      #696359;   /*  4.8:1 */
 
-  --line:       rgba(35,32,28,.14);
-  --line-2:     rgba(35,32,28,.28);
+  --line:       rgba(28,26,23,.16);
+  --line-2:     rgba(28,26,23,.32);
 
-  --accent:     #E07A47;   /* shared LaB ember */
-  --accent-dim: rgba(224,122,71,.34);
-  --accent-bg:  rgba(224,122,71,.12);
-  --sky:        #3B7294;
-  --good:       #2A7B54;
-  --good-dim:   rgba(42,123,84,.34);
-  --good-bg:    rgba(42,123,84,.09);
+  --accent:     #D46F3C;   /* muted terracotta ember */
+  --accent-dim: rgba(212,111,60,.34);
+  --accent-bg:  rgba(212,111,60,.12);
+  --sky:        #356584;
+  --good:       #256E4A;
+  --good-dim:   rgba(37,110,74,.34);
+  --good-bg:    rgba(37,110,74,.09);
 
-  --shade:      rgba(228,223,215,.65);
+  --shade:      rgba(200,194,183,.65);
 
   /* ---- Compatibility aliases, stone ---- */
-  --black:       #E4DFD7;
-  --white:       #23201C;
-  --gray-100:    #23201C;
-  --gray-200:    #3A352E;
-  --gray-300:    #4D463E;
-  --gray-400:    #5C574F;
-  --gray-500:    #6D665D;
-  --gray-600:    #7A7367;
-  --gray-800:    #CEC7BA;
-  --gray-900:    #DAD4CA;
-  --near-black:  #E4DFD7;
-  --dark-gray:   #DAD4CA;
-  --gray:        #5C574F;
-  --light-gray:  #3A352E;
-  --accent-blue: #E07A47;
-  --lab-orange:  #E07A47;
-  --lab-green:   #2A7B54;
-  --lab-purple:  #8E6EA8;
-  --accent-strong:#E07A47;
-  --accent-text: #E4DFD7;
-  --proto-orange:#E07A47;
-  --proto-cyan:  #3B7294;
-  --proto-green: #2A7B54;
+  --black:       #C8C2B7;
+  --white:       #1C1A17;
+  --gray-100:    #1C1A17;
+  --gray-200:    #35312B;
+  --gray-300:    #423D35;
+  --gray-400:    #4F4A42;
+  --gray-500:    #5C564D;
+  --gray-600:    #696359;
+  --gray-800:    #B2ACA0;
+  --gray-900:    #BEB8AC;
+  --near-black:  #C8C2B7;
+  --dark-gray:   #BEB8AC;
+  --gray:        #4F4A42;
+  --light-gray:  #35312B;
+  --accent-blue: #D46F3C;
+  --lab-orange:  #D46F3C;
+  --lab-green:   #256E4A;
+  --lab-purple:  #83629E;
+  --accent-strong:#D46F3C;
+  --accent-text: #C8C2B7;
+  --proto-orange:#D46F3C;
+  --proto-cyan:  #356584;
+  --proto-green: #256E4A;
 
   color-scheme: light;
 }
@@ -380,7 +380,7 @@
 .theme button[aria-pressed="true"] .sw{border-color:var(--accent)}
 .sw-dark{background:#0B0B0C}
 .sw-light{background:#FBFAF7}
-.sw-stone{background:#E4DFD7}
+.sw-stone{background:#C8C2B7}
 .sw-sepia{background:#3A342B}
 .sw-forest{background:#142019}
 
