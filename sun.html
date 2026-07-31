@@ -61,7 +61,7 @@
     }
     .sun-sky {
       position: relative;
-      height: clamp(240px, 36vw, 340px);
+      height: clamp(190px, 28vw, 250px);
       width: 100%;
       border-bottom: 2px solid var(--line-2);
       overflow: hidden;
@@ -157,25 +157,28 @@
     .badge-blue { color: var(--sky); font-weight: 500; }
     .sun-advice-box {
       position: absolute;
-      top: clamp(20px, 4vw, 36px);
-      left: clamp(20px, 4vw, 36px);
-      max-width: clamp(360px, 75vw, 860px);
+      top: clamp(14px, 3vw, 24px);
+      left: clamp(16px, 3vw, 28px);
+      max-width: clamp(300px, 60vw, 680px);
       z-index: 5;
       pointer-events: none;
     }
     .advice-phrase {
       font-family: var(--f-display);
-      font-size: clamp(28px, 4.8vw, 56px);
+      font-size: clamp(20px, 3.4vw, 34px);
       font-weight: 400;
-      line-height: 1.05;
-      letter-spacing: -0.025em;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
       color: var(--ink);
-      transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+      transition: color var(--fast) var(--ease);
       margin: 0;
     }
     .advice-phrase em {
       font-style: italic;
       color: var(--accent);
+    }
+    .advice-phrase.spin {
+      color: var(--faint);
     }
   </style>
 </head>
@@ -255,7 +258,7 @@
         <p class="advice-phrase" id="advicePhrase">&ldquo;Get ready and get to location, or you&rsquo;ll <em>miss it.</em>&rdquo;</p>
       </div>
       <svg width="100%" height="100%" preserveAspectRatio="none" style="position:absolute;top:0;left:0;">
-        <path class="sun-arc-path" id="arcPath" d="M 0 320 Q 50% 30 100% 320" />
+        <path class="sun-arc-path" id="arcPath" d="M 0 240 Q 50% 20 100% 240" />
       </svg>
       <div class="sun-orb" id="sunOrb"></div>
     </div>
@@ -504,6 +507,25 @@
     ]
   };
 
+  var spinTimer = null;
+  function spinAdvice(finalText, pool) {
+    if (!advicePhrase || !pool || !pool.length) return;
+    if (spinTimer) clearInterval(spinTimer);
+
+    advicePhrase.classList.add('spin');
+    var i = 0, maxFrames = 5;
+    spinTimer = setInterval(function(){
+      var rand = pool[Math.floor(Math.random() * pool.length)];
+      advicePhrase.innerHTML = '&ldquo;' + rand + '&rdquo;';
+      if (++i >= maxFrames) {
+        clearInterval(spinTimer);
+        spinTimer = null;
+        advicePhrase.classList.remove('spin');
+        advicePhrase.innerHTML = '&ldquo;' + finalText + '&rdquo;';
+      }
+    }, 45);
+  }
+
   function updateAdvice(mins, elevAngle) {
     if (!advicePhrase) return;
 
@@ -522,16 +544,7 @@
 
     if (target !== lastPhraseText) {
       lastPhraseText = target;
-      if (rollTimeout) clearTimeout(rollTimeout);
-
-      advicePhrase.style.opacity = '0';
-      advicePhrase.style.transform = 'translateY(-6px)';
-
-      rollTimeout = setTimeout(function(){
-        advicePhrase.innerHTML = '&ldquo;' + target + '&rdquo;';
-        advicePhrase.style.opacity = '1';
-        advicePhrase.style.transform = 'translateY(0)';
-      }, 120);
+      spinAdvice(target, pool);
     }
   }
 
@@ -544,10 +557,10 @@
     
     var posX = Math.max(5, Math.min(95, (mins / 1440) * 100));
     var elevSin = Math.sin(Math.max(0, Math.min(Math.PI, rad)));
-    var posY = isDay ? 320 - (elevSin * 270) : 330;
+    var posY = isDay ? 240 - (elevSin * 200) : 250;
 
     orb.style.left = posX + '%';
-    orb.style.top = (posY / 340 * 100) + '%';
+    orb.style.top = (posY / 250 * 100) + '%';
 
     var elevAngle = Math.round((elevSin * 62) - (isDay ? 0 : 18));
     elevVal.innerHTML = (elevAngle > 0 ? '+' : '') + elevAngle + '<small>°</small>';
