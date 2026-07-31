@@ -161,25 +161,37 @@
 </section>
 
 <section class="sec-c wrap">
-  <h2>One stylesheet, <em>everything</em></h2>
-  <p><code>lab.css</code> is 1,096 lines (47 KB) and governs all fourteen pages : every colour, every
-  typeface, the navigation and the footer. Change a value in the token block and it updates
-  across the entire site at once.</p>
-  <p>Seventy-one design tokens cover colour, type, spacing and motion. Four themes : dark, light,
-  sepia and forest : are per-theme overrides of the same tokens, applied by an inline script in the
-  <code>&lt;head&gt;</code> before first paint so there's no flash of the wrong colours.</p>
+  <div class="two-col-grid">
+    <div class="col-main">
+      <h2>One stylesheet, <em>everything</em></h2>
+      <p><code>lab.css</code> is 1,096 lines (47 KB) and governs all fourteen pages : every colour, every
+      typeface, the navigation and the footer. Change a value in the token block and it updates
+      across the entire site at once.</p>
+    </div>
+    <div class="col-side">
+      <p>Seventy-one design tokens cover colour, type, spacing and motion. Four themes : dark, light,
+      sepia and forest : are per-theme overrides of the same tokens, applied by an inline script in the
+      <code>&lt;head&gt;</code> before first paint so there's no flash of the wrong colours.</p>
+    </div>
+  </div>
 </section>
 
 <section class="sec-c wrap">
-  <h2>What needs <em>JavaScript,</em> and what doesn't</h2>
-  <p>The Reel and SkyBound are plain HTML. Production notes, timelines and all 81
-  behind-the-scenes photographs remain readable with JavaScript switched off.</p>
-  <p>The notebook pages, gear list, Story Generator and LaB Assistant are built from shared data
-  files. JavaScript handles rendering, search, saved kits and live counts; each page includes a
-  plain <code>&lt;noscript&gt;</code> explanation instead of leaving an empty shell.</p>
-  <p>That trade keeps 126 resources, 66 gear items and 1,334 prompts in one source of truth.
-  Videos are separate: local posters load immediately, and the <code>youtube-nocookie.com</code>
-  player is created only after Play is pressed.</p>
+  <div class="two-col-grid">
+    <div class="col-main">
+      <h2>What needs <em>JavaScript,</em> and what doesn't</h2>
+      <p>The Reel and SkyBound are plain HTML. Production notes, timelines and all 81
+      behind-the-scenes photographs remain readable with JavaScript switched off.</p>
+    </div>
+    <div class="col-side">
+      <p>The notebook pages, gear list, Story Generator and LaB Assistant are built from shared data
+      files. JavaScript handles rendering, search, saved kits and live counts; each page includes a
+      plain <code>&lt;noscript&gt;</code> explanation instead of leaving an empty shell.</p>
+      <p>That trade keeps 126 resources, 66 gear items and 1,334 prompts in one source of truth.
+      Videos are separate: local posters load immediately, and the <code>youtube-nocookie.com</code>
+      player is created only after Play is pressed.</p>
+    </div>
+  </div>
 </section>
 
 <section class="sec-c wrap">
