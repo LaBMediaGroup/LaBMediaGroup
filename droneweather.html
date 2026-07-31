@@ -249,12 +249,12 @@
 
 <section class="wrap">
   <div class="wx-card">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
       <div>
         <span class="mono" style="font-size:10px;text-transform:uppercase;color:var(--faint);letter-spacing:.14em;">Live Metro Detroit Station</span>
         <h2 style="font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;margin-top:4px;">Current <em>flight conditions.</em></h2>
       </div>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
         <div id="flightBadge" class="wx-status">🟢 CLEAR TO FLY</div>
         <button type="button" id="toggleRainBtn" class="toggle-rain-btn"><span>Simulate Rain 🌧️</span></button>
       </div>
@@ -648,36 +648,50 @@
     ctx.rotate(totalSway);
 
     ctx.strokeStyle = '#E07A47';
-    ctx.lineWidth = 2.5 * (w / 400);
+    ctx.lineWidth = 2.4 * (w / 400);
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
+    // Trunk
+    var trunkW = 3.2 * (w / 400);
+    var trunkH = treeHeight * 0.24;
     ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(0, -treeHeight * 0.38);
+    ctx.moveTo(-trunkW, 0);
+    ctx.lineTo(-trunkW, -trunkH);
+    ctx.lineTo(trunkW, -trunkH);
+    ctx.lineTo(trunkW, 0);
     ctx.stroke();
 
-    var layers = 4;
-    for (var l = 0; l < layers; l++) {
-      var ly = -treeHeight * (0.35 + l * 0.16);
-      var lw = (layers - l) * (w * 0.048);
-      var branchSway = Math.sin(time * 1.4 + l) * (swayFactor * 0.4);
+    // Hand-drawn organic scalloped evergreen canopy (matching user mockup Image 3!)
+    var topY = -treeHeight;
+    var canopyBaseY = -trunkH;
 
-      ctx.save();
-      ctx.translate(0, ly);
-      ctx.rotate(branchSway);
+    ctx.beginPath();
+    ctx.moveTo(0, topY);
 
-      ctx.beginPath();
-      ctx.moveTo(0, -lw * 0.75);
-      ctx.lineTo(lw, lw * 0.65);
-      ctx.lineTo(lw * 0.35, lw * 0.65);
-      ctx.lineTo(-lw * 0.35, lw * 0.65);
-      ctx.lineTo(-lw, lw * 0.65);
-      ctx.closePath();
-      ctx.stroke();
+    // Right side scalloped tiers
+    ctx.quadraticCurveTo(7 * (w/400), topY + treeHeight * 0.12, 13 * (w/400), topY + treeHeight * 0.20);
+    ctx.quadraticCurveTo(10 * (w/400), topY + treeHeight * 0.22, 9 * (w/400), topY + treeHeight * 0.24);
 
-      ctx.restore();
-    }
+    ctx.quadraticCurveTo(18 * (w/400), topY + treeHeight * 0.36, 24 * (w/400), topY + treeHeight * 0.44);
+    ctx.quadraticCurveTo(17 * (w/400), topY + treeHeight * 0.46, 15 * (w/400), topY + treeHeight * 0.48);
+
+    ctx.quadraticCurveTo(28 * (w/400), topY + treeHeight * 0.60, 36 * (w/400), topY + treeHeight * 0.72);
+    ctx.quadraticCurveTo(22 * (w/400), topY + treeHeight * 0.73, 0, canopyBaseY);
+
+    // Left side scalloped tiers
+    ctx.quadraticCurveTo(-22 * (w/400), topY + treeHeight * 0.73, -36 * (w/400), topY + treeHeight * 0.72);
+    ctx.quadraticCurveTo(-17 * (w/400), topY + treeHeight * 0.48, -15 * (w/400), topY + treeHeight * 0.48);
+
+    ctx.quadraticCurveTo(-18 * (w/400), topY + treeHeight * 0.36, -24 * (w/400), topY + treeHeight * 0.44);
+    ctx.quadraticCurveTo(-10 * (w/400), topY + treeHeight * 0.22, -9 * (w/400), topY + treeHeight * 0.24);
+
+    ctx.quadraticCurveTo(-7 * (w/400), topY + treeHeight * 0.12, 0, topY);
+
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(224, 122, 71, 0.05)';
+    ctx.fill();
+    ctx.stroke();
 
     ctx.restore();
   }
