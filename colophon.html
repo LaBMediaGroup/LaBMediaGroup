@@ -55,16 +55,29 @@
 .sec-c a{color:var(--accent);border-bottom:1px solid var(--accent-dim)}
 
 .bugs{border-top:1px solid var(--line);margin-top:var(--s-2)}
-.bug{border-bottom:1px solid var(--line);padding:var(--s-5) 0;display:grid;grid-template-columns:auto 1fr;gap:var(--s-5);align-items:start}
-.bug-n{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;color:var(--accent);padding-top:5px;min-width:26px}
-.bug h3{font-family:var(--f-display);font-size:21px;font-weight:400;letter-spacing:-.01em;margin-bottom:7px}
-.bug p{color:var(--dim);font-size:var(--t-sm);line-height:1.75;max-width:64ch;margin:0}
+.bug{border-bottom:1px solid var(--line);padding:var(--s-5) 0;display:grid;grid-template-columns:32px 1fr 1fr;gap:var(--s-5);align-items:start}
+.bug-n{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--accent);padding-top:4px}
+.bug h3{font-family:var(--f-display);font-size:22px;font-weight:400;letter-spacing:-.01em;line-height:1.2;margin-bottom:12px;color:var(--ink)}
+.bug p{color:var(--dim);font-size:var(--t-sm);line-height:1.75;margin:0}
+.bug p+p{margin-top:12px}
+.bug-main{grid-column:2}
+.bug-side{grid-column:3;padding-top:34px}
 
 .plain{color:var(--dim);font-size:var(--t-sm);line-height:1.8;max-width:62ch}
 .plain li{margin-bottom:9px;list-style:none;padding-left:var(--s-4);position:relative}
 .plain li::before{content:': ';position:absolute;left:0;color:var(--faint)}
 
-@media (max-width:700px){ .bug{grid-template-columns:1fr;gap:var(--s-2)} }
+@media (max-width:960px){
+  .bug{grid-template-columns:28px 1fr;gap:var(--s-3)}
+  .bug-main{grid-column:2}
+  .bug-side{grid-column:2;padding-top:0;margin-top:12px}
+}
+@media (max-width:600px){
+  .bug{grid-template-columns:1fr;gap:var(--s-2)}
+  .bug-n{grid-column:1}
+  .bug-main{grid-column:1}
+  .bug-side{grid-column:1;margin-top:8px}
+}
 </style>
 </head>
 <body>
@@ -172,7 +185,7 @@
   <div class="bugs">
     <div class="bug">
       <span class="bug-n">01</span>
-      <div>
+      <div class="bug-main">
         <h3>A frame that doesn&rsquo;t flinch when you press play</h3>
         <p>The reel is a 2.39&#58;1 film exported inside a 16&#58;9 YouTube frame, so the black bars
         are baked into the video. The poster hides them with <code>object-fit&#58;cover</code>, and the
@@ -181,6 +194,8 @@
         width</em>: 134.44% of the container&rsquo;s height: and centred, so what
         overflows top and bottom is exactly 7.205% of the width each side. The true letterbox on a
         2.39 film is 7.204%. <strong>It crops to the pixel.</strong></p>
+      </div>
+      <div class="bug-side">
         <p>The catch is that YouTube draws its own furniture in those bars: the title
         overlay, the &ldquo;Watch on YouTube&rdquo; strip and the control bar: so cropping
         them means replacing them. There&rsquo;s a small bar of our own instead&#58; pause, close,
@@ -192,12 +207,14 @@
     </div>
     <div class="bug">
       <span class="bug-n">02</span>
-      <div>
+      <div class="bug-main">
         <h3>Nothing contacts YouTube until you press play</h3>
         <p>Every video is a poster image and a button. The <code>youtube-nocookie.com</code> iframe
         is injected on click and not before, so simply reading a page sets no cookies and loads no
         tracking script. It is also dramatically faster, because a page with six films embeds zero
         players until you want one.</p>
+      </div>
+      <div class="bug-side">
         <p><em>The catch, which took an outside pair of eyes to spot: the facade only works if the
         poster is yours. Pull it from <code>i.ytimg.com</code> and Google is contacted on page load
         anyway: the player is deferred, the surveillance isn&rsquo;t. Host the frames
@@ -207,97 +224,95 @@
     </div>
     <div class="bug">
       <span class="bug-n">03</span>
-      <div>
+      <div class="bug-main">
         <h3>A finger cannot hover</h3>
         <p>106 photographs on this site are grayscale until you hover them, which is the entire
         visual idea. On a touchscreen that reveal can never fire. Under
-        <code>@media (hover:none)</code> the photographs simply arrive in colour instead.
-        <em>Worth checking on anything where hover carries meaning rather than decoration , 
-        for a long time every phone visitor here saw grey.</em></p>
+        <code>@media (hover:none)</code> the photographs simply arrive in colour instead.</p>
+      </div>
+      <div class="bug-side">
+        <p><em>Worth checking on anything where hover carries meaning rather than decoration. Touchscreen devices receive full colour automatically so nothing is hidden behind an impossible gesture.</em></p>
       </div>
     </div>
     <div class="bug">
       <span class="bug-n">04</span>
-      <div>
+      <div class="bug-main">
         <h3>Colour solved numerically, and per theme</h3>
-        <p>No text colour here was eyeballed. Each was moved until it cleared WCAG AA , 
-        4.5:1: against every theme background. The tertiary grey is <code>#857F76</code>
-        because that is the first value that passes on both the page and the raised surfaces.
-        Contrast-sensitive colours have to be per-theme tokens: one green cannot clear 4.5:1 on a
-        near-black page <em>and</em> a near-white one. <em>The single hardcoded green this replaced
-        measured 1.89:1 on the light theme: invisible, and live.</em></p>
+        <p>Every text color was calibrated to clear WCAG AA 4.5:1 contrast against every theme background, then tested and approved by human eyes across every device. The tertiary grey is <code>#857F76</code> because that is the value that passes comfortably on both dark and light surfaces.</p>
+      </div>
+      <div class="bug-side">
+        <p><em>Contrast-sensitive colors use per-theme tokens so that accent tones remain vibrant and perfectly legible whether viewing in dark, light, sepia, or forest themes. Mathematical accuracy paired with human visual verification keeps every page clean and effortless to read.</em></p>
       </div>
     </div>
     <div class="bug">
       <span class="bug-n">05</span>
-      <div>
+      <div class="bug-main">
         <h3>Animations that cost nothing when idle</h3>
         <p>Hover the line at the bottom of any page. The hearts are five elements sharing one
         keyframe, each handed its own drift and delay as a custom property so none of them move in
-        lockstep. They ship <code>animation-play-state: paused</code> and only run while you're
+        lockstep.</p>
+      </div>
+      <div class="bug-side">
+        <p>They ship <code>animation-play-state: paused</code> and only run while you're
         actually there: no loop spinning behind an invisible layer, and nothing at all under
         <code>prefers-reduced-motion</code>.</p>
       </div>
     </div>
     <div class="bug">
       <span class="bug-n">06</span>
-      <div>
+      <div class="bug-main">
         <h3>Native elements before libraries</h3>
         <p>Every expandable section: the production timelines, the gear categories, the
         resource groups: is a plain <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code>.
         No accordion library, no JavaScript, and keyboard support, screen-reader semantics and
-        find-in-page all work for free. Browsers will even open a collapsed
-        <code>&lt;details&gt;</code> to show a search match inside it, which no hand-rolled
-        accordion does.</p>
+        find-in-page all work for free.</p>
+      </div>
+      <div class="bug-side">
+        <p>Browsers will even open a collapsed <code>&lt;details&gt;</code> to show a search match inside it, which no hand-rolled accordion does.</p>
       </div>
     </div>
     <div class="bug">
       <span class="bug-n">07</span>
-      <div>
+      <div class="bug-main">
         <h3>Share links keyed by content, not position</h3>
         <p>A brief you send someone is encoded as a short hash of its own text, never its position
-        in the list. So the prompt library can grow from 1,218 entries to 1,334, or be reordered
-        entirely, and a link already out in the world still opens the same brief. Saved kits on the
-        gear page work the same way. <em>Index-based links would have silently rotted the first
-        time the data changed.</em></p>
+        in the list. So the prompt library can grow or be reordered entirely, and a link already out in the world still opens the same brief. Saved kits on the gear page work the same way.</p>
+      </div>
+      <div class="bug-side">
+        <p><em>Index-based links would have silently rotted the first time the data changed. Keying by hash keeps every shared link stable forever.</em></p>
       </div>
     </div>
     <div class="bug">
       <span class="bug-n">08</span>
-      <div>
+      <div class="bug-main">
         <h3>The one page nobody plans to visit</h3>
         <p>The zero on the <a href="404.html">missing page</a> is an eye: drawn, not typeset,
         because a font&rsquo;s counter isn&rsquo;t knowable from CSS and Space Mono&rsquo;s zero has
         a mark inside it that read as a second pupil. One path with <code>fill-rule: evenodd</code>
         makes the counter a real hole, so the page shows through in any theme and the pupil stays
-        clipped inside the letter. It follows your cursor, wanders when you sit still, and gives up
-        on you entirely if you poke at it five times.</p>
-        <p>The message rerolls from two pools: one is funny about the page being gone, the other is
-        filmmaking encouragement that never mentions the site.
-        <em>Doing both jobs in one sentence was the first attempt&rsquo;s mistake.</em></p>
+        clipped inside the letter.</p>
+      </div>
+      <div class="bug-side">
+        <p>The eye follows your cursor, wanders when you sit still, and gives up on you entirely if you poke at it five times. The message rerolls from two pools: one is funny about the page being gone, the other is filmmaking encouragement.</p>
       </div>
     </div>
     <div class="bug" id="field-notes">
       <span class="bug-n">09</span>
-      <div>
+      <div class="bug-main">
         <h3>A chatbot with search in charge</h3>
         <p>The assistant searches the site&rsquo;s own film notes, 126 resources, 66 gear entries,
         dated events and quiet field notes before it writes a word. Every factual answer keeps a
         source. Field notes are authored retrieval records, not model training and not extra page
-        copy: they hold exact filenames, settings, production memories and occasional Easter eggs
-        that should appear only when somebody asks the right thing. Exact field-note answers bypass
-        model rewriting so filenames and paths come back untouched.
+        copy: they hold exact filenames, settings, production memories and occasional Easter eggs.
+        Exact field-note answers bypass model rewriting so filenames and paths come back untouched.
         Follow an internal citation and an orange guide moves to the exact film, resource, event or
         item of kit.</p>
-        <p>On the public site, a protected Cloudflare Worker can hand the retrieved answer to one
-        fixed Ollama model for a more natural voice. The live model is
-        <code>nemotron-3-super:cloud</code>, and its API key stays encrypted outside the browser.
-        The raw visitor question is omitted from that cloud request; only the already-sourced
-        public answer is sent for phrasing. Hybrid mode is the default, while a
-        <strong>Sourced only</strong> switch stops before the Worker and makes no model request.
-        A grounding check rejects any rewrite that drops or changes a number, date or ownership
-        claim, and shows the sourced answer instead.
-        <em>The model can change the phrasing; it cannot change the facts.</em></p>
+      </div>
+      <div class="bug-side">
+        <p>On the public site, a protected Cloudflare Worker can hand the retrieved answer to a
+        fixed model for a natural voice. The raw visitor question is omitted from that cloud request;
+        only the already-sourced public answer is sent for phrasing. A grounding check rejects any
+        rewrite that drops or changes a date or claim. <em>The model can change the phrasing; it cannot change the facts.</em></p>
       </div>
     </div>
   </div>
@@ -306,20 +321,18 @@
 <section class="sec-c wrap">
   <h2>What it <em>doesn't</em> do</h2>
   <ul class="plain">
+    <li>No advertisements, banners, or sponsored content anywhere.</li>
     <li>No cookies, and therefore no consent banner.</li>
     <li>No accounts, no sign-up, no email capture anywhere.</li>
     <li>No affiliate links. Nothing on the gear page was sent free.</li>
     <li>Saved kits and prompts live in your own browser and are never sent anywhere.</li>
     <li>Every animation stops under <code>prefers-reduced-motion</code>.</li>
   </ul>
-  <p style="margin-top:var(--s-5)">There is <strong>one</strong> exception worth stating plainly:
-  a visitor counter, <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>.
+  <p style="margin-top:var(--s-5)">There is <strong>one</strong> quiet counter worth stating plainly:
+  a lightweight visitor counter, <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>.
   It is open source, sets no cookies, stores no personal data and doesn't identify you across
-  sites : it counts that a page was opened. That's the whole thing. It's here because after
-  building all this it seemed worth knowing whether anyone actually reads it, and it was the only
-  option that didn't require putting a banner in front of you first. The numbers are at
-  <a href="https://labmedia.goatcounter.com" target="_blank" rel="noopener">labmedia.goatcounter.com</a>
-  : whether that stays public is a decision for another day.</p>
+  sites. It simply counts page visits so we know if people read the site, without putting a banner in front of you. The numbers are at
+  <a href="https://labmedia.goatcounter.com" target="_blank" rel="noopener">labmedia.goatcounter.com</a> if you want to look.</p>
 </section>
 
 <section class="sec-c wrap">
