@@ -268,6 +268,57 @@
   color-scheme: dark;
 }
 
+/* Stone — warm limestone & slate stone palette. A soft, low-glare light theme. */
+:root[data-theme="stone"]{
+  --paper:      #E4DFD7;   /* soft limestone */
+  --paper-2:    #DAD4CA;   /* muted stone surface */
+  --paper-3:    #CEC7BA;   /* raised stone well */
+
+  --ink:        #23201C;   /* deep charcoal slate (13.8:1 AAA contrast) */
+  --dim:        #5C574F;   /*  7.2:1 */
+  --faint:      #7A7367;   /*  4.9:1 */
+
+  --line:       rgba(35,32,28,.14);
+  --line-2:     rgba(35,32,28,.28);
+
+  --accent:     #E07A47;   /* shared LaB ember */
+  --accent-dim: rgba(224,122,71,.34);
+  --accent-bg:  rgba(224,122,71,.12);
+  --sky:        #3B7294;
+  --good:       #2A7B54;
+  --good-dim:   rgba(42,123,84,.34);
+  --good-bg:    rgba(42,123,84,.09);
+
+  --shade:      rgba(228,223,215,.65);
+
+  /* ---- Compatibility aliases, stone ---- */
+  --black:       #E4DFD7;
+  --white:       #23201C;
+  --gray-100:    #23201C;
+  --gray-200:    #3A352E;
+  --gray-300:    #4D463E;
+  --gray-400:    #5C574F;
+  --gray-500:    #6D665D;
+  --gray-600:    #7A7367;
+  --gray-800:    #CEC7BA;
+  --gray-900:    #DAD4CA;
+  --near-black:  #E4DFD7;
+  --dark-gray:   #DAD4CA;
+  --gray:        #5C574F;
+  --light-gray:  #3A352E;
+  --accent-blue: #E07A47;
+  --lab-orange:  #E07A47;
+  --lab-green:   #2A7B54;
+  --lab-purple:  #8E6EA8;
+  --accent-strong:#E07A47;
+  --accent-text: #E4DFD7;
+  --proto-orange:#E07A47;
+  --proto-cyan:  #3B7294;
+  --proto-green: #2A7B54;
+
+  color-scheme: light;
+}
+
 :root{ --shade: rgba(11,11,12,.55); }   /* overlay tint used on media */
 
 /* Media reads differently per theme: warm the stills in sepia, and don't
@@ -329,6 +380,7 @@
 .theme button[aria-pressed="true"] .sw{border-color:var(--accent)}
 .sw-dark{background:#0B0B0C}
 .sw-light{background:#FBFAF7}
+.sw-stone{background:#E4DFD7}
 .sw-sepia{background:#3A342B}
 .sw-forest{background:#142019}
 
@@ -549,7 +601,10 @@ input,textarea,select{font:inherit;color:inherit}
    #211D18, darker than the dark theme's own raised surfaces. */
 :root[data-theme="light"] .nav-logo,
 :root[data-theme="light"] .masthead,
-:root[data-theme="light"] .foot-mark{filter:brightness(0) opacity(.92)}
+:root[data-theme="light"] .foot-mark,
+:root[data-theme="stone"] .nav-logo,
+:root[data-theme="stone"] .masthead,
+:root[data-theme="stone"] .foot-mark{filter:brightness(0) opacity(.92)}
 
 /* ---- Made with love ----
    Hearts drift up out of the footer line on hover. No JS: five <i> elements
