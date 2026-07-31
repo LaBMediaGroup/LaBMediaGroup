@@ -124,6 +124,49 @@
     .sec-c-weather {
       padding-bottom: clamp(64px, 10vw, 120px);
     }
+    .pg-hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(24px, 4vw, 48px);
+      align-items: center;
+      margin-top: var(--s-4);
+    }
+    @media (max-width: 860px) {
+      .pg-hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .weather-canvas-box {
+      position: relative;
+      width: 100%;
+      height: clamp(200px, 24vw, 280px);
+      border: 1px solid var(--line-2);
+      border-radius: 8px;
+      background: var(--paper-2);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .weather-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .wx-canvas-meta {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      font-family: var(--f-mono);
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--faint);
+      background: rgba(0, 0, 0, 0.45);
+      padding: 3px 8px;
+      border-radius: 3px;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -191,8 +234,16 @@
 
 <section class="pg-hero wrap">
   <div class="rule"><span class="mono">Flight Weather</span><i></i><span class="mono">Shelby Twp, MI · 42.67°N</span></div>
-  <h1><span style="color:var(--sky)">Sky</span><em>Bound</em> <span style="color:var(--dim);font-weight:300">|</span> <small style="font-size:0.75em;font-weight:400">Weather &amp; Safety.</small></h1>
-  <p class="lede">Real-time local wind speeds, gusts, and flight safety status<br>calibrated for quadcopters, FPV rigs, and cinematic aerial photography.</p>
+  <div class="pg-hero-grid">
+    <div>
+      <h1><span style="color:var(--sky)">Sky</span><em>Bound</em> <span style="color:var(--dim);font-weight:300">|</span> <small style="font-size:0.75em;font-weight:400">Weather &amp; Safety.</small></h1>
+      <p class="lede">Real-time local wind speeds, gusts, and flight safety status calibrated for quadcopters, FPV rigs, and cinematic aerial photography.</p>
+    </div>
+    <div class="weather-canvas-box" id="wxCanvasBox">
+      <canvas id="wxCanvas" class="weather-canvas"></canvas>
+      <div class="wx-canvas-meta" id="wxCanvasMeta">Wind: 7 mph · Gust: 11 mph</div>
+    </div>
+  </div>
 </section>
 
 <section class="wrap">
@@ -382,6 +433,177 @@
         }
       }
     }).catch(function(){});
+})();
+
+/* Live Procedural Weather Simulation (100% Client-Side Privacy Render) */
+(function(){
+  'use strict';
+  var cvs = document.getElementById('wxCanvas');
+  if (!cvs) return;
+  var ctx = cvs.getContext('2d');
+
+  var windSpeed = 7;
+  var windGust = 11;
+  var tempF = 74;
+
+  function resizeCanvas() {
+    var rect = cvs.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      cvs.width = rect.width * (window.devicePixelRatio || 1);
+      cvs.height = rect.height * (window.devicePixelRatio || 1);
+    }
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  var particles = [];
+  for (var i = 0; i < 28; i++) {
+    particles.push({
+      x: Math.random() * 400,
+      y: Math.random() * 200,
+      size: Math.random() * 2.8 + 1.2,
+      speedX: Math.random() * 2 + 1,
+      speedY: (Math.random() - 0.5) * 0.4,
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.06
+    });
+  }
+
+  var time = 0;
+
+  function render() {
+    time += 0.025;
+    var w = cvs.width;
+    var h = cvs.height;
+    if (!w || !h) { requestAnimationFrame(render); return; }
+
+    ctx.clearRect(0, 0, w, h);
+
+    var wEl = document.getElementById('wxWind');
+    var gEl = document.getElementById('wxGust');
+    var tEl = document.getElementById('wxTemp');
+
+    if (wEl) { var pw = parseInt(wEl.textContent, 10); if (!isNaN(pw)) windSpeed = pw; }
+    if (gEl) { var pg = parseInt(gEl.textContent, 10); if (!isNaN(pg)) windGust = pg; }
+    if (tEl) { var pt = parseInt(tEl.textContent, 10); if (!isNaN(pt)) tempF = pt; }
+
+    // 1. Atmosphere backdrop
+    var bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+    if (tempF >= 80) {
+      bgGrad.addColorStop(0, 'rgba(224, 122, 71, 0.16)');
+      bgGrad.addColorStop(1, 'rgba(0, 0, 0, 0.02)');
+    } else if (tempF <= 50) {
+      bgGrad.addColorStop(0, 'rgba(169, 205, 222, 0.18)');
+      bgGrad.addColorStop(1, 'rgba(0, 0, 0, 0.02)');
+    } else {
+      bgGrad.addColorStop(0, 'rgba(121, 195, 154, 0.14)');
+      bgGrad.addColorStop(1, 'rgba(0, 0, 0, 0.02)');
+    }
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, w, h);
+
+    // 2. Ground horizon contour
+    ctx.beginPath();
+    ctx.moveTo(0, h * 0.86);
+    ctx.quadraticCurveTo(w * 0.45, h * 0.83, w, h * 0.88);
+    ctx.lineTo(w, h);
+    ctx.lineTo(0, h);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+    ctx.fill();
+
+    // 3. Tree sway physics
+    var treeBaseX = w * 0.30;
+    var treeBaseY = h * 0.86;
+    var treeHeight = h * 0.52;
+
+    var baseSway = Math.sin(time * (1 + windSpeed * 0.08)) * (windSpeed * 0.016);
+    var gustSway = Math.cos(time * 0.65) * (windGust * 0.009);
+    var totalSway = baseSway + gustSway + (windSpeed * 0.009);
+
+    ctx.save();
+    ctx.translate(treeBaseX, treeBaseY);
+    ctx.rotate(totalSway);
+
+    // Trunk
+    ctx.beginPath();
+    ctx.moveTo(-5 * (w/400), 0);
+    ctx.quadraticCurveTo(-3 * (w/400), -treeHeight * 0.5, -2 * (w/400), -treeHeight);
+    ctx.lineTo(2 * (w/400), -treeHeight);
+    ctx.quadraticCurveTo(3 * (w/400), -treeHeight * 0.5, 5 * (w/400), 0);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
+    ctx.fill();
+
+    // Foliage canopy layers
+    var accentColor = tempF >= 80 ? 'rgba(224, 122, 71, 0.48)' : 'rgba(121, 195, 154, 0.48)';
+    var darkColor = 'rgba(255, 255, 255, 0.16)';
+
+    for (var layer = 0; layer < 4; layer++) {
+      var ly = -treeHeight * (0.35 + layer * 0.2);
+      var lw = (4 - layer) * (w * 0.05);
+      var layerSway = Math.sin(time * 2.2 + layer) * (windSpeed * 0.006);
+
+      ctx.save();
+      ctx.translate(0, ly);
+      ctx.rotate(layerSway);
+
+      ctx.beginPath();
+      ctx.moveTo(0, -lw * 0.85);
+      ctx.lineTo(lw, lw * 0.65);
+      ctx.lineTo(-lw, lw * 0.65);
+      ctx.closePath();
+      ctx.fillStyle = layer % 2 === 0 ? accentColor : darkColor;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    ctx.restore();
+
+    // 4. Drifting wind leaf particles
+    var speedMult = Math.max(0.6, windSpeed * 0.28);
+    for (var p = 0; p < particles.length; p++) {
+      var pt = particles[p];
+      pt.x += (pt.speedX + speedMult) * (w / 400);
+      pt.y += pt.speedY * (h / 200);
+      pt.rot += pt.rotSpeed;
+
+      if (pt.x > w + 20) {
+        pt.x = -20;
+        pt.y = Math.random() * (h * 0.8);
+      }
+
+      ctx.save();
+      ctx.translate(pt.x, pt.y);
+      ctx.rotate(pt.rot);
+      ctx.fillStyle = tempF >= 80 ? 'rgba(224, 122, 71, 0.55)' : 'rgba(255, 255, 255, 0.32)';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, pt.size * 1.8, pt.size * 0.8, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // 5. Wind velocity streaks (active gusts)
+    if (windSpeed >= 8) {
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.09)';
+      ctx.lineWidth = 1.5;
+      for (var s = 0; s < 3; s++) {
+        var sx = ((time * 220 * (windSpeed / 8) + s * 140) % (w + 100)) - 50;
+        var sy = h * (0.2 + s * 0.25);
+        ctx.beginPath();
+        ctx.moveTo(sx, sy);
+        ctx.lineTo(sx + 35 + windSpeed * 2, sy);
+        ctx.stroke();
+      }
+    }
+
+    var canvasMeta = document.getElementById('wxCanvasMeta');
+    if (canvasMeta) {
+      canvasMeta.textContent = 'Wind: ' + windSpeed + ' mph · Gust: ' + windGust + ' mph';
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
 })();
 </script>
 </body>
