@@ -8,7 +8,7 @@
   var send=form&&form.querySelector('.assistant-send');
   if(!form||!input||!log||!window.LaBAssistantClient)return;
 
-  var busy=false,elapsedTimer=null,elapsedStarted=0;
+  var busy=false,elapsedTimer=null,elapsedStarted=0,activeModel='';
   var client=window.LaBAssistantClient.create({
     resources:typeof resources!=='undefined'?resources:[],
     gearData:window.gearData||[],
@@ -16,20 +16,24 @@
     knowledge:window.LAB_ASSISTANT_KNOWLEDGE||{}
   });
 
+  function modelLabel(){
+    return /:cloud$/i.test(activeModel)?'Ollama Cloud':'local Ollama';
+  }
   function statusText(phase,detail){
     if(phase==='checking')return 'Local index ready · checking for Ollama';
     if(phase==='searching')return 'Searching the local LaB index';
     if(phase==='retrieval')return 'Sourced local search ready';
-    if(phase==='model')return 'Asking local Ollama · '+detail+'s';
-    if(phase==='verified')return 'Local Ollama answer verified against retrieved sources';
+    if(phase==='model')return 'Asking '+modelLabel()+' · '+detail+'s';
+    if(phase==='verified')return modelLabel()+' answer verified against retrieved sources';
     if(phase==='grounding')return 'Model rewrite rejected · sourced fallback shown';
     if(phase==='offline')return 'Ollama offline · sourced local search ready';
     if(phase==='busy')return 'Ollama busy · sourced local search ready';
-    if(phase==='ready')return 'Local Ollama ready · '+detail+' · grounded only';
+    if(phase==='ready')return modelLabel()+' ready · '+detail+' · grounded only';
     return 'Local index · model-free here · no prompt saved';
   }
   function setStatus(phase,detail){
     if(!status)return;
+    if((phase==='model'||phase==='ready')&&detail)activeModel=String(detail);
     clearInterval(elapsedTimer);elapsedTimer=null;
     status.setAttribute('data-model-state',phase);
     var copy=status.querySelector('span');
@@ -44,7 +48,7 @@
     if(copy)copy.textContent=statusText(phase,detail||'');
   }
   function badgeFor(mode){
-    if(mode==='ollama')return 'Local Ollama · verified';
+    if(mode==='ollama')return modelLabel()+' · verified';
     if(mode==='grounding')return 'Sourced fallback · model rejected';
     if(mode==='offline')return 'Sourced fallback · Ollama offline';
     if(mode==='busy')return 'Sourced fallback · model busy';
@@ -121,6 +125,7 @@
         else setStatus(phase,detail&&detail.model);
       }
     }).then(function(result){
+      if(result.model)activeModel=result.model;
       var mode=result.mode==='ollama'?'ollama':result.fallback||'retrieval';
       addMessage('assistant',result.answer,result.sources,mode);
       settleStatus(result);

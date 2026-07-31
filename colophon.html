@@ -287,10 +287,13 @@
         Follow an internal citation and an orange guide moves to the exact film, resource, event or
         item of kit.</p>
         <p>On the public GitHub Pages site, that sourced search is the whole assistant. On the
-        localhost gateway, the retrieved answer may be handed to the fixed
-        <code>qwen3.6:latest</code> Ollama model for a more natural voice. A grounding check rejects
-        any rewrite that drops or changes a number, date or ownership claim, and shows the sourced
-        answer instead. <em>The model can change the phrasing; it cannot change the facts.</em></p>
+        localhost gateway, the retrieved answer may be handed to one fixed Ollama model for a more
+        natural voice. The current test model is <code>nemotron-3-super:cloud</code>, so the
+        interface labels it as cloud processing rather than pretending it stayed on the Mac. The
+        raw visitor question is omitted from that cloud request; only the already-sourced public
+        answer is sent for phrasing. A grounding check rejects any rewrite that drops or changes a
+        number, date or ownership claim, and shows the sourced answer instead. <em>The model can
+        change the phrasing; it cannot change the facts.</em></p>
       </div>
     </div>
   </div>
