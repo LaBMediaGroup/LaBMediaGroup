@@ -154,48 +154,14 @@
 
 <section class="sec-c wrap">
   <h2>What needs <em>JavaScript,</em> and what doesn't</h2>
-  <p>The films are plain HTML. All eight, every production timeline and all 81 behind-the-scenes
-  photographs are in the page itself, inside native <code>&lt;details&gt;</code> elements. Turn
-  JavaScript off and the portfolio still reads completely — <strong>1,564 words of it</strong>.
-  Same for SkyBound.</p>
-  <p>The resources, the gear list, the story generator and the LaB Assistant do <strong>not</strong>. Those four are
-  built at runtime from data files, so with scripts disabled they fall back to a heading and a
-  short explanation instead of 126 links, 66 items, 1,334 prompts and grounded answers.</p>
-  <p>That's a real trade, made deliberately. Keeping 126 resources as one data file rather than
-  hand-written HTML is the only reason a one-person site can carry that much and stay correct —
-  the counts, the search, the kit and the feeds all read from the same source. The cost is that
-  those pages need scripts to draw themselves, so each one ships a <code>&lt;noscript&gt;</code>
-  fallback that says so plainly rather than showing an empty shell.</p>
-  <p>The public LaB Assistant is still model-free. A development-only localhost gateway can hand
-  its already-sourced answer to one allowlisted Ollama model for phrasing, but that gateway begins
-  with an underscore, is excluded from deployment and never exposes Ollama&rsquo;s own API to the
-  browser. If the model is asleep, retrieval keeps working.</p>
-  <p>The little orange beaker is the everyday version. Open it and the conversation reads more
-  like a tiny editorial column than a generic support chat: large type, generous air, one orange
-  rule and very little interface furniture. Its shell is present across the site, but the roughly
-  132 KiB search index and assistant code do not load until somebody opens it. The larger
-  <a href="assistant.html">full-page assistant</a> stays here for longer conversations and for
-  explaining what the bot is actually doing.</p>
-  <p>Its citations are navigation, not decoration. Follow an internal source and a deliberately
-  theatrical orange cursor opens the right collapsed section, scrolls to the exact film, resource,
-  event or piece of kit, then leaves keyboard focus and a short highlight there. It is a visual
-  guide drawn by the page; it never moves the visitor&rsquo;s real pointer. A maximum of eight
-  messages lives in <code>sessionStorage</code> so the conversation survives that page change,
-  stays inside the current tab, and disappears when the tab closes or Clear is pressed.</p>
-  <p>The status line also tells the less glamorous truth: <em>searching</em>, <em>asking local
-  Ollama</em>, <em>verified</em>, <em>model rewrite rejected</em>, or <em>Ollama offline</em>.
-  A rejected rewrite is not a broken answer. It means the grounding check caught the model
-  dropping or changing a retrieved fact and showed the sourced version instead.</p>
-  <p>Videos are click-to-load. Every poster is a local file, and only when you press play does a
-  <code>youtube-nocookie.com</code> iframe get injected. <strong>Nothing contacts YouTube before
-  you ask it to.</strong></p>
-  <p class="d-inlab" style="border-left:2px solid var(--accent-dim);padding-left:var(--s-4)">
-  <b>This was briefly untrue</b>The posters used to be pulled from <code>i.ytimg.com</code> &mdash;
-  Google&rsquo;s image host &mdash; so the sentence above was wrong in the way that matters: the
-  player was deferred, the surveillance wasn&rsquo;t. An outside reviewer caught it. Seven frames
-  were exported and hosted here, and a <code>preconnect</code> to the same host was removed. Left
-  here rather than quietly corrected, because a privacy claim that is <em>nearly</em> true is worse
-  than one you never made.</p>
+  <p>The Reel and SkyBound are plain HTML. Production notes, timelines and all 81
+  behind-the-scenes photographs remain readable with JavaScript switched off.</p>
+  <p>The notebook pages, gear list, Story Generator and LaB Assistant are built from shared data
+  files. JavaScript handles rendering, search, saved kits and live counts; each page includes a
+  plain <code>&lt;noscript&gt;</code> explanation instead of leaving an empty shell.</p>
+  <p>That trade keeps 126 resources, 66 gear items and 1,334 prompts in one source of truth.
+  Videos are separate: local posters load immediately, and the <code>youtube-nocookie.com</code>
+  player is created only after Play is pressed.</p>
 </section>
 
 <section class="sec-c wrap">
@@ -310,6 +276,21 @@
         <p>The message rerolls from two pools: one is funny about the page being gone, the other is
         filmmaking encouragement that never mentions the site.
         <em>Doing both jobs in one sentence was the first attempt&rsquo;s mistake.</em></p>
+      </div>
+    </div>
+    <div class="bug">
+      <span class="bug-n">09</span>
+      <div>
+        <h3>A chatbot with search in charge</h3>
+        <p>The assistant searches the site&rsquo;s own film notes, 126 resources, 66 gear entries
+        and dated events before it writes a word. Every factual answer cites the page it came from.
+        Follow an internal citation and an orange guide moves to the exact film, resource, event or
+        item of kit.</p>
+        <p>On the public GitHub Pages site, that sourced search is the whole assistant. On the
+        localhost gateway, the retrieved answer may be handed to the fixed
+        <code>qwen3.6:latest</code> Ollama model for a more natural voice. A grounding check rejects
+        any rewrite that drops or changes a number, date or ownership claim, and shows the sourced
+        answer instead. <em>The model can change the phrasing; it cannot change the facts.</em></p>
       </div>
     </div>
   </div>

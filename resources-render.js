@@ -119,7 +119,7 @@ var GROUPS=[
  {id:'3d',cats:['3d'],title:'<em>3D</em> &amp; Motion',blurb:'Assets and software for when a shot needs something that doesn’t exist yet.'},
  {id:'equipment',cats:['equipment'],title:'<em>Gear</em>',blurb:'Where to buy, rent, and research. Gear matters far less than people think, right up until the moment it matters enormously.'},
  {id:'software',cats:['software','coding','tools'],title:'Software &amp; <em>Code</em>',blurb:'Production planning, call sheets, and the coding tools I used to build this site.'},
- {id:'film-festivals',cats:['film-festivals'],title:'<em>Film Fests</em>',blurb:'Michigan first, then the national ones worth an entry fee. If you’ve never submitted anything, the timed competitions are the friendliest door.'},
+ {id:'film-festivals',cats:['film-festivals'],title:'Film <em>Fests</em>',blurb:'Michigan first, then the national ones worth an entry fee. If you’ve never submitted anything, the timed competitions are the friendliest door.'},
  {id:'community',cats:['community'],title:'Community &amp; <em>Groups</em>',blurb:'Where Michigan filmmakers actually talk to each other. Crew calls, casting, meetups, and orgs.'},
  {id:'drone',cats:['drone'],title:'Drone &amp; <em>FPV</em>',blurb:'Sims, gear, shops, and training. This one got big enough that it became <a href="skybound.html">its own step-by-step page</a> — start there if you’re new.'}
 ];
