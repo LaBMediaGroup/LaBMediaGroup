@@ -175,22 +175,27 @@
       font-size: clamp(20px, 2.5vw, 26px);
       color: var(--ink);
     }
-    .custom-file-btn {
+    .source-info-badge {
       font-family: var(--f-mono);
       font-size: 11px;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 1px dashed var(--accent-dim);
-      padding: 6px 14px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      transition: background var(--fast) var(--ease), border-color var(--fast) var(--ease);
+      text-align: right;
     }
-    .custom-file-btn:hover {
-      background: var(--accent-bg);
-      border-color: var(--accent);
+    .source-info-text {
+      font-family: var(--f-display);
+      font-size: clamp(17px, 2.2vw, 24px);
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .source-info-text em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    @media (max-width: 860px) {
+      .source-info-badge {
+        text-align: left;
+        margin-top: var(--s-3);
+      }
     }
   </style>
 </head>
@@ -284,12 +289,19 @@
     </div>
   </div>
 
-  <div class="ratio-pills" id="ratioPills">
-    <button class="r-pill active" data-ratio="2.39" data-name="2.39:1 Anamorphic Scope">2.39:1 Scope</button>
-    <button class="r-pill" data-ratio="1.85" data-name="1.85:1 DCI Flat">1.85:1 Flat</button>
-    <button class="r-pill" data-ratio="1.77" data-name="16:9 Widescreen (Native)">16:9 HD Native</button>
-    <button class="r-pill" data-ratio="1.33" data-name="4:3 Academy Ratio">4:3 Academy</button>
-    <button class="r-pill" data-ratio="0.5625" data-name="9:16 Vertical Reel">9:16 Vertical</button>
+  <div class="ratio-pills-row" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-block:var(--s-5);">
+    <div class="ratio-pills" id="ratioPills" style="margin-block:0;">
+      <button class="r-pill active" data-ratio="2.39" data-name="2.39:1 Anamorphic Scope">2.39:1 Scope</button>
+      <button class="r-pill" data-ratio="1.85" data-name="1.85:1 DCI Flat">1.85:1 Flat</button>
+      <button class="r-pill" data-ratio="1.77" data-name="16:9 Widescreen (Native)">16:9 HD Native</button>
+      <button class="r-pill" data-ratio="1.33" data-name="4:3 Academy Ratio">4:3 Academy</button>
+      <button class="r-pill" data-ratio="0.5625" data-name="9:16 Vertical Reel">9:16 Vertical</button>
+    </div>
+
+    <div class="source-info-badge" id="sourceInfoBadge">
+      <span class="mono" style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:2px;">Source Footage:</span>
+      <div class="source-info-text" id="sourceInfoText">16:9 <em>Widescreen (1.78&#58;1) &middot; 1920&times;1080 Still</em></div>
+    </div>
   </div>
 
   <div class="aspect-stage">
@@ -304,8 +316,12 @@
 
     <div class="specs-grid">
       <div class="spec-card">
-        <div class="k">Format</div>
+        <div class="k">Format Matte</div>
         <div class="v" id="formatName">2.39:1 Scope</div>
+      </div>
+      <div class="spec-card">
+        <div class="k">Source Native Ratio</div>
+        <div class="v" id="sourceRatioCard">1.78:1 <em>(16:9)</em></div>
       </div>
       <div class="spec-card">
         <div class="k">1080p Active Pixels</div>
@@ -451,11 +467,15 @@
   var currentRatioVal = 2.39;
   var currentRatioName = '2.39:1 Anamorphic Scope';
 
+  var sourceInfoText = document.getElementById('sourceInfoText');
+  var sourceRatioCard = document.getElementById('sourceRatioCard');
+
   function updateMediaDimensions() {
-    var nw = 0, nh = 0;
+    var nw = 0, nh = 0, isVid = false;
     if (sampleVid.style.display !== 'none' && sampleVid.videoWidth) {
       nw = sampleVid.videoWidth;
       nh = sampleVid.videoHeight;
+      isVid = true;
     } else if (sampleImg.naturalWidth) {
       nw = sampleImg.naturalWidth;
       nh = sampleImg.naturalHeight;
@@ -464,11 +484,33 @@
       currentMediaRatio = nw / nh;
     } else {
       currentMediaRatio = 16 / 9;
+      nw = 1920;
+      nh = 1080;
     }
     var vf = document.getElementById('viewfinder');
     if (vf) {
       vf.style.aspectRatio = currentMediaRatio;
     }
+
+    var r = currentMediaRatio;
+    var shapeName = 'Custom';
+    if (r >= 2.30) shapeName = '2.39:1 Scope';
+    else if (r >= 1.80) shapeName = '1.85:1 Flat';
+    else if (r >= 1.70) shapeName = '16:9 Widescreen';
+    else if (r >= 1.30 && r <= 1.36) shapeName = '4:3 Academy';
+    else if (r >= 0.50 && r <= 0.60) shapeName = '9:16 Vertical';
+    else if (r >= 0.95 && r <= 1.05) shapeName = '1:1 Square';
+    else shapeName = r.toFixed(2) + ':1 Native';
+
+    var mediaType = isVid ? 'Video' : 'Still';
+
+    if (sourceInfoText) {
+      sourceInfoText.innerHTML = shapeName + ' <em>(' + r.toFixed(2) + '&#58;1 &middot; ' + nw + '&times;' + nh + ' ' + mediaType + ')</em>';
+    }
+    if (sourceRatioCard) {
+      sourceRatioCard.innerHTML = r.toFixed(2) + '&#58;1 <em>(' + shapeName + ')</em>';
+    }
+
     applyRatio(currentRatioVal, currentRatioName);
   }
 
