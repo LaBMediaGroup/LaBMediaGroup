@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sun Arc &amp; Golden Hour Calculator | Filmmaking Tools | LaB Media</title>
+  <meta name="description" content="Astronomical Golden Hour, Blue Hour, and solar tracking calculator for filmmakers and drone pilots in Metro Detroit and Shelby Township, Michigan.">
+  <link rel="canonical" href="https://labmedia.work/sun.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="lab.css">
+
+  <script>
+    (function(){
+      var root=document.documentElement, KEY='lab-theme';
+      try{
+        var saved=localStorage.getItem(KEY);
+        if(saved && saved!=='dark') root.setAttribute('data-theme',saved);
+      }catch(e){}
+    })();
+  </script>
+
+  <style>
+    .sun-stage {
+      position: relative;
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--paper-2);
+      padding: clamp(20px, 4vw, 36px);
+      margin-block: var(--s-6);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: background 0.3s var(--ease);
+    }
+    .sun-sky {
+      position: relative;
+      height: clamp(180px, 30vw, 280px);
+      width: 100%;
+      border-bottom: 2px solid var(--line-2);
+      overflow: hidden;
+    }
+    .sun-arc-path {
+      fill: none;
+      stroke: var(--accent-dim);
+      stroke-dasharray: 4 4;
+      stroke-width: 2;
+    }
+    .sun-orb {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 20px var(--accent);
+      transform: translate(-50%, -50%);
+      transition: left 0.1s linear, top 0.1s linear, background 0.2s, box-shadow 0.2s;
+    }
+    .sun-controls {
+      margin-top: var(--s-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+    }
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: var(--s-4);
+    }
+    .time-slider {
+      flex: 1;
+      height: 8px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .time-val {
+      font-family: var(--f-mono);
+      font-size: var(--t-lg);
+      color: var(--ink);
+      min-width: 90px;
+      text-align: right;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: var(--s-4);
+      margin-top: var(--s-5);
+    }
+    .metric-card {
+      border: 1px solid var(--line);
+      padding: var(--s-4);
+      background: var(--paper);
+    }
+    .metric-card .k {
+      font-family: var(--f-mono);
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 4px;
+    }
+    .metric-card .v {
+      font-family: var(--f-display);
+      font-size: clamp(20px, 2.5vw, 28px);
+      color: var(--ink);
+    }
+    .metric-card .v small {
+      font-size: 12px;
+      font-family: var(--f-mono);
+      color: var(--dim);
+    }
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--s-6);
+    }
+    .schedule-table th, .schedule-table td {
+      padding: var(--s-3) var(--s-4);
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      font-size: var(--t-sm);
+    }
+    .schedule-table th {
+      font-family: var(--f-mono);
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+    .badge-golden { color: var(--accent); font-weight: 500; }
+    .badge-blue { color: var(--sky); font-weight: 500; }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="nav-brand" href="index.html" aria-label="LaB Media : home">
+      <img class="nav-logo is-mark" src="images/TheLaB-mark.png" alt="LaB Media : back to the LaB" width="61" height="26">
+    </a>
+    <nav class="nav-primary" aria-label="Primary"><ul class="nav-links" id="navLinks">
+      <li><a href="portfolio.html">Reel</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Resources
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="learn.html">Watch &amp; Learn</a>
+          <a href="resources.html">Software &amp; Assets</a>
+          <a href="sourcing.html">Gear &amp; Flight</a>
+          <a href="people.html">People &amp; Community</a>
+          <hr class="nav-sep" aria-hidden="true">
+          <a href="gear.html">LaB&rsquo;s Kit</a>
+          <a href="mykit.html">Your Kit</a>
+        </div>
+      </li>
+      <li class="nav-drop" data-current="true">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Tools
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="ideas.html">Story Generator</a>
+          <a href="skybound.html">SkyBound : Drone</a>
+          <a href="sun.html" aria-current="page">Sun Arc : Golden Hour</a>
+          <a href="assistant.html">LaB Assistant</a>
+        </div>
+      </li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">About
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="contact.html">About LaB</a>
+          <a href="colophon.html">About the Site</a>
+        </div>
+      </li>
+    </ul></nav>
+    <div class="theme" role="group" aria-label="Colour theme">
+      <button type="button" data-theme-set="dark" aria-pressed="true" title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
+      <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
+      <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="pg-hero wrap">
+  <div class="rule"><span class="mono">Sun Arc &amp; Golden Hour</span><i></i><span class="mono">Shelby Twp, MI · 42.67°N</span></div>
+  <h1>Catch the <em>golden hour.</em></h1>
+  <p class="lede">Astronomical sun position, elevation angle, and color temperature calculator calibrated for Metro Detroit filmmakers and aerial shooters. Drag the slider to simulate lighting through the day.</p>
+</section>
+
+<section class="wrap">
+  <div class="sun-stage" id="sunStage">
+    <div class="sun-sky" id="sunSky">
+      <svg width="100%" height="100%" preserveAspectRatio="none" style="position:absolute;top:0;left:0;">
+        <path class="sun-arc-path" id="arcPath" d="M 0 260 Q 50% 20 100% 260" />
+      </svg>
+      <div class="sun-orb" id="sunOrb"></div>
+    </div>
+
+    <div class="sun-controls">
+      <div class="slider-row">
+        <label for="timeSlider" class="vh">Time of day slider</label>
+        <input type="range" id="timeSlider" class="time-slider" min="0" max="1440" step="5" value="1140">
+        <span class="time-val" id="timeVal">7:00 PM</span>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="k">Phase</div>
+          <div class="v" id="phaseVal">Golden Hour</div>
+        </div>
+        <div class="metric-card">
+          <div class="k">Color Temp</div>
+          <div class="v" id="tempVal">3200<small>K</small></div>
+        </div>
+        <div class="metric-card">
+          <div class="k">Elevation</div>
+          <div class="v" id="elevVal">+6.2<small>°</small></div>
+        </div>
+        <div class="metric-card">
+          <div class="k">Azimuth</div>
+          <div class="v" id="azimVal">284<small>° W</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-c">
+    <h2>Today&rsquo;s <em>Shooting Windows</em></h2>
+    <p>Calculated for Shelby Township / Metro Detroit based on current solar declination.</p>
+
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>Lighting Window</th>
+          <th>Time Range</th>
+          <th>Color Temperature</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge-blue">Blue Hour (Dawn)</span></td>
+          <td id="dawnBlueTime">6:05 AM - 6:30 AM</td>
+          <td>9,500K - 11,000K</td>
+          <td>City lights, moody landscape, atmospheric drone passes</td>
+        </tr>
+        <tr>
+          <td><span class="badge-golden">Golden Hour (Morning)</span></td>
+          <td id="mornGoldTime">6:30 AM - 7:35 AM</td>
+          <td>2,700K - 3,500K</td>
+          <td>Warm backlight, soft rim lighting, low shadow angles</td>
+        </tr>
+        <tr>
+          <td>Midday Sun</td>
+          <td id="noonTime">12:30 PM - 2:00 PM</td>
+          <td>5,600K (Daylight)</td>
+          <td>High contrast, overhead shadows (diffusion recommended)</td>
+        </tr>
+        <tr>
+          <td><span class="badge-golden">Golden Hour (Evening)</span></td>
+          <td id="eveGoldTime">7:30 PM - 8:35 PM</td>
+          <td>2,700K - 3,500K</td>
+          <td>Warm flares, skin tones, hero exterior tracking shots</td>
+        </tr>
+        <tr>
+          <td><span class="badge-blue">Blue Hour (Dusk)</span></td>
+          <td id="duskBlueTime">8:35 PM - 9:05 PM</td>
+          <td>9,000K - 11,500K</td>
+          <td>Silhouette shots, practical lamps, twilight transitions</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <img class="foot-mark" src="images/TheLaB-mark.png" alt="The LaB" width="122" height="52" loading="lazy" decoding="async">
+        <p class="foot-blurb">A small film studio and a public notebook, run out of Shelby Township, Michigan.</p>
+      </div>
+      <div class="foot-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="portfolio.html">Reel</a></li>
+          <li><a href="learn.html">Watch &amp; Learn</a></li>
+          <li><a href="resources.html">Software &amp; Assets</a></li>
+          <li><a href="people.html">People &amp; Community</a></li>
+          <li><a href="sourcing.html">Gear &amp; Flight</a></li>
+          <li><a href="ideas.html">Story Generator</a></li>
+          <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="sun.html" aria-current="page">Sun Arc</a></li>
+          <li><a href="assistant.html">LaB Assistant</a></li>
+          <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
+          <li><a href="mykit.html">Your Kit</a></li>
+          <li><a href="colophon.html">How it's built</a></li>
+          <li><a href="events.html">Events</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Elsewhere</h3>
+        <ul>
+          <li><a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://instagram.com/thisislabmedia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/in/baldwinrobert" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="contact.html">About &amp; Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span class="made">Made in Shelby Twp, MI<span class="hrt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span>
+      <span class="made">© 2026 LaB Media<span class="hrt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var slider = document.getElementById('timeSlider');
+  var timeVal = document.getElementById('timeVal');
+  var orb = document.getElementById('sunOrb');
+  var stage = document.getElementById('sunStage');
+  var phaseVal = document.getElementById('phaseVal');
+  var tempVal = document.getElementById('tempVal');
+  var elevVal = document.getElementById('elevVal');
+  var azimVal = document.getElementById('azimVal');
+
+  function fmtTime(mins) {
+    var h = Math.floor(mins / 60);
+    var m = mins % 60;
+    var ampm = h >= 12 ? 'PM' : 'AM';
+    var displayH = h % 12 || 12;
+    return displayH + ':' + String(m).padStart(2, '0') + ' ' + ampm;
+  }
+
+  function updateSun(mins) {
+    timeVal.textContent = fmtTime(mins);
+
+    // Approximate solar arc math for Shelby Twp (~42.67N)
+    var rad = ((mins - 360) / (1240 - 360)) * Math.PI; // Horizon from 6:00 AM to 8:40 PM
+    var isDay = mins >= 360 && mins <= 1240;
+    
+    var posX = Math.max(5, Math.min(95, (mins / 1440) * 100));
+    var elevSin = Math.sin(Math.max(0, Math.min(Math.PI, rad)));
+    var posY = isDay ? 260 - (elevSin * 230) : 270;
+
+    orb.style.left = posX + '%';
+    orb.style.top = (posY / 280 * 100) + '%';
+
+    var elevAngle = Math.round((elevSin * 62) - (isDay ? 0 : 18));
+    elevVal.innerHTML = (elevAngle > 0 ? '+' : '') + elevAngle + '<small>°</small>';
+
+    var azim = Math.round(90 + (mins / 1440 * 180));
+    azimVal.innerHTML = azim + '<small>° W</small>';
+
+    // Phase & Color Temperature determination
+    if (elevAngle > 15) {
+      phaseVal.textContent = 'Midday Sun';
+      tempVal.innerHTML = '5600<small>K</small>';
+      orb.style.background = '#F4F1EC';
+      orb.style.boxShadow = '0 0 25px #F4F1EC';
+    } else if (elevAngle > 0) {
+      phaseVal.textContent = 'Golden Hour';
+      tempVal.innerHTML = '3200<small>K</small>';
+      orb.style.background = '#E07A47';
+      orb.style.boxShadow = '0 0 25px #E07A47';
+    } else if (elevAngle > -6) {
+      phaseVal.textContent = 'Blue Hour';
+      tempVal.innerHTML = '9500<small>K</small>';
+      orb.style.background = '#9DBFC8';
+      orb.style.boxShadow = '0 0 25px #9DBFC8';
+    } else {
+      phaseVal.textContent = 'Night';
+      tempVal.innerHTML = '12000<small>K</small>';
+      orb.style.background = '#4A5568';
+      orb.style.boxShadow = 'none';
+    }
+  }
+
+  slider.addEventListener('input', function(){
+    updateSun(parseInt(this.value, 10));
+  });
+
+  // Set initial slider to current time of day
+  var now = new Date();
+  var currentMins = (now.getHours() * 60) + now.getMinutes();
+  slider.value = currentMins;
+  updateSun(currentMins);
+})();
+</script>
+</body>
+</html>
