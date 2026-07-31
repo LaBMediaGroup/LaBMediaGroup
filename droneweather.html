@@ -152,6 +152,23 @@
       display: block;
       background: transparent;
     }
+    .toggle-rain-btn {
+      font-family: var(--f-mono);
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--sky);
+      border: 1px dashed var(--sky);
+      background: transparent;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background var(--fast) var(--ease), border-style var(--fast) var(--ease);
+    }
+    .toggle-rain-btn:hover, .toggle-rain-btn.active {
+      background: rgba(169, 205, 222, 0.18);
+      border-style: solid;
+    }
   </style>
 </head>
 <body>
@@ -232,12 +249,15 @@
 
 <section class="wrap">
   <div class="wx-card">
-    <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
       <div>
         <span class="mono" style="font-size:10px;text-transform:uppercase;color:var(--faint);letter-spacing:.14em;">Live Metro Detroit Station</span>
         <h2 style="font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;margin-top:4px;">Current <em>flight conditions.</em></h2>
       </div>
-      <div id="flightBadge" class="wx-status">🟢 CLEAR TO FLY</div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <div id="flightBadge" class="wx-status">🟢 CLEAR TO FLY</div>
+        <button type="button" id="toggleRainBtn" class="toggle-rain-btn"><span>Simulate Rain 🌧️</span></button>
+      </div>
     </div>
 
     <div class="wx-grid">
@@ -416,6 +436,11 @@
           badge.style.color = 'var(--good)'; badge.style.borderColor = 'var(--good)'; badge.style.background = 'rgba(121,195,154,.15)';
         }
       }
+
+      if (w.weathercode) {
+        var isRainy = [51,53,55,61,63,65,66,67,80,81,82,95,96,99].indexOf(w.weathercode) !== -1;
+        if (isRainy) window.isRainingLive = true;
+      }
     }).catch(function(){});
 })();
 
@@ -429,6 +454,16 @@
   var windSpeed = 7;
   var windGust = 11;
   var tempF = 74;
+  var isRaining = false;
+
+  var toggleRainBtn = document.getElementById('toggleRainBtn');
+  if (toggleRainBtn) {
+    toggleRainBtn.addEventListener('click', function(){
+      isRaining = !isRaining;
+      this.classList.toggle('active', isRaining);
+      this.innerHTML = isRaining ? '<span>Sun Mode ☀️</span>' : '<span>Simulate Rain 🌧️</span>';
+    });
+  }
 
   function resizeCanvas() {
     var rect = cvs.getBoundingClientRect();
@@ -454,6 +489,30 @@
     });
   }
 
+  // Raindrops and bouncing splash particles
+  var raindrops = [];
+  for (var r = 0; r < 22; r++) {
+    raindrops.push({
+      x: 0,
+      y: 0,
+      speedY: Math.random() * 4 + 4,
+      length: Math.random() * 8 + 6
+    });
+  }
+
+  var splashParticles = [];
+  function triggerSplash(x, y) {
+    for (var k = 0; k < 3; k++) {
+      splashParticles.push({
+        x: x,
+        y: y,
+        vx: (Math.random() - 0.5) * 2.5,
+        vy: -(Math.random() * 2.2 + 1.0),
+        alpha: 1.0
+      });
+    }
+  }
+
   // Fling easter egg item for gale wind (18+ mph)
   var flingItem = {
     x: -100,
@@ -467,6 +526,9 @@
   var time = 0;
 
   function drawSun(w, h) {
+    var activeRain = isRaining || window.isRainingLive;
+    if (activeRain) return;
+
     var sunX = w * 0.84;
     var sunY = h * 0.28;
     var sunRadius = Math.max(26, Math.min(46, w * 0.08));
@@ -481,11 +543,83 @@
     ctx.arc(sunX, sunY, sunRadius * 1.8, 0, Math.PI * 2);
     ctx.fill();
 
-    // Core sun orb (matching yellow/orange mockup orb!)
+    // Core sun orb
     ctx.fillStyle = tempF >= 80 ? '#E07A47' : '#E0A847';
     ctx.beginPath();
     ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
     ctx.fill();
+  }
+
+  function drawRainCloud(w, h) {
+    var activeRain = isRaining || window.isRainingLive;
+    if (!activeRain) return;
+
+    var cloudX = w * 0.46;
+    var cloudY = h * 0.22;
+    var groundY = h * 0.96;
+
+    // Vector rain cloud
+    ctx.save();
+    ctx.translate(cloudX, cloudY);
+    ctx.strokeStyle = '#A9CDE4';
+    ctx.lineWidth = 1.8;
+    ctx.fillStyle = 'rgba(169, 205, 222, 0.18)';
+
+    ctx.beginPath();
+    ctx.arc(-18 * (w/400), 0, 14 * (w/400), Math.PI * 0.8, Math.PI * 1.85);
+    ctx.arc(0, -10 * (w/400), 20 * (w/400), Math.PI * 1.1, Math.PI * 1.9);
+    ctx.arc(20 * (w/400), -2 * (w/400), 14 * (w/400), Math.PI * 1.25, Math.PI * 0.2);
+    ctx.lineTo(-28 * (w/400), 10 * (w/400));
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+
+    // Falling raindrops
+    ctx.strokeStyle = 'rgba(169, 205, 222, 0.75)';
+    ctx.lineWidth = 1.2;
+
+    for (var i = 0; i < raindrops.length; i++) {
+      var drop = raindrops[i];
+      if (drop.y === 0 || drop.y > groundY) {
+        drop.x = cloudX + (Math.random() - 0.5) * (w * 0.16);
+        drop.y = cloudY + 10;
+        drop.speedY = Math.random() * 3.5 + 4.5;
+      }
+
+      drop.y += drop.speedY;
+      var slant = windSpeed * 0.15;
+
+      ctx.beginPath();
+      ctx.moveTo(drop.x, drop.y);
+      ctx.lineTo(drop.x + slant, drop.y + drop.length);
+      ctx.stroke();
+
+      // Bounce & splash off white line!
+      if (drop.y >= groundY - 2) {
+        triggerSplash(drop.x, groundY);
+        drop.y = cloudY + 10;
+        drop.x = cloudX + (Math.random() - 0.5) * (w * 0.16);
+      }
+    }
+
+    // Bouncing splash droplets
+    for (var s = splashParticles.length - 1; s >= 0; s--) {
+      var sp = splashParticles[s];
+      sp.x += sp.vx;
+      sp.y += sp.vy;
+      sp.vy += 0.22;
+      sp.alpha -= 0.04;
+
+      ctx.fillStyle = 'rgba(169, 205, 222, ' + Math.max(0, sp.alpha) + ')';
+      ctx.beginPath();
+      ctx.arc(sp.x, sp.y, 1.4, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (sp.alpha <= 0) {
+        splashParticles.splice(s, 1);
+      }
+    }
   }
 
   function drawTree(w, h) {
@@ -493,8 +627,7 @@
     var treeBaseY = h * 0.96;
     var treeHeight = h * 0.58;
 
-    // Calibrated sway physics: ultra-calm at 0-11 mph, bending at 18+ mph
-    var swayFactor = 0.004; // 8 mph calm breathing
+    var swayFactor = 0.004;
     var freq = 0.7;
     var staticLean = 0;
 
@@ -514,7 +647,6 @@
     ctx.translate(treeBaseX, treeBaseY);
     ctx.rotate(totalSway);
 
-    // Trunk stem
     ctx.strokeStyle = '#E07A47';
     ctx.lineWidth = 2.5 * (w / 400);
     ctx.lineCap = 'round';
@@ -525,7 +657,6 @@
     ctx.lineTo(0, -treeHeight * 0.38);
     ctx.stroke();
 
-    // Outlined vector pine layers (matching mockup line style!)
     var layers = 4;
     for (var l = 0; l < layers; l++) {
       var ly = -treeHeight * (0.35 + l * 0.16);
@@ -573,7 +704,6 @@
       ctx.rotate(flingItem.rot);
 
       if (flingItem.type === 'drone') {
-        // Draw quadcopter drone getting flung in high wind
         ctx.strokeStyle = '#E07A47';
         ctx.lineWidth = 1.5;
         ctx.beginPath();
@@ -588,7 +718,6 @@
         ctx.fillStyle = '#E07A47';
         ctx.fillRect(-3.5, -3.5, 7, 7);
       } else {
-        // Draw safety helmet getting flung!
         ctx.fillStyle = '#E07A47';
         ctx.beginPath();
         ctx.arc(0, 0, 9, Math.PI, 0);
@@ -623,10 +752,11 @@
     if (gEl) { var pg = parseInt(gEl.textContent, 10); if (!isNaN(pg)) windGust = pg; }
     if (tEl) { var pt = parseInt(tEl.textContent, 10); if (!isNaN(pt)) tempF = pt; }
 
-    // 1. Sun Orb (top right)
+    // 1. Sun Orb OR Rain Cloud
     drawSun(w, h);
+    drawRainCloud(w, h);
 
-    // 2. Unboxed Vector Pine Tree (bottom right, matching mockup!)
+    // 2. Unboxed Vector Pine Tree
     drawTree(w, h);
 
     // 3. Gentle floating leaf particles
@@ -652,7 +782,7 @@
       ctx.restore();
     }
 
-    // 4. Easter egg: Flinging drone or safety helmet when wind >= 18 mph!
+    // 4. High wind easter egg
     drawFlingItem(w, h);
 
     requestAnimationFrame(render);
