@@ -11,10 +11,10 @@
 <meta property="og:url" content="https://labmedia.work/assistant.html">
 <meta property="og:site_name" content="LaB Media">
 <meta property="og:title" content="LaB Assistant — Ask the Site">
-<meta property="og:description" content="A model-free assistant grounded in LaB’s films, resources, gear, events, and notes.">
+<meta property="og:description" content="A sourced assistant grounded in LaB’s films, resources, gear, events, and notes.">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LaB Assistant — Ask the Site">
-<meta name="twitter:description" content="A model-free assistant grounded in LaB’s films, resources, gear, events, and notes.">
+<meta name="twitter:description" content="A sourced assistant grounded in LaB’s films, resources, gear, events, and notes.">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="images/favicon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -82,9 +82,13 @@ main{background:var(--paper)}
   max-width:61ch;margin:clamp(22px,3vw,30px) auto 0;
   font-size:var(--t-lg);line-height:1.72;color:var(--dim)
 }
+.as-status-row{
+  display:flex;justify-content:center;align-items:center;gap:9px;
+  margin-top:var(--s-5);flex-wrap:wrap
+}
 .as-status{
   display:flex;justify-content:center;align-items:center;gap:9px;
-  margin-top:var(--s-5);font-family:var(--f-mono);font-size:9px;
+  font-family:var(--f-mono);font-size:9px;
   letter-spacing:.12em;text-transform:uppercase;color:var(--faint)
 }
 .as-status i{width:7px;height:7px;border-radius:50%;background:var(--good);box-shadow:0 0 0 4px color-mix(in srgb,var(--good) 12%,transparent)}
@@ -92,6 +96,14 @@ main{background:var(--paper)}
 .as-status[data-model-state="model"] i{background:var(--accent);box-shadow:0 0 0 4px var(--accent-bg)}
 .as-status[data-model-state="retrieval"] i{background:var(--faint);box-shadow:none}
 .as-status[data-model-state="offline"] i,.as-status[data-model-state="busy"] i,.as-status[data-model-state="grounding"] i{background:var(--accent);box-shadow:none}
+.assistant-model-toggle{
+  appearance:none;border:1px solid var(--line);border-radius:999px;background:var(--paper-2);
+  color:var(--faint);padding:8px 11px;font:500 8px/1 var(--f-mono);
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer
+}
+.assistant-model-toggle[aria-pressed="true"]{border-color:var(--accent-dim);background:var(--accent-bg);color:var(--accent)}
+.assistant-model-toggle:hover,.assistant-model-toggle:focus-visible{border-color:var(--accent);color:var(--accent)}
+.assistant-model-toggle:disabled{cursor:wait;opacity:.55}
 .as-shell{
   display:block;max-width:980px;padding-bottom:clamp(70px,9vw,118px)
 }
@@ -258,7 +270,10 @@ main{background:var(--paper)}
     </div>
     <h1>Less interface.<br>More <em>conversation.</em></h1>
     <p class="lede">Ask naturally about the films, working kit, useful resources, Michigan events, drones, or how this whole thing was built. Every factual answer stays tied to the page it came from.</p>
-    <div class="as-status" id="assistantStatus" data-model-state="checking" role="status"><i aria-hidden="true"></i><span>Local index ready · checking for Ollama</span></div>
+    <div class="as-status-row">
+      <div class="as-status" id="assistantStatus" data-model-state="checking" role="status"><i aria-hidden="true"></i><span>Local index ready · checking for Ollama</span></div>
+      <button class="assistant-model-toggle" id="assistantModelToggle" type="button" aria-pressed="true" title="Switch to sourced-only answers">Nemotron</button>
+    </div>
   </section>
 
   <section class="as-shell wrap" aria-labelledby="assistantTitle">
@@ -293,7 +308,7 @@ main{background:var(--paper)}
         <button type="button" data-assistant-prompt="Which film won an editing award?">Which film won an editing award?</button>
         <button type="button" data-assistant-prompt="How is this site built?">How is this site built?</button>
       </div>
-      <p class="as-note"><strong>Search stays in charge.</strong> On the local gateway, Ollama can rewrite the retrieved facts in a more natural voice. If the model is asleep or unavailable, the same sourced answer appears immediately. No conversation memory, no open-ended model access.</p>
+      <p class="as-note"><strong>Search stays in charge.</strong> Nemotron can rewrite a retrieved answer in a more natural voice, but only that already-sourced public answer reaches the model; the raw question stays in the browser. Choose <strong>Sourced only</strong> above to stop before the cloud entirely. No conversation memory, no open-ended model access.</p>
     </aside>
   </section>
 </main>

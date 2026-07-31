@@ -15,7 +15,12 @@
     +'</button>'
     +'<section class="lab-chat-panel" id="labChatPanel" role="dialog" aria-modal="false" aria-label="LaB Assistant" hidden>'
       +'<header class="lab-chat-head">'
-        +'<div><strong>Ask the <em>LaB.</em></strong><span class="lab-chat-state" id="labChatState" role="status">Sourced search ready</span></div>'
+        +'<div><strong>Ask the <em>LaB.</em></strong>'
+          +'<div class="lab-chat-state-row">'
+            +'<span class="lab-chat-state" id="labChatState" role="status">Sourced search ready</span>'
+            +'<button class="lab-chat-model-toggle" type="button" aria-pressed="true" title="Switch to sourced-only answers">Nemotron</button>'
+          +'</div>'
+        +'</div>'
         +'<div class="lab-chat-actions">'
           +'<a href="assistant.html" aria-label="Open full-screen assistant" title="Open full assistant">↗</a>'
           +'<button type="button" data-chat-clear aria-label="Start a new conversation" title="New conversation">↺</button>'
@@ -46,6 +51,7 @@
   var input=shell.querySelector('textarea');
   var submit=form.querySelector('button[type="submit"]');
   var state=shell.querySelector('.lab-chat-state');
+  var modelToggle=shell.querySelector('.lab-chat-model-toggle');
 
   function safeStoredSource(source){
     if(!source||typeof source.title!=='string'||typeof source.url!=='string')return null;
@@ -83,11 +89,17 @@
     try{sessionStorage.setItem(SESSION_KEY,JSON.stringify(records));}catch(error){}
   }
   function modelLabel(){
+    if(/nemotron-3-super/i.test(activeModel))return 'Nemotron 3 Super';
     return /:cloud$/i.test(activeModel)?'Ollama Cloud':'local Ollama';
   }
   function badgeFor(mode){
     if(mode==='ollama')return modelLabel()+' · verified';
     return 'Sourced';
+  }
+  function setModelToggle(enabled){
+    modelToggle.setAttribute('aria-pressed',String(enabled));
+    modelToggle.textContent=enabled?'Nemotron':'Sourced only';
+    modelToggle.title=enabled?'Switch to sourced-only answers':'Enable Nemotron phrasing';
   }
   function addMessage(kind,textValue,sources,mode,persist){
     var article=document.createElement('article');
@@ -145,16 +157,18 @@
       elapsedTimer=setInterval(function(){
         state.textContent='Asking '+modelLabel()+' · '+Math.floor((Date.now()-elapsedStarted)/1000)+'s';
       },1000);
-    }else if(phase==='verified')state.textContent=modelLabel()+' answer verified';
+    }else if(phase==='verified')state.textContent='Answer verified';
     else if(phase==='grounding')state.textContent='Sourced answer ready';
     else if(phase==='offline')state.textContent='Sourced search ready';
     else if(phase==='busy')state.textContent='Sourced answer ready';
-    else if(phase==='ready')state.textContent=detail?modelLabel()+' ready · '+detail:modelLabel()+' ready';
+    else if(phase==='disabled')state.textContent='No model requests';
+    else if(phase==='ready')state.textContent='Grounded · Nemotron ready';
     else state.textContent='Sourced search ready';
   }
   function setBusy(on){
     busy=on;log.setAttribute('aria-busy',String(on));
     input.disabled=on||!client;submit.disabled=on||!client;
+    modelToggle.disabled=on;
   }
   function scriptLoaded(test){try{return test();}catch(error){return false;}}
   function loadScript(src,test){
@@ -194,10 +208,12 @@
           spotlight:window.SPOTLIGHT||[],
           knowledge:window.LAB_ASSISTANT_KNOWLEDGE||{}
         });
+        setModelToggle(client.isModelEnabled());
         setBusy(false);
         return client.checkModel().then(function(result){
           if(result.state==='ready')setState('ready',result.model);
           else if(result.state==='offline')setState('offline');
+          else if(result.state==='disabled')setState('disabled');
           else setState('retrieval');
           return client;
         });
@@ -244,6 +260,7 @@
       else if(result.fallback==='offline')setState('offline');
       else if(result.fallback==='busy')setState('busy');
       else if(modelState.state==='ready')setState('ready',modelState.model);
+      else if(modelState.state==='disabled')setState('disabled');
       else setState('retrieval');
     }).finally(function(){setBusy(false);input.focus();});
   }
@@ -260,6 +277,19 @@
   launch.addEventListener('click',function(){panel.hidden?open():close();});
   closeButton.addEventListener('click',close);
   clearButton.addEventListener('click',clearConversation);
+  modelToggle.addEventListener('click',function(){
+    loadAssistant().then(function(){
+      var enabled=!client.isModelEnabled();
+      setModelToggle(enabled);
+      return client.setModelEnabled(enabled);
+    }).then(function(result){
+      if(result.state==='ready')setState('ready',result.model);
+      else if(result.state==='offline')setState('offline');
+      else if(result.state==='disabled')setState('disabled');
+      else setState('retrieval');
+      input.focus();
+    }).catch(function(){setState('offline');});
+  });
   form.addEventListener('submit',function(event){
     event.preventDefault();var question=input.value;input.value='';ask(question);
   });

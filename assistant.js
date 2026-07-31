@@ -5,6 +5,7 @@
   var log=document.getElementById('assistantLog');
   var clear=document.getElementById('assistantClear');
   var status=document.getElementById('assistantStatus');
+  var modelToggle=document.getElementById('assistantModelToggle');
   var send=form&&form.querySelector('.assistant-send');
   if(!form||!input||!log||!window.LaBAssistantClient)return;
 
@@ -17,19 +18,27 @@
   });
 
   function modelLabel(){
+    if(/nemotron-3-super/i.test(activeModel))return 'Nemotron 3 Super';
     return /:cloud$/i.test(activeModel)?'Ollama Cloud':'local Ollama';
   }
   function statusText(phase,detail){
     if(phase==='checking')return 'Local index ready · checking for Ollama';
     if(phase==='searching')return 'Searching the local LaB index';
     if(phase==='retrieval')return 'Sourced local search ready';
+    if(phase==='disabled')return 'Sourced only · no model requests';
     if(phase==='model')return 'Asking '+modelLabel()+' · '+detail+'s';
     if(phase==='verified')return modelLabel()+' answer verified against retrieved sources';
     if(phase==='grounding')return 'Model rewrite rejected · sourced fallback shown';
     if(phase==='offline')return 'Ollama offline · sourced local search ready';
     if(phase==='busy')return 'Ollama busy · sourced local search ready';
-    if(phase==='ready')return modelLabel()+' ready · '+detail+' · grounded only';
-    return 'Local index · model-free here · no prompt saved';
+    if(phase==='ready')return modelLabel()+' ready · grounded to the site';
+    return 'Local index · sourced only · no prompt saved';
+  }
+  function setModelToggle(enabled){
+    if(!modelToggle)return;
+    modelToggle.setAttribute('aria-pressed',String(enabled));
+    modelToggle.textContent=enabled?'Nemotron':'Sourced only';
+    modelToggle.title=enabled?'Switch to sourced-only answers':'Enable Nemotron phrasing';
   }
   function setStatus(phase,detail){
     if(!status)return;
@@ -101,6 +110,7 @@
   function setBusy(on){
     busy=on;log.setAttribute('aria-busy',String(on));
     if(send)send.disabled=on;input.disabled=on;
+    if(modelToggle)modelToggle.disabled=on;
   }
   function settleStatus(result){
     if(result.mode==='ollama')setStatus('verified');
@@ -111,6 +121,7 @@
       var model=client.getModelState();
       if(model.state==='ready')setStatus('ready',model.model);
       else if(model.state==='offline')setStatus('offline');
+      else if(model.state==='disabled')setStatus('disabled');
       else setStatus('retrieval');
     }
   }
@@ -154,12 +165,25 @@
     addMessage('assistant','Fresh page. Ask me about a film, the kit, a checked resource, an event, or how the site works.',[],'retrieval');
     input.focus();
   });
+  if(modelToggle)modelToggle.addEventListener('click',function(){
+    var enabled=!client.isModelEnabled();
+    setModelToggle(enabled);
+    client.setModelEnabled(enabled).then(function(result){
+      if(result.state==='ready')setStatus('ready',result.model);
+      else if(result.state==='offline')setStatus('offline');
+      else if(result.state==='disabled')setStatus('disabled');
+      else setStatus('retrieval');
+      input.focus();
+    });
+  });
 
   window.LaBAssistant={ask:client.retrieve,client:client};
-  setStatus('checking');
+  setModelToggle(client.isModelEnabled());
+  setStatus(client.isModelEnabled()?'checking':'disabled');
   client.checkModel().then(function(result){
     if(result.state==='ready')setStatus('ready',result.model);
     else if(result.state==='offline')setStatus('offline');
+    else if(result.state==='disabled')setStatus('disabled');
     else setStatus('retrieval');
   });
   if(window.LaBAssistantGuide)window.LaBAssistantGuide.resume();

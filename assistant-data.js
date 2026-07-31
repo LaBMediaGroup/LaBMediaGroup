@@ -24,7 +24,7 @@ var LAB_ASSISTANT_KNOWLEDGE = {
       summary:'Roll a genre, character, setting and constraint when you want to make something.' },
     { title:'SkyBound', url:'skybound.html', tags:'drone fpv learn simulator part 107 flight path',
       summary:'A practical drone path: simulate, learn, build a kit, then work toward Part 107.' },
-    { title:'LaB Assistant', url:'assistant.html', tags:'assistant ask search films gear resources events local model free',
+    { title:'LaB Assistant', url:'assistant.html', tags:'assistant ask search films gear resources events sourced model ollama nemotron hybrid privacy',
       summary:'Ask the site about LaB’s films, kit, checked resources, events and build notes.' },
     { title:'About LaB', url:'contact.html', tags:'about bobby contact email shelby township detroit work hire',
       summary:'LaB Media is Bobby: one person with a camera, a full-time job and a weekend filmmaking habit.' },
@@ -78,7 +78,7 @@ var LAB_ASSISTANT_KNOWLEDGE = {
       answer:'For films, start with The Reel. To learn, open Watch & Learn. For filmmaking tools, use Software & Assets. If drones are the goal, start with SkyBound.' },
     { title:'How does this assistant work?', url:'assistant.html',
       tags:'assistant ai model ollama local search how work privacy',
-      answer:'The published assistant is model-free: your question stays in the browser and is matched against the site’s structured data. In the localhost dogfood version, a narrow gateway can give that retrieved answer to one fixed Ollama model for phrasing. For a :cloud model, the raw question stays on the Mac and only the already-sourced public answer is sent for cloud phrasing. The browser never talks to Ollama directly, and sourced retrieval remains the fallback.' }
+      answer:'The published assistant matches your question against the site’s structured data in the browser. In the default hybrid mode, a protected Cloudflare Worker may hand only that already-public answer to the fixed Nemotron 3 Super model for more natural phrasing. The raw visitor question is not sent to Ollama, the API key never reaches the browser, and sourced retrieval remains the fallback. Switch to Sourced only to make no model request at all.' }
   ]
 };
 

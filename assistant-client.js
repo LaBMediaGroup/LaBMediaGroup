@@ -1,6 +1,12 @@
 /* Shared retrieval + optional Ollama controller for the full page and widget. */
 (function(root){
   'use strict';
+  var MODEL_MODE_KEY='lab-assistant-model-mode-v1';
+
+  function savedModelEnabled(){
+    try{return root.sessionStorage.getItem(MODEL_MODE_KEY)!=='sourced';}
+    catch(error){return true;}
+  }
 
   function create(options){
     options=options||{};
@@ -12,9 +18,16 @@
       spotlight:options.spotlight||[],
       knowledge:options.knowledge||{}
     });
-    var apiBase=String(options.apiBase||'').replace(/\/+$/,'');
+    var publicApiBase=location.protocol==='https:'
+      && (location.hostname==='labmedia.work'||location.hostname==='www.labmedia.work')
+        ? 'https://lab-assistant-api.robertbaldwin3d.workers.dev'
+        : '';
+    var apiBase=String(options.apiBase||publicApiBase).replace(/\/+$/,'');
     var gatewayState='unchecked';
     var gatewayModel='';
+    var modelEnabled=typeof options.modelEnabled==='boolean'
+      ? options.modelEnabled
+      : savedModelEnabled();
 
     function canUseGateway(){
       if(apiBase)return true;
@@ -40,6 +53,11 @@
     }
 
     function checkModel(){
+      if(!modelEnabled){
+        gatewayState='disabled';
+        gatewayModel='';
+        return Promise.resolve({state:gatewayState,model:''});
+      }
       if(!canUseGateway()){
         gatewayState='retrieval';
         return Promise.resolve({state:gatewayState,model:''});
@@ -67,7 +85,7 @@
       question=String(question||'').trim();
       if(hooks.onPhase)hooks.onPhase('retrieval',{question:question});
       var baseline=retrieve(question);
-      if(baseline.kind==='unknown'||baseline.kind==='empty'||gatewayState!=='ready'){
+      if(baseline.kind==='unknown'||baseline.kind==='empty'||!modelEnabled||gatewayState!=='ready'){
         return Promise.resolve({
           ok:true,
           mode:'retrieval',
@@ -79,12 +97,16 @@
       }
 
       if(hooks.onPhase)hooks.onPhase('model',{model:gatewayModel});
+      var requestBody=apiBase
+        ? {baseline:{answer:baseline.answer}}
+        : {question:question};
       return fetchJSON(endpoint('/api/assistant'),{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({question:question})
+        body:JSON.stringify(requestBody)
       },32000).then(function(result){
         if(!result||!result.ok)throw new Error('No answer returned.');
+        result.sources=baseline.sources;
         if(result.mode==='ollama'){
           gatewayState='ready';
           if(hooks.onPhase)hooks.onPhase('verified',{model:result.model||gatewayModel});
@@ -119,6 +141,19 @@
       ask:ask,
       retrieve:retrieve,
       checkModel:checkModel,
+      setModelEnabled:function(enabled){
+        modelEnabled=Boolean(enabled);
+        try{root.sessionStorage.setItem(MODEL_MODE_KEY,modelEnabled?'hybrid':'sourced');}
+        catch(error){}
+        if(!modelEnabled){
+          gatewayState='disabled';
+          gatewayModel='';
+          return Promise.resolve({state:gatewayState,model:''});
+        }
+        gatewayState='unchecked';
+        return checkModel();
+      },
+      isModelEnabled:function(){return modelEnabled;},
       isModelReady:function(){return gatewayState==='ready';},
       getModelState:function(){return {state:gatewayState,model:gatewayModel};},
       buildIndex:function(){return engine.buildIndex();}
