@@ -598,6 +598,55 @@
 .hist-head h2 em{font-style:italic;color:var(--accent)}
 .hist-head p{color:var(--dim);font-size:var(--t-sm);line-height:1.75;max-width:62ch;margin-top:var(--s-4)}
 
+.hist { position: relative; padding-bottom: var(--s-8); }
+.tl-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-block: var(--s-5); }
+.t-pill {
+  font-family: var(--f-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  padding: 6px 14px; border: 1px solid var(--line); background: var(--paper-2); color: var(--dim);
+  transition: all var(--fast) var(--ease); cursor: pointer;
+}
+.t-pill:hover, .t-pill.active { background: var(--accent); color: var(--paper); border-color: var(--accent); }
+
+.v-timeline { position: relative; padding-left: 28px; margin-top: var(--s-6); }
+.v-timeline::before {
+  content: ''; position: absolute; left: 8px; top: 12px; bottom: 12px; width: 2px;
+  background: var(--line-2);
+}
+.v-year-marker {
+  font-family: var(--f-display); font-size: clamp(28px, 4vw, 42px); color: var(--accent);
+  margin-top: var(--s-7); margin-bottom: var(--s-4); position: relative;
+}
+.v-year-marker::before {
+  content: ''; position: absolute; left: -24px; top: 50%; transform: translateY(-50%);
+  width: 10px; height: 10px; border-radius: 50%; background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+.v-node {
+  position: relative; padding: var(--s-4); margin-bottom: var(--s-4);
+  background: var(--paper-2); border: 1px solid var(--line);
+  transition: all var(--mid) var(--ease);
+}
+.v-node:hover { border-color: var(--accent-dim); transform: translateX(4px); }
+.v-node::before {
+  content: ''; position: absolute; left: -24px; top: 22px; width: 8px; height: 8px;
+  border-radius: 50%; background: var(--dim); border: 2px solid var(--paper);
+}
+.v-node.own::before { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+.v-node.win::before { background: #FFD700; box-shadow: 0 0 8px #FFD700; }
+.v-node.crew::before { background: var(--sky); }
+
+.v-node .v-date { font-family: var(--f-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+.v-node .v-title { font-family: var(--f-body); font-size: var(--t-base); font-weight: 500; color: var(--ink); margin-block: 4px; }
+.v-node.own .v-title { color: var(--accent); }
+.v-node.crew .v-title { color: var(--sky); }
+.v-node .v-desc { font-size: var(--t-sm); color: var(--dim); line-height: 1.55; }
+.v-node a.v-jump {
+  display: inline-flex; align-items: center; gap: 4px; font-family: var(--f-mono);
+  font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent);
+  margin-top: 8px; text-decoration: none;
+}
+.v-node a.v-jump:hover { text-decoration: underline; }
+
 .yr{margin-top:var(--s-7)}
 .yr-n{font-family:var(--f-display);font-size:clamp(32px,5vw,54px);color:var(--faint);line-height:1;
   padding-bottom:var(--s-4);border-bottom:1px solid var(--line)}
@@ -620,6 +669,8 @@
 @media (max-width:640px){
   .ev-row{grid-template-columns:1fr;gap:4px}
   .ev-when{font-size:9px}
+  .v-timeline{padding-left:22px}
+  .v-node::before{left:-18px}
 }
 </style>
 </head>
@@ -1206,35 +1257,109 @@
 
 <section class="hist wrap" id="history">
   <div class="hist-head">
-    <div class="rule"><span class="mono">The run of shows</span><i></i><span class="mono" style="color:var(--faint)">2024 &rarr; now</span></div>
+    <div class="rule"><span class="mono">The Production Timeline</span><i></i><span class="mono" style="color:var(--faint)">2024 &rarr; 2026</span></div>
     <h2>Everything, <em>in order.</em></h2>
-    <p>Days on other people&rsquo;s films are marked: they aren&rsquo;t LaB projects,
-    but they were still days on set.</p>
+    <p>Every shoot, festival screening, and collaboration mapped chronologically. Filter by project type or jump straight to the video reel.</p>
   </div>
 
-  <div class="yr">
-    <div class="yr-n">2024 <span>Three shoots, one day each</span></div>
-    <div class="ev-row own"><span class="ev-when">Jan</span><span class="ev-what"><b>The Pandys</b>: live session.</span></div>
-    <div class="ev-row own"><span class="ev-when">Mar 4</span><span class="ev-what"><b>Anthony Brass</b>: one room, natural light.</span></div>
-    <div class="ev-row own"><span class="ev-when">Jul 1</span><span class="ev-what"><b>MOZ Interiors</b>: first shoot for MOZ.</span></div>
+  <div class="tl-filters" id="tlFilters">
+    <button class="t-pill active" data-filter="all" type="button">All Milestones (13)</button>
+    <button class="t-pill" data-filter="own" type="button">LaB Originals</button>
+    <button class="t-pill" data-filter="win" type="button">Wins &amp; Screenings ★</button>
+    <button class="t-pill" data-filter="crew" type="button">Crewed Sets</button>
   </div>
 
-  <div class="yr">
-    <div class="yr-n">2025 <span>Two competitions, one win</span></div>
-    <div class="ev-row own"><span class="ev-when">May 1, 5, 20</span><span class="ev-what"><b>Lookout</b>: three days, Derek and Kelly on camera. Top 25 at The Comedy Roll.</span></div>
-    <div class="ev-row own"><span class="ev-when">Sep 5</span><span class="ev-what"><b>Trail Dead</b>: rolled the wheel at Horror Film Roulette.</span></div>
-    <div class="ev-row own"><span class="ev-when">Sep 20&ndash;29</span><span class="ev-what"><b>Trail Dead</b>: two shoot days, then cut to the deadline.</span></div>
-    <div class="ev-row own win"><span class="ev-when">Oct 26</span><span class="ev-what"><b>Trail Dead</b>: screened. Best Editing.</span></div>
-  </div>
+  <div class="v-timeline" id="vTimeline">
+    <div class="v-year-marker">2024</div>
+    <div class="v-node own" data-type="own">
+      <span class="v-date">Jan 2024</span>
+      <div class="v-title">The Pandys</div>
+      <div class="v-desc">Live performance session recorded in studio.</div>
+      <a class="v-jump" href="#pandys">Jump to film &rarr;</a>
+    </div>
 
-  <div class="yr">
-    <div class="yr-n">2026 <span>Busiest year, two of them not ours</span></div>
-    <div class="ev-row crew"><span class="ev-when">Mar 14&ndash;29</span><span class="ev-what"><b>The Hook</b><span class="ev-tag">Crewed</span>: four days doing grip work on a local crew&rsquo;s pilot. Met good people and had a blast.</span></div>
-    <div class="ev-row crew"><span class="ev-when">Apr 18</span><span class="ev-what"><b>Cracked</b><span class="ev-tag">Crewed</span>: a day on Mike&rsquo;s short.</span></div>
-    <div class="ev-row own"><span class="ev-when">Apr 25, 28, 29</span><span class="ev-what"><b>It&rsquo;s a Boy</b>: three days. Screened May 17 at The Comedy Roll.</span></div>
-    <div class="ev-row crew"><span class="ev-when">May 23</span><span class="ev-what"><b>The Hook</b><span class="ev-tag">Crewed</span>: reshoot. Turned up late, mostly to say hello.</span></div>
-    <div class="ev-row own"><span class="ev-when">Jun 1</span><span class="ev-what"><b>Le Juic&eacute;</b>: one day. Still cutting it.</span></div>
-    <div class="ev-row own"><span class="ev-when">Jul 24&ndash;26</span><span class="ev-what"><b>Scattered</b>: Detroit 48 Hour. Shot, cut and submitted with six minutes to spare.</span></div>
+    <div class="v-node own" data-type="own">
+      <span class="v-date">Mar 4, 2024</span>
+      <div class="v-title">Anthony Brass</div>
+      <div class="v-desc">One room, natural light, intimate artist spotlight in his home studio.</div>
+      <a class="v-jump" href="#artist">Jump to film &rarr;</a>
+    </div>
+
+    <div class="v-node own" data-type="own">
+      <span class="v-date">Jul 1, 2024</span>
+      <div class="v-title">MOZ Interiors</div>
+      <div class="v-desc">First brand shoot for MOZ Interiors featuring the hidden mirror door.</div>
+      <a class="v-jump" href="#moz">Jump to film &rarr;</a>
+    </div>
+
+    <div class="v-year-marker">2025</div>
+    <div class="v-node own" data-type="own">
+      <span class="v-date">May 1, 5, 20, 2025</span>
+      <div class="v-title">Lookout</div>
+      <div class="v-desc">Three shoot days. Derek and Kelly on camera. Top 25 finalist at The Comedy Roll.</div>
+      <a class="v-jump" href="#comedy">Jump to film &rarr;</a>
+    </div>
+
+    <div class="v-node own" data-type="own">
+      <span class="v-date">Sep 5, 2025</span>
+      <div class="v-title">Trail Dead : Kickoff</div>
+      <div class="v-desc">Rolled the roulette wheel at Horror Film Roulette.</div>
+      <a class="v-jump" href="#horror">Jump to film &rarr;</a>
+    </div>
+
+    <div class="v-node own" data-type="own">
+      <span class="v-date">Sep 20–29, 2025</span>
+      <div class="v-title">Trail Dead : Production</div>
+      <div class="v-desc">Two shoot days in the woods, then locked the edit to deadline.</div>
+      <a class="v-jump" href="#horror">Jump to film &rarr;</a>
+    </div>
+
+    <div class="v-node own win" data-type="win">
+      <span class="v-date">Oct 26, 2025 ★</span>
+      <div class="v-title">Trail Dead : Festival Screening &amp; Win</div>
+      <div class="v-desc">Official screening at Horror Film Roulette. Awarded <b>Best Editing</b>.</div>
+      <a class="v-jump" href="#horror">Jump to film &rarr;</a>
+    </div>
+
+    <div class="v-year-marker">2026</div>
+    <div class="v-node crew" data-type="crew">
+      <span class="v-date">Mar 14–29, 2026</span>
+      <div class="v-title">The Hook (Crewed)</div>
+      <div class="v-desc">Four days doing grip work on a local crew's pilot episode.</div>
+    </div>
+
+    <div class="v-node crew" data-type="crew">
+      <span class="v-date">Apr 18, 2026</span>
+      <div class="v-title">Cracked (Crewed)</div>
+      <div class="v-desc">Camera &amp; lighting support day on Mike's short film.</div>
+    </div>
+
+    <div class="v-node own" data-type="own">
+      <span class="v-date">Apr 25, 28, 29, 2026</span>
+      <div class="v-title">It’s a Boy</div>
+      <div class="v-desc">Three shoot days. Official screening May 17 at The Comedy Roll.</div>
+      <a class="v-jump" href="#itsaboy">Jump to film &rarr;</a>
+    </div>
+
+    <div class="v-node crew" data-type="crew">
+      <span class="v-date">May 23, 2026</span>
+      <div class="v-title">The Hook : Reshoot (Crewed)</div>
+      <div class="v-desc">Grip support and set visit for pilot reshoots.</div>
+    </div>
+
+    <div class="v-node own" data-type="own">
+      <span class="v-date">Jun 1, 2026</span>
+      <div class="v-title">Le Juicé</div>
+      <div class="v-desc">One day shoot at Le Juicé counter. Currently in post audio &amp; edit.</div>
+      <a class="v-jump" href="#lejuice">Jump to film &rarr;</a>
+    </div>
+
+    <div class="v-node own" data-type="own">
+      <span class="v-date">Jul 24–26, 2026</span>
+      <div class="v-title">Scattered</div>
+      <div class="v-desc">Detroit 48 Hour Film Project. Shot, cut and submitted with six minutes to spare.</div>
+      <a class="v-jump" href="#scattered">Jump to film &rarr;</a>
+    </div>
   </div>
 </section>
 
@@ -1562,6 +1687,29 @@ document.querySelectorAll('.vid').forEach(function(box){
 
   btns.forEach(function(b){
     b.addEventListener('click',function(){apply(b.dataset.themeSet,true)});
+})();
+</script>
+<script>
+/* Vertical Timeline Filtering */
+(function(){
+  var pills = document.querySelectorAll('.t-pill');
+  var nodes = document.querySelectorAll('.v-node');
+  if(!pills.length || !nodes.length) return;
+
+  pills.forEach(function(p){
+    p.addEventListener('click', function(){
+      var f = p.dataset.filter;
+      pills.forEach(function(x){ x.classList.remove('active'); });
+      p.classList.add('active');
+
+      nodes.forEach(function(n){
+        if(f === 'all') { n.style.display = ''; }
+        else if(f === 'own' && n.classList.contains('own')) { n.style.display = ''; }
+        else if(f === 'win' && n.classList.contains('win')) { n.style.display = ''; }
+        else if(f === 'crew' && n.classList.contains('crew')) { n.style.display = ''; }
+        else { n.style.display = 'none'; }
+      });
+    });
   });
 })();
 </script>
