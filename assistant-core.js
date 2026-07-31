@@ -324,6 +324,22 @@
       var films=(knowledge.films||[]).map(function(f){var s=scoreDoc(query,{title:f.title,text:f.summary,tags:f.tags+' '+f.kind+' '+f.year});return {film:f,score:s.score};})
         .sort(function(a,b){return b.score-a.score;});
       var nq=normalize(query), themed=null;
+      var qTokens=tokens(query);
+      var named=films.filter(function(x){
+        var titleTokens=tokens(x.film.title).filter(function(t){return t!=='the'&&t.length>1;});
+        return titleTokens.length&&titleTokens.every(function(t){return qTokens.indexOf(t)>-1;});
+      });
+      if(named.length===1){
+        films=named;
+        if(/\b(when|date|dates|filmed|shot|shoot|made)\b/.test(nq)&&named[0].film.filmed){
+          return {
+            kind:'films',
+            confidence:1,
+            answer:named[0].film.title+' was filmed '+named[0].film.filmed+'. '+named[0].film.summary,
+            sources:[source(named[0].film.title,named[0].film.url,named[0].film.kind+' · '+named[0].film.year)]
+          };
+        }
+      }
       if(/\b(comedy|comedies|funny)\b/.test(nq))themed='comedy';
       else if(/\b(brand|commercial|commercials)\b/.test(nq))themed='commercial';
       else if(/\b(horror|scary)\b/.test(nq))themed='horror';
@@ -332,7 +348,7 @@
       if(themed)films=films.filter(function(x){return normalize(x.film.tags+' '+x.film.kind).indexOf(themed)>-1;});
       var plural=/\b(films|movies|reel|portfolio|work)\b/.test(nq) && !/\b(award|horror|scary|comedy|comedies|funny|48|brand|commercial|music|artist|portrait|documentary)\b/.test(nq);
       var floor=films.length?Math.max(6,films[0].score*.6):6;
-      var chosen=plural?films.slice(0,8):themed?films.slice(0,3):films.filter(function(x){return x.score>=floor;}).slice(0,3);
+      var chosen=plural?films.slice(0,8):named.length===1?films:themed?films.slice(0,3):films.filter(function(x){return x.score>=floor;}).slice(0,3);
       if(!chosen.length)return null;
       return {kind:'films',confidence:1,answer:plural
           ? 'The Reel currently has eight films: '+chosen.map(function(x){return x.film.title;}).join(', ')+'.'

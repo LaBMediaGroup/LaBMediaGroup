@@ -15,10 +15,10 @@
     +'</button>'
     +'<section class="lab-chat-panel" id="labChatPanel" role="dialog" aria-modal="false" aria-label="LaB Assistant" hidden>'
       +'<header class="lab-chat-head">'
-        +'<div><strong>Ask the <em>LaB.</em></strong><span class="lab-chat-state" id="labChatState" role="status">Local search ready</span></div>'
+        +'<div><strong>Ask the <em>LaB.</em></strong><span class="lab-chat-state" id="labChatState" role="status">Sourced search ready</span></div>'
         +'<div class="lab-chat-actions">'
           +'<a href="assistant.html" aria-label="Open full-screen assistant" title="Open full assistant">↗</a>'
-          +'<button type="button" data-chat-clear aria-label="Clear conversation" title="Clear">Clear</button>'
+          +'<button type="button" data-chat-clear aria-label="Start a new conversation" title="New conversation">↺</button>'
           +'<button type="button" data-chat-close aria-label="Close assistant" title="Close">×</button>'
         +'</div>'
       +'</header>'
@@ -30,8 +30,8 @@
       +'</div>'
       +'<form class="lab-chat-form">'
         +'<label for="labChatInput" class="vh">Ask a question about this site</label>'
-        +'<textarea id="labChatInput" rows="2" maxlength="280" placeholder="Ask about a film, tool, event, or the kit…" disabled></textarea>'
-        +'<button type="submit" disabled>Ask <span aria-hidden="true">→</span></button>'
+        +'<textarea id="labChatInput" rows="1" maxlength="280" placeholder="Ask about the LaB…" disabled></textarea>'
+        +'<button type="submit" aria-label="Ask the LaB" title="Ask" disabled><span aria-hidden="true">→</span></button>'
       +'</form>'
     +'</section>';
   document.body.appendChild(shell);
@@ -87,10 +87,7 @@
   }
   function badgeFor(mode){
     if(mode==='ollama')return modelLabel()+' · verified';
-    if(mode==='grounding')return 'Sourced fallback · model rejected';
-    if(mode==='offline')return 'Sourced fallback · Ollama offline';
-    if(mode==='busy')return 'Sourced fallback · model busy';
-    return 'Sourced search';
+    return 'Sourced';
   }
   function addMessage(kind,textValue,sources,mode,persist){
     var article=document.createElement('article');
@@ -112,6 +109,8 @@
 
     if(sources&&sources.length){
       var sourceWrap=document.createElement('div');sourceWrap.className='lab-chat-sources';
+      sourceWrap.setAttribute('aria-label','Source pages');
+      var sourceLabel=document.createElement('span');sourceLabel.textContent='Pages';sourceWrap.appendChild(sourceLabel);
       sources.slice(0,4).forEach(function(source){
         var a=document.createElement('a');
         a.href=source.url;a.textContent=source.title;
@@ -147,11 +146,11 @@
         state.textContent='Asking '+modelLabel()+' · '+Math.floor((Date.now()-elapsedStarted)/1000)+'s';
       },1000);
     }else if(phase==='verified')state.textContent=modelLabel()+' answer verified';
-    else if(phase==='grounding')state.textContent='Model rewrite rejected · sourced answer';
-    else if(phase==='offline')state.textContent='Ollama offline · sourced answer ready';
-    else if(phase==='busy')state.textContent='Ollama busy · sourced answer ready';
+    else if(phase==='grounding')state.textContent='Sourced answer ready';
+    else if(phase==='offline')state.textContent='Sourced search ready';
+    else if(phase==='busy')state.textContent='Sourced answer ready';
     else if(phase==='ready')state.textContent=detail?modelLabel()+' ready · '+detail:modelLabel()+' ready';
-    else state.textContent='Sourced local search ready';
+    else state.textContent='Sourced search ready';
   }
   function setBusy(on){
     busy=on;log.setAttribute('aria-busy',String(on));
@@ -220,12 +219,16 @@
   function clearConversation(){
     log.replaceChildren();
     try{sessionStorage.removeItem(SESSION_KEY);}catch(error){}
-    addMessage('assistant','Fresh page. Ask me about a film, the kit, a checked resource, an event, or how this place works.',[],'retrieval');
+    var intro=addMessage('assistant','Ask about a film, the kit, a checked resource, an event, or where something lives on the site.',[],'retrieval');
+    intro.classList.add('is-intro');
+    prompts.hidden=false;
     if(client)input.focus();
   }
   function ask(question){
     question=String(question||'').trim();
     if(!question||busy)return;
+    var intro=log.querySelector('.is-intro');
+    if(intro)intro.remove();
     prompts.hidden=true;
     addMessage('user',question,[],'');
     setBusy(true);
@@ -250,7 +253,8 @@
     stored.forEach(function(item){addMessage(item.kind,item.text,item.sources,item.mode,false);});
     prompts.hidden=true;
   }else{
-    addMessage('assistant','Ask me about a film, what gear is actually owned, a checked resource, an event, or where to find something on this site.',[],'retrieval',false);
+    var intro=addMessage('assistant','Ask about a film, the kit, a checked resource, an event, or where something lives on the site.',[],'retrieval',false);
+    intro.classList.add('is-intro');
   }
 
   launch.addEventListener('click',function(){panel.hidden?open():close();});
