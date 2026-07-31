@@ -102,6 +102,22 @@
         }
         .hero .hero-mine a:hover { border-bottom-color: var(--sky); }
 
+        .hero .hero-wx {
+            font-family: var(--f-mono);
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-top: 1.5rem;
+        }
+        .hero .hero-wx a {
+            color: var(--accent);
+            border-bottom: 1px solid var(--accent-dim);
+            padding-bottom: 2px;
+            transition: border-color var(--fast) var(--ease);
+        }
+        .hero .hero-wx a:hover { border-bottom-color: var(--accent); }
+
         /* Container */
         .container {
             max-width: 1400px;
@@ -601,8 +617,13 @@
             <span class="hero-tagline">a resource by LaB Media</span>
         </h1>
         <p>Drone gear, FPV resources, and your path to Part 107 certification.</p>
-        <p class="hero-mine">This is the path I actually walked : you can watch me still walking it over at
-          <a href="https://www.youtube.com/@BobtastiCFPV" target="_blank" rel="noopener">BobtastiC FPV&nbsp;↗</a>.</p>
+        <p class="hero-mine">
+          This is the path I actually walked : you can watch me still walking it over at<br>
+          <a href="https://www.youtube.com/@BobtastiCFPV" target="_blank" rel="noopener">BobtastiC FPV&nbsp;↗</a>.
+        </p>
+        <p class="hero-wx">
+          About to fly? Check live local conditions at <a href="droneweather.html">SkyBound Weather &amp; Safety &rarr;</a>
+        </p>
     </section>
 
     <!-- Explanation Section -->
