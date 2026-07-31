@@ -195,13 +195,13 @@
     if(client)return Promise.resolve(client);
     if(loading)return loading;
     setState('loading');
-    loading=loadScript('resources-data.js',hasResources)
-      .then(function(){return loadScript('gear-data.js',function(){return Boolean(window.gearData);});})
-      .then(function(){return loadScript('spotlight-data.js',function(){return Boolean(window.SPOTLIGHT);});})
-      .then(function(){return loadScript('field-notes-data.js',function(){return Array.isArray(window.LAB_FIELD_NOTES);});})
-      .then(function(){return loadScript('assistant-data.js',function(){return Boolean(window.LAB_ASSISTANT_KNOWLEDGE);});})
-      .then(function(){return loadScript('assistant-core.js',function(){return Boolean(window.LaBAssistantCore);});})
-      .then(function(){return loadScript('assistant-client.js',function(){return Boolean(window.LaBAssistantClient);});})
+    loading=loadScript('resources-data.js?v=20260731',hasResources)
+      .then(function(){return loadScript('gear-data.js?v=20260731',function(){return Boolean(window.gearData);});})
+      .then(function(){return loadScript('spotlight-data.js?v=20260731',function(){return Boolean(window.SPOTLIGHT);});})
+      .then(function(){return loadScript('field-notes-data.js?v=20260731',function(){return Array.isArray(window.LAB_FIELD_NOTES);});})
+      .then(function(){return loadScript('assistant-data.js?v=20260731',function(){return Boolean(window.LAB_ASSISTANT_KNOWLEDGE);});})
+      .then(function(){return loadScript('assistant-core.js?v=20260731',function(){return Boolean(window.LaBAssistantCore);});})
+      .then(function(){return loadScript('assistant-client.js?v=20260731',function(){return Boolean(window.LaBAssistantClient);});})
       .then(function(){
         client=window.LaBAssistantClient.create({
           resources:getResources(),
