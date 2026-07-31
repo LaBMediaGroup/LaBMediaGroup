@@ -350,11 +350,11 @@
     <div class="bug" id="aspect-previewer">
       <span class="bug-n">11</span>
       <div class="bug-main">
-        <h3>An interactive crop previewer that computes active pixels</h3>
-        <p>The Aspect Ratio Previewer (<code>aspect.html</code>) overlays 2.39&#58;1 Scope, 1.85&#58;1 Flat, 16&#58;9 HD, 4&#58;3 Academy, and 9&#58;16 Vertical mattes live over sample stills. Instead of guessing letterbox boundaries in NLE timelines, it computes exact active pixel resolutions (e.g. 3840&times;1607 for 4K 2.39 scope) so editors know their active canvas size before rendering.</p>
+        <h3>An interactive crop previewer that previews local media</h3>
+        <p>The Aspect Ratio Previewer (<code>aspect.html</code>) overlays 2.39&#58;1 Scope, 1.85&#58;1 Flat, 16&#58;9 HD, 4&#58;3 Academy, and 9&#58;16 Vertical mattes live over sample stills or your own local photos and video clips. Instead of guessing letterbox boundaries in NLE timelines, it computes exact active pixel resolutions (e.g. 3840&times;1607 for 4K 2.39 scope) so editors know their active canvas size before rendering.</p>
       </div>
       <div class="bug-side">
-        <p><em>Eliminates rendering guesswork. The letterbox overlay updates active pixel dimensions live as you test composition.</em></p>
+        <p><em>Zero upload, 100% private. User photos and video clips are parsed locally in browser memory via <code>URL.createObjectURL()</code> without sending a single byte across the network.</em></p>
       </div>
     </div>
     <div class="bug" id="drone-weather">

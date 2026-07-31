@@ -164,6 +164,28 @@
       font-size: clamp(20px, 2.5vw, 26px);
       color: var(--ink);
     }
+    .custom-file-btn {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px dashed var(--accent-dim);
+      padding: 6px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: background var(--fast) var(--ease), border-color var(--fast) var(--ease);
+    }
+    .custom-file-btn:hover {
+      background: var(--accent-bg);
+      border-color: var(--accent);
+    }
+    .viewfinder video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   </style>
 </head>
 <body>
@@ -232,18 +254,28 @@
 <section class="pg-hero wrap">
   <div class="rule"><span class="mono">Framing &amp; Scope</span><i></i><span class="mono">Crop Calculator</span></div>
   <h1><em>Preview your</em> aspect ratio.</h1>
-  <p class="lede">Test letterboxing, anamorphic scope crops, and vertical social reframing against real sample stills. Calculates exact active pixel dimensions for 1080p and 4K UHD timelines.</p>
+  <p class="lede">Test letterboxing, anamorphic scope crops, and vertical social reframing against sample stills or your own local media. Calculates exact active pixel dimensions for 1080p and 4K UHD timelines.</p>
 </section>
 
 <section class="wrap">
-  <div class="frame-select">
-    <label for="stillSelect">Sample Frame:</label>
-    <select id="stillSelect">
-      <option value="images/moz/moz-01.jpg">MOZ Interiors (Architectural)</option>
-      <option value="images/brass.jpg">Anthony Brass (Artist Studio)</option>
-      <option value="images/support.jpg">RS 3 Mini Gimbal (Set Photo)</option>
-      <option value="images/camera.jpg">EOS R50 Rig (Camera Build)</option>
-    </select>
+  <div class="frame-select" style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+    <div>
+      <label for="stillSelect">Sample Frame:</label>
+      <select id="stillSelect">
+        <option value="images/moz/moz-01.jpg">MOZ Interiors (Architectural)</option>
+        <option value="images/brass.jpg">Anthony Brass (Artist Studio)</option>
+        <option value="images/support.jpg">RS 3 Mini Gimbal (Set Photo)</option>
+        <option value="images/camera.jpg">EOS R50 Rig (Camera Build)</option>
+      </select>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span class="mono" style="font-size:11px;color:var(--faint);">or</span>
+      <label for="customMediaInput" class="custom-file-btn">
+        <span>Test Your Photo or Video &nbsp;&rarr;</span>
+        <input type="file" id="customMediaInput" accept="image/*,video/*" style="display:none;">
+      </label>
+      <span class="mono" style="font-size:10px;color:var(--faint);letter-spacing:0.04em;">(Processed 100% locally in browser memory : zero server uploads)</span>
+    </div>
   </div>
 
   <div class="ratio-pills" id="ratioPills">
@@ -257,6 +289,7 @@
   <div class="aspect-stage">
     <div class="viewfinder" id="viewfinder">
       <img id="sampleImg" src="images/moz/moz-01.jpg" alt="Sample frame for aspect ratio preview">
+      <video id="sampleVid" autoplay loop muted playsinline style="display:none;"></video>
       <div class="matte-top" id="mTop"></div>
       <div class="matte-bottom" id="mBottom"></div>
       <div class="matte-left" id="mLeft"></div>
@@ -400,15 +433,52 @@
   var mLeft = document.getElementById('mLeft');
   var mRight = document.getElementById('mRight');
   var sampleImg = document.getElementById('sampleImg');
+  var sampleVid = document.getElementById('sampleVid');
   var stillSelect = document.getElementById('stillSelect');
+  var customInput = document.getElementById('customMediaInput');
   var formatName = document.getElementById('formatName');
   var pix1080 = document.getElementById('pix1080');
   var pix4K = document.getElementById('pix4K');
   var cropPct = document.getElementById('cropPct');
 
   stillSelect.addEventListener('change', function(){
-    sampleImg.src = this.value;
+    if (this.value !== 'custom') {
+      sampleVid.pause();
+      sampleVid.style.display = 'none';
+      sampleImg.style.display = 'block';
+      sampleImg.src = this.value;
+    }
   });
+
+  if (customInput) {
+    customInput.addEventListener('change', function(e){
+      var file = e.target.files && e.target.files[0];
+      if (!file) return;
+      var objUrl = URL.createObjectURL(file);
+
+      var customOpt = document.getElementById('customOpt');
+      if (!customOpt) {
+        customOpt = document.createElement('option');
+        customOpt.id = 'customOpt';
+        customOpt.value = 'custom';
+        stillSelect.appendChild(customOpt);
+      }
+      customOpt.textContent = '★ Local File (' + file.name + ')';
+      stillSelect.value = 'custom';
+
+      if (file.type.startsWith('video/')) {
+        sampleImg.style.display = 'none';
+        sampleVid.style.display = 'block';
+        sampleVid.src = objUrl;
+        sampleVid.play().catch(function(){});
+      } else {
+        sampleVid.pause();
+        sampleVid.style.display = 'none';
+        sampleImg.style.display = 'block';
+        sampleImg.src = objUrl;
+      }
+    });
+  }
 
   function applyRatio(r, name) {
     formatName.textContent = name;
