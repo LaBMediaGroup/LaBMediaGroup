@@ -23,6 +23,31 @@
   </script>
 
   <style>
+    .pg-hero {
+      padding-block: clamp(44px, 6vw, var(--s-8)) clamp(36px, 5vw, var(--s-7));
+      border-bottom: 1px solid var(--line);
+    }
+    .pg-hero h1 {
+      font-family: var(--f-display);
+      font-size: var(--t-3xl);
+      font-weight: 400;
+      line-height: .95;
+      letter-spacing: -.025em;
+      margin-top: var(--s-6);
+      max-width: 16ch;
+    }
+    .pg-hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .pg-hero .lede {
+      color: var(--dim);
+      font-size: var(--t-lg);
+      line-height: 1.75;
+      max-width: 60ch;
+      margin-top: var(--s-5);
+    }
+
     .wx-card {
       background: var(--paper-2);
       border: 1px solid var(--line);
@@ -159,7 +184,7 @@
 
 <section class="pg-hero wrap">
   <div class="rule"><span class="mono">Flight Weather</span><i></i><span class="mono">Shelby Twp, MI · 42.67°N</span></div>
-  <h1>Drone weather &amp; <em>flight safety.</em></h1>
+  <h1><em>Drone weather</em> &amp; flight safety.</h1>
   <p class="lede">Real-time local wind speeds, gusts, and flight safety status calibrated for quadcopters, FPV rigs, and cinematic aerial photography.</p>
 </section>
 
