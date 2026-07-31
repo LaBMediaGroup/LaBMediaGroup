@@ -362,6 +362,14 @@
       query=String(query||'').trim().slice(0,280);
       if(!query)return {kind:'empty',confidence:0,answer:'Ask me something about the films, kit, resources, events or how this place works.',sources:[]};
       var nq=normalize(query);
+      if(/^(hello|hi|hey|good morning|good afternoon|good evening|how are you)( there)?$/.test(nq)){
+        return {
+          kind:'greeting',
+          confidence:1,
+          answer:'Hey — I’m the LaB Assistant. Ask me about a film, the gear LaB actually owns, a checked resource, a Michigan event, SkyBound, or how the site was built.',
+          sources:[source('LaB Assistant','assistant.html')]
+        };
+      }
       if(/\b(sync|account|saved|save)\b/.test(nq)&&/\b(kit|links|resources|favorites|favourites)\b/.test(nq)){
         var savedFaq=(knowledge.faqs||[]).filter(function(f){return f.title==='Where are saved resources kept?';})[0];
         if(savedFaq)return {kind:'faq',confidence:1,answer:savedFaq.answer,sources:[source(savedFaq.title,savedFaq.url)]};

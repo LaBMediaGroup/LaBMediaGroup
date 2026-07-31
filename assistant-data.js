@@ -78,7 +78,7 @@ var LAB_ASSISTANT_KNOWLEDGE = {
       answer:'For films, start with The Reel. To learn, open Watch & Learn. For filmmaking tools, use Software & Assets. If drones are the goal, start with SkyBound.' },
     { title:'How does this assistant work?', url:'assistant.html',
       tags:'assistant ai model ollama local search how work privacy',
-      answer:'The published assistant is model-free: your question stays in the browser and is matched against the site’s structured data. In the localhost dogfood version, a narrow gateway can give that retrieved answer to one allowlisted Ollama model for phrasing. The browser never talks to Ollama directly, and sourced retrieval remains the fallback.' }
+      answer:'The published assistant is model-free: your question stays in the browser and is matched against the site’s structured data. In the localhost dogfood version, a narrow gateway can give that retrieved answer to the fixed qwen3.6 Ollama model for phrasing. The browser never talks to Ollama directly, and sourced retrieval remains the fallback.' }
   ]
 };
 
