@@ -294,12 +294,18 @@
 :root[data-theme="forest"] .vid-btn img,
 :root[data-theme="forest"] .reel-btn img,
 :root[data-theme="forest"] .still img,
-:root[data-theme="forest"] .rv-btn img{filter:grayscale(.24) sepia(.16) saturate(.78) hue-rotate(38deg) contrast(1.03)}
+:root[data-theme="forest"] .rv-btn img,
+:root[data-theme="forest"] .kit-hero img,
+:root[data-theme="forest"] .sec-photo img,
+:root[data-theme="forest"] .shot img{filter:grayscale(1) contrast(1.05)}
 :root[data-theme="forest"] .card:hover .card-thumb img,
 :root[data-theme="forest"] .vid-btn:hover img,
 :root[data-theme="forest"] .reel-btn:hover img,
 :root[data-theme="forest"] .still:hover img,
-:root[data-theme="forest"] .rv-btn:hover img{filter:grayscale(0) sepia(0) contrast(1)}
+:root[data-theme="forest"] .rv-btn:hover img,
+:root[data-theme="forest"] .kit-hero:hover img,
+:root[data-theme="forest"] .sec-photo:hover img,
+:root[data-theme="forest"] .shot:hover img{filter:grayscale(0) contrast(1)}
 
 /* Anything sitting ON TOP of a photo keeps a dark scrim and light text in
    every theme — otherwise light/sepia would put dark text on a dark image. */
