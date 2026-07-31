@@ -150,15 +150,15 @@
 
 <section class="pg-hero wrap">
   <div class="rule"><span class="mono">Colophon</span><i></i><span class="mono" style="color:var(--faint)">Updated July 2026</span></div>
-  <h1>Fourteen pages, one <em>stylesheet.</em></h1>
+  <h1>Seventeen pages, one <em>stylesheet.</em></h1>
   <p class="lede">This site has no framework or build step. It&rsquo;s hand-written HTML and CSS on
   free hosting, plus one small Cloudflare Worker that protects the assistant&rsquo;s optional AI
   phrasing. If you&rsquo;re a filmmaker who also tinkers, this is the part you might find useful.</p>
 
   <dl class="figs">
-    <div class="fig"><dt>Pages</dt><dd>14</dd></div>
-    <div class="fig"><dt>Stylesheet</dt><dd>47<span>kb</span></dd></div>
-    <div class="fig"><dt>Design tokens</dt><dd>71</dd></div>
+    <div class="fig"><dt>Pages</dt><dd>17</dd></div>
+    <div class="fig"><dt>Stylesheet</dt><dd>48<span>kb</span></dd></div>
+    <div class="fig"><dt>Themes</dt><dd>05</dd></div>
     <div class="fig"><dt>Cloud Worker</dt><dd>01</dd></div>
     <div class="fig"><dt>Cookies</dt><dd>00</dd></div>
   </dl>
@@ -335,6 +335,36 @@
         fixed model for a natural voice. The raw visitor question is omitted from that cloud request;
         only the already-sourced public answer is sent for phrasing. A grounding check rejects any
         rewrite that drops or changes a date or claim. <em>The model can change the phrasing; it cannot change the facts.</em></p>
+      </div>
+    </div>
+    <div class="bug" id="solar-engine">
+      <span class="bug-n">10</span>
+      <div class="bug-main">
+        <h3>Simulating solar elevation and color temperature without API calls</h3>
+        <p>The Golden Hour Helper (<code>sun.html</code>) calculates real-time solar declination, azimuth, elevation angle, and color temperature (from 11,000K Blue Hour down to 2,700K Golden Hour) for Metro Detroit (42.67°N) entirely client-side. Dragging the time slider recalculates atmospheric physics in local memory without firing network requests or hitting third-party rate limits.</p>
+      </div>
+      <div class="bug-side">
+        <p><em>Zero latency, zero API costs. Solar position math is pure trigonometry running in local browser memory.</em></p>
+      </div>
+    </div>
+    <div class="bug" id="aspect-previewer">
+      <span class="bug-n">11</span>
+      <div class="bug-main">
+        <h3>An interactive crop previewer that computes active pixels</h3>
+        <p>The Aspect Ratio Previewer (<code>aspect.html</code>) overlays 2.39&#58;1 Scope, 1.85&#58;1 Flat, 16&#58;9 HD, 4&#58;3 Academy, and 9&#58;16 Vertical mattes live over sample stills. Instead of guessing letterbox boundaries in NLE timelines, it computes exact active pixel resolutions (e.g. 3840&times;1607 for 4K 2.39 scope) so editors know their active canvas size before rendering.</p>
+      </div>
+      <div class="bug-side">
+        <p><em>Eliminates rendering guesswork. The letterbox overlay updates active pixel dimensions live as you test composition.</em></p>
+      </div>
+    </div>
+    <div class="bug" id="drone-weather">
+      <span class="bug-n">12</span>
+      <div class="bug-main">
+        <h3>Live drone weather from open meteorological APIs</h3>
+        <p>SkyBound Weather (<code>droneweather.html</code>) fetches live local wind speeds, gusts, and temperatures for Shelby Township (42.67°N) from Open-Meteo REST API. It evaluates flight safety thresholds (0&ndash;11 mph ideal, 12&ndash;18 mph active compensation, 18+ mph grounded) and updates flight status badges in under 200 milliseconds.</p>
+      </div>
+      <div class="bug-side">
+        <p><em>Requires no API key or user tracking. Meteorological data is fetched directly client-side so pilots verify flight safety before launching.</em></p>
       </div>
     </div>
   </div>
