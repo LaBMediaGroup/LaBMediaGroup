@@ -23,13 +23,13 @@
     {
       id: 'davinci-resolve-color-grading',
       url: 'resources.html#davinci-resolve',
-      title: 'DaVinci Resolve Color Grading Tutorial',
-      tags: 'davinci resolve color colour grade grading tutorial video workflow node nodes primary secondary look transform',
-      note: 'Recommended video tutorial on color grading in DaVinci Resolve.',
-      answer: 'For color grading in DaVinci Resolve, check out this video walkthrough on workflow and grading techniques:\nhttps://www.youtube.com/watch?v=jBq8refj7cc&t=52s\n\nDaVinci Resolve is LaB’s primary tool for editing, color grading, and finishing.',
+      title: 'DaVinci Resolve Color Grading Tutorial & Node Bible',
+      tags: 'davinci resolve color colour grade grading help tutorial video workflow node nodes bible primary secondary look transform advice guide',
+      note: 'Recommended video tutorial and node walkthrough for color grading in DaVinci Resolve.',
+      answer: 'For color grading in DaVinci Resolve, check out this video walkthrough (essentially a DaVinci Resolve color grading node bible):\nhttps://www.youtube.com/watch?v=jBq8refj7cc&t=52s\n\nDaVinci Resolve is LaB’s primary tool for editing, color grading, and finishing.',
       sources: [
         { title: 'DaVinci Resolve', url: 'resources.html#davinci-resolve', note: 'Software & Assets entry' },
-        { title: 'Color Grading Video Tutorial', url: 'https://www.youtube.com/watch?v=jBq8refj7cc&t=52s', note: 'YouTube video tutorial' }
+        { title: 'Color Grading Node Bible Video', url: 'https://www.youtube.com/watch?v=jBq8refj7cc&t=52s', note: 'YouTube video tutorial' }
       ]
     }
   ];

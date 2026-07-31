@@ -5,9 +5,9 @@
 
   var STOP = {
     a:1, an:1, and:1, are:1, can:1, could:1, do:1, does:1, for:1, from:1,
-    how:1, i:1, in:1, is:1, it:1, me:1, of:1, on:1, please:1, show:1,
-    some:1, that:1, the:1, there:1, this:1, to:1, what:1, where:1,
-    which:1, who:1, with:1, you:1, your:1
+    get:1, give:1, help:1, how:1, i:1, in:1, is:1, it:1, me:1, need:1, of:1, on:1,
+    please:1, recommend:1, show:1, some:1, that:1, the:1, there:1, this:1, to:1,
+    want:1, what:1, where:1, which:1, who:1, with:1, you:1, your:1
   };
   var ALIASES = [
     ['camera','cameras','body','bodies'],
