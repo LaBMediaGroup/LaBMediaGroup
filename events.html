@@ -44,23 +44,9 @@
 
 /* ---- Campfire, lit ----
    Campfire is card 01 and already the one tagged "Start here". While they
-   actually have something on the calendar, embers glow along the bottom of
-   their card — so the decoration doubles as a live signal and goes out on its
-   own when their listings lapse. Nothing to remember.
-
-   Three states, because a GIF is a blunt instrument:
-
-   .lit       — the real thing, screen-blended so the file's black background
-                drops out. GIF alpha is 1-bit, so compositing is the only way
-                this looks like light rather than a rectangle.
-   .lit-still — a CSS gradient standing in for it. Used when motion is not
-                wanted, or when the file simply isn't there. An animated GIF
-                cannot be paused by CSS, so prefers-reduced-motion has to be
-                handled by never loading it in the first place.
-   light theme — always the gradient. Screen-blending onto cream erases the
-                fire completely, and multiply turns it into a smudge. The
-                signal survives; the animation doesn't, which is the right way
-                round.
+   actually have something on the calendar, a CSS ember glow warms the bottom
+   of their card — so the decoration doubles as a live signal and goes out on
+   its own when their listings lapse. Nothing to remember and no image request.
 
    The mask fades it out upward so it reads as warmth off the card rather than
    a picture stuck to it. */
@@ -73,21 +59,14 @@
           mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.5) 45%,transparent 100%);
 }
 .org.lit .org-ember{
-  opacity:.46;
-  background-image:url('images/Campfire.gif');
-  background-size:cover;background-position:center bottom;
-  mix-blend-mode:screen;
-}
-.org.lit:hover .org-ember{opacity:.66}
-
-.org.lit-still .org-ember{
-  opacity:1;background-image:none;mix-blend-mode:normal;
+  opacity:1;
+  background:linear-gradient(to top,var(--accent-bg),transparent 70%);
   background:linear-gradient(to top,
     color-mix(in srgb,var(--accent) 26%,transparent),
     transparent 70%);
 }
 :root[data-theme="light"] .org.lit .org-ember{
-  background-image:none;mix-blend-mode:normal;opacity:1;
+  background:linear-gradient(to top,var(--accent-bg),transparent 70%);
   background:linear-gradient(to top,
     color-mix(in srgb,var(--accent) 16%,transparent),
     transparent 70%);
@@ -176,6 +155,7 @@ a.ev-org:hover{color:var(--accent)}
         <div class="nav-drop-menu">
           <a href="ideas.html">Story Generator</a>
           <a href="skybound.html">SkyBound — Drone</a>
+          <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
       <li class="nav-drop">
@@ -192,6 +172,7 @@ a.ev-org:hover{color:var(--accent)}
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
@@ -343,6 +324,7 @@ a.ev-org:hover{color:var(--accent)}
           <li><a href="sourcing.html">Gear &amp; Flight</a></li>
           <li><a href="ideas.html">Story Generator</a></li>
           <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="assistant.html">LaB Assistant</a></li>
           <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
           <li><a href="mykit.html">Your Kit</a></li>
           <li><a href="colophon.html">How it's built</a></li>
@@ -367,11 +349,13 @@ a.ev-org:hover{color:var(--accent)}
   </div>
 </footer>
 
+<script src="spotlight-data.js"></script>
 <script>
 /* ============================================================
    SPOTLIGHT EVENTS
    ------------------------------------------------------------
-   To add one: copy a block, fill it in, done.
+   The records live in spotlight-data.js so Events and the LaB Assistant read
+   the same dates. To add one: copy a block there, fill it in, done.
    To remove one: nothing. It deletes itself the day after
    `date` passes, and when the last one expires the whole
    "Worth Going To" heading disappears with it. This page can
@@ -392,7 +376,7 @@ a.ev-org:hover{color:var(--accent)}
    tags   — short labels, optional
    url    — tickets or info. A Facebook event link is fine.
 
-   Copy this, fill it in, drop it in the array below:
+   Copy this, fill it in, drop it in the SPOTLIGHT array in spotlight-data.js:
 
      {
        date:  '2026-09-14',
@@ -410,47 +394,6 @@ a.ev-org:hover{color:var(--accent)}
    Add `until: 'YYYY-MM-DD'` for anything running more than one day; it keeps the
    entry listed through its final day and shows the span instead of a weekday.
    ============================================================ */
-var SPOTLIGHT = [
-  {
-    date:  '2026-08-05',
-    time:  '6:30 PM',
-    title: 'Adam &amp; Eva’s: <em>An Intimate Film Experience</em>',
-    by:    'Campfire Film Cooperative',
-    byUrl: 'https://campfirefilm.org',
-    with_: 'The Black Canon · Motor City Cinematheque · Miss Eva’s Detroit',
-    where: 'Miss Eva’s, Detroit',
-    body:  'A live projection of <em>A Man Called Adam</em> — Sammy Davis Jr., from The Black Canon collection — paired with curated music and signature drinks built around the film. Designed as more than a screening: an evening staged inside the mood and sound of the picture, celebrating Black film history and legacy.',
-    tags:  ['Screening','Live projection','Music','Black film history'],
-    url:   'https://www.facebook.com/events/1531184581974584'
-  },
-  {
-    date:  '2026-08-27',
-    time:  '6:30 PM',
-    title: 'Detroit New Wave: <em>The Rise of Cinema Culture</em>',
-    part:  'Part 1 of 3',
-    by:    'Campfire Film Cooperative',
-    byUrl: 'https://campfirefilm.org',
-    with_: 'Weekly Watchlist',
-    where: 'The Congregation, Detroit',
-    body:  'A live-recorded panel bringing Metro Detroit’s independent cinema owners, audiences, and filmmakers into the same room — at least three theaters and microcinemas per night, followed by a social hour with food and drinks. If you want to actually meet the people programming film in this city, this is the room.',
-    tags:  ['Alger Theater','Detroit Film Theatre','Farmington Civic','Historic Howell','Lowkey Cinema','Marquee Arts','Milford Independent','Senate Theater','Slimeball Cinerama'],
-    url:   'https://www.facebook.com/events/2520859208335856'
-  },
-  {
-    date:  '2026-10-17',
-    until: '2026-10-18',
-    time:  '11 AM Sat \u2013 6 PM Sun',
-    title: 'Sci-Gore: <em>Sci-Fi, Horror &amp; Cosplay</em>',
-    by:    'Great Lakes Event Network',
-    byUrl: 'https://www.facebook.com/GreatLakesEventNetwork',
-    with_: 'Josh Wynn',
-    where: '21001 Van Born Rd, Taylor',
-    body:  'A two-day convention built around science fiction, horror and dark fantasy \u2014 themed vendors, special guests, showcases, and cosplay wrestling. What earns it a place on this list is the in-house limited-access theater, with screenings running across both days. Closer to cult cinema and retro convention culture than to a comic hall, and deliberately louder and stranger than a traditional con.',
-    tags:  ['Convention','Screenings','Horror','Sci-fi','Cosplay'],
-    url:   'https://www.facebook.com/events/1559253325559765'
-  }
-];
-
 (function(){
   var sec=document.getElementById('spotlight'), list=document.getElementById('spotlightList');
   if(!sec||!list)return;
@@ -490,7 +433,7 @@ var SPOTLIGHT = [
           ? end.getDate()
           : MON[end.getMonth()]+' '+end.getDate())
       : d.toLocaleDateString(undefined,{weekday:'long'});
-    return '<article class="ev">'
+    return '<article class="ev" id="event-'+e.id+'">'
       + '<div class="ev-date">'
         + '<div class="ev-mon">'+MON[d.getMonth()]+'</div>'
         + '<div class="ev-day">'+d.getDate()+'</div>'
@@ -660,8 +603,8 @@ var SPOTLIGHT = [
    Only while Campfire Film Cooperative actually has something upcoming in
    SPOTLIGHT. Read from the same array the page renders from, so this can never
    disagree with what is on screen, and it puts itself out when their listings
-   lapse. Every failure mode falls back to the CSS gradient rather than a
-   broken image: no file, slow file, or a visitor who asked for less motion. */
+   lapse. The glow is CSS-only, so lighting the card never triggers an asset
+   request or introduces motion. */
 (function(){
   var card=document.querySelector('.org[data-org="campfire"]');
   if(!card)return;
@@ -678,17 +621,11 @@ var SPOTLIGHT = [
   card.setAttribute('title', theirs.length===1
     ? 'Campfire has an event coming up'
     : 'Campfire has '+theirs.length+' events coming up');
-
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-  if(reduce){ card.classList.add('lit-still'); return; }
-
-  /* Only commit to the GIF once it has actually decoded. */
-  var img=new Image();
-  img.onload =function(){ card.classList.add('lit') };
-  img.onerror=function(){ card.classList.add('lit-still') };
-  img.src='images/Campfire.gif';
+  card.classList.add('lit');
 })();
 </script>
 
+<script src="assistant-guide.js"></script>
+<script src="assistant-widget.js"></script>
 </body>
 </html>

@@ -74,7 +74,7 @@
 
 /* ---------- Control bar ---------- */
 .bar{position:sticky;top:58px;z-index:400;border-block:1px solid var(--line);
-  background:color-mix(in srgb,var(--paper) 93%,transparent);
+  background:var(--paper);background:color-mix(in srgb,var(--paper) 93%,transparent);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
 .bar-in{max-width:var(--maxw);margin-inline:auto;padding:var(--s-4) var(--gutter);
   display:flex;gap:var(--s-5);align-items:center;flex-wrap:wrap}
@@ -216,6 +216,7 @@ body.mode-48 .el[data-k="constraint"]{outline:1px solid var(--accent-dim)}
         <div class="nav-drop-menu">
           <a href="ideas.html" aria-current="page">Story Generator</a>
           <a href="skybound.html">SkyBound — Drone</a>
+          <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
       <li class="nav-drop">
@@ -232,6 +233,7 @@ body.mode-48 .el[data-k="constraint"]{outline:1px solid var(--accent-dim)}
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
@@ -314,6 +316,7 @@ body.mode-48 .el[data-k="constraint"]{outline:1px solid var(--accent-dim)}
           <li><a href="sourcing.html">Gear &amp; Flight</a></li>
           <li><a href="ideas.html">Story Generator</a></li>
           <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="assistant.html">LaB Assistant</a></li>
           <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
           <li><a href="mykit.html">Your Kit</a></li>
           <li><a href="colophon.html">How it's built</a></li>
@@ -942,5 +945,7 @@ body.mode-48 .el[data-k="constraint"]{outline:1px solid var(--accent-dim)}
     .catch(function(){ /* stay hidden */ });
 })();
 </script>
+<script src="assistant-guide.js"></script>
+<script src="assistant-widget.js"></script>
 </body>
 </html>

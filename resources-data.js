@@ -594,7 +594,7 @@ const resources = [
         droneType: 'software',
         desc: 'Freestyle-focused FPV simulator with cinematic environments.',
         fullDesc: 'Tryp FPV emphasizes smooth freestyle flying with handcrafted environments and a focus on flow. A solid option for building muscle memory and exploring cinematic lines before risking real gear.',
-        url: 'https://trypfpv.com',
+        url: 'https://steamcommunity.com/app/1881200',
         paid: true,
         features: ['FPV Simulator', 'Freestyle Practice', 'Cinematic Maps', 'Muscle Memory']
     },
@@ -1732,3 +1732,5 @@ const resources = [
     },
 
 ];
+
+if (typeof window !== 'undefined') window.LaBResources = resources;

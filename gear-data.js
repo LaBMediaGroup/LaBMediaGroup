@@ -316,4 +316,14 @@ const gearData = [
 
 ];
 
-if (typeof window !== 'undefined') { window.gearData = gearData; }
+function gearItemAnchor(section,item){
+  var name=String(item&&item.name||'')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  return 'gear-'+String(section&&section.id||'kit')+'-'+name;
+}
+
+if (typeof window !== 'undefined') {
+  window.gearData = gearData;
+  window.gearItemAnchor = gearItemAnchor;
+}

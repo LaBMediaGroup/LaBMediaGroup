@@ -1,12 +1,12 @@
 /* ============================================================
    THE NOTEBOOK — shared renderer
-   Loaded by resources.html, people.html and sourcing.html.
+   Loaded by learn.html, resources.html, people.html and sourcing.html.
 
    Each page sets window.PAGE_BANDS to the band ids it owns before
    including this file; everything else — grouping, counts, peek
    lines, search, the star buttons and the kit pointer — is the
-   same code on all three. It lives in one file because three
-   copies of 566 lines is how three pages quietly stop agreeing
+   same code on all four. It lives in one file because four
+   copies of 742 lines is how four pages quietly stop agreeing
    with each other, and the counts on this site have already
    drifted three times from exactly that.
 
@@ -128,6 +128,19 @@ var ALL=(typeof resources!=='undefined'?resources:[]);
 
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 
+/* A paid product may lead with a free tier in its pricing table. Showing
+   "Paid" beside "$0" in the collapsed row is technically true and practically
+   confusing, so paid entries advertise the first non-free tier instead. */
+function summaryPrice(r){
+  if(!r.pricing||!r.pricing.length)return '';
+  if(!r.paid)return r.pricing[0].price||'';
+  for(var i=0;i<r.pricing.length;i++){
+    var price=r.pricing[i].price||'';
+    if(!/^\s*(?:\$?0\b|free\b)/i.test(price))return price;
+  }
+  return '';
+}
+
 function socialsFor(r){
   var out=[];
   if(r.instagramUrl)out.push('<a href="'+esc(r.instagramUrl)+'" target="_blank" rel="noopener">Instagram</a>');
@@ -211,6 +224,7 @@ function detailHTML(r){
   return out;
 }
 
+var ITEM_RENDER_SEQ=0;
 function itemHTML(r,i){
   var n=String(i+1).padStart(2,'0');
   var tags='';
@@ -223,7 +237,8 @@ function itemHTML(r,i){
   var isPerson = catsOf(r).indexOf('collaborators')>-1;
   if(!isPerson){
     tags+= r.paid?'<span class="tag paid">Paid</span>':'<span class="tag free">Free</span>';
-    if(r.pricing&&r.pricing.length&&r.pricing[0].price)tags+='<span class="tag">'+esc(r.pricing[0].price)+'</span>';
+    var price=summaryPrice(r);
+    if(price)tags+='<span class="tag">'+esc(price)+'</span>';
   }
   (r.features||[]).slice(0,3).forEach(function(f){tags+='<span class="tag">'+esc(f)+'</span>'});
 
@@ -236,23 +251,32 @@ function itemHTML(r,i){
   if(r.featuredVideo||(r.additionalVideos||[]).length) bits.push('Video');
   if(r.pricing&&r.pricing.length) bits.push('Pricing');
   if(r.additionalLinks&&r.additionalLinks.length) bits.push('Links');
-  var hint = bits.length ? ' <i>'+bits.join(' · ')+'</i>' : '';
-  /* An open panel with a video in it is taller than the viewport, so the
-     summary that opened it scrolls out of reach — there was no way back
-     without hunting upward. This closes it and returns you to the row. */
-  var more = d ? '<details><summary>More'+hint+'</summary><div class="d-panel">'+d
-    +'<button class="d-close" type="button">Close</button></div></details>' : '';
+  var hint = bits.length ? bits.join(' · ') : 'Notes & context';
+  /* In-the-LaB entries also appear in their normal group, so controls need a
+     per-render id even though the resource's public anchor remains stable. */
+  var detailId='detail-'+keyOf(r)+'-'+(++ITEM_RENDER_SEQ);
+  /* More, Save and Visit are one action group. The old renderer put More in
+     the copy column and the other two in an unstyled side span, which made
+     More easy to miss and allowed Save / Visit to collide at narrow widths. */
+  var more = d
+    ? '<button class="item-more" type="button" aria-expanded="false" aria-controls="'+esc(detailId)+'">'
+      +'<span><b aria-hidden="true">+</b> More details</span><small>'+esc(hint)+'</small></button>'
+    : '';
 
-  return '<div class="item"'+(r.paid?' data-paid="1"':'')+' data-hay="'+esc((r.name+' '+(r.desc||'')+' '+(r.features||[]).join(' ')).toLowerCase())+'">'
+  return '<div class="item" id="'+esc(keyOf(r))+'"'+(r.paid?' data-paid="1"':'')+' data-hay="'+esc((r.name+' '+(r.desc||'')+' '+(r.features||[]).join(' ')).toLowerCase())+'">'
     +'<span class="item-idx">'+n+'</span>'
     +'<div class="item-main"><h3>'+title+'</h3><p>'+esc(r.desc||'')+'</p>'
-    +'<span class="item-tags">'+tags+'</span>'+socialsFor(r)+more+'</div>'
-    +'<span class="item-side">'
+    +'<span class="item-tags">'+tags+'</span>'+socialsFor(r)
+    +'<div class="item-actions'+(d?'':' no-more')+'">'+more
     +  '<button class="save" type="button" data-k="'+esc(keyOf(r))+'" aria-pressed="false"'
     +    ' aria-label="Save '+esc(r.name)+' to your kit">'
     +    '<span class="star" aria-hidden="true">☆</span><span class="save-t">Save</span></button>'
-    +  (r.url?'<span class="item-go">Visit ↗</span>':'<span class="item-go" style="color:var(--faint)">—</span>')
-    +'</span>'
+    +  (r.url?'<a class="item-visit" href="'+esc(r.url)+'" target="_blank" rel="noopener">Visit site ↗</a>'
+             :'<span class="item-visit is-missing" aria-disabled="true">No site listed</span>')
+    +'</div>'
+    +(d?'<div class="d-panel" id="'+esc(detailId)+'" hidden>'+d
+      +'<button class="d-close" type="button">Close details</button></div>':'')
+    +'</div>'
     +'</div>';
 }
 
@@ -410,7 +434,7 @@ function groupOfEntry(r){
        +'</details></section>';
   });
   wrapEl.innerHTML=html;
-  jump.innerHTML=nav;
+  if(jump)jump.innerHTML=nav;
   Object.keys(bandTotals).forEach(function(id){
     var el=wrapEl.querySelector('.band-c[data-band="'+id+'"]');
     if(el) el.textContent=bandTotals[id];
@@ -650,19 +674,36 @@ document.addEventListener('click',function(e){
     history.replaceState(null,'',location.pathname+location.hash);
   })();
 
-  /* Close buttons inside detail panels — delegated, because panels are built
-     on render and rebuilt whenever a search filters the list. */
+  /* Resource detail controls — delegated, because rows are built at runtime.
+     The toggle remains in the unified action bar while the full-width detail
+     panel opens directly beneath it. */
   document.addEventListener('click',function(e){
-    var b=e.target.closest && e.target.closest('.d-close');
-    if(!b)return;
-    var dt=b.closest('details');
-    if(!dt)return;
-    dt.open=false;
-    var sm=dt.querySelector('summary');
-    if(sm){
-      var top=sm.getBoundingClientRect().top;
-      if(top<0||top>window.innerHeight) sm.scrollIntoView({block:'center'});
-      sm.focus&&sm.focus();
+    var more=e.target.closest && e.target.closest('.item-more');
+    if(more){
+      var panel=document.getElementById(more.getAttribute('aria-controls'));
+      if(!panel)return;
+      var opening=more.getAttribute('aria-expanded')!=='true';
+      more.setAttribute('aria-expanded',String(opening));
+      panel.hidden=!opening;
+      var glyph=more.querySelector('b');
+      if(glyph)glyph.textContent=opening?'\u2212':'+';
+      return;
+    }
+
+    var close=e.target.closest && e.target.closest('.d-close');
+    if(!close)return;
+    var detail=close.closest('.d-panel');
+    if(!detail)return;
+    detail.hidden=true;
+    var item=detail.closest('.item');
+    var toggle=item&&item.querySelector('.item-more[aria-controls="'+detail.id+'"]');
+    if(toggle){
+      toggle.setAttribute('aria-expanded','false');
+      var icon=toggle.querySelector('b');
+      if(icon)icon.textContent='+';
+      var top=toggle.getBoundingClientRect().top;
+      if(top<0||top>window.innerHeight)toggle.scrollIntoView({block:'center'});
+      toggle.focus();
     }
   });
 

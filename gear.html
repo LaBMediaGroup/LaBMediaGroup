@@ -40,7 +40,7 @@
 .kit-cta{display:flex;gap:var(--s-3);flex-wrap:wrap;margin-top:var(--s-6)}
 
 /* jump rail, same behaviour as the resources page */
-.jump{position:sticky;top:58px;z-index:400;background:color-mix(in srgb,var(--paper) 94%,transparent);
+.jump{position:sticky;top:58px;z-index:400;background:var(--paper);background:color-mix(in srgb,var(--paper) 94%,transparent);
   backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
 .jump-in{max-width:var(--maxw);margin-inline:auto;padding:var(--s-3) var(--gutter);display:flex;gap:var(--s-2);overflow-x:auto;scrollbar-width:none}
 .jump-in::-webkit-scrollbar{display:none}
@@ -82,15 +82,23 @@
 .hl-item .g-meta{flex-direction:row;align-items:center;justify-content:flex-start;gap:9px;text-align:left;margin-top:auto;padding-top:4px;flex-wrap:wrap}
 
 /* ---- Collapsed sections ---- */
-.sec-g{border-bottom:1px solid var(--line);padding:0}
+.sec-g{border-bottom:1px solid var(--line);padding-block:0}
 .sec-g > summary{
   display:grid;grid-template-columns:auto 1fr auto auto;gap:var(--s-5);align-items:center;
   padding:var(--s-5) 0;cursor:pointer;list-style:none;
   transition:padding-left var(--mid) var(--ease);
 }
+.sec-g > summary > div{min-width:0}
 .sec-g > summary::-webkit-details-marker{display:none}
 .sec-g > summary:hover{padding-left:var(--s-3)}
 .sec-g > summary:hover h2{color:var(--accent)}
+.g-ico{position:relative;width:15px;height:15px;flex:none}
+.g-ico::before,.g-ico::after{content:'';position:absolute;background:var(--dim);
+  transition:transform var(--mid) var(--ease),background var(--fast) var(--ease)}
+.g-ico::before{left:0;right:0;top:7px;height:1px}
+.g-ico::after{top:0;bottom:0;left:7px;width:1px}
+.sec-g[open] .g-ico::after{transform:scaleY(0)}
+.sec-g > summary:hover .g-ico::before,.sec-g > summary:hover .g-ico::after{background:var(--accent)}
 .sec-peek{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.05em;color:var(--faint);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58ch;margin-top:6px}
 .sec-g[open] .sec-peek{display:none}
@@ -122,7 +130,7 @@
 .g-paid{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
 .g-since{font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;color:var(--faint)}
 .g-res{font-family:var(--f-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--sky);border-bottom:1px solid color-mix(in srgb,var(--sky) 34%,transparent);white-space:nowrap}
+  color:var(--sky);border-bottom:1px solid var(--line-2);border-bottom-color:color-mix(in srgb,var(--sky) 34%,transparent);white-space:nowrap}
 
 .verdict{font-family:var(--f-mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;
   padding:5px 10px;border:1px solid;border-radius:100px;white-space:nowrap}
@@ -130,10 +138,10 @@
 .verdict.maybe{color:var(--accent);border-color:var(--accent-dim);background:var(--accent-bg)}
 .verdict.no{color:var(--faint);border-color:var(--line-2)}
 /* Not ours. Marked so the page never implies we own the whole truck. */
-.verdict.shared{color:var(--sky);border-color:color-mix(in srgb,var(--sky) 38%,transparent);
-  background:color-mix(in srgb,var(--sky) 9%,transparent)}
+.verdict.shared{color:var(--sky);border-color:var(--line-2);border-color:color-mix(in srgb,var(--sky) 38%,transparent);
+  background:var(--paper-2);background:color-mix(in srgb,var(--sky) 9%,transparent)}
 .shared-note{margin-top:var(--s-5);color:var(--dim);font-size:var(--t-sm);line-height:1.75;
-  max-width:64ch;border-left:2px solid color-mix(in srgb,var(--sky) 40%,transparent);padding-left:var(--s-4)}
+  max-width:64ch;border-left:2px solid var(--sky);border-left-color:color-mix(in srgb,var(--sky) 40%,transparent);padding-left:var(--s-4)}
 .shared-note b{color:var(--sky);font-family:var(--f-mono);font-size:9px;letter-spacing:.2em;
   text-transform:uppercase;font-weight:400;display:block;margin-bottom:7px}
 
@@ -145,9 +153,11 @@
 .closing strong{color:var(--ink);font-weight:400}
 
 @media (max-width:700px){
+  .hl-grid{grid-template-columns:1fr}
   .g-item{grid-template-columns:1fr}
   .g-meta{flex-direction:row;align-items:center;justify-content:flex-start;gap:var(--s-4);text-align:left;flex-wrap:wrap}
-  .sec-head-g{grid-template-columns:1fr;gap:6px}
+  .sec-g > summary{grid-template-columns:auto minmax(0,1fr) auto;gap:var(--s-4)}
+  .sec-count{grid-column:2;grid-row:2;justify-self:start}
 }
 </style>
 </head>
@@ -183,6 +193,7 @@
         <div class="nav-drop-menu">
           <a href="ideas.html">Story Generator</a>
           <a href="skybound.html">SkyBound — Drone</a>
+          <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
       <li class="nav-drop">
@@ -199,6 +210,7 @@
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
@@ -267,6 +279,7 @@
           <li><a href="sourcing.html">Gear &amp; Flight</a></li>
           <li><a href="ideas.html">Story Generator</a></li>
           <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="assistant.html">LaB Assistant</a></li>
           <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
           <li><a href="mykit.html">Your Kit</a></li>
           <li><a href="colophon.html">How it's built</a></li>
@@ -334,8 +347,8 @@
                   : esc(it.name);
   }
 
-  function itemHTML(it){
-    return '<div class="g-item">'
+  function itemHTML(it,sec){
+    return '<div class="g-item" id="'+esc(window.gearItemAnchor(sec,it))+'">'
       + '<div>'
       +   '<h3 class="g-name">'+nameHTML(it)+'</h3>'
       +   (it.what ? '<p class="g-what">'+esc(it.what)+'</p>' : '')
@@ -393,11 +406,11 @@
             ? '<figure class="sec-photo"><img src="'+esc(sec.photo)+'" alt="'+esc(sec.photoAlt||'')+'"'
               + ' width="1400" height="466" loading="lazy" decoding="async"></figure>'
             : '')
-      +   main.map(itemHTML).join('')
+      +   main.map(function(it){return itemHTML(it,sec)}).join('')
       +   (mini.length
             ? '<div class="minor-wrap"><div class="minor-k">Also in the bag</div>'
               + '<div class="minor-list">'
-              + mini.map(function(x){return '<span>'+esc(x.name)+'</span>'}).join('')
+              + mini.map(function(x){return '<span id="'+esc(window.gearItemAnchor(sec,x))+'">'+esc(x.name)+'</span>'}).join('')
               + '</div></div>'
             : '')
       + '</div>'
@@ -577,5 +590,7 @@
 })();
 </script>
 
+<script src="assistant-guide.js"></script>
+<script src="assistant-widget.js"></script>
 </body>
 </html>

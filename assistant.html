@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<title>LaB Assistant — Ask the Site</title>
+<meta name="description" content="Ask LaB Media about its films, filmmaking resources, gear, Michigan events, Story Generator, SkyBound, and how the site works.">
+<link rel="canonical" href="https://labmedia.work/assistant.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://labmedia.work/assistant.html">
+<meta property="og:site_name" content="LaB Media">
+<meta property="og:title" content="LaB Assistant — Ask the Site">
+<meta property="og:description" content="A model-free assistant grounded in LaB’s films, resources, gear, events, and notes.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LaB Assistant — Ask the Site">
+<meta name="twitter:description" content="A model-free assistant grounded in LaB’s films, resources, gear, events, and notes.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="images/favicon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="alternate" type="application/rss+xml" title="LaB Media" href="/feed.xml">
+<link rel="alternate" type="application/feed+json" title="LaB Media" href="/feed.json">
+<link rel="stylesheet" href="lab.css">
+<style>
+main{background:var(--paper)}
+.as-hero{
+  padding-block:clamp(54px,8vw,100px) clamp(30px,5vw,58px);
+  text-align:center
+}
+.assistant-seal{
+  position:relative;width:230px;height:230px;margin:0 auto 30px;
+  display:grid;place-items:center;isolation:isolate
+}
+.assistant-seal::before{
+  content:'';position:absolute;z-index:1;width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,
+    rgba(224,122,71,.24) 0%,
+    rgba(224,122,71,.14) 31%,
+    rgba(224,122,71,.055) 54%,
+    transparent 78%);
+  filter:blur(18px);transform:scale(1.04)
+}
+.assistant-seal::after{
+  content:'';position:absolute;z-index:2;width:132px;height:132px;border-radius:50%;
+  background:rgba(224,122,71,.17);filter:blur(11px)
+}
+.seal-core{
+  position:relative;z-index:3;width:92px;height:92px;
+  display:grid;place-items:center;border-radius:50%;
+  background:color-mix(in srgb,var(--paper) 72%,transparent);
+  box-shadow:0 0 46px rgba(224,122,71,.2),inset 0 0 0 1px rgba(224,122,71,.16);
+  backdrop-filter:blur(8px)
+}
+.seal-core img{
+  width:54%;height:54%;object-fit:contain;
+  filter:sepia(1) saturate(3.5) hue-rotate(328deg) brightness(1.18)
+}
+.seal-arc{position:absolute;inset:0;z-index:5;pointer-events:none}
+.seal-letter{
+  position:absolute;left:0;top:0;width:1ch;height:1em;
+  color:var(--accent);font:700 8px/1 var(--f-mono);text-align:center;
+  text-transform:uppercase;offset-anchor:center
+}
+.seal-arc-top .seal-letter{
+  offset-path:path('M 36 114 A 79 79 0 0 1 194 114');
+  offset-distance:var(--arc-position);offset-rotate:auto
+}
+.seal-arc-bottom .seal-letter{
+  offset-path:path('M 36 116 A 79 79 0 0 0 194 116');
+  offset-distance:var(--arc-position);offset-rotate:auto
+}
+.as-hero h1{
+  max-width:13ch;margin:0 auto;font-family:var(--f-display);
+  font-size:clamp(56px,8.5vw,112px);font-weight:400;
+  line-height:.86;letter-spacing:-.052em
+}
+.as-hero h1 em{font-style:italic;color:var(--accent)}
+.as-hero .lede{
+  max-width:61ch;margin:clamp(22px,3vw,30px) auto 0;
+  font-size:var(--t-lg);line-height:1.72;color:var(--dim)
+}
+.as-status{
+  display:flex;justify-content:center;align-items:center;gap:9px;
+  margin-top:var(--s-5);font-family:var(--f-mono);font-size:9px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--faint)
+}
+.as-status i{width:7px;height:7px;border-radius:50%;background:var(--good);box-shadow:0 0 0 4px color-mix(in srgb,var(--good) 12%,transparent)}
+.as-status[data-model-state="checking"] i{background:var(--accent);box-shadow:0 0 0 4px var(--accent-bg)}
+.as-status[data-model-state="model"] i{background:var(--accent);box-shadow:0 0 0 4px var(--accent-bg)}
+.as-status[data-model-state="retrieval"] i{background:var(--faint);box-shadow:none}
+.as-status[data-model-state="offline"] i,.as-status[data-model-state="busy"] i,.as-status[data-model-state="grounding"] i{background:var(--accent);box-shadow:none}
+.as-shell{
+  display:block;max-width:980px;padding-bottom:clamp(70px,9vw,118px)
+}
+.assistant-panel{min-width:0;background:transparent}
+.assistant-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);
+  margin:0 24px 13px;padding:0 5px;background:transparent
+}
+.assistant-bar span{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.assistant-clear{
+  appearance:none;border:0;border-radius:999px;background:var(--paper-2);
+  color:var(--dim);font-family:var(--f-mono);font-size:9px;
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:10px 14px
+}
+.assistant-clear:hover,.assistant-clear:focus-visible{color:var(--accent)}
+.assistant-log{
+  display:flex;flex-direction:column;gap:13px;min-height:360px;max-height:58vh;
+  padding:clamp(22px,4vw,44px);overflow-y:auto;overscroll-behavior:contain;
+  border-radius:56px;background:color-mix(in srgb,var(--paper) 89%,transparent);
+  box-shadow:0 26px 85px rgba(0,0,0,.16),inset 0 0 0 1px var(--line)
+}
+.assistant-msg{
+  width:min(88%,680px);padding:20px 23px;position:relative;
+  border-radius:25px;background:var(--paper-2)
+}
+.assistant-msg.is-user{
+  align-self:flex-end;width:auto;max-width:82%;background:var(--accent-bg)
+}
+.assistant-msg.is-assistant{padding:24px 26px}
+.assistant-msg.is-assistant .assistant-copy{white-space:pre-line}
+.assistant-who-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.assistant-who{font-family:var(--f-mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.assistant-msg.is-user .assistant-who{color:var(--faint)}
+.assistant-mode{
+  padding:6px 9px;border:0;border-radius:999px;background:var(--paper);
+  color:var(--faint);font:400 8px/1.2 var(--f-mono);
+  letter-spacing:.06em;text-transform:uppercase
+}
+.assistant-copy{white-space:normal;color:var(--dim);line-height:1.72;font-size:var(--t-base);max-width:68ch}
+.assistant-msg.is-user .assistant-copy{color:var(--ink)}
+.assistant-sources{
+  display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;
+  margin-top:var(--s-4);padding-top:var(--s-3);border-top:3px solid var(--accent)
+}
+.assistant-sources>span{font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.assistant-sources a{font-size:var(--t-xs);color:var(--accent);border-bottom:1px solid var(--accent-dim)}
+.assistant-form{
+  width:calc(100% - 62px);margin:-18px auto 0;position:relative;z-index:2;
+  display:flex;align-items:flex-end;gap:8px;padding:7px;border-radius:999px;
+  background:var(--paper);
+  box-shadow:0 18px 60px rgba(0,0,0,.22),inset 0 0 0 1px var(--line)
+}
+.assistant-form label{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0
+}
+.assistant-input{
+  display:block;flex:1;min-width:0;height:50px;min-height:50px;max-height:160px;
+  resize:none;border:0;background:transparent;color:var(--ink);
+  font:400 var(--t-base)/1.55 var(--f-body);padding:13px 16px;outline:0
+}
+.assistant-input::placeholder{color:var(--faint)}
+.assistant-form:focus-within{box-shadow:0 18px 60px rgba(0,0,0,.22),0 0 0 2px var(--accent)}
+.assistant-send{
+  appearance:none;border:0;border-radius:999px;background:var(--accent);
+  color:#0B0B0C;min-width:106px;height:50px;padding:0 var(--s-4);
+  font-family:var(--f-mono);font-size:10px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;cursor:pointer
+}
+.assistant-send:hover{filter:brightness(1.08)}
+.assistant-send:disabled{cursor:wait;filter:grayscale(.35);opacity:.65}
+.assistant-input:disabled{cursor:wait;opacity:.72}
+.as-side{margin-top:28px;text-align:center}
+.as-side h2{font-family:var(--f-display);font-size:var(--t-lg);font-weight:400;line-height:1.05;margin-bottom:var(--s-4)}
+.as-side h2 em{font-style:italic;color:var(--accent)}
+.prompt-list{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+.prompt-list button{
+  appearance:none;border:0;border-radius:999px;background:var(--paper-2);
+  color:var(--dim);padding:11px 15px;text-align:left;
+  font:400 11px/1.4 var(--f-body);cursor:pointer
+}
+.prompt-list button::after{content:''}
+.prompt-list button:hover,.prompt-list button:focus-visible{color:#0B0B0C;background:var(--accent)}
+.as-note{
+  max-width:670px;margin:var(--s-5) auto 0;color:var(--faint);
+  font-size:var(--t-xs);line-height:1.7
+}
+.as-note strong{color:var(--dim);font-weight:400}
+@media(max-width:560px){
+  .assistant-seal{transform:scale(.84);margin-block:-14px 8px}
+  .assistant-log{padding:18px;border-radius:36px}
+  .assistant-msg{width:96%}
+  .assistant-msg.is-user{width:auto;max-width:92%}
+  .assistant-form{width:calc(100% - 20px)}
+  .assistant-send{min-width:86px;padding-inline:14px}
+  .assistant-log{max-height:none}
+}
+@media(prefers-reduced-motion:reduce){.assistant-msg{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="nav-brand" href="index.html" aria-label="LaB Media — home">
+      <img class="nav-logo is-mark" src="images/TheLaB-mark.png" alt="LaB Media — back to the LaB" width="61" height="26">
+    </a>
+    <nav class="nav-primary" aria-label="Primary"><ul class="nav-links" id="navLinks">
+      <li><a href="portfolio.html">Reel</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Resources
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="learn.html">Watch &amp; Learn</a>
+          <a href="resources.html">Software &amp; Assets</a>
+          <a href="sourcing.html">Gear &amp; Flight</a>
+          <a href="people.html">People &amp; Community</a>
+          <hr class="nav-sep" aria-hidden="true">
+          <a href="gear.html">LaB&rsquo;s Kit</a>
+          <a href="mykit.html">Your Kit</a>
+        </div>
+      </li>
+      <li class="nav-drop" data-current="true">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Tools
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="ideas.html">Story Generator</a>
+          <a href="skybound.html">SkyBound — Drone</a>
+          <a href="assistant.html" aria-current="page">LaB Assistant</a>
+        </div>
+      </li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">About
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="contact.html">About LaB</a>
+          <a href="colophon.html">About the Site</a>
+        </div>
+      </li>
+    </ul></nav>
+    <div class="theme" role="group" aria-label="Colour theme">
+      <button type="button" data-theme-set="dark" aria-pressed="true" title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
+      <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
+      <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="as-hero wrap">
+    <div class="assistant-seal" role="img" aria-label="LaB Assistant — sourced from the site">
+      <div class="seal-arc seal-arc-top" data-arc="LAB ASSISTANT" aria-hidden="true"></div>
+      <div class="seal-core"><img src="images/WhiteBeakerLogo.png" alt=""></div>
+      <div class="seal-arc seal-arc-bottom" data-arc="SOURCED FROM THE SITE" aria-hidden="true"></div>
+    </div>
+    <h1>Less interface.<br>More <em>conversation.</em></h1>
+    <p class="lede">Ask naturally about the films, working kit, useful resources, Michigan events, drones, or how this whole thing was built. Every factual answer stays tied to the page it came from.</p>
+    <div class="as-status" id="assistantStatus" data-model-state="checking" role="status"><i aria-hidden="true"></i><span>Local index ready · checking for Ollama</span></div>
+  </section>
+
+  <section class="as-shell wrap" aria-labelledby="assistantTitle">
+    <div class="assistant-panel">
+      <noscript><p style="padding:var(--s-4);border-bottom:1px solid var(--line);color:var(--dim)">The LaB Assistant needs JavaScript to search the site’s local data. The rest of the site remains available from the navigation.</p></noscript>
+      <div class="assistant-bar">
+        <span id="assistantTitle">LaB Assistant</span>
+        <button class="assistant-clear" id="assistantClear" type="button">Clear conversation</button>
+      </div>
+      <div class="assistant-log" id="assistantLog" role="log" aria-live="polite" aria-relevant="additions">
+        <article class="assistant-msg is-assistant">
+          <div class="assistant-who-row">
+            <div class="assistant-who">LaB Assistant</div>
+            <small class="assistant-mode">Sourced search</small>
+          </div>
+          <p class="assistant-copy">Ask me about a film, what gear is actually owned, where to rent a lens, what’s coming up in Michigan, or where to start.</p>
+        </article>
+      </div>
+      <form class="assistant-form" id="assistantForm">
+        <label for="assistantInput">Your question</label>
+        <textarea class="assistant-input" id="assistantInput" name="question" maxlength="280" rows="1" placeholder="What cameras do you own?" required></textarea>
+        <button class="assistant-send" type="submit">Ask LaB →</button>
+      </form>
+    </div>
+
+    <aside class="as-side" aria-label="Suggested questions">
+      <h2>Try asking <em>this.</em></h2>
+      <div class="prompt-list">
+        <button type="button" data-assistant-prompt="What events are coming up?">What events are coming up?</button>
+        <button type="button" data-assistant-prompt="What cameras do you own?">What cameras do you own?</button>
+        <button type="button" data-assistant-prompt="Where can I rent a lens?">Where can I rent a lens?</button>
+        <button type="button" data-assistant-prompt="Which film won an editing award?">Which film won an editing award?</button>
+        <button type="button" data-assistant-prompt="How is this site built?">How is this site built?</button>
+      </div>
+      <p class="as-note"><strong>Search stays in charge.</strong> On the local gateway, Ollama can rewrite the retrieved facts in a more natural voice. If the model is asleep or unavailable, the same sourced answer appears immediately. No conversation memory, no open-ended model access.</p>
+    </aside>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <img class="foot-mark" src="images/TheLaB-mark.png" alt="The LaB" width="122" height="52" loading="lazy" decoding="async">
+        <p class="foot-blurb">A small film studio and a public notebook, run out of Shelby Township, Michigan.</p>
+      </div>
+      <div class="foot-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="portfolio.html">Reel</a></li>
+          <li><a href="learn.html">Watch &amp; Learn</a></li>
+          <li><a href="resources.html">Software &amp; Assets</a></li>
+          <li><a href="people.html">People &amp; Community</a></li>
+          <li><a href="sourcing.html">Gear &amp; Flight</a></li>
+          <li><a href="ideas.html">Story Generator</a></li>
+          <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="assistant.html" aria-current="page">LaB Assistant</a></li>
+          <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
+          <li><a href="mykit.html">Your Kit</a></li>
+          <li><a href="colophon.html">How it's built</a></li>
+          <li><a href="events.html">Events</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Elsewhere</h3>
+        <ul>
+          <li><a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://instagram.com/thisislabmedia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/in/baldwinrobert" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="contact.html">About &amp; Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span class="made">Made in Shelby Twp, MI<span class="hrt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span>
+      <span class="visits" id="visitCount" hidden></span>
+      <span>© 2026 LaB Media</span>
+    </div>
+  </div>
+</footer>
+
+<script src="resources-data.js"></script>
+<script src="gear-data.js"></script>
+<script src="spotlight-data.js"></script>
+<script src="assistant-data.js"></script>
+<script src="assistant-core.js"></script>
+<script src="assistant-client.js"></script>
+<script src="assistant-guide.js"></script>
+<script src="assistant.js"></script>
+<script>
+(function(){
+  document.querySelectorAll('[data-arc]').forEach(function(arc){
+    var text=arc.getAttribute('data-arc')||'';
+    var start=arc.classList.contains('seal-arc-bottom')?8:12;
+    var end=arc.classList.contains('seal-arc-bottom')?92:88;
+    Array.from(text).forEach(function(character,index){
+      var letter=document.createElement('span');
+      var position=text.length<2?50:start+(end-start)*(index/(text.length-1));
+      letter.className='seal-letter';
+      letter.style.setProperty('--arc-position',position+'%');
+      letter.textContent=character===' '?' ':character;
+      arc.appendChild(letter);
+    });
+  });
+})();
+(function(){
+  var t=document.getElementById('navToggle'),l=document.getElementById('navLinks');
+  var desktop=function(){return window.innerWidth>760};
+  if(t&&l)t.addEventListener('click',function(e){e.stopPropagation();var open=t.getAttribute('aria-expanded')==='true';t.setAttribute('aria-expanded',String(!open));l.setAttribute('data-open',String(!open));});
+  function setOpen(d,on){d.setAttribute('data-open',String(on));d.querySelector('.nav-drop-btn').setAttribute('aria-expanded',String(on));if(!on)d.removeAttribute('data-pinned');}
+  function closeAll(except){document.querySelectorAll('.nav-drop').forEach(function(o){if(o!==except)setOpen(o,false);});}
+  document.querySelectorAll('.nav-drop').forEach(function(d){
+    var b=d.querySelector('.nav-drop-btn');
+    b.addEventListener('click',function(e){e.stopPropagation();var open=d.getAttribute('data-open')==='true',pinned=d.hasAttribute('data-pinned');closeAll(d);if(open&&pinned)setOpen(d,false);else{setOpen(d,true);d.setAttribute('data-pinned','1');}});
+    d.addEventListener('mouseenter',function(){if(desktop()){closeAll(d);setOpen(d,true);}});
+    d.addEventListener('mouseleave',function(){if(desktop()&&!d.hasAttribute('data-pinned'))setOpen(d,false);});
+    d.addEventListener('focusin',function(){closeAll(d);setOpen(d,true);});
+    d.addEventListener('focusout',function(){setTimeout(function(){if(!d.contains(document.activeElement))setOpen(d,false);},0);});
+    d.querySelectorAll('.nav-drop-menu a').forEach(function(a){a.addEventListener('click',function(){setOpen(d,false);});});
+  });
+  document.addEventListener('click',function(){closeAll(null);});
+  document.addEventListener('keydown',function(e){if(e.key!=='Escape')return;closeAll(null);if(t){t.setAttribute('aria-expanded','false');l.setAttribute('data-open','false');}});
+})();
+(function(){
+  var root=document.documentElement,KEY='lab-theme',btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
+  function apply(t,save){if(t==='dark')root.removeAttribute('data-theme');else root.setAttribute('data-theme',t);btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.themeSet===t));});if(save)try{localStorage.setItem(KEY,t);}catch(e){}}
+  var saved='dark';try{saved=localStorage.getItem(KEY)||'dark';}catch(e){}apply(saved,false);
+  btns.forEach(function(b){b.addEventListener('click',function(){apply(b.dataset.themeSet,true);});});
+})();
+(function(){
+  var CODE='labmedia';
+  if(location.hostname==='localhost'||location.protocol==='file:')return;
+  var s=document.createElement('script');s.async=true;s.src='//gc.zgo.at/count.js';s.setAttribute('data-goatcounter','https://'+CODE+'.goatcounter.com/count');document.head.appendChild(s);
+  var el=document.getElementById('visitCount');if(!el||!window.fetch)return;
+  fetch('https://'+CODE+'.goatcounter.com/counter/TOTAL.json').then(function(r){return r.ok?r.json():null;}).then(function(j){if(!j||!j.count)return;el.innerHTML='<b>'+j.count+'</b> visits';el.hidden=false;}).catch(function(){});
+})();
+</script>
+</body>
+</html>

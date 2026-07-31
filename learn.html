@@ -13,13 +13,13 @@
 <meta property="og:site_name" content="LaB Media">
 <meta property="og:title" content="Watch & Learn">
 <meta property="og:description" content="Channels and sites that explain the reasoning instead of the settings.">
-<meta property="og:image" content="https://labmedia.work/images/og/resources.jpg">
+<meta property="og:image" content="https://labmedia.work/images/og/learn.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Watch & Learn">
 <meta name="twitter:description" content="Channels and sites that explain the reasoning instead of the settings.">
-<meta name="twitter:image" content="https://labmedia.work/images/og/resources.jpg">
+<meta name="twitter:image" content="https://labmedia.work/images/og/learn.jpg">
 
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="images/favicon-192.png" type="image/png">
@@ -56,22 +56,7 @@
 .find svg{position:absolute;right:16px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--faint);fill:none;stroke-width:1.6;pointer-events:none}
 .find-count{margin-top:11px;font-family:var(--f-mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint)}
 
-/* Section jump rail */
-.jump{position:sticky;top:58px;z-index:400;background:color-mix(in srgb,var(--paper) 94%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
-.jump-in{max-width:var(--maxw);margin-inline:auto;padding:var(--s-3) var(--gutter);display:flex;gap:var(--s-2);overflow-x:auto;scrollbar-width:none}
-.jump-in::-webkit-scrollbar{display:none}
-.jump a{
-  font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--faint);white-space:nowrap;padding:8px 13px;border:1px solid transparent;
-  transition:color var(--fast) var(--ease),border-color var(--fast) var(--ease);
-}
-.jump a:hover{color:var(--ink);border-color:var(--line)}
-
 .find-row{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);margin-top:11px;max-width:520px}
-.toggle-all{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--accent);border-bottom:1px solid var(--accent-dim);padding-bottom:2px;
-  transition:border-color var(--fast) var(--ease)}
-.toggle-all:hover{border-bottom-color:var(--accent)}
 .freebtn{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
   color:var(--faint);border:1px solid var(--line);padding:7px 12px;white-space:nowrap;
   transition:color var(--fast) var(--ease),border-color var(--fast) var(--ease),background var(--fast) var(--ease)}
@@ -130,9 +115,9 @@
 .lab-sec .grp-d summary:hover .g-title{color:var(--sky)}
 .lab-sec .g-ico::before,.lab-sec .g-ico::after{background:var(--sky)}
 .lab-note{padding:0 0 var(--s-5);color:var(--dim);font-size:var(--t-sm);line-height:1.75;max-width:64ch}
-.tag.inlab{color:var(--sky);border-color:color-mix(in srgb,var(--sky) 38%,transparent);
-  background:color-mix(in srgb,var(--sky) 9%,transparent)}
-.d-inlab{border-left:2px solid color-mix(in srgb,var(--sky) 40%,transparent);
+.tag.inlab{color:var(--sky);border-color:var(--line-2);border-color:color-mix(in srgb,var(--sky) 38%,transparent);
+  background:var(--paper-2);background:color-mix(in srgb,var(--sky) 9%,transparent)}
+.d-inlab{border-left:2px solid var(--sky);border-left-color:color-mix(in srgb,var(--sky) 40%,transparent);
   padding:var(--s-2) 0 var(--s-2) var(--s-4);margin-bottom:var(--s-4);
   color:var(--dim);font-size:var(--t-sm);line-height:1.7;max-width:64ch}
 .d-inlab b{display:block;font-family:var(--f-mono);font-size:9px;letter-spacing:.2em;
@@ -140,7 +125,7 @@
 body.searching .lab-sec{display:none}
 .tag.fresh{color:var(--paper);background:var(--accent);border-color:var(--accent);font-weight:700}
 /* where a thing physically is — the first question anyone asks of a festival */
-.tag.loc{color:var(--sky);border-color:color-mix(in srgb,var(--sky) 34%,transparent)}
+.tag.loc{color:var(--sky);border-color:var(--line-2);border-color:color-mix(in srgb,var(--sky) 34%,transparent)}
 .tag.loc::before{content:'⌖ ';opacity:.7}
 .item-go{font-family:var(--f-mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);white-space:nowrap;padding-top:8px}
 .item details{margin-top:11px}
@@ -319,6 +304,7 @@ body.searching .lab-sec{display:none}
         <div class="nav-drop-menu">
           <a href="ideas.html">Story Generator</a>
           <a href="skybound.html">SkyBound — Drone</a>
+          <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
       <li class="nav-drop">
@@ -335,6 +321,7 @@ body.searching .lab-sec{display:none}
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
@@ -358,11 +345,8 @@ body.searching .lab-sec{display:none}
   <div class="find-row">
     <div class="find-count" id="count" role="status" aria-live="polite"></div>
     <button class="freebtn" id="freeOnly" type="button" aria-pressed="false">Free only</button>
-    <button type="button" id="toggleAll" class="toggle-all">Expand all</button>
   </div>
 </section>
-
-<nav class="jump" aria-label="Jump to category"><div class="jump-in" id="jumpNav"></div></nav>
 
 <div class="wrap" id="kitPtr" hidden></div>
 <div id="groups"></div>
@@ -403,6 +387,7 @@ body.searching .lab-sec{display:none}
           <li><a href="sourcing.html">Gear &amp; Flight</a></li>
           <li><a href="ideas.html">Story Generator</a></li>
           <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="assistant.html">LaB Assistant</a></li>
           <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
           <li><a href="mykit.html">Your Kit</a></li>
           <li><a href="colophon.html">How it's built</a></li>
@@ -429,11 +414,16 @@ body.searching .lab-sec{display:none}
 
 <script src="resources-data.js"></script>
 <script>
-/* This page owns Learn & Make. people.html and sourcing.html own the other
-   two — see resources-render.js for how bands map to pages. */
+/* This page owns the Watch & Learn band. See resources-render.js for how
+   categories map to the four notebook pages. */
 window.PAGE_BANDS = ['band-learn'];
 </script>
 <script src="resources-render.js"></script>
+<script>
+/* This page has one section, so present its resources directly instead of
+   making the visitor open the only available category. */
+(function(){var d=document.querySelector('.grp-d');if(d)d.open=true})();
+</script>
 
 <script>
 /* Theme switch — remembers the choice, falls back to dark */
@@ -499,5 +489,7 @@ window.PAGE_BANDS = ['band-learn'];
     .catch(function(){ /* stay hidden */ });
 })();
 </script>
+<script src="assistant-guide.js"></script>
+<script src="assistant-widget.js"></script>
 </body>
 </html>

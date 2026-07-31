@@ -1,0 +1,63 @@
+# macOS / SMB share artifacts
+# The NAS is mounted over SMB, which renames deleted files to .smbdelete*
+# instead of removing them. They're invisible in Finder but git will happily
+# commit ~28MB of them if you let it.
+.smbdelete*
+._*
+.DS_Store
+.Spotlight-V100
+.Trashes
+.TemporaryItems
+.fseventsd
+
+# Local working files — not part of the site.
+#
+# The deploy rule has always been "nothing starting with _ goes on the server",
+# but this listed the underscore files by hand, so every new one had to be
+# remembered. It is a wildcard now. The two below don't start with _ and so
+# still need naming: CNAME.txt is a stray twin of the real CNAME (no extension,
+# and it MUST keep shipping), and CHANGELOG_RUNNING.md is a scratch log.
+_*
+CHANGELOG_RUNNING.md
+CNAME.txt
+SITEhandoff.md
+node_modules/
+
+# ---------------------------------------------------------------------------
+# SOURCE MEDIA — WHITELIST, NOT BLACKLIST
+#
+# This used to list folders by name in CAPS (IMAGES/lookoutbts/ and friends)
+# because that's how the SMB mount displays them. The folders on disk are
+# lowercase and git is case-sensitive, so not one of those rules matched —
+# 868 MB of HEIC originals and untouched camera MOVs sat unprotected.
+# images/lookoutbts alone holds a 504 MB clip, and GitHub hard-rejects any
+# single file over 100 MB.
+#
+# Naming folders by hand is what failed, so this ignores everything under
+# images/ and re-admits only the seven the site actually references. Any new
+# source folder is now ignored by default — the safe direction to be wrong in.
+# ---------------------------------------------------------------------------
+images/*/
+!images/brass/
+!images/itsaboy/
+!images/lejuice/
+!images/lookout/
+!images/moz/
+!images/scattered/
+!images/traildead/
+!images/og/
+
+# Camera formats, wherever they land. 26 HEIC originals (66 MB) were found
+# sitting inside images/itsaboy/ — a whitelisted folder, so the rules above
+# would have waved them straight through. Only Safari renders HEIC; Chrome
+# and Firefox show a broken image. Convert to JPEG, then ship the JPEG.
+*.heic
+*.HEIC
+*.mov
+*.MOV
+*.dng
+*.DNG
+*.arw
+*.ARW
+*.braw
+*.BRAW
