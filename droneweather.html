@@ -284,6 +284,28 @@
 </footer>
 
 <script>
+/* Theme switch : remembers choice, falls back to dark */
+(function(){
+  var root=document.documentElement, KEY='lab-theme';
+  var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
+  if(!btns.length)return;
+
+  function apply(t,save){
+    if(t==='dark') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme',t);
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.themeSet===t))});
+    if(save){try{localStorage.setItem(KEY,t)}catch(e){}}
+  }
+
+  var saved='dark';
+  try{saved=localStorage.getItem(KEY)||'dark'}catch(e){}
+  apply(saved,false);
+
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){apply(b.dataset.themeSet,true)});
+  });
+})();
+
 (function(){
   /* Header Dropdown Logic */
   var t=document.getElementById('navToggle'),l=document.getElementById('navLinks');
