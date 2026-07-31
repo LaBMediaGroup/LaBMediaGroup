@@ -36,46 +36,60 @@
       id: 'lab-films-anthony-brass',
       url: 'portfolio.html#artist',
       title: 'Anthony Brass (2024) — Behind the Scenes & Production',
-      tags: 'anthony brass artist portrait documentary detroit A-cam B-cam leary asmar larry john asmar voiceover plants cats acrylics vinyl script who shot who edited',
+      tags: 'anthony brass artist portrait documentary detroit A-cam B-cam larry asmar john asmar voiceover plants cats acrylics vinyl script who shot who edited watch video player youtube',
       note: 'Production notes on Anthony Brass (2024).',
-      answer: 'Anthony Brass (2024) is an intimate portrait of Detroit outsider artist Anthony R. Brass, filmed in his home studio surrounded by plants, cats, and mid-century decor. Bobby Baldwin shot A-cam and edited; Leary (Larry) Asmar ran B-cam. The connection came through Leary/John Asmar’s network. Anthony wrote his own script/voiceover, so the narration is genuinely his.',
+      answer: 'Anthony Brass (2024) is an intimate portrait of Detroit outsider artist Anthony R. Brass, filmed in his home studio surrounded by plants, cats, and mid-century decor. Bobby Baldwin shot A-cam and edited; Larry Asmar ran B-cam. The connection came through Larry and John Asmar’s network. Anthony wrote his own script/voiceover, so the narration is genuinely his.\n\nWatch Anthony Brass on YouTube:\nhttps://www.youtube.com/watch?v=CPvxM8GrCg8',
       sources: [
         { title: 'Anthony Brass — The Reel', url: 'portfolio.html#artist', note: 'Film breakdown & still' },
-        { title: 'Watch on YouTube', url: 'https://www.youtube.com/watch?v=0kFj2m6qOVo', note: 'YouTube video' }
+        { title: 'Watch on YouTube', url: 'https://www.youtube.com/watch?v=CPvxM8GrCg8', note: 'YouTube video' }
       ]
     },
     {
       id: 'lab-films-moz-interiors',
       url: 'portfolio.html#moz',
       title: 'MOZ Interiors (2024) — Production Notes & Fun Facts',
-      tags: 'moz interiors brand film commercial lyzz industrial loft detroit 1970s custom banquette wine room brass reeded door father daughter drywall spiral staircase hidden mirror door closet nightingale builders anthony brass engagement most viewed',
+      tags: 'moz interiors brand film commercial lyzz industrial loft detroit 1970s custom banquette wine room brass reeded door father daughter drywall spiral staircase hidden mirror door closet nightingale builders anthony brass engagement most viewed watch video player youtube',
       note: 'Production notes and fun facts for MOZ Interiors (2024).',
-      answer: 'MOZ Interiors (2024) is a cinematic walkthrough of an industrial loft designed by Lyzz (MOZ Interiors). It is LaB Media’s most-viewed video on YouTube. Bobby Baldwin shot A-cam & edited; Leary (Larry) Asmar ran B-cam. Key BTS details: The spiral staircase drywall was done by a father-daughter duo; a local Detroit metalworker crafted the custom brass reeded door, wavy steel range hood, and capsule fireplace; Nightingale Builders did contracting; and Lyzz designed the hidden mirror-door walk-in closet ("the child in me really wanted a secret room"). Later, Lyzz and Anthony Brass got engaged!',
+      answer: 'MOZ Interiors (2024) is a cinematic walkthrough of an industrial loft designed by Lyzz (MOZ Interiors). It is LaB Media’s most-viewed video on YouTube. Bobby Baldwin shot A-cam & edited; Larry Asmar ran B-cam. Key BTS details: The spiral staircase drywall was done by a father-daughter duo; a local Detroit metalworker crafted the custom brass reeded door, wavy steel range hood, and capsule fireplace; Nightingale Builders did contracting; and Lyzz designed the hidden mirror-door walk-in closet ("the child in me really wanted a secret room"). Later, Lyzz and Anthony Brass got engaged!\n\nWatch MOZ Interiors on YouTube:\nhttps://www.youtube.com/watch?v=HtF4L9RpkaU',
       sources: [
         { title: 'MOZ Interiors — The Reel', url: 'portfolio.html#moz', note: 'Film breakdown & still' },
-        { title: 'Watch on YouTube', url: 'https://www.youtube.com/watch?v=R2j9Z9W8oK0', note: 'YouTube video' }
+        { title: 'Watch on YouTube', url: 'https://www.youtube.com/watch?v=HtF4L9RpkaU', note: 'YouTube video' }
+      ]
+    },
+    {
+      id: 'lab-films-the-pandys',
+      url: 'portfolio.html#pandys',
+      title: 'The Pandys (2024) — Live Session Production',
+      tags: 'the pandys music video live session rehearsal john asmar larry asmar drummer old guy band practice energy watch video player youtube',
+      note: 'Production notes for The Pandys (2024).',
+      answer: 'The Pandys (2024) captures raw band practice energy live as the band performs "Old Guy". Shot in a single day in January 2024 with minimal production interference. John Asmar (Larry Asmar’s brother) is the band’s drummer.\n\nWatch The Pandys on YouTube:\nhttps://www.youtube.com/watch?v=ZXYtZmIRiRI',
+      sources: [
+        { title: 'The Pandys — The Reel', url: 'portfolio.html#pandys', note: 'Film breakdown & still' },
+        { title: 'Watch on YouTube', url: 'https://www.youtube.com/watch?v=ZXYtZmIRiRI', note: 'YouTube video' }
       ]
     },
     {
       id: 'lab-films-trail-dead',
       url: 'portfolio.html#horror',
       title: 'Trail Dead (2025) — Horror Film Roulette Winner',
-      tags: 'trail dead horror film roulette winner best editing 2025 bobby baldwin al krakosky al sr dad 2 days 3 person crew deadline slasher who shot who edited',
+      tags: 'trail dead horror film roulette winner best editing 2025 bobby baldwin al krakosky al sr dad 2 days 3 person crew deadline slasher who shot who edited watch video player youtube',
       note: 'Production notes for Trail Dead (2025).',
-      answer: 'Trail Dead (2025) won Best Editing at Horror Film Roulette 2025. Al Krakosky spun the roulette wheel at the kickoff event drawing the constraints. The entire crew was just three people: Bobby, Al, and Al’s dad (Al Sr.). They co-directed, co-wrote, and both acted. Shot in 2 days and edited by Al in 2 days straight through to the deadline. Bobby calls the win ironic: "the award went to the thing we had the least time for."',
+      answer: 'Trail Dead (2025) won Best Editing at Horror Film Roulette 2025. Al Krakosky spun the roulette wheel at the kickoff event drawing the constraints. The entire crew was just three people: Bobby, Al, and Al’s dad (Al Sr.). They co-directed, co-wrote, and both acted. Shot in 2 days and edited by Al in 2 days straight through to the deadline. Bobby calls the win ironic: "the award went to the thing we had the least time for."\n\nWatch Trail Dead on YouTube:\nhttps://www.youtube.com/watch?v=rtEs8chuDlM',
       sources: [
-        { title: 'Trail Dead — The Reel', url: 'portfolio.html#horror', note: 'Film breakdown & BTS' }
+        { title: 'Trail Dead — The Reel', url: 'portfolio.html#horror', note: 'Film breakdown & BTS' },
+        { title: 'Watch on YouTube', url: 'https://www.youtube.com/watch?v=rtEs8chuDlM', note: 'YouTube video' }
       ]
     },
     {
       id: 'lab-films-lookout',
       url: 'portfolio.html#comedy',
       title: 'Lookout (2025) — Satirical Dark Comedy',
-      tags: 'lookout comedy roll 2025 top 25 bobby baldwin mark al krakosky joe krakosky marcus al sr older gentleman dereck shedlowsky twerk flip kelly wasmer janet ashley baldwin gym smart home who shot who edited cast',
+      tags: 'lookout comedy roll 2025 top 25 bobby baldwin mark al krakosky joe krakosky marcus al sr older gentleman dereck shedlowsky twerk flip kelly wasmer janet ashley baldwin gym smart home who shot who edited cast watch video player youtube',
       note: 'Production notes for Lookout (2025).',
-      answer: 'Lookout (2025) is a satirical dark comedy short that placed in the Top 25 at the Comedy Roll Film Festival 2025. Bobby Baldwin wrote, produced, played lead character Mark, handled grip and sound. Al Krakosky directed, wrote, ran main camera, and edited. Al’s brother Joe played Marcus (the trainer) & ran sound; Al’s dad (Al Sr.) played the older gentleman with the warning; Dereck Shedlowsky played Derek (doing a twerk and a flip); Kelly Wasmer played Janet; and Ashley Baldwin (Bobby’s ex-wife) made a cameo.',
+      answer: 'Lookout (2025) is a satirical dark comedy short that placed in the Top 25 at the Comedy Roll Film Festival 2025. Bobby Baldwin wrote, produced, played lead character Mark, handled grip and sound. Al Krakosky directed, wrote, ran main camera, and edited. Al’s brother Joe played Marcus (the trainer) & ran sound; Al’s dad (Al Sr.) played the older gentleman with the warning; Dereck Shedlowsky played Derek (doing a twerk and a flip); Kelly Wasmer played Janet; and Ashley Baldwin (Bobby’s ex-wife) made a cameo.\n\nWatch Lookout on YouTube:\nhttps://www.youtube.com/watch?v=G0zfFWwQuZA',
       sources: [
-        { title: 'Lookout — The Reel', url: 'portfolio.html#comedy', note: 'Film breakdown & still' }
+        { title: 'Lookout — The Reel', url: 'portfolio.html#comedy', note: 'Film breakdown & still' },
+        { title: 'Watch on YouTube', url: 'https://www.youtube.com/watch?v=G0zfFWwQuZA', note: 'YouTube video' }
       ]
     },
     {
@@ -115,9 +129,9 @@
       id: 'lab-crew-and-community',
       url: 'people.html',
       title: 'LaB Crew & Community Connections (ST Park, Comedy Roll, 48HFP)',
-      tags: 'crew community st park joe tenbrock rylie the hook cracked mistaken mike pickard billy nehring veda kae max josh comedy roll horror film roulette detroit film community',
+      tags: 'crew community st park joe tenbrock rylie the hook cracked mistaken mike pickard billy nehring veda kae max josh comedy roll horror film roulette detroit film community larry asmar',
       note: 'Overview of LaB Media crew and Michigan film community connections.',
-      answer: 'LaB Media’s core is Bobby Baldwin and Al Krakosky, with Joe Krakosky forming the core trio on films like Scattered. Surrounding them is a vibrant local Michigan film community: ST Park Productions (Joe TenBrock & Rylie, creators of The Hook, Brimstone, Mistaken), Mike Pickard (writer/director of Cracked), Billy Nehring, Veda Kae, and Josh (Comedy Roll showrunner). Bobby crewed on ST Park’s The Hook and Mike Pickard’s Cracked, building relationships that fuel collaborative Michigan filmmaking.',
+      answer: 'LaB Media’s core is Bobby Baldwin and Al Krakosky, with Joe Krakosky forming the core trio on films like Scattered. Surrounding them is a vibrant local Michigan film community: ST Park Productions (Joe TenBrock & Rylie, creators of The Hook, Brimstone, Mistaken), Mike Pickard (writer/director of Cracked), Billy Nehring, Veda Kae, Larry Asmar, and Josh (Comedy Roll showrunner). Bobby crewed on ST Park’s The Hook and Mike Pickard’s Cracked, building relationships that fuel collaborative Michigan filmmaking.',
       sources: [
         { title: 'People & Community', url: 'people.html', note: 'Collaborator network' }
       ]

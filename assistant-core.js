@@ -335,12 +335,16 @@
       });
       if(named.length===1){
         films=named;
-        if(/\b(when|date|dates|filmed|shot|shoot|made)\b/.test(nq)&&named[0].film.filmed){
+        var f=named[0].film;
+        var videoAdd=f.videoUrl?'\n\nWatch '+f.title+' on YouTube: '+f.videoUrl:'';
+        var srcList=[source(f.title,f.url,f.kind+' · '+f.year)];
+        if(f.videoUrl)srcList.push(source(f.title+' Video',f.videoUrl,'YouTube video'));
+        if(/\b(when|date|dates|filmed|shot|shoot|made)\b/.test(nq)&&f.filmed){
           return {
             kind:'films',
             confidence:1,
-            answer:named[0].film.title+' was filmed '+named[0].film.filmed+'. '+named[0].film.summary,
-            sources:[source(named[0].film.title,named[0].film.url,named[0].film.kind+' · '+named[0].film.year)]
+            answer:f.title+' was filmed '+f.filmed+'. '+f.summary+videoAdd,
+            sources:srcList
           };
         }
       }
@@ -354,10 +358,15 @@
       var floor=films.length?Math.max(6,films[0].score*.6):6;
       var chosen=plural?films.slice(0,8):named.length===1?films:themed?films.slice(0,3):films.filter(function(x){return x.score>=floor;}).slice(0,3);
       if(!chosen.length)return null;
+      var singleVideo=(chosen.length===1&&chosen[0].film.videoUrl)?'\n\nWatch '+chosen[0].film.title+' on YouTube: '+chosen[0].film.videoUrl:'';
+      var mainSources=chosen.slice(0,4).map(function(x){return source(x.film.title,x.film.url,x.film.kind+' · '+x.film.year);});
+      if(chosen.length===1&&chosen[0].film.videoUrl){
+        mainSources.push(source(chosen[0].film.title+' Video',chosen[0].film.videoUrl,'YouTube video'));
+      }
       return {kind:'films',confidence:1,answer:plural
           ? 'The Reel currently has eight films: '+chosen.map(function(x){return x.film.title;}).join(', ')+'.'
-          : chosen.map(function(x){return x.film.title+' — '+x.film.summary;}).join('\n'),
-        sources:chosen.slice(0,4).map(function(x){return source(x.film.title,x.film.url,x.film.kind+' · '+x.film.year);})};
+          : chosen.map(function(x){return x.film.title+' — '+x.film.summary;}).join('\n')+singleVideo,
+        sources:mainSources};
     }
     function genericAnswer(query){
       var ranked=docs.map(function(doc){var s=scoreDoc(query,doc);return {doc:doc,score:s.score,coverage:s.coverage};})
