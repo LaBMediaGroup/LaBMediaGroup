@@ -34,15 +34,15 @@
     },
     {
       id: 'lab-production-behind-the-scenes',
-      url: 'contact.html',
-      title: 'What it’s like on a LaB set (Behind the Scenes & Collaboration)',
-      tags: 'shoot set set life filming behind the scenes bts crew collaboration crew size brand film short film edit editing how we shoot spaces environment Al helpers team work working on a film set environment',
-      note: 'Curated notes on how LaB Media shoots, crew size, collaboration, and set life.',
-      answer: 'On a LaB set, nothing is a solo effort:\n- Short Films: Made collaboratively with small, tight-knit crews of good friends. For example, Al handles the editing (winning Best Editing for Trail Dead), while collaborators crew up on set to run sound, light, or lend a hand.\n- Brand Pieces (like MOZ Interiors & Le Juicé): Filmed with lean 1–2 person crews on location, moving fast with a minimal footprint so the space and real people stay front and center.\n- Production Spaces: Set environments are kept relaxed, collaborative, and practical—focused on getting great work done without huge crew overhead.',
+      url: 'portfolio.html#horror',
+      title: 'What it’s like on a LaB set (Behind the Scenes & Trail Dead Story)',
+      tags: 'shoot set set life filming behind the scenes bts crew collaboration crew size trail dead brand film short film edit editing how we shoot spaces environment Al helpers team work working on a film set environment dad',
+      note: 'Curated notes on how LaB Media shoots, crew size, collaboration, set life, and Trail Dead production.',
+      answer: 'On a LaB set, nothing is a solo effort:\n- Short Films (e.g. Trail Dead): Made with small, tight-knit crews of good friends. Trail Dead’s entire crew was just three people—Bobby, Al, and Al’s dad. It was shot in 2 days and cut by Al in 2 days straight to the deadline (winning Best Editing at Horror Film Roulette 2025).\n- Brand Pieces (like MOZ Interiors & Le Juicé): Filmed with lean 1–2 person crews on location, moving fast with a minimal footprint so the space and real people stay front and center.\n- Production Spaces: Set environments are kept relaxed, collaborative, and practical—focused on getting great work done without huge crew overhead.',
       sources: [
+        { title: 'Trail Dead — Reel & Notes', url: 'portfolio.html#horror', note: 'Film timeline & BTS' },
         { title: 'About LaB & Collaboration', url: 'contact.html', note: 'About Bobby & how LaB shoots' },
-        { title: 'People & Collaborators', url: 'people.html', note: 'People & Community' },
-        { title: 'The Reel & Production Notes', url: 'portfolio.html', note: 'Film timelines and BTS galleries' }
+        { title: 'People & Collaborators', url: 'people.html', note: 'People & Community' }
       ]
     }
   ];
