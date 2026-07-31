@@ -53,7 +53,7 @@
       border: 1px solid var(--line);
       padding: clamp(20px, 4vw, 36px);
       margin-block: var(--s-6);
-      border-radius: 4px;
+      border-radius: 8px;
     }
     .wx-status {
       font-family: var(--f-mono);
@@ -64,6 +64,7 @@
       background: rgba(121,195,154,.15);
       color: var(--good);
       border: 1px solid var(--good);
+      border-radius: 6px;
       display: inline-block;
       margin-top: 8px;
     }
@@ -77,6 +78,7 @@
       background: var(--paper);
       border: 1px solid var(--line);
       padding: var(--s-4);
+      border-radius: 6px;
     }
     .wx-metric .k {
       font-family: var(--f-mono);
@@ -101,6 +103,7 @@
       border: 1px solid var(--line);
       padding: var(--s-4);
       background: var(--paper-2);
+      border-radius: 8px;
     }
     .rule-item h3 {
       font-family: var(--f-body);
@@ -117,6 +120,9 @@
       font-size: var(--t-sm);
       color: var(--dim);
       line-height: 1.6;
+    }
+    .sec-c-weather {
+      padding-bottom: clamp(64px, 10vw, 120px);
     }
   </style>
 </head>
@@ -219,7 +225,7 @@
     </div>
   </div>
 
-  <div class="sec-c">
+  <div class="sec-c sec-c-weather">
     <h2 style="font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;margin-bottom:var(--s-4);">Flight safety <em>threshold rules.</em></h2>
     <div class="rules-list">
       <div class="rule-item">
