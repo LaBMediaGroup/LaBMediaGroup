@@ -14,6 +14,7 @@
     resources:typeof resources!=='undefined'?resources:[],
     gearData:window.gearData||[],
     spotlight:window.SPOTLIGHT||[],
+    fieldNotes:window.LAB_FIELD_NOTES||[],
     knowledge:window.LAB_ASSISTANT_KNOWLEDGE||{}
   });
 

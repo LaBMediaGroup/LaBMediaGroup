@@ -163,6 +163,7 @@
     var gearSections=data.gearData||[];
     var eventList=data.spotlight||[];
     var knowledge=data.knowledge||{pages:[],films:[],faqs:[]};
+    var fieldNotes=data.fieldNotes||[];
     var docs=[];
 
     resourceList.forEach(function(r){
@@ -189,6 +190,9 @@
     });
     (knowledge.faqs||[]).forEach(function(f){
       docs.push({type:'faq',title:f.title,url:f.url,record:f,tags:f.tags,text:f.answer});
+    });
+    fieldNotes.forEach(function(n){
+      docs.push({type:'field-note',title:n.title,url:n.url,record:n,tags:n.tags,text:n.answer});
     });
 
     function eventMention(query,event){
@@ -366,6 +370,7 @@
       var top=ranked.slice(0,3), first=top[0].doc;
       var answer;
       if(first.type==='faq')answer=first.record.answer;
+      else if(first.type==='field-note')answer=first.record.answer;
       else if(first.type==='page')answer=first.record.summary;
       else if(first.type==='film')answer=first.record.title+' — '+first.record.summary;
       else if(first.type==='gear')answer=first.title+' — '+first.record.what+(first.record.shared?' It is marked as collaborator/shared gear, not LaB-owned.':'');
@@ -373,6 +378,19 @@
       var cited=(first.type==='faq'||(first.type==='page'&&top[0].score>=12))?top.slice(0,1):top;
       return {kind:'search',confidence:Math.min(1,top[0].score/14),answer:answer,
         sources:cited.map(function(x){return source(x.doc.title,x.doc.url,x.doc.type);})};
+    }
+    function fieldNoteAnswer(query){
+      var ranked=fieldNotes.map(function(note){
+        var scored=scoreDoc(query,{title:note.title,text:note.answer,tags:note.tags});
+        return {note:note,score:scored.score,coverage:scored.coverage};
+      }).sort(function(a,b){return b.score-a.score;});
+      if(!ranked.length||ranked[0].score<10||ranked[0].coverage<.6)return null;
+      return {
+        kind:'field-note',
+        confidence:1,
+        answer:ranked[0].note.answer,
+        sources:[source(ranked[0].note.title,ranked[0].note.url,'Curated LaB field note')]
+      };
     }
     function ask(query,options){
       query=String(query||'').trim().slice(0,280);
@@ -386,6 +404,8 @@
           sources:[source('LaB Assistant','assistant.html')]
         };
       }
+      var fieldNote=fieldNoteAnswer(query);
+      if(fieldNote)return fieldNote;
       if(/\b(sync|account|saved|save)\b/.test(nq)&&/\b(kit|links|resources|favorites|favourites)\b/.test(nq)){
         var savedFaq=(knowledge.faqs||[]).filter(function(f){return f.title==='Where are saved resources kept?';})[0];
         if(savedFaq)return {kind:'faq',confidence:1,answer:savedFaq.answer,sources:[source(savedFaq.title,savedFaq.url)]};

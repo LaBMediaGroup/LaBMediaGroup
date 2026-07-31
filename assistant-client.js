@@ -16,6 +16,7 @@
       resources:options.resources||[],
       gearData:options.gearData||[],
       spotlight:options.spotlight||[],
+      fieldNotes:options.fieldNotes||[],
       knowledge:options.knowledge||{}
     });
     var publicApiBase=location.protocol==='https:'
@@ -85,7 +86,7 @@
       question=String(question||'').trim();
       if(hooks.onPhase)hooks.onPhase('retrieval',{question:question});
       var baseline=retrieve(question);
-      if(baseline.kind==='unknown'||baseline.kind==='empty'||!modelEnabled||gatewayState!=='ready'){
+      if(baseline.kind==='unknown'||baseline.kind==='empty'||baseline.kind==='field-note'||!modelEnabled||gatewayState!=='ready'){
         return Promise.resolve({
           ok:true,
           mode:'retrieval',

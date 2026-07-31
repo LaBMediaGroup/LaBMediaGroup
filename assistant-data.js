@@ -29,7 +29,7 @@ var LAB_ASSISTANT_KNOWLEDGE = {
     { title:'About LaB', url:'contact.html', tags:'about bobby contact email shelby township detroit work hire',
       summary:'LaB Media is Bobby: one person with a camera, a full-time job and a weekend filmmaking habit.' },
     { title:'How the Site Is Built', url:'colophon.html', tags:'site code html css javascript privacy cookies github pages build',
-      summary:'A hand-built static site: plain HTML, CSS and JavaScript, with no framework or backend.' }
+      summary:'A hand-built static site: plain HTML, CSS and JavaScript with no framework, plus one small Worker for optional AI phrasing.' }
   ],
   films: [
     { title:'Anthony Brass', url:'portfolio.html#artist', year:'2024', filmed:'March 4, 2024', kind:'Artist spotlight',
@@ -66,7 +66,7 @@ var LAB_ASSISTANT_KNOWLEDGE = {
       answer:'Probably not. LaB is a hobby site, not a booking funnel, and Bobby is not currently taking projects. He is open to talking shop or answering how something was made.' },
     { title:'How is the site built?', url:'colophon.html',
       tags:'built code framework backend hosting github pages javascript html css cookies',
-      answer:'It is hand-written HTML, CSS and JavaScript with no framework, build step or backend. It runs on free hosting; the domain is the recurring cost.' },
+      answer:'It is hand-written HTML, CSS and JavaScript with no framework or build step. The pages run on free hosting; one small Cloudflare Worker protects optional AI phrasing, and the domain is the recurring cost.' },
     { title:'Does the site track me?', url:'colophon.html',
       tags:'privacy cookies tracking analytics data',
       answer:'The site uses no cookies or persistent visitor identifiers. Videos are click-to-load, and GoatCounter provides privacy-minded aggregate visit counts.' },
