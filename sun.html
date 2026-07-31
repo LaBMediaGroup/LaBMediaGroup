@@ -155,6 +155,28 @@
     }
     .badge-golden { color: var(--accent); font-weight: 500; }
     .badge-blue { color: var(--sky); font-weight: 500; }
+    .sun-advice-box {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      max-width: clamp(260px, 50vw, 540px);
+      z-index: 5;
+      pointer-events: none;
+    }
+    .advice-phrase {
+      font-family: var(--f-display);
+      font-size: clamp(19px, 3.2vw, 30px);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+      margin: 0;
+    }
+    .advice-phrase em {
+      font-style: italic;
+      color: var(--accent);
+    }
   </style>
 </head>
 <body>
@@ -229,6 +251,9 @@
 <section class="wrap">
   <div class="sun-stage" id="sunStage">
     <div class="sun-sky" id="sunSky">
+      <div class="sun-advice-box" id="adviceBox">
+        <p class="advice-phrase" id="advicePhrase">&ldquo;Get ready and get to location, or you&rsquo;ll <em>miss it.</em>&rdquo;</p>
+      </div>
       <svg width="100%" height="100%" preserveAspectRatio="none" style="position:absolute;top:0;left:0;">
         <path class="sun-arc-path" id="arcPath" d="M 0 260 Q 50% 20 100% 260" />
       </svg>
@@ -438,6 +463,78 @@
     return displayH + ':' + String(m).padStart(2, '0') + ' ' + ampm;
   }
 
+  var advicePhrase = document.getElementById('advicePhrase');
+  var lastPhraseText = '';
+  var rollTimeout = null;
+
+  var advicePools = {
+    predawn: [
+      "Pack your batteries and check sensor glass before <em>first light.</em>",
+      "Quiet hours : plan your morning trajectory and <em>scout angles.</em>",
+      "Sub-zero twilight : inspect gear and prep <em>lens heaters.</em>"
+    ],
+    blueHourDawn: [
+      "Deep blue sky ambient : capture city lights and <em>horizon lines.</em>",
+      "Cool 10,000K atmosphere : perfect for moody <em>architectural passes.</em>"
+    ],
+    goldenHourMorn: [
+      "Get ready and get to location, or you&rsquo;ll <em>miss it.</em>",
+      "Warm 3,200K rim lighting : position subject against the <em>rising sun.</em>",
+      "Low shadow angle : capture flare and long <em>silhouette passes.</em>",
+      "Peak morning light : soft contrast and rich <em>skin tones.</em>"
+    ],
+    midday: [
+      "High overhead harsh light : diffusion grid recommended for <em>shadow control.</em>",
+      "Strict 5,600K daylight : watch for top-down <em>facial shadows.</em>",
+      "Overhead glare : deploy matte box flags or <em>polarizing filters.</em>"
+    ],
+    goldenHourEve: [
+      "Get ready and get to location, or you&rsquo;ll <em>miss it.</em>",
+      "Fire in the sky : open wide for low-angle <em>cinematic flares.</em>",
+      "Pure magic 2,800K light : final 20 minutes of <em>direct sun.</em>",
+      "Golden rim active : track low over water or <em>open fields.</em>"
+    ],
+    blueHourDusk: [
+      "Sun has dipped below horizon : 15 minutes of <em>deep blue twilight.</em>",
+      "Cool ambient fill : bump ISO or open aperture for <em>cityscapes.</em>"
+    ],
+    night: [
+      "Sun is down : switch to fast primes and <em>tripod passes.</em>",
+      "Starlight & city glows : wrap location and <em>back up footage.</em>"
+    ]
+  };
+
+  function updateAdvice(mins, elevAngle) {
+    if (!advicePhrase) return;
+
+    var cat = 'night';
+    if (mins < 360) cat = 'predawn';
+    else if (mins >= 360 && mins < 390) cat = 'blueHourDawn';
+    else if (mins >= 390 && mins < 455) cat = 'goldenHourMorn';
+    else if (mins >= 455 && mins < 1170) cat = 'midday';
+    else if (mins >= 1170 && mins < 1235) cat = 'goldenHourEve';
+    else if (mins >= 1235 && mins < 1265) cat = 'blueHourDusk';
+    else cat = 'night';
+
+    var pool = advicePools[cat];
+    var phraseIdx = Math.floor((mins / 25)) % pool.length;
+    var target = pool[phraseIdx];
+
+    if (target !== lastPhraseText) {
+      lastPhraseText = target;
+      if (rollTimeout) clearTimeout(rollTimeout);
+
+      advicePhrase.style.opacity = '0';
+      advicePhrase.style.transform = 'translateY(-6px)';
+
+      rollTimeout = setTimeout(function(){
+        advicePhrase.innerHTML = '&ldquo;' + target + '&rdquo;';
+        advicePhrase.style.opacity = '1';
+        advicePhrase.style.transform = 'translateY(0)';
+      }, 120);
+    }
+  }
+
   function updateSun(mins) {
     timeVal.textContent = fmtTime(mins);
 
@@ -480,6 +577,8 @@
       orb.style.background = '#4A5568';
       orb.style.boxShadow = 'none';
     }
+
+    updateAdvice(mins, elevAngle);
   }
 
   slider.addEventListener('input', function(){
