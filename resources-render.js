@@ -1,10 +1,10 @@
 /* ============================================================
-   THE NOTEBOOK — shared renderer
+   THE NOTEBOOK : shared renderer
    Loaded by learn.html, resources.html, people.html and sourcing.html.
 
    Each page sets window.PAGE_BANDS to the band ids it owns before
-   including this file; everything else — grouping, counts, peek
-   lines, search, the star buttons and the kit pointer — is the
+   including this file; everything else : grouping, counts, peek
+   lines, search, the star buttons and the kit pointer : is the
    same code on all four. It lives in one file because four
    copies of 742 lines is how four pages quietly stop agreeing
    with each other, and the counts on this site have already
@@ -55,7 +55,7 @@
 
     /* Keyboard, handled in JS rather than by a CSS :focus-within rule.
        That rule used to force the menu visible whenever anything inside the
-       drop had focus — which meant clicking the button to CLOSE it set
+       drop had focus : which meant clicking the button to CLOSE it set
        data-open="false" and aria-expanded="false" while the menu stayed on
        screen, because the button you just clicked still had focus. The menu
        then hung there until you clicked somewhere else entirely. Routing
@@ -91,7 +91,7 @@
    thing. These three bands wrap the existing groups rather than replacing them,
    so nothing is re-tagged and every group still owns its own anchor and count.
 
-   Every group belongs to exactly one band — a group that matched none would
+   Every group belongs to exactly one band : a group that matched none would
    simply never render, so the last band deliberately catches whatever is left
    over instead of letting an entry disappear the day a new category is added. */
 var BANDS=[
@@ -110,10 +110,10 @@ var BANDS=[
 ];
 
 var GROUPS=[
- {id:'collaborators',cats:['collaborators'],title:'People I’ve <em>Worked With</em>',blurb:'Artists, musicians, and studios I’ve actually shot with. If you need any of these skills on a Michigan project, start here — I can vouch for every one.'},
- {id:'references',cats:['references'],title:'References &amp; <em>Craft</em>',blurb:'The channels and sites I go back to. Shot breakdowns, editing theory, color, and comedy timing — the ones that explain <em>why</em> instead of just walking you through settings.'},
+ {id:'collaborators',cats:['collaborators'],title:'People I’ve <em>Worked With</em>',blurb:'Artists, musicians, and studios I’ve actually shot with. If you need any of these skills on a Michigan project, start here : I can vouch for every one.'},
+ {id:'references',cats:['references'],title:'References &amp; <em>Craft</em>',blurb:'The channels and sites I go back to. Shot breakdowns, editing theory, color, and comedy timing : the ones that explain <em>why</em> instead of just walking you through settings.'},
  {id:'ai',cats:['ai'],title:'AI <em>Tools</em>',blurb:'The handful that earn a place in a real workflow. Most AI video tools are still demos; these are the ones I’ve gotten usable output from.'},
- {id:'music',cats:['music','soundfx'],title:'Music &amp; <em>Sound</em>',blurb:'Score, licensing, and effects libraries that won’t get your upload muted three days later. Read the license terms — “free” and “free for YouTube” are not the same thing.'},
+ {id:'music',cats:['music','soundfx'],title:'Music &amp; <em>Sound</em>',blurb:'Score, licensing, and effects libraries that won’t get your upload muted three days later. Read the license terms : “free” and “free for YouTube” are not the same thing.'},
  {id:'stock',cats:['stock'],title:'Stock <em>Footage</em>',blurb:'For the plate you couldn’t get, the establishing shot you didn’t have time for, and the b-roll that saves an edit.'},
  {id:'fonts',cats:['fonts'],title:'<em>Type</em>',blurb:'Title cards and lower thirds live or die on typeface choice. These are free or fairly licensed, and none of them are Papyrus.'},
  {id:'3d',cats:['3d'],title:'<em>3D</em> &amp; Motion',blurb:'Assets and software for when a shot needs something that doesn’t exist yet.'},
@@ -121,7 +121,7 @@ var GROUPS=[
  {id:'software',cats:['software','coding','tools'],title:'Software &amp; <em>Code</em>',blurb:'Production planning, call sheets, and the coding tools I used to build this site.'},
  {id:'film-festivals',cats:['film-festivals'],title:'Film <em>Fests</em>',blurb:'Michigan first, then the national ones worth an entry fee. If you’ve never submitted anything, the timed competitions are the friendliest door.'},
  {id:'community',cats:['community'],title:'Community &amp; <em>Groups</em>',blurb:'Where Michigan filmmakers actually talk to each other. Crew calls, casting, meetups, and orgs.'},
- {id:'drone',cats:['drone'],title:'Drone &amp; <em>FPV</em>',blurb:'Sims, gear, shops, and training. This one got big enough that it became <a href="skybound.html">its own step-by-step page</a> — start there if you’re new.'}
+ {id:'drone',cats:['drone'],title:'Drone &amp; <em>FPV</em>',blurb:'Sims, gear, shops, and training. This one got big enough that it became <a href="skybound.html">its own step-by-step page</a> : start there if you’re new.'}
 ];
 
 var ALL=(typeof resources!=='undefined'?resources:[]);
@@ -179,7 +179,7 @@ function detailHTML(r){
   var out='',overview='';
 
   /* Why this one is in the LaB. Sits first because "we pay for this" is the
-     most useful sentence on the page — everything else is a recommendation. */
+     most useful sentence on the page : everything else is a recommendation. */
   if(r.inLab) overview+='<p class="d-inlab"><b>In the LaB</b>'+esc(r.inLab)+'</p>';
 
   if(r.fullDesc && r.fullDesc!==r.desc){
@@ -233,7 +233,7 @@ function detailHTML(r){
 
   /* The summary row already shows the first three features. This used to print
      the WHOLE set again, so 106 of the 128 entries repeated their own tags the
-     moment you opened them — which is what made an expanded row look like it
+     moment you opened them : which is what made an expanded row look like it
      had lost its place. Only the ones that didn't fit go here. */
   var rest=(r.features||[]).slice(3);
   if(rest.length){
@@ -254,7 +254,7 @@ function itemHTML(r,i){
   var where = r.locationBadge || r.location;
   if(where) tags+='<span class="tag loc">'+esc(where)+'</span>';
   if(r.labPick)tags+='<span class="tag pick">★ LaB Pick</span>';
-  /* People aren't free or paid — a cost tag on a collaborator reads like a price list */
+  /* People aren't free or paid : a cost tag on a collaborator reads like a price list */
   var isPerson = catsOf(r).indexOf('collaborators')>-1;
   if(!isPerson){
     tags+= r.paid?'<span class="tag paid">Paid</span>':'<span class="tag free">Free</span>';
@@ -308,12 +308,12 @@ function itemHTML(r,i){
    and nothing falls through. */
 
 /* A saved kit needs a stable key per entry. Only 20 of the 126 entries carry
-   an explicit id, but all 126 names are unique and slugify uniquely — so the
+   an explicit id, but all 126 names are unique and slugify uniquely : so the
    key is derived rather than hand-authored, and no data file had to change.
    Derived from name, not array position, so reordering the list never
    invalidates somebody's saved kit or a link they already shared. */
 /* An entry counts as new for 60 days after the date you added it. No date at
-   all means not new — better than backfilling dates nobody can verify. Add
+   all means not new : better than backfilling dates nobody can verify. Add
    `added: 'YYYY-MM-DD'` when you add a resource and the tag handles itself. */
 var NEW_DAYS=60;
 function isNew(r){
@@ -335,7 +335,7 @@ function catsOf(r){return String(r.category||'').split(',').map(function(s){retu
 /* ============================================================
    WHERE THINGS LIVE
    Splitting the notebook across three pages would quietly break
-   the one thing search was for — finding anything from anywhere.
+   the one thing search was for : finding anything from anywhere.
    So every page searches all 126 and anything that belongs to a
    band it does not own is listed separately, with a link to the
    page that has it. Declared once, here, because a lookup table
@@ -463,7 +463,7 @@ function groupOfEntry(r){
     if(el) el.textContent=bandTotals[id];
   });
   /* `claimed` is exactly what this page rendered, so "new" is counted from that
-     rather than from ALL — otherwise a page could advertise a new entry that
+     rather than from ALL : otherwise a page could advertise a new entry that
      lives on one of the other two. And the count says "n of 126" so the slice
      is honest about being a slice. */
   var fresh=claimed.filter(isNew).length;
@@ -476,7 +476,7 @@ function groupOfEntry(r){
 /* ============================================================
    SAVING TO YOUR KIT
    The kit itself now lives on mykit.html. This page keeps the
-   stars — saving belongs next to the thing you are saving — but
+   stars : saving belongs next to the thing you are saving : but
    no longer renders the list, which used to sit above the 126
    entries most people came here for.
 
@@ -494,7 +494,7 @@ function groupOfEntry(r){
   var byKey={}; ALL.forEach(function(r){ byKey[keyOf(r)]=r });
 
   /* Any #kit= link that predates the split still lands here. Forward it rather
-     than drop it — the whole point of hashing keys by content was that a shared
+     than drop it : the whole point of hashing keys by content was that a shared
      link keeps working, and it would be a poor joke to break them by moving the
      page they open. */
   (function forwardLegacy(){
@@ -548,7 +548,7 @@ function groupOfEntry(r){
    IN THE LaB
    The tools money actually went on. Rendered from the `inLab`
    field rather than a hand-kept list, so it can never drift out
-   of sync with the entries themselves — add `inLab: 'why'` to
+   of sync with the entries themselves : add `inLab: 'why'` to
    any resource and it appears here and badges itself.
    ============================================================ */
 (function(){
@@ -564,7 +564,7 @@ function groupOfEntry(r){
     +  '<span class="g-n">✦</span>'
     +  '<span class="g-main">'
     +    '<h2 class="g-title">In the <em>LaB</em></h2>'
-    +    '<span class="g-blurb">What we actually use or have purchased — not things tried once and dropped. '
+    +    '<span class="g-blurb">What we actually use or have purchased : not things tried once and dropped. '
     +      'Everything else on this page is a recommendation; these are the ones money went on.</span>'
     +  '</span>'
     +  '<span class="g-count">'+list.length+'</span>'
@@ -595,12 +595,12 @@ document.addEventListener('click',function(e){
 });
 
 /* Search. Sections are closed by default, so a match inside a closed
-   section has to force it open — otherwise searching looks broken. */
+   section has to force it open : otherwise searching looks broken. */
 (function(){
   var q=document.getElementById('q'),count=document.getElementById('count');
   if(!q)return;
   /* Pinned sections re-render the same entries, so counting them would report
-     more matches than are actually on screen — and both sections hide while
+     more matches than are actually on screen : and both sections hide while
      filtering anyway. Count the groups only. */
   var items=[].slice.call(document.querySelectorAll('#groups .item'));
   var secs=[].slice.call(document.querySelectorAll('.grp'));
@@ -610,7 +610,7 @@ document.addEventListener('click',function(e){
 
   /* Text and cost are two filters over one list, so they run in a single pass.
      A resource is shown when it matches the query AND passes the cost filter.
-     "Free only" hides what is explicitly tagged Paid — collaborators carry no
+     "Free only" hides what is explicitly tagged Paid : collaborators carry no
      cost tag at all, so they stay; they are people, not a purchase. */
   function run(){
     var v=q.value.trim().toLowerCase();
@@ -625,7 +625,7 @@ document.addEventListener('click',function(e){
     });
 
     secs.forEach(function(s){
-      if(!filtering){                          // cleared — restore the collapsed menu
+      if(!filtering){                          // cleared : restore the collapsed menu
         s.style.display='';
         s.querySelector('details').open=false;
         return;
@@ -697,7 +697,7 @@ document.addEventListener('click',function(e){
     history.replaceState(null,'',location.pathname+location.hash);
   })();
 
-  /* Resource detail controls — delegated, because rows are built at runtime.
+  /* Resource detail controls : delegated, because rows are built at runtime.
      The toggle remains in the unified action bar while the full-width detail
      panel opens directly beneath it. */
   document.addEventListener('click',function(e){
@@ -741,7 +741,7 @@ document.addEventListener('click',function(e){
     });
   }
 
-  /* "/" jumps to the search box from anywhere on the page — this list is long
+  /* "/" jumps to the search box from anywhere on the page : this list is long
      enough that reaching for the mouse is the slow part. Ignored while you're
      already typing somewhere, so it never eats a real slash. */
   document.addEventListener('keydown',function(e){
@@ -771,7 +771,7 @@ document.addEventListener('click',function(e){
   function openHash(){
     var h=location.hash;if(!h||h.length<2)return;
     /* A hash is not necessarily a selector. #kit=a.b.c is a shared kit, and
-       handing that to querySelector throws a SyntaxError — which killed this
+       handing that to querySelector throws a SyntaxError : which killed this
        handler outright, so arriving on a deep link WITH a kit in the URL never
        opened the group it pointed at. Only continue if the hash is a plain id. */
     if(!/^#[A-Za-z][\w-]*$/.test(h))return;

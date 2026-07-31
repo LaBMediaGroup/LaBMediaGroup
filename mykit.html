@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Your Kit — Saved Resources | LaB Media</title>
+<title>Your Kit : Saved Resources | LaB Media</title>
 <meta name="description" content="The resources you've starred, kept in your own browser. No account, nothing stored on my end, and the whole list encodes into a link you can send to someone.">
 <link rel="canonical" href="https://labmedia.work/mykit.html">
 
@@ -38,7 +38,7 @@
    resources page starts where people expect it to.
 
    Nothing here is stored on the server. The kit is an array of resource keys in
-   localStorage, and the share link is those same keys in a URL fragment — so a
+   localStorage, and the share link is those same keys in a URL fragment : so a
    link works for someone who has never been here, and I never see it. */
 .kit-hero{padding-block:clamp(48px,7vw,var(--s-9)) var(--s-6)}
 .kit-hero h1{font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;letter-spacing:-.02em;line-height:1.04;margin-top:var(--s-4)}
@@ -108,8 +108,8 @@
 
 <header class="nav">
   <div class="nav-in">
-    <a class="nav-brand" href="index.html" aria-label="LaB Media — home">
-      <img class="nav-logo is-mark" src="images/TheLaB-mark.png" alt="LaB Media — back to the LaB" width="61" height="26">
+    <a class="nav-brand" href="index.html" aria-label="LaB Media : home">
+      <img class="nav-logo is-mark" src="images/TheLaB-mark.png" alt="LaB Media : back to the LaB" width="61" height="26">
     </a>
     <nav class="nav-primary" aria-label="Primary"><ul class="nav-links" id="navLinks">
       <li><a href="portfolio.html">Reel</a></li>
@@ -134,7 +134,7 @@
         </button>
         <div class="nav-drop-menu">
           <a href="ideas.html">Story Generator</a>
-          <a href="skybound.html">SkyBound — Drone</a>
+          <a href="skybound.html">SkyBound : Drone</a>
           <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
@@ -164,7 +164,7 @@
 <section class="kit-hero wrap">
   <div class="rule"><span class="mono">Your kit</span><i></i><span class="mono kit-count" id="kitCount"></span></div>
   <h1>The ones you <em>kept.</em></h1>
-  <p class="lede">Saved in this browser only &mdash; no account, and nothing stored on my end. The whole
+  <p class="lede">Saved in this browser only: no account, and nothing stored on my end. The whole
   list also encodes into a link, so you can send it to someone or move it to another device.</p>
 </section>
 
@@ -173,7 +173,7 @@
     <div class="k-empty">
       <h2>This one needs JavaScript</h2>
       <p>Your kit lives in your own browser rather than on a server, which means the page has to read
-      it locally &mdash; there is nothing for me to send you. The
+      it locally: there is nothing for me to send you. The
       <a href="resources.html" style="color:var(--accent)">resources list</a> itself reads fine either way.</p>
     </div>
   </noscript>
@@ -224,7 +224,7 @@
 </footer>
 
 <!-- ============================================================
-     Visitor counting — GoatCounter.
+     Visitor counting : GoatCounter.
      No cookies, no persistent identifiers, no personal data, and
      ~3.5 KB. Their own docs say it needs no GDPR notice, which is
      why this site still has no consent banner.
@@ -243,7 +243,7 @@
   document.head.appendChild(s);
 
   /* Show the site total in the footer, drawn ourselves rather than using
-     GoatCounter's own widget — theirs is a 200x80 bordered box with its own
+     GoatCounter's own widget : theirs is a 200x80 bordered box with its own
      branding, which would look like somebody else's furniture in this room.
      The JSON endpoint just returns a formatted number.
 
@@ -305,7 +305,7 @@
 
     /* Keyboard, handled in JS rather than by a CSS :focus-within rule.
        That rule used to force the menu visible whenever anything inside the
-       drop had focus — which meant clicking the button to CLOSE it set
+       drop had focus : which meant clicking the button to CLOSE it set
        data-open="false" and aria-expanded="false" while the menu stayed on
        screen, because the button you just clicked still had focus. The menu
        then hung there until you clicked somewhere else entirely. Routing
@@ -336,11 +336,11 @@
 </script>
 
 <script>
-/* Theme switch — remembers the choice, falls back to dark.
+/* Theme switch : remembers the choice, falls back to dark.
    This page shipped with the three buttons and the early-boot reader in
    <head>, but never the handler, so Light and Sepia were decoration: they
    looked live, changed nothing, and a choice made here didn't survive to
-   the next page either. Same omission as the nav — both of these pages were
+   the next page either. Same omission as the nav : both of these pages were
    built from a template captured before this block existed. */
 (function(){
   var root=document.documentElement, KEY='lab-theme';
@@ -370,7 +370,7 @@
    YOUR KIT
    The kit is an array of resource keys in localStorage. Nothing
    is stored server-side, so this page reads it locally and the
-   share link carries the same keys in a URL fragment — which
+   share link carries the same keys in a URL fragment : which
    means a link resolves for someone who has never been here,
    and I never see what anyone saved.
 
@@ -384,7 +384,7 @@
   if(!body)return;
 
   /* resources-data.js declares a top-level `const resources`, which lives in
-     the global lexical scope and is NOT reachable as window.resources — so it
+     the global lexical scope and is NOT reachable as window.resources : so it
      has to be read by bare name, exactly as the resources page does it. */
   var ALL = (typeof resources!=='undefined' && Array.isArray(resources)) ? resources : [];
   if(!ALL.length){
@@ -440,7 +440,7 @@
   }
 
   function paint(){
-    /* drop any key that no longer resolves — an entry can be retired later, and
+    /* drop any key that no longer resolves : an entry can be retired later, and
        a kit should quietly survive that rather than render a blank row */
     kit=kit.filter(function(k){ return byKey[k] });
     write(kit);

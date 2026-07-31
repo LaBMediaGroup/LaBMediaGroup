@@ -4,20 +4,20 @@
 <meta charset="UTF-8">
 <script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LaB Media — Short films, and what it took to make them</title>
-<meta name="description" content="A small film studio in Shelby Township, Michigan. Award-winning shorts, free filmmaking tools, and 126 vetted resources — kept public for anyone who needs them.">
+<title>LaB Media : Short films, and what it took to make them</title>
+<meta name="description" content="A small film studio in Shelby Township, Michigan. Award-winning shorts, free filmmaking tools, and 126 vetted resources : kept public for anyone who needs them.">
 <link rel="canonical" href="https://labmedia.work/">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://labmedia.work/">
 <meta property="og:site_name" content="LaB Media">
-<meta property="og:title" content="LaB Media — Short films, and what it took to make them">
+<meta property="og:title" content="LaB Media : Short films, and what it took to make them">
 <meta property="og:description" content="A small film studio in Shelby Township, Michigan. Award-winning shorts, free filmmaking tools, and 126 vetted resources.">
 <meta property="og:image" content="https://labmedia.work/images/og/index.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="LaB Media — Short films, and what it took to make them">
+<meta name="twitter:title" content="LaB Media : Short films, and what it took to make them">
 <meta name="twitter:description" content="Award-winning shorts, free filmmaking tools, and 126 vetted resources from a Metro Detroit studio.">
 <meta name="twitter:image" content="https://labmedia.work/images/og/index.jpg">
 
@@ -96,7 +96,7 @@
 }
 .hero h1 em{font-style:italic;color:var(--accent)}
 
-/* the signature between the statement and its explanation —
+/* the signature between the statement and its explanation, 
    tucked in tight to both so the three read as one unit */
 .masthead{
   height:clamp(58px,6.4vw,88px);width:auto;
@@ -109,12 +109,12 @@
   max-width:52ch;margin:0 auto;
 }
 
-/* The reel — the centrepiece */
+/* The reel : the centrepiece */
 .reel{
   width:100%;max-width:1180px;
   margin:clamp(30px,5vh,var(--s-8)) auto 0;
   position:relative;
-  aspect-ratio:2.39/1;            /* scope — crops the letterbox off the poster */
+  aspect-ratio:2.39/1;            /* scope : crops the letterbox off the poster */
   background:var(--paper-3);border:1px solid var(--line);overflow:hidden;
   transition:aspect-ratio var(--mid) var(--ease);
 }
@@ -124,13 +124,13 @@
 
    Instead the frame now never changes. The iframe is sized to 16:9 BY WIDTH
    (2.39 × 9/16 = 134.44% of the container's height) and centred, so the
-   overflow hidden at top and bottom is 17.22% of the container each side —
+   overflow hidden at top and bottom is 17.22% of the container each side, 
    which works out to exactly 7.2% of the width, the precise height of the
    baked-in bar. The letterbox is cropped to the pixel.
 
    That also crops YouTube's own chrome, which lives in those bars: the title
    overlay, the "Watch on YouTube" strip, and the control bar. So we supply
-   our own — see .reel-ui below — and hand off to the native player for
+   our own : see .reel-ui below : and hand off to the native player for
    fullscreen, where the full 16:9 and every real control is available. */
 .reel iframe{
   position:absolute;left:0;top:50%;
@@ -138,7 +138,7 @@
   transform:translateY(-50%);
 }
 
-/* .reel-ui lives in lab.css — shared with the reel page's lead video */
+/* .reel-ui lives in lab.css : shared with the reel page's lead video */
 .reel-btn{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:pointer}
 .reel-btn img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transition:filter var(--slow) var(--ease),transform var(--slow) var(--ease)}
 .reel-btn:hover img,.reel-btn:focus-visible img{filter:grayscale(0) contrast(1);transform:scale(1.02)}
@@ -166,7 +166,7 @@
 
 /* The gap above the stat bar lives HERE, not on .hero-stats. That element is
    pinned to the base of the hero with margin-top:auto, and auto resolves to
-   zero the moment the hero's content fills the available height — which left
+   zero the moment the hero's content fills the available height : which left
    the stat bar's top border sitting flush against these buttons on anything
    shorter than a tall desktop window. A margin on the buttons is guaranteed
    either way. */
@@ -197,7 +197,7 @@
 .note strong{color:var(--ink);font-weight:400}
 /* Two paragraphs stacked in a half-width box left the right side of the page
    empty. Side by side, the box spans the full measure and each column still
-   reads at ~68 characters — widening it to one column would have meant 90+. */
+   reads at ~68 characters : widening it to one column would have meant 90+. */
 @media (min-width:880px){
   .note{grid-template-columns:1fr 1fr;gap:0;padding:var(--s-7) 0}
   .note p{font-size:var(--t-base);line-height:1.8;max-width:68ch;
@@ -209,7 +209,7 @@
   .hero{min-height:0;padding-bottom:0}
   .masthead{height:clamp(56px,14vw,80px)}
   /* margin-top:auto does nothing here (the hero drops its min-height on
-     mobile), and the buttons now own the gap — so this would double it. */
+     mobile), and the buttons now own the gap : so this would double it. */
   .hero-stats{grid-template-columns:repeat(2,1fr);margin-top:0}
   .hero-stats div:nth-child(2n){border-right:0}
   .hero-stats div:nth-child(-n+2){border-bottom:1px solid var(--line)}
@@ -224,7 +224,7 @@
 <!-- ============ NAV ============ -->
 <header class="nav">
   <div class="nav-in">
-    <a class="nav-brand" href="index.html" aria-label="LaB Media — home">
+    <a class="nav-brand" href="index.html" aria-label="LaB Media : home">
       <img class="nav-logo nav-logo-wordmark" src="images/LaBMedia-mark.png" alt="LaB Media" width="136" height="26">
       <img class="nav-logo is-mark nav-logo-mobile" src="images/TheLaB-mark.png" alt="LaB Media" width="61" height="26">
     </a>
@@ -251,7 +251,7 @@
         </button>
         <div class="nav-drop-menu">
           <a href="ideas.html">Story Generator</a>
-          <a href="skybound.html">SkyBound — Drone</a>
+          <a href="skybound.html">SkyBound : Drone</a>
           <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
@@ -329,7 +329,7 @@
         <div class="card-idx">004 / Horror</div>
         <h3>Trail Dead</h3>
         <p>Invisible threat, visible dread. Tension built almost entirely in the cut.</p>
-        <div class="card-award">Best Editing — Horror Film Roulette 2025</div>
+        <div class="card-award">Best Editing : Horror Film Roulette 2025</div>
         <div class="card-dest">View film notes →</div>
       </div>
     </a>
@@ -342,7 +342,7 @@
         <div class="card-idx">005 / Comedy</div>
         <h3>Lookout</h3>
         <p>Smart writing, sharp timing, and proof that funny is genuinely hard.</p>
-        <div class="card-award">Top 25 — Comedy Roll Film Festival 2025</div>
+        <div class="card-award">Top 25 : Comedy Roll Film Festival 2025</div>
         <div class="card-dest">View film notes →</div>
       </div>
     </a>
@@ -403,7 +403,7 @@
   <div class="rows">
     <a class="row" href="learn.html#references">
       <span class="row-idx">01</span>
-      <span><h3>References &amp; Craft</h3><p>The stuff I go back to — shot breakdowns, editing theory, color, and the channels that explain <em>why</em> instead of just how.</p></span>
+      <span><h3>References &amp; Craft</h3><p>The stuff I go back to : shot breakdowns, editing theory, color, and the channels that explain <em>why</em> instead of just how.</p></span>
       <span class="row-meta">21 links</span>
     </a>
     <a class="row" href="sourcing.html#drone">
@@ -429,7 +429,7 @@
   </div>
 
   <div class="note">
-    <p><strong>Why this exists.</strong> The films came first. The Notebook is everything that earned a place along the way — tools, references, and people worth returning to. It stays public, free, and doesn&rsquo;t ask for your email.</p>
+    <p><strong>Why this exists.</strong> The films came first. The Notebook is everything that earned a place along the way : tools, references, and people worth returning to. It stays public, free, and doesn&rsquo;t ask for your email.</p>
     <p><strong>And yes, I built this.</strong> Plain HTML, CSS, and JavaScript on free hosting. No framework or signup; one tiny Worker protects the optional AI phrasing. Start with <a href="colophon.html" style="color:var(--accent)">About the Site</a>; if something still isn&rsquo;t clear, <a href="contact.html" style="color:var(--accent)">just ask</a>.</p>
   </div>
 </section>
@@ -521,7 +521,7 @@
 
     /* Keyboard, handled in JS rather than by a CSS :focus-within rule.
        That rule used to force the menu visible whenever anything inside the
-       drop had focus — which meant clicking the button to CLOSE it set
+       drop had focus : which meant clicking the button to CLOSE it set
        data-open="false" and aria-expanded="false" while the menu stayed on
        screen, because the button you just clicked still had focus. The menu
        then hung there until you clicked somewhere else entirely. Routing
@@ -551,7 +551,7 @@
 })();
 
 /* Poster fallback. This used to fall back to i.ytimg.com, which quietly undid
-   the whole point of the facade — a missing local file would have gone and
+   the whole point of the facade : a missing local file would have gone and
    asked Google for one. Now a failed load just drops the image, leaving a clean
    panel with the play button rather than a broken icon. */
 (function(){
@@ -560,11 +560,11 @@
   img.addEventListener('error',function(){ img.remove() });
 })();
 
-/* Reel facade — nothing loads from YouTube until you press play.
+/* Reel facade : nothing loads from YouTube until you press play.
    The frame stays 2.39 through playback, which crops YouTube's own controls
    out of the letterbox along with the black bars, so we provide the three
    that actually matter: pause, fullscreen and close. Pause talks to the
-   player over postMessage (enablejsapi=1) — no API script, no extra request.
+   player over postMessage (enablejsapi=1) : no API script, no extra request.
    Fullscreen hands over to the native player, where the full 16:9 frame and
    every real control including the scrubber are available. Close destroys
    the iframe rather than hiding it, so playback genuinely stops and nothing
@@ -633,7 +633,7 @@
   });
 })();
 
-/* Reveal on scroll — respects reduced-motion */
+/* Reveal on scroll : respects reduced-motion */
 (function(){
   var els=document.querySelectorAll('.reveal');
   if(!('IntersectionObserver' in window)||(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)){
@@ -647,7 +647,7 @@
 </script>
 
 <script>
-/* Theme switch — remembers the choice, falls back to dark */
+/* Theme switch : remembers the choice, falls back to dark */
 (function(){
   var root=document.documentElement, KEY='lab-theme';
   var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
@@ -671,7 +671,7 @@
 </script>
 
 <!-- ============================================================
-     Visitor counting — GoatCounter.
+     Visitor counting : GoatCounter.
      No cookies, no persistent identifiers, no personal data, and
      ~3.5 KB. Their own docs say it needs no GDPR notice, which is
      why this site still has no consent banner.
@@ -690,7 +690,7 @@
   document.head.appendChild(s);
 
   /* Show the site total in the footer, drawn ourselves rather than using
-     GoatCounter's own widget — theirs is a 200x80 bordered box with its own
+     GoatCounter's own widget : theirs is a 200x80 bordered box with its own
      branding, which would look like somebody else's furniture in this room.
      The JSON endpoint just returns a formatted number.
 

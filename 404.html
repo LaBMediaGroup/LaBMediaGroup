@@ -198,7 +198,7 @@
            This was set in heavy monospace with a hard 4px offset shadow, which
            is why it read as a stock error page next to the rest of the site.
            Every other display line here is Instrument Serif with no shadow at
-           all — so this is too now. The accent on one figure echoes the italic
+           all : so this is too now. The accent on one figure echoes the italic
            accent the other pages use on the second half of a headline. */
         .error-code{
             font-family:var(--f-display),Georgia,'Times New Roman',serif;
@@ -209,7 +209,7 @@
             color:var(--white);
             margin:0;
             display:flex;
-            align-items:baseline;     /* NOT flex-end — that was what dropped
+            align-items:baseline;     /* NOT flex-end : that was what dropped
                                          the drawn zero below the two fours */
             justify-content:center;
             gap:0;
@@ -218,14 +218,14 @@
 
         /* ---- The eye ----------------------------------------------------
            The zero is drawn rather than typeset, because a font's counter is
-           not knowable from CSS — two earlier versions overlaid a socket on the
+           not knowable from CSS : two earlier versions overlaid a socket on the
            real glyph and both failed on that. Here the ring is one path with
            fill-rule="evenodd", so the counter is a genuine hole: the page shows
            through it in every theme with nothing to colour-match.
 
            Its shape is two ellipses. The inner one is proportionally narrower
            than it is short, so the ring lands thick at the sides (100 units)
-           and thin top and bottom (38) — the stroke modulation that makes a
+           and thin top and bottom (38) : the stroke modulation that makes a
            serif zero read as one, instead of the monospace pill this used to be.
 
            The pupil is clipped to that same inner path, so it cannot leave the
@@ -256,7 +256,7 @@
            isn't a control. It just drifts on its own.
 
            Two different failures on one timeline. Around 40% of the cycle it
-           slips out of focus and comes back — eased, because focus is a smooth
+           slips out of focus and comes back : eased, because focus is a smooth
            thing. Around 90% it drops out hard for two or three frames with the
            channels split warm and cool, which is what reads as interference
            rather than a fade. That one is steps(1), because an eased glitch
@@ -294,7 +294,7 @@
 
         .error-message{
             /* margin-top was lost when this became a flex row, and .glitch-line
-               has no bottom margin — so the rule sat straight on top of the text */
+               has no bottom margin : so the rule sat straight on top of the text */
             margin-top:2.2rem;
             display:flex;align-items:flex-start;justify-content:center;gap:.55rem;
         }
@@ -357,7 +357,7 @@
 
            This is deliberately the largest thing on the page after the 404.
            The only route back used to be a text link the same weight as the
-           two beside it, or the logo in the corner — which plenty of people
+           two beside it, or the logo in the corner : which plenty of people
            never realise is a link at all. */
         .lab-home{
             margin-top:2.8rem;
@@ -523,8 +523,8 @@
     <!-- Navigation -->
     <header class="nav">
   <div class="nav-in">
-    <a class="nav-brand" href="index.html" aria-label="LaB Media — home">
-      <img class="nav-logo is-mark" src="images/TheLaB-mark.png" alt="LaB Media — back to the LaB" width="61" height="26">
+    <a class="nav-brand" href="index.html" aria-label="LaB Media : home">
+      <img class="nav-logo is-mark" src="images/TheLaB-mark.png" alt="LaB Media : back to the LaB" width="61" height="26">
     </a>
     <nav class="nav-primary" aria-label="Primary"><ul class="nav-links" id="navLinks">
       <li><a href="portfolio.html">Reel</a></li>
@@ -549,7 +549,7 @@
         </button>
         <div class="nav-drop-menu">
           <a href="ideas.html">Story Generator</a>
-          <a href="skybound.html">SkyBound — Drone</a>
+          <a href="skybound.html">SkyBound : Drone</a>
           <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
@@ -604,7 +604,7 @@
     </main>
 
     <script>
-        /* The old nav's dropdown JS lived here — .nav-dropdown hasn't existed
+        /* The old nav's dropdown JS lived here : .nav-dropdown hasn't existed
            since the shared nav landed, so it was a no-op. The replacement nav
            has its own handler below. */
     </script>
@@ -692,7 +692,7 @@
 
     /* Keyboard, handled in JS rather than by a CSS :focus-within rule.
        That rule used to force the menu visible whenever anything inside the
-       drop had focus — which meant clicking the button to CLOSE it set
+       drop had focus : which meant clicking the button to CLOSE it set
        data-open="false" and aria-expanded="false" while the menu stayed on
        screen, because the button you just clicked still had focus. The menu
        then hung there until you clicked somewhere else entirely. Routing
@@ -723,7 +723,7 @@
 </script>
 
 <script>
-/* Theme switch — remembers the choice, falls back to dark */
+/* Theme switch : remembers the choice, falls back to dark */
 (function(){
   var root=document.documentElement, KEY='lab-theme';
   var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
@@ -747,7 +747,7 @@
 </script>
 
 <!-- ============================================================
-     Visitor counting — GoatCounter.
+     Visitor counting : GoatCounter.
      No cookies, no persistent identifiers, no personal data, and
      ~3.5 KB. Their own docs say it needs no GDPR notice, which is
      why this site still has no consent banner.
@@ -766,7 +766,7 @@
   document.head.appendChild(s);
 
   /* Show the site total in the footer, drawn ourselves rather than using
-     GoatCounter's own widget — theirs is a 200x80 bordered box with its own
+     GoatCounter's own widget : theirs is a 200x80 bordered box with its own
      branding, which would look like somebody else's furniture in this room.
      The JSON endpoint just returns a formatted number.
 
@@ -791,16 +791,16 @@
    Four behaviours over one pupil. All of them write custom properties and let
    CSS own the easing, so nothing here fights the transition.
 
-   1. Tracking  — the pupil leans toward the cursor, eased by distance so it
+   1. Tracking  : the pupil leans toward the cursor, eased by distance so it
                   reads as looking rather than being dragged. Values are in the
                   SVG's own user units, clamped well inside the counter.
-   2. Reacting  — as the cursor gets close the pupil dilates. Cross the inner
+   2. Reacting  : as the cursor gets close the pupil dilates. Cross the inner
                   threshold and it flinches: contracts hard, springs wide, then
                   settles. That is the "it noticed you" beat.
-   3. Wandering — no cursor movement for a moment (or no cursor at all, which
+   3. Wandering : no cursor movement for a moment (or no cursor at all, which
                   is every phone) and it looks around on its own. Saccades:
                   quick move, long hold.
-   4. Blink/wink — a blink is fast and symmetrical. A wink is slower, dips on
+   4. Blink/wink : a blink is fast and symmetrical. A wink is slower, dips on
                   the way down and overshoots on the way up, and locks out the
                   other behaviours so it cannot be steered mid-blink.
 
@@ -810,7 +810,7 @@
   if(!svg||!pupil)return;
   if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
 
-  var RX=55, RY=180;            /* user units — see the CSS comment */
+  var RX=55, RY=180;            /* user units : see the CSS comment */
   var NEAR=460, FLINCH=190;     /* px from the eye: curious, then startled */
   var lastMove=0, wanderT=0, blinkT=0, timer=null;
   var winking=false, flinching=false, wasNear=false;
@@ -843,18 +843,18 @@
     },300);
   }
 
-  /* The flinch. Contract, then spring wider than rest, then settle — a plain
+  /* The flinch. Contract, then spring wider than rest, then settle : a plain
      dilate reads as nothing at all, it needs the recoil to register. */
   function flinch(){
     if(winking||fedUp)return;
 
     /* Poke it enough times in a row and it stops playing along. The counter
-       only counts a RUN of pokes — leave it alone for eight seconds and it
+       only counts a RUN of pokes : leave it alone for eight seconds and it
        forgives you and resets, so this is something you have to do on purpose
        rather than something that accumulates over a long visit.
 
        Counted BEFORE the animation guard on purpose. A recoil runs 420ms, and
-       anyone actually poking at it moves in and out faster than that — if the
+       anyone actually poking at it moves in and out faster than that : if the
        guard came first those pokes would land but not count, and the threshold
        would feel arbitrary or unreachable. */
     var now=Date.now();
@@ -863,14 +863,14 @@
     if(hits+1>=PATIENCE){ hadEnough(); return; }
     hits++;
 
-    if(flinching)return;      /* still recoiling — the hit counted regardless */
+    if(flinching)return;      /* still recoiling : the hit counted regardless */
     flinching=true;
     set('--dilate','.66');
     setTimeout(function(){ set('--dilate','1.34'); },140);
     setTimeout(function(){ set('--dilate','1.16'); flinching=false; },420);
   }
 
-  /* Squeezes shut, holds it, then opens slowly and warily — a smaller pupil
+  /* Squeezes shut, holds it, then opens slowly and warily : a smaller pupil
      than it started with, which then eases back to normal. Tracking, wandering
      and blinking are all locked out for the duration so nothing steps on it. */
   function hadEnough(){
@@ -936,13 +936,13 @@
 /* ---- Two pools, two buttons -----------------------------------------------
    The funny half and the kind half roll independently, so you can keep a line
    you like and change only the other one. Twelve of each is 144 pairings from
-   24 sentences — the same small-pools-multiplied trick the story generator
+   24 sentences : the same small-pools-multiplied trick the story generator
    runs on.
 
    Every WHAT variant still carries all three possibilities: moved, deleted, or
    never existed. That is the only genuinely useful information on the page, so
    no amount of joke is allowed to drop it. The KIND pool isn't trying to be
-   funny at all — a 404 is where someone is most likely to assume they broke
+   funny at all : a 404 is where someone is most likely to assume they broke
    something, and it's there to tell them they didn't.
 
    Both defaults are in the HTML; the buttons ship hidden and JS reveals them. */
@@ -955,7 +955,7 @@
 
   /* No house rule about naming all three possibilities. An earlier version
      insisted every line carry "moved, deleted, or never existed", which meant
-     sixteen variations on one sentence — technically thorough, and the same
+     sixteen variations on one sentence : technically thorough, and the same
      joke every time. These just have to be honest that the page isn't there. */
   var WHAT=[
     "Nothing here. I checked behind the couch.",
@@ -982,7 +982,7 @@
 
      The *asterisks* mark the phrase that gets the accent colour, so the
      emphasis lands somewhere chosen rather than on a fixed half of the
-     sentence — the same cream-then-accent move the other pages make on a
+     sentence : the same cream-then-accent move the other pages make on a
      headline, but per line. */
   var KIND=[
     "Every film you\u2019ve *finished* is better than the one you\u2019re still planning.",
@@ -1015,7 +1015,7 @@
   bW.hidden=false; bK.hidden=false;
 
   /* Author-controlled strings only, but escaped before the markers are turned
-     into elements anyway — the habit costs nothing and means a future line with
+     into elements anyway : the habit costs nothing and means a future line with
      an ampersand in it can't break the markup. */
   function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
   function rich(t){ return esc(t).replace(/\*([^*]+)\*/g,'<em class="hl">$1</em>') }

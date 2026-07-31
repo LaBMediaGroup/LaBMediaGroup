@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyBound — Drone &amp; FPV, Step by Step | LaB Media</title>
+    <title>SkyBound : Drone &amp; FPV, Step by Step | LaB Media</title>
 <meta name="description" content="A guided path into drone and FPV flying: simulate before you buy, learn from pilots worth following, build your kit, then get your Part 107.">
 <link rel="canonical" href="https://labmedia.work/skybound.html">
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -13,13 +13,13 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://labmedia.work/skybound.html">
 <meta property="og:site_name" content="LaB Media">
-<meta property="og:title" content="SkyBound — Drone &amp; FPV, Step by Step | LaB Media">
+<meta property="og:title" content="SkyBound : Drone &amp; FPV, Step by Step | LaB Media">
 <meta property="og:description" content="A guided path into drone and FPV flying: simulate before you buy, learn from pilots worth following, build your kit, then get your Part 107.">
 <meta property="og:image" content="https://labmedia.work/images/og/skybound.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SkyBound — Drone &amp; FPV, Step by Step | LaB Media">
+<meta name="twitter:title" content="SkyBound : Drone &amp; FPV, Step by Step | LaB Media">
 <meta name="twitter:description" content="A guided path into drone and FPV flying: simulate before you buy, learn from pilots worth following, build your kit, then get your Part 107.">
 <meta name="twitter:image" content="https://labmedia.work/images/og/skybound.jpg">
 
@@ -164,7 +164,7 @@
         }
 
         /* This used to read "Toggle" as visible text inside the <summary>, which
-           meant every step announced as "...Toggle" — a generic label bolted onto
+           meant every step announced as "...Toggle" : a generic label bolted onto
            a control that already conveys its own state. <summary> has an implicit
            disclosure role, so the browser announces expanded/collapsed for free;
            the word added nothing and "Show step / Hide step" would only duplicate
@@ -494,7 +494,7 @@
         }
 
         /* The four Start Here tiles were <div>s that lifted and glowed on
-           hover but did nothing. They're anchors now — these rules keep the
+           hover but did nothing. They're anchors now : these rules keep the
            look identical while making the affordance honest. */
         a.card {
             display: block;
@@ -534,8 +534,8 @@
     <!-- Navigation -->
     <header class="nav">
   <div class="nav-in">
-    <a class="nav-brand" href="index.html" aria-label="LaB Media — home">
-      <img class="nav-logo is-mark" src="images/TheLaB-mark.png" alt="LaB Media — back to the LaB" width="61" height="26">
+    <a class="nav-brand" href="index.html" aria-label="LaB Media : home">
+      <img class="nav-logo is-mark" src="images/TheLaB-mark.png" alt="LaB Media : back to the LaB" width="61" height="26">
     </a>
     <nav class="nav-primary" aria-label="Primary"><ul class="nav-links" id="navLinks">
       <li><a href="portfolio.html">Reel</a></li>
@@ -560,7 +560,7 @@
         </button>
         <div class="nav-drop-menu">
           <a href="ideas.html">Story Generator</a>
-          <a href="skybound.html" aria-current="page">SkyBound — Drone</a>
+          <a href="skybound.html" aria-current="page">SkyBound : Drone</a>
           <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
@@ -594,7 +594,7 @@
             <span class="hero-tagline">a resource by LaB Media</span>
         </h1>
         <p>Drone gear, FPV resources, and your path to Part 107 certification.</p>
-        <p class="hero-mine">This is the path I actually walked — you can watch me still walking it over at
+        <p class="hero-mine">This is the path I actually walked : you can watch me still walking it over at
           <a href="https://www.youtube.com/@BobtastiCFPV" target="_blank" rel="noopener">BobtastiC FPV&nbsp;↗</a>.</p>
     </section>
 
@@ -896,7 +896,7 @@
         renderResourceList(SHOPS, 'shops-list');
         renderResourceList(OFFICIAL_LINKS, 'official-links');
 
-        /* The old nav's JS lived here — ~80 lines driving #menuToggle and
+        /* The old nav's JS lived here : ~80 lines driving #menuToggle and
            .nav-dropdown, neither of which exists since the shared nav landed.
            It threw a TypeError on every page load and killed the rest of this
            script block. The replacement nav has its own handler further down. */
@@ -986,7 +986,7 @@
 
     /* Keyboard, handled in JS rather than by a CSS :focus-within rule.
        That rule used to force the menu visible whenever anything inside the
-       drop had focus — which meant clicking the button to CLOSE it set
+       drop had focus : which meant clicking the button to CLOSE it set
        data-open="false" and aria-expanded="false" while the menu stayed on
        screen, because the button you just clicked still had focus. The menu
        then hung there until you clicked somewhere else entirely. Routing
@@ -1017,7 +1017,7 @@
 </script>
 
 <script>
-/* Theme switch — remembers the choice, falls back to dark */
+/* Theme switch : remembers the choice, falls back to dark */
 (function(){
   var root=document.documentElement, KEY='lab-theme';
   var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
@@ -1041,7 +1041,7 @@
 </script>
 
 <script>
-/* Start Here tiles point at <details> sections, which are closed by default —
+/* Start Here tiles point at <details> sections, which are closed by default, 
    a bare anchor jump would scroll you to a shut accordion and look broken.
    Open the target first, then let the browser scroll to it. Also covers a
    hash typed straight into the address bar or arriving from another page. */
@@ -1078,7 +1078,7 @@
 </script>
 
 <!-- ============================================================
-     Visitor counting — GoatCounter.
+     Visitor counting : GoatCounter.
      No cookies, no persistent identifiers, no personal data, and
      ~3.5 KB. Their own docs say it needs no GDPR notice, which is
      why this site still has no consent banner.
@@ -1097,7 +1097,7 @@
   document.head.appendChild(s);
 
   /* Show the site total in the footer, drawn ourselves rather than using
-     GoatCounter's own widget — theirs is a 200x80 bordered box with its own
+     GoatCounter's own widget : theirs is a 200x80 bordered box with its own
      branding, which would look like somebody else's furniture in this room.
      The JSON endpoint just returns a formatted number.
 

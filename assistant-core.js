@@ -1,4 +1,4 @@
-/* LaB Assistant — deterministic retrieval core.
+/* LaB Assistant: deterministic retrieval core.
    No network calls, model calls, storage or DOM dependency. */
 (function(root){
   'use strict';
@@ -30,7 +30,7 @@
     return String(value == null ? '' : value)
       .replace(/<[^>]*>/g,' ')
       .replace(/&amp;/g,'&').replace(/&rsquo;|&#8217;/g,'’')
-      .replace(/&ldquo;|&rdquo;/g,'"').replace(/&mdash;|&ndash;/g,'—')
+      .replace(/&ldquo;|&rdquo;/g,'"').replace(/, |&ndash;/g,': ')
       .replace(/&[^;]+;/g,' ').replace(/\s+/g,' ').trim();
   }
   function normalize(value){
@@ -224,7 +224,7 @@
         return {kind:'events',confidence:1,answer:'I don’t have a current dated event in the spotlight list right now. The Events page still has Michigan organizations and recurring places to check.',sources:[source('Michigan Film Events','events.html')]};
       }
       var lines=live.slice(0,4).map(function(e){
-        return plain(e.title)+' — '+dateLabel(e)+(e.where?' · '+plain(e.where):'')+(e.by?' · Presented by '+plain(e.by):'');
+        return plain(e.title)+': '+dateLabel(e)+(e.where?' · '+plain(e.where):'')+(e.by?' · Presented by '+plain(e.by):'');
       });
       return {kind:'events',confidence:1,answer:'Here’s what is still current in the event list:\n'+lines.join('\n'),
         sources:live.slice(0,4).map(function(e){return source(plain(e.title),eventUrl(e),dateLabel(e));})};
@@ -365,7 +365,7 @@
       }
       return {kind:'films',confidence:1,answer:plural
           ? 'The Reel currently has eight films: '+chosen.map(function(x){return x.film.title;}).join(', ')+'.'
-          : chosen.map(function(x){return x.film.title+' — '+x.film.summary;}).join('\n')+singleVideo,
+          : chosen.map(function(x){return x.film.title+': '+x.film.summary;}).join('\n')+singleVideo,
         sources:mainSources};
     }
     function genericAnswer(query){
@@ -381,9 +381,9 @@
       if(first.type==='faq')answer=first.record.answer;
       else if(first.type==='field-note')answer=first.record.answer;
       else if(first.type==='page')answer=first.record.summary;
-      else if(first.type==='film')answer=first.record.title+' — '+first.record.summary;
-      else if(first.type==='gear')answer=first.title+' — '+first.record.what+(first.record.shared?' It is marked as collaborator/shared gear, not LaB-owned.':'');
-      else answer=first.title+' — '+(first.record.desc||first.record.fullDesc||'A checked resource in the LaB notebook.');
+      else if(first.type==='film')answer=first.record.title+': '+first.record.summary;
+      else if(first.type==='gear')answer=first.title+': '+first.record.what+(first.record.shared?' It is marked as collaborator/shared gear, not LaB-owned.':'');
+      else answer=first.title+': '+(first.record.desc||first.record.fullDesc||'A checked resource in the LaB notebook.');
       var cited=(first.type==='faq'||(first.type==='page'&&top[0].score>=12))?top.slice(0,1):top;
       return {kind:'search',confidence:Math.min(1,top[0].score/14),answer:answer,
         sources:cited.map(function(x){return source(x.doc.title,x.doc.url,x.doc.type);})};
@@ -411,7 +411,7 @@
         return {
           kind:'greeting',
           confidence:1,
-          answer:'Hey — I’m the LaB Assistant. Ask me about a film, the gear LaB actually owns, a checked resource, a Michigan event, SkyBound, or how the site was built.',
+          answer:'Hey: I’m the LaB Assistant. Ask me about a film, the gear LaB actually owns, a checked resource, a Michigan event, SkyBound, or how the site was built.',
           sources:[source('LaB Assistant','assistant.html')]
         };
       }

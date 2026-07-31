@@ -11,7 +11,7 @@ var SPOTLIGHT = [
     byUrl: 'https://campfirefilm.org',
     with_: 'The Black Canon · Motor City Cinematheque · Miss Eva’s Detroit',
     where: 'Miss Eva’s, Detroit',
-    body:  'A live projection of <em>A Man Called Adam</em> — Sammy Davis Jr., from The Black Canon collection — paired with curated music and signature drinks built around the film. Designed as more than a screening: an evening staged inside the mood and sound of the picture, celebrating Black film history and legacy.',
+    body:  'A live projection of <em>A Man Called Adam</em> : Sammy Davis Jr., from The Black Canon collection : paired with curated music and signature drinks built around the film. Designed as more than a screening: an evening staged inside the mood and sound of the picture, celebrating Black film history and legacy.',
     tags:  ['Screening','Live projection','Music','Black film history'],
     url:   'https://www.facebook.com/events/1531184581974584'
   },
@@ -25,7 +25,7 @@ var SPOTLIGHT = [
     byUrl: 'https://campfirefilm.org',
     with_: 'Weekly Watchlist',
     where: 'The Congregation, Detroit',
-    body:  'A live-recorded panel bringing Metro Detroit’s independent cinema owners, audiences, and filmmakers into the same room — at least three theaters and microcinemas per night, followed by a social hour with food and drinks. If you want to actually meet the people programming film in this city, this is the room.',
+    body:  'A live-recorded panel bringing Metro Detroit’s independent cinema owners, audiences, and filmmakers into the same room : at least three theaters and microcinemas per night, followed by a social hour with food and drinks. If you want to actually meet the people programming film in this city, this is the room.',
     tags:  ['Alger Theater','Detroit Film Theatre','Farmington Civic','Historic Howell','Lowkey Cinema','Marquee Arts','Milford Independent','Senate Theater','Slimeball Cinerama'],
     url:   'https://www.facebook.com/events/2520859208335856'
   },
