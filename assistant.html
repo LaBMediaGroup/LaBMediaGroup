@@ -163,6 +163,13 @@ main{background:var(--paper)}
 }
 .assistant-sources>span{font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
 .assistant-sources a{font-size:var(--t-xs);color:var(--accent);border-bottom:1px solid var(--accent-dim)}
+@media (max-width:600px){
+  .as-video-card{max-width:100%;margin-top:10px;border-radius:10px}
+  .as-video-play{width:44px;height:44px}
+  .as-video-play svg{width:18px;height:18px}
+  .as-video-caption{padding:7px 10px;font-size:10px}
+  .assistant-copy{font-size:15px;line-height:1.6}
+}
 .assistant-form{
   width:calc(100% - 62px);margin:-18px auto 0;position:relative;z-index:2;
   display:flex;align-items:flex-end;gap:8px;padding:7px;border-radius:999px;
@@ -368,15 +375,15 @@ main{background:var(--paper)}
   </div>
 </footer>
 
-<script src="resources-data.js?v=20260731_v3"></script>
-<script src="gear-data.js?v=20260731_v3"></script>
-<script src="spotlight-data.js?v=20260731_v3"></script>
-<script src="field-notes-data.js?v=20260731_v3"></script>
-<script src="assistant-data.js?v=20260731_v3"></script>
-<script src="assistant-core.js?v=20260731_v3"></script>
-<script src="assistant-client.js?v=20260731_v3"></script>
-<script src="assistant-guide.js?v=20260731_v3"></script>
-<script src="assistant.js?v=20260731_v3"></script>
+<script src="resources-data.js?v=20260731_v4"></script>
+<script src="gear-data.js?v=20260731_v4"></script>
+<script src="spotlight-data.js?v=20260731_v4"></script>
+<script src="field-notes-data.js?v=20260731_v4"></script>
+<script src="assistant-data.js?v=20260731_v4"></script>
+<script src="assistant-core.js?v=20260731_v4"></script>
+<script src="assistant-client.js?v=20260731_v4"></script>
+<script src="assistant-guide.js?v=20260731_v4"></script>
+<script src="assistant.js?v=20260731_v4"></script>
 <script>
 (function(){
   document.querySelectorAll('[data-arc]').forEach(function(arc){

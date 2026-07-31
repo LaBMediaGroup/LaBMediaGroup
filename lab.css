@@ -1059,15 +1059,32 @@ input,textarea,select{font:inherit;color:inherit}
 @keyframes lab-guide-ring{to{opacity:0;transform:scale(1.5)}}
 @keyframes lab-guide-target{50%{outline-offset:11px}}
 
+.lab-chat-log .as-video-card{
+  margin-top:10px;margin-bottom:4px;
+  max-width:280px;border-radius:10px;
+}
+.lab-chat-log .as-video-play{
+  width:42px;height:42px;
+}
+.lab-chat-log .as-video-play svg{
+  width:16px;height:16px;
+}
+.lab-chat-log .as-video-caption{
+  padding:6px 10px;font-size:10px;
+}
+
 @media (max-width:560px){
   .lab-chat{
     left:max(10px,env(safe-area-inset-left));
     right:max(10px,env(safe-area-inset-right));
     bottom:max(10px,env(safe-area-inset-bottom));
   }
-  .lab-chat-panel{position:fixed;left:10px;right:10px;bottom:78px;width:auto;height:auto;max-height:min(76dvh,600px)}
-  .lab-chat-log{min-height:150px;max-height:calc(76dvh - 145px)}
+  .lab-chat-panel{position:fixed;left:10px;right:10px;bottom:76px;width:auto;height:auto;max-height:min(82dvh,600px)}
+  .lab-chat-log{min-height:140px;max-height:calc(82dvh - 135px);padding:8px 14px 8px 18px}
+  .lab-chat-msg{padding:10px 0}
+  .lab-chat-copy{font-size:14.5px;line-height:1.55}
   .lab-chat-launch{width:56px;height:56px}
+  .lab-chat-log .as-video-card{max-width:min(100%, 250px);margin-top:8px}
 }
 @media (prefers-reduced-motion:reduce){
   .lab-chat-launch::before{display:none}
