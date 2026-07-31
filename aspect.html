@@ -197,6 +197,42 @@
         margin-top: var(--s-3);
       }
     }
+    .custom-file-btn {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px dashed var(--accent-dim);
+      padding: 6px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: background var(--fast) var(--ease), border-color var(--fast) var(--ease);
+    }
+    .custom-file-btn:hover {
+      background: var(--accent-bg);
+      border-color: var(--accent);
+    }
+    .clear-media-btn {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--dim);
+      border: 1px solid var(--line);
+      background: var(--paper);
+      padding: 6px 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: color var(--fast) var(--ease), border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+    }
+    .clear-media-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent-dim);
+      background: var(--accent-bg);
+    }
   </style>
 </head>
 <body>
@@ -283,8 +319,11 @@
       <span class="mono" style="font-size:11px;color:var(--faint);">or</span>
       <label for="customMediaInput" class="custom-file-btn">
         <span>Test Your Photo or Video &nbsp;&rarr;</span>
-        <input type="file" id="customMediaInput" accept="image/*,video/*" style="display:none;">
+        <input type="file" id="customMediaInput" accept="image/*,video/*" multiple style="display:none;">
       </label>
+      <button type="button" id="clearMediaBtn" class="clear-media-btn" style="display:none;" title="Clear uploaded media">
+        <span>Clear Uploads ✕</span>
+      </button>
       <span class="mono" style="font-size:10px;color:var(--faint);letter-spacing:0.04em;">(Processed 100% locally in browser memory : zero server uploads)</span>
     </div>
   </div>
@@ -517,42 +556,75 @@
   sampleImg.addEventListener('load', updateMediaDimensions);
   sampleVid.addEventListener('loadedmetadata', updateMediaDimensions);
 
-  stillSelect.addEventListener('change', function(){
-    if (this.value !== 'custom') {
+  var clearMediaBtn = document.getElementById('clearMediaBtn');
+  var createdBlobUrls = [];
+
+  function loadMediaSource(url, isVideo) {
+    if (isVideo) {
+      sampleImg.style.display = 'none';
+      sampleVid.style.display = 'block';
+      sampleVid.src = url;
+      sampleVid.play().catch(function(){});
+    } else {
       sampleVid.pause();
       sampleVid.style.display = 'none';
       sampleImg.style.display = 'block';
-      sampleImg.src = this.value;
+      sampleImg.src = url;
     }
+  }
+
+  stillSelect.addEventListener('change', function(){
+    var opt = this.options[this.selectedIndex];
+    var isVid = opt && opt.dataset.isVid === 'true';
+    loadMediaSource(this.value, isVid);
   });
 
   if (customInput) {
     customInput.addEventListener('change', function(e){
-      var file = e.target.files && e.target.files[0];
-      if (!file) return;
-      var objUrl = URL.createObjectURL(file);
+      var files = e.target.files;
+      if (!files || !files.length) return;
 
-      var customOpt = document.getElementById('customOpt');
-      if (!customOpt) {
-        customOpt = document.createElement('option');
-        customOpt.id = 'customOpt';
-        customOpt.value = 'custom';
-        stillSelect.appendChild(customOpt);
-      }
-      customOpt.textContent = '★ Local File (' + file.name + ')';
-      stillSelect.value = 'custom';
+      var lastUrl = '', lastIsVid = false;
+      Array.prototype.forEach.call(files, function(file){
+        var objUrl = URL.createObjectURL(file);
+        createdBlobUrls.push(objUrl);
+        var isVid = file.type.startsWith('video/');
 
-      if (file.type.startsWith('video/')) {
-        sampleImg.style.display = 'none';
-        sampleVid.style.display = 'block';
-        sampleVid.src = objUrl;
-        sampleVid.play().catch(function(){});
-      } else {
-        sampleVid.pause();
-        sampleVid.style.display = 'none';
-        sampleImg.style.display = 'block';
-        sampleImg.src = objUrl;
+        var opt = document.createElement('option');
+        opt.className = 'custom-opt';
+        opt.value = objUrl;
+        opt.dataset.isVid = String(isVid);
+        opt.textContent = '★ Local: ' + file.name + ' ✕';
+        stillSelect.appendChild(opt);
+
+        lastUrl = objUrl;
+        lastIsVid = isVid;
+      });
+
+      stillSelect.value = lastUrl;
+      loadMediaSource(lastUrl, lastIsVid);
+
+      if (clearMediaBtn) {
+        clearMediaBtn.style.display = 'inline-flex';
       }
+    });
+  }
+
+  if (clearMediaBtn) {
+    clearMediaBtn.addEventListener('click', function(){
+      createdBlobUrls.forEach(function(url){
+        try { URL.revokeObjectURL(url); } catch(err){}
+      });
+      createdBlobUrls = [];
+
+      var customOpts = stillSelect.querySelectorAll('.custom-opt');
+      customOpts.forEach(function(o){ o.remove(); });
+
+      if (customInput) customInput.value = '';
+      clearMediaBtn.style.display = 'none';
+
+      stillSelect.value = 'images/moz/moz-01.jpg';
+      loadMediaSource('images/moz/moz-01.jpg', false);
     });
   }
 
