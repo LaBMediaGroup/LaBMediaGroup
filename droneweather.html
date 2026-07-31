@@ -622,23 +622,130 @@
     }
   }
 
+  // Vector Woodland Squirrel strolling along the baseline!
+  var squirrel = {
+    x: -40,
+    state: 'entering', // 'entering', 'pausing', 'exiting', 'hidden'
+    timer: 0,
+    pauseTimer: 0,
+    dir: 1,
+    tailAngle: 0
+  };
+
+  function drawSquirrel(w, h) {
+    var lineY = h * 0.96;
+
+    squirrel.timer++;
+
+    if (squirrel.state === 'hidden') {
+      if (squirrel.timer > 320 && Math.random() < 0.025) {
+        squirrel.state = 'entering';
+        squirrel.dir = Math.random() > 0.35 ? 1 : -1;
+        squirrel.x = squirrel.dir === 1 ? -30 : w + 30;
+        squirrel.timer = 0;
+      }
+      return;
+    }
+
+    var speedMult = windSpeed >= 18 ? 2.6 : 1.25;
+    var speed = speedMult * squirrel.dir * (w / 400);
+    var targetX = w * 0.58;
+
+    if (squirrel.state === 'entering') {
+      squirrel.x += speed;
+      if (squirrel.dir === 1 && squirrel.x >= targetX) {
+        squirrel.state = 'pausing';
+        squirrel.pauseTimer = 0;
+      } else if (squirrel.dir === -1 && squirrel.x <= targetX) {
+        squirrel.state = 'pausing';
+        squirrel.pauseTimer = 0;
+      }
+    } else if (squirrel.state === 'pausing') {
+      squirrel.pauseTimer++;
+      if (squirrel.pauseTimer > 110) {
+        squirrel.state = 'exiting';
+      }
+    } else if (squirrel.state === 'exiting') {
+      squirrel.x += speed * 1.35;
+      if (squirrel.x > w + 50 || squirrel.x < -50) {
+        squirrel.state = 'hidden';
+        squirrel.timer = 0;
+      }
+    }
+
+    // Walking hop & tail wiggle
+    var hopY = (squirrel.state === 'pausing') ? 0 : Math.abs(Math.sin(time * 14)) * 3;
+    var sqY = lineY - hopY;
+    squirrel.tailAngle = Math.sin(time * 7) * 0.22;
+
+    ctx.save();
+    ctx.translate(squirrel.x, sqY);
+    if (squirrel.dir === -1) ctx.scale(-1, 1);
+
+    ctx.strokeStyle = '#E07A47';
+    ctx.fillStyle = '#E07A47';
+    ctx.lineWidth = 1.6 * (w / 400);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    // Torso body
+    ctx.beginPath();
+    ctx.ellipse(0, -6 * (w/400), 7 * (w/400), 4.5 * (w/400), -0.15, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Head
+    ctx.beginPath();
+    ctx.arc(6 * (w/400), -10 * (w/400), 3.2 * (w/400), 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Ear
+    ctx.beginPath();
+    ctx.moveTo(6 * (w/400), -13 * (w/400));
+    ctx.lineTo(7.5 * (w/400), -10.5 * (w/400));
+    ctx.stroke();
+
+    // Fluffy Bushy Tail
+    ctx.save();
+    ctx.translate(-6 * (w/400), -6 * (w/400));
+    ctx.rotate(squirrel.tailAngle);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(-9 * (w/400), -9 * (w/400), -4 * (w/400), -15 * (w/400));
+    ctx.quadraticCurveTo(-1 * (w/400), -13 * (w/400), 0, -4 * (w/400));
+    ctx.stroke();
+    ctx.restore();
+
+    // Paws / Pitter-patter legs
+    var legAnim = (squirrel.state === 'pausing') ? 0 : Math.sin(time * 14) * 3 * (w / 400);
+    ctx.beginPath();
+    ctx.moveTo(-3 * (w/400), -2 * (w/400)); ctx.lineTo((-3 + legAnim) * (w/400), 0);
+    ctx.moveTo(3 * (w/400), -2 * (w/400)); ctx.lineTo((3 - legAnim) * (w/400), 0);
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
   function drawTree(w, h) {
     var treeBaseX = w * 0.68;
     var treeBaseY = h * 0.96;
     var treeHeight = h * 0.58;
 
-    var swayFactor = 0.004;
-    var freq = 0.7;
+    // Dynamic Wind Bending Physics
+    var swayFactor = 0.005; // 8 mph calm breathing
+    var freq = 0.8;
     var staticLean = 0;
+    var bendFlex = 0;
 
     if (windSpeed >= 18) {
-      swayFactor = 0.07;
-      freq = 3.2;
-      staticLean = 0.12;
+      swayFactor = 0.08;
+      freq = 3.4;
+      staticLean = 0.22; // ~13 degrees gale bend!
+      bendFlex = 0.12;   // Upper branches flex heavily!
     } else if (windSpeed >= 12) {
-      swayFactor = 0.025;
-      freq = 1.6;
-      staticLean = 0.03;
+      swayFactor = 0.03;
+      freq = 1.8;
+      staticLean = 0.06;
+      bendFlex = 0.04;
     }
 
     var totalSway = Math.sin(time * freq) * swayFactor + staticLean;
@@ -646,6 +753,11 @@
     ctx.save();
     ctx.translate(treeBaseX, treeBaseY);
     ctx.rotate(totalSway);
+
+    // Apply upper branch curvature flex when windy
+    if (bendFlex > 0) {
+      ctx.transform(1, 0, (Math.sin(time * freq) * bendFlex + bendFlex) * 0.3, 1, 0, 0);
+    }
 
     ctx.strokeStyle = '#E07A47';
     ctx.lineWidth = 2.4 * (w / 400);
@@ -662,7 +774,7 @@
     ctx.lineTo(trunkW, 0);
     ctx.stroke();
 
-    // Hand-drawn organic scalloped evergreen canopy (matching user mockup Image 3!)
+    // Hand-drawn organic scalloped evergreen canopy
     var topY = -treeHeight;
     var canopyBaseY = -trunkH;
 
@@ -770,10 +882,13 @@
     drawSun(w, h);
     drawRainCloud(w, h);
 
-    // 2. Unboxed Vector Pine Tree
+    // 2. Unboxed Vector Pine Tree with Wind Bending Flex
     drawTree(w, h);
 
-    // 3. Gentle floating leaf particles
+    // 3. Vector Squirrel strolling on baseline line!
+    drawSquirrel(w, h);
+
+    // 4. Gentle floating leaf particles
     var pSpeed = Math.max(0.1, (windSpeed - 6) * 0.12);
     for (var p = 0; p < particles.length; p++) {
       var pt = particles[p];
@@ -796,7 +911,7 @@
       ctx.restore();
     }
 
-    // 4. High wind easter egg
+    // 5. High wind easter egg
     drawFlingItem(w, h);
 
     requestAnimationFrame(render);
