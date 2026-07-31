@@ -18,7 +18,8 @@
 
   function statusText(phase,detail){
     if(phase==='checking')return 'Local index ready · checking for Ollama';
-    if(phase==='searching'||phase==='retrieval')return 'Searching the local LaB index';
+    if(phase==='searching')return 'Searching the local LaB index';
+    if(phase==='retrieval')return 'Sourced local search ready';
     if(phase==='model')return 'Asking local Ollama · '+detail+'s';
     if(phase==='verified')return 'Local Ollama answer verified against retrieved sources';
     if(phase==='grounding')return 'Model rewrite rejected · sourced fallback shown';
