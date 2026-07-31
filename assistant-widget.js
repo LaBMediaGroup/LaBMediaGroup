@@ -165,6 +165,7 @@
   }
 
   function addMessage(kind,textValue,sources,mode,persist){
+    textValue=String(textValue||'').replace(/\s*—\s*/g,': ').replace(/\s*&\s*mdash;\s*/gi,': ');
     var article=document.createElement('article');
     article.className='lab-chat-msg is-'+kind;
     article.dataset.kind=kind;

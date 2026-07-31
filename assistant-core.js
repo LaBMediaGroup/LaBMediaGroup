@@ -33,7 +33,8 @@
     return String(value == null ? '' : value)
       .replace(/<[^>]*>/g,' ')
       .replace(/&amp;/g,'&').replace(/&rsquo;|&#8217;/g,'’')
-      .replace(/&ldquo;|&rdquo;/g,'"').replace(/, |&ndash;/g,': ')
+      .replace(/&ldquo;|&rdquo;/g,'"').replace(/—|&mdash;/g,': ')
+      .replace(/, |&ndash;/g,': ')
       .replace(/&[^;]+;/g,' ').replace(/\s+/g,' ').trim();
   }
   function normalize(value){

@@ -7,26 +7,6 @@
   "icon": "https://labmedia.work/images/favicon-512.png",
   "items": [
     {
-      "id": "https://www.facebook.com/events/2520859208335856",
-      "url": "https://www.facebook.com/events/2520859208335856",
-      "title": "Detroit New Wave: The Rise of Cinema Culture",
-      "content_text": "A live-recorded panel bringing Metro Detroit’s independent cinema owners, audiences, and filmmakers into the same room — at least three theaters and microcinemas per night, followed by a social hour with food and drinks. If you want to actually meet the people programming film in this city, this is the room. — The Congregation, Detroit",
-      "date_published": "2026-08-27T12:00:00Z",
-      "tags": [
-        "Event"
-      ]
-    },
-    {
-      "id": "https://www.facebook.com/events/1531184581974584",
-      "url": "https://www.facebook.com/events/1531184581974584",
-      "title": "Adam & Eva’s: An Intimate Film Experience",
-      "content_text": "A live projection of A Man Called Adam — Sammy Davis Jr., from The Black Canon collection — paired with curated music and signature drinks built around the film. Designed as more than a screening: an evening staged inside the mood and sound of the picture, celebrating Black film history and legacy. — Miss Eva’s, Detroit",
-      "date_published": "2026-08-05T12:00:00Z",
-      "tags": [
-        "Event"
-      ]
-    },
-    {
       "id": "https://labmedia.work/resources.html#le-juice-rochester",
       "url": "https://labmedia.work/resources.html#le-juice-rochester",
       "title": "Le Juicé",
@@ -70,7 +50,7 @@
       "id": "https://labmedia.work/portfolio.html#horror",
       "url": "https://labmedia.work/portfolio.html#horror",
       "title": "Trail Dead",
-      "content_text": "Invisible threat. Visible dread. A horror short exploring tension and atmosphere. — won Best Editing.",
+      "content_text": "Invisible threat. Visible dread. A horror short exploring tension and atmosphere.: won Best Editing.",
       "date_published": "2025-09-05T12:00:00Z",
       "tags": [
         "Film"
