@@ -165,6 +165,8 @@
           <a href="ideas.html">Story Generator</a>
           <a href="skybound.html">SkyBound : Drone</a>
           <a href="sun.html" aria-current="page">Golden Hour Helper</a>
+          <a href="aspect.html">Aspect Ratio Previewer</a>
+          <a href="droneweather.html">Drone Weather Guide</a>
           <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
@@ -329,6 +331,46 @@
 </footer>
 
 <script>
+/* Header Dropdown Logic */
+(function(){
+  var t=document.getElementById('navToggle'),l=document.getElementById('navLinks');
+  var desktop=function(){return window.innerWidth>760};
+
+  if(t&&l){t.addEventListener('click',function(e){
+    e.stopPropagation();
+    var open=t.getAttribute('aria-expanded')==='true';
+    t.setAttribute('aria-expanded',String(!open));
+    l.setAttribute('data-open',String(!open));
+  });}
+
+  function setOpen(d,on){
+    d.setAttribute('data-open',String(on));
+    d.querySelector('.nav-drop-btn').setAttribute('aria-expanded',String(on));
+    if(!on) d.removeAttribute('data-pinned');
+  }
+  function closeAll(except){
+    document.querySelectorAll('.nav-drop').forEach(function(o){ if(o!==except) setOpen(o,false); });
+  }
+
+  document.querySelectorAll('.nav-drop').forEach(function(d){
+    var b=d.querySelector('.nav-drop-btn');
+    b.addEventListener('click',function(e){
+      e.stopPropagation();
+      var open=d.getAttribute('data-open')==='true';
+      var pinned=d.hasAttribute('data-pinned');
+      closeAll(d);
+      if(open&&pinned){ setOpen(d,false); }
+      else { setOpen(d,true); d.setAttribute('data-pinned','1'); }
+    });
+    d.addEventListener('mouseenter',function(){ if(desktop()){ closeAll(d); setOpen(d,true); } });
+    d.addEventListener('mouseleave',function(){
+      if(desktop() && !d.hasAttribute('data-pinned')) setOpen(d,false);
+    });
+  });
+
+  document.addEventListener('click',function(){ closeAll(null); });
+})();
+
 (function(){
   'use strict';
   var slider = document.getElementById('timeSlider');

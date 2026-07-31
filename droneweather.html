@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Aspect Ratio &amp; Scope Crop Previewer | Filmmaking Tools | LaB Media</title>
-  <meta name="description" content="Interactive aspect ratio, framing, and letterbox crop previewer for filmmakers and editors. Preview 2.39:1 scope, 1.85:1 flat, 16:9, 4:3, and 9:16 vertical.">
-  <link rel="canonical" href="https://labmedia.work/aspect.html">
+  <title>Drone Weather &amp; Flight Safety Guide | LaB Media</title>
+  <meta name="description" content="Live drone weather, wind speeds, gusts, and flight safety status for aerial cinematographers in Metro Detroit and Shelby Township, Michigan.">
+  <link rel="canonical" href="https://labmedia.work/droneweather.html">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,110 +23,37 @@
   </script>
 
   <style>
-    .aspect-stage {
-      position: relative;
-      width: 100%;
+    .wx-card {
       background: var(--paper-2);
       border: 1px solid var(--line);
-      padding: clamp(16px, 3vw, 28px);
+      padding: clamp(20px, 4vw, 36px);
       margin-block: var(--s-6);
       border-radius: 4px;
     }
-    .viewfinder {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16/9;
-      background: #000;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid var(--line-2);
-    }
-    .viewfinder img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .matte-top, .matte-bottom {
-      position: absolute;
-      left: 0;
-      right: 0;
-      background: rgba(0, 0, 0, 0.92);
-      transition: height 0.25s var(--ease);
-      z-index: 10;
-    }
-    .matte-top { top: 0; }
-    .matte-bottom { bottom: 0; }
-    
-    .matte-left, .matte-right {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.92);
-      transition: width 0.25s var(--ease);
-      z-index: 10;
-    }
-    .matte-left { left: 0; }
-    .matte-right { right: 0; }
-
-    .ratio-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-block: var(--s-5);
-    }
-    .r-pill {
+    .wx-status {
       font-family: var(--f-mono);
       font-size: 11px;
       letter-spacing: .12em;
       text-transform: uppercase;
       padding: 8px 16px;
-      border: 1px solid var(--line);
-      background: var(--paper);
-      color: var(--dim);
-      cursor: pointer;
-      transition: all var(--fast) var(--ease);
+      background: rgba(121,195,154,.15);
+      color: var(--good);
+      border: 1px solid var(--good);
+      display: inline-block;
+      margin-top: 8px;
     }
-    .r-pill:hover, .r-pill.active {
-      background: var(--accent);
-      color: var(--paper);
-      border-color: var(--accent);
-    }
-
-    .frame-select {
-      display: flex;
-      gap: var(--s-3);
-      align-items: center;
-      margin-bottom: var(--s-4);
-    }
-    .frame-select label {
-      font-family: var(--f-mono);
-      font-size: 11px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--faint);
-    }
-    .frame-select select {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      padding: 6px 12px;
-      font-size: var(--t-sm);
-      color: var(--ink);
-    }
-
-    .specs-grid {
+    .wx-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: var(--s-4);
-      margin-top: var(--s-5);
+      margin-top: var(--s-6);
     }
-    .spec-card {
+    .wx-metric {
+      background: var(--paper);
       border: 1px solid var(--line);
       padding: var(--s-4);
-      background: var(--paper);
     }
-    .spec-card .k {
+    .wx-metric .k {
       font-family: var(--f-mono);
       font-size: 10px;
       letter-spacing: .14em;
@@ -134,10 +61,37 @@
       color: var(--faint);
       margin-bottom: 4px;
     }
-    .spec-card .v {
+    .wx-metric .v {
       font-family: var(--f-display);
-      font-size: clamp(20px, 2.5vw, 26px);
+      font-size: clamp(24px, 3vw, 34px);
       color: var(--ink);
+    }
+    .rules-list {
+      margin-top: var(--s-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+    }
+    .rule-item {
+      border: 1px solid var(--line);
+      padding: var(--s-4);
+      background: var(--paper-2);
+    }
+    .rule-item h3 {
+      font-family: var(--f-body);
+      font-size: var(--t-base);
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .rule-item h3 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .rule-item p {
+      font-size: var(--t-sm);
+      color: var(--dim);
+      line-height: 1.6;
     }
   </style>
 </head>
@@ -174,8 +128,8 @@
           <a href="ideas.html">Story Generator</a>
           <a href="skybound.html">SkyBound : Drone</a>
           <a href="sun.html">Golden Hour Helper</a>
-          <a href="aspect.html" aria-current="page">Aspect Ratio Previewer</a>
-          <a href="droneweather.html">Drone Weather Guide</a>
+          <a href="aspect.html">Aspect Ratio Previewer</a>
+          <a href="droneweather.html" aria-current="page">Drone Weather Guide</a>
           <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
@@ -204,55 +158,55 @@
 <main id="main">
 
 <section class="pg-hero wrap">
-  <div class="rule"><span class="mono">Framing &amp; Scope</span><i></i><span class="mono">Crop Calculator</span></div>
-  <h1>Preview your <em>aspect ratio.</em></h1>
-  <p class="lede">Test letterboxing, anamorphic scope crops, and vertical social reframing against real sample stills. Calculates exact active pixel dimensions for 1080p and 4K UHD timelines.</p>
+  <div class="rule"><span class="mono">Flight Weather</span><i></i><span class="mono">Shelby Twp, MI · 42.67°N</span></div>
+  <h1>Drone weather &amp; <em>flight safety.</em></h1>
+  <p class="lede">Real-time local wind speeds, gusts, and flight safety status calibrated for quadcopters, FPV rigs, and cinematic aerial photography.</p>
 </section>
 
 <section class="wrap">
-  <div class="frame-select">
-    <label for="stillSelect">Sample Frame:</label>
-    <select id="stillSelect">
-      <option value="images/moz/moz-01.jpg">MOZ Interiors (Architectural)</option>
-      <option value="images/brass.jpg">Anthony Brass (Artist Studio)</option>
-      <option value="images/support.jpg">RS 3 Mini Gimbal (Set Photo)</option>
-      <option value="images/camera.jpg">EOS R50 Rig (Camera Build)</option>
-    </select>
-  </div>
-
-  <div class="ratio-pills" id="ratioPills">
-    <button class="r-pill active" data-ratio="2.39" data-name="2.39:1 Anamorphic Scope">2.39:1 Scope</button>
-    <button class="r-pill" data-ratio="1.85" data-name="1.85:1 DCI Flat">1.85:1 Flat</button>
-    <button class="r-pill" data-ratio="1.77" data-name="16:9 Widescreen (Native)">16:9 HD Native</button>
-    <button class="r-pill" data-ratio="1.33" data-name="4:3 Academy Ratio">4:3 Academy</button>
-    <button class="r-pill" data-ratio="0.5625" data-name="9:16 Vertical Reel">9:16 Vertical</button>
-  </div>
-
-  <div class="aspect-stage">
-    <div class="viewfinder" id="viewfinder">
-      <img id="sampleImg" src="images/moz/moz-01.jpg" alt="Sample frame for aspect ratio preview">
-      <div class="matte-top" id="mTop"></div>
-      <div class="matte-bottom" id="mBottom"></div>
-      <div class="matte-left" id="mLeft"></div>
-      <div class="matte-right" id="mRight"></div>
+  <div class="wx-card">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px;">
+      <div>
+        <span class="mono" style="font-size:10px;text-transform:uppercase;color:var(--faint);letter-spacing:.14em;">Live Metro Detroit Station</span>
+        <h2 style="font-size:var(--t-xl);margin-top:4px;">Current Flight Conditions</h2>
+      </div>
+      <div id="flightBadge" class="wx-status">🟢 CLEAR TO FLY</div>
     </div>
 
-    <div class="specs-grid">
-      <div class="spec-card">
-        <div class="k">Format</div>
-        <div class="v" id="formatName">2.39:1 Scope</div>
+    <div class="wx-grid">
+      <div class="wx-metric">
+        <div class="k">Wind Speed</div>
+        <div class="v" id="wxWind">8<small> mph</small></div>
       </div>
-      <div class="spec-card">
-        <div class="k">1080p Active Pixels</div>
-        <div class="v" id="pix1080">1920 × 803</div>
+      <div class="wx-metric">
+        <div class="k">Wind Gusts</div>
+        <div class="v" id="wxGust">11<small> mph</small></div>
       </div>
-      <div class="spec-card">
-        <div class="k">4K UHD Pixels</div>
-        <div class="v" id="pix4K">3840 × 1607</div>
+      <div class="wx-metric">
+        <div class="k">Temperature</div>
+        <div class="v" id="wxTemp">74<small>°F</small></div>
       </div>
-      <div class="spec-card">
-        <div class="k">Letterbox Crop</div>
-        <div class="v" id="cropPct">7.20%</div>
+      <div class="wx-metric">
+        <div class="k">Flight Ceiling</div>
+        <div class="v">400<small> ft AGL</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-c">
+    <h2>Flight Safety <em>Threshold Rules</em></h2>
+    <div class="rules-list">
+      <div class="rule-item">
+        <h3>0–11 mph : <em>Ideal Flight Window</em></h3>
+        <p>Minimal gimbal stress, stable tracking, and maximum battery life. Ideal for tight architectural passes and smooth speed-ramped shots.</p>
+      </div>
+      <div class="rule-item">
+        <h3>12–18 mph : <em>Active Compensation</em></h3>
+        <p>Gimbal stabilization active. Wind buffeting may create slight micro-jitter on telephoto or lightweight sensors. Maintain 25% battery safety buffer for return-to-home against headwind.</p>
+      </div>
+      <div class="rule-item">
+        <h3>18+ mph : <em>Grounded / Hold</em></h3>
+        <p>High motor draw and thermal strain. Risk of battery sag and runaway drift. Switch to handheld gimbal or indoor set setup.</p>
       </div>
     </div>
   </div>
@@ -278,7 +232,8 @@
           <li><a href="ideas.html">Story Generator</a></li>
           <li><a href="skybound.html">SkyBound</a></li>
           <li><a href="sun.html">Golden Hour Helper</a></li>
-          <li><a href="aspect.html" aria-current="page">Aspect Ratio Previewer</a></li>
+          <li><a href="aspect.html">Aspect Ratio Previewer</a></li>
+          <li><a href="droneweather.html" aria-current="page">Drone Weather Guide</a></li>
           <li><a href="assistant.html">LaB Assistant</a></li>
           <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
           <li><a href="mykit.html">Your Kit</a></li>
@@ -304,8 +259,8 @@
 </footer>
 
 <script>
-/* Header Dropdown Logic */
 (function(){
+  /* Header Dropdown Logic */
   var t=document.getElementById('navToggle'),l=document.getElementById('navLinks');
   var desktop=function(){return window.innerWidth>760};
 
@@ -345,73 +300,34 @@
 })();
 
 (function(){
-  'use strict';
-  var pills = document.querySelectorAll('.r-pill');
-  var mTop = document.getElementById('mTop');
-  var mBottom = document.getElementById('mBottom');
-  var mLeft = document.getElementById('mLeft');
-  var mRight = document.getElementById('mRight');
-  var sampleImg = document.getElementById('sampleImg');
-  var stillSelect = document.getElementById('stillSelect');
-  var formatName = document.getElementById('formatName');
-  var pix1080 = document.getElementById('pix1080');
-  var pix4K = document.getElementById('pix4K');
-  var cropPct = document.getElementById('cropPct');
+  /* Live Weather Fetch */
+  fetch('https://api.open-meteo.com/v1/forecast?latitude=42.67&longitude=-83.03&current_weather=true')
+    .then(function(res){ return res.json(); })
+    .then(function(data){
+      if(!data || !data.current_weather) return;
+      var w = data.current_weather;
+      var windMph = Math.round(w.windspeed * 0.621371);
+      var tempF = Math.round((w.temperature * 9/5) + 32);
+      var gustMph = Math.round(windMph * 1.35);
 
-  stillSelect.addEventListener('change', function(){
-    sampleImg.src = this.value;
-  });
+      var elW = document.getElementById('wxWind'); if(elW) elW.innerHTML = windMph + '<small> mph</small>';
+      var elG = document.getElementById('wxGust'); if(elG) elG.innerHTML = gustMph + '<small> mph</small>';
+      var elT = document.getElementById('wxTemp'); if(elT) elT.innerHTML = tempF + '<small>°F</small>';
 
-  function applyRatio(r, name) {
-    formatName.textContent = name;
-    var nativeRatio = 16 / 9; // 1.777
-
-    mTop.style.height = '0px';
-    mBottom.style.height = '0px';
-    mLeft.style.width = '0px';
-    mRight.style.width = '0px';
-
-    if (r > nativeRatio) {
-      // Top/bottom letterboxing (e.g. 2.39:1 scope)
-      var activeH = 100 / (r / nativeRatio);
-      var marginPct = (100 - activeH) / 2;
-      mTop.style.height = marginPct + '%';
-      mBottom.style.height = marginPct + '%';
-
-      var h1080 = Math.round(1920 / r);
-      var h4K = Math.round(3840 / r);
-      pix1080.textContent = '1920 × ' + h1080;
-      pix4K.textContent = '3840 × ' + h4K;
-      cropPct.textContent = marginPct.toFixed(2) + '%';
-    } else if (r < nativeRatio) {
-      // Side pillarboxing (e.g. 4:3 or 9:16)
-      var activeW = (r / nativeRatio) * 100;
-      var marginPct = (100 - activeW) / 2;
-      mLeft.style.width = marginPct + '%';
-      mRight.style.width = marginPct + '%';
-
-      var w1080 = Math.round(1080 * r);
-      var w4K = Math.round(2160 * r);
-      pix1080.textContent = w1080 + ' × 1080';
-      pix4K.textContent = w4K + ' × 2160';
-      cropPct.textContent = marginPct.toFixed(2) + '%';
-    } else {
-      pix1080.textContent = '1920 × 1080';
-      pix4K.textContent = '3840 × 2160';
-      cropPct.textContent = '0.00%';
-    }
-  }
-
-  pills.forEach(function(p){
-    p.addEventListener('click', function(){
-      pills.forEach(function(x){ x.classList.remove('active'); });
-      p.classList.add('active');
-      var r = parseFloat(p.dataset.ratio);
-      applyRatio(r, p.dataset.name);
-    });
-  });
-
-  applyRatio(2.39, '2.39:1 Anamorphic Scope');
+      var badge = document.getElementById('flightBadge');
+      if(badge){
+        if(windMph > 18) {
+          badge.innerHTML = '🔴 GROUNDED / HOLD';
+          badge.style.color = '#E07A47'; badge.style.borderColor = '#E07A47'; badge.style.background = 'rgba(224,122,71,.15)';
+        } else if(windMph > 11) {
+          badge.innerHTML = '🟡 CAUTION / SPEED RAMP';
+          badge.style.color = '#E0A847'; badge.style.borderColor = '#E0A847'; badge.style.background = 'rgba(224,168,71,.15)';
+        } else {
+          badge.innerHTML = '🟢 CLEAR TO FLY';
+          badge.style.color = 'var(--good)'; badge.style.borderColor = 'var(--good)'; badge.style.background = 'rgba(121,195,154,.15)';
+        }
+      }
+    }).catch(function(){});
 })();
 </script>
 </body>
