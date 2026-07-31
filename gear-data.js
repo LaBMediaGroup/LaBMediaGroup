@@ -41,7 +41,7 @@ const gearData = [
 
   {
     id: 'camera',
-    title: '<em>Cameras</em>',
+    title: 'Cameras &amp; <em>bodies</em>',
     blurb: 'What the picture is actually recorded on.',
     photo: 'images/kit/camera.jpg',
     photoAlt: 'An R50 on a gimbal, mid-take on the It\u2019s a Boy shoot, boom operator behind.',
@@ -112,10 +112,19 @@ const gearData = [
   },
 
   {
-    id: 'light',
-    title: '<em>Light</em>',
-    blurb: 'The portfolio says "natural light, minimal crew" more than once : this is what comes out when it isn’t.',
+    id: 'monitoring-light',
+    title: 'Monitoring &amp; <em>light</em>',
+    blurb: 'Seeing what the camera sees before it’s wrapped, and shaping the light when natural isn’t enough.',
     items: [
+      { name: 'Feelworld 5.5" field monitor',
+        what: 'On-camera. Focus and exposure you can trust.' },
+      { name: 'Hollyland Pyro wireless',
+        what: 'Video to a director or client who isn’t stood behind the camera.',
+        shared: true },
+      { name: 'iPad as a monitor',
+        what: 'Bigger client view, and it’s already in the bag.' },
+      { name: 'USB-C / HDMI capture interface',
+        what: 'Camera into a computer for streams and pulls.' },
       { name: 'SmallRig RC 60B', key: true,
         what: 'Bi-colour COB. The main light on most setups.' },
       { name: 'NEEWER T120 ×2',
@@ -158,23 +167,6 @@ const gearData = [
         what: 'Quick takes without setting up the SM7B chain.' },
       { name: 'PYLE audio mixer',
         what: 'Routing and levels.' },
-    ]
-  },
-
-  {
-    id: 'monitor',
-    title: '<em>Monitoring</em>',
-    blurb: 'Seeing what the camera actually sees, before it’s too late to fix.',
-    items: [
-      { name: 'Feelworld 5.5" field monitor',
-        what: 'On-camera. Focus and exposure you can trust.' },
-      { name: 'Hollyland Pyro wireless',
-        what: 'Video to a director or client who isn’t stood behind the camera.',
-        shared: true },
-      { name: 'iPad as a monitor',
-        what: 'Bigger client view, and it’s already in the bag.' },
-      { name: 'USB-C / HDMI capture interface',
-        what: 'Camera into a computer for streams and pulls.' },
     ]
   },
 
