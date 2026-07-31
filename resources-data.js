@@ -249,12 +249,14 @@ const resources = [
         locationBadge: 'Detroit',
         category: 'film-festivals',
         desc: 'Detroit-based festival and awards program spotlighting independent filmmakers.',
-        fullDesc: 'Detroit Filmmaker Awards is an annual Detroit festival and awards program that highlights independent filmmaking with screenings, networking, and celebration awards across multiple categories.',
+        fullDesc: 'A Detroit-centered screening and awards program for independent work, with networking built around the event.',
         url: 'https://detroitfilmmakerawards.com/',
         filmFreewayUrl: 'https://filmfreeway.com/DetroitFilmmakerAwards',
         paid: true,
         keyInfo: [
-            { label: 'Location', value: 'Detroit, MI' }
+            { label: 'Where', value: 'Detroit, MI' },
+            { label: 'Format', value: 'Screenings + awards' },
+            { label: 'Useful for', value: 'Local visibility and filmmaker networking' }
         ],
         features: ['Awards Program', 'Detroit-Based', 'Independent Film', 'FilmFreeway Submissions']
     },
@@ -265,7 +267,7 @@ const resources = [
         locationBadge: 'Ann Arbor',
         category: 'film-festivals',
         desc: 'Ann Arbor festival showcasing independent cinema.',
-        fullDesc: 'Cinetopia brings acclaimed independent films to Ann Arbor, programmed by Marquee Arts and screened at the Michigan Theater and State Theatre. Built by an indie theatre rather than a committee, with a Michigan-Made Shorts Showcase that is a genuine route in for local filmmakers. Curated selection with filmmaker appearances and community discussions.',
+        fullDesc: 'Programmed by Marquee Arts and screened at the Michigan and State theatres. The Michigan-Made Shorts Showcase is the clearest local route into the program.',
         url: 'https://marquee-arts.org/cinetopia/',
         filmFreewayUrl: 'https://filmfreeway.com/CinetopiaFilmFestival',
         paid: true,
@@ -274,7 +276,10 @@ const resources = [
             { plan: 'Short', price: '$25-35' }
         ],
         keyInfo: [
-            { label: 'Location', value: 'Ann Arbor, MI' }
+            { label: 'Where', value: 'Ann Arbor, MI' },
+            { label: 'Venues', value: 'Michigan Theater + State Theatre' },
+            { label: 'Local route', value: 'Michigan-Made Shorts Showcase' },
+            { label: 'Programmer', value: 'Marquee Arts' }
         ],
         features: ['Ann Arbor', 'Curated Selection', 'Indie Focus', 'University Town']
     },
@@ -284,9 +289,22 @@ const resources = [
         name: 'Horror Film Roulette',
         category: 'film-festivals',
         desc: 'Annual horror filmmaking competition with genre roulette draw and 4-week sprint.',
-        fullDesc: 'Horror Film Roulette is an annual Michigan horror filmmaking competition where teams draw random subgenres and race to complete short films in a 4-week sprint. Great community energy and a solid showcase at Emagine.',
+        fullDesc: 'Draw a horror subgenre, build the short in four weeks, then screen it with the field. LaB entered Trail Dead in 2025 and won Best Editing.',
+        detailMedia: {
+            src: 'images/traildead/roulette-kickoff.jpg',
+            alt: 'LaB Media at the Horror Film Roulette genre draw',
+            caption: 'At the wheel · Horror Film Roulette kickoff · 2025',
+            url: 'portfolio.html#horror'
+        },
         url: 'https://www.horrorfilmroulette.com',
         filmFreewayUrl: 'https://filmfreeway.com/HorrorFilmRoulette',
+        keyInfo: [
+            { label: 'Prompt', value: 'Random horror subgenre' },
+            { label: 'Build window', value: '4 weeks' },
+            { label: 'Finale', value: 'Theatrical showcase at Emagine' },
+            { label: 'LaB result', value: 'Trail Dead — Best Editing, 2025' }
+        ],
+        features: ['Timed Competition', 'Michigan', 'Theater Screening', 'LaB Award Winner'],
         labPick: true,
         paid: false
     },
@@ -297,12 +315,17 @@ const resources = [
         locationBadge: 'Pontiac',
         category: 'film-festivals',
         desc: 'Michigan micro-budget horror fest for DIY, cult, and underground genre work.',
-        fullDesc: 'Creepy Cheapy is a Michigan-based horror festival built for scrappy, micro-budget filmmaking—cult energy, practical effects, underground voices, and regional community screenings. A strong fit for filmmakers making weird, lean, and fearless genre work without the “competition sprint” structure of time-boxed challenges.',
+        fullDesc: 'A regional horror showcase for scrappy, practical and underground work. Unlike the roulette competitions, this is a festival destination rather than a timed production sprint.',
         url: 'https://www.creepycheapy.com',
         filmFreewayUrl: 'https://filmfreeway.com/CreepyCheapy',
         paid: true,
         pricing: [
             { plan: 'Shorts & Features', price: '$10–30' }
+        ],
+        keyInfo: [
+            { label: 'Where', value: 'Pontiac, MI' },
+            { label: 'Format', value: 'Traditional festival submissions' },
+            { label: 'Best fit', value: 'DIY, cult and micro-budget horror' }
         ],
         features: [
             'Micro-Budget Friendly',
@@ -319,14 +342,16 @@ const resources = [
         locationBadge: 'Farmington',
         category: 'film-festivals',
         desc: 'Metro Detroit festival pairing community screenings with filmmaker networking.',
-        fullDesc: 'Farmington Film Festival showcases indie shorts and features with a focus on community connection in Metro Detroit. Programming blends local voices with visiting filmmakers and pairs screenings with live Q&As and mixer-style events.',
+        fullDesc: 'Indie shorts and features presented as a community event, with Q&As and mixer-style programming around the screenings.',
         url: 'https://kickstartfarmington.org/film/',
         filmFreewayUrl: 'https://filmfreeway.com/FFF26',
         instagramUrl: 'https://www.instagram.com/kickstart_farmington',
         facebookUrl: 'https://www.facebook.com/KickstartFarmington',
         paid: true,
         keyInfo: [
-            { label: 'Location', value: 'Farmington, MI' }
+            { label: 'Where', value: 'Farmington, MI' },
+            { label: 'Program', value: 'Shorts + features' },
+            { label: 'Around the films', value: 'Q&As + filmmaker networking' }
         ],
         features: ['Community Screenings', 'Q&A Sessions', 'Metro Detroit', 'FilmFreeway Submissions']
     },
@@ -339,9 +364,16 @@ const resources = [
         locationBadge: 'Birmingham',
         category: 'film-festivals',
         desc: 'Metro Detroit film festival with screenings, panels, and community mixers.',
-        fullDesc: 'Royal Starr Film Festival hosts multiple days of screenings, filmmaker panels, and community events in the Birmingham area. They also run monthly filmmaker mixers throughout the year.',
+        fullDesc: 'A multi-day Birmingham-area festival connected to year-round filmmaker mixers, so the community continues after the screenings end.',
         url: 'https://www.royalstarr.org',
         filmFreewayUrl: 'https://filmfreeway.com/RoyalStarrFilmFestival',
+        keyInfo: [
+            { label: 'Where', value: 'Birmingham, MI' },
+            { label: 'Format', value: 'Multi-day festival' },
+            { label: 'Program', value: 'Screenings + panels' },
+            { label: 'Year-round', value: 'Monthly filmmaker mixers' }
+        ],
+        features: ['Metro Detroit', 'Panels', 'Community Mixers', 'Year-Round Network'],
         labPick: true,
         paid: false
     },
@@ -352,10 +384,22 @@ const resources = [
         category: 'film-festivals',
         locationBadge: 'Michigan',
         desc: 'Roll dice for a comedy genre, then four weeks to shoot five minutes. Lookout placed Top 25 in 2025.',
-        fullDesc: 'Teams roll two dice: one picks the comedy genre — slapstick, spoof, dark, silent, absurdist, or joker — and the other throws in a complication. Then four weeks to write, shoot and cut a five-minute film. The top 25 screen in a real theater for a $2,000 grand prize. Founded by Josh Taube and openly modelled on Horror Film Roulette, which runs the same way with horror. LaB Media\'s "Lookout" made the Top 25 in 2025.',
+        fullDesc: 'Two dice set the comedy genre and a complication. Teams get four weeks to make a five-minute film; the Top 25 screen theatrically. LaB’s Lookout made that cut in 2025.',
+        detailMedia: {
+            src: 'images/lookout/lookout-01.jpg',
+            alt: 'The Lookout team at The Comedy Roll screening',
+            caption: 'The Lookout team · The Comedy Roll screening · 2025',
+            url: 'portfolio.html#comedy'
+        },
         url: 'https://thecomedyroll.com',
         filmFreewayUrl: 'https://filmfreeway.com/TheComedyRoll/',
         paid: true,
+        keyInfo: [
+            { label: 'Prompt', value: 'Dice-assigned genre + complication' },
+            { label: 'Build window', value: '4 weeks' },
+            { label: 'Runtime', value: '5 minutes' },
+            { label: 'LaB result', value: 'Lookout — Top 25, 2025' }
+        ],
         features: ['Dice-Assigned Genre', 'Four-Week Build', 'Theater Screening', '$2,000 Grand Prize'],
         additionalLinks: [
             { label: 'How to play', url: 'https://thecomedyroll.com/about/' },

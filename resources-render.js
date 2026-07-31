@@ -163,26 +163,47 @@ function videoHTML(id,label){
     + '</button></div>';
 }
 
+function detailMediaHTML(media){
+  if(!media||!media.src)return '';
+  var image='<img loading="lazy" decoding="async" src="'+esc(media.src)+'" alt="'+esc(media.alt||'')+'">';
+  if(media.url){
+    var external=/^https?:\/\//i.test(media.url);
+    image='<a href="'+esc(media.url)+'"'+(external?' target="_blank" rel="noopener"':'')+'>'+image+'</a>';
+  }
+  return '<figure class="d-media">'+image
+    +(media.caption?'<figcaption>'+esc(media.caption)+'</figcaption>':'')
+    +'</figure>';
+}
+
 function detailHTML(r){
-  var out='';
+  var out='',overview='';
 
   /* Why this one is in the LaB. Sits first because "we pay for this" is the
      most useful sentence on the page — everything else is a recommendation. */
-  if(r.inLab) out+='<p class="d-inlab"><b>In the LaB</b>'+esc(r.inLab)+'</p>';
+  if(r.inLab) overview+='<p class="d-inlab"><b>In the LaB</b>'+esc(r.inLab)+'</p>';
 
-  if(r.fullDesc && r.fullDesc!==r.desc) out+='<p class="d-body">'+esc(r.fullDesc)+'</p>';
+  if(r.fullDesc && r.fullDesc!==r.desc){
+    overview+='<div class="d-summary"><span class="d-lbl">Quick read</span>'
+      +'<p class="d-body">'+esc(r.fullDesc)+'</p></div>';
+  }
+
+  if(r.keyInfo && r.keyInfo.length){
+    overview+='<dl class="d-info">'+r.keyInfo.map(function(k){
+      return '<div><dt>'+esc(k.label)+'</dt><dd>'+esc(k.value)+'</dd></div>';
+    }).join('')+'</dl>';
+  }
+
+  if(overview||r.detailMedia){
+    out+='<div class="d-overview'+(r.detailMedia?' has-media':'')+'">'
+      +detailMediaHTML(r.detailMedia)
+      +'<div class="d-overview-copy">'+overview+'</div></div>';
+  }
 
   var vids=[];
   if(r.featuredVideo) vids.push(r.featuredVideo);
   (r.additionalVideos||[]).forEach(function(v){vids.push(v)});
   if(r.vimeoVideo) { /* vimeo handled by link only */ }
   if(vids.length) out+='<div class="d-vids">'+vids.map(function(v){return videoHTML(v,r.name)}).join('')+'</div>';
-
-  if(r.keyInfo && r.keyInfo.length){
-    out+='<dl class="d-info">'+r.keyInfo.map(function(k){
-      return '<div><dt>'+esc(k.label)+'</dt><dd>'+esc(k.value)+'</dd></div>';
-    }).join('')+'</dl>';
-  }
 
   if(r.pricing && r.pricing.length){
     out+='<div class="d-price"><span class="d-lbl">Pricing</span><table>'
@@ -248,6 +269,8 @@ function itemHTML(r,i){
 
   var d=detailHTML(r);
   var bits=[];
+  if(r.detailMedia) bits.push('Photo');
+  if(r.keyInfo&&r.keyInfo.length) bits.push('Facts');
   if(r.featuredVideo||(r.additionalVideos||[]).length) bits.push('Video');
   if(r.pricing&&r.pricing.length) bits.push('Pricing');
   if(r.additionalLinks&&r.additionalLinks.length) bits.push('Links');
