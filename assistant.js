@@ -122,9 +122,38 @@
     return card;
   }
 
-  function addMessage(kind,textValue,sources,mode){
+  var SESSION_KEY='lab-assistant-session-v2';
+
+  function readSession(){
+    try{
+      var raw=localStorage.getItem(SESSION_KEY);
+      if(!raw)return [];
+      var parsed=JSON.parse(raw);
+      return Array.isArray(parsed)?parsed.slice(-12):[];
+    }catch(error){return [];}
+  }
+
+  function writeSession(){
+    try{
+      var items=[].slice.call(log.querySelectorAll('.assistant-msg')).map(function(msg){
+        var copy=msg.querySelector('.assistant-copy');
+        var kind=msg.dataset.kind || (msg.classList.contains('is-user')?'user':'assistant');
+        var mode=msg.dataset.mode || '';
+        var text=copy?copy.innerText||copy.textContent:'';
+        var sources=[].slice.call(msg.querySelectorAll('.assistant-sources a')).map(function(a){
+          return {title:a.textContent.replace(/\s*→$/,'').trim(),url:a.getAttribute('href'),note:a.title||''};
+        });
+        return {kind:kind,text:text,sources:sources,mode:mode};
+      }).filter(function(item){return item.text && !item.text.startsWith('Fresh page');});
+      localStorage.setItem(SESSION_KEY,JSON.stringify(items.slice(-12)));
+    }catch(error){}
+  }
+
+  function addMessage(kind,textValue,sources,mode,persist){
     var article=document.createElement('article');
     article.className='assistant-msg is-'+kind;
+    article.dataset.kind=kind;
+    article.dataset.mode=mode||'';
     var whoRow=document.createElement('div');whoRow.className='assistant-who-row';
     var who=document.createElement('div');who.className='assistant-who';
     who.textContent=kind==='user'?'You':'LaB Assistant';
@@ -189,6 +218,7 @@
     log.appendChild(article);
     var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     article.scrollIntoView({block:'nearest',behavior:reduced?'auto':'smooth'});
+    if(persist!==false)writeSession();
     return article;
   }
   function setBusy(on){
@@ -230,6 +260,11 @@
     });
   }
 
+  var stored=readSession();
+  if(stored.length){
+    stored.forEach(function(item){addMessage(item.kind,item.text,item.sources,item.mode,false);});
+  }
+
   form.addEventListener('submit',function(event){
     event.preventDefault();
     var question=input.value;input.value='';submit(question);
@@ -246,7 +281,8 @@
   });
   if(clear)clear.addEventListener('click',function(){
     log.replaceChildren();
-    addMessage('assistant','Fresh page. Ask me about a film, the kit, a checked resource, an event, or how the site works.',[],'retrieval');
+    try{localStorage.removeItem(SESSION_KEY);}catch(error){}
+    addMessage('assistant','Fresh page. Ask me about a film, the kit, a checked resource, an event, or how the site works.',[],'retrieval',false);
     input.focus();
   });
   if(modelToggle)modelToggle.addEventListener('click',function(){

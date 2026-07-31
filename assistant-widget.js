@@ -3,8 +3,8 @@
   'use strict';
   if(/(?:^|\/)assistant\.html$/.test(location.pathname))return;
 
-  var SESSION_KEY='lab-assistant-widget-session-v1';
-  var MAX_MESSAGES=8;
+  var SESSION_KEY='lab-assistant-session-v2';
+  var MAX_MESSAGES=12;
   var client=null,loading=null,busy=false,elapsedTimer=null,elapsedStarted=0,activeModel='';
 
   var shell=document.createElement('div');
@@ -63,7 +63,8 @@
   }
   function readSession(){
     try{
-      var parsed=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'[]');
+      var raw=localStorage.getItem(SESSION_KEY)||sessionStorage.getItem(SESSION_KEY);
+      var parsed=JSON.parse(raw||'[]');
       if(!Array.isArray(parsed))return [];
       return parsed.slice(-MAX_MESSAGES).filter(function(item){
         return item&&(item.kind==='user'||item.kind==='assistant')&&typeof item.text==='string';
@@ -76,17 +77,21 @@
     }catch(error){return [];}
   }
   function writeSession(){
-    var records=[].slice.call(log.querySelectorAll('.lab-chat-msg')).map(function(article){
+    var records=[].slice.call(log.querySelectorAll('.lab-chat-msg, .assistant-msg')).map(function(article){
+      var copy=article.querySelector('.lab-chat-copy, .assistant-copy');
       return {
-        kind:article.dataset.kind,
-        text:article.querySelector('.lab-chat-copy').textContent,
+        kind:article.dataset.kind||(article.classList.contains('is-user')?'user':'assistant'),
+        text:copy?copy.innerText||copy.textContent:'',
         mode:article.dataset.mode||'',
-        sources:[].slice.call(article.querySelectorAll('.lab-chat-sources a')).map(function(a){
-          return {title:a.textContent.replace(/\s*→$/,''),url:a.getAttribute('href'),note:a.getAttribute('title')||''};
+        sources:[].slice.call(article.querySelectorAll('.lab-chat-sources a, .assistant-sources a')).map(function(a){
+          return {title:a.textContent.replace(/\s*→$/,'').trim(),url:a.getAttribute('href'),note:a.getAttribute('title')||''};
         })
       };
-    }).slice(-MAX_MESSAGES);
-    try{sessionStorage.setItem(SESSION_KEY,JSON.stringify(records));}catch(error){}
+    }).filter(function(item){return item.text && !item.text.startsWith('Ask about a film') && !item.text.startsWith('Fresh page');}).slice(-MAX_MESSAGES);
+    try{
+      localStorage.setItem(SESSION_KEY,JSON.stringify(records));
+      sessionStorage.setItem(SESSION_KEY,JSON.stringify(records));
+    }catch(error){}
   }
   function modelLabel(){
     if(/nemotron-3-super/i.test(activeModel))return 'Nemotron 3 Super';
@@ -319,7 +324,10 @@
   }
   function clearConversation(){
     log.replaceChildren();
-    try{sessionStorage.removeItem(SESSION_KEY);}catch(error){}
+    try{
+      localStorage.removeItem(SESSION_KEY);
+      sessionStorage.removeItem(SESSION_KEY);
+    }catch(error){}
     var intro=addMessage('assistant','Ask about a film, the kit, a checked resource, an event, or where something lives on the site.',[],'retrieval');
     intro.classList.add('is-intro');
     prompts.hidden=false;
