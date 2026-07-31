@@ -180,7 +180,20 @@ body.mode-48 .el[data-k="constraint"]{outline:1px solid var(--accent-dim)}
   .roll-btn{flex:1;justify-content:center}
   .el-acts{opacity:1}
   .saved-item{grid-template-columns:auto 1fr}
-  .saved-acts{grid-column:2;flex-direction:row;justify-content:flex-start;gap:var(--s-4)}
+@media print {
+  header, footer, .bar, .nav-toggle, .brief-acts, .sec-head, #savedSec, .preset, .lockhint, .hint, .kbd, .mini, .tone, .el-act { display: none !important; }
+  body { background: #fff !important; color: #000 !important; font-family: serif !important; padding: 20px !important; }
+  .wrap { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+  .rule { border-bottom: 2px solid #000 !important; margin-bottom: 20px !important; }
+  .pg-hero h1 { font-size: 26px !important; margin-bottom: 8px !important; }
+  .concept { border: 2px solid #000 !important; padding: 16px !important; margin-bottom: 20px !important; background: #fafafa !important; }
+  .concept .k { font-weight: bold; text-transform: uppercase; font-size: 11px; letter-spacing: .1em; color: #333; }
+  .concept p { font-size: 18px !important; font-weight: bold; color: #000 !important; margin-top: 6px; }
+  .grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+  .el { border: 1px solid #ccc !important; padding: 10px 14px !important; background: #fff !important; }
+  .el .k { font-size: 10px !important; text-transform: uppercase !important; font-weight: bold !important; color: #666 !important; }
+  .el [data-v] { font-size: 13px !important; color: #000 !important; }
+}
 }
 </style>
 </head>
@@ -282,9 +295,10 @@ body.mode-48 .el[data-k="constraint"]{outline:1px solid var(--accent-dim)}
   is readable on its own if you'd rather just browse them.</p>
 </noscript>
   <div class="brief-acts">
-    <button class="mini" id="save" type="button">Save this</button>
-    <button class="mini" id="copy" type="button">Copy as text</button>
+    <button class="mini" id="save" type="button" title="Shortcut: S key">Save this</button>
+    <button class="mini" id="copy" type="button" title="Shortcut: C key">Copy as text</button>
     <button class="mini" id="link" type="button">Copy link</button>
+    <button class="mini" id="printBrief" type="button" title="Print 1-page pocket shot list & brief (Shortcut: P key)">Print brief</button>
     <span class="hint" id="briefMeta"></span>
   </div>
 </section>
@@ -848,11 +862,27 @@ body.mode-48 .el[data-k="constraint"]{outline:1px solid var(--accent-dim)}
     drawSaved();
   });
 
+  var pBtn = $('printBrief');
+  if(pBtn){
+    pBtn.addEventListener('click',function(){
+      if(!current.concept){ flash(pBtn,'Roll first','Print brief'); return; }
+      window.print();
+    });
+  }
+
   document.addEventListener('keydown',function(e){
-    if(e.code!=='Space')return;
     var t=(e.target.tagName||'').toUpperCase();
-    if(t==='INPUT'||t==='TEXTAREA'||t==='BUTTON'||t==='A')return;
-    e.preventDefault(); rollAll();
+    if(t==='INPUT'||t==='TEXTAREA'||t==='BUTTON'||t==='A'||e.metaKey||e.ctrlKey)return;
+    var k=e.key.toLowerCase();
+    if(e.code==='Space'||k===' '){
+      e.preventDefault(); rollAll();
+    } else if(k==='s'){
+      e.preventDefault(); $('save').click();
+    } else if(k==='c'){
+      e.preventDefault(); $('copy').click();
+    } else if(k==='p'){
+      e.preventDefault(); if(pBtn) pBtn.click();
+    }
   });
 
   /* ---- Prompt of the day -------------------------------------------------
