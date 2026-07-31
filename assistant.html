@@ -143,7 +143,20 @@ main{background:var(--paper)}
   letter-spacing:.06em;text-transform:uppercase
 }
 .assistant-copy{white-space:normal;overflow-wrap:anywhere;color:var(--dim);line-height:1.72;font-size:var(--t-base);max-width:68ch}
+.assistant-copy a{color:var(--accent);text-decoration:underline;text-underline-offset:3px;word-break:break-all}
+.assistant-copy a:hover{filter:brightness(1.2)}
 .assistant-msg.is-user .assistant-copy{color:var(--ink)}
+.as-video-card{margin-top:16px;margin-bottom:6px;border-radius:14px;overflow:hidden;background:var(--paper-2);border:1px solid var(--line);max-width:540px}
+.as-video-facade{position:relative;width:100%;aspect-ratio:16/9;background:#000;cursor:pointer;display:block}
+.as-video-facade img{width:100%;height:100%;object-fit:cover;display:block;opacity:.88;transition:opacity .2s,transform .25s}
+.as-video-facade:hover img{opacity:1;transform:scale(1.02)}
+.as-video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;background:rgba(11,11,12,.85);border:1.5px solid var(--accent);color:var(--accent);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.5);transition:transform .2s,background .2s}
+.as-video-facade:hover .as-video-play{transform:translate(-50%,-50%) scale(1.1);background:var(--accent);color:#0B0B0C}
+.as-video-play svg{width:22px;height:22px;margin-left:2px;fill:currentColor}
+.as-video-caption{padding:10px 14px;font-family:var(--f-mono);font-size:11px;letter-spacing:.05em;color:var(--dim);background:var(--paper);display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line)}
+.as-video-caption span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.as-video-caption small{color:var(--faint);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.as-video-iframe{width:100%;aspect-ratio:16/9;border:0;display:block}
 .assistant-sources{
   display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;
   margin-top:var(--s-4);padding-top:var(--s-3);border-top:3px solid var(--accent)

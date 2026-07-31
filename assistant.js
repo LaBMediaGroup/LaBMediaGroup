@@ -64,6 +64,64 @@
     if(mode==='busy')return 'Sourced fallback · model busy';
     return 'Sourced search';
   }
+  function extractYouTubeInfo(url){
+    if(!url)return null;
+    var m=String(url).match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    if(!m)return null;
+    var id=m[1];
+    var startMatch=String(url).match(/[?&]t=(?:(\d+)s?|(\d+)m(\d+)s?)/);
+    var start=0;
+    if(startMatch){
+      if(startMatch[1])start=parseInt(startMatch[1],10);
+      else if(startMatch[2])start=parseInt(startMatch[2],10)*60+(parseInt(startMatch[3],10)||0);
+    }
+    return {id:id,start:start,rawUrl:url};
+  }
+
+  function appendTextWithLinks(container,textLine){
+    var urlRegex=/(https?:\/\/[^\s]+)/g;
+    var parts=String(textLine||'').split(urlRegex);
+    parts.forEach(function(part){
+      if(urlRegex.test(part)){
+        var a=document.createElement('a');
+        a.href=part;a.textContent=part;
+        a.target='_blank';a.rel='noopener';
+        container.appendChild(a);
+      }else if(part){
+        container.appendChild(document.createTextNode(part));
+      }
+    });
+  }
+
+  function createYouTubeCard(ytInfo,titleText){
+    var card=document.createElement('div');card.className='as-video-card';
+    var facade=document.createElement('div');facade.className='as-video-facade';
+    facade.title='Click to play video';
+    var img=document.createElement('img');
+    img.src='https://img.youtube.com/vi/'+ytInfo.id+'/hqdefault.jpg';
+    img.alt=titleText||'YouTube Video Thumbnail';
+    img.loading='lazy';
+    var playBtn=document.createElement('div');playBtn.className='as-video-play';
+    playBtn.innerHTML='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+    facade.appendChild(img);facade.appendChild(playBtn);
+    facade.addEventListener('click',function(){
+      var iframe=document.createElement('iframe');
+      iframe.className='as-video-iframe';
+      iframe.src='https://www.youtube-nocookie.com/embed/'+ytInfo.id+'?autoplay=1'+(ytInfo.start?'&start='+ytInfo.start:'');
+      iframe.title=titleText||'YouTube video player';
+      iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen=true;
+      card.replaceChild(iframe,facade);
+    });
+    card.appendChild(facade);
+    var caption=document.createElement('div');caption.className='as-video-caption';
+    var labelSpan=document.createElement('span');labelSpan.textContent=titleText||'Watch Video Walkthrough';
+    var actionSpan=document.createElement('small');actionSpan.textContent='Click to play';
+    caption.appendChild(labelSpan);caption.appendChild(actionSpan);
+    card.appendChild(caption);
+    return card;
+  }
+
   function addMessage(kind,textValue,sources,mode){
     var article=document.createElement('article');
     article.className='assistant-msg is-'+kind;
@@ -79,9 +137,34 @@
     var body=document.createElement('p');body.className='assistant-copy';
     String(textValue||'').split('\n').forEach(function(line,index){
       if(index)body.appendChild(document.createElement('br'));
-      body.appendChild(document.createTextNode(line));
+      appendTextWithLinks(body,line);
     });
     article.appendChild(whoRow);article.appendChild(body);
+
+    var ytMatches=[];
+    var allUrls=[];
+    if(textValue){
+      var matches=textValue.match(/https?:\/\/[^\s]+/g);
+      if(matches)allUrls=allUrls.concat(matches);
+    }
+    if(sources&&sources.length){
+      sources.forEach(function(s){if(s.url)allUrls.push(s.url);});
+    }
+    var seenYt={};
+    allUrls.forEach(function(u){
+      var yt=extractYouTubeInfo(u);
+      if(yt&&!seenYt[yt.id]){
+        seenYt[yt.id]=true;
+        ytMatches.push(yt);
+      }
+    });
+
+    ytMatches.forEach(function(yt){
+      var ytSrc=(sources&&sources.filter(function(s){return extractYouTubeInfo(s.url);})[0]);
+      var videoTitle=ytSrc?ytSrc.title:'Watch Video Walkthrough';
+      var videoCard=createYouTubeCard(yt,videoTitle);
+      article.appendChild(videoCard);
+    });
 
     if(sources&&sources.length){
       var wrap=document.createElement('div');wrap.className='assistant-sources';
