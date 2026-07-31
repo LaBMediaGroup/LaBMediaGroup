@@ -128,26 +128,26 @@
 <section class="pg-hero wrap">
   <div class="rule"><span class="mono">Colophon</span><i></i><span class="mono" style="color:var(--faint)">Updated July 2026</span></div>
   <h1>Fourteen pages, one <em>stylesheet.</em></h1>
-  <p class="lede">This site has no framework, no build step, no backend and no dependencies. It's
-  hand-written HTML and CSS on free hosting, put together with a lot of help from AI tools. If
-  you're a filmmaker who also tinkers, this is the part you might find useful.</p>
+  <p class="lede">This site has no framework or build step. It&rsquo;s hand-written HTML and CSS on
+  free hosting, plus one small Cloudflare Worker that protects the assistant&rsquo;s optional AI
+  phrasing. If you&rsquo;re a filmmaker who also tinkers, this is the part you might find useful.</p>
 
   <dl class="figs">
     <div class="fig"><dt>Pages</dt><dd>14</dd></div>
-    <div class="fig"><dt>Stylesheet</dt><dd>29<span>kb</span></dd></div>
-    <div class="fig"><dt>Design tokens</dt><dd>67</dd></div>
-    <div class="fig"><dt>Dependencies</dt><dd>00</dd></div>
+    <div class="fig"><dt>Stylesheet</dt><dd>47<span>kb</span></dd></div>
+    <div class="fig"><dt>Design tokens</dt><dd>71</dd></div>
+    <div class="fig"><dt>Cloud Worker</dt><dd>01</dd></div>
     <div class="fig"><dt>Cookies</dt><dd>00</dd></div>
   </dl>
 </section>
 
 <section class="sec-c wrap">
   <h2>One stylesheet, <em>everything</em></h2>
-  <p><code>lab.css</code> is 996 lines and governs all fourteen pages — every colour, every
+  <p><code>lab.css</code> is 1,079 lines and governs all fourteen pages — every colour, every
   typeface, the navigation and the footer. Change a value in the one token block and it changes
   in ten places at once. It replaced eleven divergent colour blocks and nine separate navigation
   markups, which is a polite way of saying every page had quietly become its own website.</p>
-  <p>Sixty-seven design tokens cover colour, type, spacing and motion. Four themes — dark, light,
+  <p>Seventy-one design tokens cover colour, type, spacing and motion. Four themes — dark, light,
   sepia and forest — are per-theme overrides of the same tokens, applied by an inline script in the
   <code>&lt;head&gt;</code> before first paint so there's no flash of the wrong colours.</p>
 </section>
@@ -286,14 +286,15 @@
         and dated events before it writes a word. Every factual answer cites the page it came from.
         Follow an internal citation and an orange guide moves to the exact film, resource, event or
         item of kit.</p>
-        <p>On the public GitHub Pages site, that sourced search is the whole assistant. On the
-        localhost gateway, the retrieved answer may be handed to one fixed Ollama model for a more
-        natural voice. The current test model is <code>nemotron-3-super:cloud</code>, so the
-        interface labels it as cloud processing rather than pretending it stayed on the Mac. The
-        raw visitor question is omitted from that cloud request; only the already-sourced public
-        answer is sent for phrasing. A grounding check rejects any rewrite that drops or changes a
-        number, date or ownership claim, and shows the sourced answer instead. <em>The model can
-        change the phrasing; it cannot change the facts.</em></p>
+        <p>On the public site, a protected Cloudflare Worker can hand the retrieved answer to one
+        fixed Ollama model for a more natural voice. The live model is
+        <code>nemotron-3-super:cloud</code>, and its API key stays encrypted outside the browser.
+        The raw visitor question is omitted from that cloud request; only the already-sourced
+        public answer is sent for phrasing. Hybrid mode is the default, while a
+        <strong>Sourced only</strong> switch stops before the Worker and makes no model request.
+        A grounding check rejects any rewrite that drops or changes a number, date or ownership
+        claim, and shows the sourced answer instead.
+        <em>The model can change the phrasing; it cannot change the facts.</em></p>
       </div>
     </div>
   </div>
