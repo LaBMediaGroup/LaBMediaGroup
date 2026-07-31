@@ -613,7 +613,7 @@
 .ev-row.crew{opacity:.82}
 .ev-row.crew .ev-what b{color:var(--sky)}
 .ev-tag{font-family:var(--f-mono);font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--sky);border:1px solid color-mix(in srgb,var(--sky) 34%,transparent);
+  color:var(--sky);border:1px solid var(--line-2);border-color:color-mix(in srgb,var(--sky) 34%,transparent);
   padding:3px 7px;margin-left:9px;white-space:nowrap;vertical-align:1px}
 .ev-row.win .ev-what b::after{content:' ★';color:var(--accent)}
 
@@ -656,6 +656,7 @@
         <div class="nav-drop-menu">
           <a href="ideas.html">Story Generator</a>
           <a href="skybound.html">SkyBound — Drone</a>
+          <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
       <li class="nav-drop">
@@ -672,6 +673,7 @@
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
@@ -689,9 +691,8 @@
 
   <div class="vid lead" data-video="UAFQ5KU-6Jg">
     <button class="vid-btn" type="button" aria-label="Play the 2024 reel">
-      <img src="https://i.ytimg.com/vi/UAFQ5KU-6Jg/maxresdefault.jpg"
-           onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/UAFQ5KU-6Jg/hqdefault.jpg'"
-           alt="" fetchpriority="high" decoding="async" width="1280" height="720">
+      <img src="images/reel2024-still.jpg"
+           alt="" fetchpriority="high" decoding="async" width="1600" height="670">
       <span class="vid-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
     </button>
     <span class="vid-label">The Reel · 2024 work</span>
@@ -727,7 +728,7 @@
 
     <div class="vid" data-video="CPvxM8GrCg8">
       <button class="vid-btn" type="button" aria-label="Play: Anthony Brass">
-        <img onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/CPvxM8GrCg8/hqdefault.jpg'" src="https://i.ytimg.com/vi/CPvxM8GrCg8/hqdefault.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+        <img src="images/brass.jpg" alt="" loading="lazy" decoding="async" width="1600" height="900">
         <span class="vid-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
       </button>
       <span class="vid-label">Click to load · YouTube</span>
@@ -783,7 +784,7 @@
 
     <div class="vid" data-video="HtF4L9RpkaU">
       <button class="vid-btn" type="button" aria-label="Play: MOZ Interiors">
-        <img onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/HtF4L9RpkaU/hqdefault.jpg'" src="https://i.ytimg.com/vi/HtF4L9RpkaU/maxresdefault.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+        <img src="images/moz/mozpage-still.jpg" alt="" loading="lazy" decoding="async" width="1600" height="900">
         <span class="vid-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
       </button>
       <span class="vid-label">Click to load · YouTube</span>
@@ -848,7 +849,7 @@
 
     <div class="vid" data-video="ZXYtZmIRiRI">
       <button class="vid-btn" type="button" aria-label="Play: The Pandys">
-        <img onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/ZXYtZmIRiRI/hqdefault.jpg'" src="https://i.ytimg.com/vi/ZXYtZmIRiRI/maxresdefault.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+        <img src="images/pandys-still.jpg" alt="" loading="lazy" decoding="async" width="1600" height="900">
         <span class="vid-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
       </button>
       <span class="vid-label">Click to load · YouTube</span>
@@ -883,7 +884,7 @@
 
     <div class="vid" data-video="rtEs8chuDlM">
       <button class="vid-btn" type="button" aria-label="Play: Trail Dead">
-        <img onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/rtEs8chuDlM/hqdefault.jpg'" src="https://i.ytimg.com/vi/rtEs8chuDlM/maxresdefault.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+        <img src="images/traildead/roulette-poster.jpg" alt="" loading="lazy" decoding="async" width="1600" height="900">
         <span class="vid-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
       </button>
       <span class="vid-label">Click to load · YouTube</span>
@@ -942,7 +943,7 @@
 
     <div class="vid" data-video="G0zfFWwQuZA">
       <button class="vid-btn" type="button" aria-label="Play: Lookout">
-        <img onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/G0zfFWwQuZA/hqdefault.jpg'" src="https://i.ytimg.com/vi/G0zfFWwQuZA/maxresdefault.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+        <img src="images/lookout/clip-poster.jpg" alt="" loading="lazy" decoding="async" width="1600" height="900">
         <span class="vid-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
       </button>
       <span class="vid-label">Click to load · YouTube</span>
@@ -1084,9 +1085,14 @@
     <h2><em>Scattered</em></h2>
     <p class="desc">Made for the Detroit 48 Hour Film Project. Assignment Friday night, shot and cut across Saturday and Sunday, uploaded with six minutes left on the clock.</p>
 
+    <div class="vid still-lead">
+      <img src="images/scattered/scattered-01.jpg" alt="Still from Scattered — a billboard over Metro Detroit" loading="lazy" decoding="async" width="1600" height="900">
+      <span class="vid-label">Film still · not yet public</span>
+    </div>
+
     <div class="awaiting">
       <span class="aw-k">Just finished</span>
-      <p>Submitted <strong>July 26, 2026</strong>. Nothing to watch yet — the festival screens before films go public. Stills and the film will land here once they do.</p>
+      <p>Submitted <strong>July 26, 2026</strong>. Nothing to watch yet — the festival screens before films go public. The film lands here once it has.</p>
     </div>
 
     <div class="tl">
@@ -1281,6 +1287,7 @@
           <li><a href="sourcing.html">Gear &amp; Flight</a></li>
           <li><a href="ideas.html">Story Generator</a></li>
           <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="assistant.html">LaB Assistant</a></li>
           <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
           <li><a href="mykit.html">Your Kit</a></li>
           <li><a href="colophon.html">How it's built</a></li>
@@ -1619,5 +1626,7 @@ document.querySelectorAll('.vid').forEach(function(box){
     .catch(function(){ /* stay hidden */ });
 })();
 </script>
+<script src="assistant-guide.js"></script>
+<script src="assistant-widget.js"></script>
 </body>
 </html>

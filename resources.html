@@ -12,13 +12,13 @@
 <meta property="og:url" content="https://labmedia.work/resources.html">
 <meta property="og:site_name" content="LaB Media">
 <meta property="og:title" content="Software & Assets">
-<meta property="og:description" content="Every tool, festival, font, sound library and channel worth keeping — vetted, organized, and free.">
+<meta property="og:description" content="AI, music, sound, stock, type, 3D and production software worth keeping — vetted, organized, and honest about cost.">
 <meta property="og:image" content="https://labmedia.work/images/og/resources.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Software & Assets">
-<meta name="twitter:description" content="Every tool, festival, font, sound library and channel worth keeping — vetted, organized, and free.">
+<meta name="twitter:description" content="AI, music, sound, stock, type, 3D and production software worth keeping — vetted, organized, and honest about cost.">
 <meta name="twitter:image" content="https://labmedia.work/images/og/resources.jpg">
 
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -71,7 +71,7 @@
 .find-count{margin-top:11px;font-family:var(--f-mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint)}
 
 /* Section jump rail */
-.jump{position:sticky;top:58px;z-index:400;background:color-mix(in srgb,var(--paper) 94%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.jump{position:sticky;top:58px;z-index:400;background:var(--paper);background:color-mix(in srgb,var(--paper) 94%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
 .jump-in{max-width:var(--maxw);margin-inline:auto;padding:var(--s-3) var(--gutter);display:flex;gap:var(--s-2);overflow-x:auto;scrollbar-width:none}
 .jump-in::-webkit-scrollbar{display:none}
 .jump a{
@@ -144,9 +144,9 @@
 .lab-sec .grp-d summary:hover .g-title{color:var(--sky)}
 .lab-sec .g-ico::before,.lab-sec .g-ico::after{background:var(--sky)}
 .lab-note{padding:0 0 var(--s-5);color:var(--dim);font-size:var(--t-sm);line-height:1.75;max-width:64ch}
-.tag.inlab{color:var(--sky);border-color:color-mix(in srgb,var(--sky) 38%,transparent);
-  background:color-mix(in srgb,var(--sky) 9%,transparent)}
-.d-inlab{border-left:2px solid color-mix(in srgb,var(--sky) 40%,transparent);
+.tag.inlab{color:var(--sky);border-color:var(--line-2);border-color:color-mix(in srgb,var(--sky) 38%,transparent);
+  background:var(--paper-2);background:color-mix(in srgb,var(--sky) 9%,transparent)}
+.d-inlab{border-left:2px solid var(--sky);border-left-color:color-mix(in srgb,var(--sky) 40%,transparent);
   padding:var(--s-2) 0 var(--s-2) var(--s-4);margin-bottom:var(--s-4);
   color:var(--dim);font-size:var(--t-sm);line-height:1.7;max-width:64ch}
 .d-inlab b{display:block;font-family:var(--f-mono);font-size:9px;letter-spacing:.2em;
@@ -154,7 +154,7 @@
 body.searching .lab-sec{display:none}
 .tag.fresh{color:var(--paper);background:var(--accent);border-color:var(--accent);font-weight:700}
 /* where a thing physically is — the first question anyone asks of a festival */
-.tag.loc{color:var(--sky);border-color:color-mix(in srgb,var(--sky) 34%,transparent)}
+.tag.loc{color:var(--sky);border-color:var(--line-2);border-color:color-mix(in srgb,var(--sky) 34%,transparent)}
 .tag.loc::before{content:'⌖ ';opacity:.7}
 .item-go{font-family:var(--f-mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);white-space:nowrap;padding-top:8px}
 .item details{margin-top:11px}
@@ -333,6 +333,7 @@ body.searching .lab-sec{display:none}
         <div class="nav-drop-menu">
           <a href="ideas.html">Story Generator</a>
           <a href="skybound.html">SkyBound — Drone</a>
+          <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
       <li class="nav-drop">
@@ -349,6 +350,7 @@ body.searching .lab-sec{display:none}
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
@@ -418,6 +420,7 @@ body.searching .lab-sec{display:none}
           <li><a href="sourcing.html">Gear &amp; Flight</a></li>
           <li><a href="ideas.html">Story Generator</a></li>
           <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="assistant.html">LaB Assistant</a></li>
           <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
           <li><a href="mykit.html">Your Kit</a></li>
           <li><a href="colophon.html">How it's built</a></li>
@@ -514,5 +517,7 @@ window.PAGE_BANDS = ['band-make'];
     .catch(function(){ /* stay hidden */ });
 })();
 </script>
+<script src="assistant-guide.js"></script>
+<script src="assistant-widget.js"></script>
 </body>
 </html>

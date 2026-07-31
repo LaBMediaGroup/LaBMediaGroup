@@ -4,20 +4,20 @@
 <meta charset="UTF-8">
 <script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LaB Media — Some short films, and what it took to make them</title>
+<title>LaB Media — Short films, and what it took to make them</title>
 <meta name="description" content="A small film studio in Shelby Township, Michigan. Award-winning shorts, free filmmaking tools, and 126 vetted resources — kept public for anyone who needs them.">
 <link rel="canonical" href="https://labmedia.work/">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://labmedia.work/">
 <meta property="og:site_name" content="LaB Media">
-<meta property="og:title" content="LaB Media — Some short films, and what it took to make them">
+<meta property="og:title" content="LaB Media — Short films, and what it took to make them">
 <meta property="og:description" content="A small film studio in Shelby Township, Michigan. Award-winning shorts, free filmmaking tools, and 126 vetted resources.">
 <meta property="og:image" content="https://labmedia.work/images/og/index.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="LaB Media — Some short films, and what it took to make them">
+<meta name="twitter:title" content="LaB Media — Short films, and what it took to make them">
 <meta name="twitter:description" content="Award-winning shorts, free filmmaking tools, and 126 vetted resources from a Metro Detroit studio.">
 <meta name="twitter:image" content="https://labmedia.work/images/og/index.jpg">
 
@@ -225,7 +225,8 @@
 <header class="nav">
   <div class="nav-in">
     <a class="nav-brand" href="index.html" aria-label="LaB Media — home">
-      <img class="nav-logo" src="images/LaBMedia-mark.png" alt="LaB Media" width="136" height="26">
+      <img class="nav-logo nav-logo-wordmark" src="images/LaBMedia-mark.png" alt="LaB Media" width="136" height="26">
+      <img class="nav-logo is-mark nav-logo-mobile" src="images/TheLaB-mark.png" alt="LaB Media" width="61" height="26">
     </a>
     <nav class="nav-primary" aria-label="Primary"><ul class="nav-links" id="navLinks">
       <li><a href="portfolio.html">Reel</a></li>
@@ -251,6 +252,7 @@
         <div class="nav-drop-menu">
           <a href="ideas.html">Story Generator</a>
           <a href="skybound.html">SkyBound — Drone</a>
+          <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
       <li class="nav-drop">
@@ -267,6 +269,7 @@
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
@@ -280,7 +283,7 @@
 <section class="hero wrap">
   <div class="rule"><span class="mono">LaB Media</span><i></i><span class="mono">Est. Shelby Twp, MI</span></div>
 
-  <h1>Some short films, and <em>what it took to make them.</em></h1>
+  <h1>Short films, and <em>what it took to make them.</em></h1>
 
   <img class="masthead" src="images/TheLaB-mark.png" alt="The LaB" width="309" height="132" fetchpriority="high" decoding="async">
 
@@ -288,7 +291,7 @@
 
   <div class="reel" id="reel" data-video="UAFQ5KU-6Jg">
     <button class="reel-btn" type="button" aria-label="Play the LaB Media reel">
-      <img id="reelPoster" src="https://i.ytimg.com/vi/UAFQ5KU-6Jg/maxresdefault.jpg"
+      <img id="reelPoster" src="images/reel2024-still.jpg"
            alt="" decoding="async" width="1280" height="720">
       <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
     </button>
@@ -321,39 +324,39 @@
     <a class="card reveal" href="portfolio.html#horror">
       <div class="card-thumb">
         <img src="images/TrailDead-still.jpg" alt="Still from Trail Dead" loading="lazy" decoding="async" width="1600" height="892">
-        <span class="card-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
       </div>
       <div class="card-body">
         <div class="card-idx">004 / Horror</div>
         <h3>Trail Dead</h3>
         <p>Invisible threat, visible dread. Tension built almost entirely in the cut.</p>
         <div class="card-award">Best Editing — Horror Film Roulette 2025</div>
+        <div class="card-dest">View film notes →</div>
       </div>
     </a>
 
     <a class="card reveal" href="portfolio.html#comedy">
       <div class="card-thumb">
         <img src="images/Lookout-still.jpg" alt="Still from Lookout" loading="lazy" decoding="async" width="1600" height="1506">
-        <span class="card-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
       </div>
       <div class="card-body">
         <div class="card-idx">005 / Comedy</div>
         <h3>Lookout</h3>
         <p>Smart writing, sharp timing, and proof that funny is genuinely hard.</p>
         <div class="card-award">Top 25 — Comedy Roll Film Festival 2025</div>
+        <div class="card-dest">View film notes →</div>
       </div>
     </a>
 
     <a class="card reveal" href="portfolio.html#moz">
       <div class="card-thumb">
         <img src="images/MOZPage-still.jpg" alt="Still from the MOZ Interiors brand film" loading="lazy" decoding="async" width="1600" height="912">
-        <span class="card-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
       </div>
       <div class="card-body">
         <div class="card-idx">002 / Brand Film</div>
         <h3>MOZ Interiors</h3>
         <p>Where luxury meets livability. Two Detroit Design Awards out of one shoot.</p>
         <div class="card-award">Vanity Fair · Architectural Digest</div>
+        <div class="card-dest">View film notes →</div>
       </div>
     </a>
   </div>
@@ -379,6 +382,13 @@
       <h3><em>SkyBound</em></h3>
       <p>The drone path, in order: simulate before you buy, learn from pilots worth learning from, build the kit, then go get your Part 107.</p>
       <span class="tlink">Start at step one <span class="arw">→</span></span>
+    </a>
+
+    <a class="tool reveal" href="assistant.html">
+      <div class="tool-idx">Tool 03</div>
+      <h3>LaB <em>Assistant</em></h3>
+      <p>Ask the site about films, owned and borrowed gear, checked resources, Michigan events, drones, or how the whole thing was built.</p>
+      <span class="tlink">Ask a question <span class="arw">→</span></span>
     </a>
   </div>
 </section>
@@ -419,8 +429,8 @@
   </div>
 
   <div class="note">
-    <p><strong>Why this exists.</strong> This is a hobby, not a business. I work full time and I'm not really looking for jobs — I just kept a folder of good links and figured it was more useful public than private. Nothing here costs anything and nothing asks for your email.</p>
-    <p><strong>And yes, I built this.</strong> Plain HTML and CSS on free hosting — one stylesheet, no framework, no build step, no backend. If you want to know how any part of it works, <a href="contact.html" style="color:var(--accent)">just ask</a>.</p>
+    <p><strong>Why this exists.</strong> The films came first. The Notebook is everything that earned a place along the way — tools, references, and people worth returning to. It stays public, free, and doesn&rsquo;t ask for your email.</p>
+    <p><strong>And yes, I built this.</strong> Plain HTML, CSS, and JavaScript on free hosting. No framework, no backend, no signup. Start with <a href="colophon.html" style="color:var(--accent)">About the Site</a>; if something still isn&rsquo;t clear, <a href="contact.html" style="color:var(--accent)">just ask</a>.</p>
   </div>
 </section>
 
@@ -444,6 +454,7 @@
           <li><a href="sourcing.html">Gear &amp; Flight</a></li>
           <li><a href="ideas.html">Story Generator</a></li>
           <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="assistant.html">LaB Assistant</a></li>
           <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
           <li><a href="mykit.html">Your Kit</a></li>
           <li><a href="colophon.html">How it's built</a></li>
@@ -539,17 +550,14 @@
   });
 })();
 
-/* Poster fallback: try maxres, then hq, then drop the image entirely so a
-   failed load shows a clean panel with the play button, not a broken icon. */
+/* Poster fallback. This used to fall back to i.ytimg.com, which quietly undid
+   the whole point of the facade — a missing local file would have gone and
+   asked Google for one. Now a failed load just drops the image, leaving a clean
+   panel with the play button rather than a broken icon. */
 (function(){
   var img=document.getElementById('reelPoster');
   if(!img)return;
-  var tried=0;
-  img.addEventListener('error',function(){
-    tried++;
-    if(tried===1){ img.src='https://i.ytimg.com/vi/UAFQ5KU-6Jg/hqdefault.jpg'; }
-    else { img.remove(); }
-  });
+  img.addEventListener('error',function(){ img.remove() });
 })();
 
 /* Reel facade — nothing loads from YouTube until you press play.
@@ -702,5 +710,7 @@
     .catch(function(){ /* stay hidden */ });
 })();
 </script>
+<script src="assistant-guide.js"></script>
+<script src="assistant-widget.js"></script>
 </body>
 </html>

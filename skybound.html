@@ -464,6 +464,10 @@
                 grid-template-columns: 1fr;
             }
 
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
             .step-card::before {
                 position: static;
                 margin-bottom: 1rem;
@@ -557,6 +561,7 @@
         <div class="nav-drop-menu">
           <a href="ideas.html">Story Generator</a>
           <a href="skybound.html" aria-current="page">SkyBound — Drone</a>
+          <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
       <li class="nav-drop">
@@ -573,6 +578,7 @@
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
@@ -875,7 +881,7 @@
 
         const SIMULATORS = [
             { name: 'Liftoff', description: 'The most popular FPV sim for freestyle and muscle memory training.', url: 'https://store.steampowered.com/app/410340/Liftoff_FPV_Drone_Racing/' },
-            { name: 'Tryp FPV', description: 'Freestyle-first sim with cinematic environments and flow-focused flying.', url: 'https://trypfpv.com' },
+            { name: 'Tryp FPV', description: 'Freestyle-first sim with cinematic environments and flow-focused flying.', url: 'https://steamcommunity.com/app/1881200' },
             { name: 'VelociDrone', description: 'Racing-focused sim with deep tuning and multiplayer options.', url: 'https://www.velocidrone.com' },
             { name: 'Uncrashed', description: 'Freestyle-heavy sim with fast load times and smooth feel.', url: 'https://store.steampowered.com/app/1682970/Uncrashed__FPV_Drone_Simulator/' },
             { name: 'FPV Logic', description: 'Adjustable sim for practice sessions, throttle control, and line choice.', url: 'https://fpvlogic.com' }
@@ -914,6 +920,7 @@
           <li><a href="sourcing.html">Gear &amp; Flight</a></li>
           <li><a href="ideas.html">Story Generator</a></li>
           <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="assistant.html">LaB Assistant</a></li>
           <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
           <li><a href="mykit.html">Your Kit</a></li>
           <li><a href="colophon.html">How it's built</a></li>
@@ -1110,5 +1117,7 @@
     .catch(function(){ /* stay hidden */ });
 })();
 </script>
+<script src="assistant-guide.js"></script>
+<script src="assistant-widget.js"></script>
 </body>
 </html>

@@ -5,20 +5,20 @@
 <script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How This Site Is Built | LaB Media</title>
-<meta name="description" content="Thirteen pages, one stylesheet, no framework, no build step, no cookies. What it took and what broke along the way.">
+<meta name="description" content="Fourteen pages, one stylesheet, no framework, no build step, no cookies. What it took and what broke along the way.">
 <link rel="canonical" href="https://labmedia.work/colophon.html">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://labmedia.work/colophon.html">
 <meta property="og:site_name" content="LaB Media">
 <meta property="og:title" content="How This Site Is Built">
-<meta property="og:description" content="Thirteen pages, one stylesheet, no framework, no build step, no cookies.">
+<meta property="og:description" content="Fourteen pages, one stylesheet, no framework, no build step, no cookies.">
 <meta property="og:image" content="https://labmedia.work/images/og/colophon.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="How This Site Is Built">
-<meta name="twitter:description" content="Thirteen pages, one stylesheet, no framework, no build step, no cookies.">
+<meta name="twitter:description" content="Fourteen pages, one stylesheet, no framework, no build step, no cookies.">
 <meta name="twitter:image" content="https://labmedia.work/images/og/colophon.jpg">
 
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -51,7 +51,7 @@
 .sec-c h2 em{font-style:italic;color:var(--accent)}
 .sec-c p{color:var(--dim);font-size:var(--t-base);line-height:1.8;max-width:66ch;margin-bottom:var(--s-4)}
 .sec-c p strong{color:var(--ink);font-weight:400}
-.sec-c code{font-family:var(--f-mono);font-size:.88em;color:var(--sky);background:color-mix(in srgb,var(--sky) 8%,transparent);padding:2px 6px}
+.sec-c code{font-family:var(--f-mono);font-size:.88em;color:var(--sky);background:var(--paper-2);background:color-mix(in srgb,var(--sky) 8%,transparent);padding:2px 6px}
 .sec-c a{color:var(--accent);border-bottom:1px solid var(--accent-dim)}
 
 .bugs{border-top:1px solid var(--line);margin-top:var(--s-2)}
@@ -99,6 +99,7 @@
         <div class="nav-drop-menu">
           <a href="ideas.html">Story Generator</a>
           <a href="skybound.html">SkyBound — Drone</a>
+          <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
       <li class="nav-drop" data-current="true">
@@ -115,6 +116,7 @@
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
@@ -125,13 +127,13 @@
 
 <section class="pg-hero wrap">
   <div class="rule"><span class="mono">Colophon</span><i></i><span class="mono" style="color:var(--faint)">Updated July 2026</span></div>
-  <h1>Thirteen pages, one <em>stylesheet.</em></h1>
+  <h1>Fourteen pages, one <em>stylesheet.</em></h1>
   <p class="lede">This site has no framework, no build step, no backend and no dependencies. It's
   hand-written HTML and CSS on free hosting, put together with a lot of help from AI tools. If
   you're a filmmaker who also tinkers, this is the part you might find useful.</p>
 
   <dl class="figs">
-    <div class="fig"><dt>Pages</dt><dd>13</dd></div>
+    <div class="fig"><dt>Pages</dt><dd>14</dd></div>
     <div class="fig"><dt>Stylesheet</dt><dd>29<span>kb</span></dd></div>
     <div class="fig"><dt>Design tokens</dt><dd>67</dd></div>
     <div class="fig"><dt>Dependencies</dt><dd>00</dd></div>
@@ -141,12 +143,12 @@
 
 <section class="sec-c wrap">
   <h2>One stylesheet, <em>everything</em></h2>
-  <p><code>lab.css</code> is 678 lines and governs all thirteen pages — every colour, every
+  <p><code>lab.css</code> is 996 lines and governs all fourteen pages — every colour, every
   typeface, the navigation and the footer. Change a value in the one token block and it changes
   in ten places at once. It replaced eleven divergent colour blocks and nine separate navigation
   markups, which is a polite way of saying every page had quietly become its own website.</p>
-  <p>Sixty-seven design tokens cover colour, type, spacing and motion. Three themes — dark, light
-  and sepia — are per-theme overrides of the same tokens, applied by an inline script in the
+  <p>Sixty-seven design tokens cover colour, type, spacing and motion. Four themes — dark, light,
+  sepia and forest — are per-theme overrides of the same tokens, applied by an inline script in the
   <code>&lt;head&gt;</code> before first paint so there's no flash of the wrong colours.</p>
 </section>
 
@@ -156,24 +158,44 @@
   photographs are in the page itself, inside native <code>&lt;details&gt;</code> elements. Turn
   JavaScript off and the portfolio still reads completely — <strong>1,564 words of it</strong>.
   Same for SkyBound.</p>
-  <p>The resources, the gear list and the story generator do <strong>not</strong>. Those three are
+  <p>The resources, the gear list, the story generator and the LaB Assistant do <strong>not</strong>. Those four are
   built at runtime from data files, so with scripts disabled they fall back to a heading and a
-  short explanation instead of 126 links, 66 items and 1,334 prompts.</p>
+  short explanation instead of 126 links, 66 items, 1,334 prompts and grounded answers.</p>
   <p>That's a real trade, made deliberately. Keeping 126 resources as one data file rather than
   hand-written HTML is the only reason a one-person site can carry that much and stay correct —
   the counts, the search, the kit and the feeds all read from the same source. The cost is that
   those pages need scripts to draw themselves, so each one ships a <code>&lt;noscript&gt;</code>
   fallback that says so plainly rather than showing an empty shell.</p>
-  <p>Videos are click-to-load. A poster image stands in until you press play, and only then does a
-  <code>youtube-nocookie.com</code> iframe get injected &mdash; <strong>no player, no cookies and no
-  tracking script until you ask for them.</strong></p>
+  <p>The public LaB Assistant is still model-free. A development-only localhost gateway can hand
+  its already-sourced answer to one allowlisted Ollama model for phrasing, but that gateway begins
+  with an underscore, is excluded from deployment and never exposes Ollama&rsquo;s own API to the
+  browser. If the model is asleep, retrieval keeps working.</p>
+  <p>The little orange beaker is the everyday version. Open it and the conversation reads more
+  like a tiny editorial column than a generic support chat: large type, generous air, one orange
+  rule and very little interface furniture. Its shell is present across the site, but the roughly
+  132 KiB search index and assistant code do not load until somebody opens it. The larger
+  <a href="assistant.html">full-page assistant</a> stays here for longer conversations and for
+  explaining what the bot is actually doing.</p>
+  <p>Its citations are navigation, not decoration. Follow an internal source and a deliberately
+  theatrical orange cursor opens the right collapsed section, scrolls to the exact film, resource,
+  event or piece of kit, then leaves keyboard focus and a short highlight there. It is a visual
+  guide drawn by the page; it never moves the visitor&rsquo;s real pointer. A maximum of eight
+  messages lives in <code>sessionStorage</code> so the conversation survives that page change,
+  stays inside the current tab, and disappears when the tab closes or Clear is pressed.</p>
+  <p>The status line also tells the less glamorous truth: <em>searching</em>, <em>asking local
+  Ollama</em>, <em>verified</em>, <em>model rewrite rejected</em>, or <em>Ollama offline</em>.
+  A rejected rewrite is not a broken answer. It means the grounding check caught the model
+  dropping or changing a retrieved fact and showed the sourced version instead.</p>
+  <p>Videos are click-to-load. Every poster is a local file, and only when you press play does a
+  <code>youtube-nocookie.com</code> iframe get injected. <strong>Nothing contacts YouTube before
+  you ask it to.</strong></p>
   <p class="d-inlab" style="border-left:2px solid var(--accent-dim);padding-left:var(--s-4)">
-  <b>Not the whole story</b>This page used to claim nothing contacted YouTube at all before a click.
-  That wasn&rsquo;t true: on the reel page the poster frames are still served from
-  <code>i.ytimg.com</code>, which is Google&rsquo;s image host, so it learns your IP and browser
-  when the page loads even if you never press play. The home page&rsquo;s posters are now local
-  files; the reel page&rsquo;s are next. Worth saying out loud, because a privacy claim that is
-  <em>nearly</em> true is worse than one you never made.</p>
+  <b>This was briefly untrue</b>The posters used to be pulled from <code>i.ytimg.com</code> &mdash;
+  Google&rsquo;s image host &mdash; so the sentence above was wrong in the way that matters: the
+  player was deferred, the surveillance wasn&rsquo;t. An outside reviewer caught it. Seven frames
+  were exported and hosted here, and a <code>preconnect</code> to the same host was removed. Left
+  here rather than quietly corrected, because a privacy claim that is <em>nearly</em> true is worse
+  than one you never made.</p>
 </section>
 
 <section class="sec-c wrap">
@@ -206,7 +228,7 @@
     <div class="bug">
       <span class="bug-n">02</span>
       <div>
-        <h3>No player loads until you press play</h3>
+        <h3>Nothing contacts YouTube until you press play</h3>
         <p>Every video is a poster image and a button. The <code>youtube-nocookie.com</code> iframe
         is injected on click and not before, so simply reading a page sets no cookies and loads no
         tracking script. It is also dramatically faster, because a page with six films embeds zero
@@ -234,7 +256,7 @@
       <div>
         <h3>Colour solved numerically, and per theme</h3>
         <p>No text colour here was eyeballed. Each was moved until it cleared WCAG AA &mdash;
-        4.5:1 &mdash; against all three backgrounds. The tertiary grey is <code>#857F76</code>
+        4.5:1 &mdash; against every theme background. The tertiary grey is <code>#857F76</code>
         because that is the first value that passes on both the page and the raised surfaces.
         Contrast-sensitive colours have to be per-theme tokens: one green cannot clear 4.5:1 on a
         near-black page <em>and</em> a near-white one. <em>The single hardcoded green this replaced
@@ -343,6 +365,7 @@
           <li><a href="sourcing.html">Gear &amp; Flight</a></li>
           <li><a href="ideas.html">Story Generator</a></li>
           <li><a href="skybound.html">SkyBound</a></li>
+          <li><a href="assistant.html">LaB Assistant</a></li>
           <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
           <li><a href="mykit.html">Your Kit</a></li>
           <li><a href="colophon.html">How it's built</a></li>
@@ -508,5 +531,7 @@
 })();
 </script>
 
+<script src="assistant-guide.js"></script>
+<script src="assistant-widget.js"></script>
 </body>
 </html>
