@@ -1598,6 +1598,17 @@ const resources = [
         features: ['Full Selection', 'Competitive Pricing', 'Expert Staff', 'Fast Shipping']
     },
 
+    {
+        id: 'amazon-camera',
+        name: 'Amazon',
+        category: 'equipment',
+        desc: 'Everyday pro-sumer gear, drone accessories, memory cards, and 1 to 2 day shipping.',
+        fullDesc: 'Amazon for fast 1–2 day shipping on SD/CFexpress cards, drone accessories, battery packs, clamps, cables, and last-minute production kit. Big retail, but when you need a missing adapter or replacement battery delivered to set tomorrow morning, it is what gets used.',
+        url: 'https://www.amazon.com',
+        paid: true,
+        features: ['Fast 1-2 Day Shipping', 'Drone Accessories', 'Memory Cards & Power', 'Last-Minute Kit']
+    },
+
 
     // ============================================
     // 3D & VFX
