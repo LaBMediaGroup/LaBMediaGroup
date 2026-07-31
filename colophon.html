@@ -278,12 +278,16 @@
         <em>Doing both jobs in one sentence was the first attempt&rsquo;s mistake.</em></p>
       </div>
     </div>
-    <div class="bug">
+    <div class="bug" id="field-notes">
       <span class="bug-n">09</span>
       <div>
         <h3>A chatbot with search in charge</h3>
-        <p>The assistant searches the site&rsquo;s own film notes, 126 resources, 66 gear entries
-        and dated events before it writes a word. Every factual answer cites the page it came from.
+        <p>The assistant searches the site&rsquo;s own film notes, 126 resources, 66 gear entries,
+        dated events and quiet field notes before it writes a word. Every factual answer keeps a
+        source. Field notes are authored retrieval records, not model training and not extra page
+        copy: they hold exact filenames, settings, production memories and occasional Easter eggs
+        that should appear only when somebody asks the right thing. Exact field-note answers bypass
+        model rewriting so filenames and paths come back untouched.
         Follow an internal citation and an orange guide moves to the exact film, resource, event or
         item of kit.</p>
         <p>On the public site, a protected Cloudflare Worker can hand the retrieved answer to one

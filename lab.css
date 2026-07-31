@@ -985,7 +985,7 @@ input,textarea,select{font:inherit;color:inherit}
   color:var(--faint);padding:3px 6px;border:1px solid var(--line);border-radius:9px;
   font:400 7px/1.2 var(--f-mono);letter-spacing:.04em;text-transform:uppercase;
 }
-.lab-chat-copy{color:var(--dim);font-size:16px;line-height:1.7}
+.lab-chat-copy{overflow-wrap:anywhere;color:var(--dim);font-size:16px;line-height:1.7}
 .lab-chat-msg.is-user .lab-chat-copy{
   color:var(--ink);font:400 16px/1.4 var(--f-body);
 }
