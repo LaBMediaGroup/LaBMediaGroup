@@ -206,7 +206,7 @@
     <div class="bug">
       <span class="bug-n">01</span>
       <div class="bug-main">
-        <h3>A frame that doesn&rsquo;t flinch when you press play</h3>
+        <h3>A scope frame that stays put</h3>
         <p>The reel is a 2.39&#58;1 film exported inside a 16&#58;9 YouTube frame, so the black bars
         are baked into the video. The poster hides them with <code>object-fit&#58;cover</code>, and the
         player used to expose them by opening out to 16&#58;9: the frame jumped taller and the
@@ -376,27 +376,8 @@
       </div>
     </div>
 
-    <div class="bug" id="stale-test">
-      <span class="bug-n">12</span>
-      <div class="bug-main">
-        <h3>A test that had stopped watching</h3>
-        <p>Three pages once shipped without the floating assistant because its test first asserted
-        an old hard-coded page total. That early failure prevented the useful assertion underneath
-        from naming the pages missing their widget.</p>
-        <p>Public totals and coverage checks are derived from the sitemap and data files instead.
-        A test that needs a manual count whenever the site grows is most likely to be wrong when it
-        matters.</p>
-      </div>
-      <div class="bug-side">
-        <p>The suite parses the data and markup, verifies navigation, public totals and feature
-        coverage, and loads every page in mobile Chromium. Cache-busting suffixes and list growth
-        no longer turn healthy changes into stale test failures.</p>
-        <p><em>The source data owns the number; pages and tests verify it instead of inventing
-        another copy.</em></p>
-      </div>
-    </div>
     <div class="bug" id="flight-checklist">
-      <span class="bug-n">13</span>
+      <span class="bug-n">12</span>
       <div class="bug-main">
         <h3>A checklist that can leave its page</h3>
         <p>The 18-point pre-flight list stays absent until requested beside live conditions, then
