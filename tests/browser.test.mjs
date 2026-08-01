@@ -151,7 +151,7 @@ test('solar scenes hand daylight to moonlight without changing the weather compo
   await page.close();
 });
 
-test('flight checklist minimizes, reopens and carries progress between pages', async () => {
+test('flight checklist stays hidden until requested, then persists and celebrates completion', async () => {
   const page = await browser.newPage({ viewport: { width: 1180, height: 820 }, reducedMotion: 'reduce' });
   await page.route('**/*', (route) => {
     const url = route.request().url();
@@ -160,19 +160,36 @@ test('flight checklist minimizes, reopens and carries progress between pages', a
   });
   await page.goto(`${baseURL}/droneweather.html`, { waitUntil: 'domcontentloaded', timeout: 10_000 });
   const checklist = page.locator('#lab-flight-checklist');
-  assert.equal(await checklist.getAttribute('data-mode'), 'minimized');
-  await checklist.locator('[data-fc="minimize"]').click();
+  assert.equal(await checklist.getAttribute('data-mode'), 'closed');
+  assert.equal(await checklist.isVisible(), false);
+  await page.locator('[data-open-flight-checklist]').click();
   assert.equal(await checklist.getAttribute('data-mode'), 'open');
-  await checklist.locator('[data-fc-check="a1"]').locator('..').click();
-  assert.match(await checklist.locator('[data-fc-launch-count]').textContent(), /^1\/18$/);
+  assert.equal(await page.locator('[data-open-flight-checklist]').getAttribute('aria-expanded'), 'true');
+  for (const id of ['a1', 'a2', 'a3', 'a4', 'a5', 'a6']) {
+    await checklist.locator(`[data-fc-check="${id}"]`).check({ force: true });
+  }
+  assert.equal(await checklist.locator('[data-fc-group="0"]').evaluate((element) => element.classList.contains('is-complete')), true);
+  assert.match(await checklist.locator('[data-fc-group="0"] [data-fc-group-state]').textContent(), /Ready/);
   await checklist.locator('[data-fc="minimize"]').click();
   assert.equal(await checklist.getAttribute('data-mode'), 'minimized');
   await page.goto(`${baseURL}/sun.html`, { waitUntil: 'domcontentloaded', timeout: 10_000 });
   assert.equal(await page.locator('#lab-flight-checklist').getAttribute('data-mode'), 'minimized');
   assert.equal(await page.locator('[data-fc-check="a1"]').isChecked(), true);
+  await page.locator('[data-fc="minimize"]').click();
+  for (const id of ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6']) {
+    await page.locator(`[data-fc-check="${id}"]`).check({ force: true });
+  }
+  assert.equal(await page.locator('#lab-flight-checklist').getAttribute('data-complete'), 'true');
+  assert.match(await page.locator('.fc-ready').textContent(), /Go fly/i);
+  assert.equal(await page.locator('.fc-ready').isVisible(), true);
+  assert.equal(await page.locator('.fc-body').evaluate((element) => element.scrollTop), 0);
   await page.locator('[data-fc="close"]').click();
   assert.equal(await page.locator('#lab-flight-checklist').getAttribute('data-mode'), 'closed');
-  await page.locator('[data-fc="open"]').click();
+  assert.equal(await page.locator('#lab-flight-checklist').isVisible(), false);
+  await page.goto(`${baseURL}/droneweather.html`, { waitUntil: 'domcontentloaded', timeout: 10_000 });
+  assert.equal(await page.locator('#lab-flight-checklist').isVisible(), false);
+  await page.locator('[data-open-flight-checklist]').click();
   assert.equal(await page.locator('#lab-flight-checklist').getAttribute('data-mode'), 'open');
+  assert.equal(await page.locator('#lab-flight-checklist').getAttribute('data-complete'), 'true');
   await page.close();
 });

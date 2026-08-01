@@ -230,8 +230,11 @@ test('flight checklist follows visitors without exposing the private usage page'
   }
   const checklist = read('flight-checklist.js');
   assert.match(checklist, /lab-preflight/);
+  assert.match(checklist, /lab-flight-checklist-ui-v2/);
+  assert.match(checklist, /savedUI\.mode\|\|'closed'/);
   assert.match(checklist, /window\.print\(\)/);
   assert.match(checklist, /pointerdown/);
+  assert.match(checklist, /Go fly\./);
   assert.equal((checklist.match(/\['[abc][1-6]'/g) || []).length, 18);
 });
 

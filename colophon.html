@@ -388,11 +388,11 @@
       <span class="bug-n">13</span>
       <div class="bug-main">
         <h3>A checklist that can leave its page</h3>
-        <p>The 18-point pre-flight list started at the bottom of Drone Weather, which made it thorough and easy to miss at the same time. It is now one non-modal field note shared by every public page: compact until asked for, movable on a desktop, minimizable, closable to a small launcher and printable through the browser&rsquo;s native PDF flow.</p>
+        <p>The 18-point pre-flight list started at the bottom of Drone Weather, which made it thorough and easy to miss at the same time. It now stays absent until requested beside the live conditions, then becomes one non-modal field note shared by every public page: movable on a desktop, minimizable, fully dismissible and printable through the browser&rsquo;s native PDF flow.</p>
         <p>The checks, window state and position persist in <code>localStorage</code>. There is no account, server sync or PDF library, and the original checklist key was kept so an existing set of ticks survives the move.</p>
       </div>
       <div class="bug-side">
-        <p>A modal would have trapped the user inside the checklist while they were trying to read weather or light information. A fixed region can stay within reach without taking over the page, and the first-visit state remains deliberately small.</p>
+        <p>A modal would have trapped the user inside the checklist while they were trying to read weather or light information. A fixed region can stay within reach without taking over the page, and a first visit carries no floating UI until the visitor asks for it.</p>
         <p><em>The useful tool is the one that remains available without demanding attention.</em></p>
       </div>
     </div>

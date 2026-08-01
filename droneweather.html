@@ -224,19 +224,19 @@
     .wx-deepdive summary span::after { content: " +"; color: var(--accent); }
     .wx-deepdive[open] summary span::after { content: " −"; }
     .wx-deepdive .rules-list { padding-bottom: clamp(36px, 6vw, 64px); }
-    .wx-checklist-callout {
-      display: grid; grid-template-columns: 1fr auto; gap: var(--s-5); align-items: center;
-      margin: clamp(42px, 7vw, 78px) 0; padding: clamp(20px, 4vw, 34px);
-      border: 1px solid var(--line); border-left: 2px solid var(--accent); background: var(--accent-bg);
+    .wx-preflight-trigger {
+      display: inline-flex; align-items: center; gap: 10px; min-height: 36px;
+      margin-top: var(--s-4); padding: 0 12px; border: 1px solid var(--accent-dim);
+      background: var(--accent-bg); color: var(--ink); cursor: pointer;
+      font: 9px var(--f-mono); letter-spacing: .11em; text-transform: uppercase;
+      transition: border-color var(--fast), background var(--fast), color var(--fast);
     }
-    .wx-checklist-callout h2 { margin: 0; font: 400 var(--t-2xl)/1 var(--f-display); }
-    .wx-checklist-callout p { max-width: 62ch; margin: 10px 0 0; color: var(--dim); font-size: var(--t-sm); line-height: 1.6; }
-    .wx-checklist-callout button { min-height: 42px; border: 1px solid var(--accent-dim); background: var(--paper-2); color: var(--accent); padding: 0 15px; cursor: pointer; font: 9px var(--f-mono); letter-spacing: .12em; text-transform: uppercase; }
+    .wx-preflight-trigger::after { content: "→"; color: var(--accent); font-size: 13px; transition: transform var(--fast); }
+    .wx-preflight-trigger:hover, .wx-preflight-trigger:focus-visible { border-color: var(--accent); background: color-mix(in srgb, var(--accent-bg) 72%, var(--paper-2)); outline: none; }
+    .wx-preflight-trigger:hover::after, .wx-preflight-trigger:focus-visible::after { transform: translateX(2px); }
     @media (max-width: 620px) {
       .wx-scene-time { top: 0; width: 88%; }
       .wx-time-presets button:nth-child(2) { display: none; }
-      .wx-checklist-callout { grid-template-columns: 1fr; }
-      .wx-checklist-callout button { justify-self: start; }
     }
 
     /* ---- outbound reference links ---- */
@@ -361,6 +361,7 @@
       <div id="wxAdvisoryLine" class="mono" style="font-size:11px;text-transform:uppercase;color:var(--faint);letter-spacing:.12em;margin-top:10px;">
         FETCHING CURRENT MODEL CONDITIONS
       </div>
+      <button class="wx-preflight-trigger" type="button" data-open-flight-checklist aria-controls="lab-flight-checklist" aria-expanded="false">Pre-flight checklist here</button>
     </div>
 
     <div class="wx-grid">
@@ -442,11 +443,6 @@
       </div>
     </div>
   </details>
-
-  <div class="wx-checklist-callout">
-    <div><h2>Pre-flight <em>without losing the page.</em></h2><p>The 18-point checklist now travels with you around the site. Minimize it, close it to a small launcher, move it out of the shot, or save a clean paper/PDF copy.</p></div>
-    <button type="button" data-open-flight-checklist>Open checklist</button>
-  </div>
 
   <div class="sec-c sec-c-weather">
     <h2 style="font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;margin-bottom:var(--s-3);">Check <em>before you fly.</em></h2>
