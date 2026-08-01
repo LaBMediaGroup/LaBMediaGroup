@@ -119,6 +119,8 @@ test('Golden Hour responds to date changes and exposes calculated windows', asyn
     orb: Number(getComputedStyle(document.querySelector('.sun-orb')).zIndex)
   }));
   assert.ok(layers.copy > layers.orb, 'the sun must remain behind the quote');
+  assert.ok(parseFloat(await page.locator('#selectedMoment').evaluate((element) => getComputedStyle(element).fontSize)) >= 9);
+  assert.ok(parseFloat(await page.locator('#sunWind').evaluate((element) => getComputedStyle(element).opacity)) >= .75);
   await page.locator('#sunDate').fill('2026-12-01');
   await page.locator('#sunDate').dispatchEvent('change');
   assert.notEqual(await page.locator('#sunriseVal').textContent(), firstSunrise);
@@ -152,6 +154,15 @@ test('solar scenes hand daylight to moonlight without changing the weather compo
   assert.equal(await page.locator('#sunStage').getAttribute('data-sun'), 'hidden');
   assert.equal(await page.locator('#moonOrb').evaluate((element) => getComputedStyle(element).opacity), '1');
   assert.equal(await page.locator('#sunNatureCanvas').count(), 1, 'Golden Hour owns a separate wide nature canvas');
+  const adviceVisuals = await page.evaluate(() => ({
+    bottom: parseFloat(getComputedStyle(document.querySelector('.sun-advice-box')).bottom),
+    fadeLeft: parseFloat(getComputedStyle(document.querySelector('.sun-advice-box'), '::before').left),
+    fadeRight: parseFloat(getComputedStyle(document.querySelector('.sun-advice-box'), '::before').right),
+    fadeFilter: getComputedStyle(document.querySelector('.sun-advice-box'), '::before').filter
+  }));
+  assert.ok(adviceVisuals.bottom >= 160, 'the desktop quote should sit comfortably above the horizon');
+  assert.ok(adviceVisuals.fadeLeft <= -80 && adviceVisuals.fadeRight <= -200, 'the quote vignette must fade beyond its visible copy box');
+  assert.match(adviceVisuals.fadeFilter, /blur\(/, 'the quote vignette edge should be feathered');
   await page.close();
 });
 

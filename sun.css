@@ -40,10 +40,10 @@
 .sun-horizon::before{content:"Horizon";position:absolute;right:18px;bottom:10px;font:8px var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.6)}
 .sky-time{position:absolute;z-index:4;top:22px;right:24px;text-align:right;color:#fff;text-shadow:0 1px 14px rgba(0,0,0,.35)}
 .sky-time strong{display:block;font:clamp(28px,4vw,46px) var(--f-display);font-weight:400;line-height:1}
-.sky-time span{display:block;margin-top:7px;font:8px var(--f-mono);letter-spacing:.16em;text-transform:uppercase;opacity:.72}
-.sky-time #sunWind{margin-top:4px;opacity:.54}
-.sun-advice-box{position:absolute;z-index:5;left:clamp(18px,4vw,42px);bottom:clamp(112px,14vw,158px);max-width:min(860px,78%);color:#fff;text-shadow:0 1px 18px rgba(0,0,0,.52)}
-.sun-advice-box::before{content:"";position:absolute;z-index:-1;inset:-28px -50px -26px -24px;pointer-events:none;background:radial-gradient(ellipse at 28% 55%,rgba(11,11,12,.28),rgba(11,11,12,.1) 48%,transparent 73%)}
+.sky-time span{display:block;margin-top:8px;font:9px/1.35 var(--f-mono);letter-spacing:.13em;text-transform:uppercase;opacity:.86}
+.sky-time #sunWind{margin-top:5px;opacity:.76}
+.sun-advice-box{position:absolute;z-index:5;left:clamp(18px,4vw,42px);bottom:clamp(128px,15vw,174px);max-width:min(860px,78%);color:#fff;text-shadow:0 2px 22px rgba(0,0,0,.62),0 1px 2px rgba(0,0,0,.2)}
+.sun-advice-box::before{content:"";position:absolute;z-index:-1;inset:-64px -38vw -62px -90px;pointer-events:none;filter:blur(10px);background:radial-gradient(ellipse 68% 56% at 24% 50%,rgba(11,11,12,.3) 0%,rgba(11,11,12,.18) 38%,rgba(11,11,12,.07) 61%,transparent 84%)}
 .advice-k{display:block;font:8px var(--f-mono);letter-spacing:.18em;text-transform:uppercase;opacity:.7;margin-bottom:10px}
 .advice-phrase{font-family:var(--f-display);font-size:clamp(30px,4.3vw,56px);font-weight:400;line-height:1.01;letter-spacing:-.025em;margin:0}
 .advice-roll{position:relative;display:inline;transition:color var(--fast) var(--ease)}
