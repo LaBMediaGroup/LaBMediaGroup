@@ -105,5 +105,42 @@
         {"name": "Gemini Pro", "active": false}
       ]
     }
-  ]
+  ],
+  "toolUsage": {
+    "period": "Last 30 days",
+    "totalTokens": 974000000,
+    "totalLabel": "974M",
+    "note": "Counted from local logs — CodexBar + OpenClaw session history. Antigravity rides on Claude/GPT keys so it can't be separated.",
+    "tools": [
+      {
+        "name": "OpenClaw",
+        "tokensLabel": "632M",
+        "share": 65,
+        "models": [
+          {"name": "GLM-5.2", "tokensLabel": "394M", "share": 62},
+          {"name": "GLM-4.7", "tokensLabel": "109M", "share": 17},
+          {"name": "Kimi-K2.7-Code", "tokensLabel": "57M", "share": 9},
+          {"name": "Kimi-K3", "tokensLabel": "42M", "share": 7},
+          {"name": "Gemini Flash", "tokensLabel": "25M", "share": 4}
+        ]
+      },
+      {
+        "name": "Codex CLI",
+        "tokensLabel": "242M",
+        "share": 25,
+        "models": [
+          {"name": "GPT-5.6-sol", "tokensLabel": "242M", "share": 100}
+        ]
+      },
+      {
+        "name": "Claude Code",
+        "tokensLabel": "100M",
+        "share": 10,
+        "models": [
+          {"name": "Fable-5", "tokensLabel": "86M", "share": 86},
+          {"name": "Opus-5", "tokensLabel": "15M", "share": 14}
+        ]
+      }
+    ]
+  }
 }
