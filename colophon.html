@@ -326,12 +326,13 @@
     <div class="bug" id="solar-engine">
       <span class="bug-n">09</span>
       <div class="bug-main">
-        <h3>Simulating solar elevation and color temperature without API calls</h3>
-        <p>The Golden Hour Helper (<code>sun.html</code>) calculates real-time solar declination, azimuth, elevation angle and colour temperature, from 11,000K Blue Hour down to 2,700K Golden Hour, for Metro Detroit (42.67°N) entirely client-side.</p>
+        <h3>One solar clock, shared by two scenes</h3>
+        <p>The Golden Hour Helper (<code>sun.html</code>) calculates sunrise, sunset, civil twilight, golden windows, solar noon, azimuth, elevation and a practical colour-temperature estimate for the selected date and location. The same client-side engine now tells Drone Weather when its sun should rise, set and hand the scene to the moon, so 9 PM cannot look like noon.</p>
+        <p>Golden Hour keeps the sun as the subject: its own wide pixel scene shows only low pine tips, birds and wind streaks. The treetops use the selected location&rsquo;s current Open-Meteo wind and gust reading; changing the date or scrubbing the clock never asks an API to calculate the light.</p>
       </div>
       <div class="bug-side">
-        <p>Dragging the time slider recalculates atmospheric physics in local memory, without firing a network request or running into a third-party rate limit.</p>
-        <p><em>Zero latency, zero API costs. Solar position maths is pure trigonometry running in browser memory.</em></p>
+        <p>Dragging the time slider recalculates the solar position in local memory. Location coordinates leave the page only when it requests the optional current wind that moves the separate foreground animation.</p>
+        <p><em>The solar maths remains private, instant and free of rate limits; the lone weather request is labelled as current wind, not disguised as part of the calculation.</em></p>
       </div>
     </div>
     <div class="bug" id="aspect-previewer">
@@ -349,12 +350,12 @@
       <span class="bug-n">11</span>
       <div class="bug-main">
         <h3>A weather scene that actually reads the weather</h3>
-        <p>SkyBound Weather (<code>droneweather.html</code>) fetches live wind, gusts and temperature for Shelby Township (42.67&deg;N) from the Open-Meteo REST API, then evaluates flight thresholds: 0&ndash;11 mph ideal, 12&ndash;18 active compensation, 18+ grounded.</p>
+        <p>SkyBound Weather (<code>droneweather.html</code>) fetches current wind, gusts, temperature, precipitation and model visibility for Shelby Township (42.67&deg;N) from the Open-Meteo REST API, then evaluates conservative planning thresholds: 0&ndash;11 mph ideal, 12&ndash;17 active compensation, 18+ grounded.</p>
         <p>The animation reads the same values. Wind is horizontal streaks whose count, length and speed all scale off the figure, so 3 mph and 22 mph cannot look alike, and gusts arrive in bursts with real lulls rather than on a fixed interval, because a metronome does not read as weather.</p>
         <p>The scene is not in a box: its horizon is the page&rsquo;s own dividing rule, tinted with the safety state.</p>
       </div>
       <div class="bug-side">
-        <p>Drizzle is drawn apart from rain, the sun grows and drops into frame as the temperature climbs, and deer, foxes, squirrels and rabbits wander through when it is calm enough for them, with the drone breaking station to film whatever turns up.</p>
+        <p>Drizzle is drawn apart from rain; the sun, twilight and moon follow the same Detroit solar clock as Golden Hour; and deer, foxes, squirrels and rabbits wander through when it is calm enough for them, with the drone breaking station to film whatever turns up. A compact scrubber can preview sunrise, gold, sunset or night without replacing the live weather.</p>
         <p>Everything renders into a low-resolution buffer and is upscaled with nearest-neighbour, so the whole scene sits on one honest pixel grid.</p>
         <p><em>No API key, no tracking. The picture and the advisory read the same numbers through the same thresholds, so they cannot disagree.</em></p>
       </div>
@@ -378,9 +379,21 @@
         lazy-load check still matching bare filenames after every one gained a cache-busting
         suffix, a message cap pinned at eight after the widget moved to twelve, and a resource
         index pinned at 126 while the data file had reached 127. Three checks were passing.
-        Seventy pass now.</p>
+        One hundred forty-three pass now, including a real mobile Chromium pass.</p>
         <p><em>That stale 126 had also been typed onto five pages, while the README said 128.
         The data file was right and everything describing it was wrong.</em></p>
+      </div>
+    </div>
+    <div class="bug" id="flight-checklist">
+      <span class="bug-n">13</span>
+      <div class="bug-main">
+        <h3>A checklist that can leave its page</h3>
+        <p>The 18-point pre-flight list started at the bottom of Drone Weather, which made it thorough and easy to miss at the same time. It is now one non-modal field note shared by every public page: compact until asked for, movable on a desktop, minimizable, closable to a small launcher and printable through the browser&rsquo;s native PDF flow.</p>
+        <p>The checks, window state and position persist in <code>localStorage</code>. There is no account, server sync or PDF library, and the original checklist key was kept so an existing set of ticks survives the move.</p>
+      </div>
+      <div class="bug-side">
+        <p>A modal would have trapped the user inside the checklist while they were trying to read weather or light information. A fixed region can stay within reach without taking over the page, and the first-visit state remains deliberately small.</p>
+        <p><em>The useful tool is the one that remains available without demanding attention.</em></p>
       </div>
     </div>
   </div>
@@ -395,7 +408,7 @@
         <li>No cookies, and therefore no consent banner.</li>
         <li>No accounts, no sign-up, no email capture anywhere.</li>
         <li>No affiliate links. Nothing on the gear page was sent free.</li>
-        <li>Saved kits and prompts live in your own browser and are never sent anywhere.</li>
+        <li>Saved kits, prompts and checklist progress live in your own browser and are never sent anywhere.</li>
         <li>Every animation stops under <code>prefers-reduced-motion</code>.</li>
       </ul>
     </div>
