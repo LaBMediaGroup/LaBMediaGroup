@@ -796,56 +796,183 @@
     ctx.restore();
   }
 
-  function drawFlingItem(w, h) {
-    if (windSpeed < 18 && windGust < 18) return;
+  // FPV Drone State (Smooth hover in clear weather, swept in gale wind)
+  var drone = {
+    x: 100,
+    y: 80,
+    rot: 0,
+    badWindX: -50,
+    badWindY: 60,
+    badWindRot: 0,
+    badActive: false,
+    badTimer: 0
+  };
 
-    flingItem.timer++;
-    if (!flingItem.active && flingItem.timer > 140) {
-      flingItem.active = true;
-      flingItem.x = -40;
-      flingItem.y = h * (0.15 + Math.random() * 0.35);
-      flingItem.rot = 0;
-      flingItem.type = Math.random() > 0.5 ? 'drone' : 'helmet';
-    }
+  function drawDrone(w, h) {
+    var isBadWeather = windSpeed >= 18 || windGust >= 18;
 
-    if (flingItem.active) {
-      flingItem.x += (windSpeed * 0.35) * (w / 400);
-      flingItem.y += Math.sin(flingItem.x * 0.04) * 1.5;
-      flingItem.rot += 0.14;
+    if (!isBadWeather) {
+      // CLEAR / GOOD WEATHER: Cinematic FPV drone hover & tilt
+      drone.x = w * 0.36 + Math.sin(time * 0.8) * (w * 0.14);
+      drone.y = h * 0.30 + Math.cos(time * 1.4) * (h * 0.08);
+      drone.rot = Math.cos(time * 0.8) * 0.09;
 
       ctx.save();
-      ctx.translate(flingItem.x, flingItem.y);
-      ctx.rotate(flingItem.rot);
+      ctx.translate(drone.x, drone.y);
+      ctx.rotate(drone.rot);
 
-      if (flingItem.type === 'drone') {
-        ctx.strokeStyle = '#E07A47';
-        ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#E07A47';
+      ctx.lineWidth = 1.6 * (w / 400);
+      ctx.beginPath();
+      ctx.moveTo(-10 * (w/400), -10 * (w/400)); ctx.lineTo(10 * (w/400), 10 * (w/400));
+      ctx.moveTo(10 * (w/400), -10 * (w/400)); ctx.lineTo(-10 * (w/400), 10 * (w/400));
+      ctx.stroke();
+
+      var propSpin = time * 25;
+      [[-10,-10],[10,-10],[-10,10],[10,10]].forEach(function(pt){
+        var px = pt[0] * (w/400), py = pt[1] * (w/400);
         ctx.beginPath();
-        ctx.moveTo(-11, -11); ctx.lineTo(11, 11);
-        ctx.moveTo(11, -11); ctx.lineTo(-11, 11);
+        ctx.arc(px, py, 3 * (w/400), 0, Math.PI * 2);
         ctx.stroke();
-        [[-11,-11],[11,-11],[-11,11],[11,11]].forEach(function(pt){
-          ctx.beginPath();
-          ctx.arc(pt[0], pt[1], 3.5, 0, Math.PI * 2);
-          ctx.stroke();
-        });
-        ctx.fillStyle = '#E07A47';
-        ctx.fillRect(-3.5, -3.5, 7, 7);
-      } else {
-        ctx.fillStyle = '#E07A47';
+
+        ctx.strokeStyle = 'rgba(224, 122, 71, 0.4)';
         ctx.beginPath();
-        ctx.arc(0, 0, 9, Math.PI, 0);
-        ctx.lineTo(12, 2.5);
-        ctx.lineTo(-12, 2.5);
-        ctx.closePath();
-        ctx.fill();
+        ctx.arc(px, py, 5.5 * (w/400), propSpin, propSpin + Math.PI);
+        ctx.stroke();
+        ctx.strokeStyle = '#E07A47';
+      });
+
+      ctx.fillStyle = '#E07A47';
+      ctx.fillRect(-3.5 * (w/400), -3.5 * (w/400), 7 * (w/400), 7 * (w/400));
+
+      if (Math.sin(time * 10) > 0) {
+        ctx.fillStyle = '#79C39A';
+        ctx.beginPath(); ctx.arc(0, -6 * (w/400), 1.5 * (w/400), 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#E07A47';
+        ctx.beginPath(); ctx.arc(0, 6 * (w/400), 1.5 * (w/400), 0, Math.PI * 2); ctx.fill();
       }
 
       ctx.restore();
+    } else {
+      // HIGH WIND / GALE: Drone tumbled and swept across scene
+      drone.badTimer++;
+      if (!drone.badActive && drone.badTimer > 110) {
+        drone.badActive = true;
+        drone.badWindX = -40;
+        drone.badWindY = h * (0.16 + Math.random() * 0.35);
+        drone.badWindRot = 0;
+      }
 
-      if (flingItem.x > w + 60) {
-        flingItem.active = false;
-        flingItem.timer = 0;
+      if (drone.badActive) {
+        drone.badWindX += (windSpeed * 0.38) * (w / 400);
+        drone.badWindY += Math.sin(drone.badWindX * 0.04) * 1.5;
+        drone.badWindRot += 0.16;
+
+        ctx.save();
+        ctx.translate(drone.badWindX, drone.badWindY);
+        ctx.rotate(drone.badWindRot);
+
+        ctx.strokeStyle = '#E07A47';
+        ctx.lineWidth = 1.6 * (w / 400);
+        ctx.beginPath();
+        ctx.moveTo(-11 * (w/400), -11 * (w/400)); ctx.lineTo(11 * (w/400), 11 * (w/400));
+        ctx.moveTo(11 * (w/400), -11 * (w/400)); ctx.lineTo(-11 * (w/400), 11 * (w/400));
+        ctx.stroke();
+
+        [[-11,-11],[11,-11],[-11,11],[11,11]].forEach(function(pt){
+          ctx.beginPath();
+          ctx.arc(pt[0] * (w/400), pt[1] * (w/400), 3.5 * (w/400), 0, Math.PI * 2);
+          ctx.stroke();
+        });
+
+        ctx.fillStyle = '#E07A47';
+        ctx.fillRect(-3.5 * (w/400), -3.5 * (w/400), 7 * (w/400), 7 * (w/400));
+        ctx.restore();
+
+        if (drone.badWindX > w + 60) {
+          drone.badActive = false;
+          drone.badTimer = 0;
+        }
+      }
+    }
+  }
+
+  // Vector Birds System (Sky flock & Tree perching)
+  var birds = [];
+  for (var b = 0; b < 3; b++) {
+    birds.push({
+      x: -50 - b * 22,
+      y: 40 + b * 10,
+      speedX: 1.4 + b * 0.1
+    });
+  }
+
+  var perchBird = {
+    state: 'hidden',
+    timer: 0
+  };
+
+  function drawBirds(w, h) {
+    ctx.strokeStyle = '#E07A47';
+    ctx.lineWidth = 1.4 * (w / 400);
+    ctx.lineCap = 'round';
+
+    for (var i = 0; i < birds.length; i++) {
+      var bd = birds[i];
+      bd.x += (bd.speedX + (windSpeed * 0.05)) * (w / 400);
+      bd.y += Math.sin(bd.x * 0.03) * 0.3;
+
+      if (bd.x > w + 40) {
+        bd.x = -40 - i * 20;
+        bd.y = h * (0.12 + Math.random() * 0.25);
+      }
+
+      var wingY = Math.sin(time * 9 + i * 0.5) * 4 * (w / 400);
+
+      ctx.save();
+      ctx.translate(bd.x, bd.y);
+      ctx.beginPath();
+      ctx.moveTo(-6 * (w/400), -wingY);
+      ctx.quadraticCurveTo(0, 0, 6 * (w/400), -wingY);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Perching Bird on Tree Apex (in calm weather)
+    if (windSpeed < 14) {
+      perchBird.timer++;
+      var treeBaseX = w * 0.68;
+      var treeTopY = h * 0.96 - (h * 0.58);
+
+      if (perchBird.state === 'hidden' && perchBird.timer > 420 && Math.random() < 0.02) {
+        perchBird.state = 'perched';
+        perchBird.timer = 0;
+      }
+
+      if (perchBird.state === 'perched') {
+        ctx.save();
+        ctx.translate(treeBaseX, treeTopY - 2);
+
+        ctx.fillStyle = '#E07A47';
+        ctx.beginPath();
+        ctx.arc(0, -3 * (w/400), 2.5 * (w/400), 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(1.5 * (w/400), -5.5 * (w/400), 1.8 * (w/400), 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(3 * (w/400), -5.5 * (w/400));
+        ctx.lineTo(4.5 * (w/400), -5 * (w/400));
+        ctx.stroke();
+
+        ctx.restore();
+
+        if (perchBird.timer > 180) {
+          perchBird.state = 'hidden';
+          perchBird.timer = 0;
+        }
       }
     }
   }
@@ -870,13 +997,19 @@
     drawSun(w, h);
     drawRainCloud(w, h);
 
-    // 2. Unboxed Vector Pine Tree with Wind Bending Flex
+    // 2. Vector Birds (sky flock & tree perching)
+    drawBirds(w, h);
+
+    // 3. FPV Drone (Cinematic hover in good weather, swept in bad weather)
+    drawDrone(w, h);
+
+    // 4. Architectural Vector Pine Tree
     drawTree(w, h);
 
-    // 3. Vector Squirrel strolling on baseline line!
+    // 5. Woodland Squirrel on baseline
     drawSquirrel(w, h);
 
-    // 4. Gentle floating leaf particles
+    // 6. Gentle floating leaf particles
     var pSpeed = Math.max(0.1, (windSpeed - 6) * 0.12);
     for (var p = 0; p < particles.length; p++) {
       var pt = particles[p];
@@ -898,9 +1031,6 @@
       ctx.fill();
       ctx.restore();
     }
-
-    // 5. High wind easter egg
-    drawFlingItem(w, h);
 
     requestAnimationFrame(render);
   }
