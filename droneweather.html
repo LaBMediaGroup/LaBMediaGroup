@@ -220,7 +220,7 @@
       </li>
     </ul></nav>
     <div class="theme" role="group" aria-label="Colour theme">
-      <button type="button" data-theme-set="dark" aria-pressed="true" title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
+      <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
       <button type="button" data-theme-set="stone" aria-pressed="false" title="Stone"><span class="sw sw-stone"></span><span class="vh">Stone</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
@@ -235,7 +235,6 @@
 <main id="main">
 
 <section class="pg-hero wrap">
-  <div class="rule"><span class="mono">Flight Weather</span><i></i><span class="mono">Shelby Twp, MI · 42.67°N</span></div>
   <div class="pg-hero-grid">
     <div>
       <h1><span style="color:var(--sky)">Sky</span><em>Bound</em> <span style="color:var(--dim);font-weight:300">|</span> <small style="font-size:0.75em;font-weight:400">Weather &amp; Safety.</small></h1>
@@ -249,12 +248,17 @@
 
 <section class="wrap">
   <div class="wx-card">
-    <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px;">
-      <div>
-        <span class="mono" style="font-size:10px;text-transform:uppercase;color:var(--faint);letter-spacing:.14em;">Live Metro Detroit Station</span>
-        <h2 style="font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;margin-top:4px;">Current <em>flight conditions.</em></h2>
+    <div class="wx-card-header">
+      <span class="mono" style="font-size:10px;text-transform:uppercase;color:var(--faint);letter-spacing:.14em;">Live Metro Detroit Station</span>
+      <div class="wx-status-title-row">
+        <span id="wxDot" class="status-dot green"></span>
+        <h2 style="font-family:var(--f-display);font-size:clamp(30px, 4.2vw, 48px);font-weight:400;line-height:1;margin:0;letter-spacing:-.01em;">
+          Conditions <em id="wxStateText">Favorable</em>
+        </h2>
       </div>
-      <div id="flightBadge" class="wx-status">🟢 CLEAR TO FLY</div>
+      <div id="wxAdvisoryLine" class="mono" style="font-size:11px;text-transform:uppercase;color:var(--faint);letter-spacing:.12em;margin-top:10px;">
+        WIND STEADY · VISIBILITY GOOD · NO ADVISORIES
+      </div>
     </div>
 
     <div class="wx-grid">
@@ -420,18 +424,22 @@
       var elG = document.getElementById('wxGust'); if(elG) elG.innerHTML = gustMph + '<small> mph</small>';
       var elT = document.getElementById('wxTemp'); if(elT) elT.innerHTML = tempF + '<small>°F</small>';
 
-      var badge = document.getElementById('flightBadge');
-      if(badge){
-        if(windMph > 18) {
-          badge.innerHTML = '🔴 GROUNDED / HOLD';
-          badge.style.color = '#E07A47'; badge.style.borderColor = '#E07A47'; badge.style.background = 'rgba(224,122,71,.15)';
-        } else if(windMph > 11) {
-          badge.innerHTML = '🟡 CAUTION / SPEED RAMP';
-          badge.style.color = '#E0A847'; badge.style.borderColor = '#E0A847'; badge.style.background = 'rgba(224,168,71,.15)';
-        } else {
-          badge.innerHTML = '🟢 CLEAR TO FLY';
-          badge.style.color = 'var(--good)'; badge.style.borderColor = 'var(--good)'; badge.style.background = 'rgba(121,195,154,.15)';
-        }
+      var dot = document.getElementById('wxDot');
+      var stateText = document.getElementById('wxStateText');
+      var advisoryLine = document.getElementById('wxAdvisoryLine');
+
+      if (windMph >= 18 || gustMph >= 18) {
+        if (stateText) stateText.textContent = 'Unfavorable';
+        if (dot) dot.className = 'status-dot red';
+        if (advisoryLine) advisoryLine.textContent = 'WINDS EXCEED ' + Math.max(windMph, gustMph) + 'MPH · GROUND ALL AIRCRAFT · CHECK IN 1HR';
+      } else if (windMph >= 12 || gustMph >= 14) {
+        if (stateText) stateText.textContent = 'Marginal';
+        if (dot) dot.className = 'status-dot yellow';
+        if (advisoryLine) advisoryLine.textContent = 'GUSTS TO ' + gustMph + 'MPH · MONITOR BATTERY · SHORT FLIGHTS ONLY';
+      } else {
+        if (stateText) stateText.textContent = 'Favorable';
+        if (dot) dot.className = 'status-dot green';
+        if (advisoryLine) advisoryLine.textContent = 'WIND STEADY · VISIBILITY GOOD · NO ADVISORIES';
       }
 
       if (w.weathercode) {
