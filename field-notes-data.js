@@ -115,6 +115,50 @@
       ]
     },
     {
+      id: 'community-film-mistaken',
+      url: 'events.html#event-detroit-48hfp-premiere-2026',
+      title: 'Mistaken (2026) : Detroit 48 Hour Film Project Community Short',
+      tags: 'mistaken 2026 detroit 48 hour film project 48hfp group b 4 30 pm redford theater st park productions koffee noir productions joint production collaboration veda joe billy anton rylie david jeremy brandon amber kate nikki who worked on mistaken cast crew screening',
+      note: 'Local community and screening context for Mistaken (2026).',
+      answer: 'Mistaken (2026) is a Detroit 48 Hour Film Project short screening in Group B at 4:30 PM alongside Scattered. It was made jointly by ST Park Productions and Koffee Noir Productions. Veda, Joe, Billy, Anton, Rylie, David, Jeremy, Brandon, Amber, Kate, and Nikki all worked on the film. Their individual roles are not recorded in the LaB notes yet, so the assistant will not guess at them.',
+      sources: [
+        { title: 'Detroit 48HFP Premiere Screenings', url: 'events.html#event-detroit-48hfp-premiere-2026', note: 'Group B screening and local film context' }
+      ]
+    },
+    {
+      id: 'site-tool-golden-hour-planner',
+      url: 'sun.html',
+      title: 'Golden Hour Planner : Current Features',
+      tags: 'golden hour planner blue hour dawn dusk sunrise sunset solar noon elevation azimuth direction color temperature date location time slider phrases quote roller wind moon copy day plan privacy local',
+      note: 'Current Golden Hour Planner capabilities.',
+      answer: 'Golden Hour is a date- and location-aware shoot planner. It calculates dawn and dusk blue hour, morning and evening golden hour, sunrise, sunset, solar noon, daylight length, elevation, direction and a color-temperature estimate. Its panoramic timeline moves from sun to moon, responds to current wind, and rolls through time-ordered filmmaking prompts from pre-dawn through late night. The day plan can be copied, and the selected date and location stay in the browser.',
+      sources: [
+        { title: 'Golden Hour Planner', url: 'sun.html', note: 'Interactive filmmaking tool' }
+      ]
+    },
+    {
+      id: 'site-tool-drone-weather',
+      url: 'droneweather.html',
+      title: 'Drone Weather : Current Features',
+      tags: 'drone weather live conditions open meteo wind gust gusts visibility precipitation temperature flight safety thresholds animated nature scene solar sun moon night flying read gust preflight checklist 18 point move minimize resize pdf browser',
+      note: 'Current Drone Weather and pre-flight checklist capabilities.',
+      answer: 'Drone Weather reads current Open-Meteo wind, gusts, temperature, visibility and precipitation for its live status and conservative green, amber or red planning thresholds. The nature scene mirrors those conditions and the real solar phase. Gust-reading and after-dark guidance stay collapsed until needed. Its 18-point pre-flight checklist opens only when requested, then remains available around the site; it can be moved, minimized, resized and printed to PDF, and its progress stays in the browser.',
+      sources: [
+        { title: 'Drone Weather', url: 'droneweather.html', note: 'Live weather and flight-planning tool' }
+      ]
+    },
+    {
+      id: 'site-tool-aspect-ratio',
+      url: 'aspect.html',
+      title: 'Aspect Ratio Previewer : Current Features',
+      tags: 'aspect ratio previewer crop framing letterbox anamorphic scope flat widescreen vertical social image video multiple files local browser memory privacy upload active pixel dimensions 1080p 4k',
+      note: 'Current Aspect Ratio Previewer capabilities.',
+      answer: 'The Aspect Ratio Previewer tests common cinema, widescreen and vertical crops against sample frames or your own images and video. It accepts multiple local files, calculates exact active-pixel dimensions for 1080p and 4K UHD timelines, and processes the media entirely in browser memory with zero server uploads.',
+      sources: [
+        { title: 'Aspect Ratio Previewer', url: 'aspect.html', note: 'Local framing and crop tool' }
+      ]
+    },
+    {
       id: 'lab-films-le-juice',
       url: 'resources.html#le-juice-rochester',
       title: 'Le Juicé (2026) : Commercial Workflow & Color',
@@ -129,9 +173,9 @@
       id: 'lab-crew-and-community',
       url: 'people.html',
       title: 'LaB Crew & Community Connections (ST Park, Comedy Roll, 48HFP)',
-      tags: 'crew community st park al joe rylie hook the-hook cracked mistaken mike billy veda max josh comedy roll horror film roulette detroit film community larry 48hfp local crews who is al who is joe what is the hook what is cracked',
+      tags: 'crew community st park koffee noir al joe rylie hook the-hook cracked mistaken mike billy veda anton david jeremy brandon amber kate nikki max josh comedy roll horror film roulette detroit film community larry 48hfp local crews who is al who is joe what is the hook what is cracked',
       note: 'Overview of LaB Media crew and Michigan film community connections.',
-      answer: 'LaB Media’s core is Bobby and Al, with Joe forming the core trio on films like Scattered. Surrounding them is a vibrant local Michigan film community: ST Park Productions (Joe & Rylie, creators of The Hook, Brimstone, Mistaken), Mike (writer/director of Cracked), Billy, Veda, Larry, and Josh (Comedy Roll showrunner). Bobby crewed on ST Park’s The Hook and Mike’s Cracked, building relationships that fuel collaborative Michigan filmmaking.',
+      answer: 'LaB Media’s core is Bobby and Al, with Joe forming the core trio on films like Scattered. Surrounding them is a vibrant local Michigan film community: ST Park Productions (Joe and Rylie, creators of The Hook and Brimstone), Koffee Noir Productions, Mike (writer/director of Cracked), Billy, Veda, Larry, and Josh (Comedy Roll showrunner). ST Park and Koffee Noir jointly made Mistaken with Veda, Joe, Billy, Anton, Rylie, David, Jeremy, Brandon, Amber, Kate, and Nikki. Bobby crewed on ST Park’s The Hook and Mike’s Cracked, building relationships that fuel collaborative Michigan filmmaking.',
       sources: [
         { title: 'People & Community', url: 'people.html', note: 'Collaborator network' }
       ]

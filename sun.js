@@ -16,9 +16,19 @@
       notes:[
         'Let darkness stay dark. Build the frame around the light that is already there.',
         'Scout the practicals first. A window, a porch light, or one good pool can carry the scene.',
+        'Let the brightest practical choose the blocking, then simplify everything around it.',
         'Fast glass buys exposure. Restraint buys atmosphere.',
         'Protect the highlights and give the shadows permission to disappear.',
-        'Night rewards one deliberate source more than five nervous ones.'
+        'Night rewards one deliberate source more than five nervous ones.',
+        'Use the dark as negative space. The frame does not need light everywhere.'
+      ],
+      preDawnNotes:[
+        'The night is quietest now. Take the empty frame before the first blue arrives.',
+        'Streetlights still own the palette. Let their color stay honest.',
+        'Build the silhouette now; dawn will begin separating the edges soon.',
+        'Keep the setup small and ready to turn toward the brightening horizon.',
+        'Practical light is fading in importance. Watch the ambient level between takes.',
+        'Blue hour is close. Finish the night insert and prepare the wider frame.'
       ],
       best:'Fast glass · practicals · controlled pools of light'
     },
@@ -26,9 +36,11 @@
       label:'Dawn Blue Hour',temp:'8,500–11,000K',
       notes:[
         'The world is still asleep. Start with the frame that needs the empty street.',
+        'The first color is barely there. Give the sky room before it announces itself.',
         'Expose for the blue and let windows carry the warmth.',
         'Silhouettes read cleanest before the horizon turns bright.',
-        'Hold the cool sky. The color separation is the shot.'
+        'Hold the cool sky. The color separation is the shot.',
+        'Faces are beginning to separate from the shadows. Save the close-up for this edge.'
       ],
       best:'City texture · silhouettes · quiet establishing shots'
     },
@@ -37,8 +49,10 @@
       notes:[
         'The first warm edge is here. Put it behind the subject and let it draw the shape.',
         'Low, clean light; cool world behind it. This is the quiet version of gold.',
+        'Rake the light across texture now. Every surface has more depth at this angle.',
         'Turn faces just off-axis. Keep the softness and find the catchlight.',
-        'The shadows are long and the air is calm. Move before either one changes.'
+        'The shadows are long and the air is calm. Move before either one changes.',
+        'The gold is thinning. Finish the backlit frame before the light turns ordinary.'
       ],
       best:'Skin tone · rim light · long shadows · calm air'
     },
@@ -46,11 +60,15 @@
       label:'Daylight',temp:'5,200–5,800K',
       notes:[
         'The soft window has closed. Find open shade before you build more light.',
+        'Morning still has direction. Use the side light before it climbs overhead.',
         'Hard light is not a problem if the frame admits that it is hard.',
         'Watch the eyes. Top light tells on a face before it tells on the meter.',
         'Diffusion for people; contrast for architecture. Choose what the sun is doing for you.',
         'The sun is high. Scout now, then save the hero setup for the falling light.',
-        'Use the shadow line as composition, not something to apologize for.'
+        'At the top of the arc, simplify the palette and let clean geometry do the work.',
+        'Use the shadow line as composition, not something to apologize for.',
+        'The light has started leaning again. Look for depth returning to the background.',
+        'Golden hour is next. Lock the blocking now so the good light belongs to the take.'
       ],
       best:'Architecture · controlled contrast · scouting'
     },
@@ -58,9 +76,12 @@
       label:'Evening Golden Hour',temp:'2,600–4,000K',
       notes:[
         'The warmth is arriving. Set the wide frame before the light becomes precious.',
+        'The light is beginning to rake. Turn texture toward it and let the shadows stretch.',
         'Backlight the face and let the flare live at the edge, not the center.',
         'This is the hero window. Shoot the move while the shadows still have length.',
-        'The light is going faster than it looks. Protect the setup you cannot fake later.'
+        'Warmth is peaking now. Favor skin, glass, and anything that can hold the edge.',
+        'The light is going faster than it looks. Protect the setup you cannot fake later.',
+        'The sun is nearly gone. Take the silhouette before the scene becomes blue.'
       ],
       best:'Hero exteriors · flare · movement · warm skin tone'
     },
@@ -69,7 +90,9 @@
       notes:[
         'Do not wrap at sunset. The richest color separation happens just after it.',
         'The sky is cooling while the practicals wake up. Let both stay visible.',
+        'Balance for the sky, then bring the practicals up only enough to belong.',
         'Hold the silhouette and wait for the windows to become part of the frame.',
+        'The blue is deepening. Glass, chrome, and wet pavement will keep it alive.',
         'One last setup. Make it the one that needs the sky.'
       ],
       best:'Practical lights · skyline · windows · silhouettes'
@@ -144,9 +167,11 @@
 
   function adviceChoice(value,phase,copy){
     var range=adviceWindow(phase,value),span=Math.max(1,range[1]-range[0]);
+    var beforeDawn=phase==='night'&&value<minutes(state.day.civilDawn);
+    var pool=beforeDawn?copy.preDawnNotes:copy.notes;
     var progress=clamp((value-range[0])/span,0,.9999);
-    var index=Math.min(copy.notes.length-1,Math.floor(progress*copy.notes.length));
-    return {key:phase+':'+index,text:copy.notes[index]};
+    var index=Math.min(pool.length-1,Math.floor(progress*pool.length));
+    return {key:phase+':'+(beforeDawn?'pre:':'post:')+index,text:pool[index],pool:pool};
   }
 
   function paintAdvice(text,accentEnding){
@@ -238,7 +263,8 @@
     tempVal.innerHTML=kelvin?kelvin.toLocaleString()+'<small>K est.</small>':'<span>Practical</span>';
     elevVal.innerHTML=(pos.elevation>=0?'+':'')+pos.elevation.toFixed(1)+'<small>°</small>';
     azimVal.innerHTML=Math.round(pos.azimuth)+'<small>° '+LaBSun.direction(pos.azimuth)+'</small>';
-    rollAdvice(adviceChoice(value,phase,copy),copy.notes);
+    var choice=adviceChoice(value,phase,copy);
+    rollAdvice(choice,choice.pool);
     $('bestFor').textContent=copy.best;
     $('selectedMoment').textContent=dateLabel.textContent+' · '+timeVal.textContent;
 

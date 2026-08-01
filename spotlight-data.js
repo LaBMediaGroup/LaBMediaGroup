@@ -5,7 +5,7 @@ var SPOTLIGHT = [
   {
     id:    'detroit-48hfp-premiere-2026',
     date:  '2026-08-02',
-    time:  'Group A · 2:00 PM / Group B · 4:30 PM',
+    time:  'Group A · 2:00 PM / Group B · 4:30 PM · Scattered',
     title: 'Detroit 48HFP: <em>Premiere Screenings</em>',
     by:    '48 Hour Film Project · Detroit',
     byUrl: 'https://www.48hourfilm.com/detroit',
@@ -14,8 +14,8 @@ var SPOTLIGHT = [
     address: '17360 Lahser Rd, Detroit, MI 48219',
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=The+Redford+Theater%2C+17360+Lahser+Rd%2C+Detroit%2C+MI+48219',
     where: 'The Redford Theater · 17360 Lahser Rd, Detroit',
-    body:  'The completed 2026 Detroit 48 Hour films hit the big screen in two program blocks. Sideways Lab’s <em>Scattered</em> is among the submitted films listed by the project; the official page does not assign its premiere group, so check the program at the theater.',
-    tags:  ['Premiere','Group A · 2 PM','Group B · 4:30 PM','Detroit filmmakers'],
+    body:  'The completed 2026 Detroit 48 Hour films hit the big screen in two program blocks. LaB’s film <em>Scattered</em>, made as Sideways Lab, screens in Group B at 4:30 PM alongside <em>Mistaken</em>, a joint ST Park Productions and Koffee Noir Productions short. Group A begins at 2:00 PM.',
+    tags:  ['Premiere','Group A · 2 PM','Scattered · Group B · 4:30 PM','Mistaken','Detroit filmmakers'],
     url:   'https://ticketing.useast.veezi.com/sessions/?siteToken=ks2qqa1sp218n79f3jdn2r6qy0',
     links: [
       {label:'Tickets · both screenings',url:'https://ticketing.useast.veezi.com/sessions/?siteToken=ks2qqa1sp218n79f3jdn2r6qy0'},
