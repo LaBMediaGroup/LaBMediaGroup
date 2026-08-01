@@ -207,12 +207,39 @@ test('solar scenes hand daylight to moonlight without changing the weather compo
   assert.equal(heroLayout.ledeTops.length, 2);
   assert.ok(Math.abs(heroLayout.ledeTops[0] - heroLayout.ledeTops[1]) <= 1, 'the hero introduction should form two aligned columns');
   await page.locator('#timeSlider').evaluate((slider) => {
-    slider.value = '1320';
+    slider.value = '1252';
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  assert.ok(parseFloat(await page.locator('#sunOrb').evaluate((element) => element.style.top)) >= 89, 'the setting sun should cross the drawn horizon before fading');
+  await page.locator('#timeSlider').evaluate((slider) => {
+    slider.value = '1284';
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  assert.equal(await page.locator('#sunStage').getAttribute('data-sun'), 'hidden');
+  assert.equal(await page.locator('#sunStage').getAttribute('data-moon'), 'hidden');
+  assert.equal(await page.locator('#moonPhaseLabel').evaluate((element) => getComputedStyle(element).display), 'none', 'the lunar label should wait for the moon to enter the frame');
+  await page.locator('#timeSlider').evaluate((slider) => {
+    slider.value = '480';
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  assert.equal(await page.locator('#sunStage').getAttribute('data-sun'), 'visible');
+  assert.equal(await page.locator('#sunStage').getAttribute('data-moon'), 'visible', 'a phase-aware moon may share the daytime sky with the sun');
+  assert.match(await page.locator('#moonPhaseLabel').textContent(), /Waning gibbous · 9\d% moon/);
+  await page.locator('#timeSlider').evaluate((slider) => {
+    slider.value = '1380';
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  const moonriseLeft = parseFloat(await page.locator('#moonOrb').evaluate((element) => element.style.left));
+  await page.locator('#timeSlider').evaluate((slider) => {
+    slider.value = '120';
     slider.dispatchEvent(new Event('input', { bubbles: true }));
   });
   assert.equal(await page.locator('#sunStage').getAttribute('data-phase'), 'night');
   assert.equal(await page.locator('#sunStage').getAttribute('data-sun'), 'hidden');
-  assert.equal(await page.locator('#moonOrb').evaluate((element) => getComputedStyle(element).opacity), '1');
+  assert.equal(await page.locator('#sunStage').getAttribute('data-moon'), 'visible');
+  assert.ok(parseFloat(await page.locator('#moonOrb').evaluate((element) => getComputedStyle(element).opacity)) > .5);
+  assert.ok(parseFloat(await page.locator('#moonOrb').evaluate((element) => element.style.left)) > moonriseLeft, 'the moon should travel left to right after rising');
+  assert.equal(await page.locator('#moonFace').count(), 1, 'the moon phase should have its own rendered face');
   assert.equal(await page.locator('#sunNatureCanvas').count(), 1, 'Golden Hour owns a separate wide nature canvas');
   const adviceVisuals = await page.evaluate(() => ({
     bottom: parseFloat(getComputedStyle(document.querySelector('.sun-advice-box')).bottom),

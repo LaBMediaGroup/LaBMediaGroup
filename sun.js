@@ -5,9 +5,9 @@
   var REDUCED=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches);
   var state={lat:42.67,lon:-83.03,label:'Shelby Township, MI',timeZone:'America/Detroit',day:null,wind:7,gust:11};
   var $=function(id){return document.getElementById(id)};
-  var dateInput=$('sunDate'), slider=$('timeSlider'), stage=$('sunStage'), orb=$('sunOrb'), moon=$('moonOrb');
+  var dateInput=$('sunDate'), slider=$('timeSlider'), stage=$('sunStage'), orb=$('sunOrb'), moon=$('moonOrb'), moonFace=$('moonFace');
   var phaseVal=$('phaseVal'), tempVal=$('tempVal'), elevVal=$('elevVal'), azimVal=$('azimVal');
-  var advice=$('advicePhrase'), adviceA11y=$('adviceA11y'), timeVal=$('timeVal'), skyTime=$('skyTime'), dateLabel=$('dateLabel'), locationLabel=$('locationLabel');
+  var advice=$('advicePhrase'), adviceA11y=$('adviceA11y'), timeVal=$('timeVal'), skyTime=$('skyTime'), dateLabel=$('dateLabel'), locationLabel=$('locationLabel'), moonPhaseLabel=$('moonPhaseLabel');
   var adviceTimer=null,lastAdviceKey='';
 
   var phaseCopy={
@@ -139,6 +139,53 @@
   }
   function isToday(){return dateInput.value===iso(new Date(),state.timeZone)}
 
+  function wrapDayDelta(value){return ((value+720)%1440+1440)%1440-720}
+
+  function drawMoonPhase(info){
+    if(!moonFace||!info)return;
+    var ctx=moonFace.getContext('2d'),size=40,radius=18,cx=20,cy=20;
+    var angle=info.fraction*Math.PI*2,sunX=Math.sin(angle),sunZ=-Math.cos(angle);
+    ctx.clearRect(0,0,size,size);
+    function litAt(x,y){
+      var nx=(x+.5-cx)/radius,ny=(y+.5-cy)/radius,rr=nx*nx+ny*ny;
+      if(rr>1)return null;
+      return nx*sunX-Math.sqrt(Math.max(0,1-rr))*Math.cos(angle)>0;
+    }
+    for(var y=0;y<size;y++)for(var x=0;x<size;x++){
+      var lit=litAt(x,y);if(lit===null)continue;
+      ctx.fillStyle=lit?'#d7e0ea':'#273247';
+      ctx.fillRect(x,y,1,1);
+    }
+    [[14,13,2],[25,18,2],[18,27,1],[28,28,1]].forEach(function(crater){
+      for(var py=-crater[2];py<=crater[2];py++)for(var px=-crater[2];px<=crater[2];px++){
+        if(px*px+py*py>crater[2]*crater[2])continue;
+        var x=crater[0]+px,y=crater[1]+py;if(litAt(x,y)!==true)continue;
+        ctx.fillStyle='rgba(91,107,132,.38)';ctx.fillRect(x,y,1,1);
+      }
+    });
+  }
+
+  function placeMoon(value,moment){
+    if(!moon||!window.LaBSun.moonPhase)return;
+    var info=LaBSun.moonPhase(moment),solarNoon=minutes(state.day.solarNoon);
+    /* Approximate the moon's daily arc from its phase offset relative to the
+       sun. It is intentionally a visual planner cue, not a rise/set ephemeris. */
+    var transit=(solarNoon+info.fraction*1440)%1440;
+    var fromTransit=wrapDayDelta(value-transit);
+    var visible=Math.abs(fromTransit)<=360&&info.illumination>.018;
+    var progress=clamp((fromTransit+360)/720,0,1);
+    var edgeFade=clamp(Math.min(progress,1-progress)/.075,0,1);
+    moon.style.left=(4+progress*92)+'%';
+    moon.style.top=(89-Math.sin(progress*Math.PI)*61)+'%';
+    moon.style.setProperty('--moon-opacity',edgeFade.toFixed(3));
+    stage.dataset.moon=visible?'visible':'hidden';
+    drawMoonPhase(info);
+    if(moonPhaseLabel){
+      moonPhaseLabel.hidden=!visible;
+      moonPhaseLabel.textContent=info.label+' · '+Math.round(info.illumination*100)+'% moon';
+    }
+  }
+
   function colorTemperature(elevation,phase){
     if(phase==='night')return null;
     if(phase.indexOf('blue')===0)return Math.round(9000+Math.abs(elevation)*280);
@@ -243,19 +290,17 @@
     var phase=LaBSun.phaseAt(moment,state.day),copy=phaseCopy[phase];
     var kelvin=colorTemperature(pos.elevation,phase);
     var x=clamp((pos.azimuth-70)/220*100,3,97);
-    var y=clamp(84-((pos.elevation+8)/(Math.max(12,state.day.maxElevation)+8))*70,10,88);
+    var horizonY=89;
+    var y=pos.elevation>=0
+      ? horizonY-clamp(pos.elevation/Math.max(12,state.day.maxElevation),0,1)*77
+      : horizonY+clamp(-pos.elevation/6,0,1)*10;
+    var sunOpacity=clamp((pos.elevation+2.2)/2.2,0,1);
 
     stage.dataset.phase=phase;
-    stage.dataset.sun=pos.elevation>=-.8&&phase!=='night'?'visible':'hidden';
+    stage.dataset.sun=sunOpacity>.01?'visible':'hidden';
+    orb.style.setProperty('--sun-opacity',sunOpacity.toFixed(3));
     orb.style.left=x+'%';orb.style.top=y+'%';
-    if(moon&&phase==='night'){
-      var dusk=minutes(state.day.civilDusk),dawn=minutes(state.day.civilDawn);
-      var nightSpan=(1440-dusk)+dawn;
-      var nightProgress=value>=dusk?(value-dusk)/nightSpan:(1440-dusk+value)/nightSpan;
-      nightProgress=clamp(nightProgress,0,1);
-      moon.style.left=clamp(92-nightProgress*82,6,94)+'%';
-      moon.style.top=(78-Math.sin(nightProgress*Math.PI)*60)+'%';
-    }
+    placeMoon(value,moment);
     timeVal.textContent=fmtMinutes(value);
     skyTime.textContent=timeVal.textContent;
     phaseVal.textContent=copy.label;

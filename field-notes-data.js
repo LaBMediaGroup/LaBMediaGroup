@@ -129,9 +129,9 @@
       id: 'site-tool-golden-hour-planner',
       url: 'sun.html',
       title: 'Golden Hour Planner : Current Features',
-      tags: 'golden hour planner blue hour dawn dusk sunrise sunset solar noon elevation azimuth direction color temperature date location time slider phrases quote roller wind moon copy day plan privacy local',
+      tags: 'golden hour planner blue hour dawn dusk sunrise sunset solar noon elevation azimuth direction color temperature date location time slider phrases quote roller wind moon lunar phase waxing waning crescent quarter gibbous full illumination copy day plan privacy local',
       note: 'Current Golden Hour Planner capabilities.',
-      answer: 'Golden Hour is a date- and location-aware shoot planner. It calculates dawn and dusk blue hour, morning and evening golden hour, sunrise, sunset, solar noon, daylight length, elevation, direction and a color-temperature estimate. Its panoramic timeline moves from sun to moon, responds to current wind, and rolls through time-ordered filmmaking prompts from pre-dawn through late night. The day plan can be copied, and the selected date and location stay in the browser.',
+      answer: 'Golden Hour is a date- and location-aware shoot planner. It calculates dawn and dusk blue hour, morning and evening golden hour, sunrise, sunset, solar noon, daylight length, elevation, direction and a color-temperature estimate. Its panoramic timeline gives the sun and moon separate left-to-right paths, responds to current wind, and rolls through time-ordered filmmaking prompts from pre-dawn through late night. The moon reflects the selected date\'s waxing or waning phase and illumination, including crescent, quarter, gibbous, full and new stages; its arc is a visual planning cue rather than a precise moonrise ephemeris. The day plan can be copied, and the selected date and location stay in the browser.',
       sources: [
         { title: 'Golden Hour Planner', url: 'sun.html', note: 'Interactive filmmaking tool' }
       ]

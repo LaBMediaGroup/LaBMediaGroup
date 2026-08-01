@@ -153,7 +153,7 @@ test('assistant knowledge follows the current filmmaking tools', () => {
   }
   const engine = assistantCore.createEngine({ fieldNotes, spotlight, knowledge: assistantKnowledge });
   const checks = [
-    ['What does the Golden Hour Planner do?', /date- and location-aware[\s\S]*sun to moon/i],
+    ['What does the Golden Hour Planner do?', /date- and location-aware[\s\S]*sun and moon separate[\s\S]*waxing or waning/i],
     ['What does Drone Weather do?', /Open-Meteo[\s\S]*18-point pre-flight checklist/i],
     ['What does the Aspect Ratio Previewer do?', /multiple local files[\s\S]*zero server uploads/i]
   ];
@@ -352,6 +352,24 @@ test('solar calculator keeps local-day events ordered across UTC boundaries', ()
   assert.ok(day.daylightMinutes > 800 && day.daylightMinutes < 1000);
   assert.ok(day.maxElevation > 50 && day.maxElevation < 80);
   assert.equal(day.sunset.getUTCDate(), 2, 'Detroit sunset crosses into the next UTC date in August');
+});
+
+test('lunar phase calculator distinguishes the major waxing and waning stages', () => {
+  const epoch = Date.UTC(2000, 0, 6, 18, 14);
+  const cycle = 29.530588853 * 86400000;
+  const phases = [
+    [0, 'New moon', 0],
+    [.25, 'First quarter', .5],
+    [.5, 'Full moon', 1],
+    [.75, 'Last quarter', .5]
+  ];
+  for (const [offset, label, illumination] of phases) {
+    const phase = sun.moonPhase(new Date(epoch + cycle * offset));
+    assert.equal(phase.label, label);
+    assert.ok(Math.abs(phase.illumination - illumination) < .01);
+  }
+  assert.equal(sun.moonPhase(new Date(epoch + cycle * .125)).waxing, true);
+  assert.equal(sun.moonPhase(new Date(epoch + cycle * .875)).waxing, false);
 });
 
 function numberWord(value) {
