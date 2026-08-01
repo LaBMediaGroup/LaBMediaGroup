@@ -1,0 +1,28 @@
+{
+  "entries": [
+    {
+      "date": "Jul 31",
+      "text": "<strong>AI Usage Dashboard</strong> launched. Secret page at <code>/ai-usage.html</code> tracking all provider quotas in one place."
+    },
+    {
+      "date": "Jul 31",
+      "text": "<strong>Drone Weather</strong> page updated — smoother sun breathing pulse, polished drone hover drift, calmer tree sway, rain toggle button styles."
+    },
+    {
+      "date": "Jul 28",
+      "text": "<strong>Scattered</strong> film added to reel. Manager praised music and constraints at Apple internal share."
+    },
+    {
+      "date": "Jul 27",
+      "text": "<strong>Onboarding Field Guide</strong> adopted as team's living document. Co-authored with Lead, presented to full team."
+    },
+    {
+      "date": "Jul 27",
+      "text": "Site overhaul — design system unified to editorial. One stylesheet (<code>lab.css</code>), one token set, one nav, one footer. Replaced 11 divergent <code>:root</code> blocks."
+    },
+    {
+      "date": "Jul 14",
+      "text": "<strong>48 Hour Film Project Detroit 2026</strong> — completed and submitted."
+    }
+  ]
+}
