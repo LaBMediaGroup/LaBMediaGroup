@@ -187,6 +187,48 @@
 }
 .pd-model.active{color:var(--accent);border-color:var(--accent-dim);background:var(--accent-bg)}
 
+/* ── TOOL USAGE ── */
+.tu-total{
+  text-align:center;font-family:var(--f-display);
+  font-size:clamp(26px,3.4vw,38px);color:var(--ink);
+  margin-bottom:var(--s-1);
+}
+.tu-total em{font-style:italic;color:var(--accent)}
+.tu-total-label{
+  text-align:center;font-family:var(--f-mono);font-size:9.5px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--faint);
+  margin-bottom:var(--s-5);
+}
+.tu-tool{
+  padding:var(--s-4) var(--s-4);margin-bottom:var(--s-3);
+  background:var(--paper-2);border:1px solid var(--line);border-radius:6px;
+}
+.tu-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:var(--s-2);
+}
+.tu-name{font-family:var(--f-display);font-size:var(--t-lg);color:var(--ink);font-weight:400}
+.tu-tokens{font-family:var(--f-mono);font-size:var(--t-sm);font-weight:700;color:var(--accent)}
+.tu-bar{
+  height:5px;background:var(--paper-3);border-radius:var(--radius);
+  overflow:hidden;margin-bottom:var(--s-3);
+}
+.tu-fill{height:100%;background:var(--accent);border-radius:var(--radius)}
+.tu-models{display:flex;flex-direction:column;gap:5px}
+.tu-model{
+  display:grid;grid-template-columns:130px 1fr 60px;gap:var(--s-3);
+  align-items:center;font-family:var(--f-mono);font-size:9px;
+  letter-spacing:.06em;color:var(--dim);
+}
+.tu-model .m-name{color:var(--ink)}
+.tu-model .m-bar{height:3px;background:var(--paper-3);border-radius:2px;overflow:hidden}
+.tu-model .m-fill{height:100%;background:var(--dim);border-radius:2px}
+.tu-model .m-fill.top{background:var(--good)}
+.tu-model .m-tokens{text-align:right;color:var(--faint)}
+@media(max-width:560px){
+  .tu-model{grid-template-columns:100px 1fr 50px}
+}
+
 /* ── EGG ── */
 .egg{text-align:center;padding:var(--s-7) 0;font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
 .egg a{color:var(--accent);text-decoration:none}
@@ -260,6 +302,9 @@ html{scroll-behavior:smooth}
   <!-- ═══ PROVIDER DETAILS ═══ -->
   <h2 class="details-title">Provider <em>Details</em></h2>
   <div id="details-container"></div>
+
+  <!-- ═══ TOOL USAGE ═══ -->
+  <div id="tool-usage"></div>
 
   <div class="egg">🔒 <a href="/">labmedia.work</a></div>
 </div>
@@ -336,6 +381,32 @@ async function loadUsage(){
         (models ? '<div class="pd-models">' + models + '</div>' : '') +
         '</div>';
     }).join('');
+
+    // Tool Usage section
+    if(data.toolUsage){
+      var tu = data.toolUsage;
+      var tuHtml = '<h2 class="details-title">Tool <em>Usage</em></h2>' +
+        '<div class="tu-total">' + tu.totalLabel + ' <em>tokens</em></div>' +
+        '<div class="tu-total-label">' + tu.period + ' · local logs</div>';
+      tu.tools.forEach(function(t){
+        tuHtml += '<div class="tu-tool">' +
+          '<div class="tu-head"><div class="tu-name">' + t.name + '</div>' +
+          '<div class="tu-tokens">' + t.tokensLabel + '</div></div>' +
+          '<div class="tu-bar"><div class="tu-fill" style="width:' + t.share + '%"></div></div>' +
+          '<div class="tu-models">';
+        var maxShare = Math.max.apply(null, t.models.map(function(m){return m.share}));
+        t.models.forEach(function(m){
+          var isTop = m.share === maxShare && t.models.length > 1;
+          tuHtml += '<div class="tu-model">' +
+            '<span class="m-name">' + m.name + '</span>' +
+            '<span class="m-bar"><span class="m-fill' + (isTop ? ' top' : '') + '" style="display:block;width:' + m.share + '%"></span></span>' +
+            '<span class="m-tokens">' + m.tokensLabel + '</span>' +
+            '</div>';
+        });
+        tuHtml += '</div></div>';
+      });
+      document.getElementById('tool-usage').innerHTML = tuHtml;
+    }
 
     // Load What's New
     try{
