@@ -3,57 +3,82 @@
     {
       "date": "2026-07-31",
       "time": "23:30 EDT",
-      "text": "<strong>AI Usage Dashboard</strong> launched. Secret page tracking all provider quotas."
+      "text": "<strong>AI Usage Dashboard</strong> launched. Secret Easter egg page with Konami code and hidden dot on Colophon."
     },
     {
       "date": "2026-07-31",
       "time": "20:00 EDT",
-      "text": "<strong>Drone Weather</strong> rebuilt — live rain detection, FPV drone flight physics, flocking birds, procedural tree sway, mouse-tracking pilot, breathing sun glow."
+      "text": "<strong>Drone Weather</strong> rebuilt from scratch — live rain detection via Open-Meteo, FPV drone flight physics, flocking birds, procedural tree sway, breathing sun glow, mouse-tracking pilot."
     },
     {
       "date": "2026-07-31",
       "time": "19:30 EDT",
-      "text": "<strong>Golden Hour Helper</strong> — interactive shooting advice phrases, slot-machine spin animation, hero-sized display."
+      "text": "<strong>Golden Hour Helper</strong> — interactive shooting advice phrases, slot-machine spin animation, hero-sized sun arc."
     },
     {
       "date": "2026-07-31",
       "time": "19:20 EDT",
-      "text": "<strong>Aspect Ratio Tool</strong> — local photo/video previewing, multi-file uploads, native aspect detection."
+      "text": "<strong>Aspect Ratio Tool</strong> — local photo/video previewing, multi-file uploads, native aspect detection. Zero-upload privacy documented in Colophon."
     },
     {
       "date": "2026-07-31",
       "time": "19:00 EDT",
-      "text": "<strong>Stone theme</strong> added site-wide. Warm e-ink papyrus palette across all pages."
+      "text": "<strong>Stone theme</strong> added site-wide. Warm e-ink papyrus palette across all pages and theme bars."
     },
     {
-      "date": "2026-07-28",
-      "time": "14:00 EDT",
-      "text": "<strong>Scattered</strong> added to the reel. Shared internally at Apple — manager praised the music and constraints."
+      "date": "2026-07-31",
+      "time": "14:47 EDT",
+      "text": "Colophon expanded with tool case studies. Stats counters updated. Two-column grid layout applied to details sections."
     },
     {
-      "date": "2026-07-27",
-      "time": "10:00 EDT",
-      "text": "<strong>Onboarding Field Guide</strong> adopted as team's living document. Co-authored with Lead, presented to full team."
+      "date": "2026-07-31",
+      "time": "13:08 EDT",
+      "text": "<strong>Story Generator</strong> expanded to 14 genre filters. Added printable field brief exporter and keyboard hotkeys."
+    },
+    {
+      "date": "2026-07-31",
+      "time": "12:50 EDT",
+      "text": "Removed unfinished 'Still Available?' placeholder from portfolio and timeline."
+    },
+    {
+      "date": "2026-07-31",
+      "time": "06:01 EDT",
+      "text": "LaB Assistant knowledgebase ingested — verified film crew, gear, and production data. Video cards added to film queries. Mobile chat UI optimized."
+    },
+    {
+      "date": "2026-07-31",
+      "time": "05:24 EDT",
+      "text": "About page reframed to emphasize team collaboration. Behind-the-scenes set knowledge added."
+    },
+    {
+      "date": "2026-07-30",
+      "time": "22:51 EDT",
+      "text": "<strong>SkyBound</strong> restructured with Start Here path. Weather & Safety hero link added. Headlines restyled (sky blue + orange italic)."
+    },
+    {
+      "date": "2026-07-30",
+      "time": "18:56 EDT",
+      "text": "<strong>Drone Weather Guide</strong> created as standalone page. SkyBound restored. Golden Hour Helper dropdowns fixed."
+    },
+    {
+      "date": "2026-07-30",
+      "time": "18:50 EDT",
+      "text": "<strong>Aspect Ratio Previewer</strong> tool page built. Live Drone Weather Flight Safety Meter added."
+    },
+    {
+      "date": "2026-07-30",
+      "time": "18:41 EDT",
+      "text": "Static history section converted to <strong>Interactive Vertical Production Timeline</strong> with filtering and jump links."
+    },
+    {
+      "date": "2026-07-30",
+      "time": "18:36 EDT",
+      "text": "<strong>Sun Arc & Golden Hour</strong> calculator tool launched for filmmakers and drone pilots."
     },
     {
       "date": "2026-07-27",
       "time": "08:00 EDT",
-      "text": "Site design system unified — one stylesheet, one token set, editorial direction. Replaced 11 divergent style blocks."
-    },
-    {
-      "date": "2026-07-14",
-      "time": "20:00 EDT",
-      "text": "<strong>48 Hour Film Project Detroit 2026</strong> — completed and submitted."
-    },
-    {
-      "date": "2026-07-09",
-      "time": "12:00 EDT",
-      "text": "Wheatley switched to <strong>Kimi K3</strong>. GLM-5.2 demoted to fallback."
-    },
-    {
-      "date": "2026-07-01",
-      "time": "09:00 EDT",
-      "text": "Apple career rotation to <strong>AOS Digital Experience UAT Lead</strong> officially began."
+      "text": "Site design system unified to editorial direction. One stylesheet, one token set, one nav, one footer. Replaced 11 divergent style blocks."
     }
   ]
 }
