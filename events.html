@@ -109,6 +109,11 @@
 a.ev-org:hover{color:var(--accent)}
 .ev-with{font-size:var(--t-sm);color:var(--dim)}
 .ev-where{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:3px}
+.ev-where a{color:var(--faint);transition:color var(--fast) var(--ease)}
+.ev-where a:hover{color:var(--accent)}
+.ev-where .ev-place{display:block;color:var(--ink);font-family:var(--f-display);font-size:15px;letter-spacing:0;text-transform:none;margin-bottom:2px}
+.ev-links{display:flex;align-items:center;gap:var(--s-4);flex-wrap:wrap;margin-top:var(--s-3)}
+.ev-links .tlink{margin-top:0}
 .ev em{font-style:italic}
 .ev p em{color:var(--ink);font-family:var(--f-display);font-size:16px}
 
@@ -375,6 +380,8 @@ a.ev-org:hover{color:var(--accent)}
    title  : the event name. <em>italics</em> allowed. REQUIRED
    time   : "6:30 PM"
    where  : venue and city
+   venue / venueUrl : linked venue name
+   address / mapUrl : linked street address
    by     : who is presenting it
    byUrl  : their website, turns `by` into a link
    with_  : collaborators, shown as a separate line
@@ -382,6 +389,7 @@ a.ev-org:hover{color:var(--accent)}
    body   : a paragraph. <em>italics</em> allowed.
    tags   : short labels, optional
    url    : tickets or info. A Facebook event link is fine.
+   links  : optional [{label:'Tickets',url:'https://...'}] action list
 
    Copy this, fill it in, drop it in the SPOTLIGHT array in spotlight-data.js:
 
@@ -425,6 +433,25 @@ a.ev-org:hover{color:var(--accent)}
   if(!live.length)return;                               // stays hidden : no empty state
   sec.hidden=false;
 
+  function venueHTML(e){
+    if(!e.venue&&!e.address)return '<span class="ev-where">'+(e.where||'')+'</span>';
+    var venue=e.venueUrl
+      ? '<a class="ev-place" href="'+e.venueUrl+'" target="_blank" rel="noopener">'+e.venue+' ↗</a>'
+      : '<span class="ev-place">'+e.venue+'</span>';
+    var address=e.mapUrl
+      ? '<a href="'+e.mapUrl+'" target="_blank" rel="noopener">'+e.address+' ↗</a>'
+      : '<span>'+e.address+'</span>';
+    return '<span class="ev-where">'+venue+address+'</span>';
+  }
+
+  function linksHTML(e){
+    var links=e.links&&e.links.length?e.links:(e.url?[{label:/facebook\.com/.test(e.url)?'Details on Facebook':'Details &amp; tickets',url:e.url}]:[]);
+    if(!links.length)return '<span class="ev-nolink">Link to come : check the host’s page</span>';
+    return '<div class="ev-links">'+links.map(function(link){
+      return '<a class="tlink" href="'+link.url+'" target="_blank" rel="noopener">'+link.label+' <span class="arw">↗</span></a>';
+    }).join('')+'</div>';
+  }
+
   list.innerHTML = live.map(function(e){
     var d=dayOf(e.date), end=dayOf(e.until);
     var days=Math.round((d-today)/864e5);
@@ -458,14 +485,10 @@ a.ev-org:hover{color:var(--accent)}
               ? '<a class="ev-org" href="'+e.byUrl+'" target="_blank" rel="noopener">'+e.by+' ↗</a>'
               : '<span class="ev-org">'+e.by+'</span>')
           + (e.with_ ? '<span class="ev-with">with '+e.with_+'</span>' : '')
-          + '<span class="ev-where">'+e.where+'</span>'
+          + venueHTML(e)
         + '</div>'
         + (e.tags&&e.tags.length ? '<div class="ev-line">'+e.tags.map(function(t){return '<span>'+t+'</span>'}).join('')+'</div>' : '')
-        + (e.url
-            ? '<a class="tlink" href="'+e.url+'" target="_blank" rel="noopener">'
-              + (/facebook\.com/.test(e.url) ? 'Details on Facebook' : 'Details &amp; tickets')
-              + ' <span class="arw">↗</span></a>'
-            : '<span class="ev-nolink">Link to come : check the host’s page</span>')
+        + linksHTML(e)
       + '</div>'
     + '</article>';
   }).join('');

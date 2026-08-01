@@ -23,6 +23,7 @@ const require = createRequire(import.meta.url);
 const ideasData = require('../ideas-data.js');
 const resources = loadConst('resources-data.js', 'resources');
 const gearData = loadConst('gear-data.js', 'gearData');
+const spotlight = loadConst('spotlight-data.js', 'SPOTLIGHT');
 const sun = require('../sun-calc.js');
 const promptPools = Object.entries(ideasData).filter(([, value]) => Array.isArray(value));
 const promptCount = promptPools.reduce((total, [, value]) => total + value.length, 0);
@@ -103,6 +104,25 @@ test('data totals and stable keys are internally consistent', () => {
   const resourceKeys = resources.map((resource) => String(resource.id || resource.name)
     .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''));
   assert.equal(new Set(resourceKeys).size, resources.length);
+});
+
+test('spotlight events have stable IDs, valid local dates, and usable links', () => {
+  assert.equal(new Set(spotlight.map((event) => event.id)).size, spotlight.length);
+  for (const event of spotlight) {
+    assert.match(event.id, /^[a-z0-9-]+$/);
+    assert.match(event.date, /^\d{4}-\d{2}-\d{2}$/);
+    assert.ok(event.title);
+    assert.ok(event.url);
+    assert.doesNotThrow(() => new URL(event.url));
+    for (const link of event.links || []) {
+      assert.ok(link.label);
+      assert.doesNotThrow(() => new URL(link.url));
+    }
+  }
+  const detroit48 = spotlight.filter((event) => event.id.startsWith('detroit-48hfp-'));
+  assert.deepEqual(Array.from(detroit48, (event) => event.date), ['2026-08-02', '2026-08-16']);
+  assert.match(detroit48[0].time, /2:00 PM.*4:30 PM/);
+  assert.match(detroit48[1].body, /awards/i);
 });
 
 test('public totals match their data sources', () => {
