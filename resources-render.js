@@ -246,7 +246,7 @@ function detailHTML(r){
 }
 
 var ITEM_RENDER_SEQ=0;
-function itemHTML(r,i){
+function itemHTML(r,i,isCopy){
   var n=String(i+1).padStart(2,'0');
   var tags='';
   if(isNew(r))tags+='<span class="tag fresh">New</span>';
@@ -286,7 +286,8 @@ function itemHTML(r,i){
       +'<span><b aria-hidden="true">+</b> More details</span><small>'+esc(hint)+'</small></button>'
     : '';
 
-  return '<div class="item" id="'+esc(keyOf(r))+'"'+(r.paid?' data-paid="1"':'')+' data-hay="'+esc((r.name+' '+(r.desc||'')+' '+(r.features||[]).join(' ')).toLowerCase())+'">'
+  var publicAnchor=isCopy?'':' id="'+esc(keyOf(r))+'"';
+  return '<div class="item"'+publicAnchor+(r.paid?' data-paid="1"':'')+' data-hay="'+esc((r.name+' '+(r.desc||'')+' '+(r.features||[]).join(' ')).toLowerCase())+'">'
     +'<span class="item-idx">'+n+'</span>'
     +'<div class="item-main"><h3>'+title+'</h3><p>'+esc(r.desc||'')+'</p>'
     +'<span class="item-tags">'+tags+'</span>'+socialsFor(r)
@@ -453,7 +454,7 @@ function groupOfEntry(r){
        +  '<span class="g-count">'+list.length+'</span>'
        +  '<span class="g-ico" aria-hidden="true"></span>'
        +'</summary>'
-       +'<div class="items">'+list.map(itemHTML).join('')+'</div>'
+       +'<div class="items">'+list.map(function(r,i){return itemHTML(r,i,false)}).join('')+'</div>'
        +'</details></section>';
   });
   wrapEl.innerHTML=html;
@@ -554,7 +555,6 @@ function groupOfEntry(r){
 (function(){
   var sec=document.getElementById('inlab');
   if(!sec)return;   /* only the page that owns this band renders it */
-  if(!sec)return;
   var list=ALL.filter(function(r){return r.inLab});
   if(!list.length){ sec.hidden=true; return; }
 
@@ -570,13 +570,11 @@ function groupOfEntry(r){
     +  '<span class="g-count">'+list.length+'</span>'
     +  '<span class="g-ico" aria-hidden="true"></span>'
     +'</summary>'
-    +'<div class="items">'+list.map(itemHTML).join('')+'</div>'
+    +'<div class="items">'+list.map(function(r,i){return itemHTML(r,i,true)}).join('')+'</div>'
     +'<p class="lab-note">Short on purpose. A long list of things somebody claims to '
     +'pay for is not worth much.</p>'
     +'</details>';
 })();
-
-/* Video facades inside the detail panels.
 
 /* Video facades inside the detail panels.
    Delegated, so rows rendered/opened later still work.

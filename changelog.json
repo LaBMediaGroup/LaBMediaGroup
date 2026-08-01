@@ -2,6 +2,21 @@
   "entries": [
     {
       "date": "2026-08-01",
+      "time": "14:30 EDT",
+      "text": "<strong>Flight planning, kept close.</strong> The 18-point pre-flight checklist now stays completely out of sight until requested beside the live conditions, then travels around the site until it is closed. It remains movable, minimizable, browser-only and printable to PDF; each six-item section now confirms itself, and 18/18 earns a restrained go-fly finish. Drone Weather keeps its original animated ecosystem while its sun follows the real Detroit solar clock, with sunrise, gold, sunset and night controls plus a moon after twilight. Gust-reading and night-flight notes tuck away until needed; the live thresholds remain planted in view. Golden Hour gets its own separate wide pixel scene with wind-driven pine tips, birds and a true sun-to-moon handoff."
+    },
+    {
+      "date": "2026-08-01",
+      "time": "13:25 EDT",
+      "text": "<strong>Detroit 48HFP screenings added.</strong> The August 2 Group A and Group B premieres at the Redford Theater now carry both showtimes, one-click tickets, venue and map links. The August 16 Best Of screening and awards at the Civic Theater is listed separately, and both entries expire themselves after their screening date."
+    },
+    {
+      "date": "2026-08-01",
+      "time": "13:10 EDT",
+      "text": "<strong>Golden Hour, rebuilt.</strong> The decorative fixed-time helper is now a real date-and-location-aware shoot planner: calculated blue and golden windows, sunrise, sunset, solar noon, elevation, direction, daylight, a scrub-able sun arc, a time-sensitive quote roller in the Story Generator style, and a copyable day plan. Drone Weather now reports actual Open-Meteo gusts, visibility and precipitation instead of estimates. Portfolio theme controls work again, lightbox keyboard focus behaves, runtime resource IDs stay unique, mobile overflow is gone, navigation and footers agree, and the public-but-tucked-away AI Usage link no longer enters the tab order. A real Chromium suite now patrols the kinds of failures static checks miss."
+    },
+    {
+      "date": "2026-08-01",
       "time": "12:23 EDT",
       "text": "<strong>Maintenance pass.</strong> Story Generator tone tags no longer overwrite one another when an idea belongs to more than one mood. A 91-check CI suite now guards scripts, data, links, page structure, assistant coverage, social previews and published totals. The new tools respect reduced-motion settings, the weather scene stops drawing when it has nothing to animate, and lighter WebP hero images trim repeat page weight. The AI Usage dashboard stays public by URL but tucked behind its Easter eggs."
     },

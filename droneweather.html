@@ -194,72 +194,49 @@
       display: block;
       background: transparent;
     }
-
-    /* ---- pre-flight checklist ---- */
-    .ckl { margin-top: clamp(48px, 7vw, 88px); }
-    .ckl-head {
-      display: flex; align-items: baseline; justify-content: space-between;
-      gap: var(--s-4); flex-wrap: wrap; margin-bottom: var(--s-3);
+    .wx-scene-time {
+      position: absolute; z-index: 3; top: 10px; right: 0;
+      width: min(360px, 78%); padding: 9px 10px;
+      border: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 82%, transparent);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     }
-    .ckl-head h2 {
-      font-family: var(--f-display); font-size: var(--t-2xl); font-weight: 400;
-      margin: 0; line-height: 1; letter-spacing: -.01em;
+    .wx-scene-time-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 7px; }
+    .wx-scene-time-head strong { font: 9px var(--f-mono); letter-spacing: .13em; text-transform: uppercase; color: var(--ink); }
+    .wx-scene-time-head span { font: 8px var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); text-align: right; }
+    .wx-time-presets { display: flex; gap: 4px; }
+    .wx-time-presets button {
+      min-height: 26px; flex: 1; padding: 0 6px; border: 1px solid var(--line);
+      background: var(--paper-2); color: var(--dim); font: 7px var(--f-mono);
+      letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
     }
-    .ckl-meta { display: flex; align-items: center; gap: var(--s-3); }
-    .ckl-count {
-      font-family: var(--f-mono); font-size: 11px; letter-spacing: .12em;
-      text-transform: uppercase; color: var(--faint);
+    .wx-time-presets button:hover, .wx-time-presets button:focus-visible,
+    .wx-time-presets button[aria-pressed="true"] { color: var(--ink); border-color: var(--accent); outline: none; }
+    .wx-scene-slider { width: 100%; height: 6px; margin-top: 7px; accent-color: var(--accent); cursor: pointer; }
+    .wx-deepdive { border-top: 1px solid var(--line); }
+    .wx-deepdive:last-of-type { border-bottom: 1px solid var(--line); }
+    .wx-deepdive summary {
+      list-style: none; display: grid; grid-template-columns: 1fr auto; align-items: center;
+      gap: var(--s-4); padding: clamp(22px, 4vw, 38px) 0; cursor: pointer;
     }
-    .ckl-count b { color: var(--accent); font-weight: 400; }
-    .ckl-reset {
-      font-family: var(--f-mono); font-size: 10px; letter-spacing: .1em;
-      text-transform: uppercase; color: var(--dim); background: transparent;
-      border: 1px solid var(--line-2); border-radius: var(--radius);
-      padding: 6px 11px; cursor: pointer; transition: all var(--fast) var(--ease);
+    .wx-deepdive summary::-webkit-details-marker { display: none; }
+    .wx-deepdive summary h2 { margin: 0; font-family: var(--f-display); font-size: var(--t-2xl); font-weight: 400; }
+    .wx-deepdive summary span { font: 8px var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+    .wx-deepdive summary span::after { content: " +"; color: var(--accent); }
+    .wx-deepdive[open] summary span::after { content: " −"; }
+    .wx-deepdive .rules-list { padding-bottom: clamp(36px, 6vw, 64px); }
+    .wx-preflight-trigger {
+      display: inline-flex; align-items: center; gap: 10px; min-height: 36px;
+      margin-top: var(--s-4); padding: 0 12px; border: 1px solid var(--accent-dim);
+      background: var(--accent-bg); color: var(--ink); cursor: pointer;
+      font: 9px var(--f-mono); letter-spacing: .11em; text-transform: uppercase;
+      transition: border-color var(--fast), background var(--fast), color var(--fast);
     }
-    .ckl-reset:hover { color: var(--ink); border-color: var(--accent-dim); background: var(--accent-bg); }
-    .ckl-bar { height: 2px; background: var(--line); border-radius: 2px; overflow: hidden; margin-bottom: var(--s-5); }
-    .ckl-bar span {
-      display: block; height: 100%; width: 0;
-      background: var(--accent); transition: width var(--mid) var(--ease);
-    }
-    .ckl-cols {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: var(--s-5) var(--s-6);
-    }
-    .ckl-group h3 {
-      font-family: var(--f-mono); font-size: 10px; text-transform: uppercase;
-      letter-spacing: .14em; color: var(--faint); font-weight: 400;
-      margin: 0 0 var(--s-3); padding-bottom: var(--s-2);
-      border-bottom: 1px solid var(--line);
-    }
-    .ckl-item {
-      display: flex; gap: var(--s-3); align-items: flex-start;
-      padding: 9px 0; cursor: pointer; color: var(--dim);
-      font-size: var(--t-sm); line-height: 1.5;
-      transition: color var(--fast) var(--ease);
-    }
-    .ckl-item:hover { color: var(--ink); }
-    .ckl-item input { position: absolute; opacity: 0; width: 0; height: 0; }
-    .ckl-box {
-      flex: 0 0 auto; width: 15px; height: 15px; margin-top: 2px;
-      border: 1px solid var(--line-2); border-radius: var(--radius);
-      position: relative; transition: all var(--fast) var(--ease);
-    }
-    .ckl-item:hover .ckl-box { border-color: var(--accent-dim); }
-    .ckl-item input:focus-visible + .ckl-box { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .ckl-item input:checked + .ckl-box { background: var(--accent); border-color: var(--accent); }
-    .ckl-item input:checked + .ckl-box::after {
-      content: ""; position: absolute; left: 4px; top: 1px;
-      width: 4px; height: 8px; border: solid var(--paper);
-      border-width: 0 1.5px 1.5px 0; transform: rotate(45deg);
-    }
-    .ckl-item input:checked ~ .ckl-txt { color: var(--faint); text-decoration: line-through; text-decoration-color: var(--line-2); }
-    .ckl-note {
-      margin-top: var(--s-5); padding: var(--s-3) var(--s-4);
-      border: 1px solid var(--line); border-left: 2px solid var(--accent);
-      background: var(--accent-bg); font-size: var(--t-sm);
-      color: var(--dim); line-height: 1.6;
+    .wx-preflight-trigger::after { content: "→"; color: var(--accent); font-size: 13px; transition: transform var(--fast); }
+    .wx-preflight-trigger:hover, .wx-preflight-trigger:focus-visible { border-color: var(--accent); background: color-mix(in srgb, var(--accent-bg) 72%, var(--paper-2)); outline: none; }
+    .wx-preflight-trigger:hover::after, .wx-preflight-trigger:focus-visible::after { transform: translateX(2px); }
+    @media (max-width: 620px) {
+      .wx-scene-time { top: 0; width: 88%; }
+      .wx-time-presets button:nth-child(2) { display: none; }
     }
 
     /* ---- outbound reference links ---- */
@@ -354,7 +331,19 @@
       <p class="lede">Real-time local wind speeds, gusts, and flight safety status calibrated for quadcopters, FPV rigs, and cinematic aerial photography.</p>
     </div>
     <div class="weather-scene-stage" id="wxSceneStage">
-      <canvas id="wxCanvas" class="weather-canvas"></canvas>
+      <canvas id="wxCanvas" class="weather-canvas" aria-label="Animated wind and weather scene"></canvas>
+      <div class="wx-scene-time" aria-label="Scene time controls">
+        <div class="wx-scene-time-head"><strong id="wxSceneClock">Now</strong><span id="wxScenePhase">Live solar position</span></div>
+        <div class="wx-time-presets" role="group" aria-label="Scene time presets">
+          <button type="button" data-wx-time="now" aria-pressed="true">Now</button>
+          <button type="button" data-wx-time="sunrise" aria-pressed="false">Rise</button>
+          <button type="button" data-wx-time="golden" aria-pressed="false">Gold</button>
+          <button type="button" data-wx-time="sunset" aria-pressed="false">Set</button>
+          <button type="button" data-wx-time="night" aria-pressed="false">Night</button>
+        </div>
+        <label class="vh" for="wxTimeSlider">Simulated time of day</label>
+        <input class="wx-scene-slider" id="wxTimeSlider" type="range" min="0" max="1439" step="5" value="720">
+      </div>
     </div>
   </div>
 </section>
@@ -362,36 +351,39 @@
 <section class="wrap">
   <div class="wx-card">
     <div class="wx-card-header">
-      <span class="mono" style="font-size:10px;text-transform:uppercase;color:var(--faint);letter-spacing:.14em;">Live Metro Detroit Station</span>
+      <span class="mono" style="font-size:10px;text-transform:uppercase;color:var(--faint);letter-spacing:.14em;">Live weather model · Metro Detroit</span>
       <div class="wx-status-title-row">
         <span id="wxDot" class="status-dot green"></span>
         <h2 style="font-family:var(--f-display);font-size:clamp(30px, 4.2vw, 48px);font-weight:400;line-height:1;margin:0;letter-spacing:-.01em;">
-          Conditions <em id="wxStateText">Favorable</em>
+          Conditions <em id="wxStateText">Loading</em>
         </h2>
       </div>
       <div id="wxAdvisoryLine" class="mono" style="font-size:11px;text-transform:uppercase;color:var(--faint);letter-spacing:.12em;margin-top:10px;">
-        WIND STEADY · VISIBILITY GOOD · NO ADVISORIES
+        FETCHING CURRENT MODEL CONDITIONS
       </div>
+      <button class="wx-preflight-trigger" type="button" data-open-flight-checklist aria-controls="lab-flight-checklist" aria-expanded="false">Pre-flight checklist here</button>
     </div>
 
     <div class="wx-grid">
       <div class="wx-metric">
         <div class="k">Wind Speed</div>
-        <div class="v" id="wxWind">8<small> mph</small></div>
+        <div class="v" id="wxWind">--<small> mph</small></div>
       </div>
       <div class="wx-metric">
         <div class="k">Wind Gusts</div>
-        <div class="v" id="wxGust">11<small> mph</small></div>
+        <div class="v" id="wxGust">--<small> mph</small></div>
       </div>
       <div class="wx-metric">
         <div class="k">Temperature</div>
-        <div class="v" id="wxTemp">74<small>°F</small></div>
+        <div class="v" id="wxTemp">--<small>°F</small></div>
       </div>
       <div class="wx-metric">
-        <div class="k">Flight Ceiling</div>
+        <div class="k">Part 107 Standard Ceiling</div>
         <div class="v">400<small> ft AGL</small></div>
       </div>
     </div>
+    <p class="mono" id="wxSourceLine" style="font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);margin:12px 0 0;">Forecast model, not an on-site observation.</p>
+    <p style="font-size:11px;line-height:1.55;color:var(--faint);margin:8px 0 0;">400 ft AGL is the standard Part&nbsp;107 ceiling; controlled airspace can be lower, and the structure exception or an FAA waiver can change it. Weather flags below are conservative LaB planning guidance, not aircraft limits.</p>
   </div>
 
   <div class="sec-c">
@@ -402,8 +394,8 @@
         <p>Minimal gimbal stress, stable tracking, and maximum battery life. Ideal for tight architectural passes and smooth speed-ramped shots.</p>
       </div>
       <div class="rule-item">
-        <h3>12–18 mph : <em>Active Compensation</em></h3>
-        <p>Gimbal stabilization active. Wind buffeting may create slight micro-jitter on telephoto or lightweight sensors. Maintain 25% battery safety buffer for return-to-home against headwind.</p>
+        <h3>12–17 mph : <em>Active Compensation</em></h3>
+        <p>Expect more correction from the aircraft and gimbal. Wind buffeting may create slight micro-jitter on telephoto or lightweight sensors. Maintain a generous battery buffer for return-to-home against headwind, and follow the aircraft manufacturer&rsquo;s wind limit.</p>
       </div>
       <div class="rule-item">
         <h3>18+ mph : <em>Grounded / Hold</em></h3>
@@ -412,8 +404,8 @@
     </div>
   </div>
 
-  <div class="sec-c">
-    <h2 style="font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;margin-bottom:var(--s-4);">Reading the <em>gust number.</em></h2>
+  <details class="wx-deepdive">
+    <summary><h2>Reading the <em>gust number.</em></h2><span>Field note</span></summary>
     <div class="rules-list">
       <div class="rule-item">
         <h3><em>Steady wind is the average. The gust is the peak.</em></h3>
@@ -428,10 +420,10 @@
         <p>Buildings, treelines and ridges turn smooth air into mechanical turbulence, and the rough patch extends well downwind of whatever caused it. A number that is perfectly safe in an open field can be genuinely unpleasant threading a gap between two structures. Give hard edges more room than the wind reading alone suggests.</p>
       </div>
     </div>
-  </div>
+  </details>
 
-  <div class="sec-c">
-    <h2 style="font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;margin-bottom:var(--s-4);">Flying <em>after dark.</em></h2>
+  <details class="wx-deepdive">
+    <summary><h2>Flying <em>after dark.</em></h2><span>Safety note</span></summary>
     <div class="rules-list">
       <div class="rule-item">
         <h3><em>Anti-collision lighting, visible for three statute miles.</em></h3>
@@ -450,57 +442,7 @@
         <p>Lithium packs lose usable capacity in the cold, and a night flight in October behaves nothing like the same flight in July. Warm the batteries before launch, expect the low-voltage warning sooner than the percentage suggests, and land on a number that leaves you a margin. Watch for dew and frost forming on props and the gimbal glass while you are set up.</p>
       </div>
     </div>
-  </div>
-
-  <div class="ckl" id="preflight">
-    <div class="ckl-head">
-      <h2>Pre-flight <em>checklist.</em></h2>
-      <div class="ckl-meta">
-        <span class="ckl-count" id="cklCount"><b>0</b> / 18</span>
-        <button type="button" class="ckl-reset" id="cklReset">Reset</button>
-      </div>
-    </div>
-    <div class="ckl-bar"><span id="cklFill"></span></div>
-
-    <div class="ckl-cols">
-      <div class="ckl-group">
-        <h3>Before you leave</h3>
-        <label class="ckl-item"><input type="checkbox" data-ck="a1"><span class="ckl-box"></span><span class="ckl-txt">Aircraft, controller and phone batteries charged</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="a2"><span class="ckl-box"></span><span class="ckl-txt">Props checked for nicks and hairline cracks, spares packed</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="a3"><span class="ckl-box"></span><span class="ckl-txt">Firmware current on aircraft, controller and app</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="a4"><span class="ckl-box"></span><span class="ckl-txt">Card in, formatted, with space to spare</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="a5"><span class="ckl-box"></span><span class="ckl-txt">Registration mark on the airframe, Remote ID broadcasting</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="a6"><span class="ckl-box"></span><span class="ckl-txt">Airspace checked, LAANC authorisation if controlled</span></label>
-      </div>
-
-      <div class="ckl-group">
-        <h3>On site</h3>
-        <label class="ckl-item"><input type="checkbox" data-ck="b1"><span class="ckl-box"></span><span class="ckl-txt">Temporary flight restrictions checked for today</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="b2"><span class="ckl-box"></span><span class="ckl-txt">Wind and gusts read at altitude, not just at the launch point</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="b3"><span class="ckl-box"></span><span class="ckl-txt">Compass and IMU calibrated if the location moved significantly</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="b4"><span class="ckl-box"></span><span class="ckl-txt">Home point set and confirmed on the map</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="b5"><span class="ckl-box"></span><span class="ckl-txt">Return-to-home altitude above the tallest obstacle on site</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="b6"><span class="ckl-box"></span><span class="ckl-txt">Launch surface clear, flat and not loose gravel or sand</span></label>
-      </div>
-
-      <div class="ckl-group">
-        <h3>Before the sticks move</h3>
-        <label class="ckl-item"><input type="checkbox" data-ck="c1"><span class="ckl-box"></span><span class="ckl-txt">Overflight path considered, bystanders accounted for</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="c2"><span class="ckl-box"></span><span class="ckl-txt">Visual observer briefed, if you are using one</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="c3"><span class="ckl-box"></span><span class="ckl-txt">Satellite lock acquired before takeoff, not during</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="c4"><span class="ckl-box"></span><span class="ckl-txt">Hover at ten feet, confirm it holds position cleanly</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="c5"><span class="ckl-box"></span><span class="ckl-txt">Landing battery percentage decided in advance</span></label>
-        <label class="ckl-item"><input type="checkbox" data-ck="c6"><span class="ckl-box"></span><span class="ckl-txt">If night: anti-collision strobe fitted, on, and visually confirmed</span></label>
-      </div>
-    </div>
-
-    <p class="ckl-note">
-      Ticks are saved in this browser only. Nothing is sent anywhere, and there is no account to make.
-      This is how LaB packs for a shoot, not a regulatory document: the rules summarised on this page are
-      United States Part&nbsp;107 in plain language, they change, and they are not the same everywhere.
-      Check the current text at the FAA before you rely on any of it.
-    </p>
-  </div>
+  </details>
 
   <div class="sec-c sec-c-weather">
     <h2 style="font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;margin-bottom:var(--s-3);">Check <em>before you fly.</em></h2>
@@ -557,9 +499,9 @@
           <li><a href="sourcing.html">Gear &amp; Flight</a></li>
           <li><a href="ideas.html">Story Generator</a></li>
           <li><a href="skybound.html">SkyBound</a></li>
-          <li><a href="sun.html">Golden Hour Helper</a></li>
-          <li><a href="aspect.html">Aspect Ratio Previewer</a></li>
-          <li><a href="droneweather.html" aria-current="page">Drone Weather Guide</a></li>
+          <li><a href="sun.html">Golden Hour</a></li>
+          <li><a href="aspect.html">Aspect Ratio</a></li>
+          <li><a href="droneweather.html" aria-current="page">Drone Weather</a></li>
           <li><a href="assistant.html">LaB Assistant</a></li>
           <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
           <li><a href="mykit.html">Your Kit</a></li>
@@ -584,6 +526,7 @@
   </div>
 </footer>
 
+<script src="sun-calc.js"></script>
 <script>
 /* Theme switch : remembers choice, falls back to dark */
 (function(){
@@ -649,14 +592,16 @@
 
 (function(){
   /* Live Weather Fetch */
-  fetch('https://api.open-meteo.com/v1/forecast?latitude=42.67&longitude=-83.03&current_weather=true')
+  fetch('https://api.open-meteo.com/v1/forecast?latitude=42.67&longitude=-83.03&current=temperature_2m,weather_code,wind_speed_10m,wind_gusts_10m,visibility,precipitation&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto')
     .then(function(res){ return res.json(); })
     .then(function(data){
-      if(!data || !data.current_weather) return;
-      var w = data.current_weather;
-      var windMph = Math.round(w.windspeed * 0.621371);
-      var tempF = Math.round((w.temperature * 9/5) + 32);
-      var gustMph = Math.round(windMph * 1.35);
+      if(!data || !data.current) throw new Error('Current conditions unavailable');
+      var w = data.current;
+      var windMph = Math.round(w.wind_speed_10m);
+      var gustMph = Math.round(w.wind_gusts_10m);
+      var tempF = Math.round(w.temperature_2m);
+      var visibilityMi = Number(w.visibility||0) / 1609.344;
+      var precip = Number(w.precipitation||0);
 
       var elW = document.getElementById('wxWind'); if(elW) elW.innerHTML = windMph + '<small> mph</small>';
       var elG = document.getElementById('wxGust'); if(elG) elG.innerHTML = gustMph + '<small> mph</small>';
@@ -665,20 +610,26 @@
       var dot = document.getElementById('wxDot');
       var stateText = document.getElementById('wxStateText');
       var advisoryLine = document.getElementById('wxAdvisoryLine');
+      var sourceLine = document.getElementById('wxSourceLine');
 
-      if (windMph >= 18 || gustMph >= 18) {
+      if (windMph >= 18 || gustMph >= 18 || visibilityMi < 3 || precip >= 0.5) {
         if (stateText) stateText.textContent = 'Unfavorable';
         if (dot) dot.className = 'status-dot red';
-        if (advisoryLine) advisoryLine.textContent = 'WINDS EXCEED ' + Math.max(windMph, gustMph) + 'MPH · GROUND ALL AIRCRAFT · CHECK IN 1HR';
-      } else if (windMph >= 12 || gustMph >= 14) {
+        if (advisoryLine) advisoryLine.textContent = visibilityMi < 3
+          ? 'MODEL VISIBILITY BELOW 3MI · HOLD FLIGHT · VERIFY ON SITE'
+          : precip >= 0.5
+            ? 'ACTIVE PRECIPITATION · HOLD FLIGHT · PROTECT AIRFRAME'
+            : 'GUSTS TO ' + gustMph + 'MPH · GROUND AIRCRAFT · CHECK AGAIN LATER';
+      } else if (windMph >= 12 || gustMph >= 14 || visibilityMi < 5 || precip > 0) {
         if (stateText) stateText.textContent = 'Marginal';
         if (dot) dot.className = 'status-dot yellow';
-        if (advisoryLine) advisoryLine.textContent = 'GUSTS TO ' + gustMph + 'MPH · MONITOR BATTERY · SHORT FLIGHTS ONLY';
+        if (advisoryLine) advisoryLine.textContent = 'GUSTS TO ' + gustMph + 'MPH · ' + visibilityMi.toFixed(1) + 'MI MODEL VISIBILITY · VERIFY ON SITE';
       } else {
         if (stateText) stateText.textContent = 'Favorable';
         if (dot) dot.className = 'status-dot green';
-        if (advisoryLine) advisoryLine.textContent = 'WIND STEADY · VISIBILITY GOOD · NO ADVISORIES';
+        if (advisoryLine) advisoryLine.textContent = 'GUSTS TO ' + gustMph + 'MPH · ' + visibilityMi.toFixed(1) + 'MI MODEL VISIBILITY · NO MODEL ADVISORIES';
       }
+      if(sourceLine) sourceLine.textContent = 'Open-Meteo forecast model · updated ' + new Date(w.time).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}) + ' · verify conditions and airspace on site.';
 
       /* WMO codes split into two intensities rather than one boolean. The
          drizzle band (51/53/55), freezing drizzle (56/57) and the lightest
@@ -686,59 +637,20 @@
          moderate rain up gets the full downpour. Treating a 0.2 mm/h
          drizzle and a thunderstorm as the same picture was overstating the
          weather most of the time. */
-      if (w.weathercode) {
+      if (w.weather_code || precip > 0) {
         var DRIZZLE = [51,53,55,56,57,61,66,80];
         var RAIN    = [63,65,67,81,82,95,96,99];
-        if (DRIZZLE.indexOf(w.weathercode) !== -1)   window.wxPrecip = 1;
-        else if (RAIN.indexOf(w.weathercode) !== -1) window.wxPrecip = 2;
+        if (RAIN.indexOf(w.weather_code) !== -1 || precip >= 0.5) window.wxPrecip = 2;
+        else if (DRIZZLE.indexOf(w.weather_code) !== -1 || precip > 0) window.wxPrecip = 1;
         if (window.wxPrecip) window.isRainingLive = true;   // legacy flag
       }
       window.dispatchEvent(new Event('lab:weather-update'));
-    }).catch(function(){});
-})();
-
-/* Pre-flight checklist. Ticks persist in this browser, nowhere else. */
-(function(){
-  'use strict';
-  var root = document.getElementById('preflight');
-  if (!root) return;
-
-  var KEY = 'lab-preflight';
-  var boxes = Array.prototype.slice.call(root.querySelectorAll('input[data-ck]'));
-  var countEl = document.getElementById('cklCount');
-  var fillEl = document.getElementById('cklFill');
-  var resetEl = document.getElementById('cklReset');
-
-  function load(){
-    try {
-      var raw = localStorage.getItem(KEY);
-      if (!raw) return [];
-      var v = JSON.parse(raw);
-      return Object.prototype.toString.call(v) === '[object Array]' ? v : [];
-    } catch (e){ return []; }
-  }
-  function save(){
-    var on = boxes.filter(function(b){ return b.checked; }).map(function(b){ return b.dataset.ck; });
-    try { localStorage.setItem(KEY, JSON.stringify(on)); } catch (e){}
-  }
-  function sync(){
-    var n = boxes.filter(function(b){ return b.checked; }).length;
-    if (countEl) countEl.innerHTML = '<b>' + n + '</b> / ' + boxes.length;
-    if (fillEl) fillEl.style.width = (boxes.length ? (n / boxes.length) * 100 : 0) + '%';
-  }
-
-  var saved = load();
-  boxes.forEach(function(b){
-    if (saved.indexOf(b.dataset.ck) !== -1) b.checked = true;
-    b.addEventListener('change', function(){ save(); sync(); });
-  });
-
-  if (resetEl) resetEl.addEventListener('click', function(){
-    boxes.forEach(function(b){ b.checked = false; });
-    save(); sync();
-  });
-
-  sync();
+    }).catch(function(){
+      var stateText=document.getElementById('wxStateText');
+      var advisoryLine=document.getElementById('wxAdvisoryLine');
+      if(stateText) stateText.textContent='Unavailable';
+      if(advisoryLine) advisoryLine.textContent='LIVE MODEL UNAVAILABLE · CHECK A SECOND WEATHER SOURCE BEFORE FLIGHT';
+    });
 })();
 
 /* Field Station : procedural weather scene (100% client-side, no third-party calls)
@@ -754,6 +666,65 @@
   var ctx = cvs.getContext('2d');
 
   var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SCENE_ZONE='America/Detroit',SCENE_LAT=42.67,SCENE_LON=-83.03;
+  var sceneSlider=document.getElementById('wxTimeSlider');
+  var sceneClock=document.getElementById('wxSceneClock');
+  var scenePhaseEl=document.getElementById('wxScenePhase');
+  var sceneLive=true,sceneMinute=720,sceneDay=null,sceneDate='',solarCacheKey='',solarCache=null;
+
+  function pad2(n){return String(n).padStart(2,'0')}
+  function sceneZoneParts(date){
+    var out={};
+    new Intl.DateTimeFormat('en-US',{timeZone:SCENE_ZONE,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'})
+      .formatToParts(date).forEach(function(part){if(part.type!=='literal')out[part.type]=Number(part.value)});
+    return out;
+  }
+  function sceneISO(date){var p=sceneZoneParts(date);return p.year+'-'+pad2(p.month)+'-'+pad2(p.day)}
+  function minuteOf(date){var p=sceneZoneParts(date);return p.hour*60+p.minute}
+  function onSceneDate(value){
+    var p=sceneDate.split('-').map(Number),desired=Date.UTC(p[0],p[1]-1,p[2],Math.floor(value/60),value%60,0),stamp=desired;
+    for(var i=0;i<2;i++){var seen=sceneZoneParts(new Date(stamp));stamp+=desired-Date.UTC(seen.year,seen.month-1,seen.day,seen.hour,seen.minute,seen.second)}
+    return new Date(stamp);
+  }
+  function fmtMinute(value){var h=Math.floor(value/60),m=value%60,ap=h>=12?'PM':'AM';return ((h+11)%12+1)+':'+pad2(m)+' '+ap}
+  function syncSceneDay(){
+    var next=sceneISO(new Date());
+    if(next!==sceneDate){sceneDate=next;sceneDay=window.LaBSun&&LaBSun.getDay(sceneDate,SCENE_LAT,SCENE_LON);solarCacheKey=''}
+  }
+  function solarScene(){
+    syncSceneDay();
+    var cacheKey=sceneDate+'|'+sceneMinute;
+    if(solarCache&&cacheKey===solarCacheKey)return solarCache;
+    var moment=onSceneDate(sceneMinute);
+    var pos=window.LaBSun?LaBSun.position(moment,SCENE_LAT,SCENE_LON):{elevation:20,azimuth:180};
+    var phase=sceneDay&&window.LaBSun?LaBSun.phaseAt(moment,sceneDay):(sceneMinute<360||sceneMinute>1260?'night':'daylight');
+    solarCacheKey=cacheKey;solarCache={moment:moment,pos:pos,phase:phase};return solarCache;
+  }
+  function updateSceneControls(){
+    if(sceneLive)sceneMinute=minuteOf(new Date());
+    if(sceneSlider)sceneSlider.value=String(sceneMinute);
+    var solar=solarScene(),names={'night':'Night','blue-dawn':'Dawn blue','golden-morning':'Morning gold','daylight':'Daylight','golden-evening':'Evening gold','blue-dusk':'Dusk blue'};
+    if(sceneClock)sceneClock.textContent=(sceneLive?'Now · ':'')+fmtMinute(sceneMinute);
+    if(scenePhaseEl)scenePhaseEl.textContent=names[solar.phase]||solar.phase;
+    var stage=document.getElementById('wxSceneStage');if(stage){stage.dataset.phase=solar.phase;stage.dataset.sun=solar.pos.elevation>=-0.8?'visible':'hidden';stage.dataset.moon=solar.phase==='night'?'visible':'hidden'}
+    document.querySelectorAll('[data-wx-time]').forEach(function(button){button.setAttribute('aria-pressed',String(sceneLive&&button.dataset.wxTime==='now'))});
+    skyKey='';queueRender();
+  }
+  function chooseSceneTime(key){
+    syncSceneDay();sceneLive=key==='now';
+    if(sceneLive)sceneMinute=minuteOf(new Date());
+    else if(sceneDay){
+      if(key==='sunrise')sceneMinute=minuteOf(sceneDay.sunrise);
+      if(key==='golden')sceneMinute=minuteOf(new Date((sceneDay.eveningGoldenStart.getTime()+sceneDay.sunset.getTime())/2));
+      if(key==='sunset')sceneMinute=minuteOf(sceneDay.sunset);
+      if(key==='night')sceneMinute=Math.min(1380,minuteOf(sceneDay.civilDusk)+60);
+    }
+    updateSceneControls();
+  }
+  document.querySelectorAll('[data-wx-time]').forEach(function(button){button.addEventListener('click',function(){chooseSceneTime(this.dataset.wxTime)})});
+  if(sceneSlider)sceneSlider.addEventListener('input',function(){sceneLive=false;sceneMinute=Number(this.value);updateSceneControls()});
+  window.labSceneSetTime=function(value){sceneLive=false;sceneMinute=Math.max(0,Math.min(1439,Number(value)||0));updateSceneControls()};
+  syncSceneDay();sceneMinute=minuteOf(new Date());
 
   /* ---------------------------------------------------------------
      Live values, read straight off the card so there is one source
@@ -891,7 +862,8 @@
   /* Dithered sky + ground tone. Static for a given state, so it is
      built once and blitted, not recomputed per frame. */
   function buildSky(){
-    var key = status() + '|' + precip() + '|' + BW + 'x' + BH + '|' +
+    var solar=solarScene(),phase=solar.phase;
+    var key = status() + '|' + precip() + '|' + phase + '|' + BW + 'x' + BH + '|' +
               (document.documentElement.getAttribute('data-theme') || 'dark');
     if (key === skyKey) return;
     skyKey = key;
@@ -902,7 +874,9 @@
     var d = img.data;
     var wet = precip() > 0;
     var tint = wet ? rgb('--sky') : statusRGB();
-    var ink = rgb('--ink');
+    if(phase==='night')tint=rgb('--sky');
+    else if(phase==='blue-dawn'||phase==='blue-dusk')tint=rgb('--sky');
+    else if(phase==='golden-morning'||phase==='golden-evening')tint=rgb('--accent');
 
     for (var y = 0; y < BH; y++){
       for (var x = 0; x < BW; x++){
@@ -915,7 +889,7 @@
           // of dots across the whole sky.
           if (dens > 0.9 && dens > BAYER[y & 3][x & 3]){
             d[i] = tint[0]; d[i+1] = tint[1]; d[i+2] = tint[2];
-            d[i+3] = wet ? 30 : 24;
+            d[i+3] = phase==='night'?34:(wet ? 30 : 24);
           }
         }
       }
@@ -1181,7 +1155,7 @@
   }
 
   function drawBirds(t, bend){
-    if (precip() > 0 || windSpeed >= 20) return;
+    if (precip() > 0 || windSpeed >= 20 || solarScene().phase==='night') return;
     var c = css('--ink', 0.55);
     for (var i = 0; i < birds.length; i++){
       var bd = birds[i];
@@ -1195,31 +1169,28 @@
     }
   }
 
-  /* Temperature drives how much sun there is.
-     On a cold day it is a small pale disc riding high, mostly lost in the
-     top feather, barely peeking in. As it warms the disc grows, drops
-     further into frame, deepens toward the full ember and throws more
-     rays, until a genuinely hot day gets a dithered heat bloom around it.
-     35F reads as none of that, 95F as all of it. Before this, temperature
-     only nudged the sun's opacity and nobody would ever have noticed. */
+  /* The solar calculator owns the clock; temperature only changes the
+     character of a sun that is actually above the Shelby Township horizon. */
   var SUN_ARMS = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
 
   function drawSun(t){
     if (precip() > 0) return;
+    var solar=solarScene(),pos=solar.pos;
+    if(pos.elevation < -0.8)return;
     var heat = clamp((tempF - 35) / 60, 0, 1);
+    var cx = Math.round(BW * clamp((pos.azimuth-70)/220,0.08,0.92));
+    var top=4,bottom=GROUND-3,maxElev=Math.max(18,sceneDay?sceneDay.maxElevation:65);
+    var cy = Math.round(bottom-clamp(pos.elevation/maxElev,0,1)*(bottom-top));
+    var R  = Math.max(2, Math.round(BW * (0.022 + heat * 0.016)));
 
-    // x stays clear of the left feather, which was quietly eating the sun
-    var cx = Math.round(BW * 0.27);
-    var cy = Math.round(BH * (0.02 + heat * 0.24));
-    var R  = Math.max(3, Math.round(BW * (0.026 + heat * 0.036)));
-
-    var warm = css('--accent', 0.42 + heat * 0.53);
+    var golden=solar.phase.indexOf('golden')===0||solar.phase.indexOf('blue')===0;
+    var warm = golden?css('--accent',0.88):css('--ink',0.62+heat*0.20);
     for (var y = -R; y <= R; y++){
       var half = Math.floor(Math.sqrt(R * R - y * y));
       px(cx - half, cy + y, half * 2 + 1, 1, warm);
     }
 
-    var rays = heat < 0.25 ? 0 : (heat < 0.60 ? 4 : 8);
+    var rays = golden?8:(heat < 0.35 ? 4 : 8);
     var pulse = 1 + Math.round(Math.sin(t * 1.3) * (0.6 + heat));
     var reach = R + 2 + Math.round(heat * 2);
     for (var a = 0; a < rays; a++){
@@ -1227,7 +1198,7 @@
          pulse, pulse, css('--accent', 0.20 + heat * 0.28));
     }
 
-    if (heat > 0.72){
+    if (heat > 0.72 || golden){
       var bloomR = R + 3 + Math.round((heat - 0.72) * 10);
       var bloom = css('--accent', 0.16);
       for (var by = -bloomR; by <= bloomR; by++){
@@ -1239,6 +1210,20 @@
         }
       }
     }
+  }
+
+  function drawMoon(t){
+    var solar=solarScene();if(solar.phase!=='night'||precip()===2)return;
+    var dusk=sceneDay?minuteOf(sceneDay.civilDusk):1260;
+    var dawn=sceneDay?minuteOf(sceneDay.civilDawn):330;
+    var span=(1440-dusk)+dawn,progress=sceneMinute>=dusk?(sceneMinute-dusk)/span:(1440-dusk+sceneMinute)/span;
+    progress=clamp(progress,0,1);
+    var cx=Math.round(BW*lerp(.88,.14,progress));
+    var cy=Math.round(lerp(GROUND*.70,GROUND*.16,Math.sin(progress*Math.PI)));
+    var R=Math.max(2,Math.round(BW*.022)),moon=css('--ink',.72),shade=css('--sky',.28);
+    for(var y=-R;y<=R;y++){var half=Math.floor(Math.sqrt(R*R-y*y));px(cx-half,cy+y,half*2+1,1,moon)}
+    px(cx-1,cy-R+1,1,1,shade);px(cx+Math.max(1,R-2),cy,1,1,shade);
+    if(!REDUCED&&Math.sin(t*.7)>0.92)px(cx-R-2,cy,1,1,css('--ink',.24));
   }
 
   /* Drizzle is not thin rain. It is fewer, shorter, slower drops that
@@ -1351,6 +1336,7 @@
     b.drawImage(sky, 0, 0);
 
     drawSun(time);
+    drawMoon(time);
     drawBirds(time, bend);
 
     // Wind streaks: count, length and speed all scale off the number,
@@ -1399,9 +1385,12 @@
   window.addEventListener('lab:weather-update', queueRender);
 
   resize();
+  updateSceneControls();
+  setInterval(function(){if(sceneLive)updateSceneControls()},60000);
   queueRender();
 })();
 </script>
+<script src="flight-checklist.js"></script>
 <script src="assistant-guide.js"></script>
 <script src="assistant-widget.js"></script>
 </body>

@@ -27,7 +27,7 @@ weekend. Nothing costs money and nothing asks for an email.
 | `events.html` | Self-expiring spotlight events plus an evergreen org list |
 | `skybound.html` | SkyBound case study |
 | `droneweather.html` | Drone weather and flight-condition helper |
-| `sun.html` | Golden-hour planning helper |
+| `sun.html` | Date/location-aware Golden Hour and sun-phase planner |
 | `aspect.html` | Aspect-ratio previewer |
 | `assistant.html` | LaB's grounded site guide |
 | `contact.html` | About LaB and contact details |
@@ -40,8 +40,10 @@ There are 17 indexable pages. `404.html` and the deliberately tucked-away
 ## Tech
 
 Plain HTML, CSS and JS. No framework, no build step, no backend and no runtime
-dependencies. GitHub Pages hosting on a custom domain. A small Node test suite
-runs in GitHub Actions to keep data, links, metadata and published counts aligned.
+dependencies. GitHub Pages hosting on a custom domain. A Node and Playwright
+suite runs in GitHub Actions to keep data, links, metadata and published counts
+aligned, then loads every page in mobile Chromium to catch runtime errors,
+duplicate IDs, broken local images and horizontal overflow.
 
 - **`lab.css` is the whole design system** — one `:root` token block governs
   every page. This replaced 11 divergent `:root` blocks and 9 separate nav
