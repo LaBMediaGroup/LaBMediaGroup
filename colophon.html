@@ -269,20 +269,6 @@
     <div class="bug">
       <span class="bug-n">05</span>
       <div class="bug-main">
-        <h3>Animations that cost nothing when idle</h3>
-        <p>Hover the line at the bottom of any page. The hearts are five elements sharing one
-        keyframe, each handed its own drift and delay as a custom property so none of them move in
-        lockstep.</p>
-      </div>
-      <div class="bug-side">
-        <p>They ship <code>animation-play-state: paused</code> and only run while you're
-        actually there: no loop spinning behind an invisible layer, and nothing at all under
-        <code>prefers-reduced-motion</code>.</p>
-      </div>
-    </div>
-    <div class="bug">
-      <span class="bug-n">06</span>
-      <div class="bug-main">
         <h3>Native elements before libraries</h3>
         <p>Every expandable section: the production timelines, the gear categories, the
         resource groups: is a plain <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code>.
@@ -294,7 +280,7 @@
       </div>
     </div>
     <div class="bug">
-      <span class="bug-n">07</span>
+      <span class="bug-n">06</span>
       <div class="bug-main">
         <h3>Share links keyed by content, not position</h3>
         <p>A brief you send someone is encoded as a short hash of its own text, never its position
@@ -305,7 +291,7 @@
       </div>
     </div>
     <div class="bug">
-      <span class="bug-n">08</span>
+      <span class="bug-n">07</span>
       <div class="bug-main">
         <h3>The one page nobody plans to visit</h3>
         <p>The zero on the <a href="404.html">missing page</a> is an eye: drawn, not typeset,
@@ -319,7 +305,7 @@
       </div>
     </div>
     <div class="bug" id="field-notes">
-      <span class="bug-n">09</span>
+      <span class="bug-n">08</span>
       <div class="bug-main">
         <h3>A chatbot with search in charge</h3>
         <p>The assistant searches the site&rsquo;s own film notes, 126 resources, 66 gear entries,
@@ -338,7 +324,7 @@
       </div>
     </div>
     <div class="bug" id="solar-engine">
-      <span class="bug-n">10</span>
+      <span class="bug-n">09</span>
       <div class="bug-main">
         <h3>Simulating solar elevation and color temperature without API calls</h3>
         <p>The Golden Hour Helper (<code>sun.html</code>) calculates real-time solar declination, azimuth, elevation angle, and color temperature (from 11,000K Blue Hour down to 2,700K Golden Hour) for Metro Detroit (42.67°N) entirely client-side. Dragging the time slider recalculates atmospheric physics in local memory without firing network requests or hitting third-party rate limits.</p>
@@ -348,7 +334,7 @@
       </div>
     </div>
     <div class="bug" id="aspect-previewer">
-      <span class="bug-n">11</span>
+      <span class="bug-n">10</span>
       <div class="bug-main">
         <h3>An interactive crop previewer that previews local media</h3>
         <p>The Aspect Ratio Previewer (<code>aspect.html</code>) overlays 2.39&#58;1 Scope, 1.85&#58;1 Flat, 16&#58;9 HD, 4&#58;3 Academy, and 9&#58;16 Vertical mattes live over sample stills or your own local photos and video clips. Instead of guessing letterbox boundaries in NLE timelines, it computes exact active pixel resolutions (e.g. 3840&times;1607 for 4K 2.39 scope) so editors know their active canvas size before rendering.</p>
@@ -358,7 +344,7 @@
       </div>
     </div>
     <div class="bug" id="drone-weather">
-      <span class="bug-n">12</span>
+      <span class="bug-n">11</span>
       <div class="bug-main">
         <h3>Live drone weather from open meteorological APIs</h3>
         <p>SkyBound Weather (<code>droneweather.html</code>) fetches live local wind speeds, gusts, and temperatures for Shelby Township (42.67°N) from Open-Meteo REST API. It evaluates flight safety thresholds (0&ndash;11 mph ideal, 12&ndash;18 mph active compensation, 18+ mph grounded) and updates flight status badges in under 200 milliseconds.</p>
