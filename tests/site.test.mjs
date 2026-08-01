@@ -240,8 +240,10 @@ test('flight checklist follows visitors without exposing the private usage page'
 
 test('weather and Golden Hour scenes keep separate solar-aware compositions', () => {
   const weather = read('droneweather.html');
-  assert.match(weather, /data-wx-time="sunrise"/);
-  assert.match(weather, /data-wx-time="night"/);
+  assert.match(weather, /id="wxSceneTest"/);
+  assert.match(weather, /data-wx-live/);
+  assert.doesNotMatch(weather, /data-wx-time=/);
+  assert.doesNotMatch(weather, /class="wx-scene-time"/);
   assert.match(weather, /LaBSun\.phaseAt/);
   assert.match(weather, /function drawMoon/);
   assert.equal((weather.match(/<details class="wx-deepdive">/g) || []).length, 2);
@@ -250,8 +252,11 @@ test('weather and Golden Hour scenes keep separate solar-aware compositions', ()
   const golden = read('sun.html');
   assert.match(golden, /id="sunNatureCanvas"/);
   assert.match(golden, /id="moonOrb"/);
-  assert.match(read('sun.js'), /function initNatureScene/);
-  assert.match(read('sun.js'), /wind_gusts_10m/);
+  const goldenScript = read('sun.js');
+  assert.match(goldenScript, /function initNatureScene/);
+  assert.match(goldenScript, /wind_gusts_10m/);
+  assert.match(goldenScript, /advice-accent/);
+  assert.doesNotMatch(goldenScript, /bird\.s\*width/);
 });
 
 test('AI Usage remains public but deliberately hidden', () => {

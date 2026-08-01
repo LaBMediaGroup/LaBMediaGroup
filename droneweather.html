@@ -194,24 +194,33 @@
       display: block;
       background: transparent;
     }
-    .wx-scene-time {
-      position: absolute; z-index: 3; top: 10px; right: 0;
-      width: min(360px, 78%); padding: 9px 10px;
-      border: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 82%, transparent);
+    .wx-scene-test {
+      position: absolute; z-index: 3; top: 10px; right: 0; opacity: .34;
+      color: var(--faint); transition: opacity var(--fast);
+    }
+    .wx-scene-test:hover, .wx-scene-test:focus-within, .wx-scene-test[open] { opacity: .9; }
+    .wx-scene-test summary {
+      list-style: none; width: max-content; margin-left: auto; cursor: pointer;
+      font: 7px var(--f-mono); letter-spacing: .14em; text-transform: uppercase;
+    }
+    .wx-scene-test summary::-webkit-details-marker { display: none; }
+    .wx-scene-test summary::after { content: " +"; color: var(--accent); }
+    .wx-scene-test[open] summary::after { content: " −"; }
+    .wx-scene-test-panel {
+      display: grid; grid-template-columns: minmax(120px, 1fr) auto; gap: 7px 9px;
+      width: min(250px, 66vw); margin-top: 7px; padding: 9px;
+      border: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 88%, transparent);
       backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     }
-    .wx-scene-time-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 7px; }
-    .wx-scene-time-head strong { font: 9px var(--f-mono); letter-spacing: .13em; text-transform: uppercase; color: var(--ink); }
-    .wx-scene-time-head span { font: 8px var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); text-align: right; }
-    .wx-time-presets { display: flex; gap: 4px; }
-    .wx-time-presets button {
-      min-height: 26px; flex: 1; padding: 0 6px; border: 1px solid var(--line);
-      background: var(--paper-2); color: var(--dim); font: 7px var(--f-mono);
-      letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+    .wx-scene-test-head { grid-column: 1 / -1; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .wx-scene-test-head strong { font: 8px var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); }
+    .wx-scene-test-head span { font: 7px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--faint); text-align: right; }
+    .wx-scene-slider { width: 100%; height: 6px; margin: 6px 0; accent-color: var(--accent); cursor: pointer; }
+    .wx-scene-live {
+      min-height: 24px; padding: 0 8px; border: 1px solid var(--line); background: var(--paper-2);
+      color: var(--dim); cursor: pointer; font: 7px var(--f-mono); letter-spacing: .1em; text-transform: uppercase;
     }
-    .wx-time-presets button:hover, .wx-time-presets button:focus-visible,
-    .wx-time-presets button[aria-pressed="true"] { color: var(--ink); border-color: var(--accent); outline: none; }
-    .wx-scene-slider { width: 100%; height: 6px; margin-top: 7px; accent-color: var(--accent); cursor: pointer; }
+    .wx-scene-live:hover, .wx-scene-live:focus-visible, .wx-scene-live[aria-pressed="true"] { color: var(--ink); border-color: var(--accent); outline: none; }
     .wx-deepdive { border-top: 1px solid var(--line); }
     .wx-deepdive:last-of-type { border-bottom: 1px solid var(--line); }
     .wx-deepdive summary {
@@ -234,10 +243,7 @@
     .wx-preflight-trigger::after { content: "→"; color: var(--accent); font-size: 13px; transition: transform var(--fast); }
     .wx-preflight-trigger:hover, .wx-preflight-trigger:focus-visible { border-color: var(--accent); background: color-mix(in srgb, var(--accent-bg) 72%, var(--paper-2)); outline: none; }
     .wx-preflight-trigger:hover::after, .wx-preflight-trigger:focus-visible::after { transform: translateX(2px); }
-    @media (max-width: 620px) {
-      .wx-scene-time { top: 0; width: 88%; }
-      .wx-time-presets button:nth-child(2) { display: none; }
-    }
+    @media (max-width: 620px) { .wx-scene-test { top: 0; right: 4px; opacity: .46; } }
 
     /* ---- outbound reference links ---- */
     .lnk-grid {
@@ -332,18 +338,15 @@
     </div>
     <div class="weather-scene-stage" id="wxSceneStage">
       <canvas id="wxCanvas" class="weather-canvas" aria-label="Animated wind and weather scene"></canvas>
-      <div class="wx-scene-time" aria-label="Scene time controls">
-        <div class="wx-scene-time-head"><strong id="wxSceneClock">Now</strong><span id="wxScenePhase">Live solar position</span></div>
-        <div class="wx-time-presets" role="group" aria-label="Scene time presets">
-          <button type="button" data-wx-time="now" aria-pressed="true">Now</button>
-          <button type="button" data-wx-time="sunrise" aria-pressed="false">Rise</button>
-          <button type="button" data-wx-time="golden" aria-pressed="false">Gold</button>
-          <button type="button" data-wx-time="sunset" aria-pressed="false">Set</button>
-          <button type="button" data-wx-time="night" aria-pressed="false">Night</button>
+      <details class="wx-scene-test" id="wxSceneTest">
+        <summary>Preview light</summary>
+        <div class="wx-scene-test-panel" aria-label="Scene light preview">
+          <div class="wx-scene-test-head"><strong id="wxSceneClock">Now</strong><span id="wxScenePhase">Live solar position</span></div>
+          <label class="vh" for="wxTimeSlider">Preview a time of day</label>
+          <input class="wx-scene-slider" id="wxTimeSlider" type="range" min="0" max="1439" step="5" value="720">
+          <button class="wx-scene-live" type="button" data-wx-live aria-pressed="true">Live</button>
         </div>
-        <label class="vh" for="wxTimeSlider">Simulated time of day</label>
-        <input class="wx-scene-slider" id="wxTimeSlider" type="range" min="0" max="1439" step="5" value="720">
-      </div>
+      </details>
     </div>
   </div>
 </section>
@@ -670,6 +673,8 @@
   var sceneSlider=document.getElementById('wxTimeSlider');
   var sceneClock=document.getElementById('wxSceneClock');
   var scenePhaseEl=document.getElementById('wxScenePhase');
+  var sceneLiveBtn=document.querySelector('[data-wx-live]');
+  var sceneTest=document.getElementById('wxSceneTest');
   var sceneLive=true,sceneMinute=720,sceneDay=null,sceneDate='',solarCacheKey='',solarCache=null;
 
   function pad2(n){return String(n).padStart(2,'0')}
@@ -707,22 +712,12 @@
     if(sceneClock)sceneClock.textContent=(sceneLive?'Now · ':'')+fmtMinute(sceneMinute);
     if(scenePhaseEl)scenePhaseEl.textContent=names[solar.phase]||solar.phase;
     var stage=document.getElementById('wxSceneStage');if(stage){stage.dataset.phase=solar.phase;stage.dataset.sun=solar.pos.elevation>=-0.8?'visible':'hidden';stage.dataset.moon=solar.phase==='night'?'visible':'hidden'}
-    document.querySelectorAll('[data-wx-time]').forEach(function(button){button.setAttribute('aria-pressed',String(sceneLive&&button.dataset.wxTime==='now'))});
+    if(sceneLiveBtn)sceneLiveBtn.setAttribute('aria-pressed',String(sceneLive));
     skyKey='';queueRender();
   }
-  function chooseSceneTime(key){
-    syncSceneDay();sceneLive=key==='now';
-    if(sceneLive)sceneMinute=minuteOf(new Date());
-    else if(sceneDay){
-      if(key==='sunrise')sceneMinute=minuteOf(sceneDay.sunrise);
-      if(key==='golden')sceneMinute=minuteOf(new Date((sceneDay.eveningGoldenStart.getTime()+sceneDay.sunset.getTime())/2));
-      if(key==='sunset')sceneMinute=minuteOf(sceneDay.sunset);
-      if(key==='night')sceneMinute=Math.min(1380,minuteOf(sceneDay.civilDusk)+60);
-    }
-    updateSceneControls();
-  }
-  document.querySelectorAll('[data-wx-time]').forEach(function(button){button.addEventListener('click',function(){chooseSceneTime(this.dataset.wxTime)})});
   if(sceneSlider)sceneSlider.addEventListener('input',function(){sceneLive=false;sceneMinute=Number(this.value);updateSceneControls()});
+  if(sceneLiveBtn)sceneLiveBtn.addEventListener('click',function(){sceneLive=true;updateSceneControls()});
+  if(sceneTest)sceneTest.addEventListener('toggle',function(){if(!this.open&&!sceneLive){sceneLive=true;updateSceneControls()}});
   window.labSceneSetTime=function(value){sceneLive=false;sceneMinute=Math.max(0,Math.min(1439,Number(value)||0));updateSceneControls()};
   syncSceneDay();sceneMinute=minuteOf(new Date());
 

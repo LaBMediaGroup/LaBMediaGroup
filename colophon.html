@@ -328,7 +328,7 @@
       <div class="bug-main">
         <h3>One solar clock, shared by two scenes</h3>
         <p>The Golden Hour Helper (<code>sun.html</code>) calculates sunrise, sunset, civil twilight, golden windows, solar noon, azimuth, elevation and a practical colour-temperature estimate for the selected date and location. The same client-side engine now tells Drone Weather when its sun should rise, set and hand the scene to the moon, so 9 PM cannot look like noon.</p>
-        <p>Golden Hour keeps the sun as the subject: its own wide pixel scene shows only low pine tips, birds and wind streaks. The treetops use the selected location&rsquo;s current Open-Meteo wind and gust reading; changing the date or scrubbing the clock never asks an API to calculate the light.</p>
+        <p>Golden Hour keeps the sun as the subject: its own wide pixel scene shows only low pine tips, smoothly drifting birds and wind streaks. The larger, higher quote roller carries the site&rsquo;s orange italic ending treatment without competing with the solar readout. The treetops use the selected location&rsquo;s current Open-Meteo wind and gust reading; changing the date or scrubbing the clock never asks an API to calculate the light.</p>
       </div>
       <div class="bug-side">
         <p>Dragging the time slider recalculates the solar position in local memory. Location coordinates leave the page only when it requests the optional current wind that moves the separate foreground animation.</p>
@@ -355,7 +355,7 @@
         <p>The scene is not in a box: its horizon is the page&rsquo;s own dividing rule, tinted with the safety state.</p>
       </div>
       <div class="bug-side">
-        <p>Drizzle is drawn apart from rain; the sun, twilight and moon follow the same Detroit solar clock as Golden Hour; and deer, foxes, squirrels and rabbits wander through when it is calm enough for them, with the drone breaking station to film whatever turns up. A compact scrubber can preview sunrise, gold, sunset or night without replacing the live weather.</p>
+        <p>Drizzle is drawn apart from rain; the sun, twilight and moon follow the same Detroit solar clock as Golden Hour; and deer, foxes, squirrels and rabbits wander through when it is calm enough for them, with the drone breaking station to film whatever turns up. The scene stays live without a toolbar; a faint collapsed light preview can temporarily scrub the day for testing, and closing it immediately restores current time.</p>
         <p>Everything renders into a low-resolution buffer and is upscaled with nearest-neighbour, so the whole scene sits on one honest pixel grid.</p>
         <p><em>No API key, no tracking. The picture and the advisory read the same numbers through the same thresholds, so they cannot disagree.</em></p>
       </div>
