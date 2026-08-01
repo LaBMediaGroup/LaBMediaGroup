@@ -1,0 +1,108 @@
+{
+  "lastUpdated": "2026-07-31T23:28:00-04:00",
+  "providers": [
+    {
+      "name": "Synthetic",
+      "tier": "$30/mo",
+      "plan": "Synthetic Plan",
+      "monthlyCost": 30,
+      "cost": "$30/mo",
+      "endpoint": "api.synthetic.new",
+      "percentUsed": 45,
+      "usedLabel": "~45%",
+      "totalLabel": "monthly quota",
+      "status": "ok",
+      "resetsIn": "resets monthly",
+      "models": [
+        {"name": "Kimi K3", "active": true},
+        {"name": "Kimi K2.7 Code", "active": false},
+        {"name": "GLM-5.2", "active": false},
+        {"name": "GLM-4.7", "active": false}
+      ]
+    },
+    {
+      "name": "Kimi <em>Code</em>",
+      "tier": "Moderato",
+      "plan": "Kimi for Coding",
+      "monthlyCost": 0,
+      "cost": "included w/ membership",
+      "endpoint": "api.kimi.com/coding",
+      "percentUsed": 95,
+      "usedLabel": "~95%",
+      "totalLabel": "weekly quota",
+      "status": "crit",
+      "resetsIn": "resets weekly",
+      "models": [
+        {"name": "K3-256k", "active": true},
+        {"name": "K3", "active": false},
+        {"name": "kimi-for-coding", "active": false}
+      ]
+    },
+    {
+      "name": "GLM / <em>Z.ai</em>",
+      "tier": "Personal",
+      "plan": "GLM Coding Plan",
+      "monthlyCost": 0,
+      "cost": "free tier",
+      "endpoint": "api.z.ai",
+      "percentUsed": 0,
+      "usedLabel": "—",
+      "totalLabel": "—",
+      "status": "unknown",
+      "resetsIn": "",
+      "models": [
+        {"name": "GLM-5.2", "active": true},
+        {"name": "GLM-4.7", "active": false}
+      ]
+    },
+    {
+      "name": "OpenAI",
+      "tier": "$20/mo",
+      "plan": "ChatGPT Plus",
+      "monthlyCost": 20,
+      "cost": "$20/mo",
+      "endpoint": "api.openai.com",
+      "percentUsed": 60,
+      "usedLabel": "~60%",
+      "totalLabel": "5h limit",
+      "status": "ok",
+      "resetsIn": "rolling 5h window",
+      "models": [
+        {"name": "GPT-5.6-sol", "active": true},
+        {"name": "Codex CLI", "active": false}
+      ]
+    },
+    {
+      "name": "Anthropic",
+      "tier": "—",
+      "plan": "API (pay per use)",
+      "monthlyCost": 0,
+      "cost": "usage-based",
+      "endpoint": "api.anthropic.com",
+      "percentUsed": 0,
+      "usedLabel": "—",
+      "totalLabel": "—",
+      "status": "unknown",
+      "resetsIn": "",
+      "models": [
+        {"name": "Claude Sonnet 5", "active": false}
+      ]
+    },
+    {
+      "name": "Google <em>Gemini</em>",
+      "tier": "Free",
+      "plan": "Free tier",
+      "monthlyCost": 0,
+      "cost": "free",
+      "endpoint": "generativelanguage.googleapis.com",
+      "percentUsed": 0,
+      "usedLabel": "—",
+      "totalLabel": "—",
+      "status": "unknown",
+      "resetsIn": "",
+      "models": [
+        {"name": "Gemini Pro", "active": false}
+      ]
+    }
+  ]
+}
