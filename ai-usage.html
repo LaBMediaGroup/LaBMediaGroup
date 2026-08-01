@@ -285,7 +285,7 @@ async function loadUsage(){
         const clEl = document.getElementById('changelog-list');
         if(clEl && cl.entries){
           clEl.innerHTML = cl.entries.map(e =>
-            '<div class="changelog-item">' +
+            '<div class="changelog-item" title="' + (e.time || '') + '">' +
             '<div class="changelog-date">' + e.date + '</div>' +
             '<div class="changelog-body">' + e.text + '</div>' +
             '</div>'
