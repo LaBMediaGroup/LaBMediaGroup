@@ -156,7 +156,7 @@ test('solar scenes hand daylight to moonlight without changing the weather compo
 });
 
 test('flight checklist stays hidden until requested, then persists and celebrates completion', async () => {
-  const page = await browser.newPage({ viewport: { width: 1180, height: 820 }, reducedMotion: 'reduce' });
+  const page = await browser.newPage({ viewport: { width: 1180, height: 820 }, reducedMotion: 'no-preference' });
   await page.route('**/*', (route) => {
     const url = route.request().url();
     if (url.startsWith(baseURL) || /^(?:data|blob):/.test(url)) route.continue();
@@ -172,20 +172,40 @@ test('flight checklist stays hidden until requested, then persists and celebrate
   for (const id of ['a1', 'a2', 'a3', 'a4', 'a5', 'a6']) {
     await checklist.locator(`[data-fc-check="${id}"]`).check({ force: true });
   }
-  assert.equal(await checklist.locator('[data-fc-group="0"]').evaluate((element) => element.classList.contains('is-complete')), true);
-  assert.match(await checklist.locator('[data-fc-group="0"] [data-fc-group-state]').textContent(), /Ready/);
+  const firstGroup = checklist.locator('[data-fc-group="0"]');
+  assert.equal(await firstGroup.evaluate((element) => element.classList.contains('is-complete')), true);
+  assert.equal(await firstGroup.evaluate((element) => element.classList.contains('celebrate')), true);
+  assert.match(await firstGroup.locator('[data-fc-group-state]').textContent(), /Ready/);
+  assert.ok(parseFloat(await checklist.locator('.fc-panel').evaluate((element) => getComputedStyle(element).borderRadius)) >= 8);
+  assert.ok(parseFloat(await checklist.locator('[data-fc-check="a1"]').locator('..').evaluate((element) => getComputedStyle(element).fontSize)) >= 12);
+
+  const grip = checklist.locator('[data-fc-resize]');
+  const gripBox = await grip.boundingBox();
+  const beforeResize = await checklist.boundingBox();
+  assert.ok(gripBox && beforeResize);
+  await page.mouse.move(gripBox.x + gripBox.width / 2, gripBox.y + gripBox.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(gripBox.x + gripBox.width / 2 - 70, gripBox.y + gripBox.height / 2 - 70, { steps: 5 });
+  await page.mouse.up();
+  const afterResize = await checklist.boundingBox();
+  assert.ok(afterResize.width < beforeResize.width - 40);
+  assert.ok(afterResize.height < beforeResize.height - 40);
+  const savedSize = await checklist.evaluate((element) => ({ width: parseFloat(element.style.width), height: parseFloat(element.style.height) }));
+
   await checklist.locator('[data-fc="minimize"]').click();
   assert.equal(await checklist.getAttribute('data-mode'), 'minimized');
   await page.goto(`${baseURL}/sun.html`, { waitUntil: 'domcontentloaded', timeout: 10_000 });
   assert.equal(await page.locator('#lab-flight-checklist').getAttribute('data-mode'), 'minimized');
   assert.equal(await page.locator('[data-fc-check="a1"]').isChecked(), true);
   await page.locator('[data-fc="minimize"]').click();
+  assert.deepEqual(await page.locator('#lab-flight-checklist').evaluate((element) => ({ width: parseFloat(element.style.width), height: parseFloat(element.style.height) })), savedSize);
   for (const id of ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6']) {
     await page.locator(`[data-fc-check="${id}"]`).check({ force: true });
   }
   assert.equal(await page.locator('#lab-flight-checklist').getAttribute('data-complete'), 'true');
   assert.match(await page.locator('.fc-ready').textContent(), /Go fly/i);
   assert.equal(await page.locator('.fc-ready').isVisible(), true);
+  await page.waitForTimeout(700);
   assert.equal(await page.locator('.fc-body').evaluate((element) => element.scrollTop), 0);
   await page.locator('[data-fc="close"]').click();
   assert.equal(await page.locator('#lab-flight-checklist').getAttribute('data-mode'), 'closed');
