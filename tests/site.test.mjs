@@ -157,6 +157,8 @@ test('the published page count follows the sitemap', () => {
   assert.doesNotMatch(colophon, /stale-test|A test that had stopped watching/i);
   assert.equal((colophon.match(/press play/gi) || []).length, 1);
   assert.match(colophon, /<div class="bug" id="flight-checklist">\s*<span class="bug-n">12<\/span>/);
+  assert.equal((colophon.match(/<h3>[^<]*<em>[^<]+<\/em>[^<]*<\/h3>/g) || []).length, 12);
+  assert.match(colophon, /\.bug h3 em\{font-style:italic;color:var\(--accent\)\}/);
 });
 
 test('each HTML page has one title, viewport, and h1', async (t) => {
