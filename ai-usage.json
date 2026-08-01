@@ -75,18 +75,18 @@
     },
     {
       "name": "Anthropic",
-      "tier": "—",
-      "plan": "API (pay per use)",
-      "monthlyCost": 0,
-      "cost": "usage-based",
+      "tier": "$20/mo",
+      "plan": "Claude Pro",
+      "monthlyCost": 20,
+      "cost": "$20/mo",
       "endpoint": "api.anthropic.com",
       "percentUsed": 0,
       "usedLabel": "—",
       "totalLabel": "—",
       "status": "unknown",
-      "resetsIn": "",
+      "resetsIn": "renews Aug 2",
       "models": [
-        {"name": "Claude Sonnet 5", "active": false}
+        {"name": "Claude Sonnet 5", "active": true}
       ]
     },
     {
