@@ -2,138 +2,58 @@
   "entries": [
     {
       "date": "2026-07-31",
-      "time": "23:31 EDT",
-      "text": "<strong>AI Usage Dashboard</strong> launched. Secret Easter egg page tracking all AI provider quotas in one place."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "23:16 EDT",
-      "text": "<strong>Drone Weather</strong> — smoother sun breathing pulse, polished drone hover drift, calmer tree sway, rain toggle button styles."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "20:34 EDT",
-      "text": "<strong>Drone Weather</strong> — floating badge replaced with integrated heading hierarchy and live advisory subhead."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "20:12 EDT",
-      "text": "<strong>Colophon</strong> — removed idle animation callout, renumbered case studies 05–11."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "20:10 EDT",
-      "text": "<strong>Drone Weather</strong> — mouse cursor pilot tracking, squirrel curiosity/click-hop interaction."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "20:08 EDT",
-      "text": "<strong>Drone Weather</strong> — unified landscape vector scene to warm ember brand-line palette."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "20:05 EDT",
-      "text": "<strong>Drone Weather</strong> — FPV drone bird deflection and evasive dive physics."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "20:05 EDT",
-      "text": "<strong>Drone Weather</strong> — tree redesigned to 3-tier bold minimalist vector pine with adaptive theme tones."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "20:03 EDT",
-      "text": "<strong>Drone Weather</strong> — FPV drone flight dynamics and vector birds flock/perching system."
+      "time": "23:30 EDT",
+      "text": "<strong>AI Usage Dashboard</strong> launched. Secret page tracking all provider quotas."
     },
     {
       "date": "2026-07-31",
       "time": "20:00 EDT",
-      "text": "<strong>Drone Weather</strong> — tree refined to architectural vector chevrons. Simulate-rain button removed in favor of 100% live Open-Meteo rain detection."
+      "text": "<strong>Drone Weather</strong> rebuilt — live rain detection, FPV drone flight physics, flocking birds, procedural tree sway, mouse-tracking pilot, breathing sun glow."
     },
     {
       "date": "2026-07-31",
-      "time": "19:57 EDT",
-      "text": "<strong>Drone Weather</strong> — dynamic tree gale-bending physics and woodland squirrel strolling animation."
+      "time": "19:30 EDT",
+      "text": "<strong>Golden Hour Helper</strong> — interactive shooting advice phrases, slot-machine spin animation, hero-sized display."
     },
     {
       "date": "2026-07-31",
-      "time": "19:54 EDT",
-      "text": "<strong>Drone Weather</strong> — tree redesigned to organic hand-drawn scalloped silhouette. Weather buttons stacked vertically."
+      "time": "19:20 EDT",
+      "text": "<strong>Aspect Ratio Tool</strong> — local photo/video previewing, multi-file uploads, native aspect detection."
     },
     {
       "date": "2026-07-31",
-      "time": "19:48 EDT",
-      "text": "<strong>Drone Weather</strong> — animated rain cloud with falling drops, ground splash bounce physics, rain simulation toggle."
+      "time": "19:00 EDT",
+      "text": "<strong>Stone theme</strong> added site-wide. Warm e-ink papyrus palette across all pages."
     },
     {
-      "date": "2026-07-31",
-      "time": "19:47 EDT",
-      "text": "<strong>Drone Weather</strong> — weather scene converted to unboxed transparent hero landscape. Calm 8mph sway + high-wind easter egg."
+      "date": "2026-07-28",
+      "time": "14:00 EDT",
+      "text": "<strong>Scattered</strong> added to the reel. Shared internally at Apple — manager praised the music and constraints."
     },
     {
-      "date": "2026-07-31",
-      "time": "19:41 EDT",
-      "text": "<strong>Drone Weather</strong> — live procedural tree sway and wind particle canvas simulation added to hero."
+      "date": "2026-07-27",
+      "time": "10:00 EDT",
+      "text": "<strong>Onboarding Field Guide</strong> adopted as team's living document. Co-authored with Lead, presented to full team."
     },
     {
-      "date": "2026-07-31",
-      "time": "19:37 EDT",
-      "text": "<strong>Aspect Ratio Tool</strong> — Clear Uploads button and multi-file local upload management."
+      "date": "2026-07-27",
+      "time": "08:00 EDT",
+      "text": "Site design system unified — one stylesheet, one token set, editorial direction. Replaced 11 divergent style blocks."
     },
     {
-      "date": "2026-07-31",
-      "time": "19:34 EDT",
-      "text": "<strong>Aspect Ratio Tool</strong> — dynamic source footage native aspect ratio readout and specs card in Instrument Serif."
+      "date": "2026-07-14",
+      "time": "20:00 EDT",
+      "text": "<strong>48 Hour Film Project Detroit 2026</strong> — completed and submitted."
     },
     {
-      "date": "2026-07-31",
-      "time": "19:31 EDT",
-      "text": "<strong>Aspect Ratio Tool</strong> — fixed kit image paths for RS3 Mini and EOS R50. Natural media aspect ratio detection for vertical uploads."
+      "date": "2026-07-09",
+      "time": "12:00 EDT",
+      "text": "Wheatley switched to <strong>Kimi K3</strong>. GLM-5.2 demoted to fallback."
     },
     {
-      "date": "2026-07-31",
-      "time": "19:27 EDT",
-      "text": "<strong>Drone Weather</strong> — generous bottom padding and soft rounded card corners."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "19:23 EDT",
-      "text": "<strong>Golden Hour Helper</strong> — slot-machine spin animation refined, sun stage box sizing fixed."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "19:18 EDT",
-      "text": "<strong>Golden Hour Helper</strong> — phrase generator scaled to hero display size, sun arc expanded."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "19:16 EDT",
-      "text": "<strong>Golden Hour Helper</strong> — interactive rolling shooting advice phrases added to sun arc stage."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "19:11 EDT",
-      "text": "<strong>Aspect Ratio Tool</strong> — custom local photo and video previewing. <strong>Colophon</strong> — documented zero-upload privacy in entry 11."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "19:09 EDT",
-      "text": "<strong>Colophon</strong> — expanded with tool case studies 10, 11, 12. Stats counters updated."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "19:05 EDT",
-      "text": "Stone theme refined to warm e-ink papyrus palette (<code>#C8C2B7</code>)."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "19:04 EDT",
-      "text": "Stone natural-light mode introduced across <code>lab.css</code> and header theme bars."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "19:01 EDT",
-      "text": "Theme Switch JS handler added to Golden Hour, Aspect Ratio, and Drone Weather pages."
+      "date": "2026-07-01",
+      "time": "09:00 EDT",
+      "text": "Apple career rotation to <strong>AOS Digital Experience UAT Lead</strong> officially began."
     }
   ]
 }
