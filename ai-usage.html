@@ -306,8 +306,8 @@ async function loadUsage(){
 }
 
 loadUsage();
-// Auto-refresh every 5 min
-setInterval(loadUsage, 5 * 60 * 1000);
+// Auto-refresh every 15 min
+setInterval(loadUsage, 15 * 60 * 1000);
 
 // Manual refresh — reloads JSON with cache-bust and shows a spinner state
 function manualRefresh(){
