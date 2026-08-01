@@ -151,6 +151,9 @@ test('the published page count follows the sitemap', () => {
   assert.match(colophon, new RegExp(`<h1>${numberWord(sitemapCount)} pages,`, 'i'));
   assert.match(colophon, new RegExp(`<dt>Pages</dt><dd>${sitemapCount}</dd>`));
   assert.equal((colophon.match(new RegExp(`${numberWord(sitemapCount)} pages`, 'gi')) || []).length, 4);
+  assert.match(colophon, /<dt>Stylesheets<\/dt><dd>02<\/dd>/);
+  assert.doesNotMatch(colophon, /one stylesheet/i);
+  assert.match(colophon, /14 mph\s+gusts/);
 });
 
 test('each HTML page has one title, viewport, and h1', async (t) => {
@@ -234,6 +237,10 @@ test('flight checklist follows visitors without exposing the private usage page'
   assert.match(checklist, /savedUI\.mode\|\|'closed'/);
   assert.match(checklist, /window\.print\(\)/);
   assert.match(checklist, /pointerdown/);
+  assert.match(checklist, /data-fc-resize/);
+  assert.match(checklist, /fc-spark/);
+  assert.match(checklist, /border-radius:10px/);
+  assert.match(checklist, /w:parseFloat\(root\.style\.width\)/);
   assert.match(checklist, /Go fly\./);
   assert.equal((checklist.match(/\['[abc][1-6]'/g) || []).length, 18);
 });
