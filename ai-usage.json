@@ -40,16 +40,17 @@
     },
     {
       "name": "GLM / <em>Z.ai</em>",
-      "tier": "Personal",
-      "plan": "GLM Coding Plan",
-      "monthlyCost": 0,
-      "cost": "free tier",
+      "tier": "$16.20/mo",
+      "plan": "GLM Coding Lite (Legacy V2)",
+      "monthlyCost": 16.20,
+      "cost": "$16.20/mo",
       "endpoint": "api.z.ai",
       "percentUsed": 0,
       "usedLabel": "—",
       "totalLabel": "—",
       "status": "unknown",
-      "resetsIn": "",
+      "resetsIn": "renews 2026-09-01",
+      "note": "Lite",
       "models": [
         {"name": "GLM-5.2", "active": true},
         {"name": "GLM-4.7", "active": false}
