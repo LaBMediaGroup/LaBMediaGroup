@@ -269,6 +269,8 @@ test('weather and Golden Hour scenes keep separate solar-aware compositions', ()
   assert.match(goldenScript, /wind_gusts_10m/);
   assert.match(goldenScript, /advice-accent/);
   assert.doesNotMatch(goldenScript, /bird\.s\*width/);
+  assert.equal((goldenScript.match(/treeTip\(Math\.round/g) || []).length, 5);
+  assert.match(goldenScript, /bw\*\.68[\s\S]*bw\*\.78[\s\S]*bw\*\.88/);
 });
 
 test('AI Usage remains public but deliberately hidden', () => {

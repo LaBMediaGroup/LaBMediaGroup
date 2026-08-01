@@ -331,6 +331,8 @@
       var bend=wind+gust,base=bh+3;
       treeTip(Math.round(bw*.11),base,Math.round(bh*.25),Math.round(bw*.038),bend*.75,night?.86:.72);
       treeTip(Math.round(bw*.50),base,Math.round(bh*.18),Math.round(bw*.032),bend*1.05,night?.8:.66);
+      treeTip(Math.round(bw*.68),base,Math.round(bh*.26),Math.round(bw*.040),bend*.98,night?.84:.69);
+      treeTip(Math.round(bw*.78),base,Math.round(bh*.40),Math.round(bw*.056),bend*.82,night?.94:.80);
       treeTip(Math.round(bw*.88),base,Math.round(bh*.32),Math.round(bw*.045),bend*.9,night?.9:.76);
       if(!night&&state.wind<22){
         var birdColor='rgba(6,10,13,.68)';

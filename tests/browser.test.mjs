@@ -138,6 +138,7 @@ test('Golden Hour responds to date changes and exposes calculated windows', asyn
   assert.notEqual(morningAdvice, initialAdvice);
   assert.equal(await page.locator('#advicePhrase .advice-accent').count(), 1);
   assert.ok(parseFloat(await page.locator('.advice-phrase').evaluate((element) => getComputedStyle(element).fontSize)) >= 30);
+  assert.ok(await page.locator('.sun-sky').evaluate((element) => element.getBoundingClientRect().height) >= 440, 'the compact desktop scene must not crowd the mobile composition');
   await page.evaluate(() => window.__sunRafStats.reset());
   await page.locator('#timeSlider').evaluate((slider) => {
     for (let minute = 420; minute <= 1020; minute += 20) {
@@ -192,9 +193,13 @@ test('solar scenes hand daylight to moonlight without changing the weather compo
     bottom: parseFloat(getComputedStyle(document.querySelector('.sun-advice-box')).bottom),
     fadeLeft: parseFloat(getComputedStyle(document.querySelector('.sun-advice-box'), '::before').left),
     fadeRight: parseFloat(getComputedStyle(document.querySelector('.sun-advice-box'), '::before').right),
-    fadeFilter: getComputedStyle(document.querySelector('.sun-advice-box'), '::before').filter
+    fadeFilter: getComputedStyle(document.querySelector('.sun-advice-box'), '::before').filter,
+    skyHeight: document.querySelector('.sun-sky').getBoundingClientRect().height,
+    stageHeight: document.querySelector('.sun-stage').getBoundingClientRect().height
   }));
-  assert.ok(adviceVisuals.bottom >= 160, 'the desktop quote should sit comfortably above the horizon');
+  assert.ok(adviceVisuals.bottom >= 62, 'the desktop quote should sit comfortably above the horizon');
+  assert.ok(adviceVisuals.skyHeight <= 280, `the desktop sky should stay panoramic, not ${adviceVisuals.skyHeight}px tall`);
+  assert.ok(adviceVisuals.stageHeight <= 420, `the complete desktop scene should keep its conditions visible, not run ${adviceVisuals.stageHeight}px tall`);
   assert.ok(adviceVisuals.fadeLeft <= -80 && adviceVisuals.fadeRight <= -200, 'the quote vignette must fade beyond its visible copy box');
   assert.match(adviceVisuals.fadeFilter, /blur\(/, 'the quote vignette edge should be feathered');
   await page.close();
