@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /_backup_original/
-Disallow: /_directions.html
 
 Sitemap: https://labmedia.work/sitemap.xml

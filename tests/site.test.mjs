@@ -23,6 +23,7 @@ const require = createRequire(import.meta.url);
 const ideasData = require('../ideas-data.js');
 const resources = loadConst('resources-data.js', 'resources');
 const gearData = loadConst('gear-data.js', 'gearData');
+const sun = require('../sun-calc.js');
 const promptPools = Object.entries(ideasData).filter(([, value]) => Array.isArray(value));
 const promptCount = promptPools.reduce((total, [, value]) => total + value.length, 0);
 const resourceCount = resources.length;
@@ -32,6 +33,22 @@ test('JavaScript files parse', async (t) => {
   for (const file of jsFiles) {
     await t.test(file, () => {
       execFileSync(process.execPath, ['--check', path.join(root, file)], { stdio: 'pipe' });
+    });
+  }
+});
+
+test('inline JavaScript parses on every page', async (t) => {
+  for (const file of htmlFiles) {
+    await t.test(file, () => {
+      const scripts = [...read(file).matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
+      scripts.forEach((match, index) => {
+        const attrs = match[1];
+        if (/\bsrc\s*=/i.test(attrs) || /application\/ld\+json/i.test(attrs)) return;
+        assert.doesNotThrow(
+          () => new vm.Script(match[2], { filename: `${file}:inline-${index + 1}` }),
+          `${file} inline script ${index + 1} does not parse`
+        );
+      });
     });
   }
 });
@@ -136,6 +153,27 @@ test('HTML ids are unique per page', async (t) => {
   }
 });
 
+test('primary navigation and Explore footer links stay in sync', () => {
+  const pages = htmlFiles.filter((file) => /class=["']nav-primary["']/.test(read(file)));
+  const hrefs = (markup) => [...markup.matchAll(/href=["']([^"']+)["']/gi)].map((match) => match[1]);
+  const section = (html, startPattern, endPattern) => {
+    const start = html.search(startPattern);
+    assert.notEqual(start, -1);
+    const tail = html.slice(start);
+    const end = tail.search(endPattern);
+    assert.notEqual(end, -1);
+    return tail.slice(0, end);
+  };
+  const expectedNav = hrefs(section(read(pages[0]), /<nav\b[^>]*class=["']nav-primary["']/, /<\/nav>/i));
+  const expectedExplore = hrefs(section(read(pages[0]), /<h3>Explore<\/h3>/i, /<\/div>/i));
+
+  for (const file of pages) {
+    const html = read(file);
+    assert.deepEqual(hrefs(section(html, /<nav\b[^>]*class=["']nav-primary["']/, /<\/nav>/i)), expectedNav, `${file} primary nav drifted`);
+    assert.deepEqual(hrefs(section(html, /<h3>Explore<\/h3>/i, /<\/div>/i)), expectedExplore, `${file} Explore footer drifted`);
+  }
+});
+
 test('local file references resolve', async (t) => {
   for (const file of htmlFiles) {
     await t.test(file, () => {
@@ -175,6 +213,7 @@ test('AI Usage remains public but deliberately hidden', () => {
   assert.equal(entryPoints.length, 1);
   assert.equal(entryPoints[0].file, 'colophon.html');
   assert.match(entryPoints[0].anchor, /aria-hidden="true"/);
+  assert.match(entryPoints[0].anchor, /tabindex="-1"/);
   assert.match(entryPoints[0].anchor, /position:fixed/);
   assert.match(read('lab-egg.js'), /window\.location\.href\s*=\s*['"]\/ai-usage\.html['"]/);
 });
@@ -194,6 +233,15 @@ test('usage timeline adds each changelog item once', () => {
 
 test('reduced-motion weather scene does not schedule a continuous render loop', () => {
   assert.match(read('droneweather.html'), /visible\s*&&\s*!REDUCED\s*\?\s*requestAnimationFrame\(render\)\s*:\s*null/);
+});
+
+test('solar calculator keeps local-day events ordered across UTC boundaries', () => {
+  const day = sun.getDay('2026-08-01', 42.67, -83.03);
+  const events = [day.civilDawn, day.sunrise, day.morningGoldenEnd, day.eveningGoldenStart, day.sunset, day.civilDusk];
+  events.slice(1).forEach((event, index) => assert.ok(event > events[index], 'solar events must be chronological'));
+  assert.ok(day.daylightMinutes > 800 && day.daylightMinutes < 1000);
+  assert.ok(day.maxElevation > 50 && day.maxElevation < 80);
+  assert.equal(day.sunset.getUTCDate(), 2, 'Detroit sunset crosses into the next UTC date in August');
 });
 
 function numberWord(value) {
