@@ -619,6 +619,38 @@
     }
   }
 
+  // Mouse Interactive State
+  var mouse = { x: -1000, y: -1000, inside: false, clickX: -1000, clickY: -1000, clicked: false };
+
+  cvs.addEventListener('mousemove', function(e){
+    var rect = cvs.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    mouse.x = (e.clientX - rect.left) * (cvs.width / rect.width);
+    mouse.y = (e.clientY - rect.top) * (cvs.height / rect.height);
+    mouse.inside = true;
+  });
+
+  cvs.addEventListener('mouseleave', function(){
+    mouse.inside = false;
+    mouse.x = -1000;
+    mouse.y = -1000;
+  });
+
+  cvs.addEventListener('click', function(e){
+    var rect = cvs.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    mouse.clickX = (e.clientX - rect.left) * (cvs.width / rect.width);
+    mouse.clickY = (e.clientY - rect.top) * (cvs.height / rect.height);
+    mouse.clicked = true;
+
+    // Squirrel startled click hop!
+    if (squirrel.state !== 'hidden') {
+      squirrel.hopBoost = 14 * (cvs.width / 400);
+      squirrel.pauseTimer = 0;
+      squirrel.state = 'pausing';
+    }
+  });
+
   // Vector Woodland Squirrel strolling along the baseline!
   var squirrel = {
     x: -40,
@@ -626,7 +658,8 @@
     timer: 0,
     pauseTimer: 0,
     dir: 1,
-    tailAngle: 0
+    tailAngle: 0,
+    hopBoost: 0
   };
 
   function drawSquirrel(w, h) {
@@ -642,6 +675,12 @@
         squirrel.timer = 0;
       }
       return;
+    }
+
+    // Mouse curiosity: turn body/head toward mouse when in section
+    if (mouse.inside && squirrel.state === 'pausing') {
+      if (mouse.x > squirrel.x + 12) squirrel.dir = 1;
+      else if (mouse.x < squirrel.x - 12) squirrel.dir = -1;
     }
 
     var speedMult = windSpeed >= 18 ? 2.6 : 1.25;
@@ -670,9 +709,15 @@
       }
     }
 
+    // Startled click hop decay
+    if (squirrel.hopBoost > 0) {
+      squirrel.hopBoost *= 0.82;
+      if (squirrel.hopBoost < 0.5) squirrel.hopBoost = 0;
+    }
+
     // Walking hop & tail wiggle
     var hopY = (squirrel.state === 'pausing') ? 0 : Math.abs(Math.sin(time * 14)) * 3;
-    var sqY = lineY - hopY;
+    var sqY = lineY - hopY - squirrel.hopBoost;
     squirrel.tailAngle = Math.sin(time * 7) * 0.22;
 
     ctx.save();
@@ -754,7 +799,6 @@
       ctx.transform(1, 0, (Math.sin(time * freq) * bendFlex + bendFlex) * 0.25, 1, 0, 0);
     }
 
-    // Tasteful brand line stroke palette (Warm Ember #E07A47)
     ctx.strokeStyle = '#E07A47';
     ctx.lineWidth = 2.8 * (w / 400);
     ctx.lineCap = 'round';
@@ -771,7 +815,7 @@
     ctx.lineTo(0, -trunkH - 3 * scale);
     ctx.stroke();
 
-    // 2. Exact 3-Tier Bold Minimalist Vector Pine (Matching User Image!)
+    // 2. Exact 3-Tier Bold Minimalist Vector Pine
     // Tier 1 (Top)
     var t1_y = topY;
     var t1_w = 17 * scale;
@@ -811,7 +855,7 @@
     ctx.restore();
   }
 
-  // FPV Drone State (Smooth hover in clear weather with bird evasion, swept in gale wind)
+  // FPV Drone State (Smooth hover in clear weather with cursor pilot tracking & bird evasion)
   var drone = {
     x: 100,
     y: 80,
@@ -829,10 +873,21 @@
     var isBadWeather = windSpeed >= 18 || windGust >= 18;
 
     if (!isBadWeather) {
-      // CLEAR / GOOD WEATHER: Cinematic FPV drone hover & tilt
-      drone.x = w * 0.36 + Math.sin(time * 0.8) * (w * 0.14);
-      drone.y = h * 0.30 + Math.cos(time * 1.4) * (h * 0.08);
-      drone.rot = Math.cos(time * 0.8) * 0.09;
+      // Mouse Cursor Pilot Tracking when cursor is inside section!
+      if (mouse.inside) {
+        var targetX = Math.max(30 * (w/400), Math.min(w - 30 * (w/400), mouse.x));
+        var targetY = Math.max(30 * (w/400), Math.min(h * 0.75, mouse.y - 20 * (w/400)));
+
+        var vx = targetX - drone.x;
+        drone.x += vx * 0.08;
+        drone.y += (targetY - drone.y) * 0.08;
+        drone.rot = Math.max(-0.25, Math.min(0.25, vx * 0.006));
+      } else {
+        // Autonomous hover track
+        drone.x = w * 0.36 + Math.sin(time * 0.8) * (w * 0.14);
+        drone.y = h * 0.30 + Math.cos(time * 1.4) * (h * 0.08);
+        drone.rot = Math.cos(time * 0.8) * 0.09;
+      }
 
       // Collision avoidance deflection physics: dive & pitch down swoop under approaching birds!
       var nearBird = false;
