@@ -327,20 +327,22 @@
       <span class="bug-n">09</span>
       <div class="bug-main">
         <h3>Simulating solar elevation and color temperature without API calls</h3>
-        <p>The Golden Hour Helper (<code>sun.html</code>) calculates real-time solar declination, azimuth, elevation angle, and color temperature (from 11,000K Blue Hour down to 2,700K Golden Hour) for Metro Detroit (42.67°N) entirely client-side. Dragging the time slider recalculates atmospheric physics in local memory without firing network requests or hitting third-party rate limits.</p>
+        <p>The Golden Hour Helper (<code>sun.html</code>) calculates real-time solar declination, azimuth, elevation angle and colour temperature, from 11,000K Blue Hour down to 2,700K Golden Hour, for Metro Detroit (42.67°N) entirely client-side.</p>
       </div>
       <div class="bug-side">
-        <p><em>Zero latency, zero API costs. Solar position math is pure trigonometry running in local browser memory.</em></p>
+        <p>Dragging the time slider recalculates atmospheric physics in local memory, without firing a network request or running into a third-party rate limit.</p>
+        <p><em>Zero latency, zero API costs. Solar position maths is pure trigonometry running in browser memory.</em></p>
       </div>
     </div>
     <div class="bug" id="aspect-previewer">
       <span class="bug-n">10</span>
       <div class="bug-main">
         <h3>An interactive crop previewer that previews local media</h3>
-        <p>The Aspect Ratio Previewer (<code>aspect.html</code>) overlays 2.39&#58;1 Scope, 1.85&#58;1 Flat, 16&#58;9 HD, 4&#58;3 Academy, and 9&#58;16 Vertical mattes live over sample stills or your own local photos and video clips. Instead of guessing letterbox boundaries in NLE timelines, it computes exact active pixel resolutions (e.g. 3840&times;1607 for 4K 2.39 scope) so editors know their active canvas size before rendering.</p>
+        <p>The Aspect Ratio Previewer (<code>aspect.html</code>) overlays 2.39&#58;1 Scope, 1.85&#58;1 Flat, 16&#58;9 HD, 4&#58;3 Academy and 9&#58;16 Vertical mattes live over sample stills, or over your own photos and video clips. It computes exact active pixel resolutions rather than leaving you to guess letterbox boundaries in an NLE timeline.</p>
       </div>
       <div class="bug-side">
-        <p><em>Zero upload, 100% private. User photos and video clips are parsed locally in browser memory via <code>URL.createObjectURL()</code> without sending a single byte across the network.</em></p>
+        <p>3840&times;1607 is the real canvas for 4K at 2.39, so you know your working area before rendering rather than after.</p>
+        <p><em>Zero upload, 100% private. Photos and clips are parsed locally in browser memory via <code>URL.createObjectURL()</code> without sending a byte across the network.</em></p>
       </div>
     </div>
     <div class="bug" id="drone-weather">
@@ -348,11 +350,13 @@
       <div class="bug-main">
         <h3>A weather scene that actually reads the weather</h3>
         <p>SkyBound Weather (<code>droneweather.html</code>) fetches live wind, gusts and temperature for Shelby Township (42.67&deg;N) from the Open-Meteo REST API, then evaluates flight thresholds: 0&ndash;11 mph ideal, 12&ndash;18 active compensation, 18+ grounded.</p>
-        <p>The animation above the numbers reads the same values. Wind is horizontal streaks whose count, length and speed all scale off the figure, so 3 mph and 22 mph cannot look alike. Gusts arrive in bursts with real lulls between them rather than on a fixed interval, because a metronome does not read as weather. Drizzle is drawn differently from rain, the sun grows and drops into frame as the temperature climbs, and deer, foxes, squirrels and rabbits wander through in conditions calm enough for them, with the drone breaking station to film whatever turns up. Everything renders into a low-resolution buffer and is upscaled with nearest-neighbour, so the whole scene sits on one honest pixel grid.</p>
-        <p>The scene is not in a box. Its horizon is the page&rsquo;s own dividing rule, tinted green, amber or red with the current safety state, so the line the drone stands on runs the full width of the page.</p>
+        <p>The animation reads the same values. Wind is horizontal streaks whose count, length and speed all scale off the figure, so 3 mph and 22 mph cannot look alike, and gusts arrive in bursts with real lulls rather than on a fixed interval, because a metronome does not read as weather.</p>
+        <p>The scene is not in a box: its horizon is the page&rsquo;s own dividing rule, tinted with the safety state.</p>
       </div>
       <div class="bug-side">
-        <p><em>No API key and no user tracking. The picture and the advisory read the same numbers through the same thresholds, so they cannot disagree with each other.</em></p>
+        <p>Drizzle is drawn apart from rain, the sun grows and drops into frame as the temperature climbs, and deer, foxes, squirrels and rabbits wander through when it is calm enough for them, with the drone breaking station to film whatever turns up.</p>
+        <p>Everything renders into a low-resolution buffer and is upscaled with nearest-neighbour, so the whole scene sits on one honest pixel grid.</p>
+        <p><em>No API key, no tracking. The picture and the advisory read the same numbers through the same thresholds, so they cannot disagree.</em></p>
       </div>
     </div>
 
@@ -360,24 +364,23 @@
       <span class="bug-n">12</span>
       <div class="bug-main">
         <h3>A test that had stopped watching</h3>
-        <p>Three pages shipped without the floating assistant and nobody noticed for a day.
-        There is a test whose whole job is to catch that, and it had been failing the entire
-        time. It opened by asserting the site had fifteen HTML pages. Four more had been added
-        and nobody moved the number, so it threw on the count and never reached the check
-        underneath it, which is the one that would have named the pages missing their widget.</p>
-        <p>Three further assertions were queued up behind that throw, all rotten in the same way:
-        a lazy-load check still matching bare filenames after every one gained a cache-busting
-        suffix, a message cap pinned at eight after the widget moved to twelve, and a resource
-        index pinned at 126 while the data file had quietly reached 127. Three checks were
-        passing. Seventy pass now.</p>
-        <p>The counts are derived from the data now rather than restated next to it. A test that
-        has to be updated by hand every time the site grows is a test that will be wrong exactly
+        <p>Three pages shipped without the floating assistant and nobody noticed for a day. The
+        test whose whole job is to catch that had been failing the entire time: it opened by
+        asserting the site had fifteen HTML pages. Four more had been added, so it threw on the
+        count and never reached the check underneath, which is the one that names the pages
+        missing their widget.</p>
+        <p>The counts are derived from the data now rather than restated beside it. A test you
+        have to update by hand every time the site grows is a test that will be wrong exactly
         when you need it.</p>
       </div>
       <div class="bug-side">
-        <p><em>That stale 126 had also been typed into five pages, while the README said 128. The
-        data file was right and everything describing it was wrong, which is the argument for
-        measuring rather than remembering.</em></p>
+        <p>Three more assertions were queued behind that throw, all rotten the same way: a
+        lazy-load check still matching bare filenames after every one gained a cache-busting
+        suffix, a message cap pinned at eight after the widget moved to twelve, and a resource
+        index pinned at 126 while the data file had reached 127. Three checks were passing.
+        Seventy pass now.</p>
+        <p><em>That stale 126 had also been typed onto five pages, while the README said 128.
+        The data file was right and everything describing it was wrong.</em></p>
       </div>
     </div>
   </div>
