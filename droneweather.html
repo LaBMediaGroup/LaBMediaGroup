@@ -59,7 +59,7 @@
       font-weight: 400;
       letter-spacing: -.015em;
       /* Pulled back off 1.1em so the W doesn't sit directly under the
-         descender of the y in Sky — they were reading as one stacked column. */
+         descender of the y in Sky. They were reading as one stacked column. */
       margin-left: .68em;
       margin-top: .04em;
     }
@@ -405,7 +405,7 @@
     <div class="rules-list">
       <div class="rule-item">
         <h3><em>Steady wind is the average. The gust is the peak.</em></h3>
-        <p>The aircraft trims itself for the average and then has to correct for everything above it. Every correction is motors spinning up asymmetrically &mdash; battery burned, and a gimbal making constant micro-adjustments that show up as jitter once you are on a long lens. Eight steady with gusts to twenty-two is a harder flight than a flat fifteen, which is why the number on the right of these tiles is the one worth watching.</p>
+        <p>The aircraft trims itself for the average and then has to correct for everything above it. Every correction is motors spinning up asymmetrically, burning battery, with a gimbal making constant micro-adjustments that show up as jitter once you are on a long lens. Eight steady with gusts to twenty-two is a harder flight than a flat fifteen, which is why the number on the right of these tiles is the one worth watching.</p>
       </div>
       <div class="rule-item">
         <h3><em>The wind at 300 feet is not the wind at your feet.</em></h3>
@@ -423,7 +423,7 @@
     <div class="rules-list">
       <div class="rule-item">
         <h3><em>Anti-collision lighting, visible for three statute miles.</em></h3>
-        <p>Night flying under Part&nbsp;107 no longer needs a waiver, but it does need a light: anti-collision lighting visible for at least three statute miles, flashing fast enough to be seen and avoided. The navigation LEDs your aircraft shipped with almost certainly do not clear that bar &mdash; this means a dedicated strobe, mounted and switched on. The same requirement applies during civil twilight.</p>
+        <p>Night flying under Part&nbsp;107 no longer needs a waiver, but it does need a light: anti-collision lighting visible for at least three statute miles, flashing fast enough to be seen and avoided. The navigation LEDs your aircraft shipped with almost certainly do not clear that bar, so this means a dedicated strobe, mounted and switched on. The same requirement applies during civil twilight.</p>
       </div>
       <div class="rule-item">
         <h3><em>The training is a separate requirement from the light.</em></h3>
@@ -483,7 +483,7 @@
     </div>
 
     <p class="ckl-note">
-      Ticks are saved in this browser only &mdash; nothing is sent anywhere, and there is no account to make.
+      Ticks are saved in this browser only. Nothing is sent anywhere, and there is no account to make.
       This is how LaB packs for a shoot, not a regulatory document: the rules summarised on this page are
       United States Part&nbsp;107 in plain language, they change, and they are not the same everywhere.
       Check the current text at the FAA before you rely on any of it.
@@ -493,8 +493,8 @@
   <div class="sec-c sec-c-weather">
     <h2 style="font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;margin-bottom:var(--s-3);">Check <em>before you fly.</em></h2>
     <p style="color:var(--dim);font-size:var(--t-sm);line-height:1.65;max-width:64ch;margin:0;">
-      The reading at the top of this page is one station and one moment. For anything that matters &mdash; a paid
-      shoot, unfamiliar airspace, weather on the edge &mdash; these are the places worth opening first.
+      The reading at the top of this page is one station and one moment. For anything that matters, whether a paid
+      shoot, unfamiliar airspace or weather on the edge, these are the places worth opening first.
     </p>
     <div class="lnk-grid">
       <a class="lnk" href="https://www.uavforecast.com/" target="_blank" rel="noopener">
@@ -684,7 +684,7 @@
     }).catch(function(){});
 })();
 
-/* Pre-flight checklist — ticks persist in this browser, nowhere else. */
+/* Pre-flight checklist. Ticks persist in this browser, nowhere else. */
 (function(){
   'use strict';
   var root = document.getElementById('preflight');
@@ -728,7 +728,7 @@
   sync();
 })();
 
-/* Field Station — procedural weather scene (100% client-side, no third-party calls)
+/* Field Station : procedural weather scene (100% client-side, no third-party calls)
    Everything renders into a low-resolution buffer and is upscaled with
    nearest-neighbour, so the whole scene stays on one honest pixel grid.
    It reads the same numbers the card below it reports, and the same
@@ -945,7 +945,7 @@
      Forest critters
      Sprites are character maps: '.' transparent, 'X' body, 'o' shade.
      All face LEFT; walking right mirrors the blit. Sized so the
-     silhouette survives the bit grid — below about ten bits across a
+     silhouette survives the bit grid. Below about ten bits across a
      tail or an ear is one pixel and simply disappears.
      --------------------------------------------------------------- */
   function blit(sprite, x, y, flip, tone, dim){
@@ -1122,7 +1122,7 @@
     } else if (critter){
       /* Something wandered in, so go and shoot it. The drone slides over,
          drops to a lower framing height and orbits slowly around the
-         subject. The easing is deliberately slack — lagging behind the
+         subject. The easing is deliberately slack, because lagging behind the
          animal is what makes it read as a camera following something
          rather than an object snapping to a coordinate. */
       var orbit = Math.sin(t * 0.55) * (BW * 0.075);
@@ -1184,7 +1184,7 @@
 
   /* Temperature drives how much sun there is.
      On a cold day it is a small pale disc riding high, mostly lost in the
-     top feather — barely peeking in. As it warms the disc grows, drops
+     top feather, barely peeking in. As it warms the disc grows, drops
      further into frame, deepens toward the full ember and throws more
      rays, until a genuinely hot day gets a dithered heat bloom around it.
      35F reads as none of that, 95F as all of it. Before this, temperature
@@ -1228,7 +1228,7 @@
     }
   }
 
-  /* Drizzle is not thin rain — it is fewer, shorter, slower drops that
+  /* Drizzle is not thin rain. It is fewer, shorter, slower drops that
      barely land. Scaling one set of parameters down reads as a bug, so
      count, length, speed, opacity and splash are all stepped. */
   function drawPrecip(bend){
@@ -1300,7 +1300,7 @@
     sky.width = BW; sky.height = BH;
     // The floor is the last row of the buffer, because the canvas bottom is
     // now flush with the hero's rule. Nothing renders below the horizon any
-    // more — the page itself is what is under the ground.
+    // more. The page itself is what is under the ground.
     GROUND = BH - 1;
     skyKey = '';
     seed();
@@ -1381,5 +1381,7 @@
   raf = requestAnimationFrame(render);
 })();
 </script>
+<script src="assistant-guide.js"></script>
+<script src="assistant-widget.js"></script>
 </body>
 </html>

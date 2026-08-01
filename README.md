@@ -17,7 +17,7 @@ weekend. Nothing costs money and nothing asks for an email.
 |---|---|
 | `index.html` | Hub — 2024 reel, film grid, resource shortlists |
 | `portfolio.html` | 8 films, 9 production timelines, 7 BTS galleries (81 photos) |
-| `resources.html` | 128 vetted links across 15 groups, collapsed by default |
+| `resources.html` | 127 vetted links across 15 groups, collapsed by default |
 | `gear.html` | The Kit — what LaB actually owns, with verdicts and prices |
 | `colophon.html` | How the site is built, and what was quietly broken |
 | `ideas.html` | Story generator — 1,218 prompts across 14 pools |
@@ -66,8 +66,8 @@ dependencies. GitHub Pages hosting on a custom domain.
 Resources can be starred into a personal kit — stored in `localStorage` under
 `lab-kit`, shown as a pinned group above group 01, hidden when empty.
 
-Keys come from `keyOf()`, which slugifies the entry **name**. Only 21 of the 128
-entries carry an explicit `id`, but all 128 names are unique and slugify
+Keys come from `keyOf()`, which slugifies the entry **name**. Only 21 of the 127
+entries carry an explicit `id`, but all 127 names are unique and slugify
 uniquely, so no data file had to change. Deriving from name rather than array
 position means reordering or inserting entries never invalidates a saved kit or
 a link already shared. Stale keys are pruned silently on load.
@@ -78,7 +78,7 @@ replace, or dismiss, and the hash is scrubbed from the URL either way.
 
 ## Data files
 
-- `resources-data.js` — 128 entries. 6 are collaborators (people actually worked
+- `resources-data.js` — 127 entries. 6 are collaborators (people actually worked
   with) and are exempt from the Free/Paid tags.
 
   Four were removed in July 2026. **Detroit Independent Film Festival** —

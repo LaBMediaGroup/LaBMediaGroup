@@ -1,6 +1,26 @@
 {
   "entries": [
     {
+      "date": "2026-08-01",
+      "time": "11:20 EDT",
+      "text": "<strong>Housekeeping.</strong> The floating assistant was missing from Aspect Ratio, Golden Hour and Drone Weather since they shipped; all three have it now. The test that guards that had been failing on a hardcoded page count, so it never got as far as checking. Sitemap picked up the three tool pages, and the resource total was corrected to 127, having read 126 on five pages and 128 in the README since the last entry was added."
+    },
+    {
+      "date": "2026-08-01",
+      "time": "10:40 EDT",
+      "text": "<strong>Themes renamed.</strong> Stone becomes <em>Sepia</em>, the warm-paper theme people actually mean by that word, and the dark weathered-wood theme that held the name becomes <em>Timber</em>. Saved preferences migrate automatically, so nobody flips between a light and dark page. 404 was quietly missing a theme button and now offers all five."
+    },
+    {
+      "date": "2026-08-01",
+      "time": "09:30 EDT",
+      "text": "<strong>Drone Weather, part two.</strong> New pixel scene: wind you can actually read, gusts that arrive in bursts with real lulls instead of every two seconds, drizzle told apart from rain, and a sun that grows with the temperature. Deer, foxes, squirrels and rabbits wander through, and the drone breaks station to film them. The scene is no longer a box: its horizon is the page's own dividing line, tinted with the flight-safety state."
+    },
+    {
+      "date": "2026-08-01",
+      "time": "09:00 EDT",
+      "text": "<strong>Flight safety, expanded.</strong> Why the gust number matters more than steady wind, what night flying actually requires, an 18-point pre-flight checklist that remembers itself in your browser, and links to the forecast services worth opening before a shoot."
+    },
+    {
       "date": "2026-07-31",
       "time": "23:30 EDT",
       "text": "<strong>AI Usage Dashboard</strong> launched. Secret Easter egg page with Konami code and hidden dot on Colophon."
@@ -8,22 +28,22 @@
     {
       "date": "2026-07-31",
       "time": "20:00 EDT",
-      "text": "<strong>Drone Weather</strong> rebuilt from scratch — live rain detection via Open-Meteo, FPV drone flight physics, flocking birds, procedural tree sway, breathing sun glow, mouse-tracking pilot."
+      "text": "<strong>Drone Weather</strong> rebuilt from scratch, with live rain detection via Open-Meteo, FPV drone flight physics, flocking birds, procedural tree sway, breathing sun glow, mouse-tracking pilot."
     },
     {
       "date": "2026-07-31",
       "time": "19:30 EDT",
-      "text": "<strong>Golden Hour Helper</strong> — interactive shooting advice phrases, slot-machine spin animation, hero-sized sun arc."
+      "text": "<strong>Golden Hour Helper</strong> : interactive shooting advice phrases, slot-machine spin animation, hero-sized sun arc."
     },
     {
       "date": "2026-07-31",
       "time": "19:20 EDT",
-      "text": "<strong>Aspect Ratio Tool</strong> — local photo/video previewing, multi-file uploads, native aspect detection. Zero-upload privacy documented in Colophon."
+      "text": "<strong>Aspect Ratio Tool</strong> : local photo/video previewing, multi-file uploads, native aspect detection. Zero-upload privacy documented in Colophon."
     },
     {
       "date": "2026-07-31",
       "time": "19:00 EDT",
-      "text": "<strong>Stone theme</strong> added site-wide. Warm e-ink papyrus palette across all pages and theme bars."
+      "text": "<strong>Sepia theme</strong> added site-wide. Warm e-ink papyrus palette across all pages and theme bars. (Shipped as <em>Stone</em>; renamed 1 August.)"
     },
     {
       "date": "2026-07-31",
@@ -43,7 +63,7 @@
     {
       "date": "2026-07-31",
       "time": "06:01 EDT",
-      "text": "LaB Assistant knowledgebase ingested — verified film crew, gear, and production data. Video cards added to film queries. Mobile chat UI optimized."
+      "text": "LaB Assistant knowledgebase ingested, verifying film crew, gear, and production data. Video cards added to film queries. Mobile chat UI optimized."
     },
     {
       "date": "2026-07-31",
