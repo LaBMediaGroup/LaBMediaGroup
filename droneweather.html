@@ -812,11 +812,13 @@
     ctx.restore();
   }
 
-  // FPV Drone State (Smooth hover in clear weather, swept in gale wind)
+  // FPV Drone State (Smooth hover in clear weather with bird evasion, swept in gale wind)
   var drone = {
     x: 100,
     y: 80,
     rot: 0,
+    evasionY: 0,
+    evasionRot: 0,
     badWindX: -50,
     badWindY: 60,
     badWindRot: 0,
@@ -833,9 +835,36 @@
       drone.y = h * 0.30 + Math.cos(time * 1.4) * (h * 0.08);
       drone.rot = Math.cos(time * 0.8) * 0.09;
 
+      // Collision avoidance deflection physics: dive & pitch down swoop under approaching birds!
+      var nearBird = false;
+      for (var i = 0; i < birds.length; i++) {
+        var bd = birds[i];
+        var dx = drone.x - bd.x;
+        var dy = drone.y - bd.y;
+        var dist = Math.hypot(dx, dy);
+
+        if (dist < 48 * (w / 400)) {
+          nearBird = true;
+          break;
+        }
+      }
+
+      if (nearBird) {
+        // Evasive dive swoop under bird!
+        drone.evasionY = Math.min(drone.evasionY + 2.2 * (w / 400), 22 * (w / 400));
+        drone.evasionRot = -0.35;
+      } else {
+        // Smoothly climb back to standard hover track
+        drone.evasionY = Math.max(drone.evasionY - 1.2 * (w / 400), 0);
+        drone.evasionRot *= 0.84;
+      }
+
+      var finalY = drone.y + drone.evasionY;
+      var finalRot = drone.rot + drone.evasionRot;
+
       ctx.save();
-      ctx.translate(drone.x, drone.y);
-      ctx.rotate(drone.rot);
+      ctx.translate(drone.x, finalY);
+      ctx.rotate(finalRot);
 
       ctx.strokeStyle = '#E07A47';
       ctx.lineWidth = 1.6 * (w / 400);
