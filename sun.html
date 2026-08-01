@@ -130,7 +130,10 @@
       <div class="sky-time"><strong id="skyTime">7:00 PM</strong><span id="selectedMoment">Selected time</span></div>
       <div class="sun-advice-box">
         <span class="advice-k" id="phaseVal">Evening Golden Hour</span>
-        <p class="advice-phrase" id="advicePhrase" aria-live="polite">&ldquo;This is the hero window. Start wide before the light disappears.&rdquo;</p>
+        <p class="advice-phrase">
+          <span class="advice-roll" id="advicePhrase" aria-hidden="true">&ldquo;This is the hero window. Start wide before the light disappears.&rdquo;</span>
+          <span class="vh" id="adviceA11y" aria-live="polite">This is the hero window. Start wide before the light disappears.</span>
+        </p>
         <p class="advice-best" id="bestFor">Hero exteriors · flare · movement · warm skin tone</p>
       </div>
       <svg class="arc-svg" viewBox="0 0 1000 360" preserveAspectRatio="none" aria-hidden="true">

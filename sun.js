@@ -7,37 +7,71 @@
   var $=function(id){return document.getElementById(id)};
   var dateInput=$('sunDate'), slider=$('timeSlider'), stage=$('sunStage'), orb=$('sunOrb');
   var phaseVal=$('phaseVal'), tempVal=$('tempVal'), elevVal=$('elevVal'), azimVal=$('azimVal');
-  var advice=$('advicePhrase'), timeVal=$('timeVal'), skyTime=$('skyTime'), dateLabel=$('dateLabel'), locationLabel=$('locationLabel');
+  var advice=$('advicePhrase'), adviceA11y=$('adviceA11y'), timeVal=$('timeVal'), skyTime=$('skyTime'), dateLabel=$('dateLabel'), locationLabel=$('locationLabel');
+  var adviceTimer=null,lastAdviceKey='';
 
   var phaseCopy={
     'night':{
       label:'Night',temp:'Practical light',
-      note:'The sun is out of the picture. Scout the practicals, protect the highlights, and let darkness stay dark.',
+      notes:[
+        'Let darkness stay dark. Build the frame around the light that is already there.',
+        'Scout the practicals first. A window, a porch light, or one good pool can carry the scene.',
+        'Fast glass buys exposure. Restraint buys atmosphere.',
+        'Protect the highlights and give the shadows permission to disappear.',
+        'Night rewards one deliberate source more than five nervous ones.'
+      ],
       best:'Fast glass · practicals · controlled pools of light'
     },
     'blue-dawn':{
       label:'Dawn Blue Hour',temp:'8,500–11,000K',
-      note:'The city is still lit and the sky is beginning to separate. Expose for the blue, then let windows and streetlights carry the warmth.',
+      notes:[
+        'The world is still asleep. Start with the frame that needs the empty street.',
+        'Expose for the blue and let windows carry the warmth.',
+        'Silhouettes read cleanest before the horizon turns bright.',
+        'Hold the cool sky. The color separation is the shot.'
+      ],
       best:'City texture · silhouettes · quiet establishing shots'
     },
     'golden-morning':{
       label:'Morning Golden Hour',temp:'2,800–4,200K',
-      note:'Low, clean light with a cool world behind it. Put the sun just off-axis for shape without losing the morning softness.',
+      notes:[
+        'The first warm edge is here. Put it behind the subject and let it draw the shape.',
+        'Low, clean light; cool world behind it. This is the quiet version of gold.',
+        'Turn faces just off-axis. Keep the softness and find the catchlight.',
+        'The shadows are long and the air is calm. Move before either one changes.'
+      ],
       best:'Skin tone · rim light · long shadows · calm air'
     },
     'daylight':{
       label:'Daylight',temp:'5,200–5,800K',
-      note:'The sun is doing less flattering work now. Find open shade, bring diffusion, or use the hard top light deliberately.',
+      notes:[
+        'The soft window has closed. Find open shade before you build more light.',
+        'Hard light is not a problem if the frame admits that it is hard.',
+        'Watch the eyes. Top light tells on a face before it tells on the meter.',
+        'Diffusion for people; contrast for architecture. Choose what the sun is doing for you.',
+        'The sun is high. Scout now, then save the hero setup for the falling light.',
+        'Use the shadow line as composition, not something to apologize for.'
+      ],
       best:'Architecture · controlled contrast · scouting'
     },
     'golden-evening':{
       label:'Evening Golden Hour',temp:'2,600–4,000K',
-      note:'This is the hero window. Backlight faces, watch flare at the edge of frame, and shoot the widest setup before the light disappears.',
+      notes:[
+        'The warmth is arriving. Set the wide frame before the light becomes precious.',
+        'Backlight the face and let the flare live at the edge, not the center.',
+        'This is the hero window. Shoot the move while the shadows still have length.',
+        'The light is going faster than it looks. Protect the setup you cannot fake later.'
+      ],
       best:'Hero exteriors · flare · movement · warm skin tone'
     },
     'blue-dusk':{
       label:'Dusk Blue Hour',temp:'8,500–11,000K',
-      note:'Keep rolling after sunset. The sky holds color while practicals wake up, giving you the richest warm-cool separation of the day.',
+      notes:[
+        'Do not wrap at sunset. The richest color separation happens just after it.',
+        'The sky is cooling while the practicals wake up. Let both stay visible.',
+        'Hold the silhouette and wait for the windows to become part of the frame.',
+        'One last setup. Make it the one that needs the sky.'
+      ],
       best:'Practical lights · skyline · windows · silhouettes'
     }
   };
@@ -96,6 +130,43 @@
     button.dataset.minute=String(minutes(target||new Date((start.getTime()+end.getTime())/2)));
   }
 
+  function adviceWindow(phase,value){
+    var day=state.day;
+    if(phase==='blue-dawn')return [minutes(day.civilDawn),minutes(day.sunrise)];
+    if(phase==='golden-morning')return [minutes(day.sunrise),minutes(day.morningGoldenEnd)];
+    if(phase==='daylight')return [minutes(day.morningGoldenEnd),minutes(day.eveningGoldenStart)];
+    if(phase==='golden-evening')return [minutes(day.eveningGoldenStart),minutes(day.sunset)];
+    if(phase==='blue-dusk')return [minutes(day.sunset),minutes(day.civilDusk)];
+    return value<minutes(day.civilDawn)
+      ? [0,minutes(day.civilDawn)]
+      : [minutes(day.civilDusk),1439];
+  }
+
+  function adviceChoice(value,phase,copy){
+    var range=adviceWindow(phase,value),span=Math.max(1,range[1]-range[0]);
+    var progress=clamp((value-range[0])/span,0,.9999);
+    var index=Math.min(copy.notes.length-1,Math.floor(progress*copy.notes.length));
+    return {key:phase+':'+index,text:copy.notes[index]};
+  }
+
+  function rollAdvice(choice,pool){
+    if(choice.key===lastAdviceKey)return;
+    lastAdviceKey=choice.key;
+    if(adviceTimer){clearInterval(adviceTimer);adviceTimer=null;}
+    var settle=function(){
+      advice.classList.remove('spin');
+      advice.textContent='“'+choice.text+'”';
+      adviceA11y.textContent=choice.text;
+    };
+    if(REDUCED){settle();return;}
+    advice.classList.add('spin');
+    var frame=0;
+    adviceTimer=setInterval(function(){
+      advice.textContent='“'+pool[(Math.random()*pool.length)|0]+'”';
+      if(++frame>=7){clearInterval(adviceTimer);adviceTimer=null;settle();}
+    },55);
+  }
+
   function renderDay(preserveTime){
     state.day=LaBSun.getDay(dateInput.value,state.lat,state.lon);
     if(!state.day){
@@ -149,7 +220,7 @@
     tempVal.innerHTML=kelvin?kelvin.toLocaleString()+'<small>K est.</small>':'<span>Practical</span>';
     elevVal.innerHTML=(pos.elevation>=0?'+':'')+pos.elevation.toFixed(1)+'<small>°</small>';
     azimVal.innerHTML=Math.round(pos.azimuth)+'<small>° '+LaBSun.direction(pos.azimuth)+'</small>';
-    advice.innerHTML='&ldquo;'+copy.note+'&rdquo;';
+    rollAdvice(adviceChoice(value,phase,copy),copy.notes);
     $('bestFor').textContent=copy.best;
     $('selectedMoment').textContent=dateLabel.textContent+' · '+timeVal.textContent;
 
@@ -185,7 +256,7 @@
   slider.addEventListener('input',function(){renderTime(Number(this.value))});
   $('prevDay').addEventListener('click',function(){shiftDate(-1)});
   $('nextDay').addEventListener('click',function(){shiftDate(1)});
-  $('todayBtn').addEventListener('click',function(){dateInput.value=iso(new Date());renderDay(false)});
+  $('todayBtn').addEventListener('click',function(){dateInput.value=iso(new Date(),state.timeZone);renderDay(false)});
   $('copyPlan').addEventListener('click',copyPlan);
   document.querySelectorAll('.phase-card').forEach(function(button){
     button.addEventListener('click',function(){slider.value=this.dataset.minute;renderTime(Number(slider.value))});

@@ -3,7 +3,7 @@
     {
       "date": "2026-08-01",
       "time": "13:10 EDT",
-      "text": "<strong>Golden Hour, rebuilt.</strong> The decorative fixed-time helper is now a real date-and-location-aware shoot planner: calculated blue and golden windows, sunrise, sunset, solar noon, elevation, direction, daylight, a scrub-able sun arc, phase-specific shooting notes and a copyable day plan. Drone Weather now reports actual Open-Meteo gusts, visibility and precipitation instead of estimates. Portfolio theme controls work again, lightbox keyboard focus behaves, runtime resource IDs stay unique, mobile overflow is gone, navigation and footers agree, and the public-but-tucked-away AI Usage link no longer enters the tab order. A real Chromium suite now patrols the kinds of failures static checks miss."
+      "text": "<strong>Golden Hour, rebuilt.</strong> The decorative fixed-time helper is now a real date-and-location-aware shoot planner: calculated blue and golden windows, sunrise, sunset, solar noon, elevation, direction, daylight, a scrub-able sun arc, a time-sensitive quote roller in the Story Generator style, and a copyable day plan. Drone Weather now reports actual Open-Meteo gusts, visibility and precipitation instead of estimates. Portfolio theme controls work again, lightbox keyboard focus behaves, runtime resource IDs stay unique, mobile overflow is gone, navigation and footers agree, and the public-but-tucked-away AI Usage link no longer enters the tab order. A real Chromium suite now patrols the kinds of failures static checks miss."
     },
     {
       "date": "2026-08-01",

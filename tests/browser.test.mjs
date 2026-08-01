@@ -93,7 +93,7 @@ test('pages load cleanly in mobile Chromium', async (t) => {
 });
 
 test('Golden Hour responds to date changes and exposes calculated windows', async () => {
-  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, reducedMotion: 'no-preference' });
   await page.route('**/*', (route) => {
     const url = route.request().url();
     if (url.startsWith(baseURL) || /^(?:data|blob):/.test(url)) route.continue();
@@ -103,6 +103,20 @@ test('Golden Hour responds to date changes and exposes calculated windows', asyn
   const firstSunrise = await page.locator('#sunriseVal').textContent();
   assert.match(firstSunrise, /^6:2\d AM$/, 'default Shelby times should stay in Eastern time regardless of the test runner timezone');
   assert.equal(await page.locator('.phase-card').count(), 4);
+  const initialAdvice = await page.locator('#advicePhrase').textContent();
+  await page.locator('#timeSlider').evaluate((slider) => {
+    slider.value = '400';
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  assert.equal(await page.locator('#advicePhrase').evaluate((element) => element.classList.contains('spin')), true);
+  await page.waitForTimeout(450);
+  const morningAdvice = await page.locator('#advicePhrase').textContent();
+  assert.notEqual(morningAdvice, initialAdvice);
+  const layers = await page.evaluate(() => ({
+    copy: Number(getComputedStyle(document.querySelector('.sun-advice-box')).zIndex),
+    orb: Number(getComputedStyle(document.querySelector('.sun-orb')).zIndex)
+  }));
+  assert.ok(layers.copy > layers.orb, 'the sun must remain behind the quote');
   await page.locator('#sunDate').fill('2026-12-01');
   await page.locator('#sunDate').dispatchEvent('change');
   assert.notEqual(await page.locator('#sunriseVal').textContent(), firstSunrise);

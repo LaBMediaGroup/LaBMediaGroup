@@ -29,16 +29,21 @@
 .sun-stage[data-phase="daylight"] .sun-sky::after,.sun-stage[data-phase^="golden"] .sun-sky::after{opacity:0}
 .arc-svg{position:absolute;inset:8% 2% 11%;width:96%;height:81%;overflow:visible}
 .sun-arc-path{fill:none;stroke:rgba(255,255,255,.28);stroke-dasharray:3 8;stroke-width:1.3;vector-effect:non-scaling-stroke}
-.sun-orb{position:absolute;z-index:3;width:clamp(26px,4vw,46px);aspect-ratio:1;border-radius:50%;background:#f5be72;box-shadow:0 0 0 8px rgba(250,190,105,.09),0 0 46px 12px rgba(250,168,76,.45);transform:translate(-50%,-50%);transition:left 180ms linear,top 180ms linear,background 400ms,box-shadow 400ms}
+.sun-orb{position:absolute;z-index:1;width:clamp(26px,4vw,46px);aspect-ratio:1;border-radius:50%;background:#f5be72;box-shadow:0 0 0 8px rgba(250,190,105,.09),0 0 46px 12px rgba(250,168,76,.45);transform:translate(-50%,-50%);transition:left 180ms linear,top 180ms linear,background 400ms,box-shadow 400ms}
 .sun-stage[data-phase="night"] .sun-orb{background:#b8c5da;box-shadow:0 0 0 7px rgba(184,197,218,.08),0 0 28px rgba(184,197,218,.25)}
 .sun-horizon{position:absolute;left:0;right:0;bottom:11%;height:1px;background:rgba(255,255,255,.3)}
 .sun-horizon::before{content:"Horizon";position:absolute;right:18px;bottom:10px;font:8px var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.6)}
 .sky-time{position:absolute;z-index:4;top:22px;right:24px;text-align:right;color:#fff;text-shadow:0 1px 14px rgba(0,0,0,.35)}
 .sky-time strong{display:block;font:clamp(28px,4vw,46px) var(--f-display);font-weight:400;line-height:1}
 .sky-time span{display:block;margin-top:7px;font:8px var(--f-mono);letter-spacing:.16em;text-transform:uppercase;opacity:.72}
-.sun-advice-box{position:absolute;z-index:4;left:clamp(18px,4vw,42px);bottom:clamp(48px,8vw,84px);max-width:min(660px,72%);color:#fff;text-shadow:0 1px 18px rgba(0,0,0,.42)}
+.sun-advice-box{position:absolute;z-index:5;left:clamp(18px,4vw,42px);bottom:clamp(48px,8vw,84px);max-width:min(660px,72%);color:#fff;text-shadow:0 1px 18px rgba(0,0,0,.52)}
+.sun-advice-box::before{content:"";position:absolute;z-index:-1;inset:-28px -50px -26px -24px;pointer-events:none;background:radial-gradient(ellipse at 28% 55%,rgba(11,11,12,.28),rgba(11,11,12,.1) 48%,transparent 73%)}
 .advice-k{display:block;font:8px var(--f-mono);letter-spacing:.18em;text-transform:uppercase;opacity:.7;margin-bottom:10px}
 .advice-phrase{font-family:var(--f-display);font-size:clamp(22px,3.5vw,38px);font-weight:400;line-height:1.08;letter-spacing:-.02em;margin:0}
+.advice-roll{position:relative;display:inline;transition:color var(--fast) var(--ease)}
+.advice-roll::after{content:"";position:absolute;left:.02em;right:.08em;bottom:-.08em;height:1px;background:rgba(255,255,255,.55);opacity:0;transition:opacity var(--fast) var(--ease)}
+.advice-roll.spin{color:rgba(255,255,255,.58)}
+.advice-roll.spin::after{opacity:1}
 .advice-best{margin-top:14px;font:8.5px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;opacity:.72}
 
 .sun-controls{padding:var(--s-5);background:var(--paper-2);border-top:1px solid var(--line)}
@@ -84,4 +89,4 @@
   .slider-row{grid-template-columns:1fr}.time-val{text-align:left}.metrics-grid{grid-template-columns:1fr 1fr}
   .phase-grid{grid-template-columns:1fr}.phase-card{min-height:132px}.facts{grid-template-columns:1fr 1fr}.fact:last-child{grid-column:1/-1}
 }
-@media(prefers-reduced-motion:reduce){.sun-stage,.sun-sky,.sun-orb{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.sun-stage,.sun-sky,.sun-orb,.advice-roll{transition:none!important}.advice-roll::after{display:none}}
