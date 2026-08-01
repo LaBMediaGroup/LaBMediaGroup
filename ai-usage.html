@@ -199,6 +199,39 @@
 
 /* Scroll behavior */
 html{scroll-behavior:smooth}
+
+/* Highlight pulse when jumped to */
+@keyframes highlight-pulse{
+  0%{box-shadow:0 0 0 0 var(--accent-dim);border-color:var(--accent)}
+  30%{box-shadow:0 0 0 4px var(--accent-dim);border-color:var(--accent)}
+  100%{box-shadow:0 0 0 0 transparent;border-color:var(--line)}
+}
+.provider-detail.flash{
+  animation:highlight-pulse 1.4s var(--ease);
+}
+
+/* ── FLYING CURSOR ── */
+#lab-cursor{
+  position:fixed;top:0;left:0;z-index:10000;pointer-events:none;
+  opacity:0;transition:opacity .3s;will-change:transform;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));
+}
+#lab-cursor svg{display:block}
+#lab-cursor .ripple{
+  position:absolute;left:9px;top:9px;width:8px;height:8px;
+  border-radius:50%;border:2px solid var(--accent);
+  transform:translate(-50%,-50%) scale(0);opacity:0;
+}
+@keyframes ripple-out{
+  0%{transform:translate(-50%,-50%) scale(.3);opacity:.9}
+  100%{transform:translate(-50%,-50%) scale(5);opacity:0}
+}
+#lab-cursor .ripple.go{animation:ripple-out .6s ease-out forwards}
+
+@media(prefers-reduced-motion:reduce){
+  .provider-detail.flash{animation:none;border-color:var(--accent)}
+  #lab-cursor{display:none!important}
+}
 </style>
 </head>
 <body>
@@ -264,12 +297,28 @@ async function loadUsage(){
       const status = p.status || (pct < 50 ? 'ok' : pct < 80 ? 'warn' : pct < 100 ? 'crit' : 'unknown');
       const h = status === 'unknown' ? 100 : Math.min(pct, 100);
       const shortName = p.name.replace(/<[^>]*>/g,'').split(' ')[0].split('/')[0].trim();
-      return '<a href="#provider-' + i + '" class="bar-col">' +
+      return '<a href="#provider-' + i + '" class="bar-col" data-idx="' + i + '">' +
         '<div class="bar-pct">' + (status === 'unknown' ? '?' : Math.round(pct) + '%') + '</div>' +
         '<div class="bar-track"><div class="bar-level ' + status + '" style="height:' + h + '%"></div></div>' +
         '<div class="bar-name">' + shortName + '</div>' +
         '</a>';
     }).join('');
+
+    // Wire bar clicks — flying cursor animation
+    document.querySelectorAll('.bar-col').forEach(function(bar){
+      bar.addEventListener('click', function(e){
+        e.preventDefault();
+        var idx = this.getAttribute('data-idx');
+        var target = document.getElementById('provider-' + idx);
+        if(!target) return;
+        // Remove existing flash
+        document.querySelectorAll('.provider-detail.flash').forEach(function(el){ el.classList.remove('flash'); });
+        // Start scrolling the page toward the card
+        target.scrollIntoView({behavior:'smooth', block:'center'});
+        // Launch the fake cursor from the click point, chasing the card as the page scrolls
+        flyCursor(e.clientX, e.clientY, target);
+      });
+    });
 
     // Detail cards
     document.getElementById('details-container').innerHTML = providers.map((p,i) => {
@@ -341,6 +390,65 @@ function renderNews(){
 function loadMoreNews(){
   visibleDays += 3;
   renderNews();
+}
+
+// ── Flying cursor ──
+// A fake mouse cursor appears where you clicked, glides with slight
+// human wobble down to the target card, then "clicks" it: ripple
+// burst + outline pulse, then fades out.
+var flying = false;
+function flyCursor(startX, startY, target){
+  if(flying) return;
+  flying = true;
+
+  var cursor = document.getElementById('lab-cursor');
+  if(!cursor){
+    cursor = document.createElement('div');
+    cursor.id = 'lab-cursor';
+    cursor.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="#F4F1EC" stroke="#0B0B0C" stroke-width="1.5"><path d="M5 3l14 9-6.5 1.4L9 21z"/></svg><div class="ripple"></div>';
+    document.body.appendChild(cursor);
+  }
+
+  var x = startX, y = startY;
+  cursor.style.opacity = '1';
+  cursor.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+
+  var t = 0;
+  function step(){
+    var r = target.getBoundingClientRect();
+    // Aim slightly above card center so the cursor tip lands on it
+    var tx = r.left + r.width * 0.5;
+    var ty = r.top + Math.min(70, r.height * 0.35);
+
+    // Ease toward target with a gentle sine wobble (human-ish hand motion)
+    t += 0.045;
+    x += (tx - x) * 0.055;
+    y += (ty - y) * 0.055;
+    var wobble = Math.sin(t * 3) * 3 * Math.max(0, 1 - t);
+
+    cursor.style.transform = 'translate(' + (x + wobble) + 'px,' + y + 'px)';
+
+    var dx = tx - x, dy = ty - y;
+    if(Math.sqrt(dx*dx + dy*dy) < 8){
+      // Arrived — click!
+      cursor.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(.85)';
+      var ripple = cursor.querySelector('.ripple');
+      ripple.classList.remove('go');
+      void ripple.offsetWidth; // restart animation
+      ripple.classList.add('go');
+
+      target.classList.add('flash');
+
+      setTimeout(function(){
+        cursor.style.transform += ' scale(1)';
+        cursor.style.opacity = '0';
+        setTimeout(function(){ target.classList.remove('flash'); flying = false; }, 1500);
+      }, 300);
+      return;
+    }
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 }
 
 loadUsage();
