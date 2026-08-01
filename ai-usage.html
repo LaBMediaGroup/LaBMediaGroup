@@ -136,6 +136,36 @@
 }
 .summary dd em{font-style:italic;color:var(--accent)}
 
+/* Changelog */
+.changelog{
+  margin-top:clamp(48px,6vw,80px);
+}
+.changelog h2{
+  font-family:var(--f-display);font-weight:400;
+  font-size:clamp(28px,4vw,42px);line-height:1.1;
+  text-align:center;margin-bottom:var(--s-6);
+  letter-spacing:-.02em;
+}
+.changelog h2 em{font-style:italic;color:var(--accent)}
+.changelog-item{
+  display:grid;grid-template-columns:auto 1fr;gap:var(--s-5);
+  padding:var(--s-4) 0;border-bottom:1px solid var(--line);
+}
+.changelog-item:last-child{border-bottom:0}
+.changelog-date{
+  font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint);white-space:nowrap;
+  padding-top:2px;
+}
+.changelog-body{
+  color:var(--dim);font-size:var(--t-sm);line-height:1.7;
+}
+.changelog-body strong{color:var(--ink);font-weight:400}
+.changelog-body code{
+  font-family:var(--f-mono);font-size:11px;color:var(--accent);
+  background:var(--accent-bg);padding:1px 6px;border-radius:var(--radius);
+}
+
 /* Easter egg footer */
 .egg{
   text-align:center;padding:var(--s-7) 0;font-family:var(--f-mono);
@@ -160,7 +190,7 @@
 <div class="usage-wrap">
 
   <div class="usage-head">
-    <h1>AI <em>Usage</em> Dashboard</h1>
+    <h1>AI Usage <em>Dashboard</em></h1>
     <p>Every model subscription in one place. Updated automatically by Wheatley.</p>
     <div class="updated" id="lastUpdated">Loading…</div>
   </div>
@@ -176,6 +206,11 @@
 
   <div class="note-box">
     <p><strong>How this works:</strong> Wheatley polls provider APIs and dashboards on a cron schedule, writes <code>ai-usage.json</code>, and this page reads it. Some providers don't expose public usage APIs — those update on a best-effort basis. Data may be delayed up to 15 minutes.</p>
+  </div>
+
+  <div class="changelog">
+    <h2>Site <em>Changelog</em></h2>
+    <div id="changelog-list"></div>
   </div>
 
   <div class="egg">
@@ -241,6 +276,23 @@ async function loadUsage(){
         </div>
       `;
     }).join('');
+
+    // Load changelog
+    try{
+      const clRes = await fetch('changelog.json?_=' + Date.now());
+      if(clRes.ok){
+        const cl = await clRes.json();
+        const clEl = document.getElementById('changelog-list');
+        if(clEl && cl.entries){
+          clEl.innerHTML = cl.entries.map(e =>
+            '<div class="changelog-item">' +
+            '<div class="changelog-date">' + e.date + '</div>' +
+            '<div class="changelog-body">' + e.text + '</div>' +
+            '</div>'
+          ).join('');
+        }
+      }
+    }catch(e){/* changelog optional */}
 
   }catch(e){
     document.getElementById('providers').innerHTML =
