@@ -123,3 +123,56 @@ test('Golden Hour responds to date changes and exposes calculated windows', asyn
   assert.match(await page.locator('#plannerStatus').textContent(), /calculated locally/i);
   await page.close();
 });
+
+test('solar scenes hand daylight to moonlight without changing the weather composition', async () => {
+  const page = await browser.newPage({ viewport: { width: 1180, height: 820 }, reducedMotion: 'reduce' });
+  await page.route('**/*', (route) => {
+    const url = route.request().url();
+    if (url.startsWith(baseURL) || /^(?:data|blob):/.test(url)) route.continue();
+    else route.abort('blockedbyclient');
+  });
+  await page.goto(`${baseURL}/droneweather.html`, { waitUntil: 'domcontentloaded', timeout: 10_000 });
+  await page.evaluate(() => window.labSceneSetTime(1260));
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-sun'), 'hidden', '9 PM must not show a daytime sun');
+  await page.evaluate(() => window.labSceneSetTime(1320));
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-moon'), 'visible');
+  assert.equal(await page.locator('.wx-deepdive[open]').count(), 0);
+  assert.equal(await page.locator('#wxCanvas').count(), 1, 'the original weather canvas remains the weather composition');
+
+  await page.goto(`${baseURL}/sun.html?date=2026-08-01`, { waitUntil: 'domcontentloaded', timeout: 10_000 });
+  await page.locator('#timeSlider').evaluate((slider) => {
+    slider.value = '1320';
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  assert.equal(await page.locator('#sunStage').getAttribute('data-phase'), 'night');
+  assert.equal(await page.locator('#sunStage').getAttribute('data-sun'), 'hidden');
+  assert.equal(await page.locator('#moonOrb').evaluate((element) => getComputedStyle(element).opacity), '1');
+  assert.equal(await page.locator('#sunNatureCanvas').count(), 1, 'Golden Hour owns a separate wide nature canvas');
+  await page.close();
+});
+
+test('flight checklist minimizes, reopens and carries progress between pages', async () => {
+  const page = await browser.newPage({ viewport: { width: 1180, height: 820 }, reducedMotion: 'reduce' });
+  await page.route('**/*', (route) => {
+    const url = route.request().url();
+    if (url.startsWith(baseURL) || /^(?:data|blob):/.test(url)) route.continue();
+    else route.abort('blockedbyclient');
+  });
+  await page.goto(`${baseURL}/droneweather.html`, { waitUntil: 'domcontentloaded', timeout: 10_000 });
+  const checklist = page.locator('#lab-flight-checklist');
+  assert.equal(await checklist.getAttribute('data-mode'), 'minimized');
+  await checklist.locator('[data-fc="minimize"]').click();
+  assert.equal(await checklist.getAttribute('data-mode'), 'open');
+  await checklist.locator('[data-fc-check="a1"]').locator('..').click();
+  assert.match(await checklist.locator('[data-fc-launch-count]').textContent(), /^1\/18$/);
+  await checklist.locator('[data-fc="minimize"]').click();
+  assert.equal(await checklist.getAttribute('data-mode'), 'minimized');
+  await page.goto(`${baseURL}/sun.html`, { waitUntil: 'domcontentloaded', timeout: 10_000 });
+  assert.equal(await page.locator('#lab-flight-checklist').getAttribute('data-mode'), 'minimized');
+  assert.equal(await page.locator('[data-fc-check="a1"]').isChecked(), true);
+  await page.locator('[data-fc="close"]').click();
+  assert.equal(await page.locator('#lab-flight-checklist').getAttribute('data-mode'), 'closed');
+  await page.locator('[data-fc="open"]').click();
+  assert.equal(await page.locator('#lab-flight-checklist').getAttribute('data-mode'), 'open');
+  await page.close();
+});

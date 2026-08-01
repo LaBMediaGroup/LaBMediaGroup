@@ -127,7 +127,8 @@
 
   <div class="sun-stage" id="sunStage" data-phase="golden-evening">
     <div class="sun-sky" id="sunSky">
-      <div class="sky-time"><strong id="skyTime">7:00 PM</strong><span id="selectedMoment">Selected time</span></div>
+      <canvas class="sun-nature" id="sunNatureCanvas" aria-label="Animated treetop and bird silhouette"></canvas>
+      <div class="sky-time"><strong id="skyTime">7:00 PM</strong><span id="selectedMoment">Selected time</span><span id="sunWind">Checking current wind</span></div>
       <div class="sun-advice-box">
         <span class="advice-k" id="phaseVal">Evening Golden Hour</span>
         <p class="advice-phrase">
@@ -141,6 +142,7 @@
       </svg>
       <div class="sun-horizon" aria-hidden="true"></div>
       <div class="sun-orb" id="sunOrb" aria-hidden="true"></div>
+      <div class="moon-orb" id="moonOrb" aria-hidden="true"></div>
     </div>
 
     <div class="sun-controls">
@@ -309,6 +311,7 @@
 </script>
 <script src="sun-calc.js"></script>
 <script src="sun.js"></script>
+<script src="flight-checklist.js"></script>
 <script src="assistant-guide.js"></script>
 <script src="assistant-widget.js"></script>
 </body>

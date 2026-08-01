@@ -3,9 +3,9 @@
   if(!window.LaBSun)return;
 
   var REDUCED=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches);
-  var state={lat:42.67,lon:-83.03,label:'Shelby Township, MI',timeZone:'America/Detroit',day:null};
+  var state={lat:42.67,lon:-83.03,label:'Shelby Township, MI',timeZone:'America/Detroit',day:null,wind:7,gust:11};
   var $=function(id){return document.getElementById(id)};
-  var dateInput=$('sunDate'), slider=$('timeSlider'), stage=$('sunStage'), orb=$('sunOrb');
+  var dateInput=$('sunDate'), slider=$('timeSlider'), stage=$('sunStage'), orb=$('sunOrb'), moon=$('moonOrb');
   var phaseVal=$('phaseVal'), tempVal=$('tempVal'), elevVal=$('elevVal'), azimVal=$('azimVal');
   var advice=$('advicePhrase'), adviceA11y=$('adviceA11y'), timeVal=$('timeVal'), skyTime=$('skyTime'), dateLabel=$('dateLabel'), locationLabel=$('locationLabel');
   var adviceTimer=null,lastAdviceKey='';
@@ -206,13 +206,20 @@
     var moment=onSelectedDate(value),pos=LaBSun.position(moment,state.lat,state.lon);
     var phase=LaBSun.phaseAt(moment,state.day),copy=phaseCopy[phase];
     var kelvin=colorTemperature(pos.elevation,phase);
-    var x=phase==='night'
-      ? clamp(value/1440*100,3,97)
-      : clamp((pos.azimuth-70)/220*100,3,97);
+    var x=clamp((pos.azimuth-70)/220*100,3,97);
     var y=clamp(84-((pos.elevation+8)/(Math.max(12,state.day.maxElevation)+8))*70,10,88);
 
     stage.dataset.phase=phase;
+    stage.dataset.sun=pos.elevation>=-.8&&phase!=='night'?'visible':'hidden';
     orb.style.left=x+'%';orb.style.top=y+'%';
+    if(moon&&phase==='night'){
+      var dusk=minutes(state.day.civilDusk),dawn=minutes(state.day.civilDawn);
+      var nightSpan=(1440-dusk)+dawn;
+      var nightProgress=value>=dusk?(value-dusk)/nightSpan:(1440-dusk+value)/nightSpan;
+      nightProgress=clamp(nightProgress,0,1);
+      moon.style.left=clamp(92-nightProgress*82,6,94)+'%';
+      moon.style.top=(78-Math.sin(nightProgress*Math.PI)*60)+'%';
+    }
     timeVal.textContent=fmtMinutes(value);
     skyTime.textContent=timeVal.textContent;
     phaseVal.textContent=copy.label;
@@ -252,6 +259,79 @@
     if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done).catch(function(){});
   }
 
+  var windRequest=0;
+  function refreshWind(){
+    var request=++windRequest,readout=$('sunWind');
+    if(readout)readout.textContent='Checking current wind';
+    fetch('https://api.open-meteo.com/v1/forecast?latitude='+encodeURIComponent(state.lat)+'&longitude='+encodeURIComponent(state.lon)+'&current=wind_speed_10m,wind_gusts_10m&wind_speed_unit=mph&timezone=auto')
+      .then(function(response){return response.json()})
+      .then(function(data){
+        if(request!==windRequest||!data||!data.current)return;
+        state.wind=Math.round(Number(data.current.wind_speed_10m)||0);
+        state.gust=Math.round(Number(data.current.wind_gusts_10m)||state.wind);
+        if(readout)readout.textContent='Current wind '+state.wind+' · gust '+state.gust+' mph';
+        window.dispatchEvent(new Event('lab:sun-wind'));
+      }).catch(function(){if(readout)readout.textContent='Treetops using a light breeze'});
+  }
+
+  function initNatureScene(){
+    var canvas=$('sunNatureCanvas');if(!canvas)return;
+    var context=canvas.getContext('2d'),buffer=document.createElement('canvas'),paint=buffer.getContext('2d');
+    var width=0,height=0,bw=0,bh=0,bit=4,time=0,visible=true,raf=null;
+    var birds=[{x:.08,y:.25,s:.00019,p:0},{x:.16,y:.20,s:.00016,p:2.2},{x:.63,y:.30,s:.00022,p:4.1}];
+    function pixel(x,y,w,h,color){paint.fillStyle=color;paint.fillRect(Math.round(x),Math.round(y),Math.max(1,Math.round(w)),Math.max(1,Math.round(h)))}
+    function resize(){
+      var rect=canvas.getBoundingClientRect();if(!rect.width||!rect.height)return;
+      width=Math.round(rect.width);height=Math.round(rect.height);var dpr=Math.min(devicePixelRatio||1,2);
+      canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);context.setTransform(dpr,0,0,dpr,0,0);
+      bit=width<520?3:4;bw=Math.ceil(width/bit);bh=Math.ceil(height/bit);buffer.width=bw;buffer.height=bh;draw();
+    }
+    function treeTip(cx,baseY,treeH,maxHalf,bend,opacity){
+      var apex=baseY-treeH,color='rgba(5,10,13,'+opacity+')',shade='rgba(5,10,13,'+(opacity*.54)+')';
+      for(var y=apex;y<=baseY;y++){
+        var f=(y-apex)/treeH,half=0;
+        [[0,.52,.55],[.24,.78,.8],[.52,1,1]].forEach(function(tier){
+          if(f>=tier[0]&&f<=tier[1])half=Math.max(half,Math.round(maxHalf*tier[2]*(f-tier[0])/(tier[1]-tier[0])));
+        });
+        var shear=Math.round(bend*Math.pow(1-f,2)*6*(.75+.25*Math.sin(time*1.7+f*4)));
+        pixel(cx-half+shear,y,half*2+1,1,((y-apex)%4===0)?shade:color);
+      }
+    }
+    function draw(){
+      raf=null;if(!width||!height)return;
+      if(!REDUCED)time+=.0167;
+      paint.clearRect(0,0,bw,bh);
+      var phase=stage.dataset.phase||'daylight';
+      var night=phase==='night',wind=clamp(state.wind/24,0,.9),headroom=clamp((state.gust-state.wind)/16,0,1);
+      var gust=(Math.sin(time*.7)+Math.sin(time*1.83+1.2))*.14*headroom;
+      var bend=wind+gust,base=bh+3;
+      treeTip(Math.round(bw*.11),base,Math.round(bh*.25),Math.round(bw*.038),bend*.75,night?.86:.72);
+      treeTip(Math.round(bw*.50),base,Math.round(bh*.18),Math.round(bw*.032),bend*1.05,night?.8:.66);
+      treeTip(Math.round(bw*.88),base,Math.round(bh*.32),Math.round(bw*.045),bend*.9,night?.9:.76);
+      if(!night&&state.wind<22){
+        var birdColor='rgba(6,10,13,.68)';
+        birds.forEach(function(bird){
+          if(!REDUCED)bird.x+=(bird.s*width)*(1+wind*1.8);
+          if(bird.x>1.05)bird.x=-.05;
+          var x=Math.round(bird.x*bw),y=Math.round(bird.y*bh),flap=Math.sin(time*6+bird.p)>0?1:0;
+          pixel(x-1,y-flap,1,1,birdColor);pixel(x,y+flap,1,1,birdColor);pixel(x+1,y-flap,1,1,birdColor);
+        });
+      }
+      if(state.wind>5){
+        var lines=Math.min(9,Math.round(state.wind/2.4));
+        for(var i=0;i<lines;i++){
+          var drift=((time*(.8+i*.07)+i*.137)%1)*bw;
+          pixel(drift,Math.round(bh*(.14+(i*.119)%0.57)),Math.max(1,Math.round(state.wind/7)),1,'rgba(255,255,255,.10)');
+        }
+      }
+      context.clearRect(0,0,width,height);context.imageSmoothingEnabled=false;context.drawImage(buffer,0,0,bw,bh,0,0,bw*bit,bh*bit);
+      if(visible&&!REDUCED)raf=requestAnimationFrame(draw);
+    }
+    if(window.ResizeObserver)new ResizeObserver(resize).observe(canvas);else window.addEventListener('resize',resize);
+    if(window.IntersectionObserver)new IntersectionObserver(function(entries){visible=entries[0].isIntersecting;if(visible&&!raf)raf=requestAnimationFrame(draw)},{threshold:0}).observe(canvas);
+    window.addEventListener('lab:sun-wind',draw);slider.addEventListener('input',draw);resize();
+  }
+
   dateInput.addEventListener('change',function(){renderDay(false)});
   slider.addEventListener('input',function(){renderTime(Number(this.value))});
   $('prevDay').addEventListener('click',function(){shiftDate(-1)});
@@ -262,14 +342,14 @@
     button.addEventListener('click',function(){slider.value=this.dataset.minute;renderTime(Number(slider.value))});
   });
   $('shelbyBtn').addEventListener('click',function(){
-    state.lat=42.67;state.lon=-83.03;state.label='Shelby Township, MI';state.timeZone='America/Detroit';renderDay(true);
+    state.lat=42.67;state.lon=-83.03;state.label='Shelby Township, MI';state.timeZone='America/Detroit';renderDay(true);refreshWind();
   });
   $('locateBtn').addEventListener('click',function(){
     if(!navigator.geolocation){$('plannerStatus').textContent='Location is not available in this browser.';return;}
     $('plannerStatus').textContent='Waiting for location permission…';
     navigator.geolocation.getCurrentPosition(function(pos){
       state.lat=pos.coords.latitude;state.lon=pos.coords.longitude;state.label='Current location';
-      state.timeZone=Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC';renderDay(true);
+      state.timeZone=Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC';renderDay(true);refreshWind();
     },function(){
       $('plannerStatus').textContent='Location was not shared. Shelby Township remains selected.';
     },{enableHighAccuracy:false,timeout:8000,maximumAge:600000});
@@ -280,4 +360,6 @@
   dateInput.value=/^\d{4}-\d{2}-\d{2}$/.test(queryDate)?queryDate:iso(new Date(),state.timeZone);
   if(REDUCED)stage.classList.add('reduced-motion');
   renderDay(false);
+  refreshWind();
+  initNatureScene();
 })();

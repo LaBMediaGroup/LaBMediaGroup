@@ -222,6 +222,35 @@ test('floating assistant coverage matches page intent', () => {
   }
 });
 
+test('flight checklist follows visitors without exposing the private usage page', () => {
+  for (const file of htmlFiles) {
+    const html = read(file);
+    if (file === 'ai-usage.html') assert.doesNotMatch(html, /flight-checklist\.js/);
+    else assert.match(html, /flight-checklist\.js/, `${file} is missing the persistent flight checklist`);
+  }
+  const checklist = read('flight-checklist.js');
+  assert.match(checklist, /lab-preflight/);
+  assert.match(checklist, /window\.print\(\)/);
+  assert.match(checklist, /pointerdown/);
+  assert.equal((checklist.match(/\['[abc][1-6]'/g) || []).length, 18);
+});
+
+test('weather and Golden Hour scenes keep separate solar-aware compositions', () => {
+  const weather = read('droneweather.html');
+  assert.match(weather, /data-wx-time="sunrise"/);
+  assert.match(weather, /data-wx-time="night"/);
+  assert.match(weather, /LaBSun\.phaseAt/);
+  assert.match(weather, /function drawMoon/);
+  assert.equal((weather.match(/<details class="wx-deepdive">/g) || []).length, 2);
+  assert.doesNotMatch(weather, /<details class="wx-deepdive" open/);
+
+  const golden = read('sun.html');
+  assert.match(golden, /id="sunNatureCanvas"/);
+  assert.match(golden, /id="moonOrb"/);
+  assert.match(read('sun.js'), /function initNatureScene/);
+  assert.match(read('sun.js'), /wind_gusts_10m/);
+});
+
 test('AI Usage remains public but deliberately hidden', () => {
   const usage = read('ai-usage.html');
   assert.match(usage, /name="robots" content="noindex,nofollow"/);
