@@ -312,6 +312,7 @@ html{scroll-behavior:smooth}
 <script>
 var allNews = [];
 var visibleDays = 3;
+var REDUCED = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches);
 
 async function loadUsage(){
   try{
@@ -355,9 +356,13 @@ async function loadUsage(){
         // Remove existing flash
         document.querySelectorAll('.provider-detail.flash').forEach(function(el){ el.classList.remove('flash'); });
         // Start scrolling the page toward the card
-        target.scrollIntoView({behavior:'smooth', block:'center'});
+        target.scrollIntoView({behavior:REDUCED ? 'auto' : 'smooth', block:'center'});
         // Launch the fake cursor from the click point, chasing the card as the page scrolls
-        flyCursor(e.clientX, e.clientY, target);
+        if (REDUCED) {
+          target.classList.add('flash');
+          setTimeout(function(){ target.classList.remove('flash'); }, 1500);
+        }
+        else flyCursor(e.clientX, e.clientY, target);
       });
     });
 
@@ -465,6 +470,7 @@ function loadMoreNews(){
 // burst + outline pulse, then fades out.
 var flying = false;
 function flyCursor(startX, startY, target){
+  if(REDUCED) return;
   if(flying) return;
   flying = true;
 

@@ -6,6 +6,18 @@
   <title>Aspect Ratio &amp; Scope Crop Previewer | Filmmaking Tools | LaB Media</title>
   <meta name="description" content="Interactive aspect ratio, framing, and letterbox crop previewer for filmmakers and editors. Preview 2.39:1 scope, 1.85:1 flat, 16:9, 4:3, and 9:16 vertical.">
   <link rel="canonical" href="https://labmedia.work/aspect.html">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://labmedia.work/aspect.html">
+  <meta property="og:site_name" content="LaB Media">
+  <meta property="og:title" content="Aspect Ratio &amp; Scope Crop Previewer | LaB Media">
+  <meta property="og:description" content="Preview common cinema, widescreen, and vertical crops locally in your browser.">
+  <meta property="og:image" content="https://labmedia.work/images/og/index.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Aspect Ratio &amp; Scope Crop Previewer | LaB Media">
+  <meta name="twitter:description" content="Preview common cinema, widescreen, and vertical crops locally in your browser.">
+  <meta name="twitter:image" content="https://labmedia.work/images/og/index.jpg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -314,7 +326,7 @@
     <div>
       <label for="stillSelect">Sample Frame:</label>
       <select id="stillSelect">
-        <option value="images/moz/moz-01.jpg">MOZ Interiors (Architectural)</option>
+        <option value="images/moz/moz-01.webp">MOZ Interiors (Architectural)</option>
         <option value="images/brass.jpg">Anthony Brass (Artist Studio)</option>
         <option value="images/kit/support.jpg">RS 3 Mini Gimbal (Set Photo)</option>
         <option value="images/kit/camera.jpg">EOS R50 Rig (Camera Build)</option>
@@ -350,7 +362,8 @@
 
   <div class="aspect-stage">
     <div class="viewfinder" id="viewfinder">
-      <img id="sampleImg" src="images/moz/moz-01.jpg" alt="Sample frame for aspect ratio preview">
+      <img id="sampleImg" src="images/moz/moz-01.webp" alt="Sample frame for aspect ratio preview"
+           width="1800" height="1200" fetchpriority="high" decoding="async">
       <video id="sampleVid" autoplay loop muted playsinline style="display:none;"></video>
       <div class="matte-top" id="mTop"></div>
       <div class="matte-bottom" id="mBottom"></div>
@@ -628,8 +641,8 @@
       if (customInput) customInput.value = '';
       clearMediaBtn.style.display = 'none';
 
-      stillSelect.value = 'images/moz/moz-01.jpg';
-      loadMediaSource('images/moz/moz-01.jpg', false);
+      stillSelect.value = 'images/moz/moz-01.webp';
+      loadMediaSource('images/moz/moz-01.webp', false);
     });
   }
 
