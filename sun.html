@@ -6,6 +6,18 @@
   <title>Sun Arc &amp; Golden Hour Calculator | Filmmaking Tools | LaB Media</title>
   <meta name="description" content="Astronomical Golden Hour, Blue Hour, and solar tracking calculator for filmmakers and drone pilots in Metro Detroit and Shelby Township, Michigan.">
   <link rel="canonical" href="https://labmedia.work/sun.html">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://labmedia.work/sun.html">
+  <meta property="og:site_name" content="LaB Media">
+  <meta property="og:title" content="Sun Arc &amp; Golden Hour Calculator | LaB Media">
+  <meta property="og:description" content="Plan Golden Hour, Blue Hour, and sun position for Metro Detroit shoots.">
+  <meta property="og:image" content="https://labmedia.work/images/og/index.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sun Arc &amp; Golden Hour Calculator | LaB Media">
+  <meta name="twitter:description" content="Plan Golden Hour, Blue Hour, and sun position for Metro Detroit shoots.">
+  <meta name="twitter:image" content="https://labmedia.work/images/og/index.jpg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -516,6 +528,12 @@
   function spinAdvice(finalText, pool) {
     if (!advicePhrase || !pool || !pool.length) return;
     if (spinTimer) clearInterval(spinTimer);
+
+    if (REDUCED) {
+      advicePhrase.classList.remove('spin');
+      advicePhrase.innerHTML = '&ldquo;' + finalText + '&rdquo;';
+      return;
+    }
 
     advicePhrase.classList.add('spin');
     var i = 0, maxFrames = 5;

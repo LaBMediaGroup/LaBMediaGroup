@@ -2,6 +2,11 @@
   "entries": [
     {
       "date": "2026-08-01",
+      "time": "12:23 EDT",
+      "text": "<strong>Maintenance pass.</strong> Story Generator tone tags no longer overwrite one another when an idea belongs to more than one mood. A 91-check CI suite now guards scripts, data, links, page structure, assistant coverage, social previews and published totals. The new tools respect reduced-motion settings, the weather scene stops drawing when it has nothing to animate, and lighter WebP hero images trim repeat page weight. The AI Usage dashboard stays public by URL but tucked behind its Easter eggs."
+    },
+    {
+      "date": "2026-08-01",
       "time": "11:20 EDT",
       "text": "<strong>Housekeeping.</strong> The floating assistant was missing from Aspect Ratio, Golden Hour and Drone Weather since they shipped; all three have it now. The test that guards that had been failing on a hardcoded page count, so it never got as far as checking. Sitemap picked up the three tool pages, and the resource total was corrected to 127, having read 126 on five pages and 128 in the README since the last entry was added."
     },

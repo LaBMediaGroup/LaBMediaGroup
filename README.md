@@ -17,19 +17,31 @@ weekend. Nothing costs money and nothing asks for an email.
 |---|---|
 | `index.html` | Hub — 2024 reel, film grid, resource shortlists |
 | `portfolio.html` | 8 films, 9 production timelines, 7 BTS galleries (81 photos) |
-| `resources.html` | 127 vetted links across 15 groups, collapsed by default |
+| `learn.html` | Craft references and filmmaking education |
+| `resources.html` | Software, AI, music, stock, type and 3D resources |
+| `sourcing.html` | Gear shops, rentals and flight resources |
+| `people.html` | Collaborators, festivals and community |
 | `gear.html` | The Kit — what LaB actually owns, with verdicts and prices |
-| `colophon.html` | How the site is built, and what was quietly broken |
-| `ideas.html` | Story generator — 1,218 prompts across 14 pools |
+| `mykit.html` | A visitor's saved resource kit |
+| `ideas.html` | Story generator — 1,334 prompts across 14 pools |
 | `events.html` | Self-expiring spotlight events plus an evergreen org list |
 | `skybound.html` | SkyBound case study |
-| `contact.html` | — |
-| `404.html` | — |
+| `droneweather.html` | Drone weather and flight-condition helper |
+| `sun.html` | Golden-hour planning helper |
+| `aspect.html` | Aspect-ratio previewer |
+| `assistant.html` | LaB's grounded site guide |
+| `contact.html` | About LaB and contact details |
+| `colophon.html` | How the site is built, and what was quietly broken |
+| `404.html` | Not-found page |
+
+There are 17 indexable pages. `404.html` and the deliberately tucked-away
+`ai-usage.html` dashboard are not listed in the sitemap.
 
 ## Tech
 
-Plain HTML, CSS and JS. No framework, no build step, no backend, no
-dependencies. GitHub Pages hosting on a custom domain.
+Plain HTML, CSS and JS. No framework, no build step, no backend and no runtime
+dependencies. GitHub Pages hosting on a custom domain. A small Node test suite
+runs in GitHub Actions to keep data, links, metadata and published counts aligned.
 
 - **`lab.css` is the whole design system** — one `:root` token block governs
   every page. This replaced 11 divergent `:root` blocks and 9 separate nav
@@ -38,10 +50,10 @@ dependencies. GitHub Pages hosting on a custom domain.
   defined per theme. A single hardcoded `#7FC8A0` sat at **1.89:1 on the light
   theme** — effectively invisible — and it was already live on the resources
   Free tag, so that was a real bug rather than a new one. Light uses `#2C6E49`.
-- **Three themes** — dark (default), light, sepia. Switched via `data-theme` on
+- **Five themes** — dark (default), light, sepia, timber and forest. Switched via `data-theme` on
   `<html>`, remembered in `localStorage`, applied by an inline script in
   `<head>` before first paint so there's no flash. Every text colour is solved
-  to WCAG AA (4.5:1) against all three surfaces.
+  to WCAG AA (4.5:1) against all five surfaces.
 - **Progressive enhancement, but only where it's true.** The portfolio is real
   HTML — 8 films, 9 timelines and 81 photographs in native `<details>` elements,
   1,248 words readable with scripts off. SkyBound too.
@@ -66,7 +78,7 @@ dependencies. GitHub Pages hosting on a custom domain.
 Resources can be starred into a personal kit — stored in `localStorage` under
 `lab-kit`, shown as a pinned group above group 01, hidden when empty.
 
-Keys come from `keyOf()`, which slugifies the entry **name**. Only 21 of the 127
+Keys come from `keyOf()`, which slugifies the entry **name**. Only 18 of the 127
 entries carry an explicit `id`, but all 127 names are unique and slugify
 uniquely, so no data file had to change. Deriving from name rather than array
 position means reordering or inserting entries never invalidates a saved kit or
@@ -91,7 +103,7 @@ replace, or dismiss, and the hash is scrubbed from the URL either way.
   the better copy from each.
 
   A list that claims to be vetted has to be willing to drop things.
-- `ideas-data.js` — 1,321 prompts across 14 pools.
+- `ideas-data.js` — 1,334 prompts across 14 pools.
 
   Originally 1,218 with 46 duplicates (mostly formatting twins created by the
   four `_additions` blocks that used to be concatenated on at the end; those are
@@ -182,7 +194,7 @@ Each item can carry a `verdict` — `again`, `maybe` or `no` — and a rough `pa
 figure. That is the point of the page: a gear list without a verdict is a
 shopping list, and there are enough of those.
 
-66 items across 13 sections, in two layers. Seven items flagged `key: true`
+66 items across 12 sections, in two layers. Seven items flagged `key: true`
 render as a headline strip at the top — the things that actually decide how the
 work gets made. Everything else sits in `<details>` sections, closed by default
 with a peek line, exactly like the resources page.
@@ -235,9 +247,8 @@ One counter: **GoatCounter**, added July 2026. Open source, no cookies, no
 persistent identifiers, ~3.5 KB. Their docs state it needs no GDPR notice,
 which is why the site still has no consent banner.
 
-The snippet is on every page but **guarded** — it checks for a placeholder code
-and returns without making any request until one is set, and skips `localhost`
-and `file://` entirely. To switch it on, sign up free and replace `YOURCODE`.
+The snippet is on every page but **guarded** — it skips `localhost` and
+`file://` entirely. Production uses the `labmedia` GoatCounter site code.
 
 The site total is drawn in the footer from GoatCounter's JSON endpoint
 (`/counter/TOTAL.json`) rather than their built-in widget, which is a 200x80
@@ -246,8 +257,8 @@ revealed if a number actually arrives — a disabled setting, a blocked request,
 an empty response or a browser without `fetch` all leave no gap and no empty
 label. Their responses cache for up to four hours, so it lags reality.
 
-**This needs "Allow adding visitor counts on your website" switched on** in the
-GoatCounter site settings; it defaults to off.
+"Allow adding visitor counts on your website" is enabled in GoatCounter so the
+footer can read the public total.
 
 The colophon's figure list previously read "Trackers 00". Adding a counter meant
 that had to change; it now reads "Cookies 00" and the page states plainly what

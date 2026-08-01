@@ -88,7 +88,7 @@
 /* ---- Bands ----
    Twelve sibling groups read as one undifferentiated list even when they are
    all collapsed, because nothing tells you which of them are the same KIND of
-   thing. These three bands wrap the existing groups rather than replacing them,
+   thing. These four bands wrap the existing groups rather than replacing them,
    so nothing is re-tagged and every group still owns its own anchor and count.
 
    Every group belongs to exactly one band : a group that matched none would
@@ -232,7 +232,7 @@ function detailHTML(r){
   }
 
   /* The summary row already shows the first three features. This used to print
-     the WHOLE set again, so 106 of the 128 entries repeated their own tags the
+     the WHOLE set again, so 106 of the 127 entries repeated their own tags the
      moment you opened them : which is what made an expanded row look like it
      had lost its place. Only the ones that didn't fit go here. */
   var rest=(r.features||[]).slice(3);
@@ -307,8 +307,8 @@ function itemHTML(r,i){
    assign each resource to the FIRST matching group so nothing duplicates
    and nothing falls through. */
 
-/* A saved kit needs a stable key per entry. Only 20 of the 126 entries carry
-   an explicit id, but all 126 names are unique and slugify uniquely : so the
+/* A saved kit needs a stable key per entry. Only 18 of the 127 entries carry
+   an explicit id, but all 127 names are unique and slugify uniquely : so the
    key is derived rather than hand-authored, and no data file had to change.
    Derived from name, not array position, so reordering the list never
    invalidates somebody's saved kit or a link they already shared. */
@@ -336,7 +336,7 @@ function catsOf(r){return String(r.category||'').split(',').map(function(s){retu
    WHERE THINGS LIVE
    Splitting the notebook across three pages would quietly break
    the one thing search was for : finding anything from anywhere.
-   So every page searches all 126 and anything that belongs to a
+   So every page searches all 127 and anything that belongs to a
    band it does not own is listed separately, with a link to the
    page that has it. Declared once, here, because a lookup table
    duplicated per page is a lookup table that will disagree.
@@ -464,7 +464,7 @@ function groupOfEntry(r){
   });
   /* `claimed` is exactly what this page rendered, so "new" is counted from that
      rather than from ALL : otherwise a page could advertise a new entry that
-     lives on one of the other two. And the count says "n of 126" so the slice
+     lives on one of the other two. And the count says "n of 127" so the slice
      is honest about being a slice. */
   var fresh=claimed.filter(isNew).length;
   var el=document.getElementById('totalCount');
@@ -477,7 +477,7 @@ function groupOfEntry(r){
    SAVING TO YOUR KIT
    The kit itself now lives on mykit.html. This page keeps the
    stars : saving belongs next to the thing you are saving : but
-   no longer renders the list, which used to sit above the 126
+   no longer renders the list, which used to sit above the 127
    entries most people came here for.
 
    Keys come from keyOf(), derived from each name rather than its
@@ -647,7 +647,7 @@ document.addEventListener('click',function(e){
 
   /* ---- Matches on the other two pages ----
      Search used to cover the whole notebook because the whole notebook was one
-     page. Now it isn't, so a query is run against all 126 and anything that
+     page. Now it isn't, so a query is run against all 127 and anything that
      lives in a band this page does not own is listed here with a link to the
      page that has it. Without this, splitting the pages would have quietly
      turned one good search into three partial ones. */
