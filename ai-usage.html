@@ -196,6 +196,7 @@
     <h1>AI Usage <em>Dashboard</em></h1>
     <p>Every model subscription in one place. Updated automatically by Wheatley.</p>
     <div class="updated" id="lastUpdated">Loading…</div>
+    <button id="refreshBtn" onclick="manualRefresh()" style="font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:var(--accent-bg);border:1px solid var(--accent-dim);padding:6px 16px;border-radius:var(--radius);cursor:pointer;margin-top:var(--s-4);transition:opacity .3s">↻ Refresh Live Data</button>
   </div>
 
   <div class="summary" id="summary">
@@ -307,6 +308,27 @@ async function loadUsage(){
 loadUsage();
 // Auto-refresh every 5 min
 setInterval(loadUsage, 5 * 60 * 1000);
+
+// Manual refresh — reloads JSON with cache-bust and shows a spinner state
+function manualRefresh(){
+  var btn = document.getElementById('refreshBtn');
+  if(btn){
+    btn.style.opacity = '.5';
+    btn.textContent = '⟳ Refreshing…';
+  }
+  loadUsage().then(function(){
+    if(btn){
+      btn.style.opacity = '1';
+      btn.textContent = '✓ Refreshed';
+      setTimeout(function(){ btn.textContent = '↻ Refresh Live Data'; }, 2000);
+    }
+  }).catch(function(){
+    if(btn){
+      btn.style.opacity = '1';
+      btn.textContent = '↻ Refresh Live Data';
+    }
+  });
+}
 </script>
 
 </body>
