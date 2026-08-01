@@ -249,15 +249,12 @@
 
 <section class="wrap">
   <div class="wx-card">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px;">
       <div>
         <span class="mono" style="font-size:10px;text-transform:uppercase;color:var(--faint);letter-spacing:.14em;">Live Metro Detroit Station</span>
         <h2 style="font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;margin-top:4px;">Current <em>flight conditions.</em></h2>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-        <div id="flightBadge" class="wx-status">🟢 CLEAR TO FLY</div>
-        <button type="button" id="toggleRainBtn" class="toggle-rain-btn"><span>Simulate Rain 🌧️</span></button>
-      </div>
+      <div id="flightBadge" class="wx-status">🟢 CLEAR TO FLY</div>
     </div>
 
     <div class="wx-grid">
@@ -730,7 +727,6 @@
     var treeBaseY = h * 0.96;
     var treeHeight = h * 0.58;
 
-    // Dynamic Wind Bending Physics
     var swayFactor = 0.005; // 8 mph calm breathing
     var freq = 0.8;
     var staticLean = 0;
@@ -739,13 +735,13 @@
     if (windSpeed >= 18) {
       swayFactor = 0.08;
       freq = 3.4;
-      staticLean = 0.22; // ~13 degrees gale bend!
-      bendFlex = 0.12;   // Upper branches flex heavily!
+      staticLean = 0.20;
+      bendFlex = 0.10;
     } else if (windSpeed >= 12) {
       swayFactor = 0.03;
       freq = 1.8;
-      staticLean = 0.06;
-      bendFlex = 0.04;
+      staticLean = 0.05;
+      bendFlex = 0.03;
     }
 
     var totalSway = Math.sin(time * freq) * swayFactor + staticLean;
@@ -754,9 +750,8 @@
     ctx.translate(treeBaseX, treeBaseY);
     ctx.rotate(totalSway);
 
-    // Apply upper branch curvature flex when windy
     if (bendFlex > 0) {
-      ctx.transform(1, 0, (Math.sin(time * freq) * bendFlex + bendFlex) * 0.3, 1, 0, 0);
+      ctx.transform(1, 0, (Math.sin(time * freq) * bendFlex + bendFlex) * 0.25, 1, 0, 0);
     }
 
     ctx.strokeStyle = '#E07A47';
@@ -764,46 +759,39 @@
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    // Trunk
-    var trunkW = 3.2 * (w / 400);
-    var trunkH = treeHeight * 0.24;
+    // Straight clean trunk stem
+    var trunkH = treeHeight * 0.26;
     ctx.beginPath();
-    ctx.moveTo(-trunkW, 0);
-    ctx.lineTo(-trunkW, -trunkH);
-    ctx.lineTo(trunkW, -trunkH);
-    ctx.lineTo(trunkW, 0);
+    ctx.moveTo(0, 0);
+    ctx.lineTo(0, -trunkH);
     ctx.stroke();
 
-    // Hand-drawn organic scalloped evergreen canopy
-    var topY = -treeHeight;
-    var canopyBaseY = -trunkH;
+    // 4 Crisp Layered Architectural Evergreen Canopy Tiers
+    var tiers = 4;
+    for (var l = 0; l < tiers; l++) {
+      var ly = -treeHeight * (0.30 + l * 0.16);
+      var lw = (tiers - l + 0.6) * (w * 0.038);
+      var tierHeight = treeHeight * 0.24;
+      var tierSway = Math.sin(time * 1.5 + l * 0.4) * (swayFactor * 0.35);
 
-    ctx.beginPath();
-    ctx.moveTo(0, topY);
+      ctx.save();
+      ctx.translate(0, ly);
+      ctx.rotate(tierSway);
 
-    // Right side scalloped tiers
-    ctx.quadraticCurveTo(7 * (w/400), topY + treeHeight * 0.12, 13 * (w/400), topY + treeHeight * 0.20);
-    ctx.quadraticCurveTo(10 * (w/400), topY + treeHeight * 0.22, 9 * (w/400), topY + treeHeight * 0.24);
+      ctx.beginPath();
+      ctx.moveTo(0, -tierHeight * 0.85);
+      ctx.lineTo(lw, tierHeight * 0.35);
+      ctx.lineTo(lw * 0.35, tierHeight * 0.35);
+      ctx.lineTo(-lw * 0.35, tierHeight * 0.35);
+      ctx.lineTo(-lw, tierHeight * 0.35);
+      ctx.closePath();
 
-    ctx.quadraticCurveTo(18 * (w/400), topY + treeHeight * 0.36, 24 * (w/400), topY + treeHeight * 0.44);
-    ctx.quadraticCurveTo(17 * (w/400), topY + treeHeight * 0.46, 15 * (w/400), topY + treeHeight * 0.48);
+      ctx.fillStyle = 'rgba(224, 122, 71, 0.06)';
+      ctx.fill();
+      ctx.stroke();
 
-    ctx.quadraticCurveTo(28 * (w/400), topY + treeHeight * 0.60, 36 * (w/400), topY + treeHeight * 0.72);
-    ctx.quadraticCurveTo(22 * (w/400), topY + treeHeight * 0.73, 0, canopyBaseY);
-
-    // Left side scalloped tiers
-    ctx.quadraticCurveTo(-22 * (w/400), topY + treeHeight * 0.73, -36 * (w/400), topY + treeHeight * 0.72);
-    ctx.quadraticCurveTo(-17 * (w/400), topY + treeHeight * 0.48, -15 * (w/400), topY + treeHeight * 0.48);
-
-    ctx.quadraticCurveTo(-18 * (w/400), topY + treeHeight * 0.36, -24 * (w/400), topY + treeHeight * 0.44);
-    ctx.quadraticCurveTo(-10 * (w/400), topY + treeHeight * 0.22, -9 * (w/400), topY + treeHeight * 0.24);
-
-    ctx.quadraticCurveTo(-7 * (w/400), topY + treeHeight * 0.12, 0, topY);
-
-    ctx.closePath();
-    ctx.fillStyle = 'rgba(224, 122, 71, 0.05)';
-    ctx.fill();
-    ctx.stroke();
+      ctx.restore();
+    }
 
     ctx.restore();
   }
