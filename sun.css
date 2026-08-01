@@ -42,11 +42,12 @@
 .sky-time strong{display:block;font:clamp(28px,4vw,46px) var(--f-display);font-weight:400;line-height:1}
 .sky-time span{display:block;margin-top:7px;font:8px var(--f-mono);letter-spacing:.16em;text-transform:uppercase;opacity:.72}
 .sky-time #sunWind{margin-top:4px;opacity:.54}
-.sun-advice-box{position:absolute;z-index:5;left:clamp(18px,4vw,42px);bottom:clamp(48px,8vw,84px);max-width:min(660px,72%);color:#fff;text-shadow:0 1px 18px rgba(0,0,0,.52)}
+.sun-advice-box{position:absolute;z-index:5;left:clamp(18px,4vw,42px);bottom:clamp(112px,14vw,158px);max-width:min(860px,78%);color:#fff;text-shadow:0 1px 18px rgba(0,0,0,.52)}
 .sun-advice-box::before{content:"";position:absolute;z-index:-1;inset:-28px -50px -26px -24px;pointer-events:none;background:radial-gradient(ellipse at 28% 55%,rgba(11,11,12,.28),rgba(11,11,12,.1) 48%,transparent 73%)}
 .advice-k{display:block;font:8px var(--f-mono);letter-spacing:.18em;text-transform:uppercase;opacity:.7;margin-bottom:10px}
-.advice-phrase{font-family:var(--f-display);font-size:clamp(22px,3.5vw,38px);font-weight:400;line-height:1.08;letter-spacing:-.02em;margin:0}
+.advice-phrase{font-family:var(--f-display);font-size:clamp(30px,4.3vw,56px);font-weight:400;line-height:1.01;letter-spacing:-.025em;margin:0}
 .advice-roll{position:relative;display:inline;transition:color var(--fast) var(--ease)}
+.advice-accent{color:var(--accent);font-style:italic}
 .advice-roll::after{content:"";position:absolute;left:.02em;right:.08em;bottom:-.08em;height:1px;background:rgba(255,255,255,.55);opacity:0;transition:opacity var(--fast) var(--ease)}
 .advice-roll.spin{color:rgba(255,255,255,.58)}
 .advice-roll.spin::after{opacity:1}
@@ -91,7 +92,7 @@
 @media(max-width:520px){
   .sun-rule{grid-template-columns:auto 1fr}.sun-rule .mono:last-child{grid-column:1/-1;text-align:left}
   .planner-date input{width:100%;order:-1}.planner-date{display:grid;grid-template-columns:42px 42px 1fr;width:100%}.planner-date input{grid-column:1/-1}
-  .planner-date #todayBtn{width:auto}.sun-sky{min-height:420px}.sky-time{top:18px;right:18px}.sun-advice-box{left:18px;right:18px;max-width:none;bottom:54px}
+  .planner-date #todayBtn{width:auto}.sun-sky{min-height:460px}.sky-time{top:18px;right:18px}.sun-advice-box{left:18px;right:18px;max-width:none;bottom:88px}
   .slider-row{grid-template-columns:1fr}.time-val{text-align:left}.metrics-grid{grid-template-columns:1fr 1fr}
   .phase-grid{grid-template-columns:1fr}.phase-card{min-height:132px}.facts{grid-template-columns:1fr 1fr}.fact:last-child{grid-column:1/-1}
 }

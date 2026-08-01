@@ -112,6 +112,8 @@ test('Golden Hour responds to date changes and exposes calculated windows', asyn
   await page.waitForTimeout(450);
   const morningAdvice = await page.locator('#advicePhrase').textContent();
   assert.notEqual(morningAdvice, initialAdvice);
+  assert.equal(await page.locator('#advicePhrase .advice-accent').count(), 1);
+  assert.ok(parseFloat(await page.locator('.advice-phrase').evaluate((element) => getComputedStyle(element).fontSize)) >= 30);
   const layers = await page.evaluate(() => ({
     copy: Number(getComputedStyle(document.querySelector('.sun-advice-box')).zIndex),
     orb: Number(getComputedStyle(document.querySelector('.sun-orb')).zIndex)
@@ -132,6 +134,8 @@ test('solar scenes hand daylight to moonlight without changing the weather compo
     else route.abort('blockedbyclient');
   });
   await page.goto(`${baseURL}/droneweather.html`, { waitUntil: 'domcontentloaded', timeout: 10_000 });
+  assert.equal(await page.locator('.wx-scene-time').count(), 0, 'the weather scene must not carry a public time toolbar');
+  assert.equal(await page.locator('#wxSceneTest').getAttribute('open'), null, 'the subtle scene preview stays collapsed');
   await page.evaluate(() => window.labSceneSetTime(1260));
   assert.equal(await page.locator('#wxSceneStage').getAttribute('data-sun'), 'hidden', '9 PM must not show a daytime sun');
   await page.evaluate(() => window.labSceneSetTime(1320));
