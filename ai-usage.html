@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Usage Dashboard | LaB Media</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Secret AI usage dashboard">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lab.css">
+
+<style>
+/* Page-specific styles — inherits design tokens from lab.css */
+.usage-wrap{
+  max-width:860px;margin:0 auto;padding:clamp(40px,6vw,80px) var(--gutter) var(--s-10);
+}
+.usage-head{
+  text-align:center;margin-bottom:clamp(40px,5vw,64px);
+}
+.usage-head h1{
+  font-family:var(--f-display);font-weight:400;
+  font-size:clamp(34px,5.6vw,64px);line-height:1.04;letter-spacing:-.028em;
+  margin:0 0 var(--s-3);
+}
+.usage-head h1 em{font-style:italic;color:var(--accent)}
+.usage-head p{
+  color:var(--dim);font-size:var(--t-lg);line-height:1.7;max-width:48ch;margin:0 auto;
+}
+.usage-head .updated{
+  font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--faint);margin-top:var(--s-4);
+}
+
+/* Provider cards */
+.provider{
+  background:var(--paper-2);border:1px solid var(--line);
+  padding:clamp(24px,3vw,var(--s-6));margin-bottom:var(--s-5);
+  transition:border-color var(--mid) var(--ease);
+}
+.provider:hover{border-color:var(--line-2)}
+
+.provider-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:var(--s-4);
+}
+.provider-name{
+  font-family:var(--f-display);font-size:var(--t-xl);font-weight:400;
+  color:var(--ink);line-height:1.1;
+}
+.provider-name em{font-style:italic;color:var(--accent)}
+.provider-tier{
+  font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--faint);
+  padding:4px 10px;border:1px solid var(--line);border-radius:var(--radius);
+}
+
+/* Usage bar */
+.bar-wrap{
+  position:relative;height:8px;background:var(--paper-3);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:var(--s-3);
+}
+.bar-fill{
+  height:100%;border-radius:var(--radius);
+  transition:width var(--slow) var(--ease);
+  position:relative;
+}
+.bar-fill::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(244,241,236,.15),transparent);
+  animation:shimmer 3s infinite;
+}
+@keyframes shimmer{
+  0%{transform:translateX(-100%)}100%{transform:translateX(100%)}
+}
+@media(prefers-reduced-motion:reduce){.bar-fill::after{animation:none}}
+
+.bar-labels{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.08em;
+}
+.bar-labels .used{color:var(--dim)}
+.bar-labels .pct{color:var(--ink);font-weight:700}
+.bar-labels .reset{color:var(--faint);font-size:10px}
+
+/* Status colors */
+.status-ok .bar-fill{background:var(--good)}
+.status-warn .bar-fill{background:var(--accent)}
+.status-crit .bar-fill{background:#E0533A}
+.status-unknown .bar-fill{background:var(--faint);width:100%;opacity:.3}
+.status-unknown .bar-fill::after{animation:none}
+
+.status-ok .pct{color:var(--good)}
+.status-warn .pct{color:var(--accent)}
+.status-crit .pct{color:#E0533A}
+
+/* Provider detail line */
+.provider-detail{
+  display:flex;gap:var(--s-5);margin-top:var(--s-2);
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--faint);
+}
+.provider-detail span strong{color:var(--dim);font-weight:400}
+
+/* Model tags */
+.model-tags{
+  display:flex;flex-wrap:wrap;gap:6px;margin-top:var(--s-4);
+}
+.model-tag{
+  font-family:var(--f-mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;padding:3px 8px;
+  border:1px solid var(--line);color:var(--faint);border-radius:var(--radius);
+}
+.model-tag.active{color:var(--accent);border-color:var(--accent-dim);background:var(--accent-bg)}
+
+/* Summary grid */
+.summary{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:1px;background:var(--line);border:1px solid var(--line);
+  margin-bottom:clamp(40px,5vw,64px);
+}
+.summary div{
+  background:var(--paper-2);padding:var(--s-5) var(--s-4);
+  display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;
+}
+.summary dt{
+  font-family:var(--f-mono);font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--faint);order:2;
+}
+.summary dd{
+  font-family:var(--f-display);font-size:clamp(22px,3vw,32px);
+  color:var(--ink);line-height:1;order:1;margin:0;
+}
+.summary dd em{font-style:italic;color:var(--accent)}
+
+/* Easter egg footer */
+.egg{
+  text-align:center;padding:var(--s-7) 0;font-family:var(--f-mono);
+  font-size:var(--t-xs);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--faint);
+}
+.egg a{color:var(--accent);text-decoration:none}
+
+/* Note box */
+.note-box{
+  background:var(--accent-bg);border:1px solid var(--accent-dim);
+  padding:var(--s-5) var(--s-5);margin-bottom:clamp(40px,5vw,64px);
+}
+.note-box p{
+  color:var(--dim);font-size:var(--t-sm);line-height:1.7;margin:0;
+}
+.note-box strong{color:var(--ink);font-weight:400}
+</style>
+</head>
+<body>
+
+<div class="usage-wrap">
+
+  <div class="usage-head">
+    <h1>AI <em>Usage</em> Dashboard</h1>
+    <p>Every model subscription in one place. Updated automatically by Wheatley.</p>
+    <div class="updated" id="lastUpdated">Loading…</div>
+  </div>
+
+  <div class="summary" id="summary">
+    <div><dd id="sum-providers">—</dd><dt>Providers</dt></div>
+    <div><dd id="sum-active">—</dd><dt>Active Models</dt></div>
+    <div><dd id="sum-monthly">—</dd><dt>Monthly Cost</dt></div>
+    <div><dd id="sum-health">—</dd><dt>System Health</dt></div>
+  </div>
+
+  <div id="providers"></div>
+
+  <div class="note-box">
+    <p><strong>How this works:</strong> Wheatley polls provider APIs and dashboards on a cron schedule, writes <code>ai-usage.json</code>, and this page reads it. Some providers don't expose public usage APIs — those update on a best-effort basis. Data may be delayed up to 15 minutes.</p>
+  </div>
+
+  <div class="egg">
+    🔒 You found the <a href="/">control room</a>
+  </div>
+
+</div>
+
+<script>
+// Fetch and render usage data
+async function loadUsage(){
+  try{
+    const res = await fetch('ai-usage.json?_=' + Date.now());
+    if(!res.ok) throw new Error('No data');
+    const data = await res.json();
+
+    // Last updated
+    const updated = new Date(data.lastUpdated);
+    document.getElementById('lastUpdated').textContent =
+      'Last updated ' + updated.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+
+    // Summary
+    const providers = data.providers || [];
+    const active = providers.filter(p => p.status !== 'unknown').length;
+    const monthly = providers.reduce((s,p) => s + (p.monthlyCost || 0), 0);
+    const healthy = providers.filter(p => p.status === 'ok').length;
+
+    document.getElementById('sum-providers').textContent = providers.length;
+    document.getElementById('sum-active').textContent = active;
+    document.getElementById('sum-monthly').innerHTML = '$' + monthly.toFixed(0);
+    document.getElementById('sum-health').innerHTML = healthy + '<em>/</em>' + providers.length;
+
+    // Provider cards
+    const container = document.getElementById('providers');
+    container.innerHTML = providers.map(p => {
+      const pct = p.percentUsed;
+      const status = p.status || (pct < 50 ? 'ok' : pct < 80 ? 'warn' : pct < 100 ? 'crit' : 'unknown');
+      const barWidth = status === 'unknown' ? 100 : Math.min(pct, 100);
+      const models = (p.models || []).map(m =>
+        `<span class="model-tag${m.active ? ' active' : ''}">${m.name}</span>`
+      ).join('');
+
+      return `
+        <div class="provider">
+          <div class="provider-head">
+            <div class="provider-name">${p.name}${p.note ? ` <em>· ${p.note}</em>` : ''}</div>
+            <div class="provider-tier">${p.tier || '—'}</div>
+          </div>
+          <div class="bar-wrap status-${status}">
+            <div class="bar-fill" style="width:${barWidth}%"></div>
+          </div>
+          <div class="bar-labels">
+            <span class="used">${p.usedLabel || '—'} / ${p.totalLabel || '—'}</span>
+            <span class="pct">${status === 'unknown' ? '?' : Math.round(pct) + '%'}</span>
+            <span class="reset">${p.resetsIn || ''}</span>
+          </div>
+          <div class="provider-detail">
+            ${p.plan ? `<span><strong>Plan:</strong> ${p.plan}</span>` : ''}
+            ${p.cost ? `<span><strong>Cost:</strong> ${p.cost}</span>` : ''}
+            ${p.endpoint ? `<span><strong>Endpoint:</strong> ${p.endpoint}</span>` : ''}
+          </div>
+          ${models ? `<div class="model-tags">${models}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+
+  }catch(e){
+    document.getElementById('providers').innerHTML =
+      '<div class="note-box"><p><strong>Still warming up.</strong> Usage data not available yet. Wheatley is still configuring data sources.</p></div>';
+    console.error(e);
+  }
+}
+
+loadUsage();
+// Auto-refresh every 5 min
+setInterval(loadUsage, 5 * 60 * 1000);
+</script>
+
+</body>
+</html>
