@@ -23,23 +23,27 @@ CNAME.txt
 SITEhandoff.md
 node_modules/
 
+# Staging-only files that don't start with _ and so aren't caught above.
+# Design mockups get iterated in the open folder before one is chosen, and
+# timestamped .bak copies are made before risky edits. Neither belongs on the
+# server. `Mocks/` currently holds only _-prefixed files, so it is already
+# empty as far as git is concerned — named here so it stays that way.
+mockup-*.html
+*.bak
+*.bak.*
+/Mocks/
+
 # ---------------------------------------------------------------------------
-# SOURCE MEDIA — WHITELIST, NOT BLACKLIST
+# PUBLIC IMAGE DIRECTORIES — WHITELIST, NOT BLACKLIST
 #
-# This used to list folders by name in CAPS (IMAGES/lookoutbts/ and friends)
-# because that's how the SMB mount displays them. The folders on disk are
-# lowercase and git is case-sensitive, so not one of those rules matched —
-# 868 MB of HEIC originals and untouched camera MOVs sat unprotected.
-# images/lookoutbts alone holds a 504 MB clip, and GitHub hard-rejects any
-# single file over 100 MB.
-#
-# Naming folders by hand is what failed, so this ignores everything under
-# images/ and re-admits only the seven the site actually references. Any new
-# source folder is now ignored by default — the safe direction to be wrong in.
+# Original camera media now lives under `_review_later/`, but new source folders
+# may appear during future work. Ignore every image subdirectory by default and
+# re-admit only the nine web-ready directories the public site uses.
 # ---------------------------------------------------------------------------
 images/*/
 !images/brass/
 !images/itsaboy/
+!images/kit/
 !images/lejuice/
 !images/lookout/
 !images/moz/
