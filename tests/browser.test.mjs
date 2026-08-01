@@ -94,6 +94,30 @@ test('pages load cleanly in mobile Chromium', async (t) => {
 
 test('Golden Hour responds to date changes and exposes calculated windows', async () => {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, reducedMotion: 'no-preference' });
+  await page.addInitScript(() => {
+    const nativeRequest = window.requestAnimationFrame.bind(window);
+    const nativeCancel = window.cancelAnimationFrame.bind(window);
+    const pending = new Set();
+    let peak = 0;
+    window.requestAnimationFrame = (callback) => {
+      let id;
+      id = nativeRequest((stamp) => {
+        pending.delete(id);
+        callback(stamp);
+      });
+      pending.add(id);
+      peak = Math.max(peak, pending.size);
+      return id;
+    };
+    window.cancelAnimationFrame = (id) => {
+      pending.delete(id);
+      nativeCancel(id);
+    };
+    window.__sunRafStats = {
+      reset: () => { peak = pending.size; },
+      read: () => ({ pending: pending.size, peak })
+    };
+  });
   await page.route('**/*', (route) => {
     const url = route.request().url();
     if (url.startsWith(baseURL) || /^(?:data|blob):/.test(url)) route.continue();
@@ -114,6 +138,16 @@ test('Golden Hour responds to date changes and exposes calculated windows', asyn
   assert.notEqual(morningAdvice, initialAdvice);
   assert.equal(await page.locator('#advicePhrase .advice-accent').count(), 1);
   assert.ok(parseFloat(await page.locator('.advice-phrase').evaluate((element) => getComputedStyle(element).fontSize)) >= 30);
+  await page.evaluate(() => window.__sunRafStats.reset());
+  await page.locator('#timeSlider').evaluate((slider) => {
+    for (let minute = 420; minute <= 1020; minute += 20) {
+      slider.value = String(minute);
+      slider.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  });
+  await page.waitForTimeout(80);
+  const rafStats = await page.evaluate(() => window.__sunRafStats.read());
+  assert.ok(rafStats.peak <= 1, `timeline scrubbing created ${rafStats.peak} concurrent animation frames`);
   const layers = await page.evaluate(() => ({
     copy: Number(getComputedStyle(document.querySelector('.sun-advice-box')).zIndex),
     orb: Number(getComputedStyle(document.querySelector('.sun-orb')).zIndex)

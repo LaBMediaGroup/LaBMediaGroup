@@ -288,7 +288,7 @@
   function initNatureScene(){
     var canvas=$('sunNatureCanvas');if(!canvas)return;
     var context=canvas.getContext('2d'),buffer=document.createElement('canvas'),paint=buffer.getContext('2d');
-    var width=0,height=0,bw=0,bh=0,bit=4,time=0,visible=true,raf=null;
+    var width=0,height=0,bw=0,bh=0,bit=4,time=0,lastFrame=0,visible=true,raf=null;
     var birds=[
       {x:.08,y:.24,s:.00021,p:0,z:1},
       {x:.17,y:.18,s:.00016,p:2.2,z:1},
@@ -300,7 +300,7 @@
       var rect=canvas.getBoundingClientRect();if(!rect.width||!rect.height)return;
       width=Math.round(rect.width);height=Math.round(rect.height);var dpr=Math.min(devicePixelRatio||1,2);
       canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);context.setTransform(dpr,0,0,dpr,0,0);
-      bit=width<520?3:4;bw=Math.ceil(width/bit);bh=Math.ceil(height/bit);buffer.width=bw;buffer.height=bh;draw();
+      bit=width<520?3:4;bw=Math.ceil(width/bit);bh=Math.ceil(height/bit);buffer.width=bw;buffer.height=bh;requestDraw();
     }
     function treeTip(cx,baseY,treeH,maxHalf,bend,opacity){
       var apex=baseY-treeH,color='rgba(5,10,13,'+opacity+')',shade='rgba(5,10,13,'+(opacity*.54)+')';
@@ -313,9 +313,17 @@
         pixel(cx-half+shear,y,half*2+1,1,((y-apex)%4===0)?shade:color);
       }
     }
-    function draw(){
+    function requestDraw(){
+      if(!width||!height)return;
+      if(REDUCED){draw();return;}
+      if(visible&&!raf)raf=requestAnimationFrame(draw);
+    }
+    function draw(stamp){
       raf=null;if(!width||!height)return;
-      if(!REDUCED)time+=.0167;
+      if(!REDUCED){
+        var elapsed=lastFrame?clamp((stamp-lastFrame)/1000,0,.05):1/60;
+        time+=elapsed;lastFrame=stamp;
+      }
       paint.clearRect(0,0,bw,bh);
       var phase=stage.dataset.phase||'daylight';
       var night=phase==='night',wind=clamp(state.wind/24,0,.9),headroom=clamp((state.gust-state.wind)/16,0,1);
@@ -347,11 +355,15 @@
         }
       }
       context.clearRect(0,0,width,height);context.imageSmoothingEnabled=false;context.drawImage(buffer,0,0,bw,bh,0,0,bw*bit,bh*bit);
-      if(visible&&!REDUCED)raf=requestAnimationFrame(draw);
+      if(visible&&!REDUCED&&!raf)raf=requestAnimationFrame(draw);
     }
     if(window.ResizeObserver)new ResizeObserver(resize).observe(canvas);else window.addEventListener('resize',resize);
-    if(window.IntersectionObserver)new IntersectionObserver(function(entries){visible=entries[0].isIntersecting;if(visible&&!raf)raf=requestAnimationFrame(draw)},{threshold:0}).observe(canvas);
-    window.addEventListener('lab:sun-wind',draw);slider.addEventListener('input',draw);resize();
+    if(window.IntersectionObserver)new IntersectionObserver(function(entries){
+      visible=entries[0].isIntersecting;
+      if(!visible&&raf){cancelAnimationFrame(raf);raf=null;lastFrame=0;}
+      else if(visible)requestDraw();
+    },{threshold:0}).observe(canvas);
+    window.addEventListener('lab:sun-wind',requestDraw);slider.addEventListener('input',requestDraw);resize();
   }
 
   dateInput.addEventListener('change',function(){renderDay(false)});
