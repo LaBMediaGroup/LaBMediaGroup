@@ -24,6 +24,9 @@ const ideasData = require('../ideas-data.js');
 const resources = loadConst('resources-data.js', 'resources');
 const gearData = loadConst('gear-data.js', 'gearData');
 const spotlight = loadConst('spotlight-data.js', 'SPOTLIGHT');
+const fieldNotes = loadConst('field-notes-data.js', 'LAB_FIELD_NOTES');
+const assistantKnowledge = loadConst('assistant-data.js', 'LAB_ASSISTANT_KNOWLEDGE');
+const assistantCore = require('../assistant-core.js');
 const sun = require('../sun-calc.js');
 const promptPools = Object.entries(ideasData).filter(([, value]) => Array.isArray(value));
 const promptCount = promptPools.reduce((total, [, value]) => total + value.length, 0);
@@ -121,8 +124,44 @@ test('spotlight events have stable IDs, valid local dates, and usable links', ()
   }
   const detroit48 = spotlight.filter((event) => event.id.startsWith('detroit-48hfp-'));
   assert.deepEqual(Array.from(detroit48, (event) => event.date), ['2026-08-02', '2026-08-16']);
+  assert.match(detroit48[0].time, /Group B · 4:30 PM · Scattered/);
+  assert.match(detroit48[0].body, /Scattered[\s\S]*Group B at 4:30 PM/);
+  assert.match(detroit48[0].body, /Mistaken[\s\S]*ST Park Productions and Koffee Noir Productions/);
   assert.match(detroit48[0].time, /2:00 PM.*4:30 PM/);
   assert.match(detroit48[1].body, /awards/i);
+});
+
+test('assistant knows the Mistaken community film without inventing crew roles', () => {
+  const mistaken = fieldNotes.find((note) => note.id === 'community-film-mistaken');
+  assert.ok(mistaken);
+  for (const name of ['Veda', 'Joe', 'Billy', 'Anton', 'Rylie', 'David', 'Jeremy', 'Brandon', 'Amber', 'Kate', 'Nikki']) {
+    assert.match(mistaken.answer, new RegExp(`\\b${name}\\b`));
+  }
+  assert.match(mistaken.answer, /ST Park Productions and Koffee Noir Productions/);
+  assert.match(mistaken.answer, /Group B at 4:30 PM/);
+  assert.match(mistaken.answer, /will not guess/i);
+
+  const engine = assistantCore.createEngine({ fieldNotes, spotlight });
+  const answer = engine.ask('Who worked on Mistaken?');
+  assert.equal(answer.kind, 'field-note');
+  assert.match(answer.answer, /Veda[\s\S]*Nikki/);
+});
+
+test('assistant knowledge follows the current filmmaking tools', () => {
+  for (const title of ['Golden Hour Planner', 'Drone Weather', 'Aspect Ratio Previewer']) {
+    assert.ok(assistantKnowledge.pages.some((page) => page.title === title), `${title} is missing from assistant page knowledge`);
+  }
+  const engine = assistantCore.createEngine({ fieldNotes, spotlight, knowledge: assistantKnowledge });
+  const checks = [
+    ['What does the Golden Hour Planner do?', /date- and location-aware[\s\S]*sun to moon/i],
+    ['What does Drone Weather do?', /Open-Meteo[\s\S]*18-point pre-flight checklist/i],
+    ['What does the Aspect Ratio Previewer do?', /multiple local files[\s\S]*zero server uploads/i]
+  ];
+  for (const [query, expected] of checks) {
+    const answer = engine.ask(query);
+    assert.equal(answer.kind, 'field-note');
+    assert.match(answer.answer, expected);
+  }
 });
 
 test('public totals match their data sources', () => {

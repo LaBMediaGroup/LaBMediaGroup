@@ -106,8 +106,14 @@
 
 <section class="pg-hero wrap">
   <div class="sun-rule"><span class="mono">Golden Hour Planner</span><i></i><span class="mono" id="locationLabel">Shelby Township, MI · 42.67°N</span></div>
-  <h1>Plan for the light. <em>Stay for the shot.</em></h1>
-  <p class="lede">A date-aware sun and shooting-window planner for filmmakers. Scrub the day, find the warm light, copy the call-sheet times, or use your current location. The calculations stay in your browser.</p>
+  <div class="sun-hero-copy">
+    <h1>Plan for the light. <em>Stay for the shot.</em></h1>
+    <p class="hero-date" id="dateLabel">Today</p>
+    <div class="hero-lede-grid">
+      <p class="lede">A date-aware sun and shooting-window planner for filmmakers. Scrub the day, find the warm light, copy the call-sheet times, or use your current location.</p>
+      <p class="lede">The calculations stay in your browser.</p>
+    </div>
+  </div>
 </section>
 
 <section class="wrap planner-shell" aria-labelledby="dateLabel">
@@ -162,10 +168,10 @@
   <p class="planner-status" id="plannerStatus" role="status"></p>
 </section>
 
-<section class="phase-section wrap">
+<section class="phase-section wrap" aria-labelledby="windowsTitle">
   <div class="phase-head">
     <div>
-      <h2 id="dateLabel">Today&rsquo;s <em>light windows.</em></h2>
+      <h2 id="windowsTitle">The day&rsquo;s <em>light windows.</em></h2>
       <p>Blue hour runs from civil twilight to the horizon. Golden hour runs from the horizon to roughly six degrees of solar elevation: a practical filmmaking estimate, calculated for the selected date and location.</p>
     </div>
     <button class="copy-plan" id="copyPlan" type="button">Copy day plan</button>

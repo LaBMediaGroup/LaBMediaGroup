@@ -139,6 +139,22 @@ test('Golden Hour responds to date changes and exposes calculated windows', asyn
   assert.equal(await page.locator('#advicePhrase .advice-accent').count(), 1);
   assert.ok(parseFloat(await page.locator('.advice-phrase').evaluate((element) => getComputedStyle(element).fontSize)) >= 30);
   assert.ok(await page.locator('.sun-sky').evaluate((element) => element.getBoundingClientRect().height) >= 440, 'the compact desktop scene must not crowd the mobile composition');
+  const daylightAdvice = new Set();
+  for (const minute of [480, 600, 720, 840, 960, 1080, 1170]) {
+    await page.locator('#timeSlider').evaluate((slider, value) => {
+      slider.value = String(value);
+      slider.dispatchEvent(new Event('input', { bubbles: true }));
+    }, minute);
+    await page.waitForTimeout(430);
+    daylightAdvice.add(await page.locator('#adviceA11y').textContent());
+  }
+  assert.ok(daylightAdvice.size >= 6, `daylight timeline exposed only ${daylightAdvice.size} distinct phrases`);
+  await page.locator('#timeSlider').evaluate((slider) => {
+    slider.value = '30';
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await page.waitForTimeout(430);
+  assert.match(await page.locator('#adviceA11y').textContent(), /night is quietest/i, 'pre-dawn must use its own time-specific guidance');
   await page.evaluate(() => window.__sunRafStats.reset());
   await page.locator('#timeSlider').evaluate((slider) => {
     for (let minute = 420; minute <= 1020; minute += 20) {
@@ -181,6 +197,15 @@ test('solar scenes hand daylight to moonlight without changing the weather compo
   assert.equal(await page.locator('#wxCanvas').count(), 1, 'the original weather canvas remains the weather composition');
 
   await page.goto(`${baseURL}/sun.html?date=2026-08-01`, { waitUntil: 'domcontentloaded', timeout: 10_000 });
+  const heroLayout = await page.evaluate(() => {
+    const hero = document.querySelector('.pg-hero').getBoundingClientRect();
+    const date = document.querySelector('.hero-date').getBoundingClientRect();
+    const ledes = [...document.querySelectorAll('.hero-lede-grid .lede')].map((element) => element.getBoundingClientRect());
+    return { heroLeft: hero.left, heroWidth: hero.width, dateLeft: date.left, ledeTops: ledes.map((rect) => rect.top) };
+  });
+  assert.ok(heroLayout.dateLeft > heroLayout.heroLeft + heroLayout.heroWidth * .55, 'the desktop shoot date should use the open right side of the hero');
+  assert.equal(heroLayout.ledeTops.length, 2);
+  assert.ok(Math.abs(heroLayout.ledeTops[0] - heroLayout.ledeTops[1]) <= 1, 'the hero introduction should form two aligned columns');
   await page.locator('#timeSlider').evaluate((slider) => {
     slider.value = '1320';
     slider.dispatchEvent(new Event('input', { bubbles: true }));
