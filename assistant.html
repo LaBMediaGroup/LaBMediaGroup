@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<script>(function(){var K="lab-theme-v2",O="lab-theme",M={stone:"sepia",sepia:"timber"};try{var t=localStorage.getItem(K);if(t===null){var l=localStorage.getItem(O);if(l){t=M[l]||l;localStorage.setItem(K,t);}}if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <title>LaB Assistant : Ask the Site</title>
 <meta name="description" content="Ask LaB Media about its films, filmmaking resources, gear, Michigan events, Story Generator, SkyBound, and how the site works.">
 <link rel="canonical" href="https://labmedia.work/assistant.html">
@@ -275,8 +275,8 @@ main{background:var(--paper)}
     <div class="theme" role="group" aria-label="Colour theme">
       <button type="button" data-theme-set="dark" aria-pressed="true" title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
-      <button type="button" data-theme-set="stone" aria-pressed="false" title="Stone"><span class="sw sw-stone"></span><span class="vh">Stone</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="timber" aria-pressed="false" title="Timber"><span class="sw sw-timber"></span><span class="vh">Timber</span></button>
       <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
@@ -423,7 +423,7 @@ main{background:var(--paper)}
   document.addEventListener('keydown',function(e){if(e.key!=='Escape')return;closeAll(null);if(t){t.setAttribute('aria-expanded','false');l.setAttribute('data-open','false');}});
 })();
 (function(){
-  var root=document.documentElement,KEY='lab-theme',btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
+  var root=document.documentElement,KEY='lab-theme-v2',btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
   function apply(t,save){if(t==='dark')root.removeAttribute('data-theme');else root.setAttribute('data-theme',t);btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.themeSet===t));});if(save)try{localStorage.setItem(KEY,t);}catch(e){}}
   var saved='dark';try{saved=localStorage.getItem(KEY)||'dark';}catch(e){}apply(saved,false);
   btns.forEach(function(b){b.addEventListener('click',function(){apply(b.dataset.themeSet,true);});});

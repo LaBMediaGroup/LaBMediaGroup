@@ -14,9 +14,14 @@
 
   <script>
     (function(){
-      var root=document.documentElement, KEY='lab-theme';
+      var root=document.documentElement, KEY='lab-theme-v2', OLD='lab-theme';
+      var MIGRATE={stone:'sepia', sepia:'timber'};
       try{
         var saved=localStorage.getItem(KEY);
+        if(saved===null){
+          var legacy=localStorage.getItem(OLD);
+          if(legacy){ saved=MIGRATE[legacy]||legacy; localStorage.setItem(KEY,saved); }
+        }
         if(saved && saved!=='dark') root.setAttribute('data-theme',saved);
       }catch(e){}
     })();
@@ -25,7 +30,12 @@
   <style>
     .pg-hero {
       padding-block: clamp(44px, 6vw, var(--s-8)) clamp(36px, 5vw, var(--s-7));
-      border-bottom: 1px solid var(--line);
+      /* This rule is the scene's ground. The canvas is pulled down so its
+         horizon lands exactly here, and the renderer tints the colour with
+         the current safety state, so the divider that separates the hero
+         from the readout below is the same line the drone is standing on. */
+      border-bottom: 1px solid var(--wx-ground, var(--line));
+      transition: border-color var(--slow) var(--ease);
     }
     .pg-hero h1 {
       font-family: var(--f-display);
@@ -39,6 +49,22 @@
     .pg-hero h1 em, h2 em {
       font-style: italic;
       color: var(--accent);
+    }
+    /* Second line drops below and steps in, so the two halves read as a
+       title and its subject rather than one run-on sentence held together
+       by a pipe. The indent is em-based so it tracks the display size. */
+    .pg-hero h1 small {
+      display: block;
+      font-size: .66em;
+      font-weight: 400;
+      letter-spacing: -.015em;
+      /* Pulled back off 1.1em so the W doesn't sit directly under the
+         descender of the y in Sky — they were reading as one stacked column. */
+      margin-left: .68em;
+      margin-top: .04em;
+    }
+    @media (max-width: 520px) {
+      .pg-hero h1 small { margin-left: .32em; }
     }
     .pg-hero .lede {
       color: var(--dim);
@@ -145,6 +171,10 @@
       display: flex;
       align-items: flex-end;
       justify-content: flex-end;
+      /* Cancel the hero's bottom padding so the canvas floor sits on the
+         section rule rather than hovering in a box above it. */
+      align-self: end;
+      margin-bottom: calc(-1 * clamp(36px, 5vw, 48px));
     }
     .weather-canvas {
       width: 100%;
@@ -152,6 +182,94 @@
       display: block;
       background: transparent;
     }
+
+    /* ---- pre-flight checklist ---- */
+    .ckl { margin-top: clamp(48px, 7vw, 88px); }
+    .ckl-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: var(--s-4); flex-wrap: wrap; margin-bottom: var(--s-3);
+    }
+    .ckl-head h2 {
+      font-family: var(--f-display); font-size: var(--t-2xl); font-weight: 400;
+      margin: 0; line-height: 1; letter-spacing: -.01em;
+    }
+    .ckl-meta { display: flex; align-items: center; gap: var(--s-3); }
+    .ckl-count {
+      font-family: var(--f-mono); font-size: 11px; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--faint);
+    }
+    .ckl-count b { color: var(--accent); font-weight: 400; }
+    .ckl-reset {
+      font-family: var(--f-mono); font-size: 10px; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--dim); background: transparent;
+      border: 1px solid var(--line-2); border-radius: var(--radius);
+      padding: 6px 11px; cursor: pointer; transition: all var(--fast) var(--ease);
+    }
+    .ckl-reset:hover { color: var(--ink); border-color: var(--accent-dim); background: var(--accent-bg); }
+    .ckl-bar { height: 2px; background: var(--line); border-radius: 2px; overflow: hidden; margin-bottom: var(--s-5); }
+    .ckl-bar span {
+      display: block; height: 100%; width: 0;
+      background: var(--accent); transition: width var(--mid) var(--ease);
+    }
+    .ckl-cols {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--s-5) var(--s-6);
+    }
+    .ckl-group h3 {
+      font-family: var(--f-mono); font-size: 10px; text-transform: uppercase;
+      letter-spacing: .14em; color: var(--faint); font-weight: 400;
+      margin: 0 0 var(--s-3); padding-bottom: var(--s-2);
+      border-bottom: 1px solid var(--line);
+    }
+    .ckl-item {
+      display: flex; gap: var(--s-3); align-items: flex-start;
+      padding: 9px 0; cursor: pointer; color: var(--dim);
+      font-size: var(--t-sm); line-height: 1.5;
+      transition: color var(--fast) var(--ease);
+    }
+    .ckl-item:hover { color: var(--ink); }
+    .ckl-item input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .ckl-box {
+      flex: 0 0 auto; width: 15px; height: 15px; margin-top: 2px;
+      border: 1px solid var(--line-2); border-radius: var(--radius);
+      position: relative; transition: all var(--fast) var(--ease);
+    }
+    .ckl-item:hover .ckl-box { border-color: var(--accent-dim); }
+    .ckl-item input:focus-visible + .ckl-box { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .ckl-item input:checked + .ckl-box { background: var(--accent); border-color: var(--accent); }
+    .ckl-item input:checked + .ckl-box::after {
+      content: ""; position: absolute; left: 4px; top: 1px;
+      width: 4px; height: 8px; border: solid var(--paper);
+      border-width: 0 1.5px 1.5px 0; transform: rotate(45deg);
+    }
+    .ckl-item input:checked ~ .ckl-txt { color: var(--faint); text-decoration: line-through; text-decoration-color: var(--line-2); }
+    .ckl-note {
+      margin-top: var(--s-5); padding: var(--s-3) var(--s-4);
+      border: 1px solid var(--line); border-left: 2px solid var(--accent);
+      background: var(--accent-bg); font-size: var(--t-sm);
+      color: var(--dim); line-height: 1.6;
+    }
+
+    /* ---- outbound reference links ---- */
+    .lnk-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(248px, 1fr));
+      gap: var(--s-3); margin-top: var(--s-4);
+    }
+    .lnk {
+      display: block; padding: var(--s-4); text-decoration: none;
+      border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--paper-2); transition: all var(--fast) var(--ease);
+    }
+    .lnk:hover { border-color: var(--accent-dim); background: var(--accent-bg); transform: translateY(-2px); }
+    .lnk-name {
+      display: flex; align-items: baseline; gap: 7px;
+      font-size: var(--t-base); color: var(--ink); margin-bottom: 5px;
+    }
+    .lnk-name span {
+      font-family: var(--f-mono); font-size: 9px; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--faint);
+    }
+    .lnk p { margin: 0; font-size: var(--t-sm); color: var(--dim); line-height: 1.55; }
   </style>
 </head>
 <body>
@@ -205,8 +323,8 @@
     <div class="theme" role="group" aria-label="Colour theme">
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
-      <button type="button" data-theme-set="stone" aria-pressed="false" title="Stone"><span class="sw sw-stone"></span><span class="vh">Stone</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="timber" aria-pressed="false" title="Timber"><span class="sw sw-timber"></span><span class="vh">Timber</span></button>
       <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
@@ -220,7 +338,7 @@
 <section class="pg-hero wrap">
   <div class="pg-hero-grid">
     <div>
-      <h1><span style="color:var(--sky)">Sky</span><em>Bound</em> <span style="color:var(--dim);font-weight:300">|</span> <small style="font-size:0.75em;font-weight:400">Weather &amp; Safety.</small></h1>
+      <h1><span style="color:var(--sky)">Sky</span><em>Bound</em><small>Weather &amp; Safety.</small></h1>
       <p class="lede">Real-time local wind speeds, gusts, and flight safety status calibrated for quadcopters, FPV rigs, and cinematic aerial photography.</p>
     </div>
     <div class="weather-scene-stage" id="wxSceneStage">
@@ -261,6 +379,130 @@
         <div class="k">Flight Ceiling</div>
         <div class="v">400<small> ft AGL</small></div>
       </div>
+    </div>
+  </div>
+
+  <div class="sec-c">
+    <h2 style="font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;margin-bottom:var(--s-4);">Reading the <em>gust number.</em></h2>
+    <div class="rules-list">
+      <div class="rule-item">
+        <h3><em>Steady wind is the average. The gust is the peak.</em></h3>
+        <p>The aircraft trims itself for the average and then has to correct for everything above it. Every correction is motors spinning up asymmetrically &mdash; battery burned, and a gimbal making constant micro-adjustments that show up as jitter once you are on a long lens. Eight steady with gusts to twenty-two is a harder flight than a flat fifteen, which is why the number on the right of these tiles is the one worth watching.</p>
+      </div>
+      <div class="rule-item">
+        <h3><em>The wind at 300 feet is not the wind at your feet.</em></h3>
+        <p>You are standing in the boundary layer, where friction against the ground slows the air down. Your aircraft is not. It is common to launch into what feels like a light breeze and find noticeably stronger, steadier wind at altitude. Send it up, hover, and watch how hard it has to lean to hold position before you commit to a shot.</p>
+      </div>
+      <div class="rule-item">
+        <h3><em>Obstacles make their own weather.</em></h3>
+        <p>Buildings, treelines and ridges turn smooth air into mechanical turbulence, and the rough patch extends well downwind of whatever caused it. A number that is perfectly safe in an open field can be genuinely unpleasant threading a gap between two structures. Give hard edges more room than the wind reading alone suggests.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-c">
+    <h2 style="font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;margin-bottom:var(--s-4);">Flying <em>after dark.</em></h2>
+    <div class="rules-list">
+      <div class="rule-item">
+        <h3><em>Anti-collision lighting, visible for three statute miles.</em></h3>
+        <p>Night flying under Part&nbsp;107 no longer needs a waiver, but it does need a light: anti-collision lighting visible for at least three statute miles, flashing fast enough to be seen and avoided. The navigation LEDs your aircraft shipped with almost certainly do not clear that bar &mdash; this means a dedicated strobe, mounted and switched on. The same requirement applies during civil twilight.</p>
+      </div>
+      <div class="rule-item">
+        <h3><em>The training is a separate requirement from the light.</em></h3>
+        <p>Certificated pilots need to have completed the updated recurrent training that covers night operations. Flying recreationally under the limited recreational exception does not exempt you from the lighting, and you still need to follow a community-based organisation&rsquo;s safety guidelines. Registered aircraft need to be broadcasting Remote&nbsp;ID either way.</p>
+      </div>
+      <div class="rule-item">
+        <h3><em>Orientation is the hazard, not the darkness.</em></h3>
+        <p>Visual line of sight still applies after dark and it is much harder to hold. A strobe tells you where the aircraft is but not reliably which way it is facing, and losing yaw orientation at distance is how night flights go wrong. Fly a site you already know in daylight, keep it closer than you would at noon, and set your return-to-home altitude above the tallest thing out there.</p>
+      </div>
+      <div class="rule-item">
+        <h3><em>Cold takes the battery before it takes you.</em></h3>
+        <p>Lithium packs lose usable capacity in the cold, and a night flight in October behaves nothing like the same flight in July. Warm the batteries before launch, expect the low-voltage warning sooner than the percentage suggests, and land on a number that leaves you a margin. Watch for dew and frost forming on props and the gimbal glass while you are set up.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ckl" id="preflight">
+    <div class="ckl-head">
+      <h2>Pre-flight <em>checklist.</em></h2>
+      <div class="ckl-meta">
+        <span class="ckl-count" id="cklCount"><b>0</b> / 18</span>
+        <button type="button" class="ckl-reset" id="cklReset">Reset</button>
+      </div>
+    </div>
+    <div class="ckl-bar"><span id="cklFill"></span></div>
+
+    <div class="ckl-cols">
+      <div class="ckl-group">
+        <h3>Before you leave</h3>
+        <label class="ckl-item"><input type="checkbox" data-ck="a1"><span class="ckl-box"></span><span class="ckl-txt">Aircraft, controller and phone batteries charged</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="a2"><span class="ckl-box"></span><span class="ckl-txt">Props checked for nicks and hairline cracks, spares packed</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="a3"><span class="ckl-box"></span><span class="ckl-txt">Firmware current on aircraft, controller and app</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="a4"><span class="ckl-box"></span><span class="ckl-txt">Card in, formatted, with space to spare</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="a5"><span class="ckl-box"></span><span class="ckl-txt">Registration mark on the airframe, Remote ID broadcasting</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="a6"><span class="ckl-box"></span><span class="ckl-txt">Airspace checked, LAANC authorisation if controlled</span></label>
+      </div>
+
+      <div class="ckl-group">
+        <h3>On site</h3>
+        <label class="ckl-item"><input type="checkbox" data-ck="b1"><span class="ckl-box"></span><span class="ckl-txt">Temporary flight restrictions checked for today</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="b2"><span class="ckl-box"></span><span class="ckl-txt">Wind and gusts read at altitude, not just at the launch point</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="b3"><span class="ckl-box"></span><span class="ckl-txt">Compass and IMU calibrated if the location moved significantly</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="b4"><span class="ckl-box"></span><span class="ckl-txt">Home point set and confirmed on the map</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="b5"><span class="ckl-box"></span><span class="ckl-txt">Return-to-home altitude above the tallest obstacle on site</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="b6"><span class="ckl-box"></span><span class="ckl-txt">Launch surface clear, flat and not loose gravel or sand</span></label>
+      </div>
+
+      <div class="ckl-group">
+        <h3>Before the sticks move</h3>
+        <label class="ckl-item"><input type="checkbox" data-ck="c1"><span class="ckl-box"></span><span class="ckl-txt">Overflight path considered, bystanders accounted for</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="c2"><span class="ckl-box"></span><span class="ckl-txt">Visual observer briefed, if you are using one</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="c3"><span class="ckl-box"></span><span class="ckl-txt">Satellite lock acquired before takeoff, not during</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="c4"><span class="ckl-box"></span><span class="ckl-txt">Hover at ten feet, confirm it holds position cleanly</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="c5"><span class="ckl-box"></span><span class="ckl-txt">Landing battery percentage decided in advance</span></label>
+        <label class="ckl-item"><input type="checkbox" data-ck="c6"><span class="ckl-box"></span><span class="ckl-txt">If night: anti-collision strobe fitted, on, and visually confirmed</span></label>
+      </div>
+    </div>
+
+    <p class="ckl-note">
+      Ticks are saved in this browser only &mdash; nothing is sent anywhere, and there is no account to make.
+      This is how LaB packs for a shoot, not a regulatory document: the rules summarised on this page are
+      United States Part&nbsp;107 in plain language, they change, and they are not the same everywhere.
+      Check the current text at the FAA before you rely on any of it.
+    </p>
+  </div>
+
+  <div class="sec-c">
+    <h2 style="font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;margin-bottom:var(--s-3);">Check <em>before you fly.</em></h2>
+    <p style="color:var(--dim);font-size:var(--t-sm);line-height:1.65;max-width:64ch;margin:0;">
+      The reading at the top of this page is one station and one moment. For anything that matters &mdash; a paid
+      shoot, unfamiliar airspace, weather on the edge &mdash; these are the places worth opening first.
+    </p>
+    <div class="lnk-grid">
+      <a class="lnk" href="https://www.uavforecast.com/" target="_blank" rel="noopener">
+        <div class="lnk-name">UAV Forecast <span>Weather</span></div>
+        <p>Built for this specific problem. Wind and gusts at altitude, cloud base, satellite count and KP index, all on one screen with a go / no-go read.</p>
+      </a>
+      <a class="lnk" href="https://www.windy.com/" target="_blank" rel="noopener">
+        <div class="lnk-name">Windy <span>Weather</span></div>
+        <p>Wind maps you can scrub through time and altitude, with several forecast models to compare. Best tool for seeing a front arrive before it does.</p>
+      </a>
+      <a class="lnk" href="https://aviationweather.gov/" target="_blank" rel="noopener">
+        <div class="lnk-name">Aviation Weather Center <span>Official</span></div>
+        <p>NOAA&rsquo;s own service. METARs and TAFs from the nearest field, which is the same data the crewed aircraft above you are working from.</p>
+      </a>
+      <a class="lnk" href="https://www.weather.gov/dtx/" target="_blank" rel="noopener">
+        <div class="lnk-name">NWS Detroit / Pontiac <span>Local</span></div>
+        <p>The official local forecast office for Metro Detroit, including watches, warnings and the area forecast discussion when something is developing.</p>
+      </a>
+      <a class="lnk" href="https://www.aloft.ai/b4ufly/" target="_blank" rel="noopener">
+        <div class="lnk-name">B4UFLY <span>Airspace</span></div>
+        <p>The FAA&rsquo;s airspace awareness app, run by Aloft. Tells you what class you are standing in and whether you need authorisation before you unfold the arms.</p>
+      </a>
+      <a class="lnk" href="https://www.faa.gov/uas/commercial_operators" target="_blank" rel="noopener">
+        <div class="lnk-name">FAA Part 107 <span>Rules</span></div>
+        <p>The actual current text, including night operations and Remote ID. If anything on this page disagrees with this link, this link is right.</p>
+      </a>
     </div>
   </div>
 
@@ -332,7 +574,7 @@
 <script>
 /* Theme switch : remembers choice, falls back to dark */
 (function(){
-  var root=document.documentElement, KEY='lab-theme';
+  var root=document.documentElement, KEY='lab-theme-v2';
   var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
   if(!btns.length)return;
 
@@ -425,717 +667,700 @@
         if (advisoryLine) advisoryLine.textContent = 'WIND STEADY · VISIBILITY GOOD · NO ADVISORIES';
       }
 
+      /* WMO codes split into two intensities rather than one boolean. The
+         drizzle band (51/53/55), freezing drizzle (56/57) and the lightest
+         rain and showers read as a fine mist in the scene; everything from
+         moderate rain up gets the full downpour. Treating a 0.2 mm/h
+         drizzle and a thunderstorm as the same picture was overstating the
+         weather most of the time. */
       if (w.weathercode) {
-        var isRainy = [51,53,55,61,63,65,66,67,80,81,82,95,96,99].indexOf(w.weathercode) !== -1;
-        if (isRainy) window.isRainingLive = true;
+        var DRIZZLE = [51,53,55,56,57,61,66,80];
+        var RAIN    = [63,65,67,81,82,95,96,99];
+        if (DRIZZLE.indexOf(w.weathercode) !== -1)   window.wxPrecip = 1;
+        else if (RAIN.indexOf(w.weathercode) !== -1) window.wxPrecip = 2;
+        if (window.wxPrecip) window.isRainingLive = true;   // legacy flag
       }
     }).catch(function(){});
 })();
 
-/* Live Procedural Weather Simulation (100% Client-Side Privacy Render) */
+/* Pre-flight checklist — ticks persist in this browser, nowhere else. */
+(function(){
+  'use strict';
+  var root = document.getElementById('preflight');
+  if (!root) return;
+
+  var KEY = 'lab-preflight';
+  var boxes = Array.prototype.slice.call(root.querySelectorAll('input[data-ck]'));
+  var countEl = document.getElementById('cklCount');
+  var fillEl = document.getElementById('cklFill');
+  var resetEl = document.getElementById('cklReset');
+
+  function load(){
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return [];
+      var v = JSON.parse(raw);
+      return Object.prototype.toString.call(v) === '[object Array]' ? v : [];
+    } catch (e){ return []; }
+  }
+  function save(){
+    var on = boxes.filter(function(b){ return b.checked; }).map(function(b){ return b.dataset.ck; });
+    try { localStorage.setItem(KEY, JSON.stringify(on)); } catch (e){}
+  }
+  function sync(){
+    var n = boxes.filter(function(b){ return b.checked; }).length;
+    if (countEl) countEl.innerHTML = '<b>' + n + '</b> / ' + boxes.length;
+    if (fillEl) fillEl.style.width = (boxes.length ? (n / boxes.length) * 100 : 0) + '%';
+  }
+
+  var saved = load();
+  boxes.forEach(function(b){
+    if (saved.indexOf(b.dataset.ck) !== -1) b.checked = true;
+    b.addEventListener('change', function(){ save(); sync(); });
+  });
+
+  if (resetEl) resetEl.addEventListener('click', function(){
+    boxes.forEach(function(b){ b.checked = false; });
+    save(); sync();
+  });
+
+  sync();
+})();
+
+/* Field Station — procedural weather scene (100% client-side, no third-party calls)
+   Everything renders into a low-resolution buffer and is upscaled with
+   nearest-neighbour, so the whole scene stays on one honest pixel grid.
+   It reads the same numbers the card below it reports, and the same
+   green/amber/red thresholds, so the picture and the advisory can never
+   disagree. */
 (function(){
   'use strict';
   var cvs = document.getElementById('wxCanvas');
   if (!cvs) return;
   var ctx = cvs.getContext('2d');
 
-  var windSpeed = 7;
-  var windGust = 11;
-  var tempF = 74;
-  var isRaining = false;
+  var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------------------------------------------------------------
+     Live values, read straight off the card so there is one source
+     of truth for the numbers.
+     --------------------------------------------------------------- */
+  var windSpeed = 8, windGust = 11, tempF = 74;
+
+  function readCard(){
+    var w = document.getElementById('wxWind');
+    var g = document.getElementById('wxGust');
+    var t = document.getElementById('wxTemp');
+    if (w){ var pw = parseInt(w.textContent, 10); if (!isNaN(pw)) windSpeed = pw; }
+    if (g){ var pg = parseInt(g.textContent, 10); if (!isNaN(pg)) windGust  = pg; }
+    if (t){ var pt = parseInt(t.textContent, 10); if (!isNaN(pt)) tempF     = pt; }
+  }
+
+  // 0 dry, 1 drizzle, 2 rain. window.wxPrecip is set by the live fetch above.
+  function precip(){
+    if (typeof window.wxPrecip === 'number') return window.wxPrecip;
+    return window.isRainingLive ? 2 : 0;          // legacy flag
+  }
+
+  // Same thresholds as the advisory card. Never diverge these.
+  function status(){
+    if (windSpeed >= 18 || windGust >= 18) return 'red';
+    if (windSpeed >= 12 || windGust >= 14) return 'yellow';
+    return 'green';
+  }
 
   var toggleRainBtn = document.getElementById('toggleRainBtn');
-  if (toggleRainBtn) {
+  if (toggleRainBtn){
+    var LABELS = ['<span>Simulate Rain &#127782;</span>',
+                  '<span>Heavier Rain &#127783;</span>',
+                  '<span>Sun Mode &#9728;&#65039;</span>'];
+    window.wxPrecip = precip();
     toggleRainBtn.addEventListener('click', function(){
-      isRaining = !isRaining;
-      this.classList.toggle('active', isRaining);
-      this.innerHTML = isRaining ? '<span>Sun Mode ☀️</span>' : '<span>Simulate Rain 🌧️</span>';
+      window.wxPrecip = (precip() + 1) % 3;
+      this.classList.toggle('active', window.wxPrecip > 0);
+      this.innerHTML = LABELS[window.wxPrecip];
     });
   }
 
-  function resizeCanvas() {
-    var rect = cvs.getBoundingClientRect();
-    if (rect.width && rect.height) {
-      cvs.width = rect.width * (window.devicePixelRatio || 1);
-      cvs.height = rect.height * (window.devicePixelRatio || 1);
+  function lerp(a, b, t){ return a + (b - a) * t; }
+  function clamp(v, lo, hi){ return v < lo ? lo : (v > hi ? hi : v); }
+
+  /* ---------------------------------------------------------------
+     Theme tokens. Resolved through a 1x1 scratch canvas so any CSS
+     colour form works, and flushed whenever the theme switches.
+     --------------------------------------------------------------- */
+  var probe = document.createElement('canvas'); probe.width = probe.height = 1;
+  var pctx = probe.getContext('2d', { willReadFrequently: true });
+  var tokens = {};
+
+  function rgb(name){
+    if (tokens[name]) return tokens[name];
+    var val = getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '#888';
+    pctx.clearRect(0, 0, 1, 1);
+    pctx.fillStyle = '#000'; pctx.fillStyle = val;
+    pctx.fillRect(0, 0, 1, 1);
+    var d = pctx.getImageData(0, 0, 1, 1).data;
+    return (tokens[name] = [d[0], d[1], d[2]]);
+  }
+  function css(name, a){
+    var c = rgb(name);
+    return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (a === undefined ? 1 : a) + ')';
+  }
+  // The palette ships one warm accent, so amber and red are derived here.
+  function statusRGB(){
+    var s = status();
+    if (s === 'green') return rgb('--good');
+    if (s === 'yellow') return [224, 168, 71];
+    return [210, 96, 63];
+  }
+  function statusCSS(a){
+    var c = statusRGB();
+    return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (a === undefined ? 1 : a) + ')';
+  }
+
+  if (window.MutationObserver){
+    new MutationObserver(function(){ tokens = {}; skyKey = ''; })
+      .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  }
+
+  /* ---------------------------------------------------------------
+     Gust engine.
+     Real gusts arrive in bursts with genuine lulls between them. A
+     fixed interval reads as a machine, so the gap is re-rolled every
+     time: mostly ordinary, sometimes a long quiet stretch, sometimes
+     a quick second punch on the tail of the first.
+     --------------------------------------------------------------- */
+  var gustEnv = 0, gustClock = 0, gustNext = 4, gustWob = 0, gustFired = 0;
+
+  function updateGust(dt){
+    gustWob += dt;
+    var headroom = Math.max(0, windGust - windSpeed);
+    if (headroom < 1.5){ gustEnv *= 0.94; return; }
+
+    gustClock += dt;
+    if (gustClock > gustNext){
+      gustClock = 0;
+      var busy = clamp(headroom / 16, 0, 1);
+      var r = Math.random();
+      if (r < 0.20)      gustNext = lerp(11, 6, busy) + Math.random() * 5;   // lull
+      else if (r < 0.85) gustNext = lerp(6.5, 3, busy) + Math.random() * 3;  // ordinary
+      else               gustNext = 0.9 + Math.random() * 0.7;               // double punch
+      gustEnv = 0.7 + Math.random() * 0.3;
+      gustFired++;
+    }
+    gustEnv *= 0.975;
+  }
+
+  function gustNow(){
+    var headroom = Math.max(0, windGust - windSpeed);
+    // buffeting wobble on the decay, so a gust shakes rather than ramps
+    var wob = 1 + 0.22 * Math.sin(gustWob * 9.3) * gustEnv;
+    return clamp(gustEnv * wob, 0, 1.2) * clamp(headroom / 12, 0, 1);
+  }
+
+  /* ---------------------------------------------------------------
+     Buffers
+     --------------------------------------------------------------- */
+  var buf = document.createElement('canvas');
+  var b = buf.getContext('2d');
+  var sky = document.createElement('canvas');
+  var skyKey = '';
+  var BIT = 4, BW = 0, BH = 0, GROUND = 0, W = 0, H = 0, dpr = 1;
+
+  var BAYER = [[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+
+  function px(x, y, w, h, style){
+    b.fillStyle = style;
+    b.fillRect(Math.round(x), Math.round(y), Math.max(1, Math.round(w)), Math.max(1, Math.round(h)));
+  }
+
+  /* Dithered sky + ground tone. Static for a given state, so it is
+     built once and blitted, not recomputed per frame. */
+  function buildSky(){
+    var key = status() + '|' + precip() + '|' + BW + 'x' + BH + '|' +
+              (document.documentElement.getAttribute('data-theme') || 'dark');
+    if (key === skyKey) return;
+    skyKey = key;
+
+    var sc = sky.getContext('2d');
+    sc.clearRect(0, 0, BW, BH);
+    var img = sc.createImageData(BW, BH);
+    var d = img.data;
+    var wet = precip() > 0;
+    var tint = wet ? rgb('--sky') : statusRGB();
+    var ink = rgb('--ink');
+
+    for (var y = 0; y < BH; y++){
+      for (var x = 0; x < BW; x++){
+        var i = (y * BW + x) * 4;
+        if (y < GROUND){
+          var t = y / GROUND;
+          var dens = Math.pow(t, 4.5) * (wet ? 7 : 5);
+          // The floor matters: without it the zero-threshold cell of every
+          // 4x4 block lights even at density ~0, painting a regular lattice
+          // of dots across the whole sky.
+          if (dens > 0.9 && dens > BAYER[y & 3][x & 3]){
+            d[i] = tint[0]; d[i+1] = tint[1]; d[i+2] = tint[2];
+            d[i+3] = wet ? 30 : 24;
+          }
+        }
+      }
+    }
+    sc.putImageData(img, 0, 0);
+  }
+
+  /* ---------------------------------------------------------------
+     Entities
+     --------------------------------------------------------------- */
+  var streaks = [], drops = [], birds = [];
+  var drone = { x: 0, y: 0, push: 0, vel: 0 };
+
+  function newStreak(spread){
+    return {
+      x: spread ? Math.random() * BW : -8 - Math.random() * 20,
+      y: 2 + Math.random() * (GROUND - 5),
+      sp: 0.55 + Math.random() * 0.75,
+      bright: Math.random(),
+      surge: 0
+    };
+  }
+
+  function seed(){
+    streaks.length = 0;
+    for (var i = 0; i < 46; i++) streaks.push(newStreak(true));
+    drops.length = 0;
+    for (var j = 0; j < 60; j++){
+      drops.push({ x: Math.random() * BW, y: Math.random() * GROUND, v: 1.1 + Math.random() * 0.8 });
+    }
+    birds.length = 0;
+    for (var k = 0; k < 3; k++){
+      birds.push({ x: Math.random() * BW, y: 6 + Math.random() * 14, ph: Math.random() * 6, sp: 0.22 + Math.random() * 0.14 });
+    }
+    drone.x = BW * 0.52; drone.y = GROUND * 0.42; drone.push = 0; drone.vel = 0;
+    critter = null; critterWait = 4;
+  }
+
+  /* ---------------------------------------------------------------
+     Forest critters
+     Sprites are character maps: '.' transparent, 'X' body, 'o' shade.
+     All face LEFT; walking right mirrors the blit. Sized so the
+     silhouette survives the bit grid — below about ten bits across a
+     tail or an ear is one pixel and simply disappears.
+     --------------------------------------------------------------- */
+  function blit(sprite, x, y, flip, tone, dim){
+    for (var r = 0; r < sprite.length; r++){
+      var row = sprite[r];
+      for (var c = 0; c < row.length; c++){
+        var ch = row.charAt(c);
+        if (ch === '.') continue;
+        px(flip ? (x + row.length - 1 - c) : (x + c), y + r, 1, 1, ch === 'o' ? dim : tone);
+      }
     }
   }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
 
-  // Floating leaf specs (gentle floating)
-  var particles = [];
-  for (var i = 0; i < 14; i++) {
-    particles.push({
-      x: Math.random() * 400,
-      y: Math.random() * 200,
-      size: Math.random() * 2 + 1,
-      speedX: Math.random() * 0.6 + 0.2,
-      speedY: Math.random() * 0.3 + 0.1,
-      rot: Math.random() * Math.PI * 2,
-      rotSpeed: (Math.random() - 0.5) * 0.03
-    });
-  }
-
-  // Raindrops and bouncing splash particles
-  var raindrops = [];
-  for (var r = 0; r < 22; r++) {
-    raindrops.push({
-      x: 0,
-      y: 0,
-      speedY: Math.random() * 4 + 4,
-      length: Math.random() * 8 + 6
-    });
-  }
-
-  var splashParticles = [];
-  function triggerSplash(x, y) {
-    for (var k = 0; k < 3; k++) {
-      splashParticles.push({
-        x: x,
-        y: y,
-        vx: (Math.random() - 0.5) * 2.5,
-        vy: -(Math.random() * 2.2 + 1.0),
-        alpha: 1.0
-      });
+  var CRITTERS = {
+    deer: {
+      w: 14, h: 14, tone: 'ink', speed: 0.20, dwell: 4.4, stepRate: 4, idleRate: 0.6,
+      frames: [[
+        'X...X.........','.X.X.X........','..XXX.........','..XXX.........',
+        '.XXoX.........','XXXXX.........','..XXX.........','...XXX........',
+        '..XXXXXXXXXX..','.XXXXXXXXXXXX.','.XXXXXXXXXXXo.','..XXXXXXXXXX..',
+        '..X.X....X.X..','..X.X....X.X..'
+      ],[
+        'X...X.........','.X.X.X........','..XXX.........','..XXX.........',
+        '.XXoX.........','XXXXX.........','..XXX.........','...XXX........',
+        '..XXXXXXXXXX..','.XXXXXXXXXXXX.','.XXXXXXXXXXXo.','..XXXXXXXXXX..',
+        '..XX......XX..','.X..X....X..X.'
+      ]]
+    },
+    squirrel: {
+      w: 11, h: 10, tone: 'ink', speed: 0.40, dwell: 3.2, stepRate: 9, idleRate: 2.0,
+      frames: [[
+        '.....XXXX..','....XXXXXX.','..X..XXXXX.','.XXX..XXXX.','XoXXX..XXXX',
+        'XXXXXX.XXXX','XXXXXXXXXX.','.XXXXXXXX..','.XX..XX....','.X....X....'
+      ],[
+        '......XXXX.','.....XXXXXX','..X..XXXXXX','.XXX..XXXXX','XoXXX..XXXX',
+        'XXXXXX.XXX.','XXXXXXXXXX.','.XXXXXXXX..','..XX.XX....','..X...X....'
+      ]]
+    },
+    rabbit: {
+      w: 10, h: 9, tone: 'ink', speed: 0.34, dwell: 2.8, stepRate: 7, idleRate: 1.4, hop: true,
+      frames: [[
+        '.X..X.....','.X..X.....','.X..X.....','.XXXX.....','XoXXXX....',
+        '.XXXXXXXoo','XXXXXXXXoo','.XXXXXXXX.','.XX..XX...'
+      ],[
+        '..X.X.....','.X..X.....','.X..X.....','.XXXX.....','XoXXXX....',
+        '.XXXXXXXoo','XXXXXXXXoo','.XXXXXXXX.','..XX.XX...'
+      ]]
+    },
+    fox: {
+      w: 14, h: 10, tone: 'accent', speed: 0.36, dwell: 3.4, stepRate: 8, idleRate: 1.6,
+      frames: [[
+        'X..X..........','XXXX.......XX.','XoXXX.....XXXX','XXXXX....XXXXX',
+        '.XXXX...XXXXX.','..XXXXXXXXXX..','.XXXXXXXXXXX..','..XXXXXXXXX...',
+        '..X.X...X.X...','..X.X...X.X...'
+      ],[
+        'X..X..........','XXXX......XXX.','XoXXX....XXXXX','XXXXX...XXXXX.',
+        '.XXXX..XXXXX..','..XXXXXXXXXX..','.XXXXXXXXXXX..','..XXXXXXXXX...',
+        '..XX.....XX...','.X..X...X..X..'
+      ]]
     }
-  }
-
-  // Fling easter egg item for gale wind (18+ mph)
-  var flingItem = {
-    x: -100,
-    y: 60,
-    rot: 0,
-    active: false,
-    timer: 0,
-    type: 'drone'
   };
 
-  var time = 0;
+  var critter = null, critterWait = 4;
 
-  function drawSun(w, h) {
-    var activeRain = isRaining || window.isRainingLive;
-    if (activeRain) return;
-
-    var sunX = w * 0.84;
-    var sunY = h * 0.28;
-    var sunRadius = Math.max(26, Math.min(46, w * 0.08));
-
-    // 8s breathing pulse (scale 0.95 - 1.05 & alpha subtle pulse)
-    var breathe = Math.sin(time * 0.65) * 0.05;
-    var pulsedRadius = sunRadius * (1 + breathe);
-    var glowAlpha = 0.45 + Math.sin(time * 0.65) * 0.15;
-
-    // Outer glow halo
-    var glowGrad = ctx.createRadialGradient(sunX, sunY, pulsedRadius * 0.3, sunX, sunY, pulsedRadius * 1.8);
-    glowGrad.addColorStop(0, 'rgba(224, 122, 71, ' + glowAlpha + ')');
-    glowGrad.addColorStop(1, 'transparent');
-
-    ctx.fillStyle = glowGrad;
-    ctx.beginPath();
-    ctx.arc(sunX, sunY, pulsedRadius * 1.8, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Core sun orb
-    ctx.fillStyle = tempF >= 80 ? '#E07A47' : '#E0A847';
-    ctx.beginPath();
-    ctx.arc(sunX, sunY, pulsedRadius, 0, Math.PI * 2);
-    ctx.fill();
+  /* Who is out is itself a weather readout: deer only in genuine calm,
+     fox up to a stiff breeze, and when it is unsafe to fly nobody
+     comes out at all. */
+  function critterPool(){
+    if (status() === 'red') return [];
+    if (precip() === 2) return ['squirrel', 'rabbit'];
+    var pool = ['squirrel', 'rabbit', 'squirrel'];
+    if (windSpeed < 14) pool.push('fox');
+    if (windSpeed < 10) pool.push('deer', 'deer');
+    return pool;
   }
 
-  function drawRainCloud(w, h) {
-    var activeRain = isRaining || window.isRainingLive;
-    if (!activeRain) return;
-
-    var cloudX = w * 0.46;
-    var cloudY = h * 0.22;
-    var groundY = h * 0.96;
-
-    // Vector rain cloud
-    ctx.save();
-    ctx.translate(cloudX, cloudY);
-    ctx.strokeStyle = '#A9CDE4';
-    ctx.lineWidth = 1.8;
-    ctx.fillStyle = 'rgba(169, 205, 222, 0.18)';
-
-    ctx.beginPath();
-    ctx.arc(-18 * (w/400), 0, 14 * (w/400), Math.PI * 0.8, Math.PI * 1.85);
-    ctx.arc(0, -10 * (w/400), 20 * (w/400), Math.PI * 1.1, Math.PI * 1.9);
-    ctx.arc(20 * (w/400), -2 * (w/400), 14 * (w/400), Math.PI * 1.25, Math.PI * 0.2);
-    ctx.lineTo(-28 * (w/400), 10 * (w/400));
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-    ctx.restore();
-
-    // Falling raindrops
-    ctx.strokeStyle = 'rgba(169, 205, 222, 0.75)';
-    ctx.lineWidth = 1.2;
-
-    for (var i = 0; i < raindrops.length; i++) {
-      var drop = raindrops[i];
-      if (drop.y === 0 || drop.y > groundY) {
-        drop.x = cloudX + (Math.random() - 0.5) * (w * 0.16);
-        drop.y = cloudY + 10;
-        drop.speedY = Math.random() * 3.5 + 4.5;
-      }
-
-      drop.y += drop.speedY;
-      var slant = windSpeed * 0.15;
-
-      ctx.beginPath();
-      ctx.moveTo(drop.x, drop.y);
-      ctx.lineTo(drop.x + slant, drop.y + drop.length);
-      ctx.stroke();
-
-      // Bounce & splash off white line!
-      if (drop.y >= groundY - 2) {
-        triggerSplash(drop.x, groundY);
-        drop.y = cloudY + 10;
-        drop.x = cloudX + (Math.random() - 0.5) * (w * 0.16);
-      }
-    }
-
-    // Bouncing splash droplets
-    for (var s = splashParticles.length - 1; s >= 0; s--) {
-      var sp = splashParticles[s];
-      sp.x += sp.vx;
-      sp.y += sp.vy;
-      sp.vy += 0.22;
-      sp.alpha -= 0.04;
-
-      ctx.fillStyle = 'rgba(169, 205, 222, ' + Math.max(0, sp.alpha) + ')';
-      ctx.beginPath();
-      ctx.arc(sp.x, sp.y, 1.4, 0, Math.PI * 2);
-      ctx.fill();
-
-      if (sp.alpha <= 0) {
-        splashParticles.splice(s, 1);
-      }
-    }
+  function spawnCritter(){
+    var pool = critterPool();
+    if (!pool.length) return false;
+    var d = CRITTERS[pool[(Math.random() * pool.length) | 0]];
+    var dir = Math.random() < 0.5 ? 1 : -1;
+    critter = {
+      def: d, dir: dir,
+      x: dir === 1 ? -d.w - 2 : BW + 2,
+      stop: BW * (0.24 + Math.random() * 0.34),      // clear of the left feather
+      phase: 'in', t: 0, frame: 0, startle: 0
+    };
+    return true;
   }
 
-  // Mouse Interactive State
-  var mouse = { x: -1000, y: -1000, inside: false, clickX: -1000, clickY: -1000, clicked: false };
-
-  cvs.addEventListener('mousemove', function(e){
-    var rect = cvs.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-    mouse.x = (e.clientX - rect.left) * (cvs.width / rect.width);
-    mouse.y = (e.clientY - rect.top) * (cvs.height / rect.height);
-    mouse.inside = true;
-  });
-
-  cvs.addEventListener('mouseleave', function(){
-    mouse.inside = false;
-    mouse.x = -1000;
-    mouse.y = -1000;
-  });
-
-  cvs.addEventListener('click', function(e){
-    var rect = cvs.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-    mouse.clickX = (e.clientX - rect.left) * (cvs.width / rect.width);
-    mouse.clickY = (e.clientY - rect.top) * (cvs.height / rect.height);
-    mouse.clicked = true;
-
-    // Squirrel startled click hop!
-    if (squirrel.state !== 'hidden') {
-      squirrel.hopBoost = 14 * (cvs.width / 400);
-      squirrel.pauseTimer = 0;
-      squirrel.state = 'pausing';
-    }
-  });
-
-  // Vector Woodland Squirrel strolling along the baseline!
-  var squirrel = {
-    x: -40,
-    state: 'entering', // 'entering', 'pausing', 'exiting', 'hidden'
-    timer: 0,
-    pauseTimer: 0,
-    dir: 1,
-    tailAngle: 0,
-    hopBoost: 0
-  };
-
-  function drawSquirrel(w, h) {
-    var lineY = h * 0.96;
-
-    squirrel.timer++;
-
-    if (squirrel.state === 'hidden') {
-      if (squirrel.timer > 320 && Math.random() < 0.025) {
-        squirrel.state = 'entering';
-        squirrel.dir = Math.random() > 0.35 ? 1 : -1;
-        squirrel.x = squirrel.dir === 1 ? -30 : w + 30;
-        squirrel.timer = 0;
-      }
+  function updateCritter(dt, gust){
+    if (!critter){
+      critterWait -= dt;
+      if (critterWait <= 0) critterWait = spawnCritter() ? (10 + Math.random() * 13) : 3;
       return;
     }
+    var c = critter, d = c.def;
+    if (status() === 'red' && c.phase !== 'out'){ c.phase = 'out'; c.startle = 1; }
+    if (gust > 0.55 && c.phase === 'dwell' && Math.random() < 0.04){ c.phase = 'out'; c.startle = 1; }
+    c.startle *= 0.95;
 
-    // Mouse curiosity: turn body/head toward mouse when in section
-    if (mouse.inside && squirrel.state === 'pausing') {
-      if (mouse.x > squirrel.x + 12) squirrel.dir = 1;
-      else if (mouse.x < squirrel.x - 12) squirrel.dir = -1;
-    }
+    c.t += dt;
+    c.frame = Math.floor(c.t * (c.phase === 'dwell' ? d.idleRate : d.stepRate * (1 + c.startle))) & 1;
 
-    var speedMult = windSpeed >= 18 ? 2.6 : 1.25;
-    var speed = speedMult * squirrel.dir * (w / 400);
-    var targetX = w * 0.58;
-
-    if (squirrel.state === 'entering') {
-      squirrel.x += speed;
-      if (squirrel.dir === 1 && squirrel.x >= targetX) {
-        squirrel.state = 'pausing';
-        squirrel.pauseTimer = 0;
-      } else if (squirrel.dir === -1 && squirrel.x <= targetX) {
-        squirrel.state = 'pausing';
-        squirrel.pauseTimer = 0;
-      }
-    } else if (squirrel.state === 'pausing') {
-      squirrel.pauseTimer++;
-      if (squirrel.pauseTimer > 110) {
-        squirrel.state = 'exiting';
-      }
-    } else if (squirrel.state === 'exiting') {
-      squirrel.x += speed * 1.35;
-      if (squirrel.x > w + 50 || squirrel.x < -50) {
-        squirrel.state = 'hidden';
-        squirrel.timer = 0;
-      }
-    }
-
-    // Startled click hop decay
-    if (squirrel.hopBoost > 0) {
-      squirrel.hopBoost *= 0.82;
-      if (squirrel.hopBoost < 0.5) squirrel.hopBoost = 0;
-    }
-
-    // Walking hop & tail wiggle
-    var hopY = (squirrel.state === 'pausing') ? 0 : Math.abs(Math.sin(time * 14)) * 3;
-    var sqY = lineY - hopY - squirrel.hopBoost;
-    squirrel.tailAngle = Math.sin(time * 7) * 0.22;
-
-    ctx.save();
-    ctx.translate(squirrel.x, sqY);
-    if (squirrel.dir === -1) ctx.scale(-1, 1);
-
-    ctx.strokeStyle = '#E07A47';
-    ctx.fillStyle = '#E07A47';
-    ctx.lineWidth = 1.6 * (w / 400);
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
-    // Torso body
-    ctx.beginPath();
-    ctx.ellipse(0, -6 * (w/400), 7 * (w/400), 4.5 * (w/400), -0.15, 0, Math.PI * 2);
-    ctx.stroke();
-
-    // Head
-    ctx.beginPath();
-    ctx.arc(6 * (w/400), -10 * (w/400), 3.2 * (w/400), 0, Math.PI * 2);
-    ctx.stroke();
-
-    // Ear
-    ctx.beginPath();
-    ctx.moveTo(6 * (w/400), -13 * (w/400));
-    ctx.lineTo(7.5 * (w/400), -10.5 * (w/400));
-    ctx.stroke();
-
-    // Fluffy Bushy Tail
-    ctx.save();
-    ctx.translate(-6 * (w/400), -6 * (w/400));
-    ctx.rotate(squirrel.tailAngle);
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.quadraticCurveTo(-9 * (w/400), -9 * (w/400), -4 * (w/400), -15 * (w/400));
-    ctx.quadraticCurveTo(-1 * (w/400), -13 * (w/400), 0, -4 * (w/400));
-    ctx.stroke();
-    ctx.restore();
-
-    // Paws / Pitter-patter legs
-    var legAnim = (squirrel.state === 'pausing') ? 0 : Math.sin(time * 14) * 3 * (w / 400);
-    ctx.beginPath();
-    ctx.moveTo(-3 * (w/400), -2 * (w/400)); ctx.lineTo((-3 + legAnim) * (w/400), 0);
-    ctx.moveTo(3 * (w/400), -2 * (w/400)); ctx.lineTo((3 - legAnim) * (w/400), 0);
-    ctx.stroke();
-
-    ctx.restore();
-  }
-
-  function drawTree(w, h) {
-    var treeBaseX = w * 0.68;
-    var treeBaseY = h * 0.96;
-    var treeHeight = h * 0.54;
-
-    // Polished 10s imperceptible ambient sway
-    var swayFactor = 0.003;
-    var freq = 0.5;
-    var staticLean = 0;
-    var bendFlex = 0;
-
-    if (windSpeed >= 18) {
-      swayFactor = 0.05;
-      freq = 1.8;
-      staticLean = 0.16;
-      bendFlex = 0.06;
-    } else if (windSpeed >= 12) {
-      swayFactor = 0.015;
-      freq = 1.0;
-      staticLean = 0.04;
-      bendFlex = 0.02;
-    }
-
-    var totalSway = Math.sin(time * freq) * swayFactor + staticLean;
-
-    ctx.save();
-    ctx.translate(treeBaseX, treeBaseY);
-    ctx.rotate(totalSway);
-
-    if (bendFlex > 0) {
-      ctx.transform(1, 0, (Math.sin(time * freq) * bendFlex + bendFlex) * 0.25, 1, 0, 0);
-    }
-
-    ctx.strokeStyle = '#E07A47';
-    ctx.lineWidth = 2.8 * (w / 400);
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
-    var scale = w / 400;
-    var notchH = 10 * scale;
-    var topY = -treeHeight;
-    var trunkH = 16 * scale;
-
-    // 1. Trunk Stem
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(0, -trunkH - 3 * scale);
-    ctx.stroke();
-
-    // 2. Exact 3-Tier Bold Minimalist Vector Pine
-    // Tier 1 (Top)
-    var t1_y = topY;
-    var t1_w = 17 * scale;
-    var t1_h = 30 * scale;
-    ctx.beginPath();
-    ctx.moveTo(0, t1_y);
-    ctx.lineTo(t1_w, t1_y + t1_h);
-    ctx.lineTo(0, t1_y + t1_h - notchH);
-    ctx.lineTo(-t1_w, t1_y + t1_h);
-    ctx.closePath();
-    ctx.stroke();
-
-    // Tier 2 (Middle)
-    var t2_y = topY + 20 * scale;
-    var t2_w = 26 * scale;
-    var t2_h = 38 * scale;
-    ctx.beginPath();
-    ctx.moveTo(0, t2_y);
-    ctx.lineTo(t2_w, t2_y + t2_h);
-    ctx.lineTo(0, t2_y + t2_h - notchH);
-    ctx.lineTo(-t2_w, t2_y + t2_h);
-    ctx.closePath();
-    ctx.stroke();
-
-    // Tier 3 (Bottom)
-    var t3_y = topY + 44 * scale;
-    var t3_w = 36 * scale;
-    var t3_h = 48 * scale;
-    ctx.beginPath();
-    ctx.moveTo(0, t3_y);
-    ctx.lineTo(t3_w, t3_y + t3_h);
-    ctx.lineTo(0, t3_y + t3_h - notchH);
-    ctx.lineTo(-t3_w, t3_y + t3_h);
-    ctx.closePath();
-    ctx.stroke();
-
-    ctx.restore();
-  }
-
-  // FPV Drone State (Smooth hover in clear weather with cursor pilot tracking & bird evasion)
-  var drone = {
-    x: 100,
-    y: 80,
-    rot: 0,
-    evasionY: 0,
-    evasionRot: 0,
-    badWindX: -50,
-    badWindY: 60,
-    badWindRot: 0,
-    badActive: false,
-    badTimer: 0
-  };
-
-  function drawDrone(w, h) {
-    var isBadWeather = windSpeed >= 18 || windGust >= 18;
-
-    if (!isBadWeather) {
-      // Mouse Cursor Pilot Tracking when cursor is inside section!
-      if (mouse.inside) {
-        var targetX = Math.max(30 * (w/400), Math.min(w - 30 * (w/400), mouse.x));
-        var targetY = Math.max(30 * (w/400), Math.min(h * 0.75, mouse.y - 20 * (w/400)));
-
-        var vx = targetX - drone.x;
-        drone.x += vx * 0.08;
-        drone.y += (targetY - drone.y) * 0.08;
-        drone.rot = Math.max(-0.25, Math.min(0.25, vx * 0.006));
-      } else {
-        // Polished 6s-8s position-hold hover drift (motion you feel, not notice!)
-        var hoverLift = Math.sin(time * 0.7) * (6 * (w / 400));
-        var hoverDrift = Math.cos(time * 0.45) * (8 * (w / 400));
-        var hoverTilt = Math.sin(time * 0.35) * 0.03;
-
-        drone.x = w * 0.38 + hoverDrift;
-        drone.y = h * 0.30 + hoverLift;
-        drone.rot = hoverTilt;
-      }
-
-      // Collision avoidance deflection physics: dive & pitch down swoop under approaching birds!
-      var nearBird = false;
-      for (var i = 0; i < birds.length; i++) {
-        var bd = birds[i];
-        var dx = drone.x - bd.x;
-        var dy = drone.y - bd.y;
-        var dist = Math.hypot(dx, dy);
-
-        if (dist < 48 * (w / 400)) {
-          nearBird = true;
-          break;
-        }
-      }
-
-      if (nearBird) {
-        // Evasive dive swoop under bird!
-        drone.evasionY = Math.min(drone.evasionY + 2.2 * (w / 400), 22 * (w / 400));
-        drone.evasionRot = -0.35;
-      } else {
-        // Smoothly climb back to standard hover track
-        drone.evasionY = Math.max(drone.evasionY - 1.2 * (w / 400), 0);
-        drone.evasionRot *= 0.84;
-      }
-
-      var finalY = drone.y + drone.evasionY;
-      var finalRot = drone.rot + drone.evasionRot;
-
-      ctx.save();
-      ctx.translate(drone.x, finalY);
-      ctx.rotate(finalRot);
-
-      ctx.strokeStyle = '#E07A47';
-      ctx.lineWidth = 1.6 * (w / 400);
-      ctx.beginPath();
-      ctx.moveTo(-10 * (w/400), -10 * (w/400)); ctx.lineTo(10 * (w/400), 10 * (w/400));
-      ctx.moveTo(10 * (w/400), -10 * (w/400)); ctx.lineTo(-10 * (w/400), 10 * (w/400));
-      ctx.stroke();
-
-      var propSpin = time * 25;
-      [[-10,-10],[10,-10],[-10,10],[10,10]].forEach(function(pt){
-        var px = pt[0] * (w/400), py = pt[1] * (w/400);
-        ctx.beginPath();
-        ctx.arc(px, py, 3 * (w/400), 0, Math.PI * 2);
-        ctx.stroke();
-
-        ctx.strokeStyle = 'rgba(224, 122, 71, 0.4)';
-        ctx.beginPath();
-        ctx.arc(px, py, 5.5 * (w/400), propSpin, propSpin + Math.PI);
-        ctx.stroke();
-        ctx.strokeStyle = '#E07A47';
-      });
-
-      ctx.fillStyle = '#E07A47';
-      ctx.fillRect(-3.5 * (w/400), -3.5 * (w/400), 7 * (w/400), 7 * (w/400));
-
-      if (Math.sin(time * 10) > 0) {
-        ctx.fillStyle = '#79C39A';
-        ctx.beginPath(); ctx.arc(0, -6 * (w/400), 1.5 * (w/400), 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#E07A47';
-        ctx.beginPath(); ctx.arc(0, 6 * (w/400), 1.5 * (w/400), 0, Math.PI * 2); ctx.fill();
-      }
-
-      ctx.restore();
+    var sp = d.speed * (precip() === 2 ? 1.5 : 1) * (1 + c.startle * 2.2);
+    if (c.phase === 'in'){
+      c.x += sp * c.dir;
+      if (c.dir === 1 ? c.x >= c.stop : c.x <= c.stop){ c.phase = 'dwell'; c.t = 0; }
+    } else if (c.phase === 'dwell'){
+      if (c.t > d.dwell) c.phase = 'out';
     } else {
-      // HIGH WIND / GALE: Drone tumbled and swept across scene
-      drone.badTimer++;
-      if (!drone.badActive && drone.badTimer > 110) {
-        drone.badActive = true;
-        drone.badWindX = -40;
-        drone.badWindY = h * (0.16 + Math.random() * 0.35);
-        drone.badWindRot = 0;
-      }
-
-      if (drone.badActive) {
-        drone.badWindX += (windSpeed * 0.38) * (w / 400);
-        drone.badWindY += Math.sin(drone.badWindX * 0.04) * 1.5;
-        drone.badWindRot += 0.16;
-
-        ctx.save();
-        ctx.translate(drone.badWindX, drone.badWindY);
-        ctx.rotate(drone.badWindRot);
-
-        ctx.strokeStyle = '#E07A47';
-        ctx.lineWidth = 1.6 * (w / 400);
-        ctx.beginPath();
-        ctx.moveTo(-11 * (w/400), -11 * (w/400)); ctx.lineTo(11 * (w/400), 11 * (w/400));
-        ctx.moveTo(11 * (w/400), -11 * (w/400)); ctx.lineTo(-11 * (w/400), 11 * (w/400));
-        ctx.stroke();
-
-        [[-11,-11],[11,-11],[-11,11],[11,11]].forEach(function(pt){
-          ctx.beginPath();
-          ctx.arc(pt[0] * (w/400), pt[1] * (w/400), 3.5 * (w/400), 0, Math.PI * 2);
-          ctx.stroke();
-        });
-
-        ctx.fillStyle = '#E07A47';
-        ctx.fillRect(-3.5 * (w/400), -3.5 * (w/400), 7 * (w/400), 7 * (w/400));
-        ctx.restore();
-
-        if (drone.badWindX > w + 60) {
-          drone.badActive = false;
-          drone.badTimer = 0;
-        }
-      }
+      c.x += sp * c.dir;
+      if (c.x > BW + 4 || c.x < -d.w - 4){ critter = null; critterWait = 10 + Math.random() * 13; }
     }
   }
 
-  // Vector Birds System (Sky flock & Tree perching)
-  var birds = [];
-  for (var b = 0; b < 3; b++) {
-    birds.push({
-      x: -50 - b * 22,
-      y: 40 + b * 10,
-      speedX: 1.4 + b * 0.1
-    });
+  function drawCritter(){
+    if (!critter) return;
+    var c = critter, d = c.def;
+    var hop = (d.hop && c.phase !== 'dwell') ? -Math.round(Math.abs(Math.sin(c.t * 9)) * 2) : 0;
+    var tone = d.tone === 'accent' ? css('--accent', 0.85) : css('--ink', 0.72);
+    var dim  = d.tone === 'accent' ? css('--accent', 0.40) : css('--ink', 0.34);
+    px(c.x + 1, GROUND, d.w - 2, 1, css('--ink', hop ? 0.22 : 0.40));
+    blit(d.frames[c.frame], Math.round(c.x), GROUND - d.h + hop, c.dir === 1, tone, dim);
   }
 
-  var perchBird = {
-    state: 'hidden',
-    timer: 0
-  };
+  /* ---------------------------------------------------------------
+     Scenery
+     --------------------------------------------------------------- */
+  var TIER_TOP  = [0.00, 0.26, 0.55];
+  var TIER_BASE = [0.40, 0.71, 1.00];
+  var TIER_HALF = [0.44, 0.74, 1.00];
 
-  function drawBirds(w, h) {
-    ctx.strokeStyle = '#E07A47';
-    ctx.lineWidth = 1.4 * (w / 400);
-    ctx.lineCap = 'round';
+  /* Three overlapping triangles, widest at the bottom. Taking the
+     widest at each row is what produces the sawtooth edge; stacking
+     solid tiers just builds a wedding cake. */
+  function drawTree(bend, t){
+    var tx = Math.round(BW * 0.80);
+    var baseY = GROUND;
+    var trunkH = Math.max(3, Math.round(BH * 0.07));
+    var treeH = Math.max(12, Math.round(BH * 0.44));
+    var maxHalf = Math.max(4, Math.round(BW * 0.075));
+    var apexY = baseY - trunkH - treeH;
+    var lit = css('--ink', 0.60), shade = css('--ink', 0.30);
 
-    for (var i = 0; i < birds.length; i++) {
+    function shearAt(y){
+      var hA = (baseY - y) / (trunkH + treeH);
+      return Math.round(bend * hA * hA * 9 * (0.75 + 0.25 * Math.sin(t * 2.1 + hA * 2)));
+    }
+
+    px(tx, baseY - trunkH, 2, trunkH, shade);
+
+    for (var y = apexY; y <= baseY - trunkH; y++){
+      var f = (y - apexY) / treeH, half = 0;
+      for (var k = 0; k < 3; k++){
+        if (f >= TIER_TOP[k] && f <= TIER_BASE[k]){
+          var g = (f - TIER_TOP[k]) / (TIER_BASE[k] - TIER_TOP[k]);
+          var hw = Math.round(maxHalf * TIER_HALF[k] * g);
+          if (hw > half) half = hw;
+        }
+      }
+      var sx = shearAt(y);
+      if (half <= 0){ px(tx + sx, y, 1, 1, lit); continue; }
+      px(tx - half + sx, y, half * 2 + 1, 1, ((y - apexY) % 4 === 0) ? shade : lit);
+    }
+  }
+
+  function drawDrone(t, gust, bend){
+    var st = status();
+    var target = st === 'red' ? GROUND - 6 : GROUND * (0.36 + 0.04 * Math.sin(t * 1.1));
+    drone.y += (target - drone.y) * 0.05;
+
+    drone.vel += (-gust * 3.2 - drone.push * 0.16) - drone.vel * 0.18;
+    drone.push += drone.vel * 0.22;
+    var dx = Math.round(drone.x + drone.push);
+    var dy = Math.round(drone.y);
+
+    // pixel art cannot rotate, so tilting into the wind raises one side a bit
+    var tilt = st === 'red' ? 0 : Math.round(clamp(bend * 2.4, 0, 2));
+    var ink = css('--ink', 0.92), shade = css('--ink', 0.45);
+    var acc = css('--accent', 1), accD = css('--accent', 0.35);
+
+    // Contact shadow is painted onto the ground row itself now, darkening
+    // the line under the aircraft rather than sitting below it.
+    var alt = clamp((GROUND - dy) / (GROUND * 0.6), 0, 1);
+    var shW = Math.round(4 + (1 - alt) * 5);
+    px(dx - shW, GROUND, shW * 2 + 1, 1, css('--ink', 0.30 + (1 - alt) * 0.30));
+
+    var L = dy + tilt, R = dy - tilt;
+    px(dx - 8, L, 6, 1, shade);
+    px(dx + 3, R, 6, 1, shade);
+    px(dx - 7, L - 2, 1, 2, shade);
+    px(dx + 7, R - 2, 1, 2, shade);
+    px(dx - 3, dy - 1, 7, 3, ink);
+    px(dx - 1, dy + 2, 3, 1, shade);
+    px(dx, dy, 1, 1, statusCSS(0.65 + 0.35 * Math.sin(t * 5)));
+
+    // alternating bits per frame is what sells prop blur in pixel art
+    var blur = st === 'red' ? (Math.floor(t * 4) & 1) : (Math.floor(t * 26) & 1);
+    var pw = st === 'red' ? 3 : 5;
+    px(dx - 9 - (pw > 3 ? 0 : 1), L - 3, pw, 1, blur ? acc : accD);
+    px(dx + 5 + (pw > 3 ? 0 : 1), R - 3, pw, 1, blur ? accD : acc);
+  }
+
+  function drawBirds(t, bend){
+    if (precip() > 0 || windSpeed >= 20) return;
+    var c = css('--ink', 0.55);
+    for (var i = 0; i < birds.length; i++){
       var bd = birds[i];
-      bd.x += (bd.speedX + (windSpeed * 0.05)) * (w / 400);
-      bd.y += Math.sin(bd.x * 0.03) * 0.3;
+      bd.x += bd.sp + bend * 1.6;
+      if (bd.x > BW + 4){ bd.x = -4; bd.y = 5 + Math.random() * 16; }
+      var flap = Math.sin(t * 6 + bd.ph) > 0 ? 1 : 0;
+      var x = Math.round(bd.x), y = Math.round(bd.y);
+      px(x - 1, y - flap, 1, 1, c);
+      px(x,     y + flap, 1, 1, c);
+      px(x + 1, y - flap, 1, 1, c);
+    }
+  }
 
-      if (bd.x > w + 40) {
-        bd.x = -40 - i * 20;
-        bd.y = h * (0.12 + Math.random() * 0.25);
-      }
+  /* Temperature drives how much sun there is.
+     On a cold day it is a small pale disc riding high, mostly lost in the
+     top feather — barely peeking in. As it warms the disc grows, drops
+     further into frame, deepens toward the full ember and throws more
+     rays, until a genuinely hot day gets a dithered heat bloom around it.
+     35F reads as none of that, 95F as all of it. Before this, temperature
+     only nudged the sun's opacity and nobody would ever have noticed. */
+  var SUN_ARMS = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
 
-      var wingY = Math.sin(time * 9 + i * 0.5) * 4 * (w / 400);
+  function drawSun(t){
+    if (precip() > 0) return;
+    var heat = clamp((tempF - 35) / 60, 0, 1);
 
-      ctx.save();
-      ctx.translate(bd.x, bd.y);
-      ctx.beginPath();
-      ctx.moveTo(-6 * (w/400), -wingY);
-      ctx.quadraticCurveTo(0, 0, 6 * (w/400), -wingY);
-      ctx.stroke();
-      ctx.restore();
+    // x stays clear of the left feather, which was quietly eating the sun
+    var cx = Math.round(BW * 0.27);
+    var cy = Math.round(BH * (0.02 + heat * 0.24));
+    var R  = Math.max(3, Math.round(BW * (0.026 + heat * 0.036)));
+
+    var warm = css('--accent', 0.42 + heat * 0.53);
+    for (var y = -R; y <= R; y++){
+      var half = Math.floor(Math.sqrt(R * R - y * y));
+      px(cx - half, cy + y, half * 2 + 1, 1, warm);
     }
 
-    // Perching Bird on Tree Apex (in calm weather)
-    if (windSpeed < 14) {
-      perchBird.timer++;
-      var treeBaseX = w * 0.68;
-      var treeTopY = h * 0.96 - (h * 0.58);
+    var rays = heat < 0.25 ? 0 : (heat < 0.60 ? 4 : 8);
+    var pulse = 1 + Math.round(Math.sin(t * 1.3) * (0.6 + heat));
+    var reach = R + 2 + Math.round(heat * 2);
+    for (var a = 0; a < rays; a++){
+      px(cx + SUN_ARMS[a][0] * reach, cy + SUN_ARMS[a][1] * reach,
+         pulse, pulse, css('--accent', 0.20 + heat * 0.28));
+    }
 
-      if (perchBird.state === 'hidden' && perchBird.timer > 420 && Math.random() < 0.02) {
-        perchBird.state = 'perched';
-        perchBird.timer = 0;
-      }
-
-      if (perchBird.state === 'perched') {
-        ctx.save();
-        ctx.translate(treeBaseX, treeTopY - 2);
-
-        ctx.fillStyle = '#E07A47';
-        ctx.beginPath();
-        ctx.arc(0, -3 * (w/400), 2.5 * (w/400), 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(1.5 * (w/400), -5.5 * (w/400), 1.8 * (w/400), 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.moveTo(3 * (w/400), -5.5 * (w/400));
-        ctx.lineTo(4.5 * (w/400), -5 * (w/400));
-        ctx.stroke();
-
-        ctx.restore();
-
-        if (perchBird.timer > 180) {
-          perchBird.state = 'hidden';
-          perchBird.timer = 0;
+    if (heat > 0.72){
+      var bloomR = R + 3 + Math.round((heat - 0.72) * 10);
+      var bloom = css('--accent', 0.16);
+      for (var by = -bloomR; by <= bloomR; by++){
+        for (var bx = -bloomR; bx <= bloomR; bx++){
+          var dist = Math.sqrt(bx * bx + by * by);
+          if (dist <= R + 1 || dist > bloomR) continue;
+          var fall = 1 - (dist - R) / (bloomR - R);
+          if (fall * 13 > BAYER[(cy + by) & 3][(cx + bx) & 3]) px(cx + bx, cy + by, 1, 1, bloom);
         }
       }
     }
   }
 
-  function render() {
-    time += 0.025;
-    var w = cvs.width;
-    var h = cvs.height;
-    if (!w || !h) { requestAnimationFrame(render); return; }
+  /* Drizzle is not thin rain — it is fewer, shorter, slower drops that
+     barely land. Scaling one set of parameters down reads as a bug, so
+     count, length, speed, opacity and splash are all stepped. */
+  function drawPrecip(bend){
+    var lvl = precip();
+    if (!lvl) return;
+    var light = lvl === 1;
+    var count = light ? Math.round(drops.length * 0.42) : drops.length;
+    var col = css('--sky', light ? 0.26 : 0.5);
+    var len = light ? 1 : 2;
+    var fall = light ? 1.15 : 2.4;
+    var drift = light ? 2.0 : 3.4;
 
-    ctx.clearRect(0, 0, w, h);
-
-    var wEl = document.getElementById('wxWind');
-    var gEl = document.getElementById('wxGust');
-    var tEl = document.getElementById('wxTemp');
-
-    if (wEl) { var pw = parseInt(wEl.textContent, 10); if (!isNaN(pw)) windSpeed = pw; }
-    if (gEl) { var pg = parseInt(gEl.textContent, 10); if (!isNaN(pg)) windGust = pg; }
-    if (tEl) { var pt = parseInt(tEl.textContent, 10); if (!isNaN(pt)) tempF = pt; }
-
-    // 1. Sun Orb OR Rain Cloud
-    drawSun(w, h);
-    drawRainCloud(w, h);
-
-    // 2. Vector Birds (sky flock & tree perching)
-    drawBirds(w, h);
-
-    // 3. FPV Drone (Cinematic hover in good weather, swept in bad weather)
-    drawDrone(w, h);
-
-    // 4. Architectural Vector Pine Tree
-    drawTree(w, h);
-
-    // 5. Woodland Squirrel on baseline
-    drawSquirrel(w, h);
-
-    // 6. Gentle floating leaf particles
-    var pSpeed = Math.max(0.1, (windSpeed - 6) * 0.12);
-    for (var p = 0; p < particles.length; p++) {
-      var pt = particles[p];
-      pt.x += (pt.speedX + pSpeed) * (w / 400);
-      pt.y += pt.speedY * (h / 200);
-      pt.rot += pt.rotSpeed;
-
-      if (pt.x > w + 20) {
-        pt.x = -20;
-        pt.y = Math.random() * (h * 0.8);
+    for (var i = 0; i < count; i++){
+      var d = drops[i];
+      d.y += d.v * fall;
+      d.x += bend * drift;
+      if (d.y > GROUND){
+        d.y = -2; d.x = Math.random() * BW;
+        if (!light) px(d.x, GROUND - 1, 1, 1, css('--sky', 0.35));
       }
-
-      ctx.save();
-      ctx.translate(pt.x, pt.y);
-      ctx.rotate(pt.rot);
-      ctx.fillStyle = 'rgba(224, 122, 71, 0.45)';
-      ctx.beginPath();
-      ctx.ellipse(0, 0, pt.size * 1.5, pt.size * 0.6, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
+      if (d.x > BW) d.x -= BW;
+      px(d.x, d.y, 1, len, col);
     }
-
-    requestAnimationFrame(render);
   }
 
-  requestAnimationFrame(render);
+  /* ---------------------------------------------------------------
+     Edge feathering
+     The stage sits inside the hero, not in a card, so the scene has to
+     dissolve into the page rather than stop at a rectangle. Masking at
+     full resolution after the upscale keeps the pixels hard-edged
+     while the boundary itself stays soft.
+     --------------------------------------------------------------- */
+  function featherEdges(){
+    // No bottom fade: that edge is the horizon meeting the section rule and
+    // is meant to be crisp. Only the three open sides dissolve into the page.
+    ctx.globalCompositeOperation = 'destination-out';
+    var fadeL = W * 0.18, fadeR = W * 0.11, fadeT = H * 0.13, g;
+
+    g = ctx.createLinearGradient(0, 0, fadeL, 0);
+    g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, fadeL, H);
+
+    g = ctx.createLinearGradient(W, 0, W - fadeR, 0);
+    g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(W - fadeR, 0, fadeR, H);
+
+    g = ctx.createLinearGradient(0, 0, 0, fadeT);
+    g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, fadeT);
+
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  /* ---------------------------------------------------------------
+     Plumbing
+     --------------------------------------------------------------- */
+  function resize(){
+    var r = cvs.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = Math.round(r.width); H = Math.round(r.height);
+    cvs.width = Math.round(W * dpr); cvs.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    BIT = W < 420 ? 3 : 4;                 // keep enough bits on a phone
+    BW = Math.max(40, Math.round(W / BIT));
+    BH = Math.max(30, Math.round(H / BIT));
+    buf.width = BW; buf.height = BH;
+    sky.width = BW; sky.height = BH;
+    // The floor is the last row of the buffer, because the canvas bottom is
+    // now flush with the hero's rule. Nothing renders below the horizon any
+    // more — the page itself is what is under the ground.
+    GROUND = BH - 1;
+    skyKey = '';
+    seed();
+  }
+
+  var time = 0, visible = true, raf = null, lastStatus = '';
+
+  function render(){
+    time += REDUCED ? 0 : 0.0167;
+    if (!W || !H){ raf = requestAnimationFrame(render); return; }
+
+    readCard();
+    if (!REDUCED) updateGust(0.0167);
+
+    // Hand the horizon colour to the page so the hero's bottom rule carries
+    // the scene's ground line out past the canvas, full width.
+    var st = status();
+    if (st !== lastStatus){
+      lastStatus = st;
+      document.documentElement.style.setProperty('--wx-ground', statusCSS(0.55));
+    }
+
+    var gust = REDUCED ? 0.25 : gustNow();
+    var norm = clamp(windSpeed / 26, 0, 1);
+    var bend = norm + gust * 0.7;
+
+    buildSky();
+    b.clearRect(0, 0, BW, BH);
+    b.drawImage(sky, 0, 0);
+
+    drawSun(time);
+    drawBirds(time, bend);
+
+    // Wind streaks: count, length and speed all scale off the number,
+    // which is what makes 3 mph and 22 mph look like different weather.
+    var active = Math.round(lerp(2, streaks.length, Math.pow(norm, 0.75)));
+    var baseSpeed = lerp(0.35, 3.4, norm) + gust * 3.2;
+    for (var i = 0; i < active; i++){
+      var s = streaks[i];
+      if (gust > 0.45 && Math.random() < 0.05) s.surge = 1;
+      s.surge *= 0.94;
+      s.x += (s.sp * baseSpeed) * (1 + s.surge * 1.6);
+      if (s.x > BW + 10){ streaks[i] = newStreak(false); continue; }
+      var len = Math.round(lerp(1, 7, norm) * (0.6 + s.bright * 0.8) + s.surge * 5);
+      var alpha = 0.18 + s.bright * 0.30 + s.surge * 0.4;
+      px(s.x, s.y, len, 1, s.surge > 0.35 ? statusCSS(alpha) : css('--ink', alpha));
+    }
+
+    // Ground first, so everything standing on it can darken it where it
+    // touches. Drawn last it just painted over every contact shadow.
+    px(0, GROUND, BW, 1, statusCSS(0.85));
+
+    drawTree(bend, time);
+    if (!REDUCED) updateCritter(0.0167, gust);
+    drawCritter();
+    drawDrone(time, gust, bend);
+    drawPrecip(bend);
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(buf, 0, 0, BW, BH, 0, 0, BW * BIT, BH * BIT);
+    featherEdges();
+
+    raf = visible ? requestAnimationFrame(render) : null;
+  }
+
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(cvs);
+  window.addEventListener('resize', resize);
+
+  if (window.IntersectionObserver){
+    new IntersectionObserver(function(entries){
+      visible = entries[0].isIntersecting;
+      if (visible && !raf) raf = requestAnimationFrame(render);
+    }, { threshold: 0 }).observe(cvs);
+  }
+
+  resize();
+  raf = requestAnimationFrame(render);
 })();
 </script>
 </body>

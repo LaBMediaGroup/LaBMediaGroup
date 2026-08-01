@@ -14,9 +14,14 @@
 
   <script>
     (function(){
-      var root=document.documentElement, KEY='lab-theme';
+      var root=document.documentElement, KEY='lab-theme-v2', OLD='lab-theme';
+      var MIGRATE={stone:'sepia', sepia:'timber'};
       try{
         var saved=localStorage.getItem(KEY);
+        if(saved===null){
+          var legacy=localStorage.getItem(OLD);
+          if(legacy){ saved=MIGRATE[legacy]||legacy; localStorage.setItem(KEY,saved); }
+        }
         if(saved && saved!=='dark') root.setAttribute('data-theme',saved);
       }catch(e){}
     })();
@@ -233,8 +238,8 @@
     <div class="theme" role="group" aria-label="Colour theme">
       <button type="button" data-theme-set="dark" aria-pressed="true" title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
-      <button type="button" data-theme-set="stone" aria-pressed="false" title="Stone"><span class="sw sw-stone"></span><span class="vh">Stone</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="timber" aria-pressed="false" title="Timber"><span class="sw sw-timber"></span><span class="vh">Timber</span></button>
       <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
@@ -387,7 +392,7 @@
 <script>
 /* Theme switch : remembers choice, falls back to dark */
 (function(){
-  var root=document.documentElement, KEY='lab-theme';
+  var root=document.documentElement, KEY='lab-theme-v2';
   var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
   if(!btns.length)return;
 

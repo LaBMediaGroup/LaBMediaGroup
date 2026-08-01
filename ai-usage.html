@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<script>(function(){var K="lab-theme-v2",O="lab-theme",M={stone:"sepia",sepia:"timber"};try{var t=localStorage.getItem(K);if(t===null){var l=localStorage.getItem(O);if(l){t=M[l]||l;localStorage.setItem(K,t);}}if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI Usage Dashboard | LaB Media</title>
 <meta name="robots" content="noindex,nofollow">

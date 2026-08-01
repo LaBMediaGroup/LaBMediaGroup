@@ -163,10 +163,10 @@
   color-scheme: light;
 }
 
-/* Sepia — muted autumn. Weathered wood ground, bone ink, ember accent.
+/* Timber — muted autumn. Weathered wood ground, bone ink, ember accent.
    Dark like the default but warm rather than red: lifted from 6% to 12%
    lightness with chroma cut from 59% to 27%. */
-:root[data-theme="sepia"]{
+:root[data-theme="timber"]{
   --paper:      #211D18;   /* weathered wood */
   --paper-2:    #2A251F;   /* raised */
   --paper-3:    #342E26;   /* well */
@@ -182,13 +182,13 @@
   --accent-dim: rgba(224,122,71,.36);
   --accent-bg:  rgba(224,122,71,.10);
   --sky:        #A9C6DC;
-  --good:       #8FCBA6;   /*  8.9:1 on the sepia ground */
+  --good:       #8FCBA6;   /*  8.9:1 on the timber ground */
   --good-dim:   rgba(143,203,166,.34);
   --good-bg:    rgba(143,203,166,.09);
 
   --shade:      rgba(33,29,24,.55);
 
-  /* ---- Compatibility aliases, sepia ---- */
+  /* ---- Compatibility aliases, timber ---- */
   --black:       #211D18;
   --white:       #EDE5D8;
   --gray-100:    #EDE5D8;
@@ -268,8 +268,10 @@
   color-scheme: dark;
 }
 
-/* Stone — Kindle e-ink papyrus & warm slate stone palette. A quiet, low-luminance light mode. */
-:root[data-theme="stone"]{
+/* Sepia — Kindle e-ink papyrus & warm slate palette. A quiet, low-luminance light mode.
+   Renamed from Stone: this is the warm-paper theme people mean by sepia, and
+   the dark weathered-wood one that used to hold the name is now Timber. */
+:root[data-theme="sepia"]{
   --paper:      #C8C2B7;   /* warm Kindle e-ink papyrus stone */
   --paper-2:    #BEB8AC;   /* muted stone surface */
   --paper-3:    #B2ACA0;   /* raised stone well */
@@ -291,7 +293,7 @@
 
   --shade:      rgba(200,194,183,.65);
 
-  /* ---- Compatibility aliases, stone ---- */
+  /* ---- Compatibility aliases, sepia ---- */
   --black:       #C8C2B7;
   --white:       #1C1A17;
   --gray-100:    #1C1A17;
@@ -321,19 +323,19 @@
 
 :root{ --shade: rgba(11,11,12,.55); }   /* overlay tint used on media */
 
-/* Media reads differently per theme: warm the stills in sepia, and don't
+/* Media reads differently per theme: warm the stills in timber, and don't
    fully desaturate on light where the page has no darkness to hide in.
    Forest keeps some colour but folds it gently toward the surrounding greens. */
-:root[data-theme="sepia"] .card-thumb img,
-:root[data-theme="sepia"] .vid-btn img,
-:root[data-theme="sepia"] .reel-btn img,
-:root[data-theme="sepia"] .still img,
-:root[data-theme="sepia"] .rv-btn img{filter:sepia(.42) saturate(.92) contrast(1.02)}
-:root[data-theme="sepia"] .card:hover .card-thumb img,
-:root[data-theme="sepia"] .vid-btn:hover img,
-:root[data-theme="sepia"] .reel-btn:hover img,
-:root[data-theme="sepia"] .still:hover img,
-:root[data-theme="sepia"] .rv-btn:hover img{filter:sepia(0) contrast(1)}
+:root[data-theme="timber"] .card-thumb img,
+:root[data-theme="timber"] .vid-btn img,
+:root[data-theme="timber"] .reel-btn img,
+:root[data-theme="timber"] .still img,
+:root[data-theme="timber"] .rv-btn img{filter:sepia(.42) saturate(.92) contrast(1.02)}
+:root[data-theme="timber"] .card:hover .card-thumb img,
+:root[data-theme="timber"] .vid-btn:hover img,
+:root[data-theme="timber"] .reel-btn:hover img,
+:root[data-theme="timber"] .still:hover img,
+:root[data-theme="timber"] .rv-btn:hover img{filter:sepia(0) contrast(1)}
 
 :root[data-theme="light"] .card-thumb img,
 :root[data-theme="light"] .vid-btn img,
@@ -380,8 +382,8 @@
 .theme button[aria-pressed="true"] .sw{border-color:var(--accent)}
 .sw-dark{background:#0B0B0C}
 .sw-light{background:#FBFAF7}
-.sw-stone{background:#C8C2B7}
-.sw-sepia{background:#3A342B}
+.sw-sepia{background:#C8C2B7}
+.sw-timber{background:#3A342B}
 .sw-forest{background:#142019}
 
 /* Colour changes shouldn't strobe when switching */
@@ -588,7 +590,7 @@ input,textarea,select{font:inherit;color:inherit}
 .visits b{color:var(--dim);font-weight:400}
 
 /* Every LaB mark is a pure-white PNG — measured mean luminance 255.0, max
-   saturation 0. On the dark and sepia papers that's the whole point; on the
+   saturation 0. On the dark and timber papers that's the whole point; on the
    light paper (#FBFAF7) it was white on white, so the wordmark in the nav,
    the masthead on the home page and the mark in the footer were all simply
    not there.
@@ -597,14 +599,14 @@ input,textarea,select{font:inherit;color:inherit}
    alone, so the silhouette survives exactly; opacity(.92) then lands it on
    roughly #171615, which is --ink. Doing it with a filter rather than a
    second set of dark PNGs means no extra download and no file to forget to
-   update the day the logo changes. Sepia needs nothing — its paper is
+   update the day the logo changes. Timber needs nothing — its paper is
    #211D18, darker than the dark theme's own raised surfaces. */
 :root[data-theme="light"] .nav-logo,
 :root[data-theme="light"] .masthead,
 :root[data-theme="light"] .foot-mark,
-:root[data-theme="stone"] .nav-logo,
-:root[data-theme="stone"] .masthead,
-:root[data-theme="stone"] .foot-mark{filter:brightness(0) opacity(.92)}
+:root[data-theme="sepia"] .nav-logo,
+:root[data-theme="sepia"] .masthead,
+:root[data-theme="sepia"] .foot-mark{filter:brightness(0) opacity(.92)}
 
 /* ---- Made with love ----
    Hearts drift up out of the footer line on hover. No JS: five <i> elements
@@ -901,12 +903,12 @@ input,textarea,select{font:inherit;color:inherit}
   .card-thumb img,.vid-btn img,.reel-btn img,.still img,.rv-btn img,
   .shot img,.bts-peek img{filter:none}
 
-  /* sepia keeps its warmth, just lighter than the desktop hover state */
-  :root[data-theme="sepia"] .card-thumb img,
-  :root[data-theme="sepia"] .vid-btn img,
-  :root[data-theme="sepia"] .reel-btn img,
-  :root[data-theme="sepia"] .still img,
-  :root[data-theme="sepia"] .rv-btn img{filter:sepia(.26) saturate(.96)}
+  /* timber keeps its warmth, just lighter than the desktop hover state */
+  :root[data-theme="timber"] .card-thumb img,
+  :root[data-theme="timber"] .vid-btn img,
+  :root[data-theme="timber"] .reel-btn img,
+  :root[data-theme="timber"] .still img,
+  :root[data-theme="timber"] .rv-btn img{filter:sepia(.26) saturate(.96)}
 
   /* light theme has no darkness to hide in — full colour reads better */
   :root[data-theme="light"] .card-thumb img,

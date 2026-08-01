@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script>(function(){try{var t=localStorage.getItem("lab-theme");if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<script>(function(){var K="lab-theme-v2",O="lab-theme",M={stone:"sepia",sepia:"timber"};try{var t=localStorage.getItem(K);if(t===null){var l=localStorage.getItem(O);if(l){t=M[l]||l;localStorage.setItem(K,t);}}if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Story Generator : Free Short Film Prompts | LaB Media</title>
 <meta name="description" content="Roll for a concept, a place, a character, and one constraint you have to honor. 1,200+ hand-written prompts for filmmakers who want to shoot something this weekend. Free, no signup.">
@@ -248,8 +248,8 @@ body.mode-48 .el[data-k="constraint"]{outline:1px solid var(--accent-dim)}
     <div class="theme" role="group" aria-label="Colour theme">
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
-      <button type="button" data-theme-set="stone" aria-pressed="false" title="Stone"><span class="sw sw-stone"></span><span class="vh">Stone</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="timber" aria-pressed="false" title="Timber"><span class="sw sw-timber"></span><span class="vh">Timber</span></button>
       <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
@@ -433,7 +433,7 @@ body.mode-48 .el[data-k="constraint"]{outline:1px solid var(--accent-dim)}
 
 /* Theme */
 (function(){
-  var root=document.documentElement, KEY='lab-theme';
+  var root=document.documentElement, KEY='lab-theme-v2';
   var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
   if(!btns.length)return;
   function apply(t,save){
