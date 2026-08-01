@@ -149,7 +149,7 @@
 <main id="main">
 
 <section class="pg-hero wrap">
-  <div class="rule"><span class="mono">Colophon</span><i></i><span class="mono" style="color:var(--faint)">Updated July 2026</span></div>
+  <div class="rule"><span class="mono">Colophon</span><i></i><span class="mono" style="color:var(--faint)">Updated August 2026</span></div>
   <h1>Seventeen pages, one <em>stylesheet.</em></h1>
   <p class="lede">This site has no framework or build step. It&rsquo;s hand-written HTML and CSS on
   free hosting, plus one small Cloudflare Worker that protects the assistant&rsquo;s optional AI
@@ -168,9 +168,9 @@
   <div class="two-col-grid">
     <div class="col-main">
       <h2>One stylesheet, <em>everything</em></h2>
-      <p><code>lab.css</code> is 1,096 lines (47 KB) and governs all fourteen pages : every colour, every
-      typeface, the navigation and the footer. Change a value in the token block and it updates
-      across the entire site at once.</p>
+      <p><code>lab.css</code> is 1,159 lines (48 KB) and governs every page on the site : every colour,
+      every typeface, the navigation and the footer. Change a value in the token block and it
+      updates across the entire site at once.</p>
     </div>
     <div class="col-side">
       <p>Seventy-one design tokens cover colour, type, spacing and motion. Five themes : dark, light,
@@ -346,11 +346,38 @@
     <div class="bug" id="drone-weather">
       <span class="bug-n">11</span>
       <div class="bug-main">
-        <h3>Live drone weather from open meteorological APIs</h3>
-        <p>SkyBound Weather (<code>droneweather.html</code>) fetches live local wind speeds, gusts, and temperatures for Shelby Township (42.67°N) from Open-Meteo REST API. It evaluates flight safety thresholds (0&ndash;11 mph ideal, 12&ndash;18 mph active compensation, 18+ mph grounded) and updates flight status badges in under 200 milliseconds.</p>
+        <h3>A weather scene that actually reads the weather</h3>
+        <p>SkyBound Weather (<code>droneweather.html</code>) fetches live wind, gusts and temperature for Shelby Township (42.67&deg;N) from the Open-Meteo REST API, then evaluates flight thresholds: 0&ndash;11 mph ideal, 12&ndash;18 active compensation, 18+ grounded.</p>
+        <p>The animation above the numbers reads the same values. Wind is horizontal streaks whose count, length and speed all scale off the figure, so 3 mph and 22 mph cannot look alike. Gusts arrive in bursts with real lulls between them rather than on a fixed interval, because a metronome does not read as weather. Drizzle is drawn differently from rain, the sun grows and drops into frame as the temperature climbs, and deer, foxes, squirrels and rabbits wander through in conditions calm enough for them, with the drone breaking station to film whatever turns up. Everything renders into a low-resolution buffer and is upscaled with nearest-neighbour, so the whole scene sits on one honest pixel grid.</p>
+        <p>The scene is not in a box. Its horizon is the page&rsquo;s own dividing rule, tinted green, amber or red with the current safety state, so the line the drone stands on runs the full width of the page.</p>
       </div>
       <div class="bug-side">
-        <p><em>Requires no API key or user tracking. Meteorological data is fetched directly client-side so pilots verify flight safety before launching.</em></p>
+        <p><em>No API key and no user tracking. The picture and the advisory read the same numbers through the same thresholds, so they cannot disagree with each other.</em></p>
+      </div>
+    </div>
+
+    <div class="bug" id="stale-test">
+      <span class="bug-n">12</span>
+      <div class="bug-main">
+        <h3>A test that had stopped watching</h3>
+        <p>Three pages shipped without the floating assistant and nobody noticed for a day.
+        There is a test whose whole job is to catch that, and it had been failing the entire
+        time. It opened by asserting the site had fifteen HTML pages. Four more had been added
+        and nobody moved the number, so it threw on the count and never reached the check
+        underneath it, which is the one that would have named the pages missing their widget.</p>
+        <p>Three further assertions were queued up behind that throw, all rotten in the same way:
+        a lazy-load check still matching bare filenames after every one gained a cache-busting
+        suffix, a message cap pinned at eight after the widget moved to twelve, and a resource
+        index pinned at 126 while the data file had quietly reached 127. Three checks were
+        passing. Seventy pass now.</p>
+        <p>The counts are derived from the data now rather than restated next to it. A test that
+        has to be updated by hand every time the site grows is a test that will be wrong exactly
+        when you need it.</p>
+      </div>
+      <div class="bug-side">
+        <p><em>That stale 126 had also been typed into five pages, while the README said 128. The
+        data file was right and everything describing it was wrong, which is the argument for
+        measuring rather than remembering.</em></p>
       </div>
     </div>
   </div>
