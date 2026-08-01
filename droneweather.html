@@ -1114,8 +1114,25 @@
 
   function drawDrone(t, gust, bend){
     var st = status();
-    var target = st === 'red' ? GROUND - 6 : GROUND * (0.36 + 0.04 * Math.sin(t * 1.1));
-    drone.y += (target - drone.y) * 0.05;
+    var wantX = BW * 0.52, wantY;
+
+    if (st === 'red'){
+      wantY = GROUND - 6;
+    } else if (critter){
+      /* Something wandered in, so go and shoot it. The drone slides over,
+         drops to a lower framing height and orbits slowly around the
+         subject. The easing is deliberately slack — lagging behind the
+         animal is what makes it read as a camera following something
+         rather than an object snapping to a coordinate. */
+      var orbit = Math.sin(t * 0.55) * (BW * 0.075);
+      wantX = clamp(critter.x + critter.def.w / 2 + orbit, BW * 0.10, BW * 0.66);
+      wantY = GROUND * (0.58 + 0.06 * Math.sin(t * 1.6));
+    } else {
+      wantY = GROUND * (0.36 + 0.04 * Math.sin(t * 1.1));
+    }
+
+    drone.x += (wantX - drone.x) * 0.02;
+    drone.y += (wantY - drone.y) * 0.045;
 
     drone.vel += (-gust * 3.2 - drone.push * 0.16) - drone.vel * 0.18;
     drone.push += drone.vel * 0.22;
