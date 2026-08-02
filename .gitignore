@@ -47,6 +47,7 @@ mockup-*.html
 # ---------------------------------------------------------------------------
 images/*/
 !images/brass/
+!images/brass-bts/
 !images/cracked/
 !images/itsaboy/
 !images/kit/
