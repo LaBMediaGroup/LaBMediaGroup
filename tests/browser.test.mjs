@@ -234,12 +234,12 @@ test('solar scenes hand daylight to moonlight without changing the weather compo
   const heroLayout = await page.evaluate(() => {
     const hero = document.querySelector('.pg-hero').getBoundingClientRect();
     const date = document.querySelector('.hero-date').getBoundingClientRect();
-    const ledes = [...document.querySelectorAll('.hero-lede-grid .lede')].map((element) => element.getBoundingClientRect());
-    return { heroLeft: hero.left, heroWidth: hero.width, dateLeft: date.left, ledeTops: ledes.map((rect) => rect.top) };
+    const ledes = [...document.querySelectorAll('.pg-hero .lede')].map((element) => element.getBoundingClientRect());
+    return { heroLeft: hero.left, heroWidth: hero.width, dateLeft: date.left, ledes: ledes.map((rect) => ({ left: rect.left, width: rect.width })) };
   });
   assert.ok(heroLayout.dateLeft > heroLayout.heroLeft + heroLayout.heroWidth * .55, 'the desktop shoot date should use the open right side of the hero');
-  assert.equal(heroLayout.ledeTops.length, 2);
-  assert.ok(Math.abs(heroLayout.ledeTops[0] - heroLayout.ledeTops[1]) <= 1, 'the hero introduction should form two aligned columns');
+  assert.equal(heroLayout.ledes.length, 1, 'the hero introduction should be one paragraph, not an orphaned second column');
+  assert.ok(heroLayout.ledes[0].width < heroLayout.heroWidth * .72, 'the introduction should hold a readable measure rather than run the full hero');
   await page.locator('#timeSlider').evaluate((slider) => {
     slider.value = '1252';
     slider.dispatchEvent(new Event('input', { bubbles: true }));

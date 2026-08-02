@@ -1,11 +1,14 @@
+/* Corner radii follow droneweather.html, the sibling tool: 8px on cards and
+   tiles, 6px on controls. The stage is the one large surface on the page, so
+   it takes the 10px the flight checklist panel already uses. */
+.sun-page{--r-control:6px;--r-tile:8px;--r-stage:10px}
+
 .sun-page .pg-hero{padding-block:clamp(44px,6vw,var(--s-8)) clamp(28px,3.5vw,var(--s-6));border-bottom:1px solid var(--line)}
 .sun-page .pg-hero h1{font-family:var(--f-display);font-size:var(--t-3xl);font-weight:400;line-height:.94;letter-spacing:-.03em;margin:0;max-width:15ch}
 .sun-page .pg-hero h1 em,.sun-page h2 em{font-style:italic;color:var(--accent)}
 .sun-hero-copy{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.75fr);column-gap:clamp(36px,6vw,88px);row-gap:var(--s-5);align-items:start;margin-top:var(--s-6)}
 .hero-date{justify-self:end;text-align:right;white-space:nowrap;font:clamp(34px,4vw,54px)/.95 var(--f-display);letter-spacing:-.025em;color:var(--ink)}
-.hero-lede-grid{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:clamp(36px,6vw,88px);align-items:start}
 .sun-page .pg-hero .lede{color:var(--dim);font-size:var(--t-lg);line-height:1.75;max-width:62ch;margin:0}
-.sun-page .pg-hero .lede:last-child{max-width:32ch}
 .sun-rule{display:grid;grid-template-columns:auto minmax(30px,1fr) auto;align-items:center;gap:var(--s-3)}
 .sun-rule i{height:1px;background:var(--line)}
 .sun-rule .mono:last-child{text-align:right;color:var(--faint)}
@@ -13,15 +16,15 @@
 .planner-shell{padding-block:clamp(24px,3vw,var(--s-5)) clamp(24px,3vw,var(--s-5))}
 .planner-toolbar{display:grid;grid-template-columns:minmax(210px,1fr) auto;gap:var(--s-4);align-items:end;margin-bottom:var(--s-5)}
 .planner-date{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.planner-date input{min-height:42px;border:1px solid var(--line);background:var(--paper-2);color:var(--ink);font:12px var(--f-mono);letter-spacing:.06em;padding:0 12px;color-scheme:dark}
+.planner-date input{min-height:42px;border:1px solid var(--line);border-radius:var(--r-control);background:var(--paper-2);color:var(--ink);font:12px var(--f-mono);letter-spacing:.06em;padding:0 12px;color-scheme:dark}
 [data-theme]:not([data-theme="dark"]) .planner-date input{color-scheme:light}
-.planner-date button,.planner-location button,.copy-plan{min-height:42px;border:1px solid var(--line);background:transparent;color:var(--dim);font:9px var(--f-mono);letter-spacing:.13em;text-transform:uppercase;padding:0 14px;cursor:pointer;transition:color var(--fast),border-color var(--fast),background var(--fast)}
+.planner-date button,.planner-location button,.copy-plan{min-height:42px;border:1px solid var(--line);border-radius:var(--r-control);background:transparent;color:var(--dim);font:9px var(--f-mono);letter-spacing:.13em;text-transform:uppercase;padding:0 14px;cursor:pointer;transition:color var(--fast),border-color var(--fast),background var(--fast)}
 .planner-date button:hover,.planner-location button:hover,.copy-plan:hover{color:var(--ink);border-color:var(--accent);background:var(--accent-bg)}
 .date-step{width:42px;padding:0!important;font-size:15px!important}
 .planner-location{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
 .planner-location button[data-primary]{border-color:var(--accent-dim);color:var(--accent)}
 
-.sun-stage{--sky-top:#10141b;--sky-mid:#273546;--sky-low:#d8794d;position:relative;border:1px solid var(--line);background:var(--paper-2);overflow:hidden;isolation:isolate;transition:background 500ms var(--ease)}
+.sun-stage{--sky-top:#10141b;--sky-mid:#273546;--sky-low:#d8794d;position:relative;border:1px solid var(--line);border-radius:var(--r-stage);background:var(--paper-2);overflow:hidden;isolation:isolate;transition:background 500ms var(--ease)}
 .sun-sky{position:relative;min-height:clamp(230px,20vw,280px);overflow:hidden;background:
   radial-gradient(circle at 50% 105%,color-mix(in srgb,var(--sky-low) 72%,transparent),transparent 35%),
   linear-gradient(180deg,var(--sky-top),var(--sky-mid) 60%,var(--sky-low));transition:background 650ms var(--ease)}
@@ -68,7 +71,7 @@
 .slider-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--s-4);align-items:center}
 .time-slider{width:100%;height:8px;accent-color:var(--accent);cursor:pointer}
 .time-val{font:var(--t-lg) var(--f-mono);color:var(--ink);min-width:96px;text-align:right}
-.metrics-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:14px}
+.metrics-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-tile);overflow:hidden;margin-top:14px}
 .metric-card{background:var(--paper);padding:12px 14px}
 .metric-card .k{font:8px var(--f-mono);letter-spacing:.15em;text-transform:uppercase;color:var(--faint);margin-bottom:7px}
 .metric-card .v{font:clamp(20px,2.2vw,28px) var(--f-display);color:var(--ink);line-height:1}
@@ -79,24 +82,27 @@
 .phase-head h2{font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;line-height:1}
 .phase-head p{color:var(--dim);font-size:var(--t-sm);line-height:1.65;max-width:50ch;margin-top:12px}
 .copy-plan{align-self:end}
-.phase-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.phase-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-tile);overflow:hidden}
 .phase-card{position:relative;min-height:160px;text-align:left;border:0;background:var(--paper);color:var(--ink);padding:var(--s-5) var(--s-4);cursor:pointer;transition:background var(--fast),color var(--fast)}
 .phase-card::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--phase-color)}
 .phase-card:hover,.phase-card.is-near{background:var(--paper-2)}
+/* The grid clips to its radius now, and the global focus ring sits 3px outside
+   the button, so on the corner cards it would be sliced off. Draw it inside. */
+.phase-card:focus-visible{outline-offset:-3px}
 .phase-card .phase-n{display:block;font:8px var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:20px}
 .phase-card strong{display:block;font:22px var(--f-display);font-weight:400;line-height:1.05;margin-bottom:10px}
 .phase-card .phase-time{display:block;font:10px var(--f-mono);color:var(--accent);line-height:1.5}
 .phase-card small{display:block;color:var(--dim);font-size:11px;line-height:1.55;margin-top:12px}
 .phase-blue{--phase-color:var(--sky)}.phase-gold{--phase-color:var(--accent)}
 
-.facts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:var(--s-5)}
+.facts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-tile);overflow:hidden;margin-top:var(--s-5)}
 .fact{padding:var(--s-4);background:var(--paper-2)}
 .fact dt{font:8px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
 .fact dd{font:22px var(--f-display);color:var(--ink)}
 .planner-status{min-height:1.5em;margin-top:var(--s-4);font:9px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
 
 @media(max-width:760px){
-  .sun-hero-copy{grid-template-columns:1fr;row-gap:var(--s-4)}.hero-date{justify-self:start;text-align:left;white-space:normal;font-size:clamp(30px,8vw,44px)}.hero-lede-grid{grid-column:1;grid-template-columns:1fr;gap:8px}
+  .sun-hero-copy{grid-template-columns:1fr;row-gap:var(--s-4)}.hero-date{justify-self:start;text-align:left;white-space:normal;font-size:clamp(30px,8vw,44px)}
   .planner-toolbar{grid-template-columns:1fr;align-items:start}.planner-location{justify-content:flex-start}
   .metrics-grid{grid-template-columns:1fr 1fr}.phase-grid{grid-template-columns:1fr 1fr}.facts{grid-template-columns:repeat(3,1fr)}
   .sun-sky{min-height:380px}.sun-advice-box{bottom:96px;max-width:82%}.advice-phrase{font-size:clamp(30px,6vw,42px)}.phase-head{grid-template-columns:1fr}.copy-plan{justify-self:start}
