@@ -301,6 +301,17 @@
     </button>
     <span class="reel-tag">The Reel · 2024 work</span>
   </div>
+  <script>
+  /* The reel has two faces. Each visit draws one at random : both are warmed
+     ahead of time so neither flickers in. */
+  (function(){
+    var posters=['images/reel2024-still.webp','images/reel2024-still-b.webp'];
+    posters.forEach(function(s){var p=new Image();p.src=s;});
+    var img=document.getElementById('reelPoster');
+    if(!img)return;
+    img.src=posters[Math.floor(Math.random()*posters.length)];
+  })();
+  </script>
 
   <div class="hero-cta">
     <a class="btn btn-accent" href="portfolio.html">See every film <span class="arw">→</span></a>
