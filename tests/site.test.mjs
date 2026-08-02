@@ -226,6 +226,10 @@ test('the published page count follows the sitemap', () => {
   // The joke only works if the missing page is the one you reach last.
   assert.match(colophon, /<span class="bug-n">12<\/span>\s*<div class="bug-main">\s*<h3>The one page <em>nobody plans to visit<\/em><\/h3>/);
   assert.match(colophon, /\.bug h3 em\{font-style:italic;color:var\(--accent\)\}/);
+  // A deliberate contrast: the figures row keeps its square hairline corners,
+  // and the definition card is the one that softens.
+  assert.match(colophon, /\.def\{[^}]*border-radius:10px/);
+  assert.doesNotMatch(colophon, /\.figs\{[^}]*border-radius/);
 });
 
 test('each HTML page has one title, viewport, and h1', async (t) => {

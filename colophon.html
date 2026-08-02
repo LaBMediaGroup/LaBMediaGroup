@@ -43,7 +43,11 @@
    Greek and on the sense tag. */
 .hero-def{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(268px,.8fr);gap:clamp(30px,4.5vw,68px);align-items:start}
 .hero-def>:first-child{min-width:0}
-.def{border:1px solid var(--line);background:var(--paper-2);padding:clamp(20px,2.2vw,26px);margin-top:var(--s-6)}
+/* The figures row below stays hard-edged on purpose: its hairlines meet at
+   square corners and that is where its precision comes from. This is a single
+   floating card with nothing to align to, so it takes the 10px the checklist
+   panel and the Golden Hour stage already use, and reads calmer for it. */
+.def{border:1px solid var(--line);border-radius:10px;background:var(--paper-2);padding:clamp(20px,2.2vw,26px);margin-top:var(--s-6)}
 .def-k{display:flex;align-items:center;gap:var(--s-3);font-family:var(--f-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
 .def-k i{flex:1;height:1px;background:var(--line)}
 .def-k:not(:first-child){margin-top:var(--s-5)}
