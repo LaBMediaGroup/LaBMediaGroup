@@ -345,6 +345,15 @@
    that empty slot rendered as a grey block rather than as nothing. Fixed
    columns also make the :nth-child rule below reliable, which it cannot be
    when the column count changes with the viewport. */
+/* A poster is not a still. Stills are cropped to the grid and held in
+   grayscale until you hover; a poster is a finished piece of design and gets
+   shown whole, in colour, with room around it. */
+.poster{background:var(--paper-2);margin:0;display:flex;flex-direction:column;justify-content:center;
+  padding:var(--s-6) var(--s-5)}
+.poster img{display:block;width:auto;max-width:min(100%,320px);height:auto;margin-inline:auto;
+  box-shadow:0 18px 54px rgba(0,0,0,.5)}
+.poster figcaption{font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--faint);text-align:center;margin-top:var(--s-4);line-height:1.8}
 .spec{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:0;align-content:stretch}
 /* A final cell with no partner stretches across the row instead of leaving a
    hole. It also gives the long entries : the MOZ paragraph, say : a readable
@@ -1245,31 +1254,39 @@
       </ol>
     </div>
 
-    <div class="proj-grid" style="grid-template-columns:1fr">
+    <div class="proj-grid">
+      <figure class="poster">
+        <img src="images/scattered/scattered-poster.jpg" alt="Scattered poster : a man in a shirt and tie staring at his phone against a pale blue sky, the title set in a dot matrix that repeats and fades down the page" width="1350" height="1800" loading="lazy" decoding="async">
+        <figcaption>Poster &middot; Sideways Studio &amp; LaB</figcaption>
+      </figure>
       <dl class="spec">
         <div><dt>Type</dt><dd>Short Film / 48 Hour</dd></div>
         <div><dt>Festival</dt><dd>Detroit 48 Hour Film Project</dd><dd style="color:var(--faint);font-size:var(--t-xs)">2026</dd></div>
         <div><dt>Turnaround</dt><dd>48 hours, start to upload</dd></div>
         <div><dt>Status</dt><dd class="pending">Awaiting festival screening</dd></div>
+        <div><dt>Cast</dt><dd>Joe Krakosky, Robert Baldwin, Kyle Keaser, Albert Krakosky III</dd></div>
       </dl>
     </div>
     <details class="bts">
       <summary>
         <span class="bts-peek"><img src="images/scattered/thumb/scattered-01.jpg" alt="" loading="lazy" decoding="async" width="560" height="420"><img src="images/scattered/thumb/scattered-02.jpg" alt="" loading="lazy" decoding="async" width="560" height="420"><img src="images/scattered/thumb/scattered-03.jpg" alt="" loading="lazy" decoding="async" width="560" height="420"></span>
-        <span class="bts-label"><b>Behind the scenes</b><span>10 photos</span></span>
+        <span class="bts-label"><b>Behind the scenes</b><span>13 photos</span></span>
         <span class="bts-ico" aria-hidden="true"></span>
       </summary>
       <div class="bts-grid">
-          <button class="shot big" type="button" data-full="images/scattered/scattered-01.jpg" aria-label="Open photo 1 of 10"><img src="images/scattered/thumb/scattered-01.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
-          <button class="shot" type="button" data-full="images/scattered/scattered-02.jpg" aria-label="Open photo 2 of 10"><img src="images/scattered/thumb/scattered-02.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
-          <button class="shot" type="button" data-full="images/scattered/scattered-03.jpg" aria-label="Open photo 3 of 10"><img src="images/scattered/thumb/scattered-03.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
-          <button class="shot" type="button" data-full="images/scattered/scattered-04.jpg" aria-label="Open photo 4 of 10"><img src="images/scattered/thumb/scattered-04.jpg" alt="" width="1800" height="1345" loading="lazy" decoding="async"></button>
-          <button class="shot" type="button" data-full="images/scattered/scattered-05.jpg" aria-label="Open photo 5 of 10"><img src="images/scattered/thumb/scattered-05.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
-          <button class="shot" type="button" data-full="images/scattered/scattered-06.jpg" aria-label="Open photo 6 of 10"><img src="images/scattered/thumb/scattered-06.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
-          <button class="shot wide" type="button" data-full="images/scattered/scattered-07.jpg" aria-label="Open photo 7 of 10"><img src="images/scattered/thumb/scattered-07.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
-          <button class="shot tall" type="button" data-full="images/scattered/scattered-08.jpg" aria-label="Open photo 8 of 10"><img src="images/scattered/thumb/scattered-08.jpg" alt="" width="1061" height="1800" loading="lazy" decoding="async"></button>
-          <button class="shot tall" type="button" data-full="images/scattered/scattered-09.jpg" aria-label="Open photo 9 of 10"><img src="images/scattered/thumb/scattered-09.jpg" alt="" width="1350" height="1800" loading="lazy" decoding="async"></button>
-          <button class="shot" type="button" data-full="images/scattered/scattered-10.jpg" aria-label="Open photo 10 of 10"><img src="images/scattered/thumb/scattered-10.jpg" alt="" width="1800" height="1749" loading="lazy" decoding="async"></button>
+          <button class="shot big" type="button" data-full="images/scattered/scattered-01.jpg" aria-label="Open photo 1 of 13"><img src="images/scattered/thumb/scattered-01.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-full="images/scattered/scattered-02.jpg" aria-label="Open photo 2 of 13"><img src="images/scattered/thumb/scattered-02.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-full="images/scattered/scattered-03.jpg" aria-label="Open photo 3 of 13"><img src="images/scattered/thumb/scattered-03.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-full="images/scattered/scattered-04.jpg" aria-label="Open photo 4 of 13"><img src="images/scattered/thumb/scattered-04.jpg" alt="" width="1800" height="1345" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-full="images/scattered/scattered-05.jpg" aria-label="Open photo 5 of 13"><img src="images/scattered/thumb/scattered-05.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-full="images/scattered/scattered-06.jpg" aria-label="Open photo 6 of 13"><img src="images/scattered/thumb/scattered-06.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
+          <button class="shot wide" type="button" data-full="images/scattered/scattered-07.jpg" aria-label="Open photo 7 of 13"><img src="images/scattered/thumb/scattered-07.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
+          <button class="shot tall" type="button" data-full="images/scattered/scattered-08.jpg" aria-label="Open photo 8 of 13"><img src="images/scattered/thumb/scattered-08.jpg" alt="" width="1061" height="1800" loading="lazy" decoding="async"></button>
+          <button class="shot tall" type="button" data-full="images/scattered/scattered-09.jpg" aria-label="Open photo 9 of 13"><img src="images/scattered/thumb/scattered-09.jpg" alt="" width="1350" height="1800" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-full="images/scattered/scattered-10.jpg" aria-label="Open photo 10 of 13"><img src="images/scattered/thumb/scattered-10.jpg" alt="" width="1800" height="1749" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-full="images/scattered/scattered-11.jpg" aria-label="Open photo 11 of 13"><img src="images/scattered/thumb/scattered-11.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-full="images/scattered/scattered-12.jpg" aria-label="Open photo 12 of 13"><img src="images/scattered/thumb/scattered-12.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
+          <button class="shot tall" type="button" data-full="images/scattered/scattered-13.jpg" aria-label="Open photo 13 of 13"><img src="images/scattered/thumb/scattered-13.jpg" alt="" width="1061" height="1800" loading="lazy" decoding="async"></button>
       </div>
     </details>
     <aside class="honest"><b>What actually happened</b><p>Assignment Friday night, shot Saturday and Sunday, cut on the same days we were shooting. Uploaded with six minutes left on the clock.</p></aside>

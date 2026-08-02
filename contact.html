@@ -71,6 +71,8 @@
 .onset figcaption{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-top:10px;text-align:right}
 
 .bts{margin-top:0}
+/* one section, one fold per shoot : they need air between them */
+.bts + .bts{margin-top:var(--s-5)}
 .bts > summary{
   list-style:none;cursor:pointer;
   display:grid;grid-template-columns:auto 1fr auto;gap:var(--s-5);align-items:center;
@@ -117,9 +119,14 @@
 .shot img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.03);
   transition:filter var(--mid) var(--ease),transform var(--slow) var(--ease)}
 .shot:hover img,.shot:focus-visible img{filter:grayscale(0) contrast(1);transform:scale(1.05)}
+/* A short fold has no business using the wide grid's auto-fill tracks : three
+   photographs across seven columns is four empty cells of bare grid showing
+   through. Small sets get their own track count and fill a row exactly. */
+.bts-grid.is-3{grid-template-columns:repeat(3,1fr);grid-auto-rows:clamp(150px,20vw,260px)}
 @media (max-width:520px){
   .bts-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:132px}
   .shot.big,.shot.wide{grid-column:span 2}
+  .bts-grid.is-3{grid-template-columns:1fr;grid-auto-rows:210px}
 }
 /* Who took them. Said once, under the grid, in the same hairline box : the
    credit belongs to the whole set, so it isn't repeated on every frame. */
@@ -305,11 +312,11 @@
 </section>
 
 <section class="sec wrap">
-  <div class="sec-head"><h2>On Set : <em>The Hook</em></h2><i></i></div>
+  <div class="sec-head"><h2>On <em>Set</em></h2><i></i></div>
   <details class="bts">
     <summary>
       <span class="bts-peek"><img src="images/thehook/thumb/hook-01.jpg" alt="" loading="lazy" decoding="async" width="560" height="383"><img src="images/thehook/thumb/hook-02.jpg" alt="" loading="lazy" decoding="async" width="560" height="373"><img src="images/thehook/thumb/hook-13.jpg" alt="" loading="lazy" decoding="async" width="560" height="356"></span>
-      <span class="bts-label"><b>Behind the scenes</b><span>14 photos : working with the people who make the films better</span></span>
+      <span class="bts-label"><b>The Hook</b><span>14 photos : crewing on someone else&rsquo;s set, March 2026</span></span>
       <span class="bts-ico" aria-hidden="true"></span>
     </summary>
     <!-- data-meta rides into the viewer's label slot. Two shoot days, two very
@@ -332,6 +339,20 @@
         <button class="shot" type="button" data-full="images/thehook/hook-14.jpg" data-meta="Day 5 · Mar 28 · 85mm ƒ/1.8 · 1/2500 · ISO100" aria-label="Open photo 14 of 14"><img src="images/thehook/thumb/hook-14.jpg" alt="" width="1800" height="1402" loading="lazy" decoding="async"></button>
     </div>
     <p class="bts-credit">Photographs by <a href="https://www.instagram.com/alkrak3/" target="_blank" rel="noopener">Al Krakosky ↗</a></p>
+  </details>
+
+  <details class="bts">
+    <summary>
+      <span class="bts-peek"><img src="images/scattered/thumb/scattered-11.jpg" alt="" loading="lazy" decoding="async" width="560" height="420"><img src="images/scattered/thumb/scattered-13.jpg" alt="" loading="lazy" decoding="async" width="330" height="560"><img src="images/scattered/thumb/scattered-12.jpg" alt="" loading="lazy" decoding="async" width="560" height="420"></span>
+      <span class="bts-label"><b>Scattered</b><span>3 photos : forty-eight hours, a tunnel, a trail and a raccoon</span></span>
+      <span class="bts-ico" aria-hidden="true"></span>
+    </summary>
+    <div class="bts-grid is-3">
+        <button class="shot" type="button" data-full="images/scattered/scattered-11.jpg" data-meta="Jul 25 · The tunnel · iPhone 17 Pro" aria-label="Open photo 1 of 3"><img src="images/scattered/thumb/scattered-11.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
+        <button class="shot" type="button" data-full="images/scattered/scattered-12.jpg" data-meta="Jul 26 · The woods · iPhone 17 Pro" aria-label="Open photo 2 of 3"><img src="images/scattered/thumb/scattered-12.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></button>
+        <button class="shot" type="button" data-full="images/scattered/scattered-13.jpg" data-meta="Jul 26 · Saving a raccoon · Photo by Al Krakosky" aria-label="Open photo 3 of 3"><img src="images/scattered/thumb/scattered-13.jpg" alt="" width="1061" height="1800" loading="lazy" decoding="async"></button>
+    </div>
+    <p class="bts-credit">Photographs by Bobby, except the raccoon : <a href="https://www.instagram.com/alkrak3/" target="_blank" rel="noopener">Al Krakosky ↗</a></p>
   </details>
 </section>
 
