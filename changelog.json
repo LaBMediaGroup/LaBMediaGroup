@@ -2,6 +2,16 @@
   "entries": [
     {
       "date": "2026-08-02",
+      "time": "11:40 EDT",
+      "text": "<strong>The weather tool commits to its name.</strong> It had three : the browser tab said <em>Drone Weather</em>, the headline said <em>SkyBound</em>, and the menu said <em>SkyBound : Weather</em>, which is a lot of names for one page. It is <em>SkyBound : Weather</em> now, everywhere : tab title, share cards, the assistant&rsquo;s knowledge, the note it reads from, and the line about it on the colophon. Its sibling tightened up to match, from plain <em>SkyBound</em> to <em>SkyBound : Drone</em>, so the two read as the pair they are wherever they turn up. Asking for it by the old name still works and always will : the assistant keeps <em>Drone Weather</em> as an alias, and there is now a test holding both names to it, because nobody who learned a tool by one name should walk into a wall when it picks another. That was the last of the naming drift : the check that had been failing on it goes green, leaving one known failure that has nothing to do with names."
+    },
+    {
+      "date": "2026-08-02",
+      "time": "11:15 EDT",
+      "text": "<strong>One Tools menu, and the two SkyBounds finally sit together.</strong> The dropdown had drifted into two different orders : the six tool pages listed one way, the other twelve listed another, and whichever one you were looking at, the drone pair was either split apart or the assistant sat in the middle of everything. There is one order now, on all eighteen pages including the 404 : Story Generator, Golden Hour Helper, <em>SkyBound : Drone</em>, <em>SkyBound : Weather</em>, Aspect Ratio Previewer, LaB Assistant. Idea, then the light, then the two drone tools as the pair they are, then framing, then the catch-all last. The footer shelf was renamed to match : it had been calling one of them plain <em>SkyBound</em>, which is why the pairing never read as a pairing down there. A test that had been quietly failing on every commit for days : <em>primary navigation and Explore footer links stay in sync</em> : passes again, because now they do."
+    },
+    {
+      "date": "2026-08-02",
       "time": "09:30 EDT",
       "text": "<strong>Every film answers the same four questions.</strong> The spec sheets on the reel had grown up one at a time and no two asked the same things : one said <em>Shot</em>, another said <em>Turnaround</em>, a third said <em>Festival</em>, and only two of the eight said who was actually there. All eight now open with <em>Type</em>, <em>Format</em>, <em>Crew</em> and <em>Shoot days</em>, then <em>Recognition</em> where there is any, and only then the thing that belongs to that film alone : the MOZ concept line, the Pandys track, Scattered&rsquo;s cast, Lookout&rsquo;s two on camera. The crew numbers are real and now include the two that were never written down : Bobby shot and cut The Pandys with Larry there and Larry&rsquo;s brother John on drums, and Le Juic&eacute; was Veda, Al and Bobby across one evening, four until ten, with Bobby cutting. The hours went in where they were known : Anthony Brass ran ten in the morning to about seven at night, and Le Juic&eacute; was shot in a room the public had still never seen : they opened the week after."
     },

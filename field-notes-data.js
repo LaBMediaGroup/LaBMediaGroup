@@ -139,12 +139,12 @@
     {
       id: 'site-tool-drone-weather',
       url: 'droneweather.html',
-      title: 'Drone Weather : Current Features',
+      title: 'SkyBound : Weather : Current Features',
       tags: 'drone weather live conditions open meteo wind gust gusts visibility precipitation cloud cover overcast filtered grey blue temperature flight safety thresholds animated nature scene local time solar daylight sunset twilight blue hour night sun moon lunar phase waxing waning crescent quarter gibbous full night flying read gust preflight checklist 18 point move minimize resize pdf browser',
-      note: 'Current Drone Weather and pre-flight checklist capabilities.',
-      answer: 'Drone Weather reads current Open-Meteo wind, gusts, temperature, visibility, precipitation and cloud cover. Wind, visibility and precipitation inform its conservative green, amber or red planning thresholds; cloud percentage changes the scene and is reported separately rather than treated as a safety verdict without cloud-height data. The nature scene mirrors those conditions and Detroit local time, warming toward sunset when clear, muting toward grey-blue under overcast, cooling through blue hour and darkening at night. Its moon follows a separate left-to-right arc, can share the daylight sky, and reflects the date\'s waxing or waning phase and illumination. Gust-reading and after-dark guidance stay collapsed until needed. Its 18-point pre-flight checklist opens only when requested, then remains available around the site; it can be moved, minimized, resized and printed to PDF, and its progress stays in the browser.',
+      note: 'Current SkyBound : Weather and pre-flight checklist capabilities.',
+      answer: 'SkyBound : Weather (still findable as Drone Weather) reads current Open-Meteo wind, gusts, temperature, visibility, precipitation and cloud cover. Wind, visibility and precipitation inform its conservative green, amber or red planning thresholds; cloud percentage changes the scene and is reported separately rather than treated as a safety verdict without cloud-height data. The nature scene mirrors those conditions and Detroit local time, warming toward sunset when clear, muting toward grey-blue under overcast, cooling through blue hour and darkening at night. Its moon follows a separate left-to-right arc, can share the daylight sky, and reflects the date\'s waxing or waning phase and illumination. Gust-reading and after-dark guidance stay collapsed until needed. Its 18-point pre-flight checklist opens only when requested, then remains available around the site; it can be moved, minimized, resized and printed to PDF, and its progress stays in the browser.',
       sources: [
-        { title: 'Drone Weather', url: 'droneweather.html', note: 'Live weather and flight-planning tool' }
+        { title: 'SkyBound : Weather', url: 'droneweather.html', note: 'Live weather and flight-planning tool' }
       ]
     },
     {
