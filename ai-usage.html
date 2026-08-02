@@ -233,6 +233,18 @@
 .tu-model .m-name{color:var(--ink)}
 .tu-model .m-bar{height:3px;background:var(--paper-3);border-radius:2px;overflow:hidden}
 .tu-model .m-fill{height:100%;background:var(--dim);border-radius:2px}
+
+/* ── MODEL LEADERBOARD (cross-tool) ── */
+.mc-sub{color:var(--faint);font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;margin:calc(-1 * var(--s-3)) 0 var(--s-4)}
+.mc-row{margin-bottom:var(--s-3)}
+.mc-head{display:flex;align-items:baseline;gap:var(--s-3);margin-bottom:4px}
+.mc-name{font-size:var(--t-sm);color:var(--ink)}
+.mc-provider{font-family:var(--f-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.mc-tokens{margin-left:auto;font-family:var(--f-mono);font-size:10px;color:var(--dim)}
+.mc-bar{height:6px;background:var(--paper-3);border-radius:var(--radius);overflow:hidden}
+.mc-fill{height:100%;background:var(--dim);border-radius:var(--radius)}
+.mc-row.top .mc-fill{background:var(--accent)}
+.mc-row.top .mc-tokens{color:var(--accent)}
 .tu-model .m-fill.top{background:var(--good)}
 .tu-model .m-tokens{text-align:right;color:var(--faint)}
 @media(max-width:560px){
@@ -422,6 +434,29 @@ async function loadUsage(){
             '</div>';
         });
         tuHtml += '</div></div>';
+      });
+      // Models, side by side : aggregate every model across tools into one
+      // leaderboard, so a model's total is not split by which tool burned it.
+      var MODEL_PROVIDER={'GLM-5.2':'Z.ai','GLM-4.7':'Z.ai','Kimi-K2.7-Code':'Synthetic','Kimi-K3':'Synthetic','Gemini Flash':'Google','GPT-5.6-sol':'OpenAI','Fable-5':'Anthropic','Opus-5':'Anthropic'};
+      var totals={};
+      tu.tools.forEach(function(t){
+        t.models.forEach(function(m){
+          if(!totals[m.name]) totals[m.name]={name:m.name,tokens:0};
+          totals[m.name].tokens += parseFloat(m.tokensLabel) * (m.tokensLabel.indexOf('B')>-1 ? 1000 : 1);
+        });
+      });
+      var board=Object.keys(totals).map(function(k){return totals[k]}).sort(function(a,b){return b.tokens-a.tokens});
+      var maxTok=board.length?board[0].tokens:1;
+      tuHtml += '<h2 class="details-title" style="margin-top:var(--s-7)">Models, <em>side by side</em></h2>' +
+        '<div class="mc-sub">Total tokens across every tool · ' + tu.period.toLowerCase() + ' · local logs</div>';
+      board.forEach(function(m,i){
+        var label = m.tokens >= 1000 ? (m.tokens/1000).toFixed(m.tokens>=10000?0:1).replace(/\.0$/,'') + 'B' : Math.round(m.tokens) + 'M';
+        tuHtml += '<div class="mc-row' + (i===0?' top':'') + '">' +
+          '<div class="mc-head"><span class="mc-name">' + m.name + '</span>' +
+          '<span class="mc-provider">' + (MODEL_PROVIDER[m.name]||'') + '</span>' +
+          '<span class="mc-tokens">' + label + '</span></div>' +
+          '<div class="mc-bar"><span class="mc-fill" style="display:block;width:' + Math.round(m.tokens/maxTok*100) + '%"></span></div>' +
+          '</div>';
       });
       document.getElementById('tool-usage').innerHTML = tuHtml;
     }
