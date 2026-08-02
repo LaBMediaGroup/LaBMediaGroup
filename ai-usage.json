@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-02T14:48:55.486024-04:00",
+  "lastUpdated": "2026-08-02T15:19:06.214888-04:00",
   "providers": [
     {
       "name": "Synthetic",
@@ -159,7 +159,7 @@
   ],
   "toolUsage": {
     "period": "Last 30 days",
-    "totalTokens": 1646000000,
+    "totalTokens": 1650000000,
     "totalLabel": "1.6B",
     "note": "Counted from local logs — CodexBar + OpenClaw session transcripts + Hermes state.db. Antigravity rides on Claude/GPT keys and the Claude desktop app keeps its own books, so neither can be separated.",
     "tools": [
@@ -241,28 +241,23 @@
       },
       {
         "name": "OpenClaw",
-        "tokensLabel": "109M",
+        "tokensLabel": "113M",
         "share": 7,
         "models": [
           {
-            "name": "hf:zai-org/GLM-5.2",
-            "tokensLabel": "49M",
-            "share": 45
+            "name": "GLM-5.2",
+            "tokensLabel": "57M",
+            "share": 51
           },
           {
             "name": "GLM-4.7",
             "tokensLabel": "43M",
-            "share": 40
+            "share": 38
           },
           {
             "name": "Kimi-K3 (Synthetic)",
             "tokensLabel": "7M",
             "share": 6
-          },
-          {
-            "name": "GLM-5.2",
-            "tokensLabel": "5M",
-            "share": 4
           },
           {
             "name": "Kimi-K2.7-Code",
@@ -285,9 +280,461 @@
             "share": 0
           },
           {
-            "name": "hf:MiniMaxAI/MiniMax-M3",
+            "name": "MiniMax-M3",
             "tokensLabel": "19K",
             "share": 0
+          }
+        ],
+        "daily": [
+          {
+            "date": "2026-07-03",
+            "model": "GLM-5.2",
+            "tokens": 545809
+          },
+          {
+            "date": "2026-07-03",
+            "model": "Kimi-K2.7-Code",
+            "tokens": 51332
+          },
+          {
+            "date": "2026-07-04",
+            "model": "GLM-5.2",
+            "tokens": 2592106
+          },
+          {
+            "date": "2026-07-05",
+            "model": "GLM-5.2",
+            "tokens": 2839622
+          },
+          {
+            "date": "2026-07-05",
+            "model": "Kimi-K2.7-Code",
+            "tokens": 12177
+          },
+          {
+            "date": "2026-07-06",
+            "model": "GLM-5.2",
+            "tokens": 2611661
+          },
+          {
+            "date": "2026-07-06",
+            "model": "Kimi-K2.7-Code",
+            "tokens": 18097
+          },
+          {
+            "date": "2026-07-07",
+            "model": "GLM-5.2",
+            "tokens": 2128150
+          },
+          {
+            "date": "2026-07-07",
+            "model": "Kimi-K2.7-Code",
+            "tokens": 18122
+          },
+          {
+            "date": "2026-07-08",
+            "model": "GLM-4.7",
+            "tokens": 4314874
+          },
+          {
+            "date": "2026-07-08",
+            "model": "GLM-5.2",
+            "tokens": 1816059
+          },
+          {
+            "date": "2026-07-08",
+            "model": "GLM-5",
+            "tokens": 138573
+          },
+          {
+            "date": "2026-07-08",
+            "model": "Kimi-K2.7-Code",
+            "tokens": 24243
+          },
+          {
+            "date": "2026-07-09",
+            "model": "GLM-4.7",
+            "tokens": 1794259
+          },
+          {
+            "date": "2026-07-09",
+            "model": "GLM-5.2",
+            "tokens": 1899432
+          },
+          {
+            "date": "2026-07-09",
+            "model": "GPT-5.5",
+            "tokens": 480360
+          },
+          {
+            "date": "2026-07-09",
+            "model": "GLM-5",
+            "tokens": 192542
+          },
+          {
+            "date": "2026-07-10",
+            "model": "GLM-4.7",
+            "tokens": 2740257
+          },
+          {
+            "date": "2026-07-10",
+            "model": "GLM-5.2",
+            "tokens": 2559323
+          },
+          {
+            "date": "2026-07-10",
+            "model": "GPT-5.5",
+            "tokens": 199667
+          },
+          {
+            "date": "2026-07-10",
+            "model": "MiniMax-M3",
+            "tokens": 18640
+          },
+          {
+            "date": "2026-07-10",
+            "model": "GLM-5",
+            "tokens": 103719
+          },
+          {
+            "date": "2026-07-11",
+            "model": "GLM-4.7",
+            "tokens": 2455077
+          },
+          {
+            "date": "2026-07-11",
+            "model": "GLM-5.2",
+            "tokens": 2096067
+          },
+          {
+            "date": "2026-07-11",
+            "model": "Kimi-K2.7-Code",
+            "tokens": 44538
+          },
+          {
+            "date": "2026-07-12",
+            "model": "GLM-4.7",
+            "tokens": 1952048
+          },
+          {
+            "date": "2026-07-12",
+            "model": "GLM-5.2",
+            "tokens": 2163710
+          },
+          {
+            "date": "2026-07-12",
+            "model": "GLM-5",
+            "tokens": 84627
+          },
+          {
+            "date": "2026-07-13",
+            "model": "GLM-4.7",
+            "tokens": 5092587
+          },
+          {
+            "date": "2026-07-13",
+            "model": "GLM-5.2",
+            "tokens": 2067861
+          },
+          {
+            "date": "2026-07-13",
+            "model": "GLM-5",
+            "tokens": 285174
+          },
+          {
+            "date": "2026-07-14",
+            "model": "GLM-4.7",
+            "tokens": 3690342
+          },
+          {
+            "date": "2026-07-14",
+            "model": "GLM-5.2",
+            "tokens": 2105352
+          },
+          {
+            "date": "2026-07-14",
+            "model": "GLM-5",
+            "tokens": 37654
+          },
+          {
+            "date": "2026-07-15",
+            "model": "GLM-4.7",
+            "tokens": 6792486
+          },
+          {
+            "date": "2026-07-15",
+            "model": "GLM-5.2",
+            "tokens": 1804893
+          },
+          {
+            "date": "2026-07-16",
+            "model": "GLM-4.7",
+            "tokens": 1729743
+          },
+          {
+            "date": "2026-07-16",
+            "model": "GLM-5.2",
+            "tokens": 1907540
+          },
+          {
+            "date": "2026-07-16",
+            "model": "GLM-5",
+            "tokens": 33957
+          },
+          {
+            "date": "2026-07-17",
+            "model": "GLM-4.7",
+            "tokens": 898074
+          },
+          {
+            "date": "2026-07-17",
+            "model": "GLM-4.6",
+            "tokens": 394213
+          },
+          {
+            "date": "2026-07-17",
+            "model": "GLM-5.2",
+            "tokens": 1492587
+          },
+          {
+            "date": "2026-07-17",
+            "model": "GLM-5",
+            "tokens": 71872
+          },
+          {
+            "date": "2026-07-17",
+            "model": "Kimi-K2.7-Code",
+            "tokens": 59006
+          },
+          {
+            "date": "2026-07-18",
+            "model": "GLM-4.7",
+            "tokens": 1072456
+          },
+          {
+            "date": "2026-07-18",
+            "model": "GLM-5.2",
+            "tokens": 1468225
+          },
+          {
+            "date": "2026-07-18",
+            "model": "GLM-5",
+            "tokens": 141908
+          },
+          {
+            "date": "2026-07-19",
+            "model": "GLM-4.7",
+            "tokens": 241802
+          },
+          {
+            "date": "2026-07-19",
+            "model": "GLM-5.2",
+            "tokens": 1418236
+          },
+          {
+            "date": "2026-07-19",
+            "model": "GLM-5",
+            "tokens": 216184
+          },
+          {
+            "date": "2026-07-20",
+            "model": "GLM-4.7",
+            "tokens": 539798
+          },
+          {
+            "date": "2026-07-20",
+            "model": "GLM-5.2",
+            "tokens": 1981232
+          },
+          {
+            "date": "2026-07-20",
+            "model": "GLM-5",
+            "tokens": 35976
+          },
+          {
+            "date": "2026-07-21",
+            "model": "GLM-5.2",
+            "tokens": 1466407
+          },
+          {
+            "date": "2026-07-21",
+            "model": "GLM-5",
+            "tokens": 68289
+          },
+          {
+            "date": "2026-07-21",
+            "model": "GLM-4.7",
+            "tokens": 638405
+          },
+          {
+            "date": "2026-07-21",
+            "model": "Kimi-K2.7-Code",
+            "tokens": 17567
+          },
+          {
+            "date": "2026-07-22",
+            "model": "GLM-4.7",
+            "tokens": 3232186
+          },
+          {
+            "date": "2026-07-22",
+            "model": "GLM-5.2",
+            "tokens": 1312298
+          },
+          {
+            "date": "2026-07-22",
+            "model": "GLM-5",
+            "tokens": 37202
+          },
+          {
+            "date": "2026-07-22",
+            "model": "Kimi-K2.7-Code",
+            "tokens": 57638
+          },
+          {
+            "date": "2026-07-23",
+            "model": "GLM-4.7",
+            "tokens": 1263855
+          },
+          {
+            "date": "2026-07-23",
+            "model": "GLM-5.2",
+            "tokens": 1681003
+          },
+          {
+            "date": "2026-07-23",
+            "model": "GLM-5",
+            "tokens": 36160
+          },
+          {
+            "date": "2026-07-24",
+            "model": "GLM-4.7",
+            "tokens": 410891
+          },
+          {
+            "date": "2026-07-24",
+            "model": "GLM-5.2",
+            "tokens": 1310624
+          },
+          {
+            "date": "2026-07-24",
+            "model": "GLM-5",
+            "tokens": 262182
+          },
+          {
+            "date": "2026-07-25",
+            "model": "GLM-4.7",
+            "tokens": 561802
+          },
+          {
+            "date": "2026-07-25",
+            "model": "GLM-5.2",
+            "tokens": 1706928
+          },
+          {
+            "date": "2026-07-25",
+            "model": "GLM-5",
+            "tokens": 108623
+          },
+          {
+            "date": "2026-07-25",
+            "model": "Kimi-K2.7-Code",
+            "tokens": 26375
+          },
+          {
+            "date": "2026-07-26",
+            "model": "GLM-4.7",
+            "tokens": 381528
+          },
+          {
+            "date": "2026-07-26",
+            "model": "GLM-5.2",
+            "tokens": 1382198
+          },
+          {
+            "date": "2026-07-27",
+            "model": "GLM-4.7",
+            "tokens": 899508
+          },
+          {
+            "date": "2026-07-27",
+            "model": "GLM-5.2",
+            "tokens": 2468765
+          },
+          {
+            "date": "2026-07-27",
+            "model": "Kimi-K2.7-Code",
+            "tokens": 2146197
+          },
+          {
+            "date": "2026-07-28",
+            "model": "GLM-4.7",
+            "tokens": 478871
+          },
+          {
+            "date": "2026-07-28",
+            "model": "GLM-5.2",
+            "tokens": 1685502
+          },
+          {
+            "date": "2026-07-29",
+            "model": "GLM-4.7",
+            "tokens": 452746
+          },
+          {
+            "date": "2026-07-29",
+            "model": "Kimi-K3 (Synthetic)",
+            "tokens": 1599355
+          },
+          {
+            "date": "2026-07-29",
+            "model": "GLM-5.2",
+            "tokens": 41660
+          },
+          {
+            "date": "2026-07-30",
+            "model": "GLM-4.7",
+            "tokens": 404030
+          },
+          {
+            "date": "2026-07-30",
+            "model": "Kimi-K3 (Synthetic)",
+            "tokens": 956572
+          },
+          {
+            "date": "2026-07-31",
+            "model": "GLM-4.7",
+            "tokens": 297665
+          },
+          {
+            "date": "2026-07-31",
+            "model": "Kimi-K3 (Synthetic)",
+            "tokens": 655207
+          },
+          {
+            "date": "2026-08-01",
+            "model": "GLM-4.7",
+            "tokens": 800263
+          },
+          {
+            "date": "2026-08-01",
+            "model": "Kimi-K3 (Synthetic)",
+            "tokens": 2496172
+          },
+          {
+            "date": "2026-08-02",
+            "model": "GLM-4.7",
+            "tokens": 245418
+          },
+          {
+            "date": "2026-08-02",
+            "model": "Kimi-K3 (Synthetic)",
+            "tokens": 921263
+          },
+          {
+            "date": "2026-08-02",
+            "model": "GLM-5.2",
+            "tokens": 8717460
           }
         ]
       }
