@@ -47,14 +47,15 @@ mockup-*.html
 # ---------------------------------------------------------------------------
 images/*/
 !images/brass/
+!images/cracked/
 !images/itsaboy/
 !images/kit/
 !images/lejuice/
 !images/lookout/
 !images/moz/
 !images/scattered/
-!images/traildead/
 !images/thehook/
+!images/traildead/
 !images/og/
 
 # Camera formats, wherever they land. 26 HEIC originals (66 MB) were found
