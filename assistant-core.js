@@ -238,7 +238,7 @@
       var owned=/\b(own|owns|owned|ours|yours|kit|have|has)\b/.test(nq) && !borrowed;
       var sectionHints=[
         ['camera',['camera','body']],['lenses',['lens','glass','optic']],
-        ['light',['light','lighting']],['audio-prod',['audio','sound','recorder','microphone','mic']],
+        ['monitoring-light',['light','lighting']],['audio-prod',['audio','sound','recorder','microphone','mic']],
         ['drone',['drone','fpv','quad']],['support',['gimbal','tripod','dolly','support']],
         ['software',['software','edit','editor','editing']],['machine',['computer','machine','storage','nas']]
       ];
