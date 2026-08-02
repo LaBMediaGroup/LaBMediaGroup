@@ -58,6 +58,75 @@
 .faq-item p{color:var(--dim);font-size:var(--t-sm);line-height:1.72;max-width:64ch}
 
 @media (max-width:860px){.about{grid-template-columns:1fr}}
+
+/* ---- On-set photo + BTS fold (ported from portfolio) ---- */
+.onset{margin:0 0 var(--s-7)}
+.onset img{display:block;width:100%;height:auto;border:1px solid var(--line)}
+.onset figcaption{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-top:10px;text-align:right}
+
+.bts{margin-top:0}
+.bts > summary{
+  list-style:none;cursor:pointer;
+  display:grid;grid-template-columns:auto 1fr auto;gap:var(--s-5);align-items:center;
+  border:1px solid var(--line);background:var(--paper-2);padding:var(--s-4) var(--s-5);
+  transition:background var(--fast) var(--ease),border-color var(--fast) var(--ease);
+}
+.bts > summary::-webkit-details-marker{display:none}
+.bts > summary:hover{background:var(--paper-3);border-color:var(--line-2)}
+.bts-peek{display:flex;flex:none}
+.bts-peek img{
+  width:52px;height:38px;object-fit:cover;border:1px solid var(--paper-2);
+  filter:grayscale(1);transition:transform var(--mid) var(--ease),filter var(--mid) var(--ease);
+}
+.bts-peek img:nth-child(2){margin-left:-16px;transform:rotate(3deg)}
+.bts-peek img:nth-child(3){margin-left:-16px;transform:rotate(-2deg)}
+.bts > summary:hover .bts-peek img{filter:grayscale(0)}
+.bts > summary:hover .bts-peek img:nth-child(1){transform:translateX(-4px) rotate(-3deg)}
+.bts > summary:hover .bts-peek img:nth-child(3){transform:translateX(4px) rotate(4deg)}
+.bts[open] .bts-peek{display:none}
+.bts-label b{display:block;font-family:var(--f-display);font-size:21px;font-weight:400;letter-spacing:-.01em;color:var(--ink)}
+.bts-label span{display:block;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin-top:3px}
+.bts-ico{position:relative;width:15px;height:15px;flex:none}
+.bts-ico::before,.bts-ico::after{content:'';position:absolute;background:var(--accent);transition:transform var(--mid) var(--ease)}
+.bts-ico::before{left:0;right:0;top:7px;height:1px}
+.bts-ico::after{top:0;bottom:0;left:7px;width:1px}
+.bts[open] .bts-ico::after{transform:scaleY(0)}
+.bts-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  grid-auto-rows:118px;grid-auto-flow:dense;gap:1px;
+  background:var(--line);border:1px solid var(--line);border-top:0;
+}
+.shot{display:block;position:relative;overflow:hidden;background:var(--paper-3);cursor:zoom-in;
+  grid-column:span 1;grid-row:span 1}
+.shot.tall{grid-row:span 2}
+.shot.wide{grid-column:span 2}
+.shot.big{grid-column:span 2;grid-row:span 2}
+.shot img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.03);
+  transition:filter var(--mid) var(--ease),transform var(--slow) var(--ease)}
+.shot:hover img,.shot:focus-visible img{filter:grayscale(0) contrast(1);transform:scale(1.05)}
+@media (max-width:520px){
+  .bts-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:132px}
+  .shot.big,.shot.wide{grid-column:span 2}
+}
+
+.lb{position:fixed;inset:0;z-index:900;display:none;place-items:center;
+  background:rgba(6,6,7,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:var(--s-5)}
+.lb[open],.lb.on{display:grid}
+.lb img{max-width:min(1500px,94vw);max-height:86vh;width:auto;height:auto;object-fit:contain}
+.lb-close,.lb-prev,.lb-next{
+  position:absolute;background:rgba(11,11,12,.6);border:1px solid rgba(244,241,236,.28);
+  color:#F4F1EC;width:48px;height:48px;display:grid;place-items:center;font-size:19px;line-height:1;
+  transition:background var(--fast) var(--ease),border-color var(--fast) var(--ease)}
+.lb-close:hover,.lb-prev:hover,.lb-next:hover{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.lb-close{top:var(--s-5);right:var(--s-5)}
+.lb-prev{left:var(--s-5);top:50%;transform:translateY(-50%)}
+.lb-next{right:var(--s-5);top:50%;transform:translateY(-50%)}
+.lb-count{position:absolute;bottom:var(--s-5);left:50%;transform:translateX(-50%);
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;color:rgba(244,241,236,.65)}
+@media (max-width:600px){
+  .lb-prev{left:var(--s-3)} .lb-next{right:var(--s-3)}
+  .lb-close{top:var(--s-3);right:var(--s-3)}
+}
 </style>
 </head>
 <body>
@@ -129,6 +198,10 @@
 </section>
 
 <section class="sec wrap">
+  <figure class="onset">
+    <img src="images/thehook/bobby-on-set.jpg" alt="Bobby holding the slate on the set of The Hook" width="1800" height="1200" loading="lazy" decoding="async">
+    <figcaption>On set : The Hook, 2026</figcaption>
+  </figure>
   <div class="about">
     <div class="about-body">
       <p>LaB Media is one person with a camera, a full-time job, and a habit of finishing things on weekends.</p>
@@ -175,6 +248,29 @@
       </div>
     </dl>
   </div>
+</section>
+
+<section class="sec wrap">
+  <div class="sec-head"><h2>On Set : <em>The Hook</em></h2><i></i></div>
+  <details class="bts">
+    <summary>
+      <span class="bts-peek"><img src="images/thehook/thumb/hook-01.jpg" alt="" loading="lazy" decoding="async" width="560" height="383"><img src="images/thehook/thumb/hook-02.jpg" alt="" loading="lazy" decoding="async" width="560" height="373"><img src="images/thehook/thumb/hook-06.jpg" alt="" loading="lazy" decoding="async" width="560" height="471"></span>
+      <span class="bts-label"><b>Behind the scenes</b><span>10 photos : working with the people who make the films better</span></span>
+      <span class="bts-ico" aria-hidden="true"></span>
+    </summary>
+    <div class="bts-grid">
+        <button class="shot wide" type="button" data-full="images/thehook/hook-01.jpg" aria-label="Open photo 1 of 10"><img src="images/thehook/thumb/hook-01.jpg" alt="" width="1800" height="1231" loading="lazy" decoding="async"></button>
+        <button class="shot" type="button" data-full="images/thehook/hook-02.jpg" aria-label="Open photo 2 of 10"><img src="images/thehook/thumb/hook-02.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async"></button>
+        <button class="shot" type="button" data-full="images/thehook/hook-03.jpg" aria-label="Open photo 3 of 10"><img src="images/thehook/thumb/hook-03.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async"></button>
+        <button class="shot" type="button" data-full="images/thehook/hook-04.jpg" aria-label="Open photo 4 of 10"><img src="images/thehook/thumb/hook-04.jpg" alt="" width="1800" height="1115" loading="lazy" decoding="async"></button>
+        <button class="shot" type="button" data-full="images/thehook/hook-05.jpg" aria-label="Open photo 5 of 10"><img src="images/thehook/thumb/hook-05.jpg" alt="" width="1800" height="1087" loading="lazy" decoding="async"></button>
+        <button class="shot" type="button" data-full="images/thehook/hook-06.jpg" aria-label="Open photo 6 of 10"><img src="images/thehook/thumb/hook-06.jpg" alt="" width="1800" height="1514" loading="lazy" decoding="async"></button>
+        <button class="shot" type="button" data-full="images/thehook/hook-07.jpg" aria-label="Open photo 7 of 10"><img src="images/thehook/thumb/hook-07.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async"></button>
+        <button class="shot" type="button" data-full="images/thehook/hook-08.jpg" aria-label="Open photo 8 of 10"><img src="images/thehook/thumb/hook-08.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async"></button>
+        <button class="shot tall" type="button" data-full="images/thehook/hook-09.jpg" aria-label="Open photo 9 of 10"><img src="images/thehook/thumb/hook-09.jpg" alt="" width="1298" height="1800" loading="lazy" decoding="async"></button>
+        <button class="shot tall" type="button" data-full="images/thehook/hook-10.jpg" aria-label="Open photo 10 of 10"><img src="images/thehook/thumb/hook-10.jpg" alt="" width="1200" height="1800" loading="lazy" decoding="async"></button>
+    </div>
+  </details>
 </section>
 
 <section class="sec wrap" style="border-bottom:0">
@@ -405,6 +501,68 @@
       el.hidden = false;
     })
     .catch(function(){ /* stay hidden */ });
+})();
+</script>
+<script>
+/* Behind-the-scenes lightbox (ported from portfolio).
+   Thumbnails carry the grid; the full-size file only loads when opened. */
+(function(){
+  var all=[].slice.call(document.querySelectorAll('.bts-grid .shot'));
+  if(!all.length)return;
+  var shots=[], i=0, last=null;
+
+  var lb=document.createElement('div');
+  lb.className='lb'; lb.setAttribute('role','dialog');
+  lb.setAttribute('aria-modal','true'); lb.setAttribute('aria-label','Behind the scenes');
+  lb.innerHTML='<img alt="">'
+    +'<button class="lb-close" type="button" aria-label="Close">✕</button>'
+    +'<button class="lb-prev"  type="button" aria-label="Previous photo">‹</button>'
+    +'<button class="lb-next"  type="button" aria-label="Next photo">›</button>'
+    +'<span class="lb-count"></span>';
+  document.body.appendChild(lb);
+
+  var img=lb.querySelector('img'), count=lb.querySelector('.lb-count');
+
+  function show(n){
+    i=(n+shots.length)%shots.length;
+    img.src=shots[i].dataset.full;
+    img.alt='Behind the scenes, photo '+(i+1)+' of '+shots.length;
+    count.textContent=String(i+1).padStart(2,'0')+' / '+String(shots.length).padStart(2,'0');
+    [i+1,i-1].forEach(function(k){
+      var s=shots[(k+shots.length)%shots.length];
+      if(s){var p=new Image();p.src=s.dataset.full;}
+    });
+  }
+  function open(n){
+    last=document.activeElement;
+    show(n); lb.classList.add('on');
+    document.body.style.overflow='hidden';
+    lb.querySelector('.lb-close').focus();
+  }
+  function close(){
+    lb.classList.remove('on');
+    document.body.style.overflow='';
+    img.removeAttribute('src');
+    if(last)last.focus();
+  }
+
+  all.forEach(function(s){
+    s.addEventListener('click',function(){
+      shots=[].slice.call(s.closest('.bts-grid').querySelectorAll('.shot'));
+      open(shots.indexOf(s));
+    });
+  });
+  lb.querySelector('.lb-close').addEventListener('click',close);
+  lb.querySelector('.lb-prev').addEventListener('click',function(e){e.stopPropagation();show(i-1)});
+  lb.querySelector('.lb-next').addEventListener('click',function(e){e.stopPropagation();show(i+1)});
+  lb.addEventListener('click',function(e){ if(e.target===lb||e.target===img) close(); });
+
+  document.addEventListener('keydown',function(e){
+    if(!lb.classList.contains('on'))return;
+    if(e.key==='Escape'){close();}
+    else if(e.key==='ArrowRight'){show(i+1);}
+    else if(e.key==='ArrowLeft'){show(i-1);}
+  });
 })();
 </script>
 <script src="flight-checklist.js"></script>
