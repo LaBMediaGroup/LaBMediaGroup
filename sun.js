@@ -3,7 +3,7 @@
   if(!window.LaBSun)return;
 
   var REDUCED=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches);
-  var state={lat:42.67,lon:-83.03,label:'Shelby Township, MI',timeZone:'America/Detroit',day:null,wind:7,gust:11};
+  var state={lat:42.67,lon:-83.03,label:'Shelby Township, MI',timeZone:'America/Detroit',day:null,wind:7,gust:11,cloud:0,cloudOverride:null,weatherReady:false};
   var $=function(id){return document.getElementById(id)};
   var dateInput=$('sunDate'), slider=$('timeSlider'), stage=$('sunStage'), orb=$('sunOrb'), moon=$('moonOrb'), moonFace=$('moonFace');
   var phaseVal=$('phaseVal'), tempVal=$('tempVal'), elevVal=$('elevVal'), azimVal=$('azimVal');
@@ -98,6 +98,25 @@
       best:'Practical lights · skyline · windows · silhouettes'
     }
   };
+  var cloudNotes={
+    golden:[
+      'The solar window is golden, but the cloud deck has turned it into a soft source. Expose for faces, not flare.',
+      'Golden hour is geometric right now; the visible light is cool and heavily diffused.',
+      'Use the even sky as a giant source. Watch the horizon for one brief warm break.',
+      'The low sun still gives direction, but the clouds have removed the hard edge. Look for quiet separation.'
+    ],
+    daylight:[
+      'The cloud deck is doing the diffusion. Build shape with blocking and background tone.',
+      'Soft overhead light is holding contrast down. Use color and depth to separate the subject.',
+      'The sky is one broad source now. Faces will stay even; reflective surfaces need the attention.',
+      'Overcast light buys continuity. Spend it on coverage that would reveal changing sun.'
+    ],
+    blue:[
+      'The cloud layer is deepening the blue. Let practicals provide the warmth the horizon cannot.',
+      'Twilight is heavily diffused tonight. Protect the cool ambience and create your own warm edge.',
+      'The sky is muted, but the exposure is even. Use windows and practicals for separation.'
+    ]
+  };
 
   function pad(n){return String(n).padStart(2,'0')}
   function zoneParts(date,timeZone){
@@ -139,6 +158,20 @@
   }
   function isToday(){return dateInput.value===iso(new Date(),state.timeZone)}
 
+  function cloudCover(){
+    if(!isToday())return 0;
+    if(Number.isFinite(state.cloudOverride))return clamp(state.cloudOverride,0,100);
+    return state.weatherReady?clamp(state.cloud,0,100):0;
+  }
+  function cloudCharacter(value){
+    if(value>=85)return 'Overcast now';
+    if(value>=60)return 'Heavily filtered now';
+    if(value>=30)return 'Broken cloud now';
+    if(value>=12)return 'Light cloud now';
+    return 'Clear now';
+  }
+  function cloudTransmission(){return clamp(1-cloudCover()/100*.92,.08,1)}
+
   function drawMoonPhase(info){
     if(!moonFace||!info)return;
     var ctx=moonFace.getContext('2d'),size=40,radius=18,cx=20,cy=20;
@@ -172,7 +205,7 @@
     var visible=arc.aboveHorizon&&info.illumination>.018;
     moon.style.left=(4+arc.progress*92)+'%';
     moon.style.top=(89-Math.sin(arc.progress*Math.PI)*61)+'%';
-    moon.style.setProperty('--moon-opacity',arc.edgeOpacity.toFixed(3));
+    moon.style.setProperty('--moon-opacity',(arc.edgeOpacity*cloudTransmission()).toFixed(3));
     stage.dataset.moon=visible?'visible':'hidden';
     drawMoonPhase(info);
     if(moonPhaseLabel){
@@ -210,10 +243,11 @@
   function adviceChoice(value,phase,copy){
     var range=adviceWindow(phase,value),span=Math.max(1,range[1]-range[0]);
     var beforeDawn=phase==='night'&&value<minutes(state.day.civilDawn);
-    var pool=beforeDawn?copy.preDawnNotes:copy.notes;
+    var clouds=cloudCover(),cloudPool=clouds>=60?(phase.indexOf('golden')===0?cloudNotes.golden:(phase==='daylight'?cloudNotes.daylight:(phase.indexOf('blue')===0?cloudNotes.blue:null))):null;
+    var pool=cloudPool||(beforeDawn?copy.preDawnNotes:copy.notes);
     var progress=clamp((value-range[0])/span,0,.9999);
     var index=Math.min(pool.length-1,Math.floor(progress*pool.length));
-    return {key:phase+':'+(beforeDawn?'pre:':'post:')+index,text:pool[index],pool:pool};
+    return {key:phase+':'+(cloudPool?'cloud:':(beforeDawn?'pre:':'post:'))+index,text:pool[index],pool:pool};
   }
 
   function paintAdvice(text,accentEnding){
@@ -290,22 +324,28 @@
       ? horizonY-clamp(pos.elevation/Math.max(12,state.day.maxElevation),0,1)*77
       : horizonY+clamp(-pos.elevation/6,0,1)*10;
     var sunOpacity=clamp((pos.elevation+2.2)/2.2,0,1);
+    var clouds=cloudCover(),transmission=cloudTransmission();
+    if(kelvin&&clouds>0)kelvin=Math.round(kelvin+(6500-kelvin)*(clouds/100*.82));
 
     stage.dataset.phase=phase;
     stage.dataset.sun=sunOpacity>.01?'visible':'hidden';
-    orb.style.setProperty('--sun-opacity',sunOpacity.toFixed(3));
+    stage.dataset.cloud=cloudCharacter(clouds).toLowerCase().replace(/\s+/g,'-');
+    stage.dataset.cloudCover=String(Math.round(clouds));
+    stage.dataset.cloudTransmission=transmission.toFixed(3);
+    stage.style.setProperty('--cloud-opacity',(clouds/100*.95).toFixed(3));
+    orb.style.setProperty('--sun-opacity',(sunOpacity*transmission).toFixed(3));
     orb.style.left=x+'%';orb.style.top=y+'%';
     placeMoon(value,moment);
     timeVal.textContent=fmtMinutes(value);
     skyTime.textContent=timeVal.textContent;
-    phaseVal.textContent=copy.label;
-    $('lightVal').textContent=phase==='night'?'Artificial':(phase.indexOf('blue')===0?'Mixed':'Natural');
+    phaseVal.textContent=copy.label+(state.weatherReady&&isToday()?' · '+cloudCharacter(clouds):'');
+    $('lightVal').textContent=phase==='night'?'Artificial':(clouds>=85?'Diffused':(clouds>=60?'Filtered':(phase.indexOf('blue')===0?'Mixed':'Natural')));
     tempVal.innerHTML=kelvin?kelvin.toLocaleString()+'<small>K est.</small>':'<span>Practical</span>';
     elevVal.innerHTML=(pos.elevation>=0?'+':'')+pos.elevation.toFixed(1)+'<small>°</small>';
     azimVal.innerHTML=Math.round(pos.azimuth)+'<small>° '+LaBSun.direction(pos.azimuth)+'</small>';
     var choice=adviceChoice(value,phase,copy);
     rollAdvice(choice,choice.pool);
-    $('bestFor').textContent=copy.best;
+    $('bestFor').textContent=clouds>=60?'Soft faces · continuity · muted contrast':copy.best;
     $('selectedMoment').textContent=dateLabel.textContent+' · '+timeVal.textContent;
 
     document.querySelectorAll('.phase-card').forEach(function(button){
@@ -340,13 +380,16 @@
   function refreshWind(){
     var request=++windRequest,readout=$('sunWind');
     if(readout)readout.textContent='Checking current wind';
-    fetch('https://api.open-meteo.com/v1/forecast?latitude='+encodeURIComponent(state.lat)+'&longitude='+encodeURIComponent(state.lon)+'&current=wind_speed_10m,wind_gusts_10m&wind_speed_unit=mph&timezone=auto')
+    fetch('https://api.open-meteo.com/v1/forecast?latitude='+encodeURIComponent(state.lat)+'&longitude='+encodeURIComponent(state.lon)+'&current=wind_speed_10m,wind_gusts_10m,cloud_cover&wind_speed_unit=mph&timezone=auto')
       .then(function(response){return response.json()})
       .then(function(data){
         if(request!==windRequest||!data||!data.current)return;
         state.wind=Math.round(Number(data.current.wind_speed_10m)||0);
         state.gust=Math.round(Number(data.current.wind_gusts_10m)||state.wind);
-        if(readout)readout.textContent='Current wind '+state.wind+' · gust '+state.gust+' mph';
+        state.cloud=clamp(Math.round(Number(data.current.cloud_cover)||0),0,100);
+        state.weatherReady=true;
+        if(readout)readout.textContent='Current wind '+state.wind+' · gust '+state.gust+' mph · cloud '+Math.round(cloudCover())+'%';
+        renderTime(Number(slider.value));
         window.dispatchEvent(new Event('lab:sun-wind'));
       }).catch(function(){if(readout)readout.textContent='Treetops using a light breeze'});
   }
@@ -457,10 +500,12 @@
     },{enableHighAccuracy:false,timeout:8000,maximumAge:600000});
   });
 
-  var queryDate='';
-  try{queryDate=new URL(location.href).searchParams.get('date')||''}catch(e){}
+  var queryDate='',queryCloud='';
+  try{var queryParams=new URL(location.href).searchParams;queryDate=queryParams.get('date')||'';queryCloud=queryParams.get('cloud')||''}catch(e){}
   dateInput.value=/^\d{4}-\d{2}-\d{2}$/.test(queryDate)?queryDate:iso(new Date(),state.timeZone);
   if(REDUCED)stage.classList.add('reduced-motion');
+  if(queryCloud!==''&&Number.isFinite(Number(queryCloud))){state.cloudOverride=clamp(Number(queryCloud),0,100);state.weatherReady=true}
+  window.labSunSetCloud=function(value){state.cloudOverride=clamp(Number(value)||0,0,100);state.weatherReady=true;renderTime(Number(slider.value));window.dispatchEvent(new Event('lab:sun-wind'))};
   renderDay(false);
   refreshWind();
   initNatureScene();

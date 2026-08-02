@@ -595,7 +595,8 @@
 
 (function(){
   /* Live Weather Fetch */
-  fetch('https://api.open-meteo.com/v1/forecast?latitude=42.67&longitude=-83.03&current=temperature_2m,weather_code,wind_speed_10m,wind_gusts_10m,visibility,precipitation&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto')
+  try{var cloudPreview=new URL(location.href).searchParams.get('cloud');if(cloudPreview!==null&&Number.isFinite(Number(cloudPreview)))window.wxCloudOverride=Math.max(0,Math.min(100,Number(cloudPreview)))}catch(e){}
+  fetch('https://api.open-meteo.com/v1/forecast?latitude=42.67&longitude=-83.03&current=temperature_2m,weather_code,wind_speed_10m,wind_gusts_10m,visibility,precipitation,cloud_cover&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto')
     .then(function(res){ return res.json(); })
     .then(function(data){
       if(!data || !data.current) throw new Error('Current conditions unavailable');
@@ -605,6 +606,9 @@
       var tempF = Math.round(w.temperature_2m);
       var visibilityMi = Number(w.visibility||0) / 1609.344;
       var precip = Number(w.precipitation||0);
+      var cloudRaw=Number(w.cloud_cover);
+      var cloudCover=Number.isFinite(cloudRaw)?Math.round(cloudRaw):(w.weather_code===3?100:(w.weather_code===2?75:(w.weather_code===1?35:0)));
+      window.wxCloudCover=Math.max(0,Math.min(100,cloudCover));
 
       var elW = document.getElementById('wxWind'); if(elW) elW.innerHTML = windMph + '<small> mph</small>';
       var elG = document.getElementById('wxGust'); if(elG) elG.innerHTML = gustMph + '<small> mph</small>';
@@ -632,7 +636,9 @@
         if (dot) dot.className = 'status-dot green';
         if (advisoryLine) advisoryLine.textContent = 'GUSTS TO ' + gustMph + 'MPH · ' + visibilityMi.toFixed(1) + 'MI MODEL VISIBILITY · NO MODEL ADVISORIES';
       }
-      if(sourceLine) sourceLine.textContent = 'Open-Meteo forecast model · updated ' + new Date(w.time).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}) + ' · verify conditions and airspace on site.';
+      var shownCloud=Number.isFinite(window.wxCloudOverride)?window.wxCloudOverride:window.wxCloudCover;
+      if(advisoryLine)advisoryLine.textContent+=' · '+Math.round(shownCloud)+'% CLOUD';
+      if(sourceLine) sourceLine.textContent = 'Open-Meteo forecast model · updated ' + new Date(w.time).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}) + ' · cloud cover shapes the scene, not the safety verdict · verify conditions and airspace on site.';
 
       /* WMO codes split into two intensities rather than one boolean. The
          drizzle band (51/53/55), freezing drizzle (56/57) and the lightest
@@ -714,7 +720,7 @@
     if(sceneSlider)sceneSlider.value=String(sceneMinute);
     var solar=solarScene(),names={'night':'Night','blue-dawn':'Dawn blue','golden-morning':'Morning gold','daylight':'Daylight','golden-evening':'Evening gold','blue-dusk':'Dusk blue'};
     if(sceneClock)sceneClock.textContent=(sceneLive?'Now · ':'')+fmtMinute(sceneMinute);
-    if(scenePhaseEl)scenePhaseEl.textContent=names[solar.phase]||solar.phase;
+    if(scenePhaseEl)scenePhaseEl.textContent=(names[solar.phase]||solar.phase)+' · '+cloudCharacter(cloudCover());
     var stage=document.getElementById('wxSceneStage');if(stage){
       stage.dataset.phase=solar.phase;
       stage.dataset.sun=solar.pos.elevation>=-0.8?'visible':'hidden';
@@ -722,6 +728,9 @@
       stage.dataset.moonPhase=solar.moon.info?solar.moon.info.label.toLowerCase().replace(/\s+/g,'-'):'unknown';
       stage.dataset.moonIllumination=solar.moon.info?String(Math.round(solar.moon.info.illumination*100)):'0';
       stage.dataset.moonProgress=solar.moon.arc?solar.moon.arc.progress.toFixed(3):'0';
+      stage.dataset.cloud=cloudCharacter(cloudCover());
+      stage.dataset.cloudCover=String(Math.round(cloudCover()));
+      stage.dataset.cloudTransmission=cloudTransmission().toFixed(3);
       stage.style.setProperty('--wx-nightness',solar.nightness.toFixed(3));
     }
     if(sceneLiveBtn)sceneLiveBtn.setAttribute('aria-pressed',String(sceneLive));
@@ -753,6 +762,15 @@
     if (typeof window.wxPrecip === 'number') return window.wxPrecip;
     return window.isRainingLive ? 2 : 0;          // legacy flag
   }
+  function cloudCover(){return clamp(Number.isFinite(window.wxCloudOverride)?window.wxCloudOverride:(Number(window.wxCloudCover)||0),0,100)}
+  function cloudCharacter(value){
+    if(value>=85)return 'overcast';
+    if(value>=60)return 'heavily filtered';
+    if(value>=30)return 'broken cloud';
+    if(value>=12)return 'light cloud';
+    return 'clear';
+  }
+  function cloudTransmission(){return clamp(1-cloudCover()/100*.92,.08,1)}
 
   // Same thresholds as the advisory card. Never diverge these.
   function status(){
@@ -871,8 +889,8 @@
   /* Dithered sky + ground tone. Static for a given state, so it is
      built once and blitted, not recomputed per frame. */
   function buildSky(){
-    var solar=solarScene(),phase=solar.phase;
-    var key = status() + '|' + precip() + '|' + phase + '|' + Math.round(solar.pos.elevation*2) + '|' + BW + 'x' + BH + '|' +
+    var solar=solarScene(),phase=solar.phase,cloud=cloudCover()/100;
+    var key = status() + '|' + precip() + '|' + Math.round(cloudCover()) + '|' + phase + '|' + Math.round(solar.pos.elevation*2) + '|' + BW + 'x' + BH + '|' +
               (document.documentElement.getAttribute('data-theme') || 'dark');
     if (key === skyKey) return;
     skyKey = key;
@@ -886,6 +904,7 @@
     if(phase==='night')tint=rgb('--sky');
     else if(phase==='blue-dawn'||phase==='blue-dusk')tint=rgb('--sky');
     else if(phase==='golden-morning'||phase==='golden-evening')tint=rgb('--accent');
+    if(cloud>.35)tint=mixRGB(tint,[125,143,154],clamp((cloud-.35)/.65,0,1));
 
     for (var y = 0; y < BH; y++){
       for (var x = 0; x < BW; x++){
@@ -918,9 +937,22 @@
       top=[8,19,37];bottom=[27,43,68];topAlpha=.72;bottomAlpha=.52;
     }
     if(wet){top=mixRGB(top,rgb('--sky'),.58);bottom=mixRGB(bottom,rgb('--sky'),.62);topAlpha=Math.min(.78,topAlpha+.08);bottomAlpha=Math.min(.64,bottomAlpha+.08)}
+    if(cloud>0){
+      var cloudTop=phase==='night'?[15,28,46]:[78,101,118];
+      var cloudBottom=phase==='night'?[39,52,67]:[128,143,151];
+      top=mixRGB(top,cloudTop,cloud*.9);bottom=mixRGB(bottom,cloudBottom,cloud*.92);
+      topAlpha=Math.min(.82,topAlpha+cloud*.2);bottomAlpha=Math.min(.7,bottomAlpha+cloud*.18);
+    }
     var skyWash=sc.createLinearGradient(0,0,0,GROUND);
     skyWash.addColorStop(0,rgba(top,topAlpha));skyWash.addColorStop(1,rgba(bottom,bottomAlpha));
     sc.globalCompositeOperation='destination-over';sc.fillStyle=skyWash;sc.fillRect(0,0,BW,GROUND);sc.globalCompositeOperation='source-over';
+    if(cloud>.12&&cloud<.88){
+      var veil=rgba(phase==='night'?[67,82,101]:[174,187,192],.06+cloud*.11);
+      sc.fillStyle=veil;
+      [[.22,.22,.27,.075],[.68,.32,.34,.09],[.48,.12,.23,.06]].forEach(function(bank){
+        sc.beginPath();sc.ellipse(BW*bank[0],GROUND*bank[1],BW*bank[2],GROUND*bank[3],0,0,Math.PI*2);sc.fill();
+      });
+    }
   }
 
   /* ---------------------------------------------------------------
@@ -1208,7 +1240,7 @@
     var top=4,bottom=GROUND-3,maxElev=Math.max(18,sceneDay?sceneDay.maxElevation:65);
     var cy = Math.round(pos.elevation>=0?bottom-clamp(pos.elevation/maxElev,0,1)*(bottom-top):bottom+clamp(-pos.elevation/.8,0,1)*3);
     var R  = Math.max(2, Math.round(BW * (0.022 + heat * 0.016)));
-    var sunFade=clamp((pos.elevation+.8)/.8,0,1);
+    var sunFade=clamp((pos.elevation+.8)/.8,0,1)*cloudTransmission();
 
     var golden=solar.phase.indexOf('golden')===0||solar.phase.indexOf('blue')===0;
     var warm = golden?css('--accent',0.88*sunFade):css('--ink',(0.62+heat*0.20)*sunFade);
@@ -1241,7 +1273,7 @@
 
   function drawMoon(t){
     var solar=solarScene(),lunar=solar.moon;if(!lunar.visible||precip()===2)return;
-    var progress=lunar.arc.progress,info=lunar.info,opacity=lunar.arc.edgeOpacity;
+    var progress=lunar.arc.progress,info=lunar.info,opacity=lunar.arc.edgeOpacity*cloudTransmission();
     /* Stay inside the scene's soft side masks: the edge opacity still gives
        moonrise and moonset a gentle entrance without hiding the first beat. */
     var cx=Math.round(BW*lerp(.14,.90,progress));
@@ -1421,9 +1453,10 @@
     }, { threshold: 0 }).observe(cvs);
   }
 
-  window.addEventListener('lab:weather-update', queueRender);
+  window.addEventListener('lab:weather-update',function(){skyKey='';updateSceneControls()});
 
   resize();
+  window.labSceneSetCloud=function(value){window.wxCloudOverride=clamp(Number(value)||0,0,100);skyKey='';updateSceneControls()};
   updateSceneControls();
   setInterval(function(){if(sceneLive)updateSceneControls()},60000);
   queueRender();

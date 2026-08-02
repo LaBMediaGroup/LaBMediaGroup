@@ -312,6 +312,17 @@ test('weather and Golden Hour scenes keep separate solar-aware compositions', ()
   assert.match(goldenScript, /bw\*\.68[\s\S]*bw\*\.78[\s\S]*bw\*\.88/);
 });
 
+test('live cloud cover shapes both light scenes without changing safety thresholds', () => {
+  const weather = read('droneweather.html');
+  const golden = read('sun.js');
+  assert.match(weather, /current=[^'"\s]*cloud_cover/);
+  assert.match(golden, /current=[^'"\s]*cloud_cover/);
+  assert.match(weather, /cloud cover shapes the scene, not the safety verdict/i);
+  assert.match(weather, /labSceneSetCloud/);
+  assert.match(golden, /labSunSetCloud/);
+  assert.match(golden, /Overcast now/);
+});
+
 test('AI Usage remains public but deliberately hidden', () => {
   const usage = read('ai-usage.html');
   assert.match(usage, /name="robots" content="noindex,nofollow"/);
