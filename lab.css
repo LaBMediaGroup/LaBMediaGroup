@@ -564,7 +564,11 @@ input,textarea,select{font:inherit;color:inherit}
 /* ---------- 5. FOOTER (shared, every page) ---------- */
 .foot{border-top:1px solid var(--line);padding-block:var(--s-8) var(--s-6);margin-top:0}
 .foot-in{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
-.foot-top{display:grid;grid-template-columns:minmax(240px,1.15fr) minmax(460px,2fr) minmax(150px,.7fr);gap:var(--s-7);padding-bottom:var(--s-7)}
+/* Brand, then one column per footer group. This used to be three columns with
+   the middle one holding every link in a 3x4 sub-grid: 12 cells for a list
+   that had grown to 15, so three links spilled into an unplanned fourth
+   column and the reading order stopped matching the grouping. */
+.foot-top{display:grid;grid-template-columns:minmax(230px,1.3fr) repeat(4,minmax(0,.75fr));gap:var(--s-7) clamp(20px,2.6vw,48px);padding-bottom:var(--s-7)}
 .foot-mark{height:52px;width:auto;opacity:.9;margin-bottom:var(--s-4)}
 .foot-blurb{color:var(--dim);font-size:var(--t-sm);max-width:34ch;line-height:1.7}
 .foot-col h3{
@@ -572,11 +576,6 @@ input,textarea,select{font:inherit;color:inherit}
   color:var(--faint);font-weight:400;margin-bottom:var(--s-4);
 }
 .foot-col ul{list-style:none;display:flex;flex-direction:column;gap:11px}
-.foot-top>.foot-col:nth-child(2) ul{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-  grid-template-rows:repeat(4,auto);grid-auto-flow:column;
-  gap:11px clamp(20px,3vw,44px);
-}
 .foot-col a{font-size:var(--t-sm);color:var(--dim);transition:color var(--fast) var(--ease)}
 .foot-col a:hover{color:var(--accent)}
 .foot-bot{
@@ -828,8 +827,10 @@ input,textarea,select{font:inherit;color:inherit}
 /* ---------- 10. RESPONSIVE ---------- */
 @media (max-width:1000px){
   .grid-work{grid-template-columns:repeat(2,1fr)}
-  .foot-top{grid-template-columns:minmax(210px,.8fr) minmax(0,2fr)}
-  .foot-top>.foot-col:last-child{grid-column:1}
+  /* Four link columns stop fitting beside the brand here, so the brand takes
+     its own full-width row and the groups pair off two by two. */
+  .foot-top{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-6) clamp(24px,5vw,64px)}
+  .foot-top>:first-child{grid-column:1/-1}
 }
 @media (max-width:760px){
   /* The desktop nav remains a flex item even after its links become fixed.
@@ -858,12 +859,7 @@ input,textarea,select{font:inherit;color:inherit}
   .nav-drop-menu{position:static;border:0;border-left:1px solid var(--line);background:none;padding:0 0 0 var(--s-4);margin-bottom:var(--s-3)}
   .nav-drop-menu a{padding:12px 0}
   .grid-work,.grid-tools{grid-template-columns:1fr}
-  .foot-top{grid-template-columns:1fr;gap:var(--s-6)}
-  .foot-top>.foot-col:last-child{grid-column:auto}
-  .foot-top>.foot-col:nth-child(2) ul{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    grid-template-rows:repeat(6,auto);column-gap:var(--s-5);
-  }
+  .foot-top{gap:var(--s-6) var(--s-5)}
   .row{grid-template-columns:1fr;gap:var(--s-2)}
   .row-meta{grid-column:1}
 }
@@ -873,6 +869,9 @@ input,textarea,select{font:inherit;color:inherit}
      brand intact rather than compressing the wordmark horizontally. */
   .nav-logo-wordmark{display:none}
   .nav-logo-mobile{display:block}
+  /* Two columns cannot hold "People & Community" or "Software & Assets" at
+     this width without wrapping every other label. */
+  .foot-top{grid-template-columns:1fr}
 }
 @media (max-width:340px){
   /* Keep all four theme targets at a finger-friendly 40px on the smallest

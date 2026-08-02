@@ -260,12 +260,30 @@ test('primary navigation and Explore footer links stay in sync', () => {
     return tail.slice(0, end);
   };
   const expectedNav = hrefs(section(read(pages[0]), /<nav\b[^>]*class=["']nav-primary["']/, /<\/nav>/i));
-  const expectedExplore = hrefs(section(read(pages[0]), /<h3>Explore<\/h3>/i, /<\/div>/i));
+  const footerGroups = ['Resources', 'Tools', 'Studio', 'Elsewhere'];
+  const group = (html, heading) => hrefs(section(html, new RegExp(`<h3>${heading}</h3>`, 'i'), /<\/div>/i));
+  const expectedFooter = Object.fromEntries(footerGroups.map((heading) => [heading, group(read(pages[0]), heading)]));
 
   for (const file of pages) {
     const html = read(file);
     assert.deepEqual(hrefs(section(html, /<nav\b[^>]*class=["']nav-primary["']/, /<\/nav>/i)), expectedNav, `${file} primary nav drifted`);
-    assert.deepEqual(hrefs(section(html, /<h3>Explore<\/h3>/i, /<\/div>/i)), expectedExplore, `${file} Explore footer drifted`);
+    for (const heading of footerGroups) {
+      assert.deepEqual(group(html, heading), expectedFooter[heading], `${file} ${heading} footer group drifted`);
+    }
+  }
+
+  // The footer mirrors the nav's grouping, so it should also reach everywhere
+  // the nav reaches. The old flat Explore list had drifted out of step twice.
+  const internal = (list) => list.filter((href) => !/^https?:/i.test(href));
+  const footerInternal = new Set(internal(footerGroups.flatMap((heading) => expectedFooter[heading])));
+  for (const href of internal(expectedNav)) {
+    assert.ok(footerInternal.has(href), `${href} is reachable from the nav but missing from the footer`);
+  }
+  assert.equal(footerInternal.size, internal(expectedNav).length, 'the footer should not reach past the nav either');
+
+  // Elsewhere is for other places on the internet, not other pages of ours.
+  for (const href of expectedFooter.Elsewhere) {
+    assert.match(href, /^https:\/\//, 'Elsewhere should hold external links only');
   }
 });
 
