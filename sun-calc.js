@@ -128,5 +128,21 @@
     return {fraction:fraction,illumination:illumination,ageDays:ageDays,waxing:fraction<.5,label:label};
   }
 
-  return {event:event,position:position,getDay:getDay,phaseAt:phaseAt,direction:direction,moonPhase:moonPhase};
+  /* A restrained visual arc shared by the two scene renderers. Phase offsets
+     the moon from solar noon; callers still decide whether the illuminated
+     sliver is bright enough to draw. */
+  function moonArc(minute,solarNoonMinute,phaseFraction){
+    var transit=norm(solarNoonMinute+phaseFraction*1440,1440);
+    var fromTransit=norm(minute-transit+720,1440)-720;
+    var progress=Math.max(0,Math.min(1,(fromTransit+360)/720));
+    return {
+      transitMinute:transit,
+      fromTransit:fromTransit,
+      progress:progress,
+      aboveHorizon:Math.abs(fromTransit)<=360,
+      edgeOpacity:Math.max(0,Math.min(1,Math.min(progress,1-progress)/.075))
+    };
+  }
+
+  return {event:event,position:position,getDay:getDay,phaseAt:phaseAt,direction:direction,moonPhase:moonPhase,moonArc:moonArc};
 });

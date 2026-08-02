@@ -139,8 +139,6 @@
   }
   function isToday(){return dateInput.value===iso(new Date(),state.timeZone)}
 
-  function wrapDayDelta(value){return ((value+720)%1440+1440)%1440-720}
-
   function drawMoonPhase(info){
     if(!moonFace||!info)return;
     var ctx=moonFace.getContext('2d'),size=40,radius=18,cx=20,cy=20;
@@ -166,18 +164,15 @@
   }
 
   function placeMoon(value,moment){
-    if(!moon||!window.LaBSun.moonPhase)return;
+    if(!moon||!window.LaBSun.moonPhase||!window.LaBSun.moonArc)return;
     var info=LaBSun.moonPhase(moment),solarNoon=minutes(state.day.solarNoon);
     /* Approximate the moon's daily arc from its phase offset relative to the
        sun. It is intentionally a visual planner cue, not a rise/set ephemeris. */
-    var transit=(solarNoon+info.fraction*1440)%1440;
-    var fromTransit=wrapDayDelta(value-transit);
-    var visible=Math.abs(fromTransit)<=360&&info.illumination>.018;
-    var progress=clamp((fromTransit+360)/720,0,1);
-    var edgeFade=clamp(Math.min(progress,1-progress)/.075,0,1);
-    moon.style.left=(4+progress*92)+'%';
-    moon.style.top=(89-Math.sin(progress*Math.PI)*61)+'%';
-    moon.style.setProperty('--moon-opacity',edgeFade.toFixed(3));
+    var arc=LaBSun.moonArc(value,solarNoon,info.fraction);
+    var visible=arc.aboveHorizon&&info.illumination>.018;
+    moon.style.left=(4+arc.progress*92)+'%';
+    moon.style.top=(89-Math.sin(arc.progress*Math.PI)*61)+'%';
+    moon.style.setProperty('--moon-opacity',arc.edgeOpacity.toFixed(3));
     stage.dataset.moon=visible?'visible':'hidden';
     drawMoonPhase(info);
     if(moonPhaseLabel){

@@ -703,7 +703,11 @@
     var moment=onSceneDate(sceneMinute);
     var pos=window.LaBSun?LaBSun.position(moment,SCENE_LAT,SCENE_LON):{elevation:20,azimuth:180};
     var phase=sceneDay&&window.LaBSun?LaBSun.phaseAt(moment,sceneDay):(sceneMinute<360||sceneMinute>1260?'night':'daylight');
-    solarCacheKey=cacheKey;solarCache={moment:moment,pos:pos,phase:phase};return solarCache;
+    var moonInfo=window.LaBSun&&LaBSun.moonPhase?LaBSun.moonPhase(moment):null;
+    var moonArc=moonInfo&&sceneDay&&LaBSun.moonArc?LaBSun.moonArc(sceneMinute,minuteOf(sceneDay.solarNoon),moonInfo.fraction):null;
+    var moonVisible=!!(moonInfo&&moonArc&&moonArc.aboveHorizon&&moonInfo.illumination>.018);
+    var nightness=clamp((-pos.elevation+1)/8,0,1);
+    solarCacheKey=cacheKey;solarCache={moment:moment,pos:pos,phase:phase,nightness:nightness,moon:{info:moonInfo,arc:moonArc,visible:moonVisible}};return solarCache;
   }
   function updateSceneControls(){
     if(sceneLive)sceneMinute=minuteOf(new Date());
@@ -711,7 +715,15 @@
     var solar=solarScene(),names={'night':'Night','blue-dawn':'Dawn blue','golden-morning':'Morning gold','daylight':'Daylight','golden-evening':'Evening gold','blue-dusk':'Dusk blue'};
     if(sceneClock)sceneClock.textContent=(sceneLive?'Now · ':'')+fmtMinute(sceneMinute);
     if(scenePhaseEl)scenePhaseEl.textContent=names[solar.phase]||solar.phase;
-    var stage=document.getElementById('wxSceneStage');if(stage){stage.dataset.phase=solar.phase;stage.dataset.sun=solar.pos.elevation>=-0.8?'visible':'hidden';stage.dataset.moon=solar.phase==='night'?'visible':'hidden'}
+    var stage=document.getElementById('wxSceneStage');if(stage){
+      stage.dataset.phase=solar.phase;
+      stage.dataset.sun=solar.pos.elevation>=-0.8?'visible':'hidden';
+      stage.dataset.moon=solar.moon.visible?'visible':'hidden';
+      stage.dataset.moonPhase=solar.moon.info?solar.moon.info.label.toLowerCase().replace(/\s+/g,'-'):'unknown';
+      stage.dataset.moonIllumination=solar.moon.info?String(Math.round(solar.moon.info.illumination*100)):'0';
+      stage.dataset.moonProgress=solar.moon.arc?solar.moon.arc.progress.toFixed(3):'0';
+      stage.style.setProperty('--wx-nightness',solar.nightness.toFixed(3));
+    }
     if(sceneLiveBtn)sceneLiveBtn.setAttribute('aria-pressed',String(sceneLive));
     skyKey='';queueRender();
   }
@@ -786,6 +798,8 @@
     var c = rgb(name);
     return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (a === undefined ? 1 : a) + ')';
   }
+  function mixRGB(a,b,t){return [Math.round(lerp(a[0],b[0],t)),Math.round(lerp(a[1],b[1],t)),Math.round(lerp(a[2],b[2],t))]}
+  function rgba(c,a){return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')'}
   // The palette ships one warm accent, so amber and red are derived here.
   function statusRGB(){
     var s = status();
@@ -858,7 +872,7 @@
      built once and blitted, not recomputed per frame. */
   function buildSky(){
     var solar=solarScene(),phase=solar.phase;
-    var key = status() + '|' + precip() + '|' + phase + '|' + BW + 'x' + BH + '|' +
+    var key = status() + '|' + precip() + '|' + phase + '|' + Math.round(solar.pos.elevation*2) + '|' + BW + 'x' + BH + '|' +
               (document.documentElement.getAttribute('data-theme') || 'dark');
     if (key === skyKey) return;
     skyKey = key;
@@ -890,6 +904,23 @@
       }
     }
     sc.putImageData(img, 0, 0);
+
+    /* The page still shows through, but local solar elevation now gives the
+       weather field a real daylight, twilight or night atmosphere. Filling
+       behind the pixel dither preserves its crisp texture and the existing
+       feathered, borderless composition. */
+    var top=[94,151,177],bottom=[178,190,176],topAlpha=.15,bottomAlpha=.08;
+    if(phase==='golden-morning'||phase==='golden-evening'){
+      top=[75,112,142];bottom=[214,132,78];topAlpha=.29;bottomAlpha=.25;
+    }else if(phase==='blue-dawn'||phase==='blue-dusk'){
+      top=[35,62,94];bottom=[116,91,107];topAlpha=.34+solar.nightness*.24;bottomAlpha=.25+solar.nightness*.18;
+    }else if(phase==='night'){
+      top=[8,19,37];bottom=[27,43,68];topAlpha=.72;bottomAlpha=.52;
+    }
+    if(wet){top=mixRGB(top,rgb('--sky'),.58);bottom=mixRGB(bottom,rgb('--sky'),.62);topAlpha=Math.min(.78,topAlpha+.08);bottomAlpha=Math.min(.64,bottomAlpha+.08)}
+    var skyWash=sc.createLinearGradient(0,0,0,GROUND);
+    skyWash.addColorStop(0,rgba(top,topAlpha));skyWash.addColorStop(1,rgba(bottom,bottomAlpha));
+    sc.globalCompositeOperation='destination-over';sc.fillStyle=skyWash;sc.fillRect(0,0,BW,GROUND);sc.globalCompositeOperation='source-over';
   }
 
   /* ---------------------------------------------------------------
@@ -1175,11 +1206,12 @@
     var heat = clamp((tempF - 35) / 60, 0, 1);
     var cx = Math.round(BW * clamp((pos.azimuth-70)/220,0.08,0.92));
     var top=4,bottom=GROUND-3,maxElev=Math.max(18,sceneDay?sceneDay.maxElevation:65);
-    var cy = Math.round(bottom-clamp(pos.elevation/maxElev,0,1)*(bottom-top));
+    var cy = Math.round(pos.elevation>=0?bottom-clamp(pos.elevation/maxElev,0,1)*(bottom-top):bottom+clamp(-pos.elevation/.8,0,1)*3);
     var R  = Math.max(2, Math.round(BW * (0.022 + heat * 0.016)));
+    var sunFade=clamp((pos.elevation+.8)/.8,0,1);
 
     var golden=solar.phase.indexOf('golden')===0||solar.phase.indexOf('blue')===0;
-    var warm = golden?css('--accent',0.88):css('--ink',0.62+heat*0.20);
+    var warm = golden?css('--accent',0.88*sunFade):css('--ink',(0.62+heat*0.20)*sunFade);
     for (var y = -R; y <= R; y++){
       var half = Math.floor(Math.sqrt(R * R - y * y));
       px(cx - half, cy + y, half * 2 + 1, 1, warm);
@@ -1190,12 +1222,12 @@
     var reach = R + 2 + Math.round(heat * 2);
     for (var a = 0; a < rays; a++){
       px(cx + SUN_ARMS[a][0] * reach, cy + SUN_ARMS[a][1] * reach,
-         pulse, pulse, css('--accent', 0.20 + heat * 0.28));
+         pulse, pulse, css('--accent', (0.20 + heat * 0.28)*sunFade));
     }
 
     if (heat > 0.72 || golden){
       var bloomR = R + 3 + Math.round((heat - 0.72) * 10);
-      var bloom = css('--accent', 0.16);
+      var bloom = css('--accent', 0.16*sunFade);
       for (var by = -bloomR; by <= bloomR; by++){
         for (var bx = -bloomR; bx <= bloomR; bx++){
           var dist = Math.sqrt(bx * bx + by * by);
@@ -1208,17 +1240,28 @@
   }
 
   function drawMoon(t){
-    var solar=solarScene();if(solar.phase!=='night'||precip()===2)return;
-    var dusk=sceneDay?minuteOf(sceneDay.civilDusk):1260;
-    var dawn=sceneDay?minuteOf(sceneDay.civilDawn):330;
-    var span=(1440-dusk)+dawn,progress=sceneMinute>=dusk?(sceneMinute-dusk)/span:(1440-dusk+sceneMinute)/span;
-    progress=clamp(progress,0,1);
-    var cx=Math.round(BW*lerp(.88,.14,progress));
-    var cy=Math.round(lerp(GROUND*.70,GROUND*.16,Math.sin(progress*Math.PI)));
-    var R=Math.max(2,Math.round(BW*.022)),moon=css('--ink',.72),shade=css('--sky',.28);
-    for(var y=-R;y<=R;y++){var half=Math.floor(Math.sqrt(R*R-y*y));px(cx-half,cy+y,half*2+1,1,moon)}
-    px(cx-1,cy-R+1,1,1,shade);px(cx+Math.max(1,R-2),cy,1,1,shade);
-    if(!REDUCED&&Math.sin(t*.7)>0.92)px(cx-R-2,cy,1,1,css('--ink',.24));
+    var solar=solarScene(),lunar=solar.moon;if(!lunar.visible||precip()===2)return;
+    var progress=lunar.arc.progress,info=lunar.info,opacity=lunar.arc.edgeOpacity;
+    /* Stay inside the scene's soft side masks: the edge opacity still gives
+       moonrise and moonset a gentle entrance without hiding the first beat. */
+    var cx=Math.round(BW*lerp(.14,.90,progress));
+    var cy=Math.round(GROUND*.84-Math.sin(progress*Math.PI)*GROUND*.68);
+    var R=Math.max(2,Math.round(BW*.019)),angle=info.fraction*Math.PI*2,sunX=Math.sin(angle);
+    var moon=css('--ink',.76*opacity),shade='rgba(22,38,63,'+(.62*opacity)+')';
+    function litAt(x,y){
+      var nx=x/R,ny=y/R,rr=nx*nx+ny*ny;if(rr>1)return null;
+      return nx*sunX-Math.sqrt(Math.max(0,1-rr))*Math.cos(angle)>0;
+    }
+    for(var y=-R;y<=R;y++)for(var x=-R;x<=R;x++){
+      var lit=litAt(x,y);if(lit===null)continue;px(cx+x,cy+y,1,1,lit?moon:shade);
+    }
+    if(litAt(-Math.max(1,Math.round(R*.3)),-Math.max(1,Math.round(R*.25)))===true)px(cx-Math.max(1,Math.round(R*.3)),cy-Math.max(1,Math.round(R*.25)),1,1,css('--sky',.32*opacity));
+    if(!REDUCED&&Math.sin(t*.7)>0.92)px(cx-R-2,cy,1,1,css('--ink',.2*opacity));
+  }
+
+  function coolSceneAtNight(){
+    var amount=solarScene().nightness;if(amount<=.02)return;
+    b.save();b.globalCompositeOperation='source-atop';b.fillStyle='rgba(8,27,55,'+(amount*.24)+')';b.fillRect(0,0,BW,GROUND);b.restore();
   }
 
   /* Drizzle is not thin rain. It is fewer, shorter, slower drops that
@@ -1358,6 +1401,7 @@
     drawCritter();
     drawDrone(time, gust, bend);
     drawPrecip(bend);
+    coolSceneAtNight();
 
     ctx.clearRect(0, 0, W, H);
     ctx.imageSmoothingEnabled = false;

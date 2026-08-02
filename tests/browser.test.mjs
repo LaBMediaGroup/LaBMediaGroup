@@ -189,10 +189,24 @@ test('solar scenes hand daylight to moonlight without changing the weather compo
   await page.goto(`${baseURL}/droneweather.html`, { waitUntil: 'domcontentloaded', timeout: 10_000 });
   assert.equal(await page.locator('.wx-scene-time').count(), 0, 'the weather scene must not carry a public time toolbar');
   assert.equal(await page.locator('#wxSceneTest').getAttribute('open'), null, 'the subtle scene preview stays collapsed');
+  await page.evaluate(() => window.labSceneSetTime(720));
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-phase'), 'daylight');
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-sun'), 'visible');
+  const daylightNightness = parseFloat(await page.locator('#wxSceneStage').evaluate((element) => element.style.getPropertyValue('--wx-nightness')));
+  await page.evaluate(() => window.labSceneSetTime(480));
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-sun'), 'visible');
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-moon'), 'visible', 'the weather scene may show a daytime moon when the lunar arc calls for it');
   await page.evaluate(() => window.labSceneSetTime(1260));
   assert.equal(await page.locator('#wxSceneStage').getAttribute('data-sun'), 'hidden', '9 PM must not show a daytime sun');
-  await page.evaluate(() => window.labSceneSetTime(1320));
+  const duskNightness = parseFloat(await page.locator('#wxSceneStage').evaluate((element) => element.style.getPropertyValue('--wx-nightness')));
+  assert.ok(duskNightness > daylightNightness, 'the scene should cool and darken as daylight leaves');
+  await page.evaluate(() => window.labSceneSetTime(1380));
   assert.equal(await page.locator('#wxSceneStage').getAttribute('data-moon'), 'visible');
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-moon-phase'), 'waning-gibbous');
+  assert.match(await page.locator('#wxSceneStage').getAttribute('data-moon-illumination'), /^8\d$/);
+  const weatherMoonriseProgress = parseFloat(await page.locator('#wxSceneStage').getAttribute('data-moon-progress'));
+  await page.evaluate(() => window.labSceneSetTime(120));
+  assert.ok(parseFloat(await page.locator('#wxSceneStage').getAttribute('data-moon-progress')) > weatherMoonriseProgress, 'the weather moon should continue left to right overnight');
   assert.equal(await page.locator('.wx-deepdive[open]').count(), 0);
   assert.equal(await page.locator('#wxCanvas').count(), 1, 'the original weather canvas remains the weather composition');
 

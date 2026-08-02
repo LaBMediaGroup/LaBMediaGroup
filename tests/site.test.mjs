@@ -372,6 +372,14 @@ test('lunar phase calculator distinguishes the major waxing and waning stages', 
   assert.equal(sun.moonPhase(new Date(epoch + cycle * .875)).waxing, false);
 });
 
+test('shared lunar arc keeps moon travel independent from the sun', () => {
+  const newMoon = sun.moonArc(720, 720, 0);
+  const fullMoon = sun.moonArc(0, 720, .5);
+  assert.equal(newMoon.aboveHorizon, true, 'new moon transits with the midday sun');
+  assert.equal(fullMoon.aboveHorizon, true, 'full moon transits near local midnight');
+  assert.ok(sun.moonArc(120, 818, .62).progress > sun.moonArc(1380, 818, .62).progress, 'the overnight arc should continue left to right across midnight');
+});
+
 function numberWord(value) {
   const words = {
     17: 'Seventeen'
