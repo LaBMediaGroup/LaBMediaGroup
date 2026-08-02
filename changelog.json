@@ -7,6 +7,11 @@
     },
     {
       "date": "2026-08-02",
+      "time": "00:50 EDT",
+      "text": "<strong>Softer edges on the About page.</strong> The questions section is retitled <em>Fair Questions</em> : the old heading claimed a volume of mail that does not exist. And the answer about shooting your project no longer leads with a door closing : the truth is a full-time job and weekends claimed by his own films, but the invitation stands. Tell him about the project anyway; help sometimes looks like advice, a lens, or a pair of hands for an afternoon."
+    },
+    {
+      "date": "2026-08-02",
       "time": "00:35 EDT",
       "text": "<strong>Photos that end where the page does.</strong> The on-set portraits lose their frames : the About page's featured still (now the frame Bobby picked, warm and busy at the vanity mirror) and a new presence on the Notebook's hero : the staircase conversation from <em>The Hook</em> : both dissolve into the paper around them instead of sitting inside a border. The fade is drawn by the stylesheet, not baked into the file, so it melts correctly into every theme, not just the dark one."
     },
