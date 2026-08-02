@@ -61,7 +61,9 @@
 
 /* ---- On-set photo + BTS fold (ported from portfolio) ---- */
 .onset{margin:0 0 var(--s-7)}
-.onset img{display:block;width:100%;height:auto;border:1px solid var(--line)}
+.onset img{display:block;width:100%;height:auto;
+  -webkit-mask-image:radial-gradient(ellipse 94% 92% at 50% 46%, #000 58%, transparent 99%);
+  mask-image:radial-gradient(ellipse 94% 92% at 50% 46%, #000 58%, transparent 99%)}
 .onset figcaption{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-top:10px;text-align:right}
 
 .bts{margin-top:0}
@@ -199,7 +201,7 @@
 
 <section class="sec wrap">
   <figure class="onset">
-    <img src="images/thehook/bobby-on-set.jpg" alt="Bobby holding the slate on the set of The Hook" width="1800" height="1200" loading="lazy" decoding="async">
+    <img src="images/thehook/bobby-on-set.jpg" alt="Bobby at work on the set of The Hook" width="1800" height="1231" loading="lazy" decoding="async">
     <figcaption>On set : The Hook, 2026</figcaption>
   </figure>
   <div class="about">
