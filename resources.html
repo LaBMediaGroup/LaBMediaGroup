@@ -139,11 +139,16 @@
    things money actually went on, which is the only endorsement with a price
    attached. Kept deliberately small : a long one would not be believable. */
 .lab-sec{border-bottom:1px solid var(--line)}
+.lab-sec .g-n.lab-mark img{height:22px;width:auto;display:block;opacity:.88}
+:root[data-theme="light"] .lab-sec .g-n.lab-mark img,
+:root[data-theme="sepia"] .lab-sec .g-n.lab-mark img{filter:brightness(0) opacity(.72)}
+.lab-sec .g-title{font-size:1em}
+.lab-sec .g-blurb{color:var(--faint);font-size:var(--t-xs)}
+.lab-sec .grp-d{padding:var(--s-3) 0}
 .lab-sec .g-n{color:var(--sky)}
 .lab-sec .g-title em{color:var(--sky)}
 .lab-sec .grp-d summary:hover .g-title{color:var(--sky)}
 .lab-sec .g-ico::before,.lab-sec .g-ico::after{background:var(--sky)}
-.lab-note{padding:0 0 var(--s-5);color:var(--dim);font-size:var(--t-sm);line-height:1.75;max-width:64ch}
 .tag.inlab{color:var(--sky);border-color:var(--line-2);border-color:color-mix(in srgb,var(--sky) 38%,transparent);
   background:var(--paper-2);background:color-mix(in srgb,var(--sky) 9%,transparent)}
 .d-inlab{border-left:2px solid var(--sky);border-left-color:color-mix(in srgb,var(--sky) 40%,transparent);
@@ -385,8 +390,8 @@ body.searching .lab-sec{display:none}
 <nav class="jump" aria-label="Jump to category"><div class="jump-in" id="jumpNav"></div></nav>
 
 <div class="wrap" id="kitPtr" hidden></div>
-<section class="lab-sec wrap" id="inlab"></section>
 <div id="groups"></div>
+<section class="lab-sec wrap" id="inlab"></section>
 <noscript>
   <section class="sec wrap">
     <div class="callout">

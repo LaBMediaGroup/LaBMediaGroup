@@ -559,20 +559,17 @@ function groupOfEntry(r){
   if(!list.length){ sec.hidden=true; return; }
 
   sec.innerHTML =
-    '<details class="grp-d" open>'
+    '<details class="grp-d">'
     +'<summary>'
-    +  '<span class="g-n">✦</span>'
+    +  '<span class="g-n lab-mark"><img src="images/TheLaB-mark.png" alt="" width="28" height="20"></span>'
     +  '<span class="g-main">'
     +    '<h2 class="g-title">In the <em>LaB</em></h2>'
-    +    '<span class="g-blurb">What we actually use or have purchased : not things tried once and dropped. '
-    +      'Everything else on this page is a recommendation; these are the ones money went on.</span>'
+    +    '<span class="g-blurb">The ones money actually went on.</span>'
     +  '</span>'
     +  '<span class="g-count">'+list.length+'</span>'
     +  '<span class="g-ico" aria-hidden="true"></span>'
     +'</summary>'
     +'<div class="items">'+list.map(function(r,i){return itemHTML(r,i,true)}).join('')+'</div>'
-    +'<p class="lab-note">Short on purpose. A long list of things somebody claims to '
-    +'pay for is not worth much.</p>'
     +'</details>';
 })();
 
