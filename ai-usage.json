@@ -120,14 +120,14 @@
   ],
   "toolUsage": {
     "period": "Last 30 days",
-    "totalTokens": 974000000,
-    "totalLabel": "974M",
-    "note": "Counted from local logs — CodexBar + OpenClaw session history. Antigravity rides on Claude/GPT keys so it can't be separated.",
+    "totalTokens": 1169000000,
+    "totalLabel": "1.17B",
+    "note": "Counted from local logs — CodexBar + OpenClaw session history. Antigravity rides on Claude/GPT keys and the Claude desktop app keeps its own books, so neither can be separated.",
     "tools": [
       {
         "name": "OpenClaw",
         "tokensLabel": "632M",
-        "share": 65,
+        "share": 54,
         "models": [
           {"name": "GLM-5.2", "tokensLabel": "394M", "share": 62},
           {"name": "GLM-4.7", "tokensLabel": "109M", "share": 17},
@@ -139,18 +139,18 @@
       {
         "name": "Codex CLI",
         "tokensLabel": "242M",
-        "share": 25,
+        "share": 21,
         "models": [
           {"name": "GPT-5.6-sol", "tokensLabel": "242M", "share": 100}
         ]
       },
       {
         "name": "Claude Code",
-        "tokensLabel": "100M",
-        "share": 10,
+        "tokensLabel": "295M",
+        "share": 25,
         "models": [
-          {"name": "Fable-5", "tokensLabel": "86M", "share": 86},
-          {"name": "Opus-5", "tokensLabel": "15M", "share": 14}
+          {"name": "Opus-5", "tokensLabel": "209M", "share": 71},
+          {"name": "Fable-5", "tokensLabel": "86M", "share": 29}
         ]
       }
     ]
