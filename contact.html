@@ -53,9 +53,13 @@
 .status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent)}
 
 .faq{border-top:1px solid var(--line)}
-.faq-item{border-bottom:1px solid var(--line);padding:var(--s-5) 0}
-.faq-item h3{font-family:var(--f-display);font-size:22px;font-weight:400;margin-bottom:10px;letter-spacing:-.01em}
-.faq-item p{color:var(--dim);font-size:var(--t-sm);line-height:1.72;max-width:64ch}
+.faq-item{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-6);align-items:start;
+  border-bottom:1px solid var(--line);padding:var(--s-5) 0}
+.faq-item h3{font-family:var(--f-display);font-size:clamp(20px,2.4vw,26px);font-weight:400;
+  letter-spacing:-.015em;line-height:1.15;color:var(--ink);margin:0}
+.faq-item h3 em{font-style:italic;color:var(--accent)}
+.faq-item p{color:var(--dim);font-size:var(--t-sm);line-height:1.75;margin:0}
+@media (max-width:860px){.faq-item{grid-template-columns:1fr;gap:var(--s-3)}}
 
 @media (max-width:860px){.about{grid-template-columns:1fr}}
 
@@ -279,23 +283,23 @@
   <div class="sec-head"><h2>Fair <em>Questions</em></h2><i></i></div>
   <div class="faq">
     <div class="faq-item">
-      <h3>Can you shoot my project?</h3>
+      <h3>Can you shoot my <em>project?</em></h3>
       <p>Honestly, probably not : I work full time and my weekends are mostly claimed by films of my own. But <strong>tell me about it anyway.</strong> I love hearing what people are making, and help doesn't always mean a crew slot : sometimes it's advice, a lens, or a spare pair of hands for an afternoon, and I'm glad to be that when I can. If you need someone reliably available, <a href="events.html" style="color:var(--accent)">Michigan Crew Calls</a> will serve you far better than I can.</p>
     </div>
     <div class="faq-item">
-      <h3>Will you build me a website?</h3>
+      <h3>Will you build me a <em>website?</em></h3>
       <p>Probably not : but I'll happily point you at the starting line. Most small sites don't need anything more complicated than what's running this page. To be straight about the money: <strong>hosting can genuinely be free</strong> (this site sits on GitHub Pages), but a domain runs somewhere around $12–20 a year, and your own time is the real cost. Ask me where to begin and I'll give you a straight answer. I'm just not able to be anyone's ongoing tech support.</p>
     </div>
     <div class="faq-item">
-      <h3>How was [something on the reel] shot?</h3>
+      <h3>How was <em>[something on the reel]</em> shot?</h3>
       <p>Ask. This is my favorite kind of email. Most of it was small crews, natural light, and more takes than anyone would guess.</p>
     </div>
     <div class="faq-item">
-      <h3>Can I suggest a resource?</h3>
+      <h3>Can I suggest a <em>resource?</em></h3>
       <p>Yes, please. If something on the list is dead or something great is missing, send it over. I'd rather the list be right than large.</p>
     </div>
     <div class="faq-item">
-      <h3>Does any of this cost money?</h3>
+      <h3>Does any of this <em>cost money?</em></h3>
       <p><strong>The site doesn't</strong> : nothing here charges you and nothing asks for your email. Plenty of the <em>tools</em> I list do cost money, though. This started as my own bookmarks folder, and I kept whatever was actually good regardless of price, so the list is a mix. Everything is tagged <em>Free</em> or <em>Paid</em>, with pricing shown where I have it, so you can see which is which before you click. If I ever add a link that earns me something, I'll label it right there rather than burying it in a policy page.</p>
     </div>
   </div>
