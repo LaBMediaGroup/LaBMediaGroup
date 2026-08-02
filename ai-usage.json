@@ -132,7 +132,8 @@
           {"name": "GLM-5.2", "tokensLabel": "394M", "share": 62},
           {"name": "GLM-4.7", "tokensLabel": "109M", "share": 17},
           {"name": "Kimi-K2.7-Code", "tokensLabel": "57M", "share": 9},
-          {"name": "Kimi-K3", "tokensLabel": "42M", "share": 7},
+          {"name": "Kimi-K3 (Synthetic)", "tokensLabel": "42M", "share": 7},
+          {"name": "Kimi-K3 (Moonshot)", "tokensLabel": "0M", "share": 0},
           {"name": "Gemini Flash", "tokensLabel": "25M", "share": 4}
         ]
       },
