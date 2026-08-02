@@ -2,6 +2,11 @@
   "entries": [
     {
       "date": "2026-08-01",
+      "time": "23:30 EDT",
+      "text": "<strong>The dashboard answers back.</strong> The assistant now finds the lighting kit when asked about light : it had been looking for a shelf that does not exist. On Colophon, the figures row centres its last number on phones instead of leaving an empty box beside it, and the Usage link in the footer is no longer pinned under the assistant button on narrow screens. This page gained a quiet way back home, and each provider card below now links out to that service&rsquo;s own usage page : Kimi, Synthetic, Z.ai, ChatGPT and Claude, so the numbers here are one tap away from the numbers there."
+    },
+    {
+      "date": "2026-08-01",
       "time": "22:40 EDT",
       "text": "<strong>Colophon reads like a description, not a diary.</strong> The two sky tools now sit next to each other and say the same things in fewer words. The page explains how the site works rather than narrating what changed about it, because keeping track of what changed is what this list is for."
     },

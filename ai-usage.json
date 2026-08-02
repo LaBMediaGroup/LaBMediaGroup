@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-31T23:28:00-04:00",
+  "lastUpdated": "2026-08-01T23:30:00-04:00",
   "providers": [
     {
       "name": "Synthetic",
@@ -13,6 +13,8 @@
       "totalLabel": "monthly quota",
       "status": "ok",
       "resetsIn": "resets monthly",
+      "link": "https://synthetic.new/billing/",
+      "linkLabel": "Billing &amp; usage",
       "models": [
         {"name": "Kimi K3", "active": true},
         {"name": "Kimi K2.7 Code", "active": false},
@@ -32,6 +34,8 @@
       "totalLabel": "weekly quota",
       "status": "crit",
       "resetsIn": "resets weekly",
+      "link": "https://www.kimi.com/code/console?from=kfc_overview_topbar",
+      "linkLabel": "Usage console",
       "models": [
         {"name": "K3-256k", "active": true},
         {"name": "K3", "active": false},
@@ -50,6 +54,8 @@
       "totalLabel": "—",
       "status": "unknown",
       "resetsIn": "renews 2026-09-01",
+      "link": "https://z.ai/manage-apikey/coding-plan/personal/usage",
+      "linkLabel": "Usage console",
       "note": "Lite",
       "models": [
         {"name": "GLM-5.2", "active": true},
@@ -68,6 +74,8 @@
       "totalLabel": "5h limit",
       "status": "ok",
       "resetsIn": "rolling 5h window",
+      "link": "https://chatgpt.com/#settings/Usage",
+      "linkLabel": "Usage settings",
       "models": [
         {"name": "GPT-5.6-sol", "active": true},
         {"name": "Codex CLI", "active": false}
@@ -85,6 +93,8 @@
       "totalLabel": "—",
       "status": "unknown",
       "resetsIn": "renews Aug 2",
+      "link": "https://claude.ai/new#settings/usage",
+      "linkLabel": "Usage settings",
       "models": [
         {"name": "Claude Sonnet 5", "active": true}
       ]

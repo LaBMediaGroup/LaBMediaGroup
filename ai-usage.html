@@ -157,6 +157,8 @@
   scroll-margin-top:var(--s-5);
 }
 .provider-detail:hover{border-color:var(--line-2)}
+.pd-link{display:inline-block;margin-top:var(--s-3);font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);text-decoration:none;transition:color var(--fast) var(--ease)}
+.pd-link:hover{color:var(--accent)}
 
 .pd-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--s-3)}
 .pd-name{font-family:var(--f-display);font-size:var(--t-xl);font-weight:400;color:var(--ink);line-height:1.1}
@@ -394,6 +396,7 @@ async function loadUsage(){
           (p.endpoint ? '<span><strong>API:</strong> ' + p.endpoint + '</span>' : '') +
         '</div>' +
         (models ? '<div class="pd-models">' + models + '</div>' : '') +
+        (p.link ? '<a class="pd-link" href="' + p.link + '" target="_blank" rel="noopener">' + (p.linkLabel || 'View usage') + ' &nearr;</a>' : '') +
         '</div>';
     }).join('');
 
