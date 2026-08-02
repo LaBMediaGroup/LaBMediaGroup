@@ -129,9 +129,9 @@
       id: 'site-tool-golden-hour-planner',
       url: 'sun.html',
       title: 'Golden Hour Planner : Current Features',
-      tags: 'golden hour planner blue hour dawn dusk sunrise sunset solar noon elevation azimuth direction color temperature date location time slider phrases quote roller wind moon copy day plan privacy local',
+      tags: 'golden hour planner blue hour dawn dusk sunrise sunset solar noon elevation azimuth direction color temperature date location time slider phrases quote roller wind moon lunar phase waxing waning crescent quarter gibbous full illumination copy day plan privacy local',
       note: 'Current Golden Hour Planner capabilities.',
-      answer: 'Golden Hour is a date- and location-aware shoot planner. It calculates dawn and dusk blue hour, morning and evening golden hour, sunrise, sunset, solar noon, daylight length, elevation, direction and a color-temperature estimate. Its panoramic timeline moves from sun to moon, responds to current wind, and rolls through time-ordered filmmaking prompts from pre-dawn through late night. The day plan can be copied, and the selected date and location stay in the browser.',
+      answer: 'Golden Hour is a date- and location-aware shoot planner. It calculates dawn and dusk blue hour, morning and evening golden hour, sunrise, sunset, solar noon, daylight length, elevation, direction and a color-temperature estimate. Its panoramic timeline gives the sun and moon separate left-to-right paths, responds to current wind, and rolls through time-ordered filmmaking prompts from pre-dawn through late night. The moon reflects the selected date\'s waxing or waning phase and illumination, including crescent, quarter, gibbous, full and new stages; its arc is a visual planning cue rather than a precise moonrise ephemeris. The day plan can be copied, and the selected date and location stay in the browser.',
       sources: [
         { title: 'Golden Hour Planner', url: 'sun.html', note: 'Interactive filmmaking tool' }
       ]
@@ -140,9 +140,9 @@
       id: 'site-tool-drone-weather',
       url: 'droneweather.html',
       title: 'Drone Weather : Current Features',
-      tags: 'drone weather live conditions open meteo wind gust gusts visibility precipitation temperature flight safety thresholds animated nature scene solar sun moon night flying read gust preflight checklist 18 point move minimize resize pdf browser',
+      tags: 'drone weather live conditions open meteo wind gust gusts visibility precipitation temperature flight safety thresholds animated nature scene local time solar daylight sunset twilight blue hour night sun moon lunar phase waxing waning crescent quarter gibbous full night flying read gust preflight checklist 18 point move minimize resize pdf browser',
       note: 'Current Drone Weather and pre-flight checklist capabilities.',
-      answer: 'Drone Weather reads current Open-Meteo wind, gusts, temperature, visibility and precipitation for its live status and conservative green, amber or red planning thresholds. The nature scene mirrors those conditions and the real solar phase. Gust-reading and after-dark guidance stay collapsed until needed. Its 18-point pre-flight checklist opens only when requested, then remains available around the site; it can be moved, minimized, resized and printed to PDF, and its progress stays in the browser.',
+      answer: 'Drone Weather reads current Open-Meteo wind, gusts, temperature, visibility and precipitation for its live status and conservative green, amber or red planning thresholds. The nature scene mirrors those conditions and Detroit local time, warming toward sunset, cooling through blue hour and darkening at night. Its moon follows a separate left-to-right arc, can share the daylight sky, and reflects the date\'s waxing or waning phase and illumination. Gust-reading and after-dark guidance stay collapsed until needed. Its 18-point pre-flight checklist opens only when requested, then remains available around the site; it can be moved, minimized, resized and printed to PDF, and its progress stays in the browser.',
       sources: [
         { title: 'Drone Weather', url: 'droneweather.html', note: 'Live weather and flight-planning tool' }
       ]

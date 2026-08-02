@@ -189,10 +189,24 @@ test('solar scenes hand daylight to moonlight without changing the weather compo
   await page.goto(`${baseURL}/droneweather.html`, { waitUntil: 'domcontentloaded', timeout: 10_000 });
   assert.equal(await page.locator('.wx-scene-time').count(), 0, 'the weather scene must not carry a public time toolbar');
   assert.equal(await page.locator('#wxSceneTest').getAttribute('open'), null, 'the subtle scene preview stays collapsed');
+  await page.evaluate(() => window.labSceneSetTime(720));
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-phase'), 'daylight');
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-sun'), 'visible');
+  const daylightNightness = parseFloat(await page.locator('#wxSceneStage').evaluate((element) => element.style.getPropertyValue('--wx-nightness')));
+  await page.evaluate(() => window.labSceneSetTime(480));
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-sun'), 'visible');
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-moon'), 'visible', 'the weather scene may show a daytime moon when the lunar arc calls for it');
   await page.evaluate(() => window.labSceneSetTime(1260));
   assert.equal(await page.locator('#wxSceneStage').getAttribute('data-sun'), 'hidden', '9 PM must not show a daytime sun');
-  await page.evaluate(() => window.labSceneSetTime(1320));
+  const duskNightness = parseFloat(await page.locator('#wxSceneStage').evaluate((element) => element.style.getPropertyValue('--wx-nightness')));
+  assert.ok(duskNightness > daylightNightness, 'the scene should cool and darken as daylight leaves');
+  await page.evaluate(() => window.labSceneSetTime(1380));
   assert.equal(await page.locator('#wxSceneStage').getAttribute('data-moon'), 'visible');
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-moon-phase'), 'waning-gibbous');
+  assert.match(await page.locator('#wxSceneStage').getAttribute('data-moon-illumination'), /^8\d$/);
+  const weatherMoonriseProgress = parseFloat(await page.locator('#wxSceneStage').getAttribute('data-moon-progress'));
+  await page.evaluate(() => window.labSceneSetTime(120));
+  assert.ok(parseFloat(await page.locator('#wxSceneStage').getAttribute('data-moon-progress')) > weatherMoonriseProgress, 'the weather moon should continue left to right overnight');
   assert.equal(await page.locator('.wx-deepdive[open]').count(), 0);
   assert.equal(await page.locator('#wxCanvas').count(), 1, 'the original weather canvas remains the weather composition');
 
@@ -207,12 +221,39 @@ test('solar scenes hand daylight to moonlight without changing the weather compo
   assert.equal(heroLayout.ledeTops.length, 2);
   assert.ok(Math.abs(heroLayout.ledeTops[0] - heroLayout.ledeTops[1]) <= 1, 'the hero introduction should form two aligned columns');
   await page.locator('#timeSlider').evaluate((slider) => {
-    slider.value = '1320';
+    slider.value = '1252';
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  assert.ok(parseFloat(await page.locator('#sunOrb').evaluate((element) => element.style.top)) >= 89, 'the setting sun should cross the drawn horizon before fading');
+  await page.locator('#timeSlider').evaluate((slider) => {
+    slider.value = '1284';
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  assert.equal(await page.locator('#sunStage').getAttribute('data-sun'), 'hidden');
+  assert.equal(await page.locator('#sunStage').getAttribute('data-moon'), 'hidden');
+  assert.equal(await page.locator('#moonPhaseLabel').evaluate((element) => getComputedStyle(element).display), 'none', 'the lunar label should wait for the moon to enter the frame');
+  await page.locator('#timeSlider').evaluate((slider) => {
+    slider.value = '480';
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  assert.equal(await page.locator('#sunStage').getAttribute('data-sun'), 'visible');
+  assert.equal(await page.locator('#sunStage').getAttribute('data-moon'), 'visible', 'a phase-aware moon may share the daytime sky with the sun');
+  assert.match(await page.locator('#moonPhaseLabel').textContent(), /Waning gibbous · 9\d% moon/);
+  await page.locator('#timeSlider').evaluate((slider) => {
+    slider.value = '1380';
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  const moonriseLeft = parseFloat(await page.locator('#moonOrb').evaluate((element) => element.style.left));
+  await page.locator('#timeSlider').evaluate((slider) => {
+    slider.value = '120';
     slider.dispatchEvent(new Event('input', { bubbles: true }));
   });
   assert.equal(await page.locator('#sunStage').getAttribute('data-phase'), 'night');
   assert.equal(await page.locator('#sunStage').getAttribute('data-sun'), 'hidden');
-  assert.equal(await page.locator('#moonOrb').evaluate((element) => getComputedStyle(element).opacity), '1');
+  assert.equal(await page.locator('#sunStage').getAttribute('data-moon'), 'visible');
+  assert.ok(parseFloat(await page.locator('#moonOrb').evaluate((element) => getComputedStyle(element).opacity)) > .5);
+  assert.ok(parseFloat(await page.locator('#moonOrb').evaluate((element) => element.style.left)) > moonriseLeft, 'the moon should travel left to right after rising');
+  assert.equal(await page.locator('#moonFace').count(), 1, 'the moon phase should have its own rendered face');
   assert.equal(await page.locator('#sunNatureCanvas').count(), 1, 'Golden Hour owns a separate wide nature canvas');
   const adviceVisuals = await page.evaluate(() => ({
     bottom: parseFloat(getComputedStyle(document.querySelector('.sun-advice-box')).bottom),

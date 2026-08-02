@@ -9,6 +9,7 @@
   'use strict';
 
   var RAD=Math.PI/180, DEG=180/Math.PI, DAY=86400000;
+  var SYNODIC_MONTH=29.530588853, KNOWN_NEW_MOON=Date.UTC(2000,0,6,18,14);
   function norm(v,max){return ((v%max)+max)%max}
   function sin(d){return Math.sin(d*RAD)}
   function cos(d){return Math.cos(d*RAD)}
@@ -108,5 +109,40 @@
     return names[Math.round(norm(degrees,360)/45)%8];
   }
 
-  return {event:event,position:position,getDay:getDay,phaseAt:phaseAt,direction:direction};
+  /* The synodic cycle is stable enough for a local visual phase indicator.
+     This is deliberately a phase calculation, not a claim of exact moonrise,
+     altitude or ephemeris-grade position. */
+  function moonPhase(date){
+    var ageDays=norm((date.getTime()-KNOWN_NEW_MOON)/DAY,SYNODIC_MONTH);
+    var fraction=ageDays/SYNODIC_MONTH;
+    var illumination=(1-Math.cos(fraction*Math.PI*2))/2;
+    var label;
+    if(fraction<.03||fraction>=.97)label='New moon';
+    else if(fraction<.22)label='Waxing crescent';
+    else if(fraction<.28)label='First quarter';
+    else if(fraction<.47)label='Waxing gibbous';
+    else if(fraction<.53)label='Full moon';
+    else if(fraction<.72)label='Waning gibbous';
+    else if(fraction<.78)label='Last quarter';
+    else label='Waning crescent';
+    return {fraction:fraction,illumination:illumination,ageDays:ageDays,waxing:fraction<.5,label:label};
+  }
+
+  /* A restrained visual arc shared by the two scene renderers. Phase offsets
+     the moon from solar noon; callers still decide whether the illuminated
+     sliver is bright enough to draw. */
+  function moonArc(minute,solarNoonMinute,phaseFraction){
+    var transit=norm(solarNoonMinute+phaseFraction*1440,1440);
+    var fromTransit=norm(minute-transit+720,1440)-720;
+    var progress=Math.max(0,Math.min(1,(fromTransit+360)/720));
+    return {
+      transitMinute:transit,
+      fromTransit:fromTransit,
+      progress:progress,
+      aboveHorizon:Math.abs(fromTransit)<=360,
+      edgeOpacity:Math.max(0,Math.min(1,Math.min(progress,1-progress)/.075))
+    };
+  }
+
+  return {event:event,position:position,getDay:getDay,phaseAt:phaseAt,direction:direction,moonPhase:moonPhase,moonArc:moonArc};
 });

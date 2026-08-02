@@ -34,18 +34,20 @@
 .sun-nature{position:absolute;z-index:2;inset:0;width:100%;height:100%;pointer-events:none;image-rendering:pixelated}
 .arc-svg{position:absolute;z-index:1;inset:8% 2% 11%;width:96%;height:81%;overflow:visible}
 .sun-arc-path{fill:none;stroke:rgba(255,255,255,.28);stroke-dasharray:3 8;stroke-width:1.3;vector-effect:non-scaling-stroke}
-.sun-orb,.moon-orb{position:absolute;z-index:1;width:clamp(26px,4vw,46px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);transition:left 180ms linear,top 180ms linear,opacity 350ms var(--ease)}
-.sun-orb{background:#f5be72;box-shadow:0 0 0 8px rgba(250,190,105,.09),0 0 46px 12px rgba(250,168,76,.45)}
+.sun-orb,.moon-orb{position:absolute;z-index:1;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);transition:left 180ms linear,top 180ms linear,opacity 350ms var(--ease)}
+.sun-orb{width:clamp(26px,4vw,46px);opacity:var(--sun-opacity,1);background:#f5be72;box-shadow:0 0 0 8px rgba(250,190,105,.09),0 0 46px 12px rgba(250,168,76,.45)}
 .sun-stage[data-sun="hidden"] .sun-orb{opacity:0}
-.moon-orb{opacity:0;background:#c6d0df;box-shadow:0 0 0 7px rgba(184,197,218,.07),0 0 28px rgba(184,197,218,.25)}
-.moon-orb::after{content:"";position:absolute;width:22%;aspect-ratio:1;border-radius:50%;left:22%;top:25%;background:rgba(75,89,112,.28);box-shadow:10px 8px 0 -1px rgba(75,89,112,.17)}
-.sun-stage[data-phase="night"] .moon-orb{opacity:1}
+.moon-orb{width:clamp(24px,3.2vw,38px);opacity:0;overflow:hidden;background:rgba(45,57,78,.7);box-shadow:0 0 0 5px rgba(184,197,218,.05),0 0 24px rgba(184,197,218,.2)}
+.moon-face{display:block;width:100%;height:100%;border-radius:50%;image-rendering:pixelated}
+.sun-stage[data-moon="visible"] .moon-orb{opacity:var(--moon-opacity,1)}
 .sun-horizon{position:absolute;left:0;right:0;bottom:11%;height:1px;background:rgba(255,255,255,.3)}
 .sun-horizon::before{content:"Horizon";position:absolute;right:18px;bottom:10px;font:8px var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.6)}
 .sky-time{position:absolute;z-index:4;top:16px;right:20px;text-align:right;color:#fff;text-shadow:0 1px 14px rgba(0,0,0,.35)}
 .sky-time strong{display:block;font:clamp(28px,3vw,39px) var(--f-display);font-weight:400;line-height:1}
 .sky-time span{display:block;margin-top:6px;font:9px/1.35 var(--f-mono);letter-spacing:.13em;text-transform:uppercase;opacity:.86}
 .sky-time #sunWind{margin-top:5px;opacity:.76}
+.sky-time .moon-phase-label{margin-top:5px;color:#d6e0ef;opacity:.9}
+.sky-time .moon-phase-label[hidden]{display:none}
 .sun-advice-box{position:absolute;z-index:5;left:clamp(18px,3vw,36px);bottom:clamp(62px,6vw,78px);max-width:min(860px,78%);color:#fff;text-shadow:0 2px 22px rgba(0,0,0,.62),0 1px 2px rgba(0,0,0,.2)}
 .sun-advice-box::before{content:"";position:absolute;z-index:-1;inset:-64px -38vw -62px -90px;pointer-events:none;filter:blur(10px);background:radial-gradient(ellipse 68% 56% at 24% 50%,rgba(11,11,12,.3) 0%,rgba(11,11,12,.18) 38%,rgba(11,11,12,.07) 61%,transparent 84%)}
 .advice-k{display:block;font:8px var(--f-mono);letter-spacing:.18em;text-transform:uppercase;opacity:.7;margin-bottom:7px}

@@ -134,7 +134,7 @@
   <div class="sun-stage" id="sunStage" data-phase="golden-evening">
     <div class="sun-sky" id="sunSky">
       <canvas class="sun-nature" id="sunNatureCanvas" aria-label="Animated treetop and bird silhouette"></canvas>
-      <div class="sky-time"><strong id="skyTime">7:00 PM</strong><span id="selectedMoment">Selected time</span><span id="sunWind">Checking current wind</span></div>
+      <div class="sky-time"><strong id="skyTime">7:00 PM</strong><span id="selectedMoment">Selected time</span><span id="sunWind">Checking current wind</span><span class="moon-phase-label" id="moonPhaseLabel" hidden></span></div>
       <div class="sun-advice-box">
         <span class="advice-k" id="phaseVal">Evening Golden Hour</span>
         <p class="advice-phrase">
@@ -148,7 +148,7 @@
       </svg>
       <div class="sun-horizon" aria-hidden="true"></div>
       <div class="sun-orb" id="sunOrb" aria-hidden="true"></div>
-      <div class="moon-orb" id="moonOrb" aria-hidden="true"></div>
+      <div class="moon-orb" id="moonOrb" aria-hidden="true"><canvas class="moon-face" id="moonFace" width="40" height="40"></canvas></div>
     </div>
 
     <div class="sun-controls">
