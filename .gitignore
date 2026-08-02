@@ -23,6 +23,11 @@ CNAME.txt
 SITEhandoff.md
 node_modules/
 
+# Editor and assistant settings for this machine, not for the site. Left
+# untracked these show up in `git status --porcelain --untracked-files=all`,
+# which is the check "nothing stray can ride along" depends on being empty.
+.claude/
+
 # Staging-only files that don't start with _ and so aren't caught above.
 # Design mockups get iterated in the open folder before one is chosen, and
 # timestamped .bak copies are made before risky edits. Neither belongs on the
