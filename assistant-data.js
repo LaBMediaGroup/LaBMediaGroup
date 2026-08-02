@@ -24,7 +24,7 @@ var LAB_ASSISTANT_KNOWLEDGE = {
       summary:'Roll a genre, character, setting and constraint when you want to make something.' },
     { title:'Golden Hour Planner', url:'sun.html', tags:'golden hour blue hour sun sunrise sunset solar noon elevation direction date location wind cloud cover overcast filtered diffused moon lunar phase waxing waning crescent gibbous full phrases light windows call sheet',
       summary:'A date- and location-aware filmmaking planner with calculated light windows, live cloud-aware guidance for today, separate sun and phase-aware moon paths, and a copyable day plan.' },
-    { title:'Drone Weather', url:'droneweather.html', tags:'drone weather live wind gusts visibility precipitation cloud cover overcast flight safety thresholds open meteo checklist night flying animated scene local time sunset twilight blue hour moon lunar phase waxing waning',
+    { title:'SkyBound : Weather', url:'droneweather.html', tags:'drone weather skybound live wind gusts visibility precipitation cloud cover overcast flight safety thresholds open meteo checklist night flying animated scene local time sunset twilight blue hour moon lunar phase waxing waning',
       summary:'Live Metro Detroit wind, cloud and weather guidance, conservative flight thresholds, a local-time scene with a phase-aware moon, and a persistent 18-point pre-flight checklist.' },
     { title:'Aspect Ratio Previewer', url:'aspect.html', tags:'aspect ratio crop framing letterbox anamorphic scope vertical image video local privacy 1080p 4k multiple files',
       summary:'Preview common cinema and social crops against sample frames or local images and video, with exact 1080p and 4K active-pixel dimensions and no uploads.' },
