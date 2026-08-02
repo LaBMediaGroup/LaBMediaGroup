@@ -502,7 +502,7 @@ function renderNews(){
       var key = item.text.replace(/<[^>]*>/g,'').substring(0, 40);
       if(seen[key]) return;
       seen[key] = true;
-      html += '<div class="tl-item" title="' + (item.time || '') + '"><span class="tl-time">' + (item.time || '') + '</span>' + item.text + '</div>';
+      html += '<div class="tl-item" title="' + (item.time || '') + '">' + item.text + '</div>';
     });
     html += '</div>';
   }

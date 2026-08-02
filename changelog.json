@@ -96,84 +96,39 @@
       "text": "<strong>Flight safety, expanded.</strong> Why the gust number matters more than steady wind, what night flying actually requires, an 18-point pre-flight checklist that remembers itself in your browser, and links to the forecast services worth opening before a shoot."
     },
     {
-      "date": "2026-07-31",
-      "time": "23:30 EDT",
-      "text": "<strong>AI Usage Dashboard</strong> launched. Secret Easter egg page with Konami code and hidden dot on Colophon."
+      "date": "2026-07-27",
+      "time": "08:00 EDT",
+      "text": "Site design system unified to editorial direction. One stylesheet, one token set, one nav, one footer. Replaced 11 divergent style blocks."
     },
     {
       "date": "2026-07-31",
       "time": "20:00 EDT",
-      "text": "<strong>Drone Weather</strong> rebuilt from scratch, with live rain detection via Open-Meteo, FPV drone flight physics, flocking birds, procedural tree sway, breathing sun glow, mouse-tracking pilot."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "19:30 EDT",
-      "text": "<strong>Golden Hour Helper</strong> : interactive shooting advice phrases, slot-machine spin animation, hero-sized sun arc."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "19:20 EDT",
-      "text": "<strong>Aspect Ratio Tool</strong> : local photo/video previewing, multi-file uploads, native aspect detection. Zero-upload privacy documented in Colophon."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "19:00 EDT",
-      "text": "<strong>Sepia theme</strong> added site-wide. Warm e-ink papyrus palette across all pages and theme bars. (Shipped as <em>Stone</em>; renamed 1 August.)"
+      "text": "<strong>The tool shelf fills out.</strong> Drone Weather rebuilt from scratch : live rain detection via Open-Meteo, FPV flight physics, flocking birds, procedural tree sway, a breathing sun and a pilot that follows the mouse. Golden Hour Helper gains interactive shooting advice with a slot-machine spin and a hero-sized sun arc. Aspect Ratio previews photos and video locally with native detection : zero upload, documented in Colophon."
     },
     {
       "date": "2026-07-31",
       "time": "14:47 EDT",
-      "text": "Colophon expanded with tool case studies. Stats counters updated. Two-column grid layout applied to details sections."
+      "text": "<strong>Story Generator grows teeth.</strong> Fourteen genre filters, a printable field brief exporter and keyboard hotkeys. Colophon grows its tool case studies, refreshed stats counters and a two-column grid, and the unfinished &lsquo;Still Available?&rsquo; placeholder finally leaves the portfolio and timeline."
     },
     {
       "date": "2026-07-31",
-      "time": "13:08 EDT",
-      "text": "<strong>Story Generator</strong> expanded to 14 genre filters. Added printable field brief exporter and keyboard hotkeys."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "12:50 EDT",
-      "text": "Removed unfinished 'Still Available?' placeholder from portfolio and timeline."
+      "time": "23:30 EDT",
+      "text": "<strong>A fifth theme, and a secret.</strong> Sepia joins the theme bar site-wide : a warm e-ink papyrus palette (shipped as <em>Stone</em>; renamed 1 August). And the AI Usage Dashboard launches : public by URL, but tucked behind its Easter eggs, a Konami code and a hidden dot on Colophon."
     },
     {
       "date": "2026-07-31",
       "time": "06:01 EDT",
-      "text": "LaB Assistant knowledgebase ingested, verifying film crew, gear, and production data. Video cards added to film queries. Mobile chat UI optimized."
-    },
-    {
-      "date": "2026-07-31",
-      "time": "05:24 EDT",
-      "text": "About page reframed to emphasize team collaboration. Behind-the-scenes set knowledge added."
+      "text": "<strong>The assistant settles in.</strong> Its knowledgebase ingests the film crew, gear and production data, film queries earn video cards, and the mobile chat UI is tightened. The About page reframes itself around collaboration, with behind-the-scenes set knowledge added."
     },
     {
       "date": "2026-07-30",
       "time": "22:51 EDT",
-      "text": "<strong>SkyBound</strong> restructured with Start Here path. Weather & Safety hero link added. Headlines restyled (sky blue + orange italic)."
-    },
-    {
-      "date": "2026-07-30",
-      "time": "18:56 EDT",
-      "text": "<strong>Drone Weather Guide</strong> created as standalone page. SkyBound restored. Golden Hour Helper dropdowns fixed."
+      "text": "<strong>SkyBound, restructured.</strong> A Start Here path through the library, a Weather &amp; Safety link in the hero, and headlines restyled in sky blue with orange italic. The site&rsquo;s history becomes an interactive vertical production timeline with filtering and jump links."
     },
     {
       "date": "2026-07-30",
       "time": "18:50 EDT",
-      "text": "<strong>Aspect Ratio Previewer</strong> tool page built. Live Drone Weather Flight Safety Meter added."
-    },
-    {
-      "date": "2026-07-30",
-      "time": "18:41 EDT",
-      "text": "Static history section converted to <strong>Interactive Vertical Production Timeline</strong> with filtering and jump links."
-    },
-    {
-      "date": "2026-07-30",
-      "time": "18:36 EDT",
-      "text": "<strong>Sun Arc & Golden Hour</strong> calculator tool launched for filmmakers and drone pilots."
-    },
-    {
-      "date": "2026-07-27",
-      "time": "08:00 EDT",
-      "text": "Site design system unified to editorial direction. One stylesheet, one token set, one nav, one footer. Replaced 11 divergent style blocks."
+      "text": "<strong>The tools begin.</strong> The Sun Arc &amp; Golden Hour calculator launches for filmmakers and drone pilots, the Aspect Ratio Previewer is built as its own page, the Drone Weather guide stands alone, and a live flight-safety meter joins it."
     }
   ]
 }
