@@ -343,11 +343,6 @@ html{scroll-behavior:smooth}
     <div class="bars-cost" id="bars-cost"></div>
   </div>
 
-  <!-- ═══ WHAT'S NEW ═══ -->
-  <h2 class="news-title">What's <em>New</em></h2>
-  <div class="timeline" id="timeline"></div>
-  <div class="tl-more" id="news-more" onclick="loadMoreNews()" style="display:none">Load previous days</div>
-
   <!-- ═══ PROVIDER DETAILS ═══ -->
   <h2 class="details-title">Provider <em>Details</em></h2>
   <div id="details-container"></div>
@@ -359,8 +354,6 @@ html{scroll-behavior:smooth}
 </div>
 
 <script>
-var allNews = [];
-var visibleDays = 3;
 var REDUCED = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches);
 
 async function loadUsage(){
@@ -503,55 +496,9 @@ async function loadUsage(){
       document.getElementById('tool-usage').innerHTML = tuHtml;
     }
 
-    // Load What's New
-    try{
-      const clRes = await fetch('changelog.json?_=' + Date.now());
-      if(clRes.ok){
-        const cl = await clRes.json();
-        allNews = groupByDay(cl.entries || []);
-        renderNews();
-      }
-    }catch(e){}
-
   }catch(e){
     document.getElementById('bars-container').innerHTML = '<div style="text-align:center;color:var(--dim);padding:var(--s-5)">Still warming up…</div>';
   }
-}
-
-function groupByDay(entries){
-  var days = {};
-  entries.forEach(function(e){
-    if(!days[e.date]) days[e.date] = [];
-    days[e.date].push(e);
-  });
-  return Object.keys(days).sort(function(a,b){return b.localeCompare(a)}).map(function(k){
-    return {date:k, items:days[k]};
-  });
-}
-
-function renderNews(){
-  var html = '';
-  for(var i = 0; i < Math.min(visibleDays, allNews.length); i++){
-    var day = allNews[i];
-    var d = new Date(day.date + 'T12:00:00');
-    var label = d.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});
-    html += '<div class="tl-day"><div class="tl-day-head">' + label + '</div>';
-    var seen = {};
-    day.items.forEach(function(item){
-      var key = item.text.replace(/<[^>]*>/g,'').substring(0, 40);
-      if(seen[key]) return;
-      seen[key] = true;
-      html += '<div class="tl-item" title="' + (item.time || '') + '">' + item.text + '<span class="tl-time">' + (item.time || '') + '</span></div>';
-    });
-    html += '</div>';
-  }
-  document.getElementById('timeline').innerHTML = html;
-  document.getElementById('news-more').style.display = allNews.length > visibleDays ? 'block' : 'none';
-}
-
-function loadMoreNews(){
-  visibleDays += 3;
-  renderNews();
 }
 
 // ── Flying cursor ──
