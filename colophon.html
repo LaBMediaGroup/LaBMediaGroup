@@ -37,6 +37,26 @@
 .pg-hero h1 em{font-style:italic;color:var(--accent)}
 .pg-hero .lede{color:var(--dim);font-size:var(--t-lg);line-height:1.75;max-width:60ch;margin-top:var(--s-5)}
 
+/* A colophon, defined, in the open right side of the hero. The structure is a
+   dictionary entry; the type is the site's own: display serif for the
+   headword, mono for the labels and the pronunciation, ember italic on the
+   Greek and on the sense tag. */
+.hero-def{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(268px,.8fr);gap:clamp(30px,4.5vw,68px);align-items:start}
+.hero-def>:first-child{min-width:0}
+.def{border:1px solid var(--line);background:var(--paper-2);padding:clamp(20px,2.2vw,26px);margin-top:var(--s-6)}
+.def-k{display:flex;align-items:center;gap:var(--s-3);font-family:var(--f-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.def-k i{flex:1;height:1px;background:var(--line)}
+.def-k:not(:first-child){margin-top:var(--s-5)}
+.def-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:9px;margin-top:15px}
+.def-word{font-family:var(--f-display);font-size:clamp(26px,2.6vw,33px);line-height:1;color:var(--ink)}
+.def-say{font-family:var(--f-mono);font-size:10.5px;color:var(--faint)}
+.def-pos{font-size:11px;font-style:italic;color:var(--dim)}
+.def-sense{color:var(--dim);font-size:var(--t-sm);line-height:1.7;margin-top:11px}
+.def-sense em{font-style:italic;color:var(--accent)}
+.def-hist{position:relative;padding-left:15px}
+.def-hist::before{content:"";position:absolute;left:2px;top:.66em;width:4px;height:4px;border-radius:50%;background:var(--faint)}
+.def-tag{font-style:italic;color:var(--accent)}
+
 /* the numbers, stated once */
 .figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);
   border-block:1px solid var(--line);margin-top:clamp(34px,4vw,var(--s-7))}
@@ -73,6 +93,8 @@
 .plain li::before{content:': ';position:absolute;left:0;color:var(--faint)}
 
 @media (max-width:960px){
+  .hero-def{grid-template-columns:1fr;gap:0}
+  .def{margin-top:var(--s-5);max-width:46ch}
   .two-col-grid{grid-template-columns:1fr;gap:var(--s-4)}
   .two-col-grid .col-side{padding-top:0}
   .bug{grid-template-columns:28px 1fr;gap:var(--s-3)}
@@ -151,10 +173,30 @@
 
 <section class="pg-hero wrap">
   <div class="rule"><span class="mono">Colophon</span><i></i><span class="mono" style="color:var(--faint)">Updated August 2026</span></div>
-  <h1>Seventeen pages, one <em>design system.</em></h1>
-  <p class="lede">This site has no framework or build step. It&rsquo;s hand-written HTML, CSS and
-  JavaScript on free hosting, plus one small Cloudflare Worker that protects the assistant&rsquo;s
-  optional AI phrasing. If you&rsquo;re a filmmaker who also tinkers, this is the part you might find useful.</p>
+  <div class="hero-def">
+    <div>
+      <h1>Seventeen pages, one <em>design system.</em></h1>
+      <p class="lede">This site has no framework or build step. It&rsquo;s hand-written HTML, CSS and
+      JavaScript on free hosting, plus one small Cloudflare Worker that protects the assistant&rsquo;s
+      optional AI phrasing. If you&rsquo;re a filmmaker who also tinkers, this is the part you might find useful.</p>
+    </div>
+
+    <aside class="def" aria-label="Definition of colophon">
+      <p class="def-k"><span>Dictionary</span><i></i></p>
+      <p class="def-head">
+        <span class="def-word">col&middot;o&middot;phon</span>
+        <span class="def-say">| &#712;k&auml;l&#601;f&#601;n, &#712;k&auml;l&#601;&#716;f&auml;n |</span>
+        <span class="def-pos">noun</span>
+      </p>
+      <p class="def-sense">A publisher&rsquo;s emblem or imprint, usually set on the title page or the
+      spine of a book.</p>
+      <p class="def-sense def-hist"><span class="def-tag">historical</span> A note at the end of a book,
+      set beside the printer&rsquo;s mark, recording who made it and how it was printed.</p>
+      <p class="def-k"><span>Origin</span><i></i></p>
+      <p class="def-sense">Early 17th century, in the sense of a finishing touch: from Greek
+      <em>koloph&#333;n</em>, a summit or a final flourish, by way of late Latin.</p>
+    </aside>
+  </div>
 
   <dl class="figs">
     <div class="fig"><dt>Pages</dt><dd>17</dd></div>
