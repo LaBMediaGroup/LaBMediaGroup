@@ -2,6 +2,11 @@
   "entries": [
     {
       "date": "2026-08-02",
+      "time": "02:40 EDT",
+      "text": "<strong>The timeline tells time, and speaks up.</strong> Every What's New entry now carries its timestamp again : hover or tap and the hour floats in at the right edge, laid over the paper so nothing shifts an inch. (The old version hid the stamp inline and pushed every first line sideways; this one learned from it.) The entries themselves step up a size with a longer measure, and their headlines gain a little weight : easier on the eyes at one in the morning, which is when this was written."
+    },
+    {
+      "date": "2026-08-02",
       "time": "02:20 EDT",
       "text": "<strong>The viewer learns some manners.</strong> The photo lightbox stops pinning its arrows to the far edges of the screen : previous, count and next now gather into one bar beneath the frame, and the close button steps down off the ceiling. The count itself finally speaks the site's own language : the display serif at full size, the current number in ember, the total in quiet grey : <em>02 / 07</em> instead of a whisper in mono. Same viewer on the reel page and the About page."
     },

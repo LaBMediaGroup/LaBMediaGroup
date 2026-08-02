@@ -121,18 +121,22 @@
   text-transform:uppercase;color:var(--accent);margin-bottom:var(--s-3);
 }
 .tl-item{
-  position:relative;padding:4px 0;color:var(--dim);
-  font-size:var(--t-sm);line-height:1.55;
+  position:relative;padding:6px 0;color:var(--dim);
+  font-size:clamp(15px,1.9vw,17px);line-height:1.7;
 }
 .tl-item::before{
   content:'';position:absolute;left:-19px;top:11px;
   width:5px;height:5px;border-radius:50%;background:var(--line-2);
 }
-.tl-item strong{color:var(--ink);font-weight:400}
-.tl-item:hover .tl-time{opacity:1}
+.tl-item strong{color:var(--ink);font-weight:500}
+/* hover chip : the timestamp floats in at the right edge, laid over the
+   entry's own paper so layout never moves. Taps show it too, for touch. */
+.tl-item:hover .tl-time,.tl-item:active .tl-time{opacity:1}
 .tl-time{
-  font-family:var(--f-mono);font-size:8.5px;letter-spacing:.06em;
-  color:var(--faint);opacity:0;transition:opacity .2s;margin-right:6px;
+  position:absolute;right:0;top:6px;pointer-events:none;
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.1em;
+  color:var(--faint);background:var(--paper);padding:2px 0 2px 10px;
+  opacity:0;transition:opacity var(--fast) var(--ease);
 }
 
 .tl-more{
@@ -537,7 +541,7 @@ function renderNews(){
       var key = item.text.replace(/<[^>]*>/g,'').substring(0, 40);
       if(seen[key]) return;
       seen[key] = true;
-      html += '<div class="tl-item" title="' + (item.time || '') + '">' + item.text + '</div>';
+      html += '<div class="tl-item" title="' + (item.time || '') + '">' + item.text + '<span class="tl-time">' + (item.time || '') + '</span></div>';
     });
     html += '</div>';
   }
