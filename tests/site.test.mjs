@@ -379,9 +379,13 @@ test('AI Usage remains public but deliberately hidden', () => {
   );
   assert.equal(entryPoints.length, 1);
   assert.equal(entryPoints[0].file, 'colophon.html');
-  assert.match(entryPoints[0].anchor, /aria-hidden="true"/);
-  assert.match(entryPoints[0].anchor, /tabindex="-1"/);
-  assert.match(entryPoints[0].anchor, /position:fixed/);
+  // The way in is a quiet word in the footer rather than an unlabelled dot
+  // floating over the corner. It is a real link now: readable, keyboard
+  // reachable and announced, just not advertised.
+  assert.match(entryPoints[0].anchor, /class="foot-quiet"/);
+  assert.doesNotMatch(entryPoints[0].anchor, /aria-hidden|tabindex|position:fixed/);
+  assert.match(read('colophon.html'), /<a class="foot-quiet" href="ai-usage\.html">Usage<\/a>/);
+  assert.match(read('lab.css'), /\.foot-quiet\{[^}]*opacity:\.4/);
   assert.match(read('lab-egg.js'), /window\.location\.href\s*=\s*['"]\/ai-usage\.html['"]/);
 });
 
