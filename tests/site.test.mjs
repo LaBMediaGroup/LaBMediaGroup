@@ -217,8 +217,14 @@ test('the published page count follows the sitemap', () => {
   assert.match(colophon, /14 mph\s+gusts/);
   assert.doesNotMatch(colophon, /stale-test|A test that had stopped watching/i);
   assert.equal((colophon.match(/press play/gi) || []).length, 1);
-  assert.match(colophon, /<div class="bug" id="flight-checklist">\s*<span class="bug-n">12<\/span>/);
+  assert.match(colophon, /<div class="bug" id="flight-checklist">\s*<span class="bug-n">11<\/span>/);
   assert.equal((colophon.match(/<h3>[^<]*<em>[^<]+<\/em>[^<]*<\/h3>/g) || []).length, 12);
+  // Entries get reordered as tools land, and the numbers are typed by hand, so
+  // check the run is still 01..12 with nothing repeated or skipped.
+  const bugNumbers = (colophon.match(/<span class="bug-n">(\d+)<\/span>/g) || []).map((span) => span.replace(/\D/g, ''));
+  assert.deepEqual(bugNumbers, Array.from({ length: 12 }, (_, index) => String(index + 1).padStart(2, '0')));
+  // The joke only works if the missing page is the one you reach last.
+  assert.match(colophon, /<span class="bug-n">12<\/span>\s*<div class="bug-main">\s*<h3>The one page <em>nobody plans to visit<\/em><\/h3>/);
   assert.match(colophon, /\.bug h3 em\{font-style:italic;color:var\(--accent\)\}/);
 });
 
