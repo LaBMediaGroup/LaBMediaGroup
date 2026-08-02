@@ -25,6 +25,11 @@
 .sun-sky{position:relative;min-height:clamp(230px,20vw,280px);overflow:hidden;background:
   radial-gradient(circle at 50% 105%,color-mix(in srgb,var(--sky-low) 72%,transparent),transparent 35%),
   linear-gradient(180deg,var(--sky-top),var(--sky-mid) 60%,var(--sky-low));transition:background 650ms var(--ease)}
+.sun-sky::before{content:"";position:absolute;z-index:0;inset:0;pointer-events:none;opacity:var(--cloud-opacity,0);background:
+  radial-gradient(ellipse 48% 20% at 18% 24%,rgba(205,216,221,.42),transparent 72%),
+  radial-gradient(ellipse 56% 24% at 77% 34%,rgba(171,188,198,.38),transparent 74%),
+  linear-gradient(180deg,rgb(76,98,116),rgb(119,137,146) 62%,rgb(148,155,157));
+  mix-blend-mode:normal;transition:opacity 650ms var(--ease)}
 .sun-sky::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.28;background-image:radial-gradient(circle at 12% 18%,#fff 0 1px,transparent 1.5px),radial-gradient(circle at 78% 25%,#fff 0 1px,transparent 1.5px),radial-gradient(circle at 42% 12%,#fff 0 1px,transparent 1.5px);background-size:190px 150px,240px 180px,280px 210px;transition:opacity 500ms var(--ease)}
 .sun-stage[data-phase="night"]{--sky-top:#080b12;--sky-mid:#11182a;--sky-low:#28334a}
 .sun-stage[data-phase="blue-dawn"],.sun-stage[data-phase="blue-dusk"]{--sky-top:#151c32;--sky-mid:#3f5975;--sky-low:#bf7c72}

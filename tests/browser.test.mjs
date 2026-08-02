@@ -193,6 +193,12 @@ test('solar scenes hand daylight to moonlight without changing the weather compo
   assert.equal(await page.locator('#wxSceneStage').getAttribute('data-phase'), 'daylight');
   assert.equal(await page.locator('#wxSceneStage').getAttribute('data-sun'), 'visible');
   const daylightNightness = parseFloat(await page.locator('#wxSceneStage').evaluate((element) => element.style.getPropertyValue('--wx-nightness')));
+  await page.evaluate(() => window.labSceneSetCloud(100));
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-cloud'), 'overcast');
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-cloud-transmission'), '0.080');
+  assert.match(await page.locator('#wxScenePhase').textContent(), /overcast/i);
+  await page.evaluate(() => window.labSceneSetCloud(0));
+  assert.equal(await page.locator('#wxSceneStage').getAttribute('data-cloud-transmission'), '1.000');
   await page.evaluate(() => window.labSceneSetTime(480));
   assert.equal(await page.locator('#wxSceneStage').getAttribute('data-sun'), 'visible');
   assert.equal(await page.locator('#wxSceneStage').getAttribute('data-moon'), 'visible', 'the weather scene may show a daytime moon when the lunar arc calls for it');
@@ -239,6 +245,13 @@ test('solar scenes hand daylight to moonlight without changing the weather compo
   assert.equal(await page.locator('#sunStage').getAttribute('data-sun'), 'visible');
   assert.equal(await page.locator('#sunStage').getAttribute('data-moon'), 'visible', 'a phase-aware moon may share the daytime sky with the sun');
   assert.match(await page.locator('#moonPhaseLabel').textContent(), /Waning gibbous · 9\d% moon/);
+  await page.evaluate(() => window.labSunSetCloud(100));
+  assert.equal(await page.locator('#sunStage').getAttribute('data-cloud'), 'overcast-now');
+  assert.equal(await page.locator('#sunStage').getAttribute('data-cloud-transmission'), '0.080');
+  assert.ok(parseFloat(await page.locator('#sunStage').evaluate((element) => element.style.getPropertyValue('--cloud-opacity'))) >= .85);
+  assert.match(await page.locator('#phaseVal').textContent(), /Overcast now/);
+  await page.evaluate(() => window.labSunSetCloud(0));
+  assert.equal(await page.locator('#sunStage').getAttribute('data-cloud-transmission'), '1.000');
   await page.locator('#timeSlider').evaluate((slider) => {
     slider.value = '1380';
     slider.dispatchEvent(new Event('input', { bubbles: true }));
