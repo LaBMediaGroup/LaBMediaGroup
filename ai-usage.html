@@ -201,6 +201,19 @@
 }
 .pd-model.active{color:var(--accent);border-color:var(--accent-dim);background:var(--accent-bg)}
 
+/* ── TOOL CATEGORY LABELS ── */
+.tu-cat-label{
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--faint);
+  margin-top:var(--s-6);margin-bottom:var(--s-3);
+  padding-bottom:var(--s-2);border-bottom:1px solid var(--line);
+}
+.tu-cat-label:first-child{margin-top:0}
+.tu-cat-sub{
+  font-size:8px;letter-spacing:.08em;color:var(--faint);
+  margin-left:var(--s-3);opacity:.7;text-transform:none;font-style:italic;
+}
+
 /* ── TOOL USAGE ── */
 .tu-total{
   text-align:center;font-family:var(--f-display);
@@ -433,11 +446,40 @@ async function loadUsage(){
     // Tool Usage section
     if(data.toolUsage){
       var tu = data.toolUsage;
-      var tuHtml = '<h2 class="details-title">Tool <em>Usage</em></h2>' +
-        '<div class="tu-total">' + tu.totalLabel + ' <em>tokens</em></div>' +
-        '<div class="tu-total-label">' + tu.period + ' · local logs</div>';
-      tu.tools.forEach(function(t){
-        tuHtml += '<div class="tu-tool">' +
+
+      // Sort tools by tokens descending (biggest first)
+      var sortedTools = tu.tools.slice().sort(function(a,b){
+        return parseTokenLabel(b.tokensLabel) - parseTokenLabel(a.tokensLabel);
+      });
+
+      // Category groupings
+      var CATEGORIES = {
+        'OpenClaw': 'assistants',
+        'Hermes': 'assistants',
+        'Codex CLI': 'devtools',
+        'Claude Code': 'devtools'
+      };
+      var CATEGORY_LABELS = {
+        'assistants': 'AI Assistants',
+        'devtools': 'Dev Tools'
+      };
+      var CATEGORY_SUBS = {
+        'assistants': 'Always-on agents · Mac control · personal',
+        'devtools': 'Coding · IDE · CLI'
+      };
+
+      function parseTokenLabel(label){
+        label=(label||'0').toUpperCase();
+        try{
+          if(label.endsWith('B')) return parseFloat(label.slice(0,-1))*1000;
+          if(label.endsWith('M')) return parseFloat(label.slice(0,-1));
+          if(label.endsWith('K')) return parseFloat(label.slice(0,-1))/1000;
+          return parseFloat(label)/1e6;
+        }catch(e){return 0}
+      }
+
+      function renderToolCard(t){
+        var html = '<div class="tu-tool">' +
           '<div class="tu-head"><div class="tu-name">' + t.name + '</div>' +
           '<div class="tu-tokens">' + t.tokensLabel + '</div></div>' +
           '<div class="tu-bar"><div class="tu-fill" style="width:' + t.share + '%"></div></div>' +
@@ -445,17 +487,36 @@ async function loadUsage(){
         var maxShare = Math.max.apply(null, t.models.map(function(m){return m.share}));
         t.models.forEach(function(m){
           var isTop = m.share === maxShare && t.models.length > 1;
-          tuHtml += '<div class="tu-model">' +
+          html += '<div class="tu-model">' +
             '<span class="m-name">' + m.name + '</span>' +
             '<span class="m-bar"><span class="m-fill' + (isTop ? ' top' : '') + '" style="display:block;width:' + m.share + '%"></span></span>' +
             '<span class="m-tokens">' + m.tokensLabel + '</span>' +
             '</div>';
         });
-        tuHtml += '</div></div>';
+        html += '</div></div>';
+        return html;
+      }
+
+      var tuHtml = '<h2 class="details-title">Tool <em>Usage</em></h2>' +
+        '<div class="tu-total">' + tu.totalLabel + ' <em>tokens</em></div>' +
+        '<div class="tu-total-label">' + tu.period + ' · local logs</div>';
+
+      // Group tools by category, render with labels
+      var cats = ['assistants','devtools'];
+      cats.forEach(function(cat){
+        var catTools = sortedTools.filter(function(t){return CATEGORIES[t.name]===cat});
+        if(catTools.length===0) return;
+        tuHtml += '<div class="tu-cat-label">' + CATEGORY_LABELS[cat] +
+          '<span class="tu-cat-sub">' + CATEGORY_SUBS[cat] + '</span></div>';
+        catTools.forEach(function(t){ tuHtml += renderToolCard(t); });
       });
+
+      // Render any uncategorized tools without a label
+      var uncategorized = sortedTools.filter(function(t){return !CATEGORIES[t.name]});
+      uncategorized.forEach(function(t){ tuHtml += renderToolCard(t); });
       // Models, side by side : aggregate every model across tools into one
       // leaderboard, so a model's total is not split by which tool burned it.
-      var MODEL_PROVIDER={'GLM-5.2':'Z.ai','GLM-4.7':'Z.ai','Kimi-K2.7-Code':'Synthetic','Kimi-K3 (Synthetic)':'Synthetic','Kimi-K3 (Moonshot)':'Moonshot','Gemini Flash':'Google','GPT-5.6-sol':'OpenAI','Fable-5':'Anthropic','Opus-5':'Anthropic'};
+      var MODEL_PROVIDER={'GLM-5.2':'Z.ai','GLM-4.7':'Z.ai','GLM-5':'Z.ai','GLM-4.6':'Z.ai','Kimi-K2.7-Code':'Synthetic','Kimi-K3 (Synthetic)':'Synthetic','Kimi-K3 (Moonshot)':'Moonshot','Gemini Flash':'Google','GPT-5.6-sol':'OpenAI','GPT-5.5':'OpenAI','GPT-5.4':'OpenAI','Fable-5':'Anthropic','Opus-5':'Anthropic','MiniMax-M3':'MiniMax','MiniMax-M2.7':'MiniMax','Llama-3.3-70B':'Groq'};
       var totals={};
       tu.tools.forEach(function(t){
         t.models.forEach(function(m){
