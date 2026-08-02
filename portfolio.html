@@ -173,7 +173,7 @@
           "@type": "CreativeWork",
           "@id": "https://labmedia.work/portfolio.html#itsaboy",
           "name": "It's a Boy",
-          "description": "A late entry to The Comedy Roll, shot across three days in a Michigan spring.",
+          "description": "A late entry to The Comedy Roll, shot across four days in a Michigan spring.",
           "dateCreated": "2026-04-25",
           "creator": {
             "@id": "https://labmedia.work/#org"
@@ -182,7 +182,7 @@
           "associatedMedia": {
             "@type": "VideoObject",
             "name": "It's a Boy",
-            "description": "A late entry to The Comedy Roll, shot across three days in a Michigan spring.",
+            "description": "A late entry to The Comedy Roll, shot across four days in a Michigan spring.",
             "thumbnailUrl": "https://i.ytimg.com/vi/BsIad5S8bQc/hqdefault.jpg",
             "embedUrl": "https://www.youtube-nocookie.com/embed/BsIad5S8bQc",
             "uploadDate": "2026-08-02"
@@ -297,6 +297,55 @@
 .vid iframe{width:100%;height:100%;border:0;display:block}
 .vid.tgt{border-color:var(--accent-dim)}
 
+/* Back to the show : the film you left running.
+   Start something playing, scroll off it, and a way back parks itself
+   bottom-LEFT : the assistant owns bottom-right, and the two must never
+   sit on top of each other. It leaves the moment the film is on screen
+   again, and the arrow points whichever way the film actually is.
+   visibility, not just opacity, so a hidden button is out of the
+   accessibility tree instead of being a target nobody can see. */
+.backto{
+  position:fixed;
+  left:max(18px,env(safe-area-inset-left));
+  bottom:max(18px,env(safe-area-inset-bottom));
+  /* Above the assistant's wrapper (720), not because they overlap : the
+     launcher is a circle in the far corner and the panel stops well short
+     of this one : but because that wrapper is a full-width invisible strip
+     across the bottom of the page, and underneath it this button is a
+     target no tap can reach. */
+  z-index:730;
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;
+  background:var(--paper-2);border:1px solid var(--line-2);
+  color:var(--ink);cursor:pointer;
+  font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  box-shadow:0 14px 38px rgba(0,0,0,.34);
+  opacity:0;visibility:hidden;transform:translateY(8px);
+  transition:opacity var(--mid) var(--ease),transform var(--mid) var(--ease),
+             visibility var(--mid) var(--ease),
+             background var(--fast) var(--ease),border-color var(--fast) var(--ease);
+}
+.backto.on{opacity:1;visibility:visible;transform:none}
+.backto:hover,.backto:focus-visible{background:var(--paper-3);border-color:var(--accent)}
+/* Still rolling : the same ember the page uses for anything live. */
+.backto .bt-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none;
+  animation:bt-pulse 1.9s var(--ease) infinite;
+}
+.backto svg{width:11px;height:13px;fill:currentColor;flex:none;
+  transition:transform var(--fast) var(--ease)}
+.backto.is-down svg{transform:rotate(180deg)}
+@keyframes bt-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){
+  .backto{transition:opacity var(--fast) linear,visibility var(--fast) linear;transform:none}
+  .backto.on{transform:none}
+  .backto .bt-dot{animation:none}
+}
+/* On a phone the label alone is most of the screen width : keep it short. */
+@media (max-width:560px){
+  .backto{padding:11px 13px;gap:8px;font-size:9px}
+}
+
 /* Lead reel : shot in scope. The 2.39 frame is kept through playback rather
    than opening out to 16:9, because the letterbox is baked into the video and
    opening out just exposes it. The iframe is sized to 16:9 by width (134.44%
@@ -364,6 +413,11 @@
 .spec dd{font-size:var(--t-sm);color:var(--ink);line-height:1.6}
 .spec dd + dd{margin-top:6px}
 .spec dd.q{color:var(--dim);font-style:italic;font-family:var(--f-display);font-size:17px}
+/* The qualifier under a value : which festival, which client, which hours.
+   Every sheet needs it, so it is a class rather than the same inline style
+   written out eight times. */
+.spec dd.sub{color:var(--faint);font-size:var(--t-xs)}
+.spec dd.sub a{color:var(--accent)}
 .spec .win{color:var(--accent)}
 
 /* The official YouTube lockup, set inline in the heading.
@@ -881,15 +935,17 @@
       </figure>
       <dl class="spec">
       <div><dt>Type</dt><dd>Artist Spotlight</dd></div>
-      <div><dt>Shot</dt><dd>1 day</dd></div>
-      <div><dt>Approach</dt><dd>Natural light, minimal crew, authentic moments</dd></div>
+      <div><dt>Format</dt><dd>Independent</dd><dd class="sub">No brief, no clock</dd></div>
+      <div><dt>Crew</dt><dd>2 : Bobby on A-cam and the edit, Larry on B-cam</dd><dd class="sub">Larry brought the connection in</dd></div>
+      <div><dt>Shoot days</dt><dd>1 day &middot; Mar 4, 2024</dd><dd class="sub">Ten in the morning to about seven</dd></div>
+      <div><dt>Approach</dt><dd>Natural light, minimal crew, authentic moments</dd><dd class="sub">Anthony wrote his own narration</dd></div>
     </dl>
     </div>
     <div class="tl">
       <div class="tl-head"><h3>Production</h3><i></i><span class="span">One day, one room</span></div>
       <ol>
         <li class="done"><span class="dot"></span><span class="when">Mon, Mar 4, 2024</span>
-          <span class="what"><b>Filmed : 1 day</b><span>His home studio, start to finish. Natural light, minimal crew, and enough time to let him forget the camera was there.</span></span></li>
+          <span class="what"><b>Filmed : 1 day</b><span>His home studio, start to finish : ten in the morning to about seven at night. Natural light, minimal crew, and enough time to let him forget the camera was there.</span></span></li>
       </ol>
     </div>
 
@@ -937,7 +993,9 @@
       </figure>
       <dl class="spec">
       <div><dt>Type</dt><dd>Commercial · Brand Film</dd></div>
-      <div><dt>Shot</dt><dd>1 day</dd></div>
+      <div><dt>Format</dt><dd>Client brief</dd><dd class="sub">MOZ Interiors, Detroit</dd></div>
+      <div><dt>Crew</dt><dd>2 : Bobby on A-cam and the edit, Larry on B-cam</dd></div>
+      <div><dt>Shoot days</dt><dd>1 day &middot; Jul 1, 2024</dd></div>
       <div><dt>Concept</dt><dd class="q">“Vintage vibes with modern modality”</dd></div>
       <div><dt>About MOZ</dt><dd>Their interiors took Best Fireplace and Best Staircase at the 2025 Detroit Design Awards, and their work has run in Vanity Fair, Architectural Digest, Hour Detroit and The World of Interiors.</dd></div>
     </dl>
@@ -1001,9 +1059,12 @@
         <figcaption>Captured live at rehearsal</figcaption>
       </figure>
       <dl class="spec">
-      <div><dt>Type</dt><dd>Music Video / Live Session</dd></div>
-      <div><dt>Shot</dt><dd>1 day · January 2024</dd></div>
-      <div><dt>Track</dt><dd class="q">“Old Guy”</dd><dd style="color:var(--faint);font-size:var(--t-xs)">from <em>Nothing's Getting Better, It's Going to Be Fine</em></dd></div>
+      <div><dt>Type</dt><dd>Music Video · Live Session</dd></div>
+      <div><dt>Format</dt><dd>Live session</dd><dd class="sub">One rehearsal, captured as it happened</dd></div>
+      <div><dt>Crew</dt><dd>2 : Bobby on camera and the edit, Larry on hand</dd></div>
+      <div><dt>Shoot days</dt><dd>1 day &middot; January 2024</dd></div>
+      <div><dt>Track</dt><dd class="q">“Old Guy”</dd><dd class="sub">from <em>Nothing's Getting Better, It's Going to Be Fine</em></dd></div>
+      <div><dt>On drums</dt><dd>John, Larry's brother</dd></div>
     </dl>
     </div>
     <div class="tl">
@@ -1036,9 +1097,10 @@
         <figcaption>On location</figcaption>
       </figure>
       <dl class="spec">
-      <div><dt>Type</dt><dd>Short Film / Horror</dd></div>
-      <div><dt>Crew</dt><dd>3 people : Bobby, Al, &amp; Al's dad</dd></div>
-      <div><dt>Format</dt><dd>Timed competition</dd><dd style="color:var(--faint);font-size:var(--t-xs)">Constraints drawn on the day</dd></div>
+      <div><dt>Type</dt><dd>Short Film · Horror</dd></div>
+      <div><dt>Format</dt><dd>Timed competition</dd><dd class="sub">Constraints drawn on the day</dd></div>
+      <div><dt>Crew</dt><dd>3 : Bobby, Al &amp; Al's dad</dd><dd class="sub">Co-directed, co-written, both acting</dd></div>
+      <div><dt>Shoot days</dt><dd>2 days &middot; Sep 20&ndash;21, 2025</dd></div>
       <div><dt>Recognition</dt><dd class="win">Best Editing : Horror Film Roulette 2025</dd></div>
     </dl>
     </div>
@@ -1096,10 +1158,12 @@
         <figcaption>On set</figcaption>
       </figure>
       <dl class="spec">
-      <div><dt>Type</dt><dd>Short Film / Comedy</dd></div>
-      <div><dt>Format</dt><dd>Timed competition</dd></div>
-      <div><dt>On camera</dt><dd>Derek &amp; Kelly</dd></div>
+      <div><dt>Type</dt><dd>Short Film · Comedy</dd></div>
+      <div><dt>Format</dt><dd>Timed competition</dd><dd class="sub">The Comedy Roll, 2025</dd></div>
+      <div><dt>Crew</dt><dd>3 : Bobby, Al &amp; Joe</dd><dd class="sub">Al directing, on camera and cutting</dd></div>
+      <div><dt>Shoot days</dt><dd>3 days &middot; May 1, 5 &amp; 20, 2025</dd></div>
       <div><dt>Recognition</dt><dd class="win">Top 25 : Comedy Roll Film Festival 2025</dd></div>
+      <div><dt>On camera</dt><dd>Derek &amp; Kelly</dd></div>
     </dl>
     </div>
     <div class="tl">
@@ -1152,7 +1216,7 @@
   <article class="proj" id="itsaboy">
     <div class="proj-head"><span class="proj-num">006</span><span class="proj-kind">Short Film · Comedy</span><i></i><span class="proj-kind">2026</span></div>
     <h2>It's a <em>Boy</em></h2>
-    <p class="desc">A late entry to The Comedy Roll, shot across three days in a Michigan spring. This is the cut that made the screening : a finished version is still in the works.</p>
+    <p class="desc">A late entry to The Comedy Roll, shot across four days in a Michigan spring. This is the cut that made the screening : a finished version is still in the works.</p>
 
     <div class="vid scope" data-video="BsIad5S8bQc">
       <button class="vid-btn" type="button" aria-label="Play: It's a Boy">
@@ -1168,16 +1232,19 @@
         <figcaption>Shot on location, Michigan</figcaption>
       </figure>
       <dl class="spec">
-        <div><dt>Type</dt><dd>Short Film / Comedy</dd></div>
-        <div><dt>Format</dt><dd>Timed competition</dd><dd style="color:var(--faint);font-size:var(--t-xs)">Late entry</dd></div>
-        <div><dt>Status</dt><dd>Comedy Roll cut · public</dd><dd style="color:var(--faint);font-size:var(--t-xs)">Final cut in progress</dd></div>
+        <div><dt>Type</dt><dd>Short Film · Comedy</dd></div>
+        <div><dt>Format</dt><dd>Timed competition</dd><dd class="sub">The Comedy Roll, 2026 &middot; late entry</dd></div>
+        <div><dt>Crew</dt><dd>13 : co-directed by Bobby &amp; Al, produced by Veda</dd><dd class="sub">The biggest ensemble LaB has run</dd></div>
+        <div><dt>Shoot days</dt><dd>4 days &middot; Apr 25, 27, 28 &amp; 29, 2026</dd></div>
+        <div><dt>Recognition</dt><dd>Screened : The Comedy Roll 2026</dd></div>
+        <div><dt>Status</dt><dd>Comedy Roll cut · public</dd><dd class="sub">Final cut in progress</dd></div>
       </dl>
     </div>
     <div class="tl">
-      <div class="tl-head"><h3>Production</h3><i></i><span class="span">3 shoot days · 22 to screen</span></div>
+      <div class="tl-head"><h3>Production</h3><i></i><span class="span">4 shoot days · 22 to screen</span></div>
       <ol>
-        <li class="done"><span class="dot"></span><span class="when">Apr 25, 28, 29</span>
-          <span class="what"><b>Filmed : 3 days</b><span>Three separate days across a Michigan spring: the 25th, 28th and 29th.</span></span></li>
+        <li class="done"><span class="dot"></span><span class="when">Apr 25, 27, 28, 29</span>
+          <span class="what"><b>Filmed : 4 days</b><span>Four separate days across a Michigan spring: the 25th, 27th, 28th and 29th.</span></span></li>
         <li class="done"><span class="dot"></span><span class="when">May 17, 2026</span>
           <span class="what"><b>Screened</b><span>A late entry to The Comedy Roll : it made the room even though it only just made the deadline.</span></span></li>
         <li class="done"><span class="dot"></span><span class="when">Aug 2, 2026</span>
@@ -1260,10 +1327,12 @@
         <figcaption>Poster by Sideways Studio</figcaption>
       </figure>
       <dl class="spec">
-        <div><dt>Type</dt><dd>Short Film / 48 Hour</dd></div>
-        <div><dt>Festival</dt><dd>Detroit 48 Hour Film Project</dd><dd style="color:var(--faint);font-size:var(--t-xs)">2026</dd></div>
+        <div><dt>Type</dt><dd>Short Film · 48 Hour</dd></div>
+        <div><dt>Format</dt><dd>Timed competition</dd><dd class="sub">Detroit 48 Hour Film Project, 2026</dd></div>
+        <div><dt>Crew</dt><dd>4 : Bobby, Al &amp; Joe, plus Kyle for the tunnel scene</dd></div>
+        <div><dt>Shoot days</dt><dd>2 days &middot; Jul 25&ndash;26, 2026</dd><dd class="sub">Shot and cut at the same time</dd></div>
+        <div><dt>Recognition</dt><dd class="pending">Awaiting festival screening</dd></div>
         <div><dt>Turnaround</dt><dd>48 hours, start to upload</dd></div>
-        <div><dt>Status</dt><dd class="pending">Awaiting festival screening</dd></div>
         <div><dt>Cast</dt><dd>Joe Krakosky, Robert Baldwin, Kyle Keaser, Albert Krakosky III</dd></div>
       </dl>
     </div>
@@ -1308,7 +1377,7 @@
       <div class="tl-head"><h3>Production</h3><i></i><span class="span">Single day shoot</span></div>
       <ol>
         <li class="done"><span class="dot"></span><span class="when">Mon, Jun 1, 2026</span>
-          <span class="what"><b>Filmed : 1 day</b><span>One pass through the space before opening, working around the light coming off all that white marble.</span></span></li>
+          <span class="what"><b>Filmed : 1 day</b><span>Four in the afternoon to ten at night, Veda and Al on it with Bobby. The room had never been open to anyone : they opened the week after we shot it. One pass through the space, working around the light coming off all that white marble.</span></span></li>
         <li><span class="dot"></span><span class="when">In progress</span>
           <span class="what"><b>Editing</b></span></li>
       </ol>
@@ -1321,8 +1390,9 @@
       </figure>
       <dl class="spec">
         <div><dt>Type</dt><dd>Commercial · Brand Film</dd></div>
-        <div><dt>For</dt><dd>Le Juicé, Rochester</dd><dd style="font-size:var(--t-xs)"><a href="#moz" style="color:var(--accent)">with MOZ Interiors</a></dd></div>
-        <div><dt>Shot</dt><dd>1 day</dd></div>
+        <div><dt>Format</dt><dd>Client brief</dd><dd class="sub">Le Juicé, Rochester &middot; <a href="#moz">with MOZ Interiors</a></dd></div>
+        <div><dt>Crew</dt><dd>3 : Veda, Al &amp; Bobby, with Bobby on the edit</dd></div>
+        <div><dt>Shoot days</dt><dd>1 day &middot; Jun 1, 2026</dd><dd class="sub">Four in the afternoon to ten at night &middot; shot before they opened</dd></div>
         <div><dt>Status</dt><dd class="pending">In the edit</dd></div>
       </dl>
     </div>
@@ -1437,9 +1507,9 @@
     </div>
 
     <div class="v-node own" data-type="own">
-      <span class="v-date">Apr 25, 28, 29, 2026</span>
+      <span class="v-date">Apr 25, 27, 28, 29, 2026</span>
       <div class="v-title">It’s a Boy</div>
-      <div class="v-desc">Three shoot days. Official screening May 17 at The Comedy Roll.</div>
+      <div class="v-desc">Four shoot days. Official screening May 17 at The Comedy Roll.</div>
       <a class="v-jump" href="#itsaboy">Jump to film &rarr;</a>
     </div>
 
@@ -1603,12 +1673,22 @@
   });
 })();
 
-/* Video facade : nothing is requested from YouTube until you press play */
-document.querySelectorAll('.vid').forEach(function(box){
-  var btn=box.querySelector('.vid-btn');
+/* Video facade : nothing is requested from YouTube until you press play.
+
+   Delegated rather than bound to each play button, because closing a player
+   rewrites its box's innerHTML : the button you pressed is gone and a fresh
+   one stands in its place. A listener held on the original element died with
+   it, so a closed film showed a play button that looked right, took focus,
+   and did nothing until the page was reloaded. Reading from document means
+   the replacement button works exactly like the one it replaced. */
+document.addEventListener('click',function(ev){
+  var btn=ev.target.closest?ev.target.closest('.vid-btn'):null;
   if(!btn)return;
-  btn.addEventListener('click',function(){
+  var box=btn.closest('.vid');
+  if(!box||box.classList.contains('playing'))return;
+  (function(){
     var id=box.getAttribute('data-video');
+    if(!id)return;
     var f=document.createElement('iframe');
     f.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0';
     f.title=btn.getAttribute('aria-label')||'Video player';
@@ -1663,8 +1743,88 @@ document.querySelectorAll('.vid').forEach(function(box){
       restore();document.removeEventListener('keydown',esc);
     });
     box.appendChild(ui);
-  });
+  })();
 });
+
+/* Back to the show : a way back to the film you left running.
+   Start something playing, scroll it off the screen, and a control parks
+   itself bottom-left that puts the viewport back on it, centred.
+
+   It knows nothing about YouTube. A facade box counts as playing for as long
+   as it carries .playing : the same class the player above adds and its close
+   button removes : and a behind-the-scenes clip counts for as long as its
+   own <video> says it is. So closing a film, or letting a clip end, takes the
+   control away without either of them having to say so.
+
+   Everything hangs off document rather off the elements themselves, because
+   closing a player rewrites the box's innerHTML and would throw away any
+   listener bound to the play button inside it. */
+(function(){
+  var reduce = window.matchMedia
+    && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  var btn=document.createElement('button');
+  btn.type='button';
+  btn.className='backto';
+  btn.setAttribute('aria-label','Back to the film you left playing');
+  btn.innerHTML='<span class="bt-dot" aria-hidden="true"></span>'
+    +'<span>Back to the show</span>'
+    +'<svg viewBox="0 0 12 14" aria-hidden="true"><path d="M6 0l5.2 6H7.6v8H4.4V6H.8z"/></svg>';
+  document.body.appendChild(btn);
+
+  var clip=null;
+  function live(){
+    if(!clip) return null;
+    if(clip.tagName==='VIDEO') return (clip.paused||clip.ended)?null:clip;
+    return clip.classList.contains('playing')?clip:null;
+  }
+
+  var shown=false,queued=false;
+  function measure(){
+    queued=false;
+    var el=live();
+    if(!el){ if(shown){ btn.classList.remove('on'); shown=false; } return; }
+    var r=el.getBoundingClientRect(),
+        vh=window.innerHeight||document.documentElement.clientHeight,
+        seen=Math.min(r.bottom,vh)-Math.max(r.top,0);
+    /* "scrolled away" means most of the frame is gone, not the first pixel */
+    var away = seen < Math.min(r.height,vh)*0.4;
+    /* the arrow points at where the film actually is, above or below */
+    btn.classList.toggle('is-down', r.top>0);
+    if(away!==shown){ btn.classList.toggle('on',away); shown=away; }
+  }
+  /* One measurement per frame, whatever asked for it */
+  function ping(){ if(!queued){ queued=true; requestAnimationFrame(measure); } }
+
+  window.addEventListener('scroll',ping,{passive:true});
+  window.addEventListener('resize',ping);
+
+  /* A click can start a film, close one, or move the page under it. Reading
+     in the capture phase but measuring on the next frame means the handler
+     that adds or removes .playing has already run by the time we look. */
+  document.addEventListener('click',function(e){
+    var t=e.target;
+    if(t&&t.closest){
+      var b=t.closest('.vid-btn');
+      if(b){ var box=b.closest('.vid'); if(box) clip=box; }
+    }
+    ping();
+  },true);
+  document.addEventListener('keydown',ping,true);
+
+  /* Behind-the-scenes clips are ordinary <video> and announce themselves.
+     Neither event bubbles, so both are caught on the way down. */
+  document.addEventListener('play',function(e){
+    if(e.target&&e.target.tagName==='VIDEO'){ clip=e.target; ping(); }
+  },true);
+  document.addEventListener('pause',function(e){ if(e.target===clip) ping(); },true);
+  document.addEventListener('ended',function(e){ if(e.target===clip) ping(); },true);
+
+  btn.addEventListener('click',function(){
+    var el=live(); if(!el) return;
+    el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
+  });
+})();
 
 /* Arriving from a card on the homepage: highlight + focus that film's play button */
 (function(){

@@ -36,9 +36,9 @@
       id: 'lab-films-anthony-brass',
       url: 'portfolio.html#artist',
       title: 'Anthony Brass (2024) : Behind the Scenes & Production',
-      tags: 'anthony brass artist portrait documentary detroit A-cam B-cam larry john voiceover plants cats acrylics vinyl script who shot who edited watch video player youtube',
+      tags: 'anthony brass artist portrait documentary detroit A-cam B-cam larry john voiceover plants cats acrylics vinyl script who shot who edited crew march 4 2024 one day 10am 7pm shoot hours watch video player youtube',
       note: 'Production notes on Anthony Brass (2024).',
-      answer: 'Anthony Brass (2024) is an intimate portrait of Detroit outsider artist Anthony R. Brass, filmed in his home studio surrounded by plants, cats, and mid-century decor. Bobby shot A-cam and edited; Larry ran B-cam. The connection came through Larry and John’s network. Anthony wrote his own script/voiceover, so the narration is genuinely his.\n\nWatch Anthony Brass on YouTube:\nhttps://www.youtube.com/watch?v=CPvxM8GrCg8',
+      answer: 'Anthony Brass (2024) is an intimate portrait of Detroit outsider artist Anthony R. Brass, filmed in his home studio surrounded by plants, cats, and mid-century decor. Shot in one day on March 4, 2024, running from about 10 AM to roughly 7 PM. Bobby shot A-cam and edited; Larry ran B-cam. The connection came through Larry and John’s network. Anthony wrote his own script/voiceover, so the narration is genuinely his.\n\nWatch Anthony Brass on YouTube:\nhttps://www.youtube.com/watch?v=CPvxM8GrCg8',
       sources: [
         { title: 'Anthony Brass : The Reel', url: 'portfolio.html#artist', note: 'Film breakdown & still' },
         { title: 'Watch on YouTube', url: 'https://www.youtube.com/watch?v=CPvxM8GrCg8', note: 'YouTube video' }
@@ -60,9 +60,9 @@
       id: 'lab-films-the-pandys',
       url: 'portfolio.html#pandys',
       title: 'The Pandys (2024) : Live Session Production',
-      tags: 'the pandys music video live session rehearsal john larry drummer old guy band practice energy watch video player youtube',
+      tags: 'the pandys music video live session rehearsal john larry drummer old guy band practice energy crew who shot who edited watch video player youtube',
       note: 'Production notes for The Pandys (2024).',
-      answer: 'The Pandys (2024) captures raw band practice energy live as the band performs "Old Guy". Shot in a single day in January 2024 with minimal production interference. John (Larry’s brother) is the band’s drummer.\n\nWatch The Pandys on YouTube:\nhttps://www.youtube.com/watch?v=ZXYtZmIRiRI',
+      answer: 'The Pandys (2024) captures raw band practice energy live as the band performs "Old Guy". Shot in a single day in January 2024 with minimal production interference. Bobby shot it and cut it, with Larry there on the day. John (Larry’s brother) is the band’s drummer.\n\nWatch The Pandys on YouTube:\nhttps://www.youtube.com/watch?v=ZXYtZmIRiRI',
       sources: [
         { title: 'The Pandys : The Reel', url: 'portfolio.html#pandys', note: 'Film breakdown & still' },
         { title: 'Watch on YouTube', url: 'https://www.youtube.com/watch?v=ZXYtZmIRiRI', note: 'YouTube video' }
@@ -96,9 +96,9 @@
       id: 'lab-films-its-a-boy',
       url: 'portfolio.html#itsaboy',
       title: 'It’s a Boy (2026) : 13-Person Ensemble Comedy',
-      tags: 'its a boy comedy roll 2026 ensemble 13 cast bobby al veda producer mike peanut allergy david contraption creator tripod sony camera who shot who edited',
+      tags: 'its a boy comedy roll 2026 ensemble 13 cast bobby al veda producer mike peanut allergy david contraption creator tripod sony camera who shot who edited 4 four shoot days april 25 27 28 29 2026 shoot dates',
       note: 'Production notes for It’s a Boy (2026).',
-      answer: 'It’s a Boy (2026) is LaB Media’s big-crew 13-person ensemble film, screened at The Comedy Roll in May 2026. Co-directed by Bobby and Al, with Veda as producer. Al was main writer, editor, and main camera operator (rolling his Sony on the tripod, not the R50). Mike wrote the peanut allergy lines. David filmed a song as a "contraption creator". Filmed over 3 days (April 25, 28, 29, 2026).',
+      answer: 'It’s a Boy (2026) is LaB Media’s big-crew 13-person ensemble film, screened at The Comedy Roll in May 2026. Co-directed by Bobby and Al, with Veda as producer. Al was main writer, editor, and main camera operator (rolling his Sony on the tripod, not the R50). Mike wrote the peanut allergy lines. David filmed a song as a "contraption creator". Filmed over 4 days (April 25, 27, 28 and 29, 2026).',
       sources: [
         { title: 'It’s a Boy : The Reel', url: 'portfolio.html#itsaboy', note: 'Film breakdown & still' }
       ]
@@ -162,9 +162,9 @@
       id: 'lab-films-le-juice',
       url: 'resources.html#le-juice-rochester',
       title: 'Le Juicé (2026) : Commercial Workflow & Color',
-      tags: 'le juice rochester brand film commercial moz interiors lyzz green millwork terrazzo brass fruit clog3 canon log 3 lut BT709_CanonLog3-to-BT709_WideDR_65_FF_Ver.2.0 who shot who edited',
+      tags: 'le juice rochester brand film commercial moz interiors lyzz green millwork terrazzo brass fruit clog3 canon log 3 lut BT709_CanonLog3-to-BT709_WideDR_65_FF_Ver.2.0 who shot who edited crew veda al bobby june 1 2026 one day 4pm 10pm shoot hours not open yet opened week after pre-opening',
       note: 'Commercial brand film for Le Juicé and MOZ Interiors.',
-      answer: 'Le Juicé (2026) is a commercial brand film for a cold-pressed juice bar in downtown Rochester, Michigan, designed by Lyzz (MOZ Interiors). Shot June 1, 2026. Bobby shot C-Log 3 footage on the Canon R50 and converted it using the technical LUT BT709_CanonLog3-to-BT709_WideDR_65_FF_Ver.2.0, grading manually to match the client’s real-space color target.',
+      answer: 'Le Juicé (2026) is a commercial brand film for a cold-pressed juice bar in downtown Rochester, Michigan, designed by Lyzz (MOZ Interiors). Shot June 1, 2026 in a single day running from about 4 PM to 10 PM, with Veda, Al and Bobby on it; Bobby is cutting it. The shop had not opened to the public yet at the time of the shoot : it opened the following week. Bobby shot C-Log 3 footage on the Canon R50 and converted it using the technical LUT BT709_CanonLog3-to-BT709_WideDR_65_FF_Ver.2.0, grading manually to match the client’s real-space color target.',
       sources: [
         { title: 'Le Juicé Resource', url: 'resources.html#le-juice-rochester', note: 'Checked resource & film entry' }
       ]
