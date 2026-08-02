@@ -28,7 +28,7 @@ var LAB_ASSISTANT_KNOWLEDGE = {
       summary:'Live Metro Detroit wind, cloud and weather guidance, conservative flight thresholds, a local-time scene with a phase-aware moon, and a persistent 18-point pre-flight checklist.' },
     { title:'Aspect Ratio Previewer', url:'aspect.html', tags:'aspect ratio crop framing letterbox anamorphic scope vertical image video local privacy 1080p 4k multiple files',
       summary:'Preview common cinema and social crops against sample frames or local images and video, with exact 1080p and 4K active-pixel dimensions and no uploads.' },
-    { title:'SkyBound', url:'skybound.html', tags:'drone fpv learn simulator part 107 flight path',
+    { title:'SkyBound : Drone', url:'skybound.html', tags:'skybound drone fpv learn simulator part 107 flight path training licence license',
       summary:'A practical drone path: simulate, learn, build a kit, then work toward Part 107.' },
     { title:'LaB Assistant', url:'assistant.html', tags:'assistant ask search films gear resources events sourced model ollama nemotron hybrid privacy',
       summary:'Ask the site about LaB’s films, kit, checked resources, events and build notes.' },

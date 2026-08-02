@@ -170,13 +170,17 @@ test('assistant knows the Mistaken community film without inventing crew roles',
 });
 
 test('assistant knowledge follows the current filmmaking tools', () => {
-  for (const title of ['Golden Hour Planner', 'Drone Weather', 'Aspect Ratio Previewer']) {
+  for (const title of ['Golden Hour Planner', 'SkyBound : Weather', 'Aspect Ratio Previewer']) {
     assert.ok(assistantKnowledge.pages.some((page) => page.title === title), `${title} is missing from assistant page knowledge`);
   }
   const engine = assistantCore.createEngine({ fieldNotes, spotlight, knowledge: assistantKnowledge });
   const checks = [
     ['What does the Golden Hour Planner do?', /date- and location-aware[\s\S]*sun and moon separate[\s\S]*waxing or waning/i],
+    // The weather tool is called SkyBound : Weather now. Asking for it by its
+    // old name still has to reach it : people who learned it as Drone Weather
+    // should not fall off the edge of a rename.
     ['What does Drone Weather do?', /Open-Meteo[\s\S]*18-point pre-flight checklist/i],
+    ['What does SkyBound Weather do?', /Open-Meteo[\s\S]*18-point pre-flight checklist/i],
     ['What does the Aspect Ratio Previewer do?', /multiple local files[\s\S]*zero server uploads/i]
   ];
   for (const [query, expected] of checks) {
