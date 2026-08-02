@@ -7,6 +7,11 @@
     },
     {
       "date": "2026-08-01",
+      "time": "23:55 EDT",
+      "text": "<strong>A podium for the top three.</strong> The model leaderboard now gives its leaders the steps they earned : first place stands taller, centre stage, in a wash of ember, flanked by second and third. The rest of the field queues below in the running order, bars intact. And the timeline below no longer indents its first lines : the invisible time stamps that caused it now live where they belong, in the hover."
+    },
+    {
+      "date": "2026-08-01",
       "time": "23:45 EDT",
       "text": "<strong>Models, side by side.</strong> Tool Usage kept its per-tool breakdown : the little bars stay : and below it now stands one leaderboard that adds each model&rsquo;s tokens across every tool, tagged with the provider that serves it. Kimi K3, GLM-5.2 and the rest finally appear as themselves rather than as slices of OpenClaw, Codex or Claude Code. The busiest model carries the ember bar; everyone else falls in line behind it."
     },

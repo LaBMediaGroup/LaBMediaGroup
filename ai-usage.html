@@ -247,6 +247,25 @@
 .mc-fill{height:100%;background:var(--dim);border-radius:var(--radius)}
 .mc-row.top .mc-fill{background:var(--accent)}
 .mc-row.top .mc-tokens{color:var(--accent)}
+
+/* ── PODIUM (top three models) ── */
+.mc-podium{display:flex;gap:var(--s-3);align-items:flex-end;margin:var(--s-5) 0 var(--s-6)}
+.mc-podium-card{flex:1;background:var(--paper-2);border:1px solid var(--line);border-radius:8px;
+  padding:var(--s-4) var(--s-3);text-align:center;display:flex;flex-direction:column;gap:3px}
+.mc-podium-card.first{order:2;padding-top:var(--s-6);padding-bottom:var(--s-6);border-color:var(--accent-dim);background:color-mix(in srgb,var(--accent) 6%,var(--paper-2))}
+.mc-podium-card.second{order:1}
+.mc-podium-card.third{order:3}
+.mc-podium-rank{font-family:var(--f-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.mc-podium-card.first .mc-podium-rank{color:var(--accent)}
+.mc-podium-name{font-family:var(--f-display);font-size:clamp(15px,2vw,20px);color:var(--ink);line-height:1.15}
+.mc-podium-provider{font-family:var(--f-mono);font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.mc-podium-tokens{font-family:var(--f-mono);font-size:clamp(16px,2.2vw,22px);color:var(--dim);margin-top:2px}
+.mc-podium-card.first .mc-podium-tokens{color:var(--accent)}
+@media (max-width:560px){
+  .mc-podium{gap:var(--s-2)}
+  .mc-podium-card{padding:var(--s-3) var(--s-2)}
+  .mc-podium-card.first{padding-top:var(--s-4);padding-bottom:var(--s-4)}
+}
 .tu-model .m-fill.top{background:var(--good)}
 .tu-model .m-tokens{text-align:right;color:var(--faint)}
 @media(max-width:560px){
@@ -449,15 +468,31 @@ async function loadUsage(){
       });
       var board=Object.keys(totals).map(function(k){return totals[k]}).filter(function(m){return m.tokens>0}).sort(function(a,b){return b.tokens-a.tokens});
       var maxTok=board.length?board[0].tokens:1;
+      var fmtTok=function(t){return t >= 1000 ? (t/1000).toFixed(t>=10000?0:1).replace(/\.0$/,'') + 'B' : Math.round(t) + 'M'};
       tuHtml += '<h2 class="details-title" style="margin-top:var(--s-7)">Models, <em>side by side</em></h2>' +
         '<div class="mc-sub">Total tokens across every tool · ' + tu.period.toLowerCase() + ' · local logs</div>';
+      // The podium : top three stand on the steps, the rest queue below.
+      var podiumClasses=['first','second','third'];
+      if(board.length>=3){
+        tuHtml += '<div class="mc-podium">';
+        for(var pi=0;pi<3;pi++){
+          var pm=board[pi];
+          tuHtml += '<div class="mc-podium-card ' + podiumClasses[pi] + '">' +
+            '<span class="mc-podium-rank">' + String(pi+1).padStart(2,'0') + '</span>' +
+            '<span class="mc-podium-name">' + pm.name + '</span>' +
+            '<span class="mc-podium-provider">' + (MODEL_PROVIDER[pm.name]||'') + '</span>' +
+            '<span class="mc-podium-tokens">' + fmtTok(pm.tokens) + '</span>' +
+            '</div>';
+        }
+        tuHtml += '</div>';
+      }
       board.forEach(function(m,i){
-        var label = m.tokens >= 1000 ? (m.tokens/1000).toFixed(m.tokens>=10000?0:1).replace(/\.0$/,'') + 'B' : Math.round(m.tokens) + 'M';
-        tuHtml += '<div class="mc-row' + (i===0?' top':'') + '">' +
+        if(board.length>=3 && i<3) return;
+        tuHtml += '<div class="mc-row">' +
           '<div class="mc-head"><span class="mc-rank">' + String(i+1).padStart(2,'0') + '</span>' +
           '<span class="mc-name">' + m.name + '</span>' +
           '<span class="mc-provider">' + (MODEL_PROVIDER[m.name]||'') + '</span>' +
-          '<span class="mc-tokens">' + label + '</span></div>' +
+          '<span class="mc-tokens">' + fmtTok(m.tokens) + '</span></div>' +
           '<div class="mc-bar"><span class="mc-fill" style="display:block;width:' + Math.round(m.tokens/maxTok*100) + '%"></span></div>' +
           '</div>';
       });
