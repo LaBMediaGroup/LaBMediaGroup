@@ -587,7 +587,7 @@ input,textarea,select{font:inherit;color:inherit}
 /* Reachable without advertising itself. The usage dashboard is public but
    unlisted, and this is the way in for anyone who does not know the Konami
    code. Quiet enough to miss, solid enough to read once you look at it. */
-.foot-quiet{color:inherit;opacity:.4;transition:opacity var(--fast) var(--ease),color var(--fast) var(--ease)}
+.foot-quiet{display:inline-block;padding:12px 8px;margin:-12px -8px;color:inherit;opacity:.4;transition:opacity var(--fast) var(--ease),color var(--fast) var(--ease)}
 .foot-quiet:hover,.foot-quiet:focus-visible{opacity:1;color:var(--accent)}
 /* The assistant launcher is fixed in the bottom-right corner, directly over the
    copyright. Move that line aside, but only while the launcher is mounted, so
@@ -1157,6 +1157,9 @@ body:has(.lab-chat) .foot-bot>:last-child{margin-right:clamp(54px,6vw,72px)}
   .lab-chat-msg{padding:10px 0}
   .lab-chat-copy{font-size:14.5px;line-height:1.55}
   .lab-chat-launch{width:56px;height:56px}
+  /* The launcher is 56px wide with a 10px inset; lift the whole footer above
+     it on phones so no footer link can hide underneath. */
+  body:has(.lab-chat) .foot-bot{padding-bottom:78px}
   .lab-chat-log .as-video-card{max-width:min(100%, 250px);margin-top:8px}
 }
 @media (prefers-reduced-motion:reduce){
