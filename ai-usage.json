@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-01T23:30:00-04:00",
+  "lastUpdated": "2026-08-02T14:48:55.486024-04:00",
   "providers": [
     {
       "name": "Synthetic",
@@ -16,10 +16,22 @@
       "link": "https://synthetic.new/billing/",
       "linkLabel": "Billing &amp; usage",
       "models": [
-        {"name": "Kimi K3", "active": true},
-        {"name": "Kimi K2.7 Code", "active": false},
-        {"name": "GLM-5.2", "active": false},
-        {"name": "GLM-4.7", "active": false}
+        {
+          "name": "Kimi K3",
+          "active": true
+        },
+        {
+          "name": "Kimi K2.7 Code",
+          "active": false
+        },
+        {
+          "name": "GLM-5.2",
+          "active": false
+        },
+        {
+          "name": "GLM-4.7",
+          "active": false
+        }
       ]
     },
     {
@@ -37,16 +49,25 @@
       "link": "https://www.kimi.com/code/console?from=kfc_overview_topbar",
       "linkLabel": "Usage console",
       "models": [
-        {"name": "K3-256k", "active": true},
-        {"name": "K3", "active": false},
-        {"name": "kimi-for-coding", "active": false}
+        {
+          "name": "K3-256k",
+          "active": true
+        },
+        {
+          "name": "K3",
+          "active": false
+        },
+        {
+          "name": "kimi-for-coding",
+          "active": false
+        }
       ]
     },
     {
       "name": "GLM / <em>Z.ai</em>",
       "tier": "$16.20/mo",
       "plan": "GLM Coding Lite (Legacy V2)",
-      "monthlyCost": 16.20,
+      "monthlyCost": 16.2,
       "cost": "$16.20/mo",
       "endpoint": "api.z.ai",
       "percentUsed": 0,
@@ -58,8 +79,14 @@
       "linkLabel": "Usage console",
       "note": "Lite",
       "models": [
-        {"name": "GLM-5.2", "active": true},
-        {"name": "GLM-4.7", "active": false}
+        {
+          "name": "GLM-5.2",
+          "active": true
+        },
+        {
+          "name": "GLM-4.7",
+          "active": false
+        }
       ]
     },
     {
@@ -77,8 +104,14 @@
       "link": "https://chatgpt.com/#settings/Usage",
       "linkLabel": "Usage settings",
       "models": [
-        {"name": "GPT-5.6-sol", "active": true},
-        {"name": "Codex CLI", "active": false}
+        {
+          "name": "GPT-5.6-sol",
+          "active": true
+        },
+        {
+          "name": "Codex CLI",
+          "active": false
+        }
       ]
     },
     {
@@ -96,7 +129,10 @@
       "link": "https://claude.ai/new#settings/usage",
       "linkLabel": "Usage settings",
       "models": [
-        {"name": "Claude Sonnet 5", "active": true}
+        {
+          "name": "Claude Sonnet 5",
+          "active": true
+        }
       ]
     },
     {
@@ -114,44 +150,145 @@
       "link": "https://gemini.google.com/usage",
       "linkLabel": "Usage dashboard",
       "models": [
-        {"name": "Gemini Pro", "active": false}
+        {
+          "name": "Gemini Pro",
+          "active": false
+        }
       ]
     }
   ],
   "toolUsage": {
     "period": "Last 30 days",
-    "totalTokens": 1169000000,
-    "totalLabel": "1.17B",
-    "note": "Counted from local logs — CodexBar + OpenClaw session history. Antigravity rides on Claude/GPT keys and the Claude desktop app keeps its own books, so neither can be separated.",
+    "totalTokens": 1646000000,
+    "totalLabel": "1.6B",
+    "note": "Counted from local logs — CodexBar + OpenClaw session transcripts + Hermes state.db. Antigravity rides on Claude/GPT keys and the Claude desktop app keeps its own books, so neither can be separated.",
     "tools": [
-      {
-        "name": "OpenClaw",
-        "tokensLabel": "632M",
-        "share": 54,
-        "models": [
-          {"name": "GLM-5.2", "tokensLabel": "394M", "share": 62},
-          {"name": "GLM-4.7", "tokensLabel": "109M", "share": 17},
-          {"name": "Kimi-K2.7-Code", "tokensLabel": "57M", "share": 9},
-          {"name": "Kimi-K3 (Synthetic)", "tokensLabel": "42M", "share": 7},
-          {"name": "Kimi-K3 (Moonshot)", "tokensLabel": "0M", "share": 0},
-          {"name": "Gemini Flash", "tokensLabel": "25M", "share": 4}
-        ]
-      },
       {
         "name": "Codex CLI",
         "tokensLabel": "242M",
-        "share": 21,
+        "share": 15,
         "models": [
-          {"name": "GPT-5.6-sol", "tokensLabel": "242M", "share": 100}
+          {
+            "name": "GPT-5.6-sol",
+            "tokensLabel": "242M",
+            "share": 100
+          }
         ]
       },
       {
         "name": "Claude Code",
         "tokensLabel": "295M",
-        "share": 25,
+        "share": 18,
         "models": [
-          {"name": "Opus-5", "tokensLabel": "209M", "share": 71},
-          {"name": "Fable-5", "tokensLabel": "86M", "share": 29}
+          {
+            "name": "Opus-5",
+            "tokensLabel": "209M",
+            "share": 71
+          },
+          {
+            "name": "Fable-5",
+            "tokensLabel": "86M",
+            "share": 29
+          }
+        ]
+      },
+      {
+        "name": "Hermes",
+        "tokensLabel": "1B",
+        "share": 61,
+        "models": [
+          {
+            "name": "MiniMax-M3",
+            "tokensLabel": "643M",
+            "share": 63
+          },
+          {
+            "name": "GPT-5.6-sol",
+            "tokensLabel": "166M",
+            "share": 16
+          },
+          {
+            "name": "GLM-5.2",
+            "tokensLabel": "107M",
+            "share": 10
+          },
+          {
+            "name": "MiniMax-M2.7",
+            "tokensLabel": "47M",
+            "share": 5
+          },
+          {
+            "name": "GPT-5.4",
+            "tokensLabel": "33M",
+            "share": 3
+          },
+          {
+            "name": "Kimi-K3 (Synthetic)",
+            "tokensLabel": "15M",
+            "share": 1
+          },
+          {
+            "name": "GPT-5.4-mini",
+            "tokensLabel": "8M",
+            "share": 1
+          },
+          {
+            "name": "GPT-5.5",
+            "tokensLabel": "1M",
+            "share": 0
+          }
+        ]
+      },
+      {
+        "name": "OpenClaw",
+        "tokensLabel": "109M",
+        "share": 7,
+        "models": [
+          {
+            "name": "hf:zai-org/GLM-5.2",
+            "tokensLabel": "49M",
+            "share": 45
+          },
+          {
+            "name": "GLM-4.7",
+            "tokensLabel": "43M",
+            "share": 40
+          },
+          {
+            "name": "Kimi-K3 (Synthetic)",
+            "tokensLabel": "7M",
+            "share": 6
+          },
+          {
+            "name": "GLM-5.2",
+            "tokensLabel": "5M",
+            "share": 4
+          },
+          {
+            "name": "Kimi-K2.7-Code",
+            "tokensLabel": "2M",
+            "share": 2
+          },
+          {
+            "name": "GLM-5",
+            "tokensLabel": "2M",
+            "share": 2
+          },
+          {
+            "name": "GPT-5.5",
+            "tokensLabel": "680K",
+            "share": 1
+          },
+          {
+            "name": "GLM-4.6",
+            "tokensLabel": "394K",
+            "share": 0
+          },
+          {
+            "name": "hf:MiniMaxAI/MiniMax-M3",
+            "tokensLabel": "19K",
+            "share": 0
+          }
         ]
       }
     ]
