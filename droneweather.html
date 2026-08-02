@@ -1050,6 +1050,33 @@
         '.XXXXXXXoo','XXXXXXXXoo','.XXXXXXXX.','..XX.XX...'
       ]]
     },
+    /* The night shift. A raccoon reads by its mask and its ringed tail, so
+       both get the shade tone rather than the body tone; below this size the
+       mask is the only thing that says raccoon at all. */
+    raccoon: {
+      w: 12, h: 9, tone: 'ink', speed: 0.24, dwell: 4.0, stepRate: 7, idleRate: 1.1,
+      frames: [[
+        '.XX.........','XooX....XXX.','XXXXX..XoXoX','.XXXXXXXXXXX',
+        '.XXXXXXXXXXX','..XXXXXXXXX.','..XXXXXXXX..','..X.X..X.X..',
+        '..X.X..X.X..'
+      ],[
+        '.XX.........','XooX....XXX.','XXXXX..XoXoX','.XXXXXXXXXXX',
+        '.XXXXXXXXXXX','..XXXXXXXXX.','..XXXXXXXX..','..XX....XX..',
+        '.X..X..X..X.'
+      ]]
+    },
+    /* The opossum is slower than everything else out there and its tail is
+       bare, so it stays one pixel wide instead of taking the body tone. */
+    opossum: {
+      w: 13, h: 8, tone: 'ink', speed: 0.17, dwell: 4.6, stepRate: 5, idleRate: 0.8,
+      frames: [[
+        '.X...........','XXXX.....XXXX','XoXXXXXXXXXX.','.XXXXXXXXXX..',
+        '.XXXXXXXXXX..','..XXXXXXXX...','..X.X..X.X...','..X.X..X.X...'
+      ],[
+        '.X...........','XXXX.....XXXX','XoXXXXXXXXXX.','.XXXXXXXXXX..',
+        '.XXXXXXXXXX..','..XXXXXXXX...','..XX....XX...','.X..X..X..X..'
+      ]]
+    },
     fox: {
       w: 14, h: 10, tone: 'accent', speed: 0.36, dwell: 3.4, stepRate: 8, idleRate: 1.6,
       frames: [[
@@ -1068,9 +1095,19 @@
 
   /* Who is out is itself a weather readout: deer only in genuine calm,
      fox up to a stiff breeze, and when it is unsafe to fly nobody
-     comes out at all. */
+     comes out at all. It is also a clock. After dark the day shift goes
+     home and the raccoons and opossums take over, with the fox working
+     both, because a fox genuinely does. */
   function critterPool(){
     if (status() === 'red') return [];
+    var night = solarScene().phase === 'night';
+    if (night){
+      if (precip() === 2) return ['opossum'];
+      var dark = ['raccoon', 'opossum', 'raccoon'];
+      if (windSpeed < 14) dark.push('fox');
+      if (windSpeed < 10) dark.push('deer');
+      return dark;
+    }
     if (precip() === 2) return ['squirrel', 'rabbit'];
     var pool = ['squirrel', 'rabbit', 'squirrel'];
     if (windSpeed < 14) pool.push('fox');
@@ -1221,6 +1258,17 @@
     var pw = st === 'red' ? 3 : 5;
     px(dx - 9 - (pw > 3 ? 0 : 1), L - 3, pw, 1, blur ? acc : accD);
     px(dx + 5 + (pw > 3 ? 0 : 1), R - 3, pw, 1, blur ? accD : acc);
+
+    /* After dark the aircraft lights up, which is the rule the note further
+       down the page is about: position lights burning steady, red to port and
+       green to starboard, and an anti-collision strobe that is off far more
+       of the second than it is on. A drone parked on the ground is not
+       flying, so it keeps them off. */
+    if (solarScene().phase === 'night' && st !== 'red'){
+      px(dx - 8, L, 1, 1, 'rgba(255,74,60,.95)');
+      px(dx + 8, R, 1, 1, 'rgba(96,240,140,.95)');
+      if ((t % 1.15) < 0.11) px(dx - 1, dy + 2, 3, 1, 'rgba(255,255,255,.98)');
+    }
   }
 
   function drawBirds(t, bend){

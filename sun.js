@@ -404,6 +404,16 @@
       {x:.62,y:.29,s:.00023,p:4.1,z:1.7},
       {x:.72,y:.22,s:.00018,p:1.3,z:1}
     ];
+    /* The night shift. Bats are faster than the birds and do not hold a line,
+       so their height is two sine waves fighting each other rather than one
+       gentle one. The owl is the opposite: one of it, slow, mostly gliding,
+       crossing well above the treeline. */
+    var bats=[
+      {x:.21,y:.30,s:.00036,p:.6,z:1},
+      {x:.47,y:.23,s:.00043,p:2.9,z:1},
+      {x:.74,y:.34,s:.00039,p:5.0,z:1}
+    ];
+    var owl={x:-.14,y:.19,s:.00013,p:1.1,z:2};
     function pixel(x,y,w,h,color){paint.fillStyle=color;paint.fillRect(Math.round(x),Math.round(y),Math.max(1,Math.round(w)),Math.max(1,Math.round(h)))}
     function resize(){
       var rect=canvas.getBoundingClientRect();if(!rect.width||!rect.height)return;
@@ -455,6 +465,37 @@
           pixel(x-size,y,size*2,size,birdColor);
           pixel(x+size,y+flap*size,size*2,size,birdColor);
         });
+      }
+      if(night&&state.wind<18){
+        /* The night sky is not one colour, so neither is the night shift. On a
+           clear night it drops to near-black and a dark silhouette vanishes,
+           so the fliers catch moonlight and read pale. Under a full deck the
+           same sky lifts to a grey that pale wings disappear into, so they go
+           back to being silhouettes. Cross-fade between the two on cloud. */
+        var deck=clamp(cloudCover()/100,0,1);
+        var nightColor=deck>.55
+          ? 'rgba(18,26,38,'+(.42+deck*.30).toFixed(2)+')'
+          : 'rgba(201,214,234,'+(.52-deck*.16).toFixed(2)+')';
+        bats.forEach(function(bat){
+          if(!REDUCED)bat.x+=bat.s*(1+wind*1.1);
+          if(bat.x>1.08)bat.x=-.08;
+          var bs=Math.max(1,Math.round(bat.z)),bx=Math.round(bat.x*bw);
+          var by=Math.round((bat.y+Math.sin(time*2.4+bat.p)*.03+Math.sin(time*5.9+bat.p*2)*.013)*bh);
+          // wings are held above the body and beat roughly three times a second
+          var bf=Math.sin(time*13+bat.p)>0?bs:0;
+          pixel(bx-bs*3,by-bf,bs*2,bs,nightColor);
+          pixel(bx-bs,by,bs*2,bs,nightColor);
+          pixel(bx+bs,by-bf,bs*2,bs,nightColor);
+        });
+        if(!REDUCED)owl.x+=owl.s*(1+wind*.55);
+        if(owl.x>1.2)owl.x=-.2;
+        var os=Math.max(1,Math.round(owl.z)),ox=Math.round(owl.x*bw);
+        var oy=Math.round((owl.y+Math.sin(time*.38+owl.p)*.012)*bh);
+        // mostly a glide, with a slow beat every few seconds
+        var of=Math.sin(time*1.6)>.62?os:0;
+        pixel(ox-os*4,oy-of,os*3,os,nightColor);
+        pixel(ox-os,oy-1,os*3,os+1,nightColor);
+        pixel(ox+os*2,oy-of,os*3,os,nightColor);
       }
       if(state.wind>5){
         var lines=Math.min(9,Math.round(state.wind/2.4));

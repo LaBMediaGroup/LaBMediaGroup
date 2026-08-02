@@ -59,7 +59,10 @@
 .def-sense em{font-style:italic;color:var(--accent)}
 .def-hist{position:relative;padding-left:15px}
 .def-hist::before{content:"";position:absolute;left:2px;top:.66em;width:4px;height:4px;border-radius:50%;background:var(--faint)}
-.def-tag{font-style:italic;color:var(--accent)}
+/* A register label, not the first word of the sentence, so it needs to read as
+   a tag. Italic and ember do most of that; the extra air stops the eye running
+   "historical" straight into "A note" and parsing it as an adverb. */
+.def-tag{font-style:italic;color:var(--accent);margin-right:.4em}
 
 /* the numbers, stated once */
 .figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);
@@ -192,9 +195,9 @@
         <span class="def-say">| &#712;k&auml;l&#601;f&#601;n, &#712;k&auml;l&#601;&#716;f&auml;n |</span>
         <span class="def-pos">noun</span>
       </p>
-      <p class="def-sense">A publisher&rsquo;s emblem or imprint, usually set on the title page or the
+      <p class="def-sense">a publisher&rsquo;s emblem or imprint, usually set on the title page or the
       spine of a book.</p>
-      <p class="def-sense def-hist"><span class="def-tag">historical</span> A note at the end of a book,
+      <p class="def-sense def-hist"><span class="def-tag">historical</span> a note at the end of a book,
       set beside the printer&rsquo;s mark, recording who made it and how it was printed.</p>
       <p class="def-k"><span>Origin</span><i></i></p>
       <p class="def-sense">Early 17th century, in the sense of a finishing touch: from Greek
