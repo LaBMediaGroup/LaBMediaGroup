@@ -121,6 +121,13 @@
   .bts-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:132px}
   .shot.big,.shot.wide{grid-column:span 2}
 }
+/* Who took them. Said once, under the grid, in the same hairline box : the
+   credit belongs to the whole set, so it isn't repeated on every frame. */
+.bts-credit{margin:0;font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--faint);padding:11px var(--s-4);border:1px solid var(--line);border-top:0}
+.bts-credit a{color:var(--dim);border-bottom:1px solid var(--line-2);
+  transition:color var(--fast) var(--ease),border-color var(--fast) var(--ease)}
+.bts-credit a:hover,.bts-credit a:focus-visible{color:var(--accent);border-color:var(--accent)}
 
 /* ---- Lightbox : the reel page's viewer, same rules ----
    A column, not a stack of absolutes. The frame takes whatever height is
@@ -324,6 +331,7 @@
         <button class="shot wide" type="button" data-full="images/thehook/hook-13.jpg" data-meta="Day 5 · Mar 28 · 85mm ƒ/1.8 · 1/2500 · ISO100" aria-label="Open photo 13 of 14"><img src="images/thehook/thumb/hook-13.jpg" alt="" width="1800" height="1143" loading="lazy" decoding="async"></button>
         <button class="shot" type="button" data-full="images/thehook/hook-14.jpg" data-meta="Day 5 · Mar 28 · 85mm ƒ/1.8 · 1/2500 · ISO100" aria-label="Open photo 14 of 14"><img src="images/thehook/thumb/hook-14.jpg" alt="" width="1800" height="1402" loading="lazy" decoding="async"></button>
     </div>
+    <p class="bts-credit">Photographs by <a href="https://www.instagram.com/alkrak3/" target="_blank" rel="noopener">Al Krakosky ↗</a></p>
   </details>
 </section>
 

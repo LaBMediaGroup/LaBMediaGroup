@@ -87,6 +87,12 @@ var LAB_ASSISTANT_KNOWLEDGE = {
     { title:'Where should I start?', url:'index.html',
       tags:'start beginner where navigation help',
       answer:'For films, start with The Reel. To learn, open Watch & Learn. For filmmaking tools, use Software & Assets. If drones are the goal, start with SkyBound.' },
+    { title:'Who took the On Set photographs?', url:'contact.html',
+      tags:'photo photos photograph photographs photographer photography credit credited stills who shot took taken al krakosky alkrak3 on set onset behind the scenes bts gallery the hook about page',
+      answer:'Al Krakosky took all fourteen On Set photographs from The Hook on the About page, across both shoot days: March 21 on a 35mm and March 28 on an 85mm, the same Sony ILCE-7RM2 body each time. His work is at instagram.com/alkrak3.' },
+    { title:'What is Sideways?', url:'contact.html',
+      tags:'sideways sideways studio sideways animation sideways lab animator animation studio al krakosky joe krakosky brothers brother collaborator who is al',
+      answer:'Sideways Studio is an animation studio run by Al Krakosky and his brother Joe. Al is LaB’s closest collaborator across the reel, and the photographer behind the On Set photographs on the About page; Scattered was entered in the Detroit 48 Hour Film Project under the team name Sideways Lab. The studio is at sidewaysstudio.net, and on Instagram at instagram.com/sideways_animation.' },
     { title:'How does this assistant work?', url:'assistant.html',
       tags:'assistant ai model ollama local search how work privacy',
       answer:'The published assistant matches your question against the site’s structured data in the browser. In the default hybrid mode, a protected Cloudflare Worker may hand only that already-public answer to the fixed Nemotron 3 Super model for more natural phrasing. The raw visitor question is not sent to Ollama, the API key never reaches the browser, and sourced retrieval remains the fallback. Switch to Sourced only to make no model request at all.' }
