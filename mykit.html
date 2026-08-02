@@ -101,6 +101,30 @@
   .k-n{display:none}
   .k-drop{justify-self:start}
 }
+/* ---------- Favorited frames ----------
+   Photos hearted in the Reel's behind-the-scenes galleries. Same rule as the
+   kit : localStorage in this browser, nothing on the server, cap of 50. */
+.favs{margin-top:var(--s-8)}
+.favs .rule{margin-bottom:0}
+.favs-h{font-family:var(--f-display);font-size:clamp(24px,3vw,32px);font-weight:400;letter-spacing:-.02em;line-height:1.05;margin:var(--s-4) 0 var(--s-5)}
+.favs-h em{font-style:italic;color:var(--accent)}
+.favs-empty{color:var(--dim);font-size:var(--t-sm);line-height:1.75;max-width:58ch}
+.favs-empty a{color:var(--accent);border-bottom:1px solid var(--accent-dim)}
+.favs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.favs-item{margin:0;background:var(--paper);position:relative}
+.favs-link{display:block;overflow:hidden}
+.favs-link img{width:100%;height:130px;object-fit:cover;display:block;transition:transform .45s var(--ease)}
+.favs-link:hover img{transform:scale(1.04)}
+.favs-item figcaption{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-top:1px solid var(--line)}
+.favs-film{flex:1;min-width:0;font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* a whole film, not a frame from one : said once, on the corner of the poster,
+   so the caption keeps its full width for the title */
+.favs-kind{position:absolute;top:0;left:0;z-index:1;
+  font-family:var(--f-mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);background:rgba(11,11,12,.72);padding:4px 6px;line-height:1;pointer-events:none;
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.favs-drop{background:transparent;border:0;color:var(--faint);font-size:12px;line-height:1;cursor:pointer;padding:4px}
+.favs-drop:hover{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -181,6 +205,12 @@
       <a href="resources.html" style="color:var(--accent)">resources list</a> itself reads fine either way.</p>
     </div>
   </noscript>
+</section>
+
+<section class="wrap favs" id="favSection" aria-label="Kept from the reel">
+  <div class="rule"><span class="mono">Kept from the reel</span><i></i><span class="mono" id="favCount"></span></div>
+  <h2 class="favs-h">Films &amp; frames you <em>kept.</em></h2>
+  <div id="favGrid"></div>
 </section>
 
 </main>
@@ -558,5 +588,51 @@
 <script src="flight-checklist.js"></script>
 <script src="assistant-guide.js"></script>
 <script src="assistant-widget.js"></script>
+<script>
+/* Kept from the reel : reads the same lab-favs-v1 key the Reel writes to.
+   Two things live in that list : whole films, kept from the heart in a film's
+   rule line, and single frames, kept from the behind-the-scenes viewer. Newest
+   first. A frame links back into its own gallery at its own photo via
+   portfolio.html#fav= ; a film links straight to the film. */
+(function(){
+  var KEY='lab-favs-v1', MAX=50;
+  var grid=document.getElementById('favGrid'), count=document.getElementById('favCount');
+  if(!grid)return;
+  function read(){ try{ var v=JSON.parse(localStorage.getItem(KEY)||'[]'); return Array.isArray(v)?v:[] }catch(e){ return [] } }
+  function write(a){ try{ localStorage.setItem(KEY,JSON.stringify(a)) }catch(e){} }
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;') }
+  function paint(){
+    var favs=read();
+    count.textContent = favs.length ? favs.length+' of '+MAX : 'empty';
+    if(!favs.length){
+      grid.innerHTML='<p class="favs-empty">Nothing kept yet. On the '
+        +'<a href="portfolio.html">Reel</a>, the heart beside a film’s title keeps the film; '
+        +'open any behind-the-scenes gallery and the heart under a photo keeps that frame. '
+        +'Either way it lands here, in this browser only.</p>';
+      return;
+    }
+    grid.innerHTML='<div class="favs-grid">'+favs.slice().reverse().map(function(f){
+      var isFilm = f.kind==='film';
+      var href = isFilm ? f.src : 'portfolio.html#fav='+encodeURIComponent(f.src);
+      var alt  = isFilm ? f.film : f.film+' : behind the scenes';
+      return '<figure class="favs-item">'
+        +(isFilm ? '<span class="favs-kind">Film</span>' : '')
+        +'<a class="favs-link" href="'+esc(href)+'">'
+        +'<img src="'+esc(f.thumb||f.src)+'" alt="'+esc(alt)+'" loading="lazy" decoding="async"></a>'
+        +'<figcaption><span class="favs-film">'+esc(f.film)+'</span>'
+        +'<button type="button" class="favs-drop" data-drop="'+esc(f.src)+'" aria-label="Remove '+esc(f.film)+' from your Kit">✕</button>'
+        +'</figcaption></figure>';
+    }).join('')+'</div>';
+  }
+  grid.addEventListener('click',function(e){
+    var b=e.target.closest && e.target.closest('[data-drop]');
+    if(!b)return;
+    e.preventDefault();
+    write(read().filter(function(f){ return f.src!==b.dataset.drop }));
+    paint();
+  });
+  paint();
+})();
+</script>
 </body>
 </html>

@@ -253,6 +253,21 @@
 .proj-num{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;color:var(--accent)}
 .proj-kind{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
 .proj-head i{flex:1;height:1px;background:var(--line)}
+/* Keep a film : deliberately the quietest control on the page. It borrows the
+   rule line the number and the year already share rather than adding furniture
+   of its own, rests at a third of an opacity, and only takes colour once it
+   actually means something. */
+.proj-fav{background:transparent;border:0;padding:0;margin-left:-6px;align-self:center;
+  width:24px;height:24px;display:grid;place-items:center;cursor:pointer;
+  color:var(--faint);opacity:.3;
+  transition:opacity var(--fast) var(--ease),color var(--fast) var(--ease)}
+.proj-fav svg{display:block}
+.proj:hover .proj-fav{opacity:.85}
+.proj-fav:hover{opacity:1;color:var(--accent)}
+.proj-fav:focus-visible{opacity:1;outline:1px solid var(--accent);outline-offset:3px}
+.proj-fav[aria-pressed="true"]{opacity:1;color:var(--accent)}
+.proj-fav[aria-pressed="true"] svg path{fill:currentColor}
+@media (hover:none){ .proj-fav{opacity:.5} }
 .proj h2{font-family:var(--f-display);font-size:var(--t-2xl);font-weight:400;letter-spacing:-.022em;line-height:1;margin-bottom:var(--s-4)}
 .proj h2 em{font-style:italic;color:var(--accent)}
 .proj .desc{color:var(--dim);font-size:var(--t-lg);line-height:1.75;max-width:50ch;margin-bottom:var(--s-6)}
@@ -490,30 +505,65 @@
   color:var(--faint);padding:11px var(--s-4);border-top:1px solid var(--line)}
 @media (max-width:520px){ .clip{grid-column:span 1} }
 
-/* ---- Lightbox ---- */
-.lb{position:fixed;inset:0;z-index:900;display:none;place-items:center;
-  background:rgba(6,6,7,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:var(--s-5)}
-.lb[open],.lb.on{display:grid}
-.lb img{max-width:min(1500px,94vw);max-height:86vh;width:auto;height:auto;object-fit:contain}
-/* controls gathered into one editorial bar : prev, count, next.
-   The X steps down off the ceiling; the count wears the display serif. */
-.lb-close{position:absolute;top:clamp(28px,6vh,64px);right:var(--s-5);z-index:2;
-  background:transparent;border:1px solid rgba(244,241,236,.28);color:#F4F1EC;
-  width:44px;height:44px;display:grid;place-items:center;font-size:15px;line-height:1;cursor:pointer;
+/* ---- Lightbox ----
+   A column, not a stack of absolutes. The frame takes whatever height is
+   left over and the control bar sits underneath it, so the arrows can
+   never come to rest on top of the photograph : which is exactly what the
+   old absolutely-positioned bar did to anything taller than it expected. */
+.lb{position:fixed;inset:0;z-index:900;display:none;
+  background:rgba(6,6,7,.965);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.lb[open],.lb.on{display:flex;flex-direction:column;
+  padding:clamp(18px,3.4vh,40px) var(--gutter) clamp(14px,2.6vh,30px)}
+/* flex-basis 0 so the frame's height is a real number the photo can measure
+   itself against : with basis auto the image sizes the frame and overruns it. */
+.lb-frame{flex:1 1 0;min-height:0;position:relative}
+.lb img{position:absolute;inset:0;margin:auto;
+  max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;
+  box-shadow:0 24px 80px rgba(0,0,0,.55)}
+.lb img.is-in{animation:lb-fade 300ms var(--ease) both}
+@keyframes lb-fade{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
+
+/* controls gathered into one editorial bar : prev, film + count, favorite,
+   next, then close behind a rule. It reads as a piece of furniture now :
+   a hairline tray on its own ground, not glyphs floating on the picture.
+   The count wears the display serif; the film name rides above it. */
+.lb-bar{flex:0 0 auto;align-self:center;margin-top:clamp(14px,2.4vh,26px);
+  display:flex;align-items:center;gap:clamp(6px,1.1vw,12px);
+  padding:8px clamp(10px,1.4vw,16px);
+  background:rgba(244,241,236,.05);border:1px solid rgba(244,241,236,.13);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.lb-prev,.lb-next,.lb-close,.lb-fav{background:transparent;border:1px solid rgba(244,241,236,.2);
+  color:#F4F1EC;width:44px;height:44px;display:grid;place-items:center;line-height:1;cursor:pointer;
   transition:background var(--fast) var(--ease),border-color var(--fast) var(--ease),color var(--fast) var(--ease)}
-.lb-close:hover{background:var(--accent);border-color:var(--accent);color:var(--paper)}
-.lb-bar{position:absolute;bottom:clamp(24px,5vh,56px);left:50%;transform:translateX(-50%);z-index:2;
-  display:flex;align-items:center;gap:clamp(14px,2.5vw,26px)}
-.lb-prev,.lb-next{background:transparent;border:1px solid rgba(244,241,236,.28);
-  color:#F4F1EC;width:44px;height:44px;display:grid;place-items:center;font-size:17px;line-height:1;cursor:pointer;
-  transition:background var(--fast) var(--ease),border-color var(--fast) var(--ease),color var(--fast) var(--ease)}
-.lb-prev:hover,.lb-next:hover{background:var(--accent);border-color:var(--accent);color:var(--paper)}
-.lb-count{font-family:var(--f-display);font-size:clamp(28px,3.5vw,42px);line-height:1;letter-spacing:.02em;
+.lb-prev svg,.lb-next svg,.lb-close svg,.lb-fav svg{display:block}
+.lb-prev:hover,.lb-next:hover,.lb-close:hover,.lb-fav:hover{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.lb-prev:focus-visible,.lb-next:focus-visible,.lb-close:focus-visible,.lb-fav:focus-visible{
+  outline:2px solid var(--accent);outline-offset:2px}
+.lb-rule{width:1px;height:26px;background:rgba(244,241,236,.16);margin-inline:clamp(2px,.6vw,6px)}
+.lb-meta{display:flex;flex-direction:column;align-items:center;gap:4px;
+  min-width:96px;padding-inline:clamp(4px,1vw,12px)}
+.lb-film{font-family:var(--f-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(244,241,236,.5);white-space:nowrap;max-width:34vw;overflow:hidden;text-overflow:ellipsis}
+.lb-count{font-family:var(--f-display);font-size:clamp(26px,3vw,36px);line-height:1;letter-spacing:.02em;
   color:rgba(244,241,236,.5);white-space:nowrap}
 .lb-count .lb-cur{color:var(--accent)}
-.lb-count .lb-sep{color:rgba(244,241,236,.28);margin:0 6px;font-size:.6em}
-@media (max-width:600px){
-  .lb-close{top:var(--s-4);right:var(--s-4)}
+.lb-count .lb-sep{color:rgba(244,241,236,.28);margin:0 5px;font-size:.6em}
+.lb-fav[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.lb-fav[aria-pressed="true"] svg path{fill:var(--accent);stroke:var(--accent)}
+.lb-fav[aria-pressed="true"]:hover{color:var(--paper)}
+.lb-fav[aria-pressed="true"]:hover svg path{fill:var(--paper);stroke:var(--paper)}
+@media (max-width:520px){
+  .lb[open],.lb.on{padding-inline:var(--s-4)}
+  .lb-bar{gap:4px;padding:6px 8px}
+  .lb-prev,.lb-next,.lb-close,.lb-fav{width:40px;height:40px}
+  .lb-meta{min-width:74px}
+  .lb-count{font-size:24px}
+}
+@media (max-width:420px){
+  .lb-film{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .lb img.is-in{animation:none}
 }
 
 .reel-cta{padding-block:clamp(56px,8vw,var(--s-9));text-align:center}
@@ -1612,6 +1662,53 @@ document.querySelectorAll('.vid').forEach(function(box){
   window.addEventListener('hashchange',target);
 })();
 
+/* Keep a film. Same drawer as the kept frames : one list, one cap, one page
+   to find them on. A film entry carries its own anchor as its key, so it can
+   never collide with a photograph's file path. The control is a heart in the
+   rule line above each title and nowhere else : you have to be looking at the
+   film to find it. */
+(function(){
+  var arts=[].slice.call(document.querySelectorAll('article.proj'));
+  if(!arts.length)return;
+  var KEY='lab-favs-v1', MAX=50;
+  function read(){ try{ var v=JSON.parse(localStorage.getItem(KEY)||'[]'); return Array.isArray(v)?v:[] }catch(e){ return [] } }
+  function write(a){ try{ localStorage.setItem(KEY,JSON.stringify(a)) }catch(e){} }
+
+  arts.forEach(function(art){
+    var head=art.querySelector('.proj-head'), h=art.querySelector('h2');
+    if(!head||!h||!art.id)return;
+    var title=h.textContent.replace(/\s+/g,' ').trim();
+    var key='portfolio.html#'+art.id;
+    var poster=art.querySelector('.vid-btn img, .still img');
+
+    var b=document.createElement('button');
+    b.type='button'; b.className='proj-fav';
+    b.innerHTML='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"'
+      +' stroke-width="1.6" aria-hidden="true">'
+      +'<path d="M12 20.5c-5.2-3.3-8.5-6.6-8.5-10.4 0-2.7 2.1-4.6 4.4-4.6 1.6 0 3.1.9 4.1 2.3 1-1.4 2.5-2.3 4.1-2.3 2.3 0 4.4 1.9 4.4 4.6 0 3.8-3.3 7.1-8.5 10.4z"/>'
+      +'</svg>';
+
+    function sync(){
+      var on=read().some(function(f){ return f.src===key });
+      b.setAttribute('aria-pressed', on?'true':'false');
+      b.setAttribute('aria-label', (on?'Remove ':'Keep ')+title+(on?' from your Kit':' in your Kit'));
+    }
+    b.addEventListener('click',function(){
+      var f=read(), k=-1;
+      f.forEach(function(x,idx){ if(x.src===key)k=idx });
+      if(k>-1){ f.splice(k,1); }
+      else{
+        f.push({kind:'film',src:key,thumb:poster?poster.getAttribute('src'):'',
+                film:title,filmId:art.id,t:Date.now()});
+        while(f.length>MAX) f.shift();
+      }
+      write(f); sync();
+    });
+    sync();
+    head.appendChild(b);
+  });
+})();
+
 /* Behind-the-scenes lightbox.
    Thumbnails carry the grid; the full-size file only loads when opened. */
 (function(){
@@ -1624,24 +1721,67 @@ document.querySelectorAll('.vid').forEach(function(box){
   var lb=document.createElement('div');
   lb.className='lb'; lb.setAttribute('role','dialog');
   lb.setAttribute('aria-modal','true'); lb.setAttribute('aria-label','Behind the scenes');
-  lb.innerHTML='<img alt="">'
-    +'<button class="lb-close" type="button" aria-label="Close">✕</button>'
+  /* Drawn chevrons rather than the ‹ › characters : the text glyphs render
+     hairline-thin in the body face and all but vanish over a bright frame. */
+  var CHEV='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"'
+    +' stroke-width="1.7" stroke-linecap="square" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
+  lb.innerHTML='<div class="lb-frame"><img alt=""></div>'
     +'<div class="lb-bar">'
-    +'<button class="lb-prev"  type="button" aria-label="Previous photo">‹</button>'
-    +'<span class="lb-count"></span>'
-    +'<button class="lb-next"  type="button" aria-label="Next photo">›</button>'
+    +'<button class="lb-prev"  type="button" aria-label="Previous photo">'+CHEV+'</button>'
+    +'<div class="lb-meta"><span class="lb-film"></span><span class="lb-count"></span></div>'
+    +'<button class="lb-fav" type="button" aria-pressed="false" aria-label="Save this photo to your favorites">'
+    +'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">'
+    +'<path d="M12 20.5c-5.2-3.3-8.5-6.6-8.5-10.4 0-2.7 2.1-4.6 4.4-4.6 1.6 0 3.1.9 4.1 2.3 1-1.4 2.5-2.3 4.1-2.3 2.3 0 4.4 1.9 4.4 4.6 0 3.8-3.3 7.1-8.5 10.4z"/>'
+    +'</svg></button>'
+    +'<button class="lb-next"  type="button" aria-label="Next photo">'
+    +CHEV.replace('M15 5l-7 7 7 7','M9 5l7 7-7 7')+'</button>'
+    +'<span class="lb-rule" aria-hidden="true"></span>'
+    +'<button class="lb-close" type="button" aria-label="Close">'
+    +'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7"'
+    +' stroke-linecap="square" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>'
     +'</div>';
   document.body.appendChild(lb);
 
-  var img=lb.querySelector('img'), count=lb.querySelector('.lb-count');
+  var img=lb.querySelector('img'), frame=lb.querySelector('.lb-frame'),
+      count=lb.querySelector('.lb-count'),
+      filmEl=lb.querySelector('.lb-film'), favBtn=lb.querySelector('.lb-fav');
+
+  /* Favorites : the heart writes to the same place the Kit page reads.
+     This browser only, cap of 50, oldest drops off the end. */
+  var FAV_KEY='lab-favs-v1', FAV_MAX=50;
+  function favRead(){ try{ var v=JSON.parse(localStorage.getItem(FAV_KEY)||'[]'); return Array.isArray(v)?v:[] }catch(e){ return [] } }
+  function favWrite(a){ try{ localStorage.setItem(FAV_KEY,JSON.stringify(a)) }catch(e){} }
+  function favHas(src){ return favRead().some(function(f){ return f.src===src }) }
+  function favToggle(entry){
+    var f=favRead(), k=-1;
+    f.forEach(function(x,idx){ if(x.src===entry.src)k=idx });
+    if(k>-1){ f.splice(k,1); favWrite(f); return false }
+    f.push(entry);
+    while(f.length>FAV_MAX) f.shift();
+    favWrite(f); return true;
+  }
+  function filmOf(s){
+    var art=s && s.closest('article.proj');
+    var h=art && art.querySelector('h2');
+    return h ? h.textContent.replace(/\s+/g,' ').trim() : '';
+  }
+  function syncFav(){
+    var on=favHas(shots[i].dataset.full);
+    favBtn.setAttribute('aria-pressed', on?'true':'false');
+    favBtn.setAttribute('aria-label', on ? 'Remove this photo from your favorites' : 'Save this photo to your favorites');
+  }
 
   function show(n){
     i=(n+shots.length)%shots.length;
     img.src=shots[i].dataset.full;
     img.alt='Behind the scenes, photo '+(i+1)+' of '+shots.length;
+    /* restart the fade so paging reads as a change of frame, not a jump cut */
+    img.classList.remove('is-in'); void img.offsetWidth; img.classList.add('is-in');
+    filmEl.textContent=filmOf(shots[i]);
     count.innerHTML='<span class="lb-cur">'+String(i+1).padStart(2,'0')+'</span>'
       +'<span class="lb-sep">/</span>'
       +'<span class="lb-tot">'+String(shots.length).padStart(2,'0')+'</span>';
+    syncFav();
     /* warm the neighbours so arrowing through feels instant */
     [i+1,i-1].forEach(function(k){
       var s=shots[(k+shots.length)%shots.length];
@@ -1671,7 +1811,19 @@ document.querySelectorAll('.vid').forEach(function(box){
   lb.querySelector('.lb-close').addEventListener('click',close);
   lb.querySelector('.lb-prev').addEventListener('click',function(e){e.stopPropagation();show(i-1)});
   lb.querySelector('.lb-next').addEventListener('click',function(e){e.stopPropagation();show(i+1)});
-  lb.addEventListener('click',function(e){ if(e.target===lb||e.target===img) close(); });
+  favBtn.addEventListener('click',function(e){
+    e.stopPropagation();
+    var s=shots[i], th=s.querySelector('img'), art=s.closest('article.proj');
+    favToggle({
+      src:s.dataset.full,
+      thumb:th ? th.getAttribute('src') : s.dataset.full,
+      film:filmOf(s),
+      filmId:art ? art.id : '',
+      t:Date.now()
+    });
+    syncFav();
+  });
+  lb.addEventListener('click',function(e){ if(e.target===lb||e.target===img||e.target===frame) close(); });
 
   document.addEventListener('keydown',function(e){
     if(!lb.classList.contains('on'))return;
@@ -1706,6 +1858,21 @@ document.querySelectorAll('.vid').forEach(function(box){
         close();                                   /* swipe down to dismiss */
       }
     },{passive:true});
+  })();
+
+  /* A #fav= link (from the Kit page's favorited frames) opens straight into
+     the right gallery at the right photo. */
+  (function(){
+    var m=(location.hash||'').match(/^#fav=(.+)$/);
+    if(!m)return;
+    var src;
+    try{ src=decodeURIComponent(m[1]) }catch(e){ return }
+    var s=document.querySelector('.bts-grid .shot[data-full="'+src.replace(/"/g,'\\"')+'"]');
+    if(!s)return;
+    var d=s.closest('details'); if(d&&!d.open)d.open=true;
+    shots=[].slice.call(s.closest('.bts-grid').querySelectorAll('.shot'));
+    var art=s.closest('article'); if(art)art.scrollIntoView({block:'start'});
+    open(shots.indexOf(s));
   })();
 
 })();
