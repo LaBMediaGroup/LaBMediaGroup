@@ -495,19 +495,25 @@
   background:rgba(6,6,7,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:var(--s-5)}
 .lb[open],.lb.on{display:grid}
 .lb img{max-width:min(1500px,94vw);max-height:86vh;width:auto;height:auto;object-fit:contain}
-.lb-close,.lb-prev,.lb-next{
-  position:absolute;background:rgba(11,11,12,.6);border:1px solid rgba(244,241,236,.28);
-  color:#F4F1EC;width:48px;height:48px;display:grid;place-items:center;font-size:19px;line-height:1;
-  transition:background var(--fast) var(--ease),border-color var(--fast) var(--ease)}
-.lb-close:hover,.lb-prev:hover,.lb-next:hover{background:var(--accent);border-color:var(--accent);color:var(--paper)}
-.lb-close{top:var(--s-5);right:var(--s-5)}
-.lb-prev{left:var(--s-5);top:50%;transform:translateY(-50%)}
-.lb-next{right:var(--s-5);top:50%;transform:translateY(-50%)}
-.lb-count{position:absolute;bottom:var(--s-5);left:50%;transform:translateX(-50%);
-  font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;color:rgba(244,241,236,.65)}
+/* controls gathered into one editorial bar : prev, count, next.
+   The X steps down off the ceiling; the count wears the display serif. */
+.lb-close{position:absolute;top:clamp(28px,6vh,64px);right:var(--s-5);z-index:2;
+  background:transparent;border:1px solid rgba(244,241,236,.28);color:#F4F1EC;
+  width:44px;height:44px;display:grid;place-items:center;font-size:15px;line-height:1;cursor:pointer;
+  transition:background var(--fast) var(--ease),border-color var(--fast) var(--ease),color var(--fast) var(--ease)}
+.lb-close:hover{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.lb-bar{position:absolute;bottom:clamp(24px,5vh,56px);left:50%;transform:translateX(-50%);z-index:2;
+  display:flex;align-items:center;gap:clamp(14px,2.5vw,26px)}
+.lb-prev,.lb-next{background:transparent;border:1px solid rgba(244,241,236,.28);
+  color:#F4F1EC;width:44px;height:44px;display:grid;place-items:center;font-size:17px;line-height:1;cursor:pointer;
+  transition:background var(--fast) var(--ease),border-color var(--fast) var(--ease),color var(--fast) var(--ease)}
+.lb-prev:hover,.lb-next:hover{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.lb-count{font-family:var(--f-display);font-size:clamp(28px,3.5vw,42px);line-height:1;letter-spacing:.02em;
+  color:rgba(244,241,236,.5);white-space:nowrap}
+.lb-count .lb-cur{color:var(--accent)}
+.lb-count .lb-sep{color:rgba(244,241,236,.28);margin:0 6px;font-size:.6em}
 @media (max-width:600px){
-  .lb-prev{left:var(--s-3)} .lb-next{right:var(--s-3)}
-  .lb-close{top:var(--s-3);right:var(--s-3)}
+  .lb-close{top:var(--s-4);right:var(--s-4)}
 }
 
 .reel-cta{padding-block:clamp(56px,8vw,var(--s-9));text-align:center}
@@ -1620,9 +1626,11 @@ document.querySelectorAll('.vid').forEach(function(box){
   lb.setAttribute('aria-modal','true'); lb.setAttribute('aria-label','Behind the scenes');
   lb.innerHTML='<img alt="">'
     +'<button class="lb-close" type="button" aria-label="Close">✕</button>'
+    +'<div class="lb-bar">'
     +'<button class="lb-prev"  type="button" aria-label="Previous photo">‹</button>'
+    +'<span class="lb-count"></span>'
     +'<button class="lb-next"  type="button" aria-label="Next photo">›</button>'
-    +'<span class="lb-count"></span>';
+    +'</div>';
   document.body.appendChild(lb);
 
   var img=lb.querySelector('img'), count=lb.querySelector('.lb-count');
@@ -1631,7 +1639,9 @@ document.querySelectorAll('.vid').forEach(function(box){
     i=(n+shots.length)%shots.length;
     img.src=shots[i].dataset.full;
     img.alt='Behind the scenes, photo '+(i+1)+' of '+shots.length;
-    count.textContent=String(i+1).padStart(2,'0')+' / '+String(shots.length).padStart(2,'0');
+    count.innerHTML='<span class="lb-cur">'+String(i+1).padStart(2,'0')+'</span>'
+      +'<span class="lb-sep">/</span>'
+      +'<span class="lb-tot">'+String(shots.length).padStart(2,'0')+'</span>';
     /* warm the neighbours so arrowing through feels instant */
     [i+1,i-1].forEach(function(k){
       var s=shots[(k+shots.length)%shots.length];
