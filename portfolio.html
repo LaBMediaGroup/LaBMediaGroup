@@ -287,11 +287,16 @@
    opening out just exposes it. The iframe is sized to 16:9 by width (134.44%
    of this box's height) and centred, cropping exactly the baked-in bar.
    The other videos on this page are true 16:9 and are left alone. */
+/* Lead reel and any film shot in scope : the 2.39 frame is kept through
+   playback rather than opening out to 16:9, because the letterbox is baked
+   into the video and opening out just exposes it. The iframe is sized to
+   16:9 by width (134.44% of this box's height) and centred, cropping exactly
+   the baked-in bar. True 16:9 videos are left alone. */
+.vid.lead,.vid.scope{aspect-ratio:2.39/1}
 .vid.lead{
   margin-top:var(--s-7);margin-bottom:var(--s-4);border-color:var(--line-2);
-  aspect-ratio:2.39/1;
 }
-.vid.lead.playing iframe{
+.vid.lead.playing iframe,.vid.scope.playing iframe{
   position:absolute;left:0;top:50%;
   width:100%;height:134.44%;
   transform:translateY(-50%);
@@ -944,9 +949,9 @@
     <h2>Trail <em>Dead</em></h2>
     <p class="desc">Invisible threat. Visible dread. A horror short exploring tension and atmosphere : built almost entirely in the cut. Don't watch alone.</p>
 
-    <div class="vid" data-video="rtEs8chuDlM">
+    <div class="vid scope" data-video="rtEs8chuDlM">
       <button class="vid-btn" type="button" aria-label="Play: Trail Dead">
-        <img src="images/traildead/roulette-poster.jpg" alt="" loading="lazy" decoding="async" width="1600" height="900">
+        <img src="images/traildead/roulette-poster.jpg" alt="" loading="lazy" decoding="async" width="1600" height="669">
         <span class="vid-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
       </button>
       <span class="vid-label">Click to load · YouTube</span>
@@ -1006,7 +1011,7 @@
 
     <div class="vid" data-video="G0zfFWwQuZA">
       <button class="vid-btn" type="button" aria-label="Play: Lookout">
-        <img src="images/lookout/clip-poster.jpg" alt="" loading="lazy" decoding="async" width="1600" height="900">
+        <img src="images/lookout/clip-poster.jpg" alt="" loading="lazy" decoding="async" width="1600" height="901">
         <span class="vid-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
       </button>
       <span class="vid-label">Click to load · YouTube</span>
@@ -1076,7 +1081,7 @@
     <h2>It's a <em>Boy</em></h2>
     <p class="desc">A late entry to The Comedy Roll, shot across three days in a Michigan spring. This is the cut that made the screening : a finished version is still in the works.</p>
 
-    <div class="vid" data-video="BsIad5S8bQc">
+    <div class="vid scope" data-video="BsIad5S8bQc">
       <button class="vid-btn" type="button" aria-label="Play: It's a Boy">
         <img src="images/itsaboy/poster.jpg" alt="Title card from It's a Boy" loading="lazy" decoding="async" width="1600" height="669">
         <span class="vid-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg></span>
@@ -1533,10 +1538,10 @@ document.querySelectorAll('.vid').forEach(function(box){
     box.classList.add('playing');
     box.appendChild(f);
 
-    /* Only the lead is cropped to 2.39, so only the lead loses YouTube's own
-       controls to that crop and needs ours back. Identical markup and styling
+    /* Only scope films are cropped to 2.39, so only they lose YouTube's own
+       controls to that crop and need ours back. Identical markup and styling
        to the home page reel : .reel-ui is in lab.css. */
-    if(!box.classList.contains('lead')) return;
+    if(!box.classList.contains('lead')&&!box.classList.contains('scope')) return;
 
     f.src=f.src+'&enablejsapi=1&modestbranding=1';
     var I={
