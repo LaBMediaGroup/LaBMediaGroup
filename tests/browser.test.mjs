@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
@@ -6,7 +7,20 @@ import test from 'node:test';
 import { chromium } from 'playwright';
 
 const root = path.resolve(import.meta.dirname, '..');
-const htmlFiles = fs.readdirSync(root).filter((file) => file.endsWith('.html')).sort();
+// Same reason as tests/site.test.mjs: only load the pages that actually ship,
+// not the NAS's AppleDouble twins or the staging mockups sitting beside them.
+const htmlFiles = listTrackedPages();
+
+function listTrackedPages() {
+  try {
+    return execFileSync('git', ['ls-files', '-z', '*.html'], { cwd: root, encoding: 'utf8' })
+      .split('\0')
+      .filter((file) => file && !file.includes('/'))
+      .sort();
+  } catch {
+    return fs.readdirSync(root).filter((file) => file.endsWith('.html') && !file.startsWith('._')).sort();
+  }
+}
 const types = {
   '.css': 'text/css; charset=utf-8',
   '.gif': 'image/gif',
@@ -220,12 +234,12 @@ test('solar scenes hand daylight to moonlight without changing the weather compo
   const heroLayout = await page.evaluate(() => {
     const hero = document.querySelector('.pg-hero').getBoundingClientRect();
     const date = document.querySelector('.hero-date').getBoundingClientRect();
-    const ledes = [...document.querySelectorAll('.hero-lede-grid .lede')].map((element) => element.getBoundingClientRect());
-    return { heroLeft: hero.left, heroWidth: hero.width, dateLeft: date.left, ledeTops: ledes.map((rect) => rect.top) };
+    const ledes = [...document.querySelectorAll('.pg-hero .lede')].map((element) => element.getBoundingClientRect());
+    return { heroLeft: hero.left, heroWidth: hero.width, dateLeft: date.left, ledes: ledes.map((rect) => ({ left: rect.left, width: rect.width })) };
   });
   assert.ok(heroLayout.dateLeft > heroLayout.heroLeft + heroLayout.heroWidth * .55, 'the desktop shoot date should use the open right side of the hero');
-  assert.equal(heroLayout.ledeTops.length, 2);
-  assert.ok(Math.abs(heroLayout.ledeTops[0] - heroLayout.ledeTops[1]) <= 1, 'the hero introduction should form two aligned columns');
+  assert.equal(heroLayout.ledes.length, 1, 'the hero introduction should be one paragraph, not an orphaned second column');
+  assert.ok(heroLayout.ledes[0].width < heroLayout.heroWidth * .72, 'the introduction should hold a readable measure rather than run the full hero');
   await page.locator('#timeSlider').evaluate((slider) => {
     slider.value = '1252';
     slider.dispatchEvent(new Event('input', { bubbles: true }));

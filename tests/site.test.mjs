@@ -8,9 +8,31 @@ import { createRequire } from 'node:module';
 
 const root = path.resolve(import.meta.dirname, '..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
-const htmlFiles = fs.readdirSync(root).filter((file) => file.endsWith('.html')).sort();
-const jsFiles = fs.readdirSync(root).filter((file) => file.endsWith('.js')).sort();
-const jsonFiles = fs.readdirSync(root).filter((file) => file.endsWith('.json')).sort();
+
+// Check what ships, not whatever happens to be sitting in the folder. The
+// working copy lives on the SMB-mounted NAS, which sprays AppleDouble `._*`
+// twins beside every file, and staging-only `mockup-*.html` iterations sit in
+// the open folder until one is chosen. Both are gitignored, so CI never saw
+// them — but a plain `readdirSync` did, and seven checks failed locally against
+// a tree that was perfectly fine.
+const trackedRootFiles = listTrackedRootFiles();
+
+function listTrackedRootFiles() {
+  try {
+    return execFileSync('git', ['ls-files', '-z'], { cwd: root, encoding: 'utf8' })
+      .split('\0')
+      .filter((file) => file && !file.includes('/'));
+  } catch {
+    // Not a git checkout (an exported copy, say). Fall back to the folder and
+    // drop at least the AppleDouble twins, which are binary and never parse.
+    return fs.readdirSync(root).filter((file) => !file.startsWith('._'));
+  }
+}
+
+const byExtension = (extension) => trackedRootFiles.filter((file) => file.endsWith(extension)).sort();
+const htmlFiles = byExtension('.html');
+const jsFiles = byExtension('.js');
+const jsonFiles = byExtension('.json');
 
 function loadConst(file, name) {
   const context = {};
@@ -195,8 +217,14 @@ test('the published page count follows the sitemap', () => {
   assert.match(colophon, /14 mph\s+gusts/);
   assert.doesNotMatch(colophon, /stale-test|A test that had stopped watching/i);
   assert.equal((colophon.match(/press play/gi) || []).length, 1);
-  assert.match(colophon, /<div class="bug" id="flight-checklist">\s*<span class="bug-n">12<\/span>/);
+  assert.match(colophon, /<div class="bug" id="flight-checklist">\s*<span class="bug-n">11<\/span>/);
   assert.equal((colophon.match(/<h3>[^<]*<em>[^<]+<\/em>[^<]*<\/h3>/g) || []).length, 12);
+  // Entries get reordered as tools land, and the numbers are typed by hand, so
+  // check the run is still 01..12 with nothing repeated or skipped.
+  const bugNumbers = (colophon.match(/<span class="bug-n">(\d+)<\/span>/g) || []).map((span) => span.replace(/\D/g, ''));
+  assert.deepEqual(bugNumbers, Array.from({ length: 12 }, (_, index) => String(index + 1).padStart(2, '0')));
+  // The joke only works if the missing page is the one you reach last.
+  assert.match(colophon, /<span class="bug-n">12<\/span>\s*<div class="bug-main">\s*<h3>The one page <em>nobody plans to visit<\/em><\/h3>/);
   assert.match(colophon, /\.bug h3 em\{font-style:italic;color:var\(--accent\)\}/);
 });
 
