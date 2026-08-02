@@ -111,6 +111,8 @@
       "totalLabel": "—",
       "status": "unknown",
       "resetsIn": "",
+      "link": "https://gemini.google.com/usage",
+      "linkLabel": "Usage dashboard",
       "models": [
         {"name": "Gemini Pro", "active": false}
       ]
