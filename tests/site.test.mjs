@@ -226,6 +226,10 @@ test('the published page count follows the sitemap', () => {
   // The joke only works if the missing page is the one you reach last.
   assert.match(colophon, /<span class="bug-n">12<\/span>\s*<div class="bug-main">\s*<h3>The one page <em>nobody plans to visit<\/em><\/h3>/);
   assert.match(colophon, /\.bug h3 em\{font-style:italic;color:var\(--accent\)\}/);
+  // A deliberate contrast: the figures row keeps its square hairline corners,
+  // and the definition card is the one that softens.
+  assert.match(colophon, /\.def\{[^}]*border-radius:10px/);
+  assert.doesNotMatch(colophon, /\.figs\{[^}]*border-radius/);
 });
 
 test('each HTML page has one title, viewport, and h1', async (t) => {
@@ -260,12 +264,30 @@ test('primary navigation and Explore footer links stay in sync', () => {
     return tail.slice(0, end);
   };
   const expectedNav = hrefs(section(read(pages[0]), /<nav\b[^>]*class=["']nav-primary["']/, /<\/nav>/i));
-  const expectedExplore = hrefs(section(read(pages[0]), /<h3>Explore<\/h3>/i, /<\/div>/i));
+  const footerGroups = ['Resources', 'Tools', 'Studio', 'Elsewhere'];
+  const group = (html, heading) => hrefs(section(html, new RegExp(`<h3>${heading}</h3>`, 'i'), /<\/div>/i));
+  const expectedFooter = Object.fromEntries(footerGroups.map((heading) => [heading, group(read(pages[0]), heading)]));
 
   for (const file of pages) {
     const html = read(file);
     assert.deepEqual(hrefs(section(html, /<nav\b[^>]*class=["']nav-primary["']/, /<\/nav>/i)), expectedNav, `${file} primary nav drifted`);
-    assert.deepEqual(hrefs(section(html, /<h3>Explore<\/h3>/i, /<\/div>/i)), expectedExplore, `${file} Explore footer drifted`);
+    for (const heading of footerGroups) {
+      assert.deepEqual(group(html, heading), expectedFooter[heading], `${file} ${heading} footer group drifted`);
+    }
+  }
+
+  // The footer mirrors the nav's grouping, so it should also reach everywhere
+  // the nav reaches. The old flat Explore list had drifted out of step twice.
+  const internal = (list) => list.filter((href) => !/^https?:/i.test(href));
+  const footerInternal = new Set(internal(footerGroups.flatMap((heading) => expectedFooter[heading])));
+  for (const href of internal(expectedNav)) {
+    assert.ok(footerInternal.has(href), `${href} is reachable from the nav but missing from the footer`);
+  }
+  assert.equal(footerInternal.size, internal(expectedNav).length, 'the footer should not reach past the nav either');
+
+  // Elsewhere is for other places on the internet, not other pages of ours.
+  for (const href of expectedFooter.Elsewhere) {
+    assert.match(href, /^https:\/\//, 'Elsewhere should hold external links only');
   }
 });
 
@@ -361,9 +383,13 @@ test('AI Usage remains public but deliberately hidden', () => {
   );
   assert.equal(entryPoints.length, 1);
   assert.equal(entryPoints[0].file, 'colophon.html');
-  assert.match(entryPoints[0].anchor, /aria-hidden="true"/);
-  assert.match(entryPoints[0].anchor, /tabindex="-1"/);
-  assert.match(entryPoints[0].anchor, /position:fixed/);
+  // The way in is a quiet word in the footer rather than an unlabelled dot
+  // floating over the corner. It is a real link now: readable, keyboard
+  // reachable and announced, just not advertised.
+  assert.match(entryPoints[0].anchor, /class="foot-quiet"/);
+  assert.doesNotMatch(entryPoints[0].anchor, /aria-hidden|tabindex|position:fixed/);
+  assert.match(read('colophon.html'), /<a class="foot-quiet" href="ai-usage\.html">Usage<\/a>/);
+  assert.match(read('lab.css'), /\.foot-quiet\{[^}]*opacity:\.4/);
   assert.match(read('lab-egg.js'), /window\.location\.href\s*=\s*['"]\/ai-usage\.html['"]/);
 });
 

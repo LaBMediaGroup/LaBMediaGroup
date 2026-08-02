@@ -37,6 +37,30 @@
 .pg-hero h1 em{font-style:italic;color:var(--accent)}
 .pg-hero .lede{color:var(--dim);font-size:var(--t-lg);line-height:1.75;max-width:60ch;margin-top:var(--s-5)}
 
+/* A colophon, defined, in the open right side of the hero. The structure is a
+   dictionary entry; the type is the site's own: display serif for the
+   headword, mono for the labels and the pronunciation, ember italic on the
+   Greek and on the sense tag. */
+.hero-def{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(268px,.8fr);gap:clamp(30px,4.5vw,68px);align-items:start}
+.hero-def>:first-child{min-width:0}
+/* The figures row below stays hard-edged on purpose: its hairlines meet at
+   square corners and that is where its precision comes from. This is a single
+   floating card with nothing to align to, so it takes the 10px the checklist
+   panel and the Golden Hour stage already use, and reads calmer for it. */
+.def{border:1px solid var(--line);border-radius:10px;background:var(--paper-2);padding:clamp(20px,2.2vw,26px);margin-top:var(--s-6)}
+.def-k{display:flex;align-items:center;gap:var(--s-3);font-family:var(--f-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.def-k i{flex:1;height:1px;background:var(--line)}
+.def-k:not(:first-child){margin-top:var(--s-5)}
+.def-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:9px;margin-top:15px}
+.def-word{font-family:var(--f-display);font-size:clamp(26px,2.6vw,33px);line-height:1;color:var(--ink)}
+.def-say{font-family:var(--f-mono);font-size:10.5px;color:var(--faint)}
+.def-pos{font-size:11px;font-style:italic;color:var(--dim)}
+.def-sense{color:var(--dim);font-size:var(--t-sm);line-height:1.7;margin-top:11px}
+.def-sense em{font-style:italic;color:var(--accent)}
+.def-hist{position:relative;padding-left:15px}
+.def-hist::before{content:"";position:absolute;left:2px;top:.66em;width:4px;height:4px;border-radius:50%;background:var(--faint)}
+.def-tag{font-style:italic;color:var(--accent)}
+
 /* the numbers, stated once */
 .figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);
   border-block:1px solid var(--line);margin-top:clamp(34px,4vw,var(--s-7))}
@@ -73,6 +97,8 @@
 .plain li::before{content:': ';position:absolute;left:0;color:var(--faint)}
 
 @media (max-width:960px){
+  .hero-def{grid-template-columns:1fr;gap:0}
+  .def{margin-top:var(--s-5);max-width:46ch}
   .two-col-grid{grid-template-columns:1fr;gap:var(--s-4)}
   .two-col-grid .col-side{padding-top:0}
   .bug{grid-template-columns:28px 1fr;gap:var(--s-3)}
@@ -151,10 +177,30 @@
 
 <section class="pg-hero wrap">
   <div class="rule"><span class="mono">Colophon</span><i></i><span class="mono" style="color:var(--faint)">Updated August 2026</span></div>
-  <h1>Seventeen pages, one <em>design system.</em></h1>
-  <p class="lede">This site has no framework or build step. It&rsquo;s hand-written HTML, CSS and
-  JavaScript on free hosting, plus one small Cloudflare Worker that protects the assistant&rsquo;s
-  optional AI phrasing. If you&rsquo;re a filmmaker who also tinkers, this is the part you might find useful.</p>
+  <div class="hero-def">
+    <div>
+      <h1>Seventeen pages, one <em>design system.</em></h1>
+      <p class="lede">This site has no framework or build step. It&rsquo;s hand-written HTML, CSS and
+      JavaScript on free hosting, plus one small Cloudflare Worker that protects the assistant&rsquo;s
+      optional AI phrasing. If you&rsquo;re a filmmaker who also tinkers, this is the part you might find useful.</p>
+    </div>
+
+    <aside class="def" aria-label="Definition of colophon">
+      <p class="def-k"><span>Dictionary</span><i></i></p>
+      <p class="def-head">
+        <span class="def-word">col&middot;o&middot;phon</span>
+        <span class="def-say">| &#712;k&auml;l&#601;f&#601;n, &#712;k&auml;l&#601;&#716;f&auml;n |</span>
+        <span class="def-pos">noun</span>
+      </p>
+      <p class="def-sense">A publisher&rsquo;s emblem or imprint, usually set on the title page or the
+      spine of a book.</p>
+      <p class="def-sense def-hist"><span class="def-tag">historical</span> A note at the end of a book,
+      set beside the printer&rsquo;s mark, recording who made it and how it was printed.</p>
+      <p class="def-k"><span>Origin</span><i></i></p>
+      <p class="def-sense">Early 17th century, in the sense of a finishing touch: from Greek
+      <em>koloph&#333;n</em>, a summit or a final flourish, by way of late Latin.</p>
+    </aside>
+  </div>
 
   <dl class="figs">
     <div class="fig"><dt>Pages</dt><dd>17</dd></div>
@@ -210,8 +256,8 @@
         <h3>A scope <em>frame</em> that stays put</h3>
         <p>The reel is a 2.39&#58;1 film exported inside a 16&#58;9 YouTube frame, so the black bars
         are baked into the video. The poster hides them with <code>object-fit&#58;cover</code>, and the
-        player used to expose them by opening out to 16&#58;9: the frame jumped taller and the
-        bars appeared. Now it doesn&rsquo;t move at all&#58; the iframe is sized to 16&#58;9 <em>by
+        trap is the player&#58; open it out to 16&#58;9 and the frame jumps taller as the bars
+        reappear. This one does not move at all&#58; the iframe is sized to 16&#58;9 <em>by
         width</em>: 134.44% of the container&rsquo;s height: and centred, so what
         overflows top and bottom is exactly 7.205% of the width each side. The true letterbox on a
         2.39 film is 7.204%. <strong>It crops to the pixel.</strong></p>
@@ -316,27 +362,47 @@
         <h3>One <em>solar clock</em>, shared by two scenes</h3>
         <p>The Golden Hour Helper (<code>sun.html</code>) calculates sunrise, sunset, civil twilight,
         golden windows, solar noon, azimuth, elevation and a practical colour-temperature estimate
-        for the selected date and location. The same client-side engine keeps Drone Weather&rsquo;s living
-        field tied to Detroit local time: daylight warms toward sunset, blue hour cools into night,
-        and a separately moving moon carries the date&rsquo;s waxing or waning phase and illumination.</p>
-        <p>For today&rsquo;s view, both tools add the current Open-Meteo cloud percentage as a separate
-        visual layer. Clear sky preserves the calculated warmth; broken cloud filters it; overcast
-        shifts the field toward grey-blue, softens the sun or moon and gives Golden Hour different
-        shooting guidance. Cloud cover changes the picture, not the flight-safety verdict, because
-        percentage alone does not establish a legal or useful cloud ceiling.</p>
+        for any date and location. The same engine holds Drone Weather&rsquo;s field on Detroit
+        local time, with a separately moving moon carrying the date&rsquo;s phase.</p>
+        <p>Both tools lay the current Open-Meteo cloud percentage over that maths. Clear sky keeps
+        the calculated warmth, broken cloud filters it, overcast turns it grey-blue and changes
+        Golden Hour&rsquo;s advice. Cloud alters the picture, not the flight-safety verdict, because
+        a percentage is not a ceiling.</p>
       </div>
       <div class="bug-side">
-        <p>Golden Hour keeps the sun as the subject: its wide pixel scene uses low pine tips,
-        smoothly drifting birds and wind streaks. The quote roller carries the site&rsquo;s orange italic
-        ending treatment, while the treetops respond to the selected location&rsquo;s current Open-Meteo
-        wind and gust reading.</p>
-        <p>Dragging the time slider recalculates the solar position in local memory. Location coordinates leave the page only when it requests the optional current wind, gust and cloud snapshot that shapes the separate foreground animation.</p>
-        <p><em>The solar maths remains local and instant; current cloud cover is labelled as weather
-        layered over the calculated window, not presented as part of the astronomy.</em></p>
+        <p>Golden Hour keeps the sun as the subject: low pine tips, drifting birds and wind streaks,
+        with the treetops answering the current wind and gust reading.</p>
+        <p>Dragging the slider recalculates the solar position in local memory. Coordinates leave
+        the page only to fetch that optional weather snapshot.</p>
+        <p><em>The solar maths stays local and instant; cloud is labelled as weather laid over the
+        calculated window, not as part of the astronomy.</em></p>
+      </div>
+    </div>
+    <div class="bug" id="drone-weather">
+      <span class="bug-n">09</span>
+      <div class="bug-main">
+        <h3>A weather scene that actually <em>reads the weather</em></h3>
+        <p>SkyBound Weather (<code>droneweather.html</code>) pulls current wind, gusts, temperature,
+        precipitation and model visibility for Shelby Township (42.67&deg;N) from Open-Meteo. Its
+        conservative guide flags active compensation at 12 mph steady wind or 14 mph gusts, and
+        grounds at 18 mph for either.</p>
+        <p>The animation reads the same numbers. Wind is horizontal streaks whose count, length and
+        speed scale off the figure, so 3 mph and 22 mph cannot look alike, and gusts arrive in bursts
+        with real lulls, because a metronome does not read as weather.</p>
+        <p>The scene is not in a box: its horizon is the page&rsquo;s own dividing rule, tinted with
+        the safety state.</p>
+      </div>
+      <div class="bug-side">
+        <p>Drizzle is drawn apart from rain, and the light and the animals answer the same state.
+        Deer, foxes, squirrels and rabbits wander through when it is calm enough, with the drone
+        breaking station to film whatever turns up.</p>
+        <p><em>No API key, no tracking. Everything renders into one low-resolution buffer upscaled
+        with nearest-neighbour, and the picture and the advisory read the same numbers through the
+        same thresholds, so they cannot disagree.</em></p>
       </div>
     </div>
     <div class="bug" id="aspect-previewer">
-      <span class="bug-n">09</span>
+      <span class="bug-n">10</span>
       <div class="bug-main">
         <h3>An interactive crop previewer that previews <em>local media</em></h3>
         <p>The Aspect Ratio Previewer (<code>aspect.html</code>) overlays 2.39&#58;1 Scope, 1.85&#58;1 Flat, 16&#58;9 HD, 4&#58;3 Academy and 9&#58;16 Vertical mattes live over sample stills, or over your own photos and video clips. It computes exact active pixel resolutions rather than leaving you to guess letterbox boundaries in an NLE timeline.</p>
@@ -344,28 +410,6 @@
       <div class="bug-side">
         <p>3840&times;1607 is the real canvas for 4K at 2.39, so you know your working area before rendering rather than after.</p>
         <p><em>Zero upload, 100% private. Photos and clips are parsed locally in browser memory via <code>URL.createObjectURL()</code> without sending a byte across the network.</em></p>
-      </div>
-    </div>
-    <div class="bug" id="drone-weather">
-      <span class="bug-n">10</span>
-      <div class="bug-main">
-        <h3>A weather scene that actually <em>reads the weather</em></h3>
-        <p>SkyBound Weather (<code>droneweather.html</code>) fetches current wind, gusts, temperature,
-        precipitation and model visibility for Shelby Township (42.67&deg;N) from Open-Meteo. Its
-        conservative planning guide flags active compensation at 12 mph steady wind or 14 mph
-        gusts, and grounds at 18 mph for either. Low model visibility and precipitation can also
-        escalate the advisory.</p>
-        <p>The animation reads the same values. Wind is horizontal streaks whose count, length and speed all scale off the figure, so 3 mph and 22 mph cannot look alike, and gusts arrive in bursts with real lulls rather than on a fixed interval, because a metronome does not read as weather.</p>
-        <p>The scene is not in a box: its horizon is the page&rsquo;s own dividing rule, tinted with the safety state.</p>
-      </div>
-      <div class="bug-side">
-        <p>Drizzle is drawn apart from rain; light and animals respond to the same time-and-weather
-        state. Deer, foxes, squirrels and rabbits wander through when it is calm enough, with the
-        drone breaking station to film whatever turns up. The scene stays live without a toolbar;
-        a faint collapsed preview can temporarily scrub the light for testing, then returns to the
-        current time when closed.</p>
-        <p>Everything renders into a low-resolution buffer and is upscaled with nearest-neighbour, so the whole scene sits on one honest pixel grid.</p>
-        <p><em>No API key, no tracking. The picture and the advisory read the same numbers through the same thresholds, so they cannot disagree.</em></p>
       </div>
     </div>
 
@@ -377,10 +421,10 @@
         becomes a higher-contrast non-modal field note shared by every public page: softly rounded,
         movable and resizable on a desktop, minimizable, dismissible and printable through the
         browser&rsquo;s native PDF flow.</p>
-        <p>The checks, window state, position and dimensions persist in <code>localStorage</code>. Each completed six-item section gets a small spark-and-glow acknowledgement before the final 18/18 message. There is no account, server sync or PDF library, and the original checklist key was kept so an existing set of ticks survives the move.</p>
+        <p>The checks, window state, position and dimensions persist in <code>localStorage</code>. Each completed six-item section gets a small spark-and-glow acknowledgement before the final 18/18 message. There is no account, no server sync and no PDF library.</p>
       </div>
       <div class="bug-side">
-        <p>A modal would have trapped the user inside the checklist while they were trying to read weather or light information. A fixed region can stay within reach without taking over the page, and a first visit carries no floating UI until the visitor asks for it.</p>
+        <p>A modal would trap you inside the checklist at the exact moment you want to read the weather behind it. A fixed region stays within reach without taking over the page, and a first visit carries no floating UI until you ask for it.</p>
         <p><em>The useful tool is the one that remains available without demanding attention.</em></p>
       </div>
     </div>
@@ -451,23 +495,34 @@
         <p class="foot-blurb">A small film studio and a public notebook, run out of Shelby Township, Michigan.</p>
       </div>
       <div class="foot-col">
-        <h3>Explore</h3>
+        <h3>Resources</h3>
         <ul>
-          <li><a href="portfolio.html">Reel</a></li>
           <li><a href="learn.html">Watch &amp; Learn</a></li>
           <li><a href="resources.html">Software &amp; Assets</a></li>
-          <li><a href="people.html">People &amp; Community</a></li>
           <li><a href="sourcing.html">Gear &amp; Flight</a></li>
+          <li><a href="people.html">People &amp; Community</a></li>
+          <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
+          <li><a href="mykit.html">Your Kit</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Tools</h3>
+        <ul>
           <li><a href="ideas.html">Story Generator</a></li>
           <li><a href="skybound.html">SkyBound</a></li>
           <li><a href="sun.html">Golden Hour</a></li>
           <li><a href="aspect.html">Aspect Ratio</a></li>
           <li><a href="droneweather.html">Drone Weather</a></li>
           <li><a href="assistant.html">LaB Assistant</a></li>
-          <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
-          <li><a href="mykit.html">Your Kit</a></li>
-          <li><a href="colophon.html">How it's built</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Studio</h3>
+        <ul>
+          <li><a href="portfolio.html">Reel</a></li>
           <li><a href="events.html">Events</a></li>
+          <li><a href="contact.html">About LaB</a></li>
+          <li><a href="colophon.html" aria-current="page">About the Site</a></li>
         </ul>
       </div>
       <div class="foot-col">
@@ -476,15 +531,16 @@
           <li><a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" rel="noopener">YouTube</a></li>
           <li><a href="https://instagram.com/thisislabmedia" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="https://www.linkedin.com/in/baldwinrobert" target="_blank" rel="noopener">LinkedIn</a></li>
-          <li><a href="contact.html">About &amp; Contact</a></li>
         </ul>
       </div>
     </div>
     <div class="foot-bot">
       <span class="made">Made in Shelby Twp, MI<span class="hrt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span>
       <span class="visits" id="visitCount" hidden></span>
-      <span class="made">© 2026 LaB Media<span class="hrt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span>
-      <a href="/ai-usage.html" aria-hidden="true" tabindex="-1" style="position:fixed;bottom:16px;left:16px;width:14px;height:14px;border-radius:50%;background:var(--accent);opacity:.3;transition:opacity .3s,transform .3s;z-index:9999;cursor:pointer" onmouseover="this.style.opacity=1;this.style.transform='scale(1.3)'" onmouseout="this.style.opacity=.3;this.style.transform='scale(1)'" title=""></a>
+      <span class="foot-end">
+        <span class="made">© 2026 LaB Media<span class="hrt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span>
+        <a class="foot-quiet" href="ai-usage.html">Usage</a>
+      </span>
     </div>
   </div>
 </footer>

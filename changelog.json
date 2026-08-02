@@ -2,6 +2,21 @@
   "entries": [
     {
       "date": "2026-08-01",
+      "time": "22:40 EDT",
+      "text": "<strong>Colophon reads like a description, not a diary.</strong> The two sky tools now sit next to each other and say the same things in fewer words. The page explains how the site works rather than narrating what changed about it, because keeping track of what changed is what this list is for."
+    },
+    {
+      "date": "2026-08-01",
+      "time": "22:20 EDT",
+      "text": "<strong>A footer that matches the menu.</strong> The index at the bottom of every page held fifteen links in a grid built for twelve, so three of them spilled into a column of their own and the order stopped meaning anything. It now groups the way the navigation at the top already does: Resources, Tools, Studio, and Elsewhere for the links that actually leave the site. About &amp; Contact had been filed between Instagram and LinkedIn. Each page also marks its own footer link for screen readers, the visit counter is back on three tool pages that had lost it, and the copyright line steps aside for the assistant button instead of sitting underneath it. The usage dashboard is reached by a quiet word in the footer now, rather than an orange dot in the corner."
+    },
+    {
+      "date": "2026-08-01",
+      "time": "21:20 EDT",
+      "text": "<strong>Golden Hour, softened.</strong> The planner&rsquo;s date field, buttons, readings and light windows now carry the same gently rounded corners Drone Weather already used, so the two tools look like a pair. Its introduction no longer strands &ldquo;the calculations stay in your browser&rdquo; alone in a column, and the fuller note about local calculation stays under the scene where it is useful. On Colophon, the entry about the page nobody plans to visit went back to being the last one you reach."
+    },
+    {
+      "date": "2026-08-01",
       "time": "20:32 EDT",
       "text": "<strong>Golden hour, weather included.</strong> Golden Hour remains the honest astronomical window, but today&rsquo;s scene no longer promises visible gold through a solid cloud deck. Live cloud cover now moves both light tools from clear warmth through filtered light to an overcast grey-blue, softening the sun and moon as the sky closes. Golden Hour labels the current character of the light, shifts its color estimate and replaces flare-and-shadow advice with useful overcast guidance; Drone Weather reports cloud percentage beside the model conditions while keeping cloud cover separate from its safety verdict."
     },
