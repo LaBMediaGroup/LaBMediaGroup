@@ -52,6 +52,10 @@
 .status{display:inline-flex;align-items:center;gap:9px;font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 .status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent)}
 
+/* Section headings inherit ink for their emphasis; this one leads with the
+   ember instead, the way the hero and the questions below it already do.
+   Scoped, so "On Set" above keeps the plain treatment. */
+.sec-head h2.em-accent em{font-style:italic;color:var(--accent)}
 .faq{border-top:1px solid var(--line)}
 .faq-item{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-6);align-items:start;
   border-bottom:1px solid var(--line);padding:var(--s-5) 0}
@@ -376,7 +380,7 @@
 </section>
 
 <section class="sec wrap" style="border-bottom:0">
-  <div class="sec-head"><h2>Fair <em>Questions</em></h2><i></i></div>
+  <div class="sec-head"><h2 class="em-accent"><em>Fair</em> Questions</h2><i></i></div>
   <div class="faq">
     <div class="faq-item">
       <h3>Can you shoot my <em>project?</em></h3>
