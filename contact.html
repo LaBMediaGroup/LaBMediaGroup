@@ -79,17 +79,24 @@
 }
 .bts > summary::-webkit-details-marker{display:none}
 .bts > summary:hover{background:var(--paper-3);border-color:var(--line-2)}
-.bts-peek{display:flex;flex:none}
+.bts-peek{display:flex;flex:none;align-items:center}
 .bts-peek img{
-  width:52px;height:38px;object-fit:cover;border:1px solid var(--paper-2);
+  width:104px;height:76px;object-fit:cover;border:1px solid var(--paper-2);
+  box-shadow:0 8px 22px rgba(0,0,0,.30);
   filter:grayscale(1);transition:transform var(--mid) var(--ease),filter var(--mid) var(--ease);
 }
-.bts-peek img:nth-child(2){margin-left:-16px;transform:rotate(3deg)}
-.bts-peek img:nth-child(3){margin-left:-16px;transform:rotate(-2deg)}
+.bts-peek img:nth-child(1){position:relative;z-index:1;transform:translateY(10px) rotate(-6deg)}
+.bts-peek img:nth-child(2){position:relative;z-index:2;margin-left:-38px;transform:rotate(2deg)}
+.bts-peek img:nth-child(3){position:relative;z-index:3;margin-left:-38px;transform:translateY(-10px) rotate(7deg)}
 .bts > summary:hover .bts-peek img{filter:grayscale(0)}
-.bts > summary:hover .bts-peek img:nth-child(1){transform:translateX(-4px) rotate(-3deg)}
-.bts > summary:hover .bts-peek img:nth-child(3){transform:translateX(4px) rotate(4deg)}
+.bts > summary:hover .bts-peek img:nth-child(1){transform:translate(-14px,16px) rotate(-9deg) scale(1.14)}
+.bts > summary:hover .bts-peek img:nth-child(2){transform:translateY(-8px) rotate(1deg) scale(1.18)}
+.bts > summary:hover .bts-peek img:nth-child(3){transform:translate(14px,-18px) rotate(10deg) scale(1.14)}
 .bts[open] .bts-peek{display:none}
+@media (max-width:520px){
+  .bts-peek img{width:84px;height:62px}
+  .bts-peek img:nth-child(2),.bts-peek img:nth-child(3){margin-left:-30px}
+}
 .bts-label b{display:block;font-family:var(--f-display);font-size:21px;font-weight:400;letter-spacing:-.01em;color:var(--ink)}
 .bts-label span{display:block;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin-top:3px}
 .bts-ico{position:relative;width:15px;height:15px;flex:none}
