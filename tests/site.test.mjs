@@ -8,9 +8,31 @@ import { createRequire } from 'node:module';
 
 const root = path.resolve(import.meta.dirname, '..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
-const htmlFiles = fs.readdirSync(root).filter((file) => file.endsWith('.html')).sort();
-const jsFiles = fs.readdirSync(root).filter((file) => file.endsWith('.js')).sort();
-const jsonFiles = fs.readdirSync(root).filter((file) => file.endsWith('.json')).sort();
+
+// Check what ships, not whatever happens to be sitting in the folder. The
+// working copy lives on the SMB-mounted NAS, which sprays AppleDouble `._*`
+// twins beside every file, and staging-only `mockup-*.html` iterations sit in
+// the open folder until one is chosen. Both are gitignored, so CI never saw
+// them — but a plain `readdirSync` did, and seven checks failed locally against
+// a tree that was perfectly fine.
+const trackedRootFiles = listTrackedRootFiles();
+
+function listTrackedRootFiles() {
+  try {
+    return execFileSync('git', ['ls-files', '-z'], { cwd: root, encoding: 'utf8' })
+      .split('\0')
+      .filter((file) => file && !file.includes('/'));
+  } catch {
+    // Not a git checkout (an exported copy, say). Fall back to the folder and
+    // drop at least the AppleDouble twins, which are binary and never parse.
+    return fs.readdirSync(root).filter((file) => !file.startsWith('._'));
+  }
+}
+
+const byExtension = (extension) => trackedRootFiles.filter((file) => file.endsWith(extension)).sort();
+const htmlFiles = byExtension('.html');
+const jsFiles = byExtension('.js');
+const jsonFiles = byExtension('.json');
 
 function loadConst(file, name) {
   const context = {};

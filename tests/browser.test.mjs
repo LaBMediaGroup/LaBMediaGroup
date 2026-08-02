@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
@@ -6,7 +7,20 @@ import test from 'node:test';
 import { chromium } from 'playwright';
 
 const root = path.resolve(import.meta.dirname, '..');
-const htmlFiles = fs.readdirSync(root).filter((file) => file.endsWith('.html')).sort();
+// Same reason as tests/site.test.mjs: only load the pages that actually ship,
+// not the NAS's AppleDouble twins or the staging mockups sitting beside them.
+const htmlFiles = listTrackedPages();
+
+function listTrackedPages() {
+  try {
+    return execFileSync('git', ['ls-files', '-z', '*.html'], { cwd: root, encoding: 'utf8' })
+      .split('\0')
+      .filter((file) => file && !file.includes('/'))
+      .sort();
+  } catch {
+    return fs.readdirSync(root).filter((file) => file.endsWith('.html') && !file.startsWith('._')).sort();
+  }
+}
 const types = {
   '.css': 'text/css; charset=utf-8',
   '.gif': 'image/gif',
