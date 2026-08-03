@@ -223,6 +223,36 @@
   margin-left:var(--s-3);opacity:.7;text-transform:none;font-style:italic;
 }
 
+/* ── HIGHLIGHTS / STAT CARDS ── */
+.hl-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:var(--s-3);margin-top:var(--s-5);
+}
+.hl-card{
+  background:var(--paper-2);border:1px solid var(--line);border-radius:8px;
+  padding:var(--s-4) var(--s-3);text-align:center;
+  display:flex;flex-direction:column;gap:3px;align-items:center;
+}
+.hl-emoji{font-size:24px;line-height:1}
+.hl-label{
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--faint);
+}
+.hl-value{
+  font-family:var(--f-display);font-size:clamp(20px,2.5vw,28px);
+  color:var(--accent);line-height:1.1;
+}
+.hl-model{
+  font-size:var(--t-xs);color:var(--dim);line-height:1.4;
+}
+.hl-date{
+  font-family:var(--f-mono);font-size:8.5px;letter-spacing:.08em;
+  color:var(--faint);
+}
+@media(max-width:480px){
+  .hl-grid{grid-template-columns:repeat(2,1fr)}
+}
+
 /* ── TOOL USAGE ── */
 .tu-total{
   text-align:center;font-family:var(--f-display);
@@ -658,6 +688,97 @@ function renderToolUsage(data, range){
         '<div class="mc-bar"><span class="mc-fill" style="display:block;width:' + Math.round(m.tokens/maxTok*100) + '%"></span></div>' +
         '</div>';
     });
+  }
+
+  // Highlights / Stat Cards — computed from dailyStats if available
+  var allStats = [];
+  tools.forEach(function(t){
+    if(t.dailyStats){
+      var filtered = filterDailyEntries(t.dailyStats, range);
+      if(filtered) filtered.forEach(function(s){
+        s._tool = t.name;
+        allStats.push(s);
+      });
+    }
+  });
+
+  if(allStats.length){
+    var champ = {
+      maxOut: {val:0, model:'', tool:'', date:''},
+      maxThink: {val:0, model:'', tool:'', date:''},
+      maxTurn: {val:0, model:'', tool:'', date:''},
+      busiestDay: {val:0, date:''},
+      totalCalls: 0
+    };
+    // Per-day totals for busiest day
+    var dayTotals = {};
+    allStats.forEach(function(s){
+      if(s.maxOut > champ.maxOut.val)
+        champ.maxOut = {val:s.maxOut, model:s.maxOutModel, tool:s._tool, date:s.date};
+      if(s.maxThink > champ.maxThink.val)
+        champ.maxThink = {val:s.maxThink, model:s.maxThinkModel, tool:s._tool, date:s.date};
+      if(s.maxTurn > champ.maxTurn.val)
+        champ.maxTurn = {val:s.maxTurn, model:s.maxTurnModel, tool:s._tool, date:s.date};
+      champ.totalCalls += s.calls || 0;
+      // Sum tokens per day from daily buckets
+    });
+    // Use the daily token buckets for busiest day
+    tools.forEach(function(t){
+      if(t.daily){
+        filterDailyEntries(t.daily, range).forEach(function(e){
+          if(!dayTotals[e.date]) dayTotals[e.date] = 0;
+          dayTotals[e.date] += e.tokens;
+        });
+      }
+    });
+    Object.keys(dayTotals).forEach(function(d){
+      if(dayTotals[d] > champ.busiestDay.val)
+        champ.busiestDay = {val:dayTotals[d], date:d};
+    });
+
+    function fmtDate(ds){
+      if(!ds) return '';
+      try{
+        var dt = new Date(ds + 'T12:00:00');
+        return dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      }catch(e){return ds}
+    }
+
+    tuHtml += '<h2 class="details-title" style="margin-top:var(--s-7)">Highlights <em>&amp; Champions</em></h2>' +
+      '<div class="mc-sub">Single-turn extremes · ' + rangeLabels[range].toLowerCase() + ' · local logs</div>';
+    tuHtml += '<div class="hl-grid">';
+
+    if(champ.maxTurn.val > 0)
+      tuHtml += '<div class="hl-card"><span class="hl-emoji">🏋️</span><span class="hl-label">Longest Turn</span>' +
+        '<span class="hl-value">' + fmtTok(champ.maxTurn.val) + '</span>' +
+        '<span class="hl-model">' + champ.maxTurn.model + '</span>' +
+        '<span class="hl-date">' + fmtDate(champ.maxTurn.date) + '</span></div>';
+
+    if(champ.maxThink.val > 0)
+      tuHtml += '<div class="hl-card"><span class="hl-emoji">🧠</span><span class="hl-label">Deepest Think</span>' +
+        '<span class="hl-value">' + fmtTok(champ.maxThink.val) + '</span>' +
+        '<span class="hl-model">' + champ.maxThink.model + '</span>' +
+        '<span class="hl-date">' + fmtDate(champ.maxThink.date) + '</span></div>';
+
+    if(champ.maxOut.val > 0)
+      tuHtml += '<div class="hl-card"><span class="hl-emoji">📣</span><span class="hl-label">Biggest Response</span>' +
+        '<span class="hl-value">' + fmtTok(champ.maxOut.val) + '</span>' +
+        '<span class="hl-model">' + champ.maxOut.model + '</span>' +
+        '<span class="hl-date">' + fmtDate(champ.maxOut.date) + '</span></div>';
+
+    if(champ.busiestDay.val > 0)
+      tuHtml += '<div class="hl-card"><span class="hl-emoji">🔥</span><span class="hl-label">Busiest Day</span>' +
+        '<span class="hl-value">' + fmtTok(champ.busiestDay.val) + '</span>' +
+        '<span class="hl-model">tokens moved</span>' +
+        '<span class="hl-date">' + fmtDate(champ.busiestDay.date) + '</span></div>';
+
+    if(champ.totalCalls > 0)
+      tuHtml += '<div class="hl-card"><span class="hl-emoji">📞</span><span class="hl-label">Total Calls</span>' +
+        '<span class="hl-value">' + champ.totalCalls.toLocaleString() + '</span>' +
+        '<span class="hl-model">API requests</span>' +
+        '<span class="hl-date">' + rangeLabels[range] + '</span></div>';
+
+    tuHtml += '</div>';
   }
 
   document.getElementById('tool-usage').innerHTML = tuHtml;
