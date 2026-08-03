@@ -2,6 +2,26 @@
   "entries": [
     {
       "date": "2026-08-02",
+      "time": "21:30 EDT",
+      "text": "<strong>The Usage Dashboard grew a leaderboard with champions.</strong> The models-at-a-glance section now has a top-three podium, and below it, five stat cards answer the questions raw token totals can't: <em>Longest Turn</em>, <em>Deepest Think</em>, <em>Biggest Response</em>, <em>Busiest Day</em> and <em>Total Calls</em>. Each card names the model and the date it happened, and every one of them recalculates when you switch between 24-hour, 7-day and 30-day windows."
+    },
+    {
+      "date": "2026-08-02",
+      "time": "15:20 EDT",
+      "text": "<strong>The Usage Dashboard learned to tell time.</strong> Three buttons &mdash; 24h, 7d, 30d &mdash; now sit above the chart, and clicking one re-renders every tool breakdown, model leaderboard and highlight for that window, live. Provider details moved to the bottom of the page so costs and quotas aren't the first thing you see, and each provider card carries its own <em>Synced</em> timestamp now, the way it should have from the start."
+    },
+    {
+      "date": "2026-08-02",
+      "time": "14:50 EDT",
+      "text": "<strong>OpenClaw joined the Usage Dashboard &mdash; for real this time.</strong> The old number was 632M tokens, hand-written and months stale. A new sync script reads session transcripts directly, aggregates per model over a rolling 30-day window, and pushes the result to the live JSON on its own. The dashboard sorted itself out to match: tools are ranked by usage now instead of file order, and a quiet label separates <em>AI Assistants</em> from <em>Dev Tools</em>, because OpenClaw and Hermes are a different animal from Codex CLI and Claude Code."
+    },
+    {
+      "date": "2026-08-02",
+      "time": "12:10 EDT",
+      "text": "<strong>What's New became its own page.</strong> It was buried at the bottom of the hidden Usage dashboard, which meant the most human-facing part of the dashboard was the hardest to find. The timeline now lives at <em>whats-new.html</em>, reachable from a button at the foot of the colophon &mdash; quiet enough not to distract from the page above, visible enough that someone looking for it will find it. Usage is still where it was, behind the same subtle link."
+    },
+    {
+      "date": "2026-08-02",
       "time": "11:40 EDT",
       "text": "<strong>The weather tool commits to its name.</strong> It had three : the browser tab said <em>Drone Weather</em>, the headline said <em>SkyBound</em>, and the menu said <em>SkyBound : Weather</em>, which is a lot of names for one page. It is <em>SkyBound : Weather</em> now, everywhere : tab title, share cards, the assistant&rsquo;s knowledge, the note it reads from, and the line about it on the colophon. Its sibling tightened up to match, from plain <em>SkyBound</em> to <em>SkyBound : Drone</em>, so the two read as the pair they are wherever they turn up. Asking for it by the old name still works and always will : the assistant keeps <em>Drone Weather</em> as an alias, and there is now a test holding both names to it, because nobody who learned a tool by one name should walk into a wall when it picks another. That was the last of the naming drift : the check that had been failing on it goes green, leaving one known failure that has nothing to do with names."
     },
