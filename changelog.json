@@ -13,7 +13,7 @@
     {
       "date": "2026-08-02",
       "time": "14:50 EDT",
-      "text": "<strong>OpenClaw joined the Usage Dashboard &mdash; for real this time.</strong> The old number was 632M tokens, hand-written and months stale. A new sync script reads session transcripts directly, aggregates per model over a rolling 30-day window, and pushes the result to the live JSON on its own. The dashboard sorted itself out to match: tools are ranked by usage now instead of file order, and a quiet label separates <em>AI Assistants</em> from <em>Dev Tools</em>, because OpenClaw and Hermes are a different animal from Codex CLI and Claude Code."
+      "text": "<strong>OpenClaw joined the Usage Dashboard &mdash; for real this time.</strong> Hermes had arrived that morning, courtesy of Cave's sync script reading its state.db, and now OpenClaw has its own pipeline: a script that reads session transcripts directly, aggregates per model over a rolling 30-day window, and pushes the result to the live JSON on its own. The old OpenClaw number was 632M tokens, hand-written and months stale. The dashboard sorted itself out to match: tools are ranked by usage now instead of file order, and a quiet label separates <em>AI Assistants</em> from <em>Dev Tools</em>, because OpenClaw and Hermes are a different animal from Codex CLI and Claude Code."
     },
     {
       "date": "2026-08-02",
