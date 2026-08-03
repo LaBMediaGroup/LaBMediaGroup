@@ -402,6 +402,9 @@ html{scroll-behavior:smooth}
     <div class="bars-cost" id="bars-cost"></div>
   </div>
 
+  <!-- ═══ MODEL LEADERBOARD ═══ -->
+  <div id="model-leaderboard"></div>
+
   <!-- ═══ TOOL USAGE ═══ -->
   <div id="tool-usage"></div>
 
@@ -648,50 +651,10 @@ function renderToolUsage(data, range){
   // Uncategorized
   tools.filter(function(t){return !CATEGORIES[t.name]}).forEach(function(t){ tuHtml += renderToolCard(t); });
 
-  // Models, side by side (leaderboard)
-  var modelTotals = {};
-  tools.forEach(function(t){
-    (t.models||[]).forEach(function(m){
-      if(!modelTotals[m.name]) modelTotals[m.name] = 0;
-      // Use raw tokens if available, otherwise parse from tokensLabel
-      var tok = m.tokens;
-      if(!tok && m.tokensLabel) tok = parseTokenLabel(m.tokensLabel) * (m.tokensLabel.indexOf('B')>-1 ? 1000 : 1);
-      modelTotals[m.name] += (tok||0);
-    });
-  });
-  var board = Object.keys(modelTotals).map(function(name){return {name:name,tokens:modelTotals[name]}})
-    .filter(function(m){return m.tokens>0})
-    .sort(function(a,b){return b.tokens-a.tokens});
-  var maxTok = board.length ? board[0].tokens : 1;
+  document.getElementById('tool-usage').innerHTML = tuHtml;
 
-  if(board.length){
-    tuHtml += '<h2 class="details-title" style="margin-top:var(--s-7)">Models, <em>side by side</em></h2>' +
-      '<div class="mc-sub">Total tokens across every tool · ' + rangeLabels[range].toLowerCase() + ' · local logs</div>';
-    var podiumClasses=['first','second','third'];
-    if(board.length>=3){
-      tuHtml += '<div class="mc-podium">';
-      for(var pi=0;pi<3;pi++){
-        var pm=board[pi];
-        tuHtml += '<div class="mc-podium-card ' + podiumClasses[pi] + '">' +
-          '<span class="mc-podium-rank">' + String(pi+1).padStart(2,'0') + '</span>' +
-          '<span class="mc-podium-name">' + pm.name + '</span>' +
-          '<span class="mc-podium-provider">' + (MODEL_PROVIDER[pm.name]||'') + '</span>' +
-          '<span class="mc-podium-tokens">' + fmtTok(pm.tokens) + '</span>' +
-          '</div>';
-      }
-      tuHtml += '</div>';
-    }
-    board.forEach(function(m,i){
-      if(board.length>=3 && i<3) return;
-      tuHtml += '<div class="mc-row">' +
-        '<div class="mc-head"><span class="mc-rank">' + String(i+1).padStart(2,'0') + '</span>' +
-        '<span class="mc-name">' + m.name + '</span>' +
-        '<span class="mc-provider">' + (MODEL_PROVIDER[m.name]||'') + '</span>' +
-        '<span class="mc-tokens">' + fmtTok(m.tokens) + '</span></div>' +
-        '<div class="mc-bar"><span class="mc-fill" style="display:block;width:' + Math.round(m.tokens/maxTok*100) + '%"></span></div>' +
-        '</div>';
-    });
-  }
+  // Render leaderboard into its own container (between bars and tool usage)
+  renderLeaderboard(tools, range);
 
   // Highlights / Stat Cards — computed from dailyStats if available
   var allStats = [];
@@ -785,6 +748,51 @@ function renderToolUsage(data, range){
   }
 
   document.getElementById('tool-usage').innerHTML = tuHtml;
+}
+
+function renderLeaderboard(tools, range){
+  var rangeLabels = {'24h':'Last 24 hours','7d':'Last 7 days','30d':'Last 30 days'};
+  var modelTotals = {};
+  tools.forEach(function(t){
+    (t.models||[]).forEach(function(m){
+      if(!modelTotals[m.name]) modelTotals[m.name] = 0;
+      var tok = m.tokens;
+      if(!tok && m.tokensLabel) tok = parseTokenLabel(m.tokensLabel) * (m.tokensLabel.indexOf('B')>-1 ? 1000 : 1);
+      modelTotals[m.name] += (tok||0);
+    });
+  });
+  var board = Object.keys(modelTotals).map(function(name){return {name:name,tokens:modelTotals[name]}})
+    .filter(function(m){return m.tokens>0})
+    .sort(function(a,b){return b.tokens-a.tokens});
+  if(!board.length){document.getElementById('model-leaderboard').innerHTML=''; return}
+  var maxTok = board[0].tokens;
+  var lbHtml = '<h2 class="details-title">Models, <em>side by side</em></h2>' +
+    '<div class="mc-sub">Total tokens across every tool · ' + rangeLabels[range].toLowerCase() + ' · local logs</div>';
+  var podiumClasses=['first','second','third'];
+  if(board.length>=3){
+    lbHtml += '<div class="mc-podium">';
+    for(var pi=0;pi<3;pi++){
+      var pm=board[pi];
+      lbHtml += '<div class="mc-podium-card ' + podiumClasses[pi] + '">' +
+        '<span class="mc-podium-rank">' + String(pi+1).padStart(2,'0') + '</span>' +
+        '<span class="mc-podium-name">' + pm.name + '</span>' +
+        '<span class="mc-podium-provider">' + (MODEL_PROVIDER[pm.name]||'') + '</span>' +
+        '<span class="mc-podium-tokens">' + fmtTok(pm.tokens) + '</span>' +
+        '</div>';
+    }
+    lbHtml += '</div>';
+  }
+  board.forEach(function(m,i){
+    if(board.length>=3 && i<3) return;
+    lbHtml += '<div class="mc-row">' +
+      '<div class="mc-head"><span class="mc-rank">' + String(i+1).padStart(2,'0') + '</span>' +
+      '<span class="mc-name">' + m.name + '</span>' +
+      '<span class="mc-provider">' + (MODEL_PROVIDER[m.name]||'') + '</span>' +
+      '<span class="mc-tokens">' + fmtTok(m.tokens) + '</span></div>' +
+      '<div class="mc-bar"><span class="mc-fill" style="display:block;width:' + Math.round(m.tokens/maxTok*100) + '%"></span></div>' +
+      '</div>';
+  });
+  document.getElementById('model-leaderboard').innerHTML = lbHtml;
 }
 
 // ── Flying cursor ──
