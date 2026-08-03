@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-02T15:19:06.214888-04:00",
+  "lastUpdated": "2026-08-02T21:16:56.527191-04:00",
   "providers": [
     {
       "name": "Synthetic",
@@ -159,8 +159,8 @@
   ],
   "toolUsage": {
     "period": "Last 30 days",
-    "totalTokens": 1650000000,
-    "totalLabel": "1.6B",
+    "totalTokens": 1652000000,
+    "totalLabel": "1.7B",
     "note": "Counted from local logs — CodexBar + OpenClaw session transcripts + Hermes state.db. Antigravity rides on Claude/GPT keys and the Claude desktop app keeps its own books, so neither can be separated.",
     "tools": [
       {
@@ -241,13 +241,13 @@
       },
       {
         "name": "OpenClaw",
-        "tokensLabel": "113M",
+        "tokensLabel": "115M",
         "share": 7,
         "models": [
           {
             "name": "GLM-5.2",
-            "tokensLabel": "57M",
-            "share": 51
+            "tokensLabel": "60M",
+            "share": 52
           },
           {
             "name": "GLM-4.7",
@@ -287,19 +287,9 @@
         ],
         "daily": [
           {
-            "date": "2026-07-03",
-            "model": "GLM-5.2",
-            "tokens": 545809
-          },
-          {
-            "date": "2026-07-03",
-            "model": "Kimi-K2.7-Code",
-            "tokens": 51332
-          },
-          {
             "date": "2026-07-04",
             "model": "GLM-5.2",
-            "tokens": 2592106
+            "tokens": 2421681
           },
           {
             "date": "2026-07-05",
@@ -729,12 +719,334 @@
           {
             "date": "2026-08-02",
             "model": "Kimi-K3 (Synthetic)",
-            "tokens": 921263
+            "tokens": 1081854
           },
           {
             "date": "2026-08-02",
             "model": "GLM-5.2",
-            "tokens": 8717460
+            "tokens": 11552229
+          },
+          {
+            "date": "2026-08-03",
+            "model": "GLM-5.2",
+            "tokens": 141897
+          },
+          {
+            "date": "2026-08-03",
+            "model": "Kimi-K3 (Synthetic)",
+            "tokens": 189007
+          }
+        ],
+        "dailyStats": [
+          {
+            "date": "2026-07-04",
+            "calls": 340,
+            "maxOut": 3449,
+            "maxOutModel": "GLM-5.2",
+            "maxThink": 0,
+            "maxThinkModel": "",
+            "maxTurn": 19333,
+            "maxTurnModel": "GLM-5.2"
+          },
+          {
+            "date": "2026-07-05",
+            "calls": 379,
+            "maxOut": 3449,
+            "maxOutModel": "GLM-5.2",
+            "maxThink": 0,
+            "maxThinkModel": "",
+            "maxTurn": 49583,
+            "maxTurnModel": "GLM-5.2"
+          },
+          {
+            "date": "2026-07-06",
+            "calls": 344,
+            "maxOut": 1562,
+            "maxOutModel": "GLM-5.2",
+            "maxThink": 0,
+            "maxThinkModel": "",
+            "maxTurn": 30924,
+            "maxTurnModel": "GLM-5.2"
+          },
+          {
+            "date": "2026-07-07",
+            "calls": 305,
+            "maxOut": 1426,
+            "maxOutModel": "GLM-5.2",
+            "maxThink": 0,
+            "maxThinkModel": "",
+            "maxTurn": 22830,
+            "maxTurnModel": "GLM-5.2"
+          },
+          {
+            "date": "2026-07-08",
+            "calls": 358,
+            "maxOut": 5904,
+            "maxOutModel": "GLM-5",
+            "maxThink": 2770,
+            "maxThinkModel": "GLM-5",
+            "maxTurn": 82392,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-09",
+            "calls": 321,
+            "maxOut": 14608,
+            "maxOutModel": "GLM-5",
+            "maxThink": 8173,
+            "maxThinkModel": "GLM-5",
+            "maxTurn": 110208,
+            "maxTurnModel": "GPT-5.5"
+          },
+          {
+            "date": "2026-07-10",
+            "calls": 384,
+            "maxOut": 2664,
+            "maxOutModel": "GLM-5",
+            "maxThink": 2631,
+            "maxThinkModel": "GLM-5",
+            "maxTurn": 57732,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-11",
+            "calls": 366,
+            "maxOut": 3783,
+            "maxOutModel": "GLM-4.7",
+            "maxThink": 524,
+            "maxThinkModel": "GLM-4.7",
+            "maxTurn": 70053,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-12",
+            "calls": 369,
+            "maxOut": 7814,
+            "maxOutModel": "GLM-5",
+            "maxThink": 2897,
+            "maxThinkModel": "GLM-5",
+            "maxTurn": 49015,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-13",
+            "calls": 404,
+            "maxOut": 17740,
+            "maxOutModel": "GLM-5",
+            "maxThink": 7682,
+            "maxThinkModel": "GLM-5",
+            "maxTurn": 91466,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-14",
+            "calls": 387,
+            "maxOut": 2824,
+            "maxOutModel": "GLM-5.2",
+            "maxThink": 1022,
+            "maxThinkModel": "GLM-5",
+            "maxTurn": 78834,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-15",
+            "calls": 407,
+            "maxOut": 5218,
+            "maxOutModel": "GLM-4.7",
+            "maxThink": 2472,
+            "maxThinkModel": "GLM-4.7",
+            "maxTurn": 68574,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-16",
+            "calls": 277,
+            "maxOut": 1737,
+            "maxOutModel": "GLM-5.2",
+            "maxThink": 720,
+            "maxThinkModel": "GLM-4.7",
+            "maxTurn": 92520,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-17",
+            "calls": 282,
+            "maxOut": 2927,
+            "maxOutModel": "GLM-5",
+            "maxThink": 1307,
+            "maxThinkModel": "GLM-5",
+            "maxTurn": 50354,
+            "maxTurnModel": "GLM-4.6"
+          },
+          {
+            "date": "2026-07-18",
+            "calls": 248,
+            "maxOut": 8610,
+            "maxOutModel": "GLM-5",
+            "maxThink": 4455,
+            "maxThinkModel": "GLM-5",
+            "maxTurn": 49348,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-19",
+            "calls": 250,
+            "maxOut": 5935,
+            "maxOutModel": "GLM-5",
+            "maxThink": 2071,
+            "maxThinkModel": "GLM-5",
+            "maxTurn": 50514,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-20",
+            "calls": 269,
+            "maxOut": 3449,
+            "maxOutModel": "GLM-5.2",
+            "maxThink": 503,
+            "maxThinkModel": "GLM-4.7",
+            "maxTurn": 50915,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-21",
+            "calls": 253,
+            "maxOut": 2128,
+            "maxOutModel": "GLM-4.7",
+            "maxThink": 572,
+            "maxThinkModel": "GLM-4.7",
+            "maxTurn": 78686,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-22",
+            "calls": 312,
+            "maxOut": 5568,
+            "maxOutModel": "GLM-4.7",
+            "maxThink": 4044,
+            "maxThinkModel": "GLM-4.7",
+            "maxTurn": 75645,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-23",
+            "calls": 291,
+            "maxOut": 3449,
+            "maxOutModel": "GLM-5.2",
+            "maxThink": 16,
+            "maxThinkModel": "GLM-5",
+            "maxTurn": 42986,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-24",
+            "calls": 249,
+            "maxOut": 7384,
+            "maxOutModel": "GLM-5",
+            "maxThink": 4206,
+            "maxThinkModel": "GLM-5",
+            "maxTurn": 41498,
+            "maxTurnModel": "GLM-5"
+          },
+          {
+            "date": "2026-07-25",
+            "calls": 279,
+            "maxOut": 7666,
+            "maxOutModel": "GLM-5",
+            "maxThink": 7619,
+            "maxThinkModel": "GLM-5",
+            "maxTurn": 50142,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-26",
+            "calls": 234,
+            "maxOut": 1224,
+            "maxOutModel": "GLM-5.2",
+            "maxThink": 0,
+            "maxThinkModel": "",
+            "maxTurn": 48635,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-27",
+            "calls": 368,
+            "maxOut": 7215,
+            "maxOutModel": "Kimi-K2.7-Code",
+            "maxThink": 306,
+            "maxThinkModel": "GLM-4.7",
+            "maxTurn": 77247,
+            "maxTurnModel": "Kimi-K2.7-Code"
+          },
+          {
+            "date": "2026-07-28",
+            "calls": 254,
+            "maxOut": 2774,
+            "maxOutModel": "GLM-4.7",
+            "maxThink": 363,
+            "maxThinkModel": "GLM-4.7",
+            "maxTurn": 62453,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-29",
+            "calls": 234,
+            "maxOut": 2707,
+            "maxOutModel": "GLM-4.7",
+            "maxThink": 236,
+            "maxThinkModel": "GLM-4.7",
+            "maxTurn": 53963,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-30",
+            "calls": 128,
+            "maxOut": 1952,
+            "maxOutModel": "GLM-4.7",
+            "maxThink": 1214,
+            "maxThinkModel": "GLM-4.7",
+            "maxTurn": 41957,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-07-31",
+            "calls": 109,
+            "maxOut": 1747,
+            "maxOutModel": "Kimi-K3 (Synthetic)",
+            "maxThink": 0,
+            "maxThinkModel": "",
+            "maxTurn": 37562,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-08-01",
+            "calls": 296,
+            "maxOut": 852,
+            "maxOutModel": "Kimi-K3 (Synthetic)",
+            "maxThink": 0,
+            "maxThinkModel": "",
+            "maxTurn": 50198,
+            "maxTurnModel": "GLM-4.7"
+          },
+          {
+            "date": "2026-08-02",
+            "calls": 267,
+            "maxOut": 4626,
+            "maxOutModel": "GLM-5.2",
+            "maxThink": 0,
+            "maxThinkModel": "",
+            "maxTurn": 141714,
+            "maxTurnModel": "GLM-5.2"
+          },
+          {
+            "date": "2026-08-03",
+            "calls": 10,
+            "maxOut": 872,
+            "maxOutModel": "Kimi-K3 (Synthetic)",
+            "maxThink": 0,
+            "maxThinkModel": "",
+            "maxTurn": 141897,
+            "maxTurnModel": "GLM-5.2"
           }
         ]
       }
