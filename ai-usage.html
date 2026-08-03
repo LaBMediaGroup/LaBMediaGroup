@@ -653,7 +653,10 @@ function renderToolUsage(data, range){
   tools.forEach(function(t){
     (t.models||[]).forEach(function(m){
       if(!modelTotals[m.name]) modelTotals[m.name] = 0;
-      modelTotals[m.name] += (m.tokens||0);
+      // Use raw tokens if available, otherwise parse from tokensLabel
+      var tok = m.tokens;
+      if(!tok && m.tokensLabel) tok = parseTokenLabel(m.tokensLabel) * (m.tokensLabel.indexOf('B')>-1 ? 1000 : 1);
+      modelTotals[m.name] += (tok||0);
     });
   });
   var board = Object.keys(modelTotals).map(function(name){return {name:name,tokens:modelTotals[name]}})
