@@ -583,12 +583,9 @@ input,textarea,select{font:inherit;color:inherit}
   display:flex;justify-content:space-between;gap:var(--s-4);flex-wrap:wrap;
   font-family:var(--f-mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);
 }
-.foot-end{display:inline-flex;align-items:baseline;gap:var(--s-4)}
-/* Reachable without advertising itself. The usage dashboard is public but
-   unlisted, and this is the way in for anyone who does not know the Konami
-   code. Quiet enough to miss, solid enough to read once you look at it. */
-.foot-quiet{display:inline-block;padding:12px 8px;margin:-12px -8px;color:inherit;opacity:.4;transition:opacity var(--fast) var(--ease),color var(--fast) var(--ease)}
-.foot-quiet:hover,.foot-quiet:focus-visible{opacity:1;color:var(--accent)}
+/* .foot-end / .foot-quiet lived here to pair the copyright with a quiet
+   "Usage" link into the AI dashboard. That link is gone — the dashboard is
+   the owner's, reached by the Konami egg — so both rules went with it. */
 /* The assistant launcher is fixed in the bottom-right corner, directly over the
    copyright. Move that line aside, but only while the launcher is mounted, so
    the pages without one keep the full width. */
