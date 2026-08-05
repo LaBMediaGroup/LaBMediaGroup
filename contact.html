@@ -651,6 +651,88 @@
 })();
 </script>
 <script>
+/* The "All" fold : one place to page through every frame on this page.
+
+   Built from the folds below rather than written out a second time. They stay
+   the source of truth, so a photo added to a shoot turns up in All without
+   anyone having to remember to add it twice — and there is no chance of the
+   two copies drifting apart.
+
+   It is built in script on purpose. This fold shows nothing the page doesn't
+   already show; its whole value is paging through the lot in the viewer, and
+   the viewer needs JS. So with JS off you simply get the six real folds and
+   nothing is broken or empty.
+
+   Must run BEFORE the lightbox script below: that one collects its buttons
+   from a querySelectorAll at load and scopes prev/next to the .bts-grid the
+   photo was clicked in — which is exactly the behaviour this fold wants. */
+(function(){
+  var first = document.querySelector('details.bts');
+  if(!first) return;
+  var sec = first.closest('section');
+  if(!sec) return;
+
+  var folds = [].slice.call(sec.querySelectorAll('details.bts'));
+  var shots = [].slice.call(sec.querySelectorAll('.bts-grid .shot'));
+  /* One fold collecting one fold is just the same fold twice. */
+  if(folds.length < 2 || !shots.length) return;
+
+  var d = document.createElement('details');
+  d.className = 'bts';
+
+  /* Three peeks from three different shoots, so the stack reads as a mix
+     rather than three frames of the same afternoon. */
+  var picks = [0, Math.floor(folds.length / 2), folds.length - 1]
+    .filter(function(v, n, a){ return a.indexOf(v) === n; });
+
+  var sum = document.createElement('summary');
+  var peek = document.createElement('span');
+  peek.className = 'bts-peek';
+  picks.forEach(function(fi){
+    var im = folds[fi].querySelector('.bts-grid .shot img');
+    if(!im) return;
+    var c = im.cloneNode(false);
+    c.alt = '';
+    c.setAttribute('loading','lazy');
+    c.setAttribute('decoding','async');
+    peek.appendChild(c);
+  });
+  sum.appendChild(peek);
+
+  var label = document.createElement('span');
+  label.className = 'bts-label';
+  label.innerHTML = '<b>All</b><span>' + shots.length +
+    ' photos : every frame on this page, one roll</span>';
+  sum.appendChild(label);
+
+  var ico = document.createElement('span');
+  ico.className = 'bts-ico';
+  ico.setAttribute('aria-hidden','true');
+  sum.appendChild(ico);
+  d.appendChild(sum);
+
+  /* The wide grid, same as The Hook's : it is the one tuned for a long mixed
+     set, and the wide/tall spans the clones carry pack into it as they do
+     there. The is-3 / is-4 track counts exist for short folds. */
+  var grid = document.createElement('div');
+  grid.className = 'bts-grid';
+  shots.forEach(function(s, n){
+    var c = s.cloneNode(true);
+    c.setAttribute('aria-label','Open photo ' + (n + 1) + ' of ' + shots.length);
+    grid.appendChild(c);
+  });
+  d.appendChild(grid);
+
+  var credit = document.createElement('p');
+  credit.className = 'bts-credit';
+  credit.innerHTML = 'Every frame from the folds below, in page order &middot; ' +
+    'each shoot keeps its own credit there';
+  d.appendChild(credit);
+
+  first.parentNode.insertBefore(d, first);
+})();
+</script>
+<script>
 /* Behind-the-scenes lightbox (ported from portfolio).
    Thumbnails carry the grid; the full-size file only loads when opened. */
 (function(){
