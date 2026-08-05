@@ -104,7 +104,6 @@
   text-transform:uppercase;color:var(--faint);
 }
 .bars-cost strong{color:var(--accent);font-weight:400}
-.cost-caveat{color:var(--faint);opacity:.75}
 
 /* ── WHAT'S NEW (timeline) ── */
 .news-title{
@@ -604,18 +603,11 @@ async function loadUsage(){
 
     // "Usable" is the honest headline: a reading, fresh, with headroom left.
     const usable = providers.filter(p => availabilityFor(p).state === 'open').length;
-    const monthly = providers.reduce((s,p) => s + (p.monthlyCost || 0), 0);
 
-    // A provider whose price nobody has written down must not be summed as $0.
-    // Same failure mode as the stale quotas: an unknown quietly rendered as a
-    // confident number. Mark the total as a floor instead.
-    const unpriced = providers.filter(p => typeof p.monthlyCost !== 'number').length;
-
-    // Cost line
+    // No spend is reported here. This page is world-readable, and what these
+    // plans cost is nobody's business but ours — the useful question is which
+    // provider can actually take work right now, not what the bill came to.
     document.getElementById('bars-cost').innerHTML =
-      '<span>Monthly: <strong>$' + monthly.toFixed(0) + (unpriced ? '+' : '') + '</strong>' +
-      (unpriced ? '<span class="cost-caveat" title="' + unpriced + ' provider' + (unpriced === 1 ? '' : 's') +
-        ' with no recorded price"> · ' + unpriced + ' unpriced</span>' : '') + '</span>' +
       '<span>Usable now: <strong>' + usable + '/' + providers.length + '</strong></span>';
 
     // Vertical bars
@@ -687,7 +679,8 @@ async function loadUsage(){
         quotaRows +
         '<div class="pd-info">' +
           (p.plan ? '<span><strong>Plan:</strong> ' + p.plan + '</span>' : '') +
-          (p.cost ? '<span><strong>Cost:</strong> ' + p.cost + '</span>' : '') +
+          // No Cost row, and providers[] carries no price fields to render one
+          // from. The tier badge names the plan tier, never its price.
           (p.endpoint ? '<span><strong>API:</strong> ' + p.endpoint + '</span>' : '') +
         '</div>' +
         (models ? '<div class="pd-models">' + models + '</div>' : '') +

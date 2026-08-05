@@ -3,10 +3,8 @@
   "providers": [
     {
       "name": "Synthetic",
-      "tier": "$30/mo",
+      "tier": "Paid",
       "plan": "Synthetic Plan",
-      "monthlyCost": 30,
-      "cost": "$30/mo",
       "endpoint": "api.synthetic.new",
       "quotas": [
         {
@@ -14,7 +12,7 @@
           "label": "Weekly credits",
           "percentUsed": 100,
           "resetsAt": "2026-08-06T13:45:00-04:00",
-          "resetNote": "regenerates 2% ($0.72) per hour",
+          "resetNote": "regenerates 2% per hour",
           "syncedAt": "2026-08-04T11:45:00-04:00",
           "source": "manual"
         },
@@ -51,10 +49,8 @@
     },
     {
       "name": "Kimi <em>Code</em>",
-      "tier": "$19/mo",
+      "tier": "Moderato",
       "plan": "Moderato",
-      "monthlyCost": 19,
-      "cost": "$19/mo",
       "endpoint": "api.kimi.com/coding",
       "quotas": [
         {
@@ -95,10 +91,8 @@
     },
     {
       "name": "GLM / <em>Z.ai</em>",
-      "tier": "$16.20/mo",
+      "tier": "Lite",
       "plan": "GLM Coding Lite (Legacy V2)",
-      "monthlyCost": 16.2,
-      "cost": "$16.20/mo",
       "endpoint": "api.z.ai",
       "quotas": [
         {
@@ -145,10 +139,8 @@
     },
     {
       "name": "MiniMax",
-      "tier": "$20/mo",
+      "tier": "Plus",
       "plan": "Coding Plan &middot; Plus",
-      "monthlyCost": 20,
-      "cost": "$20/mo",
       "endpoint": "api.minimaxi.chat/v1",
       "quotas": [
         {
@@ -177,10 +169,8 @@
     },
     {
       "name": "OpenAI",
-      "tier": "$20/mo",
+      "tier": "Plus",
       "plan": "ChatGPT Plus",
-      "monthlyCost": 20,
-      "cost": "$20/mo",
       "endpoint": "api.openai.com",
       "quotas": [
         {
@@ -208,10 +198,8 @@
     },
     {
       "name": "Anthropic",
-      "tier": "$20/mo",
+      "tier": "Pro",
       "plan": "Claude Pro",
-      "monthlyCost": 20,
-      "cost": "$20/mo",
       "endpoint": "api.anthropic.com",
       "quotas": [
         {
@@ -246,8 +234,6 @@
       "name": "Google <em>Gemini</em>",
       "tier": "Free",
       "plan": "Free tier",
-      "monthlyCost": 0,
-      "cost": "free",
       "endpoint": "generativelanguage.googleapis.com",
       "quotas": [
         {
