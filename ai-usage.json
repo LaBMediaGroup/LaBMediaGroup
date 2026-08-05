@@ -1,10 +1,13 @@
 {
-  "lastUpdated": "2026-08-04T09:15:10.421088-04:00",
+  "lastUpdated": "2026-08-05T09:15:06.137910-04:00",
+  "_note": "Run `node tools/sync-usage.mjs` to refresh what can be refreshed. Only Synthetic has a documented usage API (api.synthetic.new/v2/quotas), and it currently reports the 5-hour window only. Z.ai, Kimi, Anthropic and Synthetic's weekly credits have no public endpoint — edit those quotas by hand from the consoles linked on each card, then bump lastUpdated. Each quota's percentUsed is 0-100 or null for 'no reading'; resetsAt is an ISO timestamp or null. See tools/README.md.",
   "providers": [
     {
       "name": "Synthetic",
-      "tier": "Paid",
+      "tier": "$30/mo",
       "plan": "Synthetic Plan",
+      "monthlyCost": 30,
+      "cost": "$30/mo",
       "endpoint": "api.synthetic.new",
       "quotas": [
         {
@@ -12,7 +15,7 @@
           "label": "Weekly credits",
           "percentUsed": 100,
           "resetsAt": "2026-08-06T13:45:00-04:00",
-          "resetNote": "regenerates 2% per hour",
+          "resetNote": "regenerates 2% ($0.72) per hour",
           "syncedAt": "2026-08-04T11:45:00-04:00",
           "source": "manual"
         },
@@ -20,10 +23,10 @@
           "id": "session",
           "label": "5-hour requests",
           "percentUsed": 0,
-          "resetsAt": null,
-          "resetNote": "rolling 5h window",
-          "syncedAt": "2026-08-04T11:45:00-04:00",
-          "source": "manual"
+          "resetsAt": "2026-08-05T18:15:06.163Z",
+          "resetNote": "0 of 750 requests",
+          "syncedAt": "2026-08-05T13:15:06.137834+00:00",
+          "source": "api"
         }
       ],
       "link": "https://synthetic.new/billing/",
@@ -49,8 +52,10 @@
     },
     {
       "name": "Kimi <em>Code</em>",
-      "tier": "Moderato",
+      "tier": "$19/mo",
       "plan": "Moderato",
+      "monthlyCost": 19,
+      "cost": "$19/mo",
       "endpoint": "api.kimi.com/coding",
       "quotas": [
         {
@@ -91,8 +96,10 @@
     },
     {
       "name": "GLM / <em>Z.ai</em>",
-      "tier": "Lite",
+      "tier": "$16.20/mo",
       "plan": "GLM Coding Lite (Legacy V2)",
+      "monthlyCost": 16.2,
+      "cost": "$16.20/mo",
       "endpoint": "api.z.ai",
       "quotas": [
         {
@@ -138,39 +145,11 @@
       ]
     },
     {
-      "name": "MiniMax",
-      "tier": "Plus",
-      "plan": "Coding Plan &middot; Plus",
-      "endpoint": "api.minimaxi.chat/v1",
-      "quotas": [
-        {
-          "id": "monthly",
-          "label": "Monthly quota",
-          "percentUsed": null,
-          "resetsAt": null,
-          "resetNote": "~1.7B M3 tokens/mo &middot; text, image, speech and music share one pool",
-          "syncedAt": null,
-          "source": "manual"
-        }
-      ],
-      "link": "https://account.minimax.io",
-      "linkLabel": "Account &amp; usage",
-      "note": "Plus",
-      "models": [
-        {
-          "name": "MiniMax-M3",
-          "active": true
-        },
-        {
-          "name": "MiniMax-M2.7",
-          "active": false
-        }
-      ]
-    },
-    {
       "name": "OpenAI",
-      "tier": "Plus",
+      "tier": "$20/mo",
       "plan": "ChatGPT Plus",
+      "monthlyCost": 20,
+      "cost": "$20/mo",
       "endpoint": "api.openai.com",
       "quotas": [
         {
@@ -198,8 +177,10 @@
     },
     {
       "name": "Anthropic",
-      "tier": "Pro",
+      "tier": "$20/mo",
       "plan": "Claude Pro",
+      "monthlyCost": 20,
+      "cost": "$20/mo",
       "endpoint": "api.anthropic.com",
       "quotas": [
         {
@@ -234,6 +215,8 @@
       "name": "Google <em>Gemini</em>",
       "tier": "Free",
       "plan": "Free tier",
+      "monthlyCost": 0,
+      "cost": "free",
       "endpoint": "generativelanguage.googleapis.com",
       "quotas": [
         {
@@ -258,7 +241,7 @@
   ],
   "toolUsage": {
     "period": "Last 30 days",
-    "totalTokens": 1640000000,
+    "totalTokens": 1636000000,
     "totalLabel": "1.6B",
     "note": "Counted from local logs — CodexBar + OpenClaw session transcripts + Hermes state.db. Antigravity rides on Claude/GPT keys and the Claude desktop app keeps its own books, so neither can be separated.",
     "tools": [
@@ -340,23 +323,23 @@
       },
       {
         "name": "OpenClaw",
-        "tokensLabel": "103M",
+        "tokensLabel": "99M",
         "share": 6,
         "models": [
           {
-            "name": "GLM-5.2",
-            "tokensLabel": "46M",
-            "share": 45
-          },
-          {
             "name": "GLM-4.7",
             "tokensLabel": "44M",
+            "share": 44
+          },
+          {
+            "name": "GLM-5.2",
+            "tokensLabel": "41M",
             "share": 42
           },
           {
             "name": "Kimi-K3 (Synthetic)",
-            "tokensLabel": "8M",
-            "share": 8
+            "tokensLabel": "9M",
+            "share": 9
           },
           {
             "name": "Kimi-K2.7-Code",
@@ -386,19 +369,9 @@
         ],
         "daily": [
           {
-            "date": "2026-07-05",
-            "model": "GLM-5.2",
-            "tokens": 1508515
-          },
-          {
             "date": "2026-07-06",
             "model": "GLM-5.2",
-            "tokens": 2611661
-          },
-          {
-            "date": "2026-07-06",
-            "model": "Kimi-K2.7-Code",
-            "tokens": 18097
+            "tokens": 1015600
           },
           {
             "date": "2026-07-07",
@@ -818,38 +791,33 @@
           {
             "date": "2026-08-03",
             "model": "Kimi-K3 (Synthetic)",
-            "tokens": 918984
+            "tokens": 708867
           },
           {
-            "date": "2026-08-03",
+            "date": "2026-08-04",
             "model": "GLM-5.2",
-            "tokens": 2130705
+            "tokens": 122989
           },
           {
             "date": "2026-08-04",
             "model": "Kimi-K3 (Synthetic)",
-            "tokens": 321298
+            "tokens": 736234
+          },
+          {
+            "date": "2026-08-05",
+            "model": "Kimi-K3 (Synthetic)",
+            "tokens": 638431
           }
         ],
         "dailyStats": [
           {
-            "date": "2026-07-05",
-            "calls": 182,
-            "maxOut": 607,
-            "maxOutModel": "GLM-5.2",
-            "maxThink": 0,
-            "maxThinkModel": "",
-            "maxTurn": 21598,
-            "maxTurnModel": "GLM-5.2"
-          },
-          {
             "date": "2026-07-06",
-            "calls": 344,
-            "maxOut": 1562,
+            "calls": 129,
+            "maxOut": 948,
             "maxOutModel": "GLM-5.2",
             "maxThink": 0,
             "maxThinkModel": "",
-            "maxTurn": 30924,
+            "maxTurn": 24472,
             "maxTurnModel": "GLM-5.2"
           },
           {
@@ -1124,27 +1092,37 @@
           },
           {
             "date": "2026-08-03",
-            "calls": 155,
+            "calls": 100,
             "maxOut": 1363,
             "maxOutModel": "GLM-4.7",
             "maxThink": 0,
             "maxThinkModel": "",
-            "maxTurn": 68011,
-            "maxTurnModel": "GLM-5.2"
+            "maxTurn": 50074,
+            "maxTurnModel": "GLM-4.7"
           },
           {
             "date": "2026-08-04",
-            "calls": 67,
-            "maxOut": 482,
+            "calls": 128,
+            "maxOut": 552,
             "maxOutModel": "Kimi-K3 (Synthetic)",
             "maxThink": 0,
             "maxThinkModel": "",
-            "maxTurn": 13895,
+            "maxTurn": 18876,
+            "maxTurnModel": "Kimi-K3 (Synthetic)"
+          },
+          {
+            "date": "2026-08-05",
+            "calls": 63,
+            "maxOut": 1243,
+            "maxOutModel": "Kimi-K3 (Synthetic)",
+            "maxThink": 0,
+            "maxThinkModel": "",
+            "maxTurn": 25808,
             "maxTurnModel": "Kimi-K3 (Synthetic)"
           }
         ]
       }
     ]
   },
-  "_note": "Quota freshness is per-window: each entry in providers[].quotas carries syncedAt + source. sync_openclaw_usage.py refreshes toolUsage and (where an API exists) quotas; windows without an API are edited by hand from the consoles linked on each card. Do NOT use lastUpdated as a provider-freshness signal — it only describes the token-count sync."
+  "quotasSyncedCount": 1
 }
