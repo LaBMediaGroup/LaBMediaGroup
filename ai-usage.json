@@ -8,11 +8,26 @@
       "monthlyCost": 30,
       "cost": "$30/mo",
       "endpoint": "api.synthetic.new",
-      "percentUsed": 45,
-      "usedLabel": "~45%",
-      "totalLabel": "monthly quota",
-      "status": "ok",
-      "resetsIn": "resets monthly",
+      "quotas": [
+        {
+          "id": "weekly",
+          "label": "Weekly credits",
+          "percentUsed": 100,
+          "resetsAt": "2026-08-06T13:45:00-04:00",
+          "resetNote": "regenerates 2% ($0.72) per hour",
+          "syncedAt": "2026-08-04T11:45:00-04:00",
+          "source": "manual"
+        },
+        {
+          "id": "session",
+          "label": "5-hour requests",
+          "percentUsed": 0,
+          "resetsAt": null,
+          "resetNote": "rolling 5h window",
+          "syncedAt": "2026-08-04T11:45:00-04:00",
+          "source": "manual"
+        }
+      ],
       "link": "https://synthetic.new/billing/",
       "linkLabel": "Billing &amp; usage",
       "models": [
@@ -41,11 +56,26 @@
       "monthlyCost": 19,
       "cost": "$19/mo",
       "endpoint": "api.kimi.com/coding",
-      "percentUsed": 95,
-      "usedLabel": "~95%",
-      "totalLabel": "weekly quota",
-      "status": "crit",
-      "resetsIn": "resets weekly",
+      "quotas": [
+        {
+          "id": "weekly",
+          "label": "Weekly usage",
+          "percentUsed": 100,
+          "resetsAt": "2026-08-07T15:54:00-04:00",
+          "resetNote": "",
+          "syncedAt": "2026-08-04T11:45:00-04:00",
+          "source": "manual"
+        },
+        {
+          "id": "session",
+          "label": "Rate limit window",
+          "percentUsed": 0,
+          "resetsAt": "2026-08-04T14:54:00-04:00",
+          "resetNote": "",
+          "syncedAt": "2026-08-04T11:45:00-04:00",
+          "source": "manual"
+        }
+      ],
       "link": "https://www.kimi.com/code/console?from=kfc_overview_topbar",
       "linkLabel": "Usage console",
       "models": [
@@ -70,11 +100,35 @@
       "monthlyCost": 16.2,
       "cost": "$16.20/mo",
       "endpoint": "api.z.ai",
-      "percentUsed": 0,
-      "usedLabel": "—",
-      "totalLabel": "—",
-      "status": "unknown",
-      "resetsIn": "renews 2026-09-01",
+      "quotas": [
+        {
+          "id": "weekly",
+          "label": "Weekly quota",
+          "percentUsed": 100,
+          "resetsAt": "2026-08-07T22:03:00-04:00",
+          "resetNote": "",
+          "syncedAt": "2026-08-04T11:45:00-04:00",
+          "source": "manual"
+        },
+        {
+          "id": "session",
+          "label": "5-hour quota",
+          "percentUsed": 0,
+          "resetsAt": null,
+          "resetNote": "rolling 5h window",
+          "syncedAt": "2026-08-04T11:45:00-04:00",
+          "source": "manual"
+        },
+        {
+          "id": "mcp",
+          "label": "MCP quota",
+          "percentUsed": 0,
+          "resetsAt": "2026-08-31T22:03:00-04:00",
+          "resetNote": "",
+          "syncedAt": "2026-08-04T11:45:00-04:00",
+          "source": "manual"
+        }
+      ],
       "link": "https://z.ai/manage-apikey/coding-plan/personal/usage",
       "linkLabel": "Usage console",
       "note": "Lite",
@@ -90,17 +144,55 @@
       ]
     },
     {
+      "name": "MiniMax",
+      "tier": "$20/mo",
+      "plan": "Coding Plan &middot; Plus",
+      "monthlyCost": 20,
+      "cost": "$20/mo",
+      "endpoint": "api.minimaxi.chat/v1",
+      "quotas": [
+        {
+          "id": "monthly",
+          "label": "Monthly quota",
+          "percentUsed": null,
+          "resetsAt": null,
+          "resetNote": "~1.7B M3 tokens/mo &middot; text, image, speech and music share one pool",
+          "syncedAt": null,
+          "source": "manual"
+        }
+      ],
+      "link": "https://account.minimax.io",
+      "linkLabel": "Account &amp; usage",
+      "note": "Plus",
+      "models": [
+        {
+          "name": "MiniMax-M3",
+          "active": true
+        },
+        {
+          "name": "MiniMax-M2.7",
+          "active": false
+        }
+      ]
+    },
+    {
       "name": "OpenAI",
       "tier": "$20/mo",
       "plan": "ChatGPT Plus",
       "monthlyCost": 20,
       "cost": "$20/mo",
       "endpoint": "api.openai.com",
-      "percentUsed": 60,
-      "usedLabel": "~60%",
-      "totalLabel": "5h limit",
-      "status": "ok",
-      "resetsIn": "rolling 5h window",
+      "quotas": [
+        {
+          "id": "weekly",
+          "label": "Weekly limit",
+          "percentUsed": 100,
+          "resetsAt": "2026-08-08T03:00:00-04:00",
+          "resetNote": "shared across Codex, Work, Workspace Agents",
+          "syncedAt": "2026-08-04T11:45:00-04:00",
+          "source": "manual"
+        }
+      ],
       "link": "https://chatgpt.com/#settings/Usage",
       "linkLabel": "Usage settings",
       "models": [
@@ -121,11 +213,26 @@
       "monthlyCost": 20,
       "cost": "$20/mo",
       "endpoint": "api.anthropic.com",
-      "percentUsed": 0,
-      "usedLabel": "—",
-      "totalLabel": "—",
-      "status": "unknown",
-      "resetsIn": "renews Aug 2",
+      "quotas": [
+        {
+          "id": "session",
+          "label": "5-hour window",
+          "percentUsed": null,
+          "resetsAt": null,
+          "resetNote": "no API — check manually",
+          "syncedAt": null,
+          "source": "manual"
+        },
+        {
+          "id": "weekly",
+          "label": "Weekly limit",
+          "percentUsed": null,
+          "resetsAt": null,
+          "resetNote": "no API — check manually",
+          "syncedAt": null,
+          "source": "manual"
+        }
+      ],
       "link": "https://claude.ai/new#settings/usage",
       "linkLabel": "Usage settings",
       "models": [
@@ -142,11 +249,17 @@
       "monthlyCost": 0,
       "cost": "free",
       "endpoint": "generativelanguage.googleapis.com",
-      "percentUsed": 0,
-      "usedLabel": "—",
-      "totalLabel": "—",
-      "status": "unknown",
-      "resetsIn": "",
+      "quotas": [
+        {
+          "id": "daily",
+          "label": "Daily free tier",
+          "percentUsed": null,
+          "resetsAt": null,
+          "resetNote": "resets daily · not tracked",
+          "syncedAt": null,
+          "source": "manual"
+        }
+      ],
       "link": "https://gemini.google.com/usage",
       "linkLabel": "Usage dashboard",
       "models": [
@@ -1046,5 +1159,6 @@
         ]
       }
     ]
-  }
+  },
+  "_note": "Quota freshness is per-window: each entry in providers[].quotas carries syncedAt + source. sync_openclaw_usage.py refreshes toolUsage and (where an API exists) quotas; windows without an API are edited by hand from the consoles linked on each card. Do NOT use lastUpdated as a provider-freshness signal — it only describes the token-count sync."
 }
