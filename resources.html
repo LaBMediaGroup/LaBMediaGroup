@@ -292,9 +292,72 @@ body.searching .lab-sec{display:none}
 @media (max-width:760px){
   .item-side{flex-direction:row;align-items:center;gap:var(--s-4);grid-column:2;padding-top:2px}
 }
+
+/* ================= PALETTE LAYOUT =================
+   The page asks a question instead of presenting a menu. The groups still
+   render underneath exactly as before, which is what keeps the save-to-kit
+   stars, the detail panels and the deep-link anchors working; this hides the
+   accordion chrome and lets the filtered items read as one flat answer. */
+.pal-lead{max-width:720px;margin:0 auto;text-align:center}
+.pal-lead h1{max-width:none;margin-top:var(--s-5)}
+.pal-lead .lede{margin-inline:auto;max-width:56ch}
+.pal-lead .find{margin-inline:auto}
+.pal-lead .find input{border-radius:10px;padding:18px 46px 18px 50px;font-size:16.5px}
+.pal-lead .find svg{left:19px;right:auto}
+.pal-lead .slash{right:18px}
+.pal-lead .find-row{margin-inline:auto;justify-content:center;gap:var(--s-3)}
+
+.pal-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:var(--s-4)}
+.pal-chip{
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--faint);border:1px solid var(--line);border-radius:100px;padding:6px 12px;
+  background:none;cursor:pointer;transition:color var(--fast) var(--ease),border-color var(--fast) var(--ease)
+}
+.pal-chip span{opacity:.55;margin-left:4px}
+.pal-chip:hover{color:var(--ink)}
+.pal-chip[aria-pressed="true"]{color:var(--accent);border-color:var(--accent-dim);background:var(--accent-bg)}
+
+.pal-rest{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);
+  padding:var(--s-5) 0 var(--s-2);margin:0;text-align:center}
+
+/* Group chrome is the thing this layout replaces. */
+body.palette .jump{display:none}
+body.palette .grp{border-bottom:0}
+body.palette .grp-d > summary{display:none}
+body.palette .grp-d .items{padding-bottom:0;border-top:0}
+body.palette .band{display:none}
+body.palette .items{border-top:0}
+/* One continuous rule between answers, whichever group they came from. */
+body.palette .item{border-bottom:1px solid var(--line)}
+body.palette #groups{border-top:1px solid var(--line)}
+/* Nothing to expand when there are no doors. */
+body.palette .toggle-all{display:none}
+
+/* An answer should be scannable. The row is unchanged in structure : the
+   detail panel, the save star and the visit link all still work : but the
+   action block was 74px of 48px-tall buttons under every single result,
+   which put three answers on a screen. Touch targets stay at 40px. */
+body.palette .items > .item{padding:var(--s-4) 0}
+body.palette .item-actions{
+  margin-top:12px;padding:0;background:none;gap:6px;
+  grid-template-columns:minmax(0,auto) minmax(0,auto) minmax(0,auto);
+  justify-content:start
+}
+body.palette .item-more,
+body.palette .item-actions .save,
+body.palette .item-visit{
+  min-height:40px;padding:8px 13px;border-radius:8px;font-size:8.5px
+}
+body.palette .item-more small{display:none}
+body.palette .item-main > p{margin-top:2px}
+
+/* The count moved into the resting label above the answers, so the row under
+   the chips holds one button and was mostly empty space. */
+body.palette .find-row{margin-top:10px;max-width:none;gap:var(--s-2)}
+body.palette .find-count{display:none}
 </style>
 </head>
-<body>
+<body class="palette">
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header class="nav">
@@ -353,24 +416,30 @@ body.searching .lab-sec{display:none}
 
 <section class="pg-hero wrap">
   <div class="rule"><span class="mono">The Notebook</span><i></i><span class="mono" id="totalCount">127 entries</span></div>
-  <h1>The whole <em>notebook.</em></h1>
-  <p class="lede">Everything I point people at, in one place: channels that teach, software and
-  assets worth opening, where to buy and rent, and the people worth working with. Search runs
-  across all 127 at once. <a href="gear.html">LaB&rsquo;s Kit</a> is what I actually own, and
-  <a href="mykit.html">Your Kit</a> builds your own.</p>
 
-  <div class="find">
-    <label class="vh" for="q">Search resources</label>
-    <input type="search" id="q" placeholder="Search everything…" autocomplete="off">
-    <kbd class="slash" aria-hidden="true">/</kbd>
-    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
-  </div>
-  <div class="find-row">
-    <div class="find-count" id="count" role="status" aria-live="polite"></div>
-    <button class="freebtn" id="freeOnly" type="button" aria-pressed="false">Free only</button>
-    <button type="button" id="toggleAll" class="toggle-all">Expand all</button>
+  <div class="pal-lead">
+    <h1>What do you <em>need?</em></h1>
+    <p class="lede">127 things worth keeping: channels that teach, software worth opening, where to
+    buy and rent, and the people worth working with. Start typing, or pick a corner.</p>
+
+    <div class="find">
+      <label class="vh" for="q">Search the notebook</label>
+      <input type="search" id="q" placeholder="Search everything&hellip;" autocomplete="off">
+      <kbd class="slash" aria-hidden="true">/</kbd>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+    </div>
+
+    <div class="pal-chips" id="palChips"></div>
+
+    <div class="find-row">
+      <div class="find-count" id="count" role="status" aria-live="polite"></div>
+      <button class="freebtn" id="freeOnly" type="button" aria-pressed="false">Free only</button>
+      <button type="button" id="toggleAll" class="toggle-all">Expand all</button>
+    </div>
   </div>
 </section>
+
+<div class="wrap"><p class="pal-rest mono" id="restLabel" role="status" aria-live="polite"></p></div>
 
 <nav class="jump" aria-label="Jump to category"><div class="jump-in" id="jumpNav"></div></nav>
 

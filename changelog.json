@@ -2,6 +2,11 @@
   "entries": [
     {
       "date": "2026-08-06",
+      "time": "23:25 EDT",
+      "text": "<strong>The notebook asks a question now.</strong> One page of sixteen collapsed sections was still a menu you had to read before you could do anything, so the page leads with <em>What do you need?</em> and a search box instead. At rest it answers with the seven LaB picks rather than an empty box or all 127 rows; type, or tap one of sixteen category chips. The sections still render underneath exactly as before, which is what keeps the save-to-kit stars, the detail panels and every deep link working untouched &mdash; the layout hides the accordion and lets the filtered entries read as one flat answer. Rows lost the 74&nbsp;pixel block of buttons under every result and kept 40&nbsp;pixel touch targets. Six point eight screens at rest down to three point six."
+    },
+    {
+      "date": "2026-08-06",
       "time": "22:40 EDT",
       "text": "<strong>Four resource lists became one notebook.</strong> Watch &amp; Learn, Software &amp; Assets, Gear &amp; Flight and People &amp; Community were four pages showing sixteen collapsed groups, which meant paying for the hero, the search box and the footer four times over to display the same thing. They are one page now: all 127 entries, sixteen groups under four band headings, one search that never has to hand off between pages again. The old addresses still work and forward to the right band, carrying any search with them. <em>Resources also stopped being a dropdown</em> &mdash; it is a link, with LaB&rsquo;s Kit and Your Kit promoted beside it, so the menu went from six items to three."
     },
