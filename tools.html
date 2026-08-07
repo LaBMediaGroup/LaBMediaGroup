@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var K="lab-theme-v2",O="lab-theme",M={stone:"sepia",sepia:"timber"};try{var t=localStorage.getItem(K);if(t===null){var l=localStorage.getItem(O);if(l){t=M[l]||l;localStorage.setItem(K,t);}}if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tools | LaB Media</title>
+<meta name="description" content="Six free filmmaking tools, arranged in the order you actually use them: plan the shoot, read the sky, frame the crop, ask the notebook. No accounts, no uploads.">
+<link rel="canonical" href="https://labmedia.work/tools.html">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://labmedia.work/tools.html">
+<meta property="og:site_name" content="LaB Media">
+<meta property="og:title" content="Tools">
+<meta property="og:description" content="Six free filmmaking tools, arranged in the order you actually use them. No accounts, no uploads.">
+<meta property="og:image" content="https://labmedia.work/images/og/index.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tools">
+<meta name="twitter:description" content="Six free filmmaking tools, arranged in the order you actually use them.">
+<meta name="twitter:image" content="https://labmedia.work/images/og/index.jpg">
+
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="images/favicon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="alternate" type="application/rss+xml" title="LaB Media" href="/feed.xml">
+<link rel="alternate" type="application/feed+json" title="LaB Media" href="/feed.json">
+<link rel="stylesheet" href="lab.css">
+<style>
+.pg-hero{padding-block:clamp(44px,6vw,var(--s-8)) clamp(30px,4vw,var(--s-6));border-bottom:1px solid var(--line)}
+.pg-hero h1{font-family:var(--f-display);font-size:var(--t-3xl);font-weight:400;line-height:.95;letter-spacing:-.025em;margin-top:var(--s-6);max-width:16ch}
+.pg-hero h1 em{font-style:italic;color:var(--accent)}
+.pg-hero .lede{color:var(--dim);font-size:var(--t-lg);line-height:1.75;max-width:56ch;margin-top:var(--s-5)}
+
+/* ── The live strip. Proof, above the fold, that these are running tools and
+      not screenshots: two of them are computing while you read the sentence
+      that describes them. Solar is local maths and lands instantly; the wind
+      arrives a moment later over the network. ── */
+.livestrip{
+  display:flex;flex-wrap:wrap;gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  margin-top:clamp(28px,4vw,var(--s-6))
+}
+.live-cell{flex:1 1 190px;background:var(--paper-2);padding:var(--s-4) var(--s-4)}
+.live-k{font-family:var(--f-mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:8px}
+.live-v{font-family:var(--f-display);font-size:clamp(21px,2.5vw,27px);color:var(--ink);line-height:1.05}
+.live-v small{font-size:.5em;color:var(--faint);letter-spacing:.06em;margin-left:4px}
+.live-sub{font-family:var(--f-mono);font-size:9px;letter-spacing:.08em;color:var(--faint);margin-top:7px}
+.live-v.is-wait{color:var(--faint);font-style:italic}
+.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--faint);margin-right:6px;vertical-align:middle}
+.live-dot.ok{background:var(--good)}.live-dot.warn{background:var(--accent)}.live-dot.crit{background:#E0533A}
+
+/* ── Phases. The page is ordered by when you reach for a thing, so the spine
+      is the shoot itself: plan it, fly it, frame it, then ask about it. ── */
+.phase{padding-block:clamp(34px,4.5vw,var(--s-7));border-bottom:1px solid var(--line)}
+.phase:last-of-type{border-bottom:0}
+.phase-head{display:flex;align-items:baseline;gap:var(--s-4);margin-bottom:var(--s-5)}
+.phase-n{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--accent);flex:none}
+.phase-head h2{font-family:var(--f-display);font-size:clamp(24px,3.2vw,34px);font-weight:400;letter-spacing:-.02em;line-height:1.05;margin:0;flex:none}
+.phase-head h2 em{font-style:italic;color:var(--accent)}
+.phase-head i{flex:1;height:1px;background:var(--line);align-self:center}
+.phase-head .phase-when{font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);flex:none}
+
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:var(--s-4)}
+
+.tool{
+  display:flex;flex-direction:column;
+  border:1px solid var(--line);border-radius:10px;background:var(--paper-2);
+  padding:var(--s-5);position:relative;overflow:hidden;
+  transition:border-color var(--fast) var(--ease),transform var(--fast) var(--ease)
+}
+.tool:hover{border-color:var(--accent-dim);transform:translateY(-2px)}
+.tool-name{font-family:var(--f-display);font-size:clamp(21px,2.4vw,26px);font-weight:400;line-height:1.15;letter-spacing:-.01em;margin:0 0 9px;color:var(--ink)}
+.tool-name em{font-style:italic;color:var(--accent)}
+.tool-desc{color:var(--dim);font-size:var(--t-sm);line-height:1.7;margin:0 0 var(--s-4)}
+
+/* Each card carries a working miniature of its own tool rather than a
+   screenshot of one. The panel is the demo. */
+/* Every panel stretches to the same bottom edge, so cards sitting side by side
+   line their demos up instead of each floating at its own content height.
+   min-height:0 is load-bearing: without it a flex item's automatic minimum is
+   its content, and the accumulating chat transcript would push the whole card
+   taller on every turn. */
+.demo{
+  border:1px solid var(--line);border-radius:6px;background:var(--paper);
+  padding:var(--s-4);margin-bottom:var(--s-4);
+  flex:1;min-height:0;display:flex;flex-direction:column
+}
+.demo-k{font-family:var(--f-mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:10px}
+.demo-line{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-3);font-family:var(--f-mono);font-size:11px;color:var(--dim);padding:5px 0}
+.demo-line+.demo-line{border-top:1px solid var(--line)}
+.demo-line b{color:var(--ink);font-weight:400}
+.demo-line .accent{color:var(--accent)}
+
+/* Slot machine, the same one ideas.html uses: the premise flickers through
+   real entries and dims to --faint while it is spinning, so the landing reads
+   as a result rather than a text swap. */
+.prompt-text{color:var(--ink);font-size:var(--t-sm);line-height:1.65;min-height:4.9em;margin:0}
+.prompt-text.spin{color:var(--faint)}
+.demo-btn{
+  /* The panel is a flex column, so without this the button stretches edge to
+     edge and stops reading as a button. */
+  align-self:flex-start;display:inline-flex;align-items:center;gap:8px;
+  margin-top:11px;font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--faint);background:none;border:1px solid var(--line);border-radius:4px;
+  padding:6px 11px;cursor:pointer;transition:color var(--fast),border-color var(--fast)
+}
+.demo-btn .die{font-size:14px;line-height:1;display:inline-block}
+.demo-btn:hover .die{animation:tumble .6s var(--ease)}
+.demo-btn[data-busy="true"] .die{animation:tumble .55s linear infinite}
+@keyframes tumble{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.demo-btn .die{animation:none !important}}
+.demo-btn:hover,.demo-btn:focus-visible{color:var(--accent);border-color:var(--accent-dim);outline:none}
+.demo-btn[disabled]{opacity:.5;cursor:default}
+
+/* Weather sky: the droneweather scene shrunk to a tile. Streak count and speed
+   come off the live wind figure, so a calm day and a gusty one cannot look the
+   same — which is the whole argument the full scene makes. */
+.wx-sky{
+  /* Same 16/6 as the SkyBound scene beside it: the two tiles sit side by side
+     in one row, and a pair of animated boxes at different heights reads as a
+     mistake rather than as a choice. */
+  position:relative;width:100%;aspect-ratio:16/6;border-radius:3px;overflow:hidden;
+  margin-bottom:12px;background:color-mix(in srgb,var(--ink) 12%,var(--paper))
+}
+.wx-sky canvas{display:block;width:100%;height:100%}
+.wx-temp,.wx-cond{
+  position:absolute;top:7px;font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;
+  color:#fff;background:rgba(0,0,0,.42);padding:2px 6px;border-radius:3px
+}
+.wx-temp{left:7px}
+.wx-cond{right:7px;font-size:8.5px;letter-spacing:.12em;text-transform:uppercase}
+
+/* SkyBound scene: the guide's story in three beats, drawn into a low buffer
+   and upscaled with nearest-neighbour, the same way the weather scene is. */
+/* Shorter than the weather tile: this scene lives on the floor line, and at
+   16/7 the top half was empty room with nothing happening in it. */
+.sb-scene{
+  position:relative;width:100%;aspect-ratio:16/6;border-radius:3px;overflow:hidden;
+  margin-bottom:12px;background:color-mix(in srgb,var(--ink) 10%,var(--paper))
+}
+.sb-scene canvas{
+  display:block;width:100%;height:100%;
+  image-rendering:pixelated;image-rendering:crisp-edges
+}
+.sb-cap{
+  position:absolute;left:7px;bottom:6px;font-family:var(--f-mono);font-size:8.5px;
+  letter-spacing:.12em;text-transform:uppercase;color:#fff;
+  background:rgba(0,0,0,.42);padding:2px 6px;border-radius:3px
+}
+
+/* Golden Hour: the sun's real arc for today, swept on a loop. The band is the
+   evening golden window, so the thing the tool exists for is the lit part. */
+.gh-sky{
+  position:relative;width:100%;aspect-ratio:16/7;border-radius:3px;overflow:hidden;
+  margin-bottom:12px;background:color-mix(in srgb,var(--ink) 12%,var(--paper))
+}
+.gh-sky canvas{display:block;width:100%;height:100%}
+.gh-clock{
+  position:absolute;right:7px;top:7px;font-family:var(--f-mono);font-size:9px;
+  letter-spacing:.1em;color:#fff;background:rgba(0,0,0,.42);padding:2px 6px;border-radius:3px
+}
+
+/* Aspect demo: a real matte, redrawn on a timer, with the active pixel count
+   that goes with it. The numbers are the point of the tool. */
+/* The stage stands in for the image, so it needs to sit between paper and ink
+   in every theme: a fixed grey would vanish in one of the five. The mattes are
+   plain black because a letterbox is black whatever the page is wearing. */
+.matte-stage{
+  position:relative;width:100%;aspect-ratio:16/9;border-radius:3px;overflow:hidden;
+  background:color-mix(in srgb,var(--ink) 34%,var(--paper))
+}
+/* A real frame under the mattes: a crop only means something over a picture. */
+.matte-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.matte-bar{position:absolute;left:0;right:0;background:#000;opacity:.9;transition:height .55s var(--ease)}
+.matte-bar.t{top:0}.matte-bar.b{bottom:0}
+.matte-side{position:absolute;top:0;bottom:0;background:#000;opacity:.9;transition:width .55s var(--ease)}
+.matte-side.l{left:0}.matte-side.r{right:0}
+/* Sits over the picture now, so it carries its own backdrop rather than
+   relying on a theme colour that a photograph could swallow. */
+.matte-label{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;white-space:nowrap;
+  color:#fff;background:rgba(0,0,0,.55);padding:3px 8px;border-radius:3px
+}
+
+/* Assistant demo: the real retrieval engine, played back as a conversation.
+   Fixed height and bottom-aligned so the card never reflows as turns cycle. */
+/* The transcript is absolutely positioned so it contributes no height at all.
+   Without that the card is circular — content sizes the card, the card sizes
+   the panel, the panel sizes the chat — and every new turn made the whole row
+   30px taller. Out of flow, the chat takes only the space left over, and old
+   turns are clipped off the top the way a scrolled transcript is. */
+.chat{flex:1;min-height:186px;position:relative;overflow:hidden}
+.chat-log{
+  position:absolute;left:0;right:0;bottom:0;
+  display:flex;flex-direction:column;gap:8px
+}
+.bub{
+  max-width:88%;padding:8px 11px;border-radius:9px;font-size:12.5px;line-height:1.55;
+  opacity:0;transform:translateY(4px);animation:bubIn .32s var(--ease) forwards
+}
+@keyframes bubIn{to{opacity:1;transform:none}}
+.bub-q{
+  align-self:flex-end;background:var(--accent-bg);color:var(--ink);
+  border:1px solid var(--accent-dim);border-bottom-right-radius:2px
+}
+.bub-a{
+  align-self:flex-start;background:var(--paper-2);color:var(--dim);
+  border:1px solid var(--line);border-bottom-left-radius:2px
+}
+.caret{display:inline-block;width:6px;color:var(--accent);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.chat-status{
+  align-self:flex-start;font-family:var(--f-mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:6px
+}
+.chat-status i{
+  width:4px;height:4px;border-radius:50%;background:var(--accent);
+  animation:pulse 1.1s ease-in-out infinite
+}
+.chat-status i:nth-child(2){animation-delay:.18s}
+.chat-status i:nth-child(3){animation-delay:.36s}
+@keyframes pulse{0%,100%{opacity:.25}50%{opacity:1}}
+.chat-src{
+  align-self:flex-start;font-family:var(--f-mono);font-size:8.5px;letter-spacing:.09em;
+  color:var(--accent);border:1px solid var(--accent-dim);border-radius:3px;padding:3px 7px;
+  opacity:0;animation:bubIn .32s var(--ease) .1s forwards
+}
+.chat-index{
+  margin-top:11px;padding-top:10px;border-top:1px solid var(--line);
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.06em;color:var(--faint);line-height:1.7
+}
+.chat-index b{color:var(--ink);font-weight:400}
+@media (prefers-reduced-motion:reduce){
+  .bub,.chat-src{animation:none;opacity:1;transform:none}
+  .caret,.chat-status i{animation:none}
+}
+
+.tool-go{
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;gap:7px
+}
+.tool-go::after{content:"→";transition:transform var(--fast) var(--ease)}
+.tool:hover .tool-go::after{transform:translateX(3px)}
+.tool-stretch{position:absolute;inset:0}
+
+.closing{padding-block:clamp(34px,4.5vw,var(--s-7))}
+.closing p{color:var(--dim);font-size:var(--t-sm);line-height:1.75;max-width:62ch;margin:0 0 var(--s-4)}
+.closing p:last-child{margin-bottom:0}
+.closing a{color:var(--accent);border-bottom:1px solid var(--accent-dim)}
+.closing code{font-family:var(--f-mono);font-size:.88em;color:var(--sky);background:color-mix(in srgb,var(--sky) 8%,transparent);padding:2px 6px}
+
+@media (max-width:600px){
+  .tool-grid{grid-template-columns:1fr}
+  .phase-head{flex-wrap:wrap;gap:var(--s-2)}
+  .phase-head i,.phase-head .phase-when{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .tool:hover{transform:none}
+  .matte-bar,.matte-side{transition:none}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="nav-brand" href="index.html" aria-label="LaB Media : home">
+      <img class="nav-logo is-mark" src="images/TheLaB-mark.png" alt="LaB Media : back to the LaB" width="61" height="26">
+    </a>
+    <nav class="nav-primary" aria-label="Primary"><ul class="nav-links" id="navLinks">
+      <li><a href="portfolio.html">Reel</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Resources
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="learn.html">Watch &amp; Learn</a>
+          <a href="resources.html">Software &amp; Assets</a>
+          <a href="sourcing.html">Gear &amp; Flight</a>
+          <a href="people.html">People &amp; Community</a>
+          <hr class="nav-sep" aria-hidden="true">
+          <a href="gear.html">LaB&rsquo;s Kit</a>
+          <a href="mykit.html">Your Kit</a>
+        </div>
+      </li>
+      <li class="nav-drop" data-current="true">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Tools
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="tools.html" aria-current="page">All Tools</a>
+          <hr class="nav-sep" aria-hidden="true">
+          <a href="ideas.html">Story Generator</a>
+          <a href="sun.html">Golden Hour Helper</a>
+          <hr class="nav-sep" aria-hidden="true">
+          <a href="droneweather.html">SkyBound : Weather</a>
+          <a href="skybound.html">SkyBound : Drone</a>
+          <hr class="nav-sep" aria-hidden="true">
+          <a href="aspect.html">Aspect Ratio Previewer</a>
+          <a href="assistant.html">LaB Assistant</a>
+        </div>
+      </li>
+      <li class="nav-drop">
+        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">About
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="contact.html">About LaB</a>
+          <a href="colophon.html">About the Site</a>
+          <a href="whats-new.html">What&rsquo;s New</a>
+        </div>
+      </li>
+      </ul></nav>
+    <div class="theme" role="group" aria-label="Colour theme">
+      <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
+      <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
+      <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
+      <button type="button" data-theme-set="timber" aria-pressed="false" title="Timber"><span class="sw sw-timber"></span><span class="vh">Timber</span></button>
+      <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="pg-hero wrap">
+  <div class="rule"><span class="mono">Tools</span><i></i><span class="mono" style="color:var(--faint)">Free, no account</span></div>
+  <h1>Six tools, in the order you <em>reach for them.</em></h1>
+  <p class="lede">Everything here was built because a shoot needed it, which is why they are grouped
+  by the part of the day they belong to rather than alphabetically. Nothing asks for an account,
+  nothing uploads your footage, and two of them are already running further down this page.</p>
+
+  <div class="livestrip">
+    <div class="live-cell">
+      <span class="live-k">Tonight&rsquo;s golden hour &middot; Shelby Twp</span>
+      <span class="live-v is-wait" id="lsGolden">Calculating</span>
+      <div class="live-sub" id="lsGoldenSub">Solar maths, computed in this tab</div>
+    </div>
+    <div class="live-cell">
+      <span class="live-k">Wind right now</span>
+      <span class="live-v is-wait" id="lsWind">Fetching</span>
+      <div class="live-sub" id="lsWindSub">Open-Meteo, no key, no tracking</div>
+    </div>
+    <div class="live-cell">
+      <span class="live-k">Flight verdict</span>
+      <span class="live-v is-wait" id="lsVerdict">&mdash;</span>
+      <div class="live-sub" id="lsVerdictSub">LaB planning guidance, not aircraft limits</div>
+    </div>
+  </div>
+</section>
+
+<section class="phase wrap">
+  <div class="phase-head">
+    <span class="phase-n">01</span>
+    <h2>Before the <em>shoot</em></h2>
+    <i></i>
+    <span class="phase-when">Planning</span>
+  </div>
+  <div class="tool-grid">
+
+    <article class="tool">
+      <h3 class="tool-name">Story <em>Generator</em></h3>
+      <p class="tool-desc">Short-film prompts you can actually shoot, filtered by tone, cast size and
+      budget. Every brief gets a share link keyed to its own text, so one you send stays pointing at
+      the same idea however the library grows.</p>
+      <div class="demo">
+        <span class="demo-k">A real prompt from the library</span>
+        <p class="prompt-text" id="promptText">Waiting on the prompt library&hellip;</p>
+        <button class="demo-btn" type="button" id="promptBtn"><span class="die" aria-hidden="true">&#9860;</span><span id="promptBtnLabel">Roll</span></button>
+      </div>
+      <a class="tool-go" href="ideas.html">Open the generator<span class="tool-stretch"></span></a>
+    </article>
+
+    <article class="tool">
+      <h3 class="tool-name">Golden Hour <em>Helper</em></h3>
+      <p class="tool-desc">Sunrise, sunset, civil twilight, both golden windows, solar noon, azimuth,
+      elevation and a colour-temperature estimate, for any date and any location. Drag the slider and
+      the sun moves; the maths runs in your browser, so it never waits on a network.</p>
+      <div class="demo">
+        <span class="demo-k">Today, at the studio</span>
+        <div class="gh-sky">
+          <canvas id="ghSky" aria-hidden="true"></canvas>
+          <span class="gh-clock" id="ghClock">&mdash;</span>
+        </div>
+        <div class="demo-line"><span>Sunrise</span><b id="ghSunrise">&mdash;</b></div>
+        <div class="demo-line"><span>Evening golden</span><b class="accent" id="ghGolden">&mdash;</b></div>
+        <div class="demo-line"><span>Sunset</span><b id="ghSunset">&mdash;</b></div>
+        <div class="demo-line"><span>Daylight</span><b id="ghLength">&mdash;</b></div>
+      </div>
+      <a class="tool-go" href="sun.html">Open the planner<span class="tool-stretch"></span></a>
+    </article>
+
+  </div>
+</section>
+
+<section class="phase wrap">
+  <div class="phase-head">
+    <span class="phase-n">02</span>
+    <h2>On the <em>day</em></h2>
+    <i></i>
+    <span class="phase-when">In the field</span>
+  </div>
+  <div class="tool-grid">
+
+    <article class="tool">
+      <h3 class="tool-name">SkyBound : <em>Weather</em></h3>
+      <p class="tool-desc">Live wind, gusts, temperature and visibility for Metro Detroit, with a
+      conservative go / no-go read: compensation at 12&nbsp;mph steady or 14&nbsp;mph gusts, grounded
+      at 18. The animated scene behind it reads the same numbers, so the picture and the advice can
+      never disagree.</p>
+      <div class="demo">
+        <span class="demo-k">Reading the model right now</span>
+        <div class="wx-sky">
+          <canvas id="wxSky" aria-hidden="true"></canvas>
+          <span class="wx-temp" id="wxTemp">&mdash;</span>
+          <span class="wx-cond" id="wxCond"></span>
+        </div>
+        <div class="demo-line"><span>Steady wind</span><b id="wxW">&mdash;</b></div>
+        <div class="demo-line"><span>Gusting to</span><b id="wxG">&mdash;</b></div>
+        <div class="demo-line"><span>Verdict</span><b id="wxV">&mdash;</b></div>
+      </div>
+      <a class="tool-go" href="droneweather.html">Open the weather scene<span class="tool-stretch"></span></a>
+    </article>
+
+    <article class="tool">
+      <h3 class="tool-name">SkyBound : <em>Drone</em></h3>
+      <p class="tool-desc">The route into drone and FPV without wasting money on the wrong first
+      aircraft: simulate before you buy, follow pilots worth learning from, build the kit in order,
+      then sit Part&nbsp;107. Written for the person who has not started yet.</p>
+      <div class="demo">
+        <span class="demo-k">The path, in order</span>
+        <div class="sb-scene">
+          <canvas id="sbScene" aria-hidden="true"></canvas>
+          <span class="sb-cap" id="sbCap">At the bench</span>
+        </div>
+        <div class="demo-line"><span>01</span><b>Simulate before you buy</b></div>
+        <div class="demo-line"><span>02</span><b>Learn from real pilots</b></div>
+        <div class="demo-line"><span>03</span><b>Build the kit</b></div>
+        <div class="demo-line"><span>04</span><b class="accent">Pass Part 107</b></div>
+      </div>
+      <a class="tool-go" href="skybound.html">Open the guide<span class="tool-stretch"></span></a>
+    </article>
+
+  </div>
+</section>
+
+<section class="phase wrap">
+  <div class="phase-head">
+    <span class="phase-n">03</span>
+    <h2>Back at the <em>desk</em></h2>
+    <i></i>
+    <span class="phase-when">Framing &amp; edit</span>
+  </div>
+  <div class="tool-grid">
+
+    <article class="tool">
+      <h3 class="tool-name">Aspect Ratio <em>Previewer</em></h3>
+      <p class="tool-desc">Lay Scope, Flat, HD, Academy and Vertical mattes over a still, or over your
+      own photos and clips, and get the exact active pixel resolution instead of guessing at letterbox
+      edges in a timeline. Files are read in browser memory: nothing is uploaded.</p>
+      <div class="demo">
+        <span class="demo-k">Mattes over a 4K frame</span>
+        <div class="matte-stage" id="matteStage" aria-hidden="true">
+          <img class="matte-img" src="images/itsaboy/test-3.jpg" alt="" width="1800" height="1012"
+               loading="lazy" decoding="async">
+          <div class="matte-bar t" id="matteT"></div>
+          <div class="matte-bar b" id="matteB"></div>
+          <div class="matte-side l" id="matteL"></div>
+          <div class="matte-side r" id="matteR"></div>
+          <span class="matte-label" id="matteLabel">2.39 : 1</span>
+        </div>
+        <div class="demo-line" style="margin-top:10px"><span id="matteName">Scope</span><b class="accent" id="matteDims">3840 &times; 1607</b></div>
+      </div>
+      <a class="tool-go" href="aspect.html">Open the previewer<span class="tool-stretch"></span></a>
+    </article>
+
+    <article class="tool">
+      <h3 class="tool-name">LaB <em>Assistant</em></h3>
+      <p class="tool-desc">Ask the notebook a question and search answers first: film notes, the
+      resource list, the gear entries, dated events and hand-written field notes. Every factual answer
+      keeps its source, and following a citation walks you to the exact film or item of kit.</p>
+      <div class="demo">
+        <span class="demo-k">Search in charge, live</span>
+        <div class="chat" aria-label="Assistant demonstration">
+          <div class="chat-log" id="chat" aria-live="polite"></div>
+        </div>
+        <div class="chat-index">Searching <b>127</b> resources, <b>66</b> gear entries
+        and <b>1,334</b> story prompts &mdash; every answer keeps its source.</div>
+      </div>
+      <a class="tool-go" href="assistant.html">Ask the assistant<span class="tool-stretch"></span></a>
+    </article>
+
+  </div>
+</section>
+
+<section class="phase wrap closing">
+  <div class="phase-head">
+    <span class="phase-n">04</span>
+    <h2>The <em>terms</em></h2>
+    <i></i>
+    <span class="phase-when">Such as they are</span>
+  </div>
+  <p>All six are free and none of them want anything from you. There is no account to make, no email
+  to hand over and no trial that expires. Saved kits, prompts and checklist progress live in your own
+  browser under <code>localStorage</code>, which also means clearing your site data clears them: that
+  is the trade for never holding your work on a server.</p>
+  <p>Two of these read a live weather model from Open-Meteo, without an API key and without sending
+  anything about you. The Aspect Ratio Previewer parses your own photos and clips locally through
+  <code>URL.createObjectURL()</code>, so a frame you drop in never crosses the network. If you want
+  the longer version of how any of it works, it is written up on the
+  <a href="colophon.html">colophon</a>, and what changed most recently is on
+  <a href="whats-new.html">What&rsquo;s New</a>.</p>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <img class="foot-mark" src="images/TheLaB-mark.png" alt="The LaB" width="122" height="52" loading="lazy" decoding="async">
+        <p class="foot-blurb">A small film studio and a public notebook, run out of Shelby Township, Michigan.</p>
+      </div>
+      <div class="foot-col">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="learn.html">Watch &amp; Learn</a></li>
+          <li><a href="resources.html">Software &amp; Assets</a></li>
+          <li><a href="sourcing.html">Gear &amp; Flight</a></li>
+          <li><a href="people.html">People &amp; Community</a></li>
+          <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
+          <li><a href="mykit.html">Your Kit</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Tools</h3>
+        <ul>
+          <li><a href="tools.html" aria-current="page">All Tools</a></li>
+          <li><a href="ideas.html">Story Generator</a></li>
+          <li><a href="sun.html">Golden Hour</a></li>
+          <li><a href="droneweather.html">SkyBound : Weather</a></li>
+          <li><a href="skybound.html">SkyBound : Drone</a></li>
+          <li><a href="aspect.html">Aspect Ratio</a></li>
+          <li><a href="assistant.html">LaB Assistant</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Studio</h3>
+        <ul>
+          <li><a href="portfolio.html">Reel</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="contact.html">About LaB</a></li>
+          <li><a href="colophon.html">About the Site</a></li>
+          <li><a href="whats-new.html">What&rsquo;s New</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Elsewhere</h3>
+        <ul>
+          <li><a href="https://www.youtube.com/@ThisIsLabMedia" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://instagram.com/thisislabmedia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/in/baldwinrobert" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span class="made">Made in Shelby Twp, MI<span class="hrt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span>
+      <span class="visits" id="visitCount" hidden></span>
+      <span class="made">© 2026 LaB Media<span class="hrt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span>
+    </div>
+  </div>
+</footer>
+
+<script src="sun-calc.js"></script>
+<script>
+/* The demos on this page are the tools themselves, running small. Each one
+   fails to its own label rather than to an empty box, because a blank readout
+   on a weather card reads as "calm" when it actually means "no idea". */
+(function () {
+  'use strict';
+  var LAT = 42.67, LON = -83.03;
+  var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function el(id) { return document.getElementById(id); }
+  function hhmm(d) {
+    return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  }
+
+  /* ---- shared canvas plumbing for the two animated tiles ---- */
+
+  // Theme tokens resolved once, refreshed only when the theme actually
+  // changes. Reading them per frame would mean a layout flush 60 times a
+  // second, twice over, for colours that almost never move.
+  var palette = {};
+  function refreshPalette() {
+    var cs = getComputedStyle(document.documentElement);
+    ['--ink', '--accent', '--paper', '--good'].forEach(function (k) {
+      palette[k] = cs.getPropertyValue(k).trim();
+    });
+  }
+  refreshPalette();
+  new MutationObserver(refreshPalette)
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  // Parses "#rgb"/"#rrggbb" so a token can be drawn at partial alpha.
+  function rgba(hex, a) {
+    var h = String(hex).replace('#', '');
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    var n = parseInt(h, 16);
+    if (isNaN(n) || h.length !== 6) return 'rgba(140,140,140,' + a + ')';
+    return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+  }
+
+  function setupCanvas(cvs) {
+    var ctx = cvs.getContext('2d');
+    var size = { w: 0, h: 0 };
+    function resize() {
+      var r = cvs.getBoundingClientRect();
+      if (!r.width) return;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      cvs.width = Math.round(r.width * dpr);
+      cvs.height = Math.round(r.height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      size.w = r.width; size.h = r.height;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    return { ctx: ctx, size: size, resize: resize };
+  }
+
+  // Only animate while the tile is on screen, and never under reduced motion:
+  // a loop running behind the fold is heat for nothing.
+  function onScreenLoop(target, draw) {
+    if (REDUCED) { draw(0); return; }
+    var running = false;
+    function frame(t) {
+      if (!running) return;
+      draw(t);
+      requestAnimationFrame(frame);
+    }
+    if (!('IntersectionObserver' in window)) { running = true; requestAnimationFrame(frame); return; }
+    new IntersectionObserver(function (entries) {
+      var vis = entries[0].isIntersecting;
+      if (vis && !running) { running = true; requestAnimationFrame(frame); }
+      else if (!vis) { running = false; }
+    }, { rootMargin: '80px' }).observe(target);
+  }
+
+  /* ---- Golden hour : local maths, no network, so it lands immediately ---- */
+  (function solar() {
+    if (!window.LaBSun) return;
+    try {
+      var now = new Date();
+      var iso = now.getFullYear() + '-' +
+        String(now.getMonth() + 1).padStart(2, '0') + '-' +
+        String(now.getDate()).padStart(2, '0');
+      var day = window.LaBSun.getDay(iso, LAT, LON);
+
+      el('ghSunrise').textContent = hhmm(day.sunrise);
+      el('ghGolden').textContent = hhmm(day.eveningGoldenStart) + ' – ' + hhmm(day.sunset);
+      el('ghSunset').textContent = hhmm(day.sunset);
+      var h = Math.floor(day.daylightMinutes / 60), m = Math.round(day.daylightMinutes % 60);
+      el('ghLength').textContent = h + 'h ' + m + 'm';
+
+      var strip = el('lsGolden');
+      strip.classList.remove('is-wait');
+      strip.innerHTML = hhmm(day.eveningGoldenStart) + '<small>&nbsp;until ' + hhmm(day.sunset) + '</small>';
+      el('lsGoldenSub').textContent = 'Solar maths, computed in this tab';
+
+      drawArc(day);
+    } catch (e) {
+      el('lsGoldenSub').textContent = 'Solar clock unavailable';
+    }
+
+    function mins(d) { return d.getHours() * 60 + d.getMinutes(); }
+
+    function drawArc(day) {
+      var cvs = el('ghSky');
+      if (!cvs) return;
+      var c = setupCanvas(cvs), ctx = c.ctx, clock = el('ghClock');
+
+      var rise = mins(day.sunrise), set = mins(day.sunset);
+      var dawn = mins(day.civilDawn), dusk = mins(day.civilDusk);
+      var gStart = mins(day.eveningGoldenStart);
+      var peak = Math.max(10, day.maxElevation || 60);
+      var span = Math.max(1, dusk - dawn);
+
+      // Elevation as a sine through the real sunrise, sunset and peak. It is a
+      // decorative curve, not an ephemeris: the numbers printed underneath are
+      // the calculated ones.
+      function elevAt(m) {
+        var f = (m - rise) / Math.max(1, set - rise);
+        return Math.sin(Math.PI * Math.max(0, Math.min(1, f))) * peak * (f < 0 || f > 1 ? 0 : 1);
+      }
+      function xAt(m, w) { return ((m - dawn) / span) * w; }
+      function yAt(m, h) {
+        var hor = h * 0.76;
+        return hor - (elevAt(m) / peak) * (h * 0.60);
+      }
+
+      function draw(t) {
+        var w = c.size.w, h = c.size.h;
+        if (!w) { c.resize(); w = c.size.w; h = c.size.h; if (!w) return; }
+        // One sweep of the full day every 16 seconds.
+        var m = dawn + ((t % 16000) / 16000) * span;
+        var elev = elevAt(m);
+        var lit = Math.max(0, Math.min(1, elev / peak));
+
+        ctx.clearRect(0, 0, w, h);
+
+        // Sky warms as the sun drops, which is the entire point of the tool.
+        var sky = ctx.createLinearGradient(0, 0, 0, h);
+        var warmth = 1 - lit;
+        sky.addColorStop(0, rgba(palette['--ink'], 0.05 + 0.05 * lit));
+        sky.addColorStop(1, rgba(palette['--accent'], 0.05 + 0.22 * warmth * (elev > 0 ? 1 : 0.25)));
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, w, h);
+
+        // The whole day's path.
+        ctx.beginPath();
+        for (var i = 0; i <= 90; i++) {
+          var mm = dawn + (span * i) / 90;
+          var x = xAt(mm, w), y = yAt(mm, h);
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = rgba(palette['--ink'], 0.18);
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // The evening golden window, drawn lit.
+        ctx.beginPath();
+        for (var j = 0; j <= 30; j++) {
+          var gm = gStart + ((set - gStart) * j) / 30;
+          var gx = xAt(gm, w), gy = yAt(gm, h);
+          if (j === 0) ctx.moveTo(gx, gy); else ctx.lineTo(gx, gy);
+        }
+        ctx.strokeStyle = rgba(palette['--accent'], 0.95);
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Horizon.
+        ctx.beginPath();
+        ctx.moveTo(0, h * 0.76);
+        ctx.lineTo(w, h * 0.76);
+        ctx.strokeStyle = rgba(palette['--ink'], 0.3);
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // The sun. Below the horizon it is a dim ghost rather than gone, so the
+        // arc still reads as a continuous day.
+        var sx = xAt(m, w), sy = yAt(m, h);
+        var above = elev > 0;
+        var r = above ? 5 : 3.5;
+        var glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, r * 4.5);
+        glow.addColorStop(0, rgba(palette['--accent'], above ? 0.5 : 0.16));
+        glow.addColorStop(1, rgba(palette['--accent'], 0));
+        ctx.fillStyle = glow;
+        ctx.beginPath(); ctx.arc(sx, sy, r * 4.5, 0, Math.PI * 2); ctx.fill();
+
+        ctx.beginPath(); ctx.arc(sx, sy, r, 0, Math.PI * 2);
+        ctx.fillStyle = above ? rgba(palette['--accent'], 1) : rgba(palette['--ink'], 0.35);
+        ctx.fill();
+
+        if (clock) {
+          var hh = Math.floor(m / 60) % 24, mm2 = Math.floor(m % 60);
+          var ampm = hh >= 12 ? 'PM' : 'AM', h12 = hh % 12 || 12;
+          clock.textContent = h12 + ':' + String(mm2).padStart(2, '0') + ' ' + ampm;
+        }
+      }
+
+      // Under reduced motion the sweep is replaced by the sun sitting at the
+      // real current time, which is the useful frame anyway.
+      if (REDUCED) {
+        var nowM = mins(new Date());
+        draw(((Math.max(dawn, Math.min(dusk, nowM)) - dawn) / span) * 16000);
+      } else {
+        onScreenLoop(cvs, draw);
+      }
+    }
+  })();
+
+  /* ---- Wind : the same Open-Meteo call the weather page makes ---- */
+  (function wind() {
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT + '&longitude=' + LON +
+      '&current=wind_speed_10m,wind_gusts_10m,temperature_2m,precipitation,cloud_cover,weather_code' +
+      '&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto';
+
+    // WMO codes, collapsed to the handful of words that change what you'd do.
+    function condition(code, cloud) {
+      if (code >= 95) return 'Thunderstorm';
+      if (code >= 71 && code <= 77) return 'Snow';
+      if (code >= 80) return 'Showers';
+      if (code >= 61) return 'Rain';
+      if (code >= 51) return 'Drizzle';
+      if (code >= 45 && code <= 48) return 'Fog';
+      if (cloud >= 85) return 'Overcast';
+      if (cloud >= 40) return 'Broken cloud';
+      return 'Clear';
+    }
+
+    fetch(url)
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (d) {
+        var w = Math.round(d.current.wind_speed_10m);
+        var g = Math.round(d.current.wind_gusts_10m);
+
+        // Thresholds are the weather page's, restated in one place here so the
+        // two cannot drift apart silently: compensate at 12/14, ground at 18.
+        var state = (w >= 18 || g >= 18) ? 'crit' : (w >= 12 || g >= 14) ? 'warn' : 'ok';
+        var word = state === 'crit' ? 'Grounded' : state === 'warn' ? 'Compensating' : 'Ideal';
+
+        el('wxW').textContent = w + ' mph';
+        el('wxG').textContent = g + ' mph';
+        el('wxV').textContent = word;
+        el('wxV').className = state === 'ok' ? 'b' : 'accent';
+
+        var lw = el('lsWind');
+        lw.classList.remove('is-wait');
+        lw.innerHTML = w + '<small>mph, gusts ' + g + '</small>';
+        el('lsWindSub').textContent = 'Open-Meteo, no key, no tracking';
+
+        var lv = el('lsVerdict');
+        lv.classList.remove('is-wait');
+        lv.innerHTML = '<span class="live-dot ' + state + '"></span>' + word;
+
+        var cloud = d.current.cloud_cover, rain = d.current.precipitation || 0;
+        var temp = Math.round(d.current.temperature_2m);
+        if (el('wxTemp')) el('wxTemp').textContent = temp + '°F';
+        if (el('wxCond')) el('wxCond').textContent = condition(d.current.weather_code, cloud);
+        startSky({ wind: w, gust: g, rain: rain, cloud: cloud });
+      })
+      .catch(function () {
+        el('lsWind').textContent = 'No reading';
+        el('lsWindSub').textContent = 'Could not reach the weather model';
+        el('lsVerdict').textContent = 'Unknown';
+        el('lsVerdictSub').textContent = 'No data is not the same as calm';
+        el('wxW').textContent = el('wxG').textContent = el('wxV').textContent = 'no reading';
+        if (el('wxTemp')) el('wxTemp').textContent = '—';
+        if (el('wxCond')) el('wxCond').textContent = 'No reading';
+      });
+
+    /* The scene the full weather page draws, shrunk to a tile and fed the same
+       figures. Streak count and speed come off the wind, drops appear only if
+       the model says precipitation, and cloud cover sets how grey it all is —
+       so a flat calm and an 18mph gust day cannot look alike. */
+    function startSky(s) {
+      var cvs = el('wxSky');
+      if (!cvs) return;
+      var c = setupCanvas(cvs), ctx = c.ctx;
+
+      var count = Math.max(7, Math.min(30, Math.round(s.wind * 1.5) + 7));
+      var streaks = [], i;
+      for (i = 0; i < count; i++) {
+        streaks.push({
+          x: Math.random(), y: 0.08 + Math.random() * 0.84,
+          len: 0.05 + Math.random() * 0.14, z: 0.45 + Math.random() * 0.8
+        });
+      }
+      var drops = [];
+      if (s.rain > 0) {
+        var dn = Math.min(70, Math.round(s.rain * 26) + 16);
+        for (i = 0; i < dn; i++) {
+          drops.push({ x: Math.random(), y: Math.random(), z: 0.6 + Math.random() * 0.7 });
+        }
+      }
+
+      var overcast = Math.max(0, Math.min(1, s.cloud / 100));
+      var last = 0;
+
+      function draw(t) {
+        var w = c.size.w, h = c.size.h;
+        if (!w) { c.resize(); w = c.size.w; h = c.size.h; if (!w) return; }
+        var dt = last ? Math.min(64, t - last) : 16;
+        last = t;
+
+        ctx.clearRect(0, 0, w, h);
+
+        // Grey rises with cloud cover; a clear sky keeps more of the page tone.
+        var sky = ctx.createLinearGradient(0, 0, 0, h);
+        sky.addColorStop(0, rgba(palette['--ink'], 0.04 + 0.13 * overcast));
+        sky.addColorStop(1, rgba(palette['--ink'], 0.02 + 0.06 * overcast));
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, w, h);
+
+        // Wind, as the full scene draws it: horizontal streaks whose speed is
+        // the actual figure, so 3mph and 22mph read differently at a glance.
+        var base = (s.wind * 0.00013) + 0.00004;
+        ctx.lineCap = 'round';
+        streaks.forEach(function (st) {
+          st.x += base * st.z * dt;
+          if (st.x > 1.2) { st.x = -0.25; st.y = 0.08 + Math.random() * 0.84; }
+          var x = st.x * w, y = st.y * h, len = st.len * w * (0.5 + st.z * 0.6);
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x - len, y);
+          ctx.strokeStyle = rgba(palette['--ink'], 0.1 + 0.16 * st.z);
+          ctx.lineWidth = st.z > 1 ? 1.4 : 1;
+          ctx.stroke();
+        });
+
+        // Rain leans with the wind rather than falling straight, which is the
+        // detail that stops it looking like static.
+        if (drops.length) {
+          var lean = Math.min(0.75, s.wind / 26);
+          drops.forEach(function (dp) {
+            dp.y += 0.0011 * dp.z * dt;
+            dp.x += 0.0011 * dp.z * lean * dt;
+            if (dp.y > 1.05) { dp.y = -0.08; dp.x = Math.random(); }
+            if (dp.x > 1.1) dp.x = -0.08;
+            var x = dp.x * w, y = dp.y * h;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x - lean * 7, y - 7);
+            ctx.strokeStyle = rgba(palette['--accent'], 0.42 + 0.3 * dp.z);
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          });
+        }
+
+        // Ground line, tinted by the flight verdict the numbers produced.
+        var st8 = (s.wind >= 18 || s.gust >= 18) ? '--accent'
+          : (s.wind >= 12 || s.gust >= 14) ? '--accent' : '--good';
+        ctx.beginPath();
+        ctx.moveTo(0, h - 1);
+        ctx.lineTo(w, h - 1);
+        ctx.strokeStyle = rgba(palette[st8] || palette['--ink'], 0.75);
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      onScreenLoop(cvs, draw);
+    }
+  })();
+
+  /* ---- Story prompts : 195KB of library, so it waits to be asked ---- */
+  (function prompts() {
+    var btn = el('promptBtn'), out = el('promptText');
+    if (!btn || !out) return;
+    var pending = null, timer = null, last = -1;
+
+    function pick() {
+      // `concepts` is the premise list; the other arrays are the modifiers the
+      // full generator layers on top of it.
+      var list = window.ideasData && window.ideasData.concepts;
+      if (!list || !list.length) return null;
+      var n;
+      do { n = Math.floor(Math.random() * list.length); } while (list.length > 1 && n === last);
+      last = n;
+      var p = list[n];
+      return typeof p === 'string' ? p : (p.text || String(p));
+    }
+
+    // Lifted from ideas.html so the two behave identically: flick through real
+    // entries at a fixed step, then land. Reduced motion skips to the landing.
+    function spin(node, pool, finalText, frames, step, done) {
+      if (REDUCED || !pool || !pool.length) {
+        node.textContent = finalText; if (done) done(); return;
+      }
+      var i = 0;
+      node.classList.add('spin');
+      var iv = setInterval(function () {
+        var p = pool[(Math.random() * pool.length) | 0];
+        node.textContent = (typeof p === 'string' ? p : (p && p.text)) || finalText;
+        if (++i >= frames) {
+          clearInterval(iv);
+          node.classList.remove('spin');
+          node.textContent = finalText;
+          if (done) done();
+        }
+      }, step);
+    }
+
+    var busy = false;
+    function roll() {
+      if (busy) return;
+      var next = pick();
+      if (!next) { out.textContent = 'The prompt library did not load.'; return; }
+      busy = true;
+      btn.dataset.busy = 'true';
+      spin(out, window.ideasData && window.ideasData.concepts, next, 9, 55, function () {
+        busy = false;
+        btn.removeAttribute('data-busy');
+      });
+    }
+
+    function label(text) {
+      var l = el('promptBtnLabel');
+      if (l) l.textContent = text;      // never btn.textContent: it eats the die
+    }
+
+    function library() {
+      if (window.ideasData) return Promise.resolve();
+      if (pending) return pending;
+      btn.disabled = true;
+      btn.dataset.busy = 'true';
+      label('Loading');
+      pending = new Promise(function (res, rej) {
+        var s = document.createElement('script');
+        s.src = 'ideas-data.js';
+        s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      }).then(function () {
+        btn.disabled = false; btn.removeAttribute('data-busy'); label('Roll');
+      }, function () {
+        btn.disabled = false; btn.removeAttribute('data-busy'); label('Roll');
+        out.textContent = 'Could not load the prompt library.';
+        throw new Error('library');
+      });
+      return pending;
+    }
+
+    function auto() {
+      clearInterval(timer);
+      if (REDUCED) return;                 // one premise, held still
+      timer = setInterval(roll, 5200);
+    }
+
+    btn.addEventListener('click', function () {
+      library().then(function () { roll(); auto(); }, function () {});
+    });
+
+    // 195KB of premises is not worth downloading for someone who never scrolls
+    // this far, so the roll starts itself only once the card is in view.
+    function begin() { library().then(function () { roll(); auto(); }, function () {}); }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (e) {
+        if (e[0].isIntersecting) { io.disconnect(); begin(); }
+      }, { rootMargin: '160px' });
+      io.observe(out);
+    } else {
+      begin();
+    }
+  })();
+
+  /* ---- Aspect mattes : the numbers are the reason the tool exists ---- */
+  (function mattes() {
+    var W = 3840, H = 2160;
+    var frames = [
+      { name: 'Scope',    label: '2.39 : 1', ratio: 2.39 },
+      { name: 'Flat',     label: '1.85 : 1', ratio: 1.85 },
+      { name: 'HD',       label: '16 : 9',   ratio: 16 / 9 },
+      { name: 'Academy',  label: '4 : 3',    ratio: 4 / 3 },
+      { name: 'Vertical', label: '9 : 16',   ratio: 9 / 16 }
+    ];
+    var i = 0;
+    var t = el('matteT'), b = el('matteB'), l = el('matteL'), r = el('matteR');
+    var label = el('matteLabel'), name = el('matteName'), dims = el('matteDims');
+    var stageRatio = 16 / 9;
+
+    function show(f) {
+      if (f.ratio >= stageRatio) {
+        // Wider than the frame: letterbox top and bottom.
+        var pct = (1 - stageRatio / f.ratio) / 2 * 100;
+        t.style.height = b.style.height = pct + '%';
+        l.style.width = r.style.width = '0%';
+        dims.innerHTML = W + ' &times; ' + Math.round(W / f.ratio);
+      } else {
+        // Taller than the frame: pillarbox left and right.
+        var pctW = (1 - f.ratio / stageRatio) / 2 * 100;
+        l.style.width = r.style.width = pctW + '%';
+        t.style.height = b.style.height = '0%';
+        dims.innerHTML = Math.round(H * f.ratio) + ' &times; ' + H;
+      }
+      label.textContent = f.label;
+      name.textContent = f.name;
+    }
+
+    show(frames[0]);
+    // Reduced motion gets the numbers without the loop.
+    if (!REDUCED) {
+      setInterval(function () { i = (i + 1) % frames.length; show(frames[i]); }, 2600);
+    }
+  })();
+
+  /* ---- Assistant : the real retrieval engine, played as a conversation ----
+     The answers below are not written here. Each one is whatever the engine
+     returns for that question, sources included, so if the kit changes the
+     demo changes with it. Roughly 50KB of engine and data, loaded only when
+     the card comes into view. */
+  (function assistant() {
+    var chat = el('chat');
+    if (!chat) return;
+
+    // Every one of these was checked against the engine first: each returns a
+    // confident, sourced answer. Questions that only produce a shrug were left
+    // out rather than dressed up.
+    var SCRIPT = [
+      'What camera do you use?',
+      'What films have you made?',
+      'How was this site built?',
+      'What drone do you fly?',
+      'What is Scattered about?',
+      'What lenses do you own?',
+      'What do you edit on?',
+      'What is the Story Generator?',
+      'What microphone do you use?',
+      'Do you use lighting?'
+    ];
+    var engine = null, turn = 0, timers = [];
+
+    function after(ms, fn) { timers.push(setTimeout(fn, ms)); }
+    function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
+    function node(cls, text) {
+      var d = document.createElement('div');
+      d.className = cls;
+      if (text != null) d.textContent = text;
+      return d;
+    }
+
+    function tidy(answer) {
+      var t = String(answer).replace(/\s*\n+\s*/g, ' ').replace(/`/g, '').trim();
+      return t.length > 160 ? t.slice(0, 157).replace(/[,;:\s]+$/, '') + '…' : t;
+    }
+
+    function loadScript(src) {
+      return new Promise(function (res, rej) {
+        var s = document.createElement('script');
+        s.src = src; s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      });
+    }
+
+    function play() {
+      clearTimers();
+      // Turns accumulate rather than clearing, so the taller panel reads as a
+      // session in progress. `justify-content:flex-end` plus `overflow:hidden`
+      // means the oldest turns slide out of the top the way a real transcript
+      // does; this just stops the DOM growing forever.
+      while (chat.children.length > 7) chat.removeChild(chat.firstChild);
+      var q = SCRIPT[turn % SCRIPT.length];
+      var result = engine.ask(q);
+
+      var bq = node('bub bub-q', REDUCED ? q : '');
+      chat.appendChild(bq);
+
+      function reveal() {
+        chat.appendChild(node('chat-status')).innerHTML =
+          '<i></i><i></i><i></i> Searching the site';
+        after(820, function () {
+          var s = chat.querySelector('.chat-status');
+          if (s) s.remove();
+          chat.appendChild(node('bub bub-a', tidy(result.answer)));
+          var src = (result.sources || [])[0];
+          if (src) chat.appendChild(node('chat-src', '↳ ' + src.title));
+          turn++;
+          if (!REDUCED) after(4600, play);
+        });
+      }
+
+      if (REDUCED) { reveal(); return; }
+
+      // Type the question in, then search. The caret is part of the illusion
+      // that you are watching someone use it, which is the point of the card.
+      var i = 0;
+      (function type() {
+        if (i <= q.length) {
+          bq.innerHTML = q.slice(0, i).replace(/</g, '&lt;') + '<span class="caret">▌</span>';
+          i++;
+          after(34, type);
+        } else {
+          bq.textContent = q;
+          after(340, reveal);
+        }
+      })();
+    }
+
+    function boot() {
+      chat.appendChild(node('chat-status')).innerHTML =
+        '<i></i><i></i><i></i> Waking the assistant';
+      Promise.all([
+        loadScript('assistant-core.js'),
+        loadScript('assistant-data.js'),
+        loadScript('gear-data.js')
+      ]).then(function () {
+        if (!window.LaBAssistantCore) throw new Error('core missing');
+        engine = window.LaBAssistantCore.createEngine({
+          knowledge: window.LAB_ASSISTANT_KNOWLEDGE,
+          gearData: window.gearData
+        });
+        chat.textContent = '';  // drop the waking notice; turns accumulate now
+        play();
+      }).catch(function () {
+        chat.textContent = '';
+        chat.appendChild(node('bub bub-a',
+          'The assistant could not load here, but it is waiting on its own page.'));
+      });
+    }
+
+    // Only pay for it if someone scrolls this far.
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { io.disconnect(); boot(); }
+      }, { rootMargin: '160px' });
+      io.observe(chat);
+    } else {
+      boot();
+    }
+  })();
+
+  /* ---- SkyBound : Drone — the guide, as a scene ----
+     Four beats on a loop that follow the four steps listed underneath: fly the
+     simulator, build the kit, head out, then actually fly. Drawn into a low
+     buffer and blown up with nearest-neighbour so it belongs to the same
+     family as the weather scene. The camera simply follows the figure, which
+     is what carries you from the desk to the field. */
+  (function skybound() {
+    var cvs = el('sbScene');
+    if (!cvs) return;
+    var cap = el('sbCap');
+    var ctx = cvs.getContext('2d');
+    var buf = document.createElement('canvas');
+    var b = buf.getContext('2d');
+
+    var BIT = 3, BW = 0, BH = 0, GY = 0, WORLD = 0, W = 0, H = 0, dpr = 1;
+    var DESK = 0, BENCH = 0, WALL = 0, OUT = 0;
+
+    function measure() {
+      var r = cvs.getBoundingClientRect();
+      if (!r.width) return false;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = Math.round(r.width); H = Math.round(r.height);
+      cvs.width = Math.round(W * dpr); cvs.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.imageSmoothingEnabled = false;
+
+      // Three-pixel bits: fine enough to draw a monitor, a keyboard and a
+      // recognisable person, coarse enough to still read as pixel art.
+      BIT = W < 420 ? 2 : 3;
+      BW = Math.max(60, Math.round(W / BIT));
+      BH = Math.max(30, Math.round(H / BIT));
+      buf.width = BW; buf.height = BH;
+      GY = BH - 5;
+
+      DESK = Math.round(BW * 0.26);
+      BENCH = Math.round(BW * 0.86);
+      WALL = Math.round(BW * 1.32);
+      OUT = Math.round(BW * 1.92);
+      WORLD = Math.round(BW * 2.6);
+      return true;
+    }
+
+    function px(x, y, w, h, c) {
+      b.fillStyle = c;
+      b.fillRect(Math.round(x), Math.round(y), Math.max(1, Math.round(w)), Math.max(1, Math.round(h)));
+    }
+
+    /* Twenty pixels tall, so there is room for a head, a torso and limbs that
+       move independently. `lean` tips the upper body forward for desk work. */
+    function person(x, gy, mode, ph, ink, dim) {
+      var top = gy - 20;
+      var lean = (mode === 'sim' || mode === 'build') ? 1 : 0;
+
+      if (mode === 'sim' || mode === 'build') {
+        px(x + lean, top + 4, 3, 3, ink);              // head
+        px(x + lean, top + 7, 4, 8, ink);              // torso, tipped in
+        px(x + 3, top + 14, 4, 2, ink);                // thigh
+        px(x + 6, top + 16, 2, 4, ink);                // shin
+        px(x, top + 16, 2, 4, dim);                    // chair leg behind
+        // Hands sit where the work is. Typing is down at desk height; working
+        // on a drone standing on the bench means forearms up in front of the
+        // chest, which is the difference between the two poses reading right.
+        if (mode === 'sim') {
+          px(x + 4, top + 8 + (Math.sin(ph * 14) > 0 ? 0 : 1), 3, 2, ink);
+        } else {
+          var tick = Math.sin(ph * 7) > 0 ? 0 : 1;
+          px(x + 4, top + 6 + tick, 2, 2, ink);      // raised forearm
+          px(x + 6, top + 5 + tick, 2, 2, ink);      // hands, up at the airframe
+        }
+      } else if (mode === 'walk') {
+        px(x, top + 1, 3, 3, ink);
+        px(x, top + 4, 4, 9, ink);
+        var sw = Math.sin(ph * 8);
+        px(x + (sw > 0 ? -1 : 2), top + 13, 2, 7, ink);
+        px(x + (sw > 0 ? 2 : 0), top + 13, 2, 7, ink);
+        px(x + (sw > 0 ? 4 : -1), top + 6, 2, 3, ink);   // swinging arm
+      } else {
+        px(x, top + 1, 3, 3, ink);
+        px(x, top + 4, 4, 9, ink);
+        px(x, top + 13, 2, 7, ink);
+        px(x + 2, top + 13, 2, 7, ink);
+        px(x + 4, top + 7, 2, 3, ink);                   // arms out front
+        // Controller, held up, with two stubby antennae.
+        px(x + 5, top + 7, 5, 3, ink);
+        px(x + 5, top + 5, 1, 2, dim);
+        px(x + 9, top + 5, 1, 2, dim);
+      }
+    }
+
+    // Nav lights follow the droneweather convention: red to port, green to
+    // starboard, and a strobe that is off far more than it is on.
+    function drone(x, y, ink, spin, lights, scale) {
+      var s = scale || 1;
+      px(x, y, 7 * s, 1, ink);
+      px(x + 3 * s, y - 1, 1, 1, ink);
+      var p = spin > 0.5 ? 1 : 0;
+      px(x - 1, y - 1 - p, 2, 1, ink);
+      px(x + 6 * s, y - 1 - p, 2, 1, ink);
+      if (lights) {
+        px(x - 1, y + 1, 1, 1, '#E0533A');
+        px(x + 6 * s, y + 1, 1, 1, palette['--good'] || '#7FB069');
+        if (spin > 0.88) px(x + 3 * s, y - 3, 1, 1, '#fff');
+      }
+    }
+
+    var t0 = 0, cam = 0, lastT = 0;
+    // Beat lengths, in order of the four steps printed under the scene.
+    var SIM = 6000, TO_BENCH = 2600, BUILD = 5200, WALK = 4200, FLY = 8000;
+    var LOOP = SIM + TO_BENCH + BUILD + WALK + FLY;
+
+    function draw(now) {
+      if (!BW && !measure()) return;
+      if (!t0) t0 = now;
+      var t = (now - t0) % LOOP;
+
+      var ink = rgba(palette['--ink'], 0.92);
+      var soft = rgba(palette['--ink'], 0.34);
+      var faint = rgba(palette['--ink'], 0.15);
+      var warm = rgba(palette['--accent'], 0.8);
+
+      var figX, mode, label, k;
+      if (t < SIM) {
+        figX = DESK + 5; mode = 'sim'; label = 'In the simulator';
+      } else if (t < SIM + TO_BENCH) {
+        k = (t - SIM) / TO_BENCH;
+        figX = DESK + 5 + (BENCH - DESK - 5) * k;
+        mode = 'walk'; label = 'To the bench';
+      } else if (t < SIM + TO_BENCH + BUILD) {
+        // Stands to the left of the airframe rather than on top of it, so the
+        // raised hands land on the drone instead of inside the torso.
+        figX = BENCH - 5; mode = 'build'; label = 'Building the kit';
+      } else if (t < SIM + TO_BENCH + BUILD + WALK) {
+        k = (t - SIM - TO_BENCH - BUILD) / WALK;
+        figX = (BENCH - 5) + (OUT - BENCH + 5) * k;
+        mode = 'walk'; label = k > 0.6 ? 'Out the door' : 'Packing up';
+      } else {
+        figX = OUT; mode = 'stand'; label = 'Flying';
+      }
+
+      var want = Math.max(0, Math.min(WORLD - BW, figX - BW * 0.40));
+      // On the loop restart the figure teleports from the field back to the
+      // desk. Easing across that gap reads as a long aimless pan with the
+      // caption already saying "In the simulator", so the wrap is a hard cut.
+      if (t < lastT) cam = want;
+      lastT = t;
+      cam += (want - cam) * 0.055;
+      if (Math.abs(want - cam) < 0.4) cam = want;
+
+      b.clearRect(0, 0, BW, BH);
+
+      // Outside everywhere, interior painted back over the near half.
+      px(0, 0, BW, BH, rgba(palette['--ink'], 0.05));
+      var wallS = WALL - cam;
+      if (wallS > 0) {
+        px(0, 0, wallS, BH, rgba(palette['--accent'], 0.08));
+        // A ceiling, so the indoor half reads as a room rather than as sky
+        // that happens to be a different colour.
+        px(0, 2, wallS, 1, soft);
+      }
+
+      [1.5, 1.72, 2.15, 2.4].forEach(function (f, i) {
+        var tx = Math.round(BW * f) - cam;
+        if (tx < -12 || tx > BW + 12) return;
+        var th = 14 + (i % 2) * 5;
+        px(tx, GY - th, 2, th, soft);
+        px(tx - 4, GY - th - 3, 10, 4, faint);
+        px(tx - 2, GY - th - 6, 6, 3, faint);
+      });
+
+      px(0, GY, BW, 1, soft);
+
+      if (wallS > -6 && wallS < BW + 6) {
+        for (var y = 0; y < GY; y++) {
+          if (y > GY - 24) continue;                 // the doorway
+          px(wallS, y, 3, 1, soft);
+        }
+        px(wallS, GY - 24, 3, 1, soft);              // lintel
+      }
+
+      /* ---- the computer desk: step one is flown indoors ---- */
+      var dx = DESK - cam;
+      if (dx > -34 && dx < BW + 12) {
+        px(dx - 6, GY - 11, 22, 1, soft);            // desk top
+        px(dx - 5, GY - 10, 1, 10, faint);
+        px(dx + 14, GY - 10, 1, 10, faint);
+        px(dx + 2, GY - 13, 8, 2, faint);            // keyboard
+        // Monitor, with the sim actually running on it. Nine pixels tall
+        // against a twenty-pixel person: any bigger and it read as a wardrobe.
+        px(dx - 2, GY - 22, 13, 9, soft);            // bezel
+        px(dx - 1, GY - 21, 11, 7, rgba(palette['--accent'], t < SIM ? 0.34 : 0.10));
+        px(dx + 4, GY - 13, 2, 2, faint);            // stand
+        if (t < SIM) {
+          var f = (t / SIM);
+          var sxp = dx - 1 + ((Math.sin(f * Math.PI * 6) + 1) / 2) * 4;
+          var syp = GY - 20 + ((Math.cos(f * Math.PI * 5) + 1) / 2) * 4;
+          drone(sxp, syp, warm, (now / 60) % 1, false);
+        }
+      }
+
+      /* ---- the bench: the kit gets built here ---- */
+      var bx = BENCH - cam;
+      if (bx > -30 && bx < BW + 12) {
+        px(bx - 5, GY - 11, 20, 1, soft);
+        px(bx - 4, GY - 10, 1, 10, faint);
+        px(bx + 13, GY - 10, 1, 10, faint);
+        var built = t >= SIM + TO_BENCH && t < SIM + TO_BENCH + BUILD + WALK * 0.4;
+        if (built) {
+          // Props held still: it is being worked on, not run up on the bench.
+          // Sits a pixel proud of the bench so the raised hands meet it.
+          drone(bx + 4, GY - 14, ink, 0, false);
+          // A couple of parts still waiting to go on.
+          px(bx - 3, GY - 12, 2, 1, faint);
+          px(bx + 15, GY - 12, 2, 1, faint);
+        }
+        if (t >= SIM && t < SIM + TO_BENCH + BUILD) {
+          // Hung off the ceiling rather than floating: the cord runs from the
+          // ceiling line down to the shade above the bench.
+          px(bx + 6, 3, 1, 11, faint);               // cord
+          px(bx + 3, 14, 7, 2, warm);                // shade
+          px(bx + 4, 16, 5, 1, rgba(palette['--accent'], 0.28));  // spill
+        }
+      }
+
+      person(figX - cam, GY, mode, now / 1000, ink, soft);
+
+      if (t >= SIM + TO_BENCH + BUILD + WALK) {
+        var ff = (t - SIM - TO_BENCH - BUILD - WALK) / FLY;
+        var launch = Math.min(1, ff / 0.22);
+        var ddx = (figX - cam) + 10 + Math.sin(ff * Math.PI * 2) * (BW * 0.28) * launch;
+        var ddy = GY - 14 - launch * (BH * 0.5) - Math.sin(ff * Math.PI * 4) * 3 * launch;
+        drone(ddx, ddy, ink, (now / 55) % 1, true);
+      }
+
+      ctx.clearRect(0, 0, W, H);
+      ctx.drawImage(buf, 0, 0, BW, BH, 0, 0, BW * BIT, BH * BIT);
+      if (cap && cap.textContent !== label) cap.textContent = label;
+    }
+
+    measure();
+    window.addEventListener('resize', function () { measure(); });
+    // Reduced motion holds the last beat, which is the one that says what the
+    // guide is actually for.
+    if (REDUCED) { t0 = -(SIM + TO_BENCH + BUILD + WALK + FLY * 0.45); draw(0); }
+    else onScreenLoop(cvs, draw);
+  })();
+})();
+</script>
+<script src="flight-checklist.js"></script>
+<script src="assistant-guide.js"></script>
+<script src="assistant-widget.js"></script>
+</body>
+</html>

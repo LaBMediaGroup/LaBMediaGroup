@@ -396,7 +396,7 @@ test('AI Usage is unlinked — the egg is the only way in', () => {
 });
 
 test('new tool pages have complete social preview metadata', () => {
-  for (const file of ['aspect.html', 'droneweather.html', 'sun.html']) {
+  for (const file of ['aspect.html', 'droneweather.html', 'sun.html', 'tools.html', 'whats-new.html']) {
     const html = read(file);
     assert.match(html, /property="og:image"/);
     assert.match(html, /name="twitter:card" content="summary_large_image"/);
@@ -404,8 +404,47 @@ test('new tool pages have complete social preview metadata', () => {
   }
 });
 
-test('usage timeline adds each changelog item once', () => {
-  assert.equal((read('ai-usage.html').match(/days\[e\.date\]\.push\(e\)/g) || []).length, 1);
+test('every published page carries the shared nav and footer', () => {
+  // What's New shipped with neither, and nothing caught it: the nav lives
+  // inline in every file, so a new page starts with no way in or out. The
+  // usage dashboard is the deliberate exception, being unlinked by design.
+  for (const file of htmlFiles) {
+    const html = read(file);
+    if (file === 'ai-usage.html') continue;
+    assert.match(html, /<header class="nav">/, `${file} is missing the shared nav`);
+    assert.match(html, /<footer class="foot">/, `${file} is missing the shared footer`);
+    assert.match(html, /href="tools\.html"/, `${file} cannot reach the tools index`);
+    // 404.html is rightly noindex; everything the sitemap advertises is not.
+    if (file === '404.html') continue;
+    assert.doesNotMatch(html, /name="robots" content="noindex/,
+      `${file} is in the sitemap but tells robots to skip it`);
+  }
+});
+
+test('the tools index groups every tool and quotes the data honestly', () => {
+  const tools = read('tools.html');
+  for (const page of ['ideas.html', 'sun.html', 'droneweather.html',
+    'skybound.html', 'aspect.html', 'assistant.html']) {
+    assert.match(tools, new RegExp(`href="${page.replace('.', '\\.')}"`), `tools.html omits ${page}`);
+  }
+  // The three counts on the Assistant card are typed by hand. They are only
+  // worth printing if they still match what the assistant actually searches.
+  const promptTotal = Object.values(loadConst('ideas-data.js', 'ideasData'))
+    .filter(Array.isArray).reduce((sum, list) => sum + list.length, 0);
+  const gearItems = loadConst('gear-data.js', 'gearData')
+    .reduce((sum, section) => sum + (section.items || []).length, 0);
+  const resourceCount = loadConst('resources-data.js', 'resources').length;
+  assert.match(tools, new RegExp(`<b>${promptTotal.toLocaleString('en-US')}</b>`),
+    `tools.html should say ${promptTotal} prompts`);
+  assert.match(tools, new RegExp(`<b>${gearItems}</b>`), `tools.html should say ${gearItems} gear entries`);
+  assert.match(tools, new RegExp(`<b>${resourceCount}</b>`), `tools.html should say ${resourceCount} resources`);
+});
+
+test('the changelog timeline adds each item once', () => {
+  // The timeline moved off the private usage dashboard when What's New became
+  // its own page, so this follows the code rather than the old address.
+  assert.equal((read('whats-new.html').match(/days\[e\.date\]\.push\(e\)/g) || []).length, 1);
+  assert.doesNotMatch(read('ai-usage.html'), /days\[e\.date\]\.push\(e\)/);
 });
 
 test('reduced-motion weather scene does not schedule a continuous render loop', () => {
@@ -449,7 +488,10 @@ test('shared lunar arc keeps moon travel independent from the sun', () => {
 
 function numberWord(value) {
   const words = {
-    17: 'Seventeen'
+    17: 'Seventeen',
+    18: 'Eighteen',
+    19: 'Nineteen',
+    20: 'Twenty'
   };
   return words[value] || String(value);
 }
