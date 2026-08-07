@@ -252,7 +252,7 @@ function detailHTML(r){
 }
 
 var ITEM_RENDER_SEQ=0;
-function itemHTML(r,i,isCopy){
+function itemHTML(r,i,isCopy,gid){
   var n=String(i+1).padStart(2,'0');
   var tags='';
   if(isNew(r))tags+='<span class="tag fresh">New</span>';
@@ -293,7 +293,11 @@ function itemHTML(r,i,isCopy){
     : '';
 
   var publicAnchor=isCopy?'':' id="'+esc(keyOf(r))+'"';
-  return '<div class="item"'+publicAnchor+(r.paid?' data-paid="1"':'')+' data-hay="'+esc((r.name+' '+(r.desc||'')+' '+(r.features||[]).join(' ')).toLowerCase())+'">'
+  /* The palette layout filters these in place rather than re-rendering, so
+     the group and the pick flag ride along on the element itself. */
+  return '<div class="item"'+publicAnchor+(r.paid?' data-paid="1"':'')
+    +(gid?' data-gid="'+esc(gid)+'"':'')+(r.labPick?' data-pick="1"':'')
+    +' data-hay="'+esc((r.name+' '+(r.desc||'')+' '+(r.features||[]).join(' ')).toLowerCase())+'">'
     +'<span class="item-idx">'+n+'</span>'
     +'<div class="item-main"><h3>'+title+'</h3><p>'+esc(r.desc||'')+'</p>'
     +'<span class="item-tags">'+tags+'</span>'+socialsFor(r)
@@ -472,7 +476,7 @@ function groupOfEntry(r){
        +  '<span class="g-count">'+list.length+'</span>'
        +  '<span class="g-ico" aria-hidden="true"></span>'
        +'</summary>'
-       +'<div class="items">'+list.map(function(r,i){return itemHTML(r,i,false)}).join('')+'</div>'
+       +'<div class="items">'+list.map(function(r,i){return itemHTML(r,i,false,g.id)}).join('')+'</div>'
        +'</details></section>';
   });
   wrapEl.innerHTML=html;
@@ -620,22 +624,54 @@ document.addEventListener('click',function(e){
 
   var freeBtn=document.getElementById('freeOnly');
   var freeOnly=false;
+  var restLabel=document.getElementById('restLabel');
+  var chipHost=document.getElementById('palChips');
 
   /* Text and cost are two filters over one list, so they run in a single pass.
      A resource is shown when it matches the query AND passes the cost filter.
      "Free only" hides what is explicitly tagged Paid : collaborators carry no
      cost tag at all, so they stay; they are people, not a purchase. */
+  /* The palette layout is the same filter with a different resting state: it
+     asks a question instead of presenting a menu, so at rest it answers with
+     the picks rather than showing all 127 or nothing at all. The groups still
+     render exactly as before, which is what keeps the save-to-kit stars, the
+     detail panels and the deep-link anchors working untouched. */
+  var PALETTE = document.body.classList.contains('palette');
+  var activeGid = null;
+
   function run(){
     var v=q.value.trim().toLowerCase();
-    var filtering = !!v || freeOnly;
+    var filtering = !!v || freeOnly || (PALETTE && activeGid);
 
     var hits=0;
     items.forEach(function(el){
       var on = (!v || el.dataset.hay.indexOf(v)>-1)
-            && (!freeOnly || el.dataset.paid!=='1');
+            && (!freeOnly || el.dataset.paid!=='1')
+            && (!activeGid || el.dataset.gid===activeGid);
+      /* At rest the palette shows the picks: an empty page under a search box
+         reads as broken, and 127 rows reads as the thing we just removed. */
+      if(PALETTE && !v && !freeOnly && !activeGid) on = el.dataset.pick==='1';
       el.style.display = on ? '' : 'none';
       if(on) hits++;
     });
+
+    if(PALETTE){
+      document.body.classList.toggle('palette-resting', !v && !freeOnly && !activeGid);
+      if(restLabel){
+        restLabel.textContent = (!v && !freeOnly && !activeGid)
+          ? 'Start here \u00b7 ' + hits + ' LaB picks'
+          : hits + (hits===1?' match':' matches');
+      }
+      secs.forEach(function(s){
+        var shown = s.querySelectorAll('.item:not([style*="none"])').length;
+        s.style.display = shown ? '' : 'none';
+        s.querySelector('details').open = true;   // no doors in this layout
+      });
+      if(count) count.textContent='';
+      document.body.classList.toggle('searching', !!v);
+      elsewhere(v);
+      return;
+    }
 
     secs.forEach(function(s){
       if(!filtering){
@@ -721,6 +757,11 @@ document.addEventListener('click',function(e){
     history.replaceState(null,'',location.pathname+location.hash);
   })();
 
+  /* The grouped layout arrives correct without ever running the filter, so it
+     never needed a first pass. The palette does: its resting state is the
+     picks, and without this the page opens showing all 127. */
+  if(PALETTE && !q.value) run();
+
   /* Resource detail controls : delegated, because rows are built at runtime.
      The toggle remains in the unified action bar while the full-width detail
      panel opens directly beneath it. */
@@ -754,7 +795,37 @@ document.addEventListener('click',function(e){
     }
   });
 
-  q.addEventListener('input',run);
+  /* One chip per section that rendered, built from the DOM rather than the
+     taxonomy so a group with nothing in it can never leave a dead chip. */
+  if(chipHost){
+    secs.forEach(function(sec){
+      var d=sec.querySelector('details');
+      var title=sec.querySelector('.g-title');
+      var n=sec.querySelectorAll('.item').length;
+      if(!title||!n)return;
+      var b=document.createElement('button');
+      b.type='button'; b.className='pal-chip'; b.setAttribute('aria-pressed','false');
+      b.dataset.gid=sec.id;
+      b.innerHTML=title.textContent.trim()+' <span>'+n+'</span>';
+      b.addEventListener('click',function(){
+        activeGid = (activeGid===sec.id) ? null : sec.id;
+        [].forEach.call(chipHost.children,function(c){
+          c.setAttribute('aria-pressed', String(c.dataset.gid===activeGid));
+        });
+        if(activeGid){ q.value=''; }
+        run();
+      });
+      chipHost.appendChild(b);
+    });
+  }
+
+  q.addEventListener('input',function(){
+    if(q.value.trim() && activeGid){
+      activeGid=null;
+      if(chipHost)[].forEach.call(chipHost.children,function(c){c.setAttribute("aria-pressed","false")});
+    }
+    run();
+  });
   q.addEventListener('keydown',function(e){if(e.key==='Escape'){q.value='';run();q.blur()}});
 
   if(freeBtn){
