@@ -22,23 +22,8 @@
     },
     {
       "date": "2026-08-02",
-      "time": "21:30 EDT",
-      "text": "<strong>The Usage Dashboard grew a leaderboard with champions.</strong> The models-at-a-glance section now has a top-three podium, and below it, five stat cards answer the questions raw token totals can't: <em>Longest Turn</em>, <em>Deepest Think</em>, <em>Biggest Response</em>, <em>Busiest Day</em> and <em>Total Calls</em>. Each card names the model and the date it happened, and every one of them recalculates when you switch between 24-hour, 7-day and 30-day windows."
-    },
-    {
-      "date": "2026-08-02",
-      "time": "15:20 EDT",
-      "text": "<strong>The Usage Dashboard learned to tell time.</strong> Three buttons &mdash; 24h, 7d, 30d &mdash; now sit above the chart, and clicking one re-renders every tool breakdown, model leaderboard and highlight for that window, live. Provider details moved to the bottom of the page so costs and quotas aren't the first thing you see, and each provider card carries its own <em>Synced</em> timestamp now, the way it should have from the start."
-    },
-    {
-      "date": "2026-08-02",
-      "time": "14:50 EDT",
-      "text": "<strong>OpenClaw joined the Usage Dashboard &mdash; for real this time.</strong> Hermes had arrived that morning, courtesy of Cave's sync script reading its state.db, and now OpenClaw has its own pipeline: a script that reads session transcripts directly, aggregates per model over a rolling 30-day window, and pushes the result to the live JSON on its own. The old OpenClaw number was 632M tokens, hand-written and months stale. The dashboard sorted itself out to match: tools are ranked by usage now instead of file order, and a quiet label separates <em>AI Assistants</em> from <em>Dev Tools</em>, because OpenClaw and Hermes are a different animal from Codex CLI and Claude Code."
-    },
-    {
-      "date": "2026-08-02",
       "time": "12:10 EDT",
-      "text": "<strong>What's New became its own page.</strong> It was buried at the bottom of the hidden Usage dashboard, which meant the most human-facing part of the dashboard was the hardest to find. The timeline now lives at <em>whats-new.html</em>, reachable from a button at the foot of the colophon &mdash; quiet enough not to distract from the page above, visible enough that someone looking for it will find it. Usage is still where it was, behind the same subtle link."
+      "text": "<strong>What's New became its own page.</strong> The timeline now lives at <em>whats-new.html</em>, reachable from a button at the foot of the colophon &mdash; quiet enough not to distract from the page above, visible enough that someone looking for it will find it."
     },
     {
       "date": "2026-08-02",
@@ -168,7 +153,7 @@
     {
       "date": "2026-08-01",
       "time": "23:30 EDT",
-      "text": "<strong>The dashboard answers back.</strong> The assistant now finds the lighting kit when asked about light : it had been looking for a shelf that does not exist. On Colophon, the figures row centres its last number on phones instead of leaving an empty box beside it, and the Usage link in the footer is no longer pinned under the assistant button on narrow screens. This page gained a quiet way back home, and each provider card below now links out to that service&rsquo;s own usage page : Kimi, Synthetic, Z.ai, ChatGPT and Claude, so the numbers here are one tap away from the numbers there."
+      "text": "<strong>Small corrections, site-wide.</strong> The assistant now finds the lighting kit when asked about light : it had been looking for a shelf that does not exist. On Colophon, the figures row centres its last number on phones instead of leaving an empty box beside it."
     },
     {
       "date": "2026-08-02",
@@ -192,16 +177,6 @@
     },
     {
       "date": "2026-08-01",
-      "time": "23:55 EDT",
-      "text": "<strong>A podium for the top three.</strong> The model leaderboard now gives its leaders the steps they earned : first place stands taller, centre stage, in a wash of ember, flanked by second and third. The rest of the field queues below in the running order, bars intact. And the timeline below no longer indents its first lines : the invisible time stamps that caused it now live where they belong, in the hover."
-    },
-    {
-      "date": "2026-08-01",
-      "time": "23:45 EDT",
-      "text": "<strong>Models, side by side.</strong> Tool Usage kept its per-tool breakdown : the little bars stay : and below it now stands one leaderboard that adds each model&rsquo;s tokens across every tool, tagged with the provider that serves it. Kimi K3, GLM-5.2 and the rest finally appear as themselves rather than as slices of OpenClaw, Codex or Claude Code. The busiest model carries the ember bar; everyone else falls in line behind it."
-    },
-    {
-      "date": "2026-08-01",
       "time": "22:35 EDT",
       "text": "<strong>The night shift clocks in.</strong> Both scenes had been empty after midnight : trees, weather and nothing alive. Golden Hour now has bats, quicker than the birds and allergic to a straight line, and one slow gliding owl : painted pale, because a dark silhouette against a night sky is simply invisible. The weather field gains a raccoon and an opossum, and the wildlife pool now follows the clock as well as the forecast : after dark the squirrels and rabbits go home, the fox works both shifts because a fox genuinely does, and rain still sends everyone off."
     },
@@ -213,7 +188,7 @@
     {
       "date": "2026-08-01",
       "time": "22:20 EDT",
-      "text": "<strong>A footer that matches the menu.</strong> The index at the bottom of every page held fifteen links in a grid built for twelve, so three of them spilled into a column of their own and the order stopped meaning anything. It now groups the way the navigation at the top already does: Resources, Tools, Studio, and Elsewhere for the links that actually leave the site. About &amp; Contact had been filed between Instagram and LinkedIn. Each page also marks its own footer link for screen readers, the visit counter is back on three tool pages that had lost it, and the copyright line steps aside for the assistant button instead of sitting underneath it. The usage dashboard is reached by a quiet word in the footer now, rather than an orange dot in the corner."
+      "text": "<strong>A footer that matches the menu.</strong> The index at the bottom of every page held fifteen links in a grid built for twelve, so three of them spilled into a column of their own and the order stopped meaning anything. It now groups the way the navigation at the top already does: Resources, Tools, Studio, and Elsewhere for the links that actually leave the site. About &amp; Contact had been filed between Instagram and LinkedIn. Each page also marks its own footer link for screen readers, the visit counter is back on three tool pages that had lost it, and the copyright line steps aside for the assistant button instead of sitting underneath it."
     },
     {
       "date": "2026-08-01",
@@ -258,12 +233,12 @@
     {
       "date": "2026-08-01",
       "time": "13:10 EDT",
-      "text": "<strong>Golden Hour, rebuilt.</strong> The decorative fixed-time helper is now a real date-and-location-aware shoot planner: calculated blue and golden windows, sunrise, sunset, solar noon, elevation, direction, daylight, a scrub-able sun arc, a time-sensitive quote roller in the Story Generator style, and a copyable day plan. Drone Weather now reports actual Open-Meteo gusts, visibility and precipitation instead of estimates. Portfolio theme controls work again, lightbox keyboard focus behaves, runtime resource IDs stay unique, mobile overflow is gone, navigation and footers agree, and the public-but-tucked-away AI Usage link no longer enters the tab order. A real Chromium suite now patrols the kinds of failures static checks miss."
+      "text": "<strong>Golden Hour, rebuilt.</strong> The decorative fixed-time helper is now a real date-and-location-aware shoot planner: calculated blue and golden windows, sunrise, sunset, solar noon, elevation, direction, daylight, a scrub-able sun arc, a time-sensitive quote roller in the Story Generator style, and a copyable day plan. Drone Weather now reports actual Open-Meteo gusts, visibility and precipitation instead of estimates. Portfolio theme controls work again, lightbox keyboard focus behaves, runtime resource IDs stay unique, mobile overflow is gone, navigation and footers agree. A real Chromium suite now patrols the kinds of failures static checks miss."
     },
     {
       "date": "2026-08-01",
       "time": "12:23 EDT",
-      "text": "<strong>Maintenance pass.</strong> Story Generator tone tags no longer overwrite one another when an idea belongs to more than one mood. A 91-check CI suite now guards scripts, data, links, page structure, assistant coverage, social previews and published totals. The new tools respect reduced-motion settings, the weather scene stops drawing when it has nothing to animate, and lighter WebP hero images trim repeat page weight. The AI Usage dashboard stays public by URL but tucked behind its Easter eggs."
+      "text": "<strong>Maintenance pass.</strong> Story Generator tone tags no longer overwrite one another when an idea belongs to more than one mood. A 91-check CI suite now guards scripts, data, links, page structure, assistant coverage, social previews and published totals. The new tools respect reduced-motion settings, the weather scene stops drawing when it has nothing to animate, and lighter WebP hero images trim repeat page weight."
     },
     {
       "date": "2026-08-01",
@@ -303,7 +278,7 @@
     {
       "date": "2026-07-31",
       "time": "23:30 EDT",
-      "text": "<strong>A fifth theme, and a secret.</strong> Sepia joins the theme bar site-wide : a warm e-ink papyrus palette (shipped as <em>Stone</em>; renamed 1 August). And the AI Usage Dashboard launches : public by URL, but tucked behind its Easter eggs, a Konami code and a hidden dot on Colophon."
+      "text": "<strong>A fifth theme.</strong> Sepia joins the theme bar site-wide : a warm e-ink papyrus palette (shipped as <em>Stone</em>; renamed 1 August)."
     },
     {
       "date": "2026-07-31",
