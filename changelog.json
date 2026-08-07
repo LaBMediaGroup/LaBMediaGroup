@@ -1,6 +1,26 @@
 {
   "entries": [
     {
+      "date": "2026-08-06",
+      "time": "21:35 EDT",
+      "text": "<strong>The tool tiles started running.</strong> Every card on the new index is a working miniature rather than a screenshot: Golden Hour sweeps today&rsquo;s real solar arc with the evening window drawn lit, SkyBound&nbsp;: Weather shrinks the full scene to a tile whose streaks are the live wind speed, the Story Generator flickers through actual premises on the same slot machine <em>ideas.html</em> uses, and the Assistant plays back real answers from the real retrieval engine. SkyBound&nbsp;: Drone got a pixel vignette that runs the guide&rsquo;s four steps in order &mdash; simulator, bench, out the door, flying &mdash; and the props sit still while the thing is being built, because they would."
+    },
+    {
+      "date": "2026-08-06",
+      "time": "20:20 EDT",
+      "text": "<strong>Six tools, one page to find them on.</strong> <em>tools.html</em> arranges them by when you reach for them rather than alphabetically: before the shoot, on the day, back at the desk. Until now the only routes in were a dropdown, the footer and a homepage section that could not be linked to. The heavy parts &mdash; a 195&nbsp;KB prompt library, the assistant engine &mdash; only download once a card scrolls into view."
+    },
+    {
+      "date": "2026-08-06",
+      "time": "19:35 EDT",
+      "text": "<strong>The Tools menu learned to group itself, and What&rsquo;s New stopped being a dead end.</strong> The separator rule the Resources menu already used now splits Tools into planning, flying and finishing, with Weather above Drone since it is the one you check first. Tool names, and their order, finally match across the nav, the footer and the homepage. <em>What&rsquo;s New shipped with no navigation at all</em> &mdash; no header, no footer, reachable only from one button and impossible to leave. It has both now, a place in the About menu, and its entries go out on the RSS and JSON feeds."
+    },
+    {
+      "date": "2026-08-06",
+      "time": "19:10 EDT",
+      "text": "<strong>The colophon was quietly lying about three things.</strong> It claimed seventeen pages in five places, including the search description and the link previews, when there are nineteen. The drone scene&rsquo;s animal list never mentioned the bats, the owl, the raccoon or the opossum that shipped with it, nor the mistake behind them: they were drawn pale to read against a dark sky, and only rendering it showed that full cloud lifts the sky to grey and swallows pale wings. The test suite went from four failures to 135 passing, with new guards for the things that broke &mdash; every page must carry the shared nav and footer, and the counts printed on the tools page are recomputed from the data files."
+    },
+    {
       "date": "2026-08-02",
       "time": "21:30 EDT",
       "text": "<strong>The Usage Dashboard grew a leaderboard with champions.</strong> The models-at-a-glance section now has a top-three podium, and below it, five stat cards answer the questions raw token totals can't: <em>Longest Turn</em>, <em>Deepest Think</em>, <em>Biggest Response</em>, <em>Busiest Day</em> and <em>Total Calls</em>. Each card names the model and the date it happened, and every one of them recalculates when you switch between 24-hour, 7-day and 30-day windows."

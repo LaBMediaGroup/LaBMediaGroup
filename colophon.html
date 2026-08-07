@@ -5,20 +5,20 @@
 <script>(function(){var K="lab-theme-v2",O="lab-theme",M={stone:"sepia",sepia:"timber"};try{var t=localStorage.getItem(K);if(t===null){var l=localStorage.getItem(O);if(l){t=M[l]||l;localStorage.setItem(K,t);}}if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How This Site Is Built | LaB Media</title>
-<meta name="description" content="Seventeen pages, one design system, no framework, no build step, and no first-party cookies. What it took and what broke along the way.">
+<meta name="description" content="Nineteen pages, one design system, no framework, no build step, and no first-party cookies. What it took and what broke along the way.">
 <link rel="canonical" href="https://labmedia.work/colophon.html">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://labmedia.work/colophon.html">
 <meta property="og:site_name" content="LaB Media">
 <meta property="og:title" content="How This Site Is Built">
-<meta property="og:description" content="Seventeen pages, one design system, no framework, no build step, and no first-party cookies.">
+<meta property="og:description" content="Nineteen pages, one design system, no framework, no build step, and no first-party cookies.">
 <meta property="og:image" content="https://labmedia.work/images/og/colophon.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="How This Site Is Built">
-<meta name="twitter:description" content="Seventeen pages, one design system, no framework, no build step, and no first-party cookies.">
+<meta name="twitter:description" content="Nineteen pages, one design system, no framework, no build step, and no first-party cookies.">
 <meta name="twitter:image" content="https://labmedia.work/images/og/colophon.jpg">
 
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -146,10 +146,14 @@
           <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
         </button>
         <div class="nav-drop-menu">
+          <a href="tools.html">All Tools</a>
+          <hr class="nav-sep" aria-hidden="true">
           <a href="ideas.html">Story Generator</a>
           <a href="sun.html">Golden Hour Helper</a>
-          <a href="skybound.html">SkyBound : Drone</a>
+          <hr class="nav-sep" aria-hidden="true">
           <a href="droneweather.html">SkyBound : Weather</a>
+          <a href="skybound.html">SkyBound : Drone</a>
+          <hr class="nav-sep" aria-hidden="true">
           <a href="aspect.html">Aspect Ratio Previewer</a>
           <a href="assistant.html">LaB Assistant</a>
         </div>
@@ -161,6 +165,7 @@
         <div class="nav-drop-menu">
           <a href="contact.html">About LaB</a>
           <a href="colophon.html" aria-current="page">About the Site</a>
+          <a href="whats-new.html">What&rsquo;s New</a>
         </div>
       </li>
       </ul></nav>
@@ -182,7 +187,7 @@
   <div class="rule"><span class="mono">Colophon</span><i></i><span class="mono" style="color:var(--faint)">Updated August 2026</span></div>
   <div class="hero-def">
     <div>
-      <h1>Seventeen pages, one <em>design system.</em></h1>
+      <h1>Nineteen pages, one <em>design system.</em></h1>
       <p class="lede">This site has no framework or build step. It&rsquo;s hand-written HTML, CSS and
       JavaScript on free hosting, plus one small Cloudflare Worker that protects the assistant&rsquo;s
       optional AI phrasing. If you&rsquo;re a filmmaker who also tinkers, this is the part you might find useful.</p>
@@ -206,7 +211,7 @@
   </div>
 
   <dl class="figs">
-    <div class="fig"><dt>Pages</dt><dd>17</dd></div>
+    <div class="fig"><dt>Pages</dt><dd>19</dd></div>
     <div class="fig"><dt>Stylesheets</dt><dd>02</dd></div>
     <div class="fig"><dt>Themes</dt><dd>05</dd></div>
     <div class="fig"><dt>Cloud Worker</dt><dd>01</dd></div>
@@ -398,7 +403,13 @@
       <div class="bug-side">
         <p>Drizzle is drawn apart from rain, and the light and the animals answer the same state.
         Deer, foxes, squirrels and rabbits wander through when it is calm enough, with the drone
-        breaking station to film whatever turns up.</p>
+        breaking station to film whatever turns up. After dark the cast changes over: bats on two
+        sine waves fighting each other, one slow owl mostly gliding, a raccoon read by its mask and
+        ringed tail, and an opossum with a bare one-pixel tail.</p>
+        <p>The night animals were drawn pale so they would read against a dark sky, and only
+        rendering the thing showed that to be wrong: at full cloud the night sky lifts to grey and
+        pale wings vanish into it. <em>Their tone now cross-fades on live cloud cover, pale enough
+        to catch moonlight on a clear night and back to silhouette under a deck.</em></p>
         <p><em>No API key, no tracking. Everything renders into one low-resolution buffer upscaled
         with nearest-neighbour, and the picture and the advisory read the same numbers through the
         same thresholds, so they cannot disagree.</em></p>
@@ -515,10 +526,11 @@
       <div class="foot-col">
         <h3>Tools</h3>
         <ul>
+          <li><a href="tools.html">All Tools</a></li>
           <li><a href="ideas.html">Story Generator</a></li>
           <li><a href="sun.html">Golden Hour</a></li>
-          <li><a href="skybound.html">SkyBound : Drone</a></li>
           <li><a href="droneweather.html">SkyBound : Weather</a></li>
+          <li><a href="skybound.html">SkyBound : Drone</a></li>
           <li><a href="aspect.html">Aspect Ratio</a></li>
           <li><a href="assistant.html">LaB Assistant</a></li>
         </ul>
@@ -530,6 +542,7 @@
           <li><a href="events.html">Events</a></li>
           <li><a href="contact.html">About LaB</a></li>
           <li><a href="colophon.html" aria-current="page">About the Site</a></li>
+          <li><a href="whats-new.html">What&rsquo;s New</a></li>
         </ul>
       </div>
       <div class="foot-col">
