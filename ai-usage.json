@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-06T09:15:50.342605-04:00",
+  "lastUpdated": "2026-08-07T09:15:07.640028-04:00",
   "_note": "Run `node tools/sync-usage.mjs` to refresh what can be refreshed. Only Synthetic has a documented usage API (api.synthetic.new/v2/quotas), and it currently reports the 5-hour window only. Z.ai, Kimi, Anthropic and Synthetic's weekly credits have no public endpoint — edit those quotas by hand from the consoles linked on each card, then bump lastUpdated. Each quota's percentUsed is 0-100 or null for 'no reading'; resetsAt is an ISO timestamp or null. See tools/README.md.",
   "providers": [
     {
@@ -23,9 +23,9 @@
           "id": "session",
           "label": "5-hour requests",
           "percentUsed": 0,
-          "resetsAt": "2026-08-06T18:15:50.329Z",
+          "resetsAt": "2026-08-07T18:15:07.657Z",
           "resetNote": "0 of 750 requests",
-          "syncedAt": "2026-08-06T13:15:50.342545+00:00",
+          "syncedAt": "2026-08-07T13:15:07.639971+00:00",
           "source": "api"
         }
       ],
@@ -241,7 +241,7 @@
   ],
   "toolUsage": {
     "period": "Last 30 days",
-    "totalTokens": 1635000000,
+    "totalTokens": 1632000000,
     "totalLabel": "1.6B",
     "note": "Counted from local logs — CodexBar + OpenClaw session transcripts + Hermes state.db. Antigravity rides on Claude/GPT keys and the Claude desktop app keeps its own books, so neither can be separated.",
     "tools": [
@@ -323,23 +323,23 @@
       },
       {
         "name": "OpenClaw",
-        "tokensLabel": "98M",
+        "tokensLabel": "95M",
         "share": 6,
         "models": [
           {
             "name": "GLM-4.7",
-            "tokensLabel": "44M",
-            "share": 45
+            "tokensLabel": "42M",
+            "share": 44
           },
           {
             "name": "GLM-5.2",
-            "tokensLabel": "39M",
+            "tokensLabel": "38M",
             "share": 40
           },
           {
             "name": "Kimi-K3 (Synthetic)",
-            "tokensLabel": "9M",
-            "share": 10
+            "tokensLabel": "10M",
+            "share": 11
           },
           {
             "name": "Kimi-K2.7-Code",
@@ -369,29 +369,14 @@
         ],
         "daily": [
           {
-            "date": "2026-07-07",
-            "model": "GLM-5.2",
-            "tokens": 750348
-          },
-          {
             "date": "2026-07-08",
             "model": "GLM-4.7",
-            "tokens": 4314874
+            "tokens": 2392516
           },
           {
             "date": "2026-07-08",
             "model": "GLM-5.2",
-            "tokens": 1816059
-          },
-          {
-            "date": "2026-07-08",
-            "model": "GLM-5",
-            "tokens": 138573
-          },
-          {
-            "date": "2026-07-08",
-            "model": "Kimi-K2.7-Code",
-            "tokens": 24243
+            "tokens": 967418
           },
           {
             "date": "2026-07-09",
@@ -805,33 +790,33 @@
           },
           {
             "date": "2026-08-06",
-            "model": "Kimi-K3 (Synthetic)",
-            "tokens": 403885
+            "model": "GLM-5.2",
+            "tokens": 135236
           },
           {
             "date": "2026-08-06",
+            "model": "Kimi-K3 (Synthetic)",
+            "tokens": 683557
+          },
+          {
+            "date": "2026-08-07",
+            "model": "Kimi-K3 (Synthetic)",
+            "tokens": 378331
+          },
+          {
+            "date": "2026-08-07",
             "model": "GLM-5.2",
-            "tokens": 127631
+            "tokens": 70413
           }
         ],
         "dailyStats": [
           {
-            "date": "2026-07-07",
-            "calls": 102,
-            "maxOut": 627,
-            "maxOutModel": "GLM-5.2",
-            "maxThink": 0,
-            "maxThinkModel": "",
-            "maxTurn": 19312,
-            "maxTurnModel": "GLM-5.2"
-          },
-          {
             "date": "2026-07-08",
-            "calls": 358,
-            "maxOut": 5904,
-            "maxOutModel": "GLM-5",
-            "maxThink": 2770,
-            "maxThinkModel": "GLM-5",
+            "calls": 161,
+            "maxOut": 2896,
+            "maxOutModel": "GLM-4.7",
+            "maxThink": 467,
+            "maxThinkModel": "GLM-4.7",
             "maxTurn": 82392,
             "maxTurnModel": "GLM-4.7"
           },
@@ -1117,12 +1102,22 @@
           },
           {
             "date": "2026-08-06",
-            "calls": 50,
-            "maxOut": 554,
-            "maxOutModel": "GLM-5.2",
+            "calls": 85,
+            "maxOut": 331,
+            "maxOutModel": "Kimi-K3 (Synthetic)",
             "maxThink": 0,
             "maxThinkModel": "",
-            "maxTurn": 20728,
+            "maxTurn": 12618,
+            "maxTurnModel": "Kimi-K3 (Synthetic)"
+          },
+          {
+            "date": "2026-08-07",
+            "calls": 46,
+            "maxOut": 412,
+            "maxOutModel": "Kimi-K3 (Synthetic)",
+            "maxThink": 0,
+            "maxThinkModel": "",
+            "maxTurn": 14252,
             "maxTurnModel": "GLM-5.2"
           }
         ]
