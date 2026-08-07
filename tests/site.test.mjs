@@ -414,6 +414,16 @@ test('every published page carries the shared nav and footer', () => {
     assert.match(html, /<header class="nav">/, `${file} is missing the shared nav`);
     assert.match(html, /<footer class="foot">/, `${file} is missing the shared footer`);
     assert.match(html, /href="tools\.html"/, `${file} cannot reach the tools index`);
+    // The markup alone is inert. tools.html and whats-new.html both shipped
+    // with the header drawn and neither behaviour wired, so the dropdowns
+    // would not open and the theme swatches did nothing. The four resource
+    // pages get the same two behaviours out of resources-render.js instead of
+    // inlining them, so either source counts.
+    const shared = /resources-render\.js/.test(html);
+    assert.ok(shared || /getElementById\('navToggle'\)/.test(html),
+      `${file} has nav markup but nothing wires the dropdowns`);
+    assert.ok(shared || /dataset\.themeSet/.test(html),
+      `${file} has theme swatches but nothing wires them`);
     // 404.html is rightly noindex; everything the sitemap advertises is not.
     if (file === '404.html') continue;
     assert.doesNotMatch(html, /name="robots" content="noindex/,

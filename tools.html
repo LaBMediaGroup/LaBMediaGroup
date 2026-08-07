@@ -366,9 +366,8 @@
 <section class="pg-hero wrap">
   <div class="rule"><span class="mono">Tools</span><i></i><span class="mono" style="color:var(--faint)">Free, no account</span></div>
   <h1>Six tools, in the order you <em>reach for them.</em></h1>
-  <p class="lede">Everything here was built because a shoot needed it, which is why they are grouped
-  by the part of the day they belong to rather than alphabetically. Nothing asks for an account,
-  nothing uploads your footage, and two of them are already running further down this page.</p>
+  <p class="lede">I built these to be useful to me, and they turned out to be worth leaving out
+  here. No account, no uploads. Two of them are already running further down the page.</p>
 
   <div class="livestrip">
     <div class="live-cell">
@@ -1508,6 +1507,70 @@
     if (REDUCED) { t0 = -(SIM + TO_BENCH + BUILD + WALK + FLY * 0.45); draw(0); }
     else onScreenLoop(cvs, draw);
   })();
+})();
+</script>
+<script>
+/* Shared header behaviour, same as every other page: without these the
+   theme swatches and the nav dropdowns are inert markup. */
+(function(){
+  var root=document.documentElement, KEY='lab-theme-v2';
+  var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
+  if(!btns.length)return;
+
+  function apply(t,save){
+    if(t==='dark') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme',t);
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.themeSet===t))});
+    if(save){try{localStorage.setItem(KEY,t)}catch(e){}}
+  }
+
+  var saved='dark';
+  try{saved=localStorage.getItem(KEY)||'dark'}catch(e){}
+  apply(saved,false);
+
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){apply(b.dataset.themeSet,true)});
+  });
+})();
+
+(function(){
+  /* Header Dropdown Logic */
+  var t=document.getElementById('navToggle'),l=document.getElementById('navLinks');
+  var desktop=function(){return window.innerWidth>760};
+
+  if(t&&l){t.addEventListener('click',function(e){
+    e.stopPropagation();
+    var open=t.getAttribute('aria-expanded')==='true';
+    t.setAttribute('aria-expanded',String(!open));
+    l.setAttribute('data-open',String(!open));
+  });}
+
+  function setOpen(d,on){
+    d.setAttribute('data-open',String(on));
+    d.querySelector('.nav-drop-btn').setAttribute('aria-expanded',String(on));
+    if(!on) d.removeAttribute('data-pinned');
+  }
+  function closeAll(except){
+    document.querySelectorAll('.nav-drop').forEach(function(o){ if(o!==except) setOpen(o,false); });
+  }
+
+  document.querySelectorAll('.nav-drop').forEach(function(d){
+    var b=d.querySelector('.nav-drop-btn');
+    b.addEventListener('click',function(e){
+      e.stopPropagation();
+      var open=d.getAttribute('data-open')==='true';
+      var pinned=d.hasAttribute('data-pinned');
+      closeAll(d);
+      if(open&&pinned){ setOpen(d,false); }
+      else { setOpen(d,true); d.setAttribute('data-pinned','1'); }
+    });
+    d.addEventListener('mouseenter',function(){ if(desktop()){ closeAll(d); setOpen(d,true); } });
+    d.addEventListener('mouseleave',function(){
+      if(desktop() && !d.hasAttribute('data-pinned')) setOpen(d,false);
+    });
+  });
+
+  document.addEventListener('click',function(){ closeAll(null); });
 })();
 </script>
 <script src="flight-checklist.js"></script>

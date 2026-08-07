@@ -295,6 +295,70 @@ function loadMoreNews(){
 
 loadNews();
 </script>
+<script>
+/* Shared header behaviour, same as every other page: without these the
+   theme swatches and the nav dropdowns are inert markup. */
+(function(){
+  var root=document.documentElement, KEY='lab-theme-v2';
+  var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
+  if(!btns.length)return;
+
+  function apply(t,save){
+    if(t==='dark') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme',t);
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.themeSet===t))});
+    if(save){try{localStorage.setItem(KEY,t)}catch(e){}}
+  }
+
+  var saved='dark';
+  try{saved=localStorage.getItem(KEY)||'dark'}catch(e){}
+  apply(saved,false);
+
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){apply(b.dataset.themeSet,true)});
+  });
+})();
+
+(function(){
+  /* Header Dropdown Logic */
+  var t=document.getElementById('navToggle'),l=document.getElementById('navLinks');
+  var desktop=function(){return window.innerWidth>760};
+
+  if(t&&l){t.addEventListener('click',function(e){
+    e.stopPropagation();
+    var open=t.getAttribute('aria-expanded')==='true';
+    t.setAttribute('aria-expanded',String(!open));
+    l.setAttribute('data-open',String(!open));
+  });}
+
+  function setOpen(d,on){
+    d.setAttribute('data-open',String(on));
+    d.querySelector('.nav-drop-btn').setAttribute('aria-expanded',String(on));
+    if(!on) d.removeAttribute('data-pinned');
+  }
+  function closeAll(except){
+    document.querySelectorAll('.nav-drop').forEach(function(o){ if(o!==except) setOpen(o,false); });
+  }
+
+  document.querySelectorAll('.nav-drop').forEach(function(d){
+    var b=d.querySelector('.nav-drop-btn');
+    b.addEventListener('click',function(e){
+      e.stopPropagation();
+      var open=d.getAttribute('data-open')==='true';
+      var pinned=d.hasAttribute('data-pinned');
+      closeAll(d);
+      if(open&&pinned){ setOpen(d,false); }
+      else { setOpen(d,true); d.setAttribute('data-pinned','1'); }
+    });
+    d.addEventListener('mouseenter',function(){ if(desktop()){ closeAll(d); setOpen(d,true); } });
+    d.addEventListener('mouseleave',function(){
+      if(desktop() && !d.hasAttribute('data-pinned')) setOpen(d,false);
+    });
+  });
+
+  document.addEventListener('click',function(){ closeAll(null); });
+})();
+</script>
 <script src="flight-checklist.js"></script>
 <script src="assistant-guide.js"></script>
 <script src="assistant-widget.js"></script>
