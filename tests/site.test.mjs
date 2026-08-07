@@ -31,6 +31,12 @@ function listTrackedRootFiles() {
 
 const byExtension = (extension) => trackedRootFiles.filter((file) => file.endsWith(extension)).sort();
 const htmlFiles = byExtension('.html');
+/* The four notebook lists became one page. Three files stay behind as
+   redirects so existing links and bookmarks still land on the right band, but
+   they are not pages: no nav, no footer, no assistant, and not in the sitemap.
+   Detected by the refresh rather than by name, so a future one is caught too. */
+const redirectStubs = htmlFiles.filter((file) => /http-equiv="refresh"/i.test(read(file)));
+const realPages = htmlFiles.filter((file) => !redirectStubs.includes(file));
 const jsFiles = byExtension('.js');
 const jsonFiles = byExtension('.json');
 
@@ -194,9 +200,9 @@ test('public totals match their data sources', () => {
   const index = read('index.html');
   assert.equal((index.match(new RegExp(`${resourceCount} vetted resources`, 'g')) || []).length, 3);
 
-  for (const file of ['learn.html', 'people.html', 'resources.html', 'sourcing.html']) {
-    assert.match(read(file), new RegExp(`id="totalCount">${resourceCount} entries`));
-  }
+  // One notebook, one total. The other three carried the same count while the
+  // list was split across them; they are redirects now.
+  assert.match(read('resources.html'), new RegExp(`id="totalCount">${resourceCount} entries`));
 
   const docs = read('README.md');
   assert.match(docs, new RegExp(`Story generator .* ${promptCount.toLocaleString('en-US')} prompts`));
@@ -209,7 +215,8 @@ test('public totals match their data sources', () => {
 
 test('the published page count follows the sitemap', () => {
   const sitemapCount = (read('sitemap.xml').match(/<loc>/g) || []).length;
-  const indexablePages = htmlFiles.filter((file) => !['404.html', 'ai-usage.html'].includes(file));
+  // Redirects are not pages: they are noindex and absent from the sitemap.
+  const indexablePages = realPages.filter((file) => !['404.html', 'ai-usage.html'].includes(file));
   assert.equal(sitemapCount, indexablePages.length);
 
   const colophon = read('colophon.html');
@@ -311,7 +318,7 @@ test('local file references resolve', async (t) => {
 });
 
 test('floating assistant coverage matches page intent', () => {
-  for (const file of htmlFiles) {
+  for (const file of realPages) {
     const html = read(file);
     if (file === 'ai-usage.html') {
       assert.doesNotMatch(html, /assistant-widget\.js/);
@@ -324,7 +331,7 @@ test('floating assistant coverage matches page intent', () => {
 });
 
 test('flight checklist follows visitors without exposing the private usage page', () => {
-  for (const file of htmlFiles) {
+  for (const file of realPages) {
     const html = read(file);
     if (file === 'ai-usage.html') assert.doesNotMatch(html, /flight-checklist\.js/);
     else assert.match(html, /flight-checklist\.js/, `${file} is missing the persistent flight checklist`);
@@ -408,7 +415,7 @@ test('every published page carries the shared nav and footer', () => {
   // What's New shipped with neither, and nothing caught it: the nav lives
   // inline in every file, so a new page starts with no way in or out. The
   // usage dashboard is the deliberate exception, being unlinked by design.
-  for (const file of htmlFiles) {
+  for (const file of realPages) {
     const html = read(file);
     if (file === 'ai-usage.html') continue;
     assert.match(html, /<header class="nav">/, `${file} is missing the shared nav`);
@@ -498,6 +505,9 @@ test('shared lunar arc keeps moon travel independent from the sun', () => {
 
 function numberWord(value) {
   const words = {
+    14: 'Fourteen',
+    15: 'Fifteen',
+    16: 'Sixteen',
     17: 'Seventeen',
     18: 'Eighteen',
     19: 'Nineteen',

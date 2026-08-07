@@ -523,6 +523,10 @@ input,textarea,select{font:inherit;color:inherit}
   font-family:var(--f-mono);font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;
   color:var(--dim);transition:color var(--fast) var(--ease);
   display:inline-flex;align-items:center;gap:6px;padding-block:6px;
+  /* Every top-level label was one word until the Kit pages were promoted out
+     of the Resources menu. "LaB's Kit" and "Your Kit" then broke across two
+     lines and made the whole header taller, with 500px of bar still empty. */
+  white-space:nowrap;
 }
 .nav-links a:hover,.nav-drop-btn:hover,.nav-links a[aria-current="page"]{color:var(--ink)}
 .nav-links a[aria-current="page"]{color:var(--accent)}

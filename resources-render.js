@@ -678,8 +678,16 @@ document.addEventListener('click',function(e){
     }
     if(!v){ offEl.hidden=true; offEl.innerHTML=''; return; }
 
+    /* Unset means this page owns every band, the same way it does for OWN
+       above. Defaulting to an empty set here would have declared all 127
+       results to be somewhere else and linked them to pages that are now
+       redirects: the whole notebook listed as "elsewhere" on the page it
+       is actually on. */
     var mine={};
-    (window.PAGE_BANDS||[]).forEach(function(b){ mine[b]=1 });
+    var own = (window.PAGE_BANDS && window.PAGE_BANDS.length)
+      ? window.PAGE_BANDS
+      : BANDS.map(function(b){ return b.id });
+    own.forEach(function(b){ mine[b]=1 });
     var byBand={};
     ALL.forEach(function(r){
       var hay=(r.name+' '+(r.desc||'')+' '+(r.category||'')).toLowerCase();
