@@ -97,7 +97,7 @@
 var BANDS=[
  {id:'band-learn', title:'Watch &amp; <em>Learn</em>',
   blurb:'Channels and sites that explain the reasoning instead of the settings. Eighteen of these are people on YouTube, so this is a watch-list rather than a toolbox.',
-  groups:['references']},
+  groups:['ref-filming','ref-editing','ref-art','ref-craft','references']},
  {id:'band-make',  title:'Software &amp; <em>Assets</em>',
   blurb:'Things you actually open: AI that earns its place in a workflow, music and effects that won\u2019t get an upload muted, stock, type, 3D and code.',
   groups:['ai','music','stock','fonts','3d','software']},
@@ -111,7 +111,13 @@ var BANDS=[
 
 var GROUPS=[
  {id:'collaborators',cats:['collaborators'],title:'People I’ve <em>Worked With</em>',blurb:'Artists, musicians, and studios I’ve actually shot with. If you need any of these skills on a Michigan project, start here : I can vouch for every one.'},
- {id:'references',cats:['references'],title:'References &amp; <em>Craft</em>',blurb:'The channels and sites I go back to. Shot breakdowns, editing theory, color, and comedy timing : the ones that explain <em>why</em> instead of just walking you through settings.'},
+ /* The watch-list, split by what you came to learn. These four run before the
+    catch-all below, which then picks up whatever carries no sub-type. */
+ {id:'ref-filming',cats:['references'],refTypes:['filming'],title:'Shooting &amp; <em>Camera</em>',blurb:'Blocking, lensing and lighting, from people who show you the frame and then explain why it is that frame.'},
+ {id:'ref-editing',cats:['references'],refTypes:['editing'],title:'Editing &amp; <em>Post</em>',blurb:'Pacing, structure and the cut itself. Editing theory is the hardest thing to find taught well, and these teach it well.'},
+ {id:'ref-art',cats:['references'],refTypes:['art'],title:'Art &amp; <em>Animation</em>',blurb:'Drawing, design and animation channels. Not filmmaking, and better for it : composition and colour arrive through the side door.'},
+ {id:'ref-craft',cats:['references'],refTypes:['comedy','music'],title:'Comedy &amp; <em>Music</em>',blurb:'Timing, in both senses. Comedy is editing you can hear, and scoring is editing you can feel.'},
+ {id:'references',cats:['references'],title:'Everything <em>Else</em>',blurb:'The channels and sites I go back to that do not sit neatly in one craft : the ones that explain <em>why</em> instead of just walking you through settings.'},
  {id:'ai',cats:['ai'],title:'AI <em>Tools</em>',blurb:'The handful that earn a place in a real workflow. Most AI video tools are still demos; these are the ones I’ve gotten usable output from.'},
  {id:'music',cats:['music','soundfx'],title:'Music &amp; <em>Sound</em>',blurb:'Score, licensing, and effects libraries that won’t get your upload muted three days later. Read the license terms : “free” and “free for YouTube” are not the same thing.'},
  {id:'stock',cats:['stock'],title:'Stock <em>Footage</em>',blurb:'For the plate you couldn’t get, the establishing shot you didn’t have time for, and the b-roll that saves an edit.'},
@@ -417,6 +423,12 @@ function groupOfEntry(r){
   ordered.forEach(function(g){
     var list=ALL.filter(function(r){
       if(claimed.indexOf(r)>-1)return false;
+      /* A group may narrow a category further by refType. References is one
+         category of 21, which rendered as a single eight-screen list; the
+         entries already carried the sub-type, it just had nowhere to show.
+         Specific groups are ordered before the catch-all, and `claimed` stops
+         anything being listed twice. */
+      if(g.refTypes && g.refTypes.indexOf(r.refType||'')<0) return false;
       var cs=catsOf(r);
       for(var i=0;i<cs.length;i++){if(g.cats.indexOf(cs[i])>-1)return true}
       return false;
@@ -442,8 +454,14 @@ function groupOfEntry(r){
     var peek=list.slice(0,4).map(function(r){return r.name}).join(' · ')
            + (list.length>4 ? ' · +'+(list.length-4)+' more' : '');
 
-    html+='<section class="grp wrap" id="'+g.id+'">'
-       +'<details class="grp-d">'
+    /* Land on something, but not on everything. The first section opens only
+       when it is short enough to read as an introduction: opening a 13-entry
+       group put this page back to eight screens, which is the thing the split
+       was meant to cure. Longer sections stay shut and rely on their count and
+       peek line, which is what the peek is for. */
+    var leadOpen = (gi===0 && list.length<=6);
+    html+='<section class="grp wrap'+(leadOpen?' is-lead':'')+'" id="'+g.id+'">'
+       +'<details class="grp-d"'+(leadOpen?' open':'')+'>'
        +'<summary>'
        +  '<span class="g-n">'+String(++gi).padStart(2,'0')+'</span>'
        +  '<span class="g-main">'
@@ -620,9 +638,12 @@ document.addEventListener('click',function(e){
     });
 
     secs.forEach(function(s){
-      if(!filtering){                          // cleared : restore the collapsed menu
+      if(!filtering){
+        /* Cleared : go back to exactly how the page arrived, which is the
+           lead section open if it had one. Closing all of them meant clearing
+           a search left you worse off than you started. */
         s.style.display='';
-        s.querySelector('details').open=false;
+        s.querySelector('details').open = s.classList.contains('is-lead');
         return;
       }
       var found=s.querySelectorAll('.item:not([style*="none"])').length;

@@ -452,18 +452,13 @@ body.searching .lab-sec{display:none}
   </div>
 </footer>
 
-<script src="resources-data.js"></script>
+<script src="resources-data.js?v=20260806b"></script>
 <script>
 /* This page owns the Watch & Learn band. See resources-render.js for how
    categories map to the four notebook pages. */
 window.PAGE_BANDS = ['band-learn'];
 </script>
-<script src="resources-render.js"></script>
-<script>
-/* This page has one section, so present its resources directly instead of
-   making the visitor open the only available category. */
-(function(){var d=document.querySelector('.grp-d');if(d)d.open=true})();
-</script>
+<script src="resources-render.js?v=20260806b"></script>
 
 <script>
 /* Theme switch : remembers the choice, falls back to dark */
