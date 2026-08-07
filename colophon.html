@@ -5,20 +5,20 @@
 <script>(function(){var K="lab-theme-v2",O="lab-theme",M={stone:"sepia",sepia:"timber"};try{var t=localStorage.getItem(K);if(t===null){var l=localStorage.getItem(O);if(l){t=M[l]||l;localStorage.setItem(K,t);}}if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How This Site Is Built | LaB Media</title>
-<meta name="description" content="Nineteen pages, one design system, no framework, no build step, and no first-party cookies. What it took and what broke along the way.">
+<meta name="description" content="Sixteen pages, one design system, no framework, no build step, and no first-party cookies. What it took and what broke along the way.">
 <link rel="canonical" href="https://labmedia.work/colophon.html">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://labmedia.work/colophon.html">
 <meta property="og:site_name" content="LaB Media">
 <meta property="og:title" content="How This Site Is Built">
-<meta property="og:description" content="Nineteen pages, one design system, no framework, no build step, and no first-party cookies.">
+<meta property="og:description" content="Sixteen pages, one design system, no framework, no build step, and no first-party cookies.">
 <meta property="og:image" content="https://labmedia.work/images/og/colophon.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="How This Site Is Built">
-<meta name="twitter:description" content="Nineteen pages, one design system, no framework, no build step, and no first-party cookies.">
+<meta name="twitter:description" content="Sixteen pages, one design system, no framework, no build step, and no first-party cookies.">
 <meta name="twitter:image" content="https://labmedia.work/images/og/colophon.jpg">
 
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -30,7 +30,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="alternate" type="application/rss+xml" title="LaB Media" href="/feed.xml">
 <link rel="alternate" type="application/feed+json" title="LaB Media" href="/feed.json">
-<link rel="stylesheet" href="lab.css">
+<link rel="stylesheet" href="lab.css?v=20260806b">
 <style>
 .pg-hero{padding-block:clamp(44px,6vw,var(--s-8)) clamp(36px,5vw,var(--s-7));border-bottom:1px solid var(--line)}
 .pg-hero h1{font-family:var(--f-display);font-size:var(--t-3xl);font-weight:400;line-height:.95;letter-spacing:-.025em;margin-top:var(--s-6);max-width:18ch}
@@ -127,20 +127,9 @@
     <nav class="nav-primary" aria-label="Primary"><ul class="nav-links" id="navLinks">
       <li><a href="portfolio.html">Reel</a></li>
       <li><a href="events.html">Events</a></li>
-      <li class="nav-drop">
-        <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Resources
-          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
-        </button>
-        <div class="nav-drop-menu">
-          <a href="learn.html">Watch &amp; Learn</a>
-          <a href="resources.html">Software &amp; Assets</a>
-          <a href="sourcing.html">Gear &amp; Flight</a>
-          <a href="people.html">People &amp; Community</a>
-          <hr class="nav-sep" aria-hidden="true">
-          <a href="gear.html">LaB&rsquo;s Kit</a>
-          <a href="mykit.html">Your Kit</a>
-        </div>
-      </li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
+      <li><a href="mykit.html">Your Kit</a></li>
       <li class="nav-drop">
         <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Tools
           <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
@@ -187,7 +176,7 @@
   <div class="rule"><span class="mono">Colophon</span><i></i><span class="mono" style="color:var(--faint)">Updated August 2026</span></div>
   <div class="hero-def">
     <div>
-      <h1>Nineteen pages, one <em>design system.</em></h1>
+      <h1>Sixteen pages, one <em>design system.</em></h1>
       <p class="lede">This site has no framework or build step. It&rsquo;s hand-written HTML, CSS and
       JavaScript on free hosting, plus one small Cloudflare Worker that protects the assistant&rsquo;s
       optional AI phrasing. If you&rsquo;re a filmmaker who also tinkers, this is the part you might find useful.</p>
@@ -211,7 +200,7 @@
   </div>
 
   <dl class="figs">
-    <div class="fig"><dt>Pages</dt><dd>19</dd></div>
+    <div class="fig"><dt>Pages</dt><dd>16</dd></div>
     <div class="fig"><dt>Stylesheets</dt><dd>02</dd></div>
     <div class="fig"><dt>Themes</dt><dd>05</dd></div>
     <div class="fig"><dt>Cloud Worker</dt><dd>01</dd></div>
@@ -515,10 +504,7 @@
       <div class="foot-col">
         <h3>Resources</h3>
         <ul>
-          <li><a href="learn.html">Watch &amp; Learn</a></li>
-          <li><a href="resources.html">Software &amp; Assets</a></li>
-          <li><a href="sourcing.html">Gear &amp; Flight</a></li>
-          <li><a href="people.html">People &amp; Community</a></li>
+          <li><a href="resources.html">The Notebook</a></li>
           <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
           <li><a href="mykit.html">Your Kit</a></li>
         </ul>
