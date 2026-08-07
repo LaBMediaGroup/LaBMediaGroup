@@ -89,7 +89,12 @@
 .demo{
   border:1px solid var(--line);border-radius:6px;background:var(--paper);
   padding:var(--s-4);margin-bottom:var(--s-4);
-  flex:1;min-height:0;display:flex;flex-direction:column
+  flex:1;min-height:0;display:flex;flex-direction:column;
+  /* .tool-stretch turns the whole card into one big link, which swallowed
+     every click meant for the demo: pressing Roll navigated to the generator
+     instead of rolling. The panel sits above it, so the card is a link
+     everywhere except the part you are meant to play with. */
+  position:relative;z-index:1
 }
 .demo-k{font-family:var(--f-mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:10px}
 .demo-line{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-3);font-family:var(--f-mono);font-size:11px;color:var(--dim);padding:5px 0}
@@ -99,9 +104,32 @@
 
 /* Slot machine, the same one ideas.html uses: the premise flickers through
    real entries and dims to --faint while it is spinning, so the landing reads
-   as a result rather than a text swap. */
-.prompt-text{color:var(--ink);font-size:var(--t-sm);line-height:1.65;min-height:4.9em;margin:0}
-.prompt-text.spin{color:var(--faint)}
+   as a result rather than a text swap.
+
+   The type is lifted from that page too. Its hero rolls a tone word in ember
+   italic and sets the concept in large display serif behind an ember rule;
+   at --t-sm in body text this tile read like a caption of the generator
+   rather than a piece of it. */
+/* These sit under `.demo` deliberately. lab.css already owns `.tool p`, and
+   at (0,1,1) it outranks a lone class: every paragraph in these cards was
+   being pulled back to --t-base no matter what the local rule said. */
+.demo .spark{
+  font-family:var(--f-display);font-size:clamp(19px,2.3vw,27px);line-height:1.18;
+  letter-spacing:-.01em;color:var(--ink);max-width:none;margin:0 0 var(--s-4)
+}
+.demo .spark .rw{font-style:italic;color:var(--accent);white-space:nowrap}
+.demo .spark .rw.spin{color:var(--dim)}
+
+.concept-mini{
+  border-left:2px solid var(--accent);
+  padding-left:clamp(14px,1.8vw,20px)
+}
+.concept-mini .demo-k{color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.demo .prompt-text{
+  font-family:var(--f-display);font-size:clamp(25px,3.3vw,40px);line-height:1.12;
+  letter-spacing:-.022em;color:var(--ink);max-width:22ch;min-height:3.36em;margin:0
+}
+.demo .prompt-text.spin{color:var(--faint)}
 .demo-btn{
   /* The panel is a flex column, so without this the button stretches edge to
      edge and stops reading as a button. */
@@ -376,8 +404,11 @@
       budget. Every brief gets a share link keyed to its own text, so one you send stays pointing at
       the same idea however the library grows.</p>
       <div class="demo">
-        <span class="demo-k">A real prompt from the library</span>
-        <p class="prompt-text" id="promptText">Waiting on the prompt library&hellip;</p>
+        <p class="spark">Spark a <em class="rw" id="promptWord">honest</em> film.</p>
+        <div class="concept-mini">
+          <span class="demo-k">The concept</span>
+          <p class="prompt-text" id="promptText">Waiting on the prompt library&hellip;</p>
+        </div>
         <button class="demo-btn" type="button" id="promptBtn"><span class="die" aria-hidden="true">&#9860;</span><span id="promptBtnLabel">Roll</span></button>
       </div>
       <a class="tool-go" href="ideas.html">Open the generator<span class="tool-stretch"></span></a>
@@ -982,6 +1013,21 @@
       }, step);
     }
 
+    // The tone words ideas.html rolls through its headline, so the two pages
+    // say the same things in the same voice.
+    var WORDS = ['quiet', 'strange', 'funny', 'creepy', 'tender', 'mean',
+      'hopeful', 'tense', 'small', 'honest', 'absurd', 'sad'];
+    var wordEl = el('promptWord'), lastWord = '';
+
+    function rollWord() {
+      if (!wordEl) return;
+      var w, guard = 0;
+      do { w = WORDS[(Math.random() * WORDS.length) | 0]; }
+      while (w === lastWord && guard++ < 8);
+      lastWord = w;
+      spin(wordEl, WORDS, w, 7, 55, null);
+    }
+
     var busy = false;
     function roll() {
       if (busy) return;
@@ -989,6 +1035,7 @@
       if (!next) { out.textContent = 'The prompt library did not load.'; return; }
       busy = true;
       btn.dataset.busy = 'true';
+      rollWord();
       spin(out, window.ideasData && window.ideasData.concepts, next, 9, 55, function () {
         busy = false;
         btn.removeAttribute('data-busy');
@@ -1199,12 +1246,16 @@
       });
     }
 
-    // Only pay for it if someone scrolls this far.
+    // Only pay for it if someone scrolls this far. Watch the panel, not the
+    // transcript: the transcript is absolutely positioned and empty until the
+    // engine answers, so it has no height for an observer to catch and the
+    // demo could sit there never starting.
+    var watch = chat.closest('.chat') || chat.parentElement || chat;
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (entries) {
         if (entries[0].isIntersecting) { io.disconnect(); boot(); }
       }, { rootMargin: '160px' });
-      io.observe(chat);
+      io.observe(watch);
     } else {
       boot();
     }
