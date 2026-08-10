@@ -23,6 +23,21 @@ var SPOTLIGHT = [
     ]
   },
   {
+    id:    'royal-starr-mixer-2026',
+    date:  '2026-08-11',
+    time:  '7:00 PM – 10:00 PM',
+    title: 'Royal Starr Filmmaker <em>Mixer</em>',
+    by:    'Royal Starr Film Festival',
+    byUrl: 'https://www.royalstarrfilmfestival.com',
+    venue: 'Eastern Palace Club',
+    address: '21509 John R Rd, Hazel Park, MI 48030',
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Eastern+Palace+Club%2C+21509+John+R+Rd%2C+Hazel+Park%2C+MI+48030',
+    where: 'Eastern Palace Club · 21509 John R Rd, Hazel Park',
+    body:  'One of Metro Detroit’s largest film industry networking events — filmmakers, actors, writers, producers, cinematographers, editors, photographers, and content creators in a fun, welcoming atmosphere. $3 donation at the door enters you to win two VIP passes to the Royal Starr Film Festival (Sep 10–13, 2026, Birmingham 8 Theatre Powered by Emagine) — including screenings, networking events, and the full filmmaker weekend.',
+    tags:  ['Networking','Mixer','Detroit filmmakers','Royal Starr Film Festival','Giveaway'],
+    url:   'https://www.royalstarrfilmfestival.com/mixer'
+  },
+  {
     id:    'detroit-48hfp-best-of-2026',
     date:  '2026-08-16',
     time:  '7:30 PM',
