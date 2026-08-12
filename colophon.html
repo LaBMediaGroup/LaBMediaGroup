@@ -114,6 +114,14 @@
   .bug-main{grid-column:1}
   .bug-side{grid-column:1;margin-top:8px}
 }
+
+/* The changelog lives at the foot of this page and nowhere else in the
+   chrome : quiet enough that you only find it once you've read this far. */
+.col-log{border-bottom:0;padding-block:var(--s-5);text-align:center}
+.col-log a{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--faint);text-decoration:none;
+  transition:color var(--fast) var(--ease)}
+.col-log a:hover{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -154,7 +162,6 @@
         <div class="nav-drop-menu">
           <a href="contact.html">About LaB</a>
           <a href="colophon.html" aria-current="page">About the Site</a>
-          <a href="whats-new.html">What&rsquo;s New</a>
         </div>
       </li>
       </ul></nav>
@@ -488,8 +495,8 @@
   </div>
 </section>
 
-<section class="sec-c wrap" style="text-align:center;padding-top:var(--s-4)">
-  <a href="whats-new.html" style="font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);text-decoration:none;border:1px solid var(--accent-dim);padding:var(--s-2) var(--s-4);border-radius:var(--radius);background:var(--accent-bg);transition:opacity .3s">What&rsquo;s New &rarr;</a>
+<section class="sec-c col-log wrap">
+  <a href="whats-new.html">What&rsquo;s New</a>
 </section>
 
 </main>
