@@ -221,7 +221,7 @@ const resources = [
         name: 'ProductionHub',
         category: 'community',
         communityType: 'hiring',
-        desc: 'US-focused production job board and directory.',
+        desc: 'US-focused production job board and directory. Not tried.',
         fullDesc: 'Find and post production jobs. Searchable directory of crew and vendors by location. Useful for staffing up local shoots and finding specialists.',
         url: 'https://www.productionhub.com',
         paid: true,
