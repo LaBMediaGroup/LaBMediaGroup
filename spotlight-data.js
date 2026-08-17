@@ -57,6 +57,21 @@ var SPOTLIGHT = [
     ]
   },
   {
+    id:    'royal-starr-mixer-2026-09',
+    date:  '2026-09-08',
+    time:  '7:00 PM – 10:00 PM',
+    title: 'Royal Starr <em>Kick-Off Mixer + 11 Years</em>',
+    by:    'Royal Starr Arts Institute',
+    byUrl: 'https://www.royalstarr.org',
+    venue: 'Eastern Palace Club',
+    address: '21509 John R Rd, Hazel Park, MI 48030',
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Eastern+Palace+Club%2C+21509+John+R+Rd%2C+Hazel+Park%2C+MI+48030',
+    where: 'Eastern Palace Club · 21509 John R Rd, Hazel Park',
+    body:  'The Royal Starr Film Festival kicks off its 11th year with the monthly filmmaker mixer — networking with filmmakers, actors, casting professionals, and crew, plus casting opportunities and creative connections. Bring business cards, headshots, and resumes.',
+    tags:  ['Networking','Mixer','Detroit filmmakers','Royal Starr Film Festival','Kick-Off'],
+    url:   'https://www.royalstarr.org'
+  },
+  {
     id:    'adam-evas-intimate-film',
     date:  '2026-08-05',
     time:  '6:30 PM',
