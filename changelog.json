@@ -2,6 +2,11 @@
   "entries": [
     {
       "date": "2026-08-18",
+      "time": "19:35 EDT",
+      "text": "<strong>The feeds are gone.</strong> <em>feed.xml</em> and <em>feed.json</em> were built and published, but never set up or tested, and nothing was reading them. A feed nobody subscribes to is just another file that can quietly go stale and start misdescribing the site &mdash; this one had already stopped carrying events entirely, when the event records moved into their own file and the generator kept looking for them in the old place. Nobody noticed, which is rather the point. Both files are removed, along with the script that wrote them and the alternate-feed links in the head of all fourteen pages that advertised them. What&rsquo;s New is still the log; it just lives in one place now."
+    },
+    {
+      "date": "2026-08-18",
       "time": "19:10 EDT",
       "text": "<strong>Past events stopped disappearing.</strong> A dated event used to delete itself the day after it happened, which meant anyone who saw a listing here last month came back to a page that denied it had ever existed. They move now instead : down to a <em>Past Events</em> section at the bottom of the Events page, struck through and stepped back, still carrying every link, venue, address and tag they had. The card lifts back to full strength the moment you hover it or anything inside it takes focus, so the dimming never costs you a detail. The four that had already quietly vanished are the first entries in it &mdash; the 48HFP premiere at the Redford, Adam &amp; Eva&rsquo;s at Miss Eva&rsquo;s, the Royal Starr mixer, and the 48HFP Best Of and awards night. Archived cards also gained an optional photo slot: drop photographs in and they draw a thumbnail grid that opens into the same lightbox the film galleries use, and leave it out and nothing renders at all. <em>The LaB Assistant learned the difference too</em> &mdash; it will tell you an event has already happened rather than offering it as something to go to."
     },

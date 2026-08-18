@@ -238,10 +238,6 @@ way to tell a returning visitor that anything else had.
 - **New markers.** A resource with `added: 'YYYY-MM-DD'` shows a NEW tag for 60
   days and counts into the header rule. No date means not new — better than
   backfilling dates nobody can verify.
-- **Feeds.** `feed.xml` and `feed.json` cover films, dated resources and
-  spotlight events. Rebuild with `node _buildfeed.js` after adding any of the
-  three; it reads the film list out of the portfolio's schema block so there is
-  one source of truth.
 
 ## Analytics
 

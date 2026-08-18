@@ -28,8 +28,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="alternate" type="application/rss+xml" title="LaB Media" href="/feed.xml">
-<link rel="alternate" type="application/feed+json" title="LaB Media" href="/feed.json">
 <link rel="stylesheet" href="lab.css?v=20260806b">
 
 <style>
@@ -86,7 +84,7 @@
 }
 .tl-more:hover{color:var(--accent);border-color:var(--accent-dim)}
 
-/* The feed is the reason a log like this is worth keeping. */
+/* Closing note under the timeline. */
 .nw-feed{
   margin-top:var(--s-6);padding-top:var(--s-5);border-top:1px solid var(--line);
   font-size:var(--t-sm);line-height:1.7;color:var(--dim)
@@ -157,16 +155,14 @@ html{scroll-behavior:smooth}
     <div class="rule"><span class="mono">Changelog</span><i></i><span class="mono" style="color:var(--faint)">Newest first</span></div>
     <h1>What&rsquo;s <em>New</em></h1>
     <p class="sub">Site changes, additions and fixes as they ship. Mostly small, occasionally a whole
-    tool, always dated. If you would rather not check, the same entries go out on the feed at the
-    bottom of this page.</p>
+    tool, always dated.</p>
   </div>
 
   <div class="timeline" id="timeline"></div>
   <div class="tl-more" id="news-more" onclick="loadMoreNews()" style="display:none">Load previous days</div>
 
-  <p class="nw-feed">This log is also published as <a href="/feed.xml">RSS</a> and
-  <a href="/feed.json">JSON Feed</a>, so a reader can follow it without you coming back here. The
-  longer write-up of how any of this was built is on the <a href="colophon.html">colophon</a>.</p>
+  <p class="nw-feed">The longer write-up of how any of this was built is on the
+  <a href="colophon.html">colophon</a>.</p>
 
 </div>
 </main>
