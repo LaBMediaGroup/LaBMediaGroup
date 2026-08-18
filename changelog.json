@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "date": "2026-08-18",
+      "time": "19:10 EDT",
+      "text": "<strong>Past events stopped disappearing.</strong> A dated event used to delete itself the day after it happened, which meant anyone who saw a listing here last month came back to a page that denied it had ever existed. They move now instead : down to a <em>Past Events</em> section at the bottom of the Events page, struck through and stepped back, still carrying every link, venue, address and tag they had. The card lifts back to full strength the moment you hover it or anything inside it takes focus, so the dimming never costs you a detail. The four that had already quietly vanished are the first entries in it &mdash; the 48HFP premiere at the Redford, Adam &amp; Eva&rsquo;s at Miss Eva&rsquo;s, the Royal Starr mixer, and the 48HFP Best Of and awards night. Archived cards also gained an optional photo slot: drop photographs in and they draw a thumbnail grid that opens into the same lightbox the film galleries use, and leave it out and nothing renders at all. <em>The LaB Assistant learned the difference too</em> &mdash; it will tell you an event has already happened rather than offering it as something to go to."
+    },
+    {
+      "date": "2026-08-18",
+      "time": "19:05 EDT",
+      "text": "<strong>Scattered leads the homepage.</strong> Selected Work opens with the 48 Hour film and its poster instead of <em>Trail Dead</em> : Best Use of Character and 3rd Best Film out of the Detroit 48HFP Best Of screening, from a four-person crew and one weekend. Trail Dead moves to second, MOZ Interiors holds third, and <em>Lookout</em> steps off the homepage &mdash; it is untouched on the Reel, where all eight films still live."
+    },
+    {
       "date": "2026-08-06",
       "time": "23:25 EDT",
       "text": "<strong>The notebook asks a question now.</strong> One page of sixteen collapsed sections was still a menu you had to read before you could do anything, so the page leads with <em>What do you need?</em> and a search box instead. At rest it answers with the seven LaB picks rather than an empty box or all 127 rows; type, or tap one of sixteen category chips. The sections still render underneath exactly as before, which is what keeps the save-to-kit stars, the detail panels and every deep link working untouched &mdash; the layout hides the accordion and lets the filtered entries read as one flat answer. Rows lost the 74&nbsp;pixel block of buttons under every result and kept 40&nbsp;pixel touch targets. Six point eight screens at rest down to three point six."

@@ -7,6 +7,16 @@
   "icon": "https://labmedia.work/images/favicon-512.png",
   "items": [
     {
+      "id": "https://labmedia.work/whats-new.html#2026-08-18",
+      "url": "https://labmedia.work/whats-new.html#2026-08-18",
+      "title": "Site updates : August 18",
+      "content_text": "Past events stopped disappearing. Scattered leads the homepage.",
+      "date_published": "2026-08-18T12:00:00Z",
+      "tags": [
+        "Update"
+      ]
+    },
+    {
       "id": "https://labmedia.work/whats-new.html#2026-08-06",
       "url": "https://labmedia.work/whats-new.html#2026-08-06",
       "title": "Site updates : August 6",
@@ -80,7 +90,7 @@
       "id": "https://labmedia.work/portfolio.html#scattered",
       "url": "https://labmedia.work/portfolio.html#scattered",
       "title": "Scattered",
-      "content_text": "Made for the Detroit 48 Hour Film Project. Assignment Friday night, shot and cut over the weekend.",
+      "content_text": "Made for the Detroit 48 Hour Film Project. Assignment Friday night, shot and cut over the weekend.: won Best Use of Character · 3rd Best Film.",
       "date_published": "2026-07-25T12:00:00Z",
       "tags": [
         "Film"
