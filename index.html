@@ -218,6 +218,11 @@
   .hero-cta{width:100%}
   .hero-cta .btn{flex:1;justify-content:center}
 }
+
+/* Scattered leads with its poster rather than a still. A 3:4 sheet in a 16:10
+   slot has to be anchored : centred, the crop lands in the faded middle of the
+   title and shows neither the lockup nor the face. */
+.card-poster img{object-position:50% 0}
 </style>
 </head>
 <body>
@@ -331,6 +336,19 @@
   </div>
 
   <div class="grid-work">
+    <a class="card reveal" href="portfolio.html#scattered">
+      <div class="card-thumb card-poster">
+        <img src="images/scattered/scattered-poster.jpg" alt="Scattered poster : the title set in a dot matrix that repeats and fades down the page" loading="lazy" decoding="async" width="1350" height="1800">
+      </div>
+      <div class="card-body">
+        <div class="card-idx">007 / 48 Hour</div>
+        <h3>Scattered</h3>
+        <p>Made for the Detroit 48 Hour Film Project. Shot and cut across a weekend, uploaded with six minutes left on the clock.</p>
+        <div class="card-award">Best Use of Character · 3rd Best Film : 48HFP Detroit 2026</div>
+        <div class="card-dest">View film notes →</div>
+      </div>
+    </a>
+
     <a class="card reveal" href="portfolio.html#horror">
       <div class="card-thumb">
         <img src="images/TrailDead-still.jpg" alt="Still from Trail Dead" loading="lazy" decoding="async" width="1600" height="892">
@@ -340,19 +358,6 @@
         <h3>Trail Dead</h3>
         <p>Invisible threat, visible dread. Tension built almost entirely in the cut.</p>
         <div class="card-award">Best Editing : Horror Film Roulette 2025</div>
-        <div class="card-dest">View film notes →</div>
-      </div>
-    </a>
-
-    <a class="card reveal" href="portfolio.html#comedy">
-      <div class="card-thumb">
-        <img src="images/Lookout-still.jpg" alt="Still from Lookout" loading="lazy" decoding="async" width="1600" height="1506">
-      </div>
-      <div class="card-body">
-        <div class="card-idx">005 / Comedy</div>
-        <h3>Lookout</h3>
-        <p>Smart writing, sharp timing, and proof that funny is genuinely hard.</p>
-        <div class="card-award">Top 25 : Comedy Roll Film Festival 2025</div>
         <div class="card-dest">View film notes →</div>
       </div>
     </a>
