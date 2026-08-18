@@ -154,25 +154,8 @@ test('spotlight events have stable IDs, valid local dates, and usable links', ()
   assert.deepEqual(Array.from(detroit48, (event) => event.date), ['2026-08-02', '2026-08-16']);
   assert.match(detroit48[0].time, /Group B · 4:30 PM · Scattered/);
   assert.match(detroit48[0].body, /Scattered[\s\S]*Group B at 4:30 PM/);
-  assert.match(detroit48[0].body, /Mistaken[\s\S]*ST Park Productions and Koffee Noir Productions/);
   assert.match(detroit48[0].time, /2:00 PM.*4:30 PM/);
   assert.match(detroit48[1].body, /awards/i);
-});
-
-test('assistant knows the Mistaken community film without inventing crew roles', () => {
-  const mistaken = fieldNotes.find((note) => note.id === 'community-film-mistaken');
-  assert.ok(mistaken);
-  for (const name of ['Veda', 'Joe', 'Billy', 'Anton', 'Rylie', 'David', 'Jeremy', 'Brandon', 'Amber', 'Kate', 'Nikki']) {
-    assert.match(mistaken.answer, new RegExp(`\\b${name}\\b`));
-  }
-  assert.match(mistaken.answer, /ST Park Productions and Koffee Noir Productions/);
-  assert.match(mistaken.answer, /Group B at 4:30 PM/);
-  assert.match(mistaken.answer, /will not guess/i);
-
-  const engine = assistantCore.createEngine({ fieldNotes, spotlight });
-  const answer = engine.ask('Who worked on Mistaken?');
-  assert.equal(answer.kind, 'field-note');
-  assert.match(answer.answer, /Veda[\s\S]*Nikki/);
 });
 
 test('assistant knowledge follows the current filmmaking tools', () => {

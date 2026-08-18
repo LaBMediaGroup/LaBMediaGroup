@@ -2,7 +2,12 @@
   "entries": [
     {
       "date": "2026-08-18",
-      "time": "19:35 EDT",
+      "time": "19:25 EDT",
+      "text": "<strong>Another team&rsquo;s film came off the site.</strong> <em>Mistaken</em> screened in the same Group B block as <em>Scattered</em> at the 48HFP premiere, and it had ended up in three places here: a tag on the event, a line inside the event&rsquo;s own description, and a whole Assistant note naming the eleven people who made it. None of that was LaB&rsquo;s to publish. The event describes only LaB&rsquo;s film now, that Assistant note is gone, and the collaborator note keeps the people LaB has genuinely worked with while dropping a cast list belonging to someone else. Ask the Assistant about <em>Mistaken</em> now and it will tell you it doesn&rsquo;t know &mdash; which is the honest answer."
+    },
+    {
+      "date": "2026-08-18",
+      "time": "19:20 EDT",
       "text": "<strong>The feeds are gone.</strong> <em>feed.xml</em> and <em>feed.json</em> were built and published, but never set up or tested, and nothing was reading them. A feed nobody subscribes to is just another file that can quietly go stale and start misdescribing the site &mdash; this one had already stopped carrying events entirely, when the event records moved into their own file and the generator kept looking for them in the old place. Nobody noticed, which is rather the point. Both files are removed, along with the script that wrote them and the alternate-feed links in the head of all fourteen pages that advertised them. What&rsquo;s New is still the log; it just lives in one place now."
     },
     {

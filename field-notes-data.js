@@ -115,17 +115,6 @@
       ]
     },
     {
-      id: 'community-film-mistaken',
-      url: 'events.html#event-detroit-48hfp-premiere-2026',
-      title: 'Mistaken (2026) : Detroit 48 Hour Film Project Community Short',
-      tags: 'mistaken 2026 detroit 48 hour film project 48hfp group b 4 30 pm redford theater st park productions koffee noir productions joint production collaboration veda joe billy anton rylie david jeremy brandon amber kate nikki who worked on mistaken cast crew screening',
-      note: 'Local community and screening context for Mistaken (2026).',
-      answer: 'Mistaken (2026) is a Detroit 48 Hour Film Project short screening in Group B at 4:30 PM alongside Scattered. It was made jointly by ST Park Productions and Koffee Noir Productions. Veda, Joe, Billy, Anton, Rylie, David, Jeremy, Brandon, Amber, Kate, and Nikki all worked on the film. Their individual roles are not recorded in the LaB notes yet, so the assistant will not guess at them.',
-      sources: [
-        { title: 'Detroit 48HFP Premiere Screenings', url: 'events.html#event-detroit-48hfp-premiere-2026', note: 'Group B screening and local film context' }
-      ]
-    },
-    {
       id: 'site-tool-golden-hour-planner',
       url: 'sun.html',
       title: 'Golden Hour Planner : Current Features',
@@ -173,9 +162,9 @@
       id: 'lab-crew-and-community',
       url: 'people.html',
       title: 'LaB Crew & Community Connections (ST Park, Comedy Roll, 48HFP)',
-      tags: 'crew community st park koffee noir al joe rylie hook the-hook cracked mistaken mike billy veda anton david jeremy brandon amber kate nikki max josh comedy roll horror film roulette detroit film community larry 48hfp local crews who is al who is joe what is the hook what is cracked',
+      tags: 'crew community st park koffee noir al joe rylie hook the-hook cracked mike billy veda max josh comedy roll horror film roulette detroit film community larry 48hfp local crews who is al who is joe what is the hook what is cracked',
       note: 'Overview of LaB Media crew and Michigan film community connections.',
-      answer: 'LaB Media’s core is Bobby and Al, with Joe forming the core trio on films like Scattered. Surrounding them is a vibrant local Michigan film community: ST Park Productions (Joe and Rylie, creators of The Hook and Brimstone), Koffee Noir Productions, Mike (writer/director of Cracked), Billy, Veda, Larry, and Josh (Comedy Roll showrunner). ST Park and Koffee Noir jointly made Mistaken with Veda, Joe, Billy, Anton, Rylie, David, Jeremy, Brandon, Amber, Kate, and Nikki. Bobby crewed on ST Park’s The Hook and Mike’s Cracked, building relationships that fuel collaborative Michigan filmmaking.',
+      answer: 'LaB Media’s core is Bobby and Al, with Joe forming the core trio on films like Scattered. Surrounding them is a vibrant local Michigan film community: ST Park Productions (Joe and Rylie, creators of The Hook and Brimstone), Koffee Noir Productions, Mike (writer/director of Cracked), Billy, Veda, Larry, and Josh (Comedy Roll showrunner). Bobby crewed on ST Park’s The Hook and Mike’s Cracked, building relationships that fuel collaborative Michigan filmmaking.',
       sources: [
         { title: 'People & Community', url: 'people.html', note: 'Collaborator network' }
       ]

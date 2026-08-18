@@ -26,7 +26,7 @@ var SPOTLIGHT = [
     address: '17360 Lahser Rd, Detroit, MI 48219',
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=The+Redford+Theater%2C+17360+Lahser+Rd%2C+Detroit%2C+MI+48219',
     where: 'The Redford Theater · 17360 Lahser Rd, Detroit',
-    body:  'The completed 2026 Detroit 48 Hour films hit the big screen in two program blocks. LaB’s film <em>Scattered</em>, made as Sideways Lab, screens in Group B at 4:30 PM alongside <em>Mistaken</em>, a joint ST Park Productions and Koffee Noir Productions short. Group A begins at 2:00 PM.',
+    body:  'The completed 2026 Detroit 48 Hour films hit the big screen in two program blocks. LaB’s film <em>Scattered</em>, made as Sideways Lab, screens in Group B at 4:30 PM. Group A begins at 2:00 PM.',
     tags:  ['Premiere','Group A · 2 PM','Scattered · Group B · 4:30 PM','Detroit filmmakers'],
     url:   'https://ticketing.useast.veezi.com/sessions/?siteToken=ks2qqa1sp218n79f3jdn2r6qy0',
     links: [
