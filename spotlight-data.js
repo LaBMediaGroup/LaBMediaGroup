@@ -1,6 +1,18 @@
-/* Upcoming-event records shared by events.html and the LaB Assistant.
+/* Event records shared by events.html and the LaB Assistant.
    Keep dates as local YYYY-MM-DD values. `until` keeps multi-day events
-   current through their final day. */
+   current through their final day.
+
+   Nothing here expires out of the file. The day after an event ends it stops
+   being "Worth Going To" and becomes an entry under Past Events : struck
+   through, dimmed, but with every link and detail still on it. Only a record
+   that was wrong or a duplicate should ever be deleted.
+
+   Past entries can also carry `photos` : paths to photographs from the night,
+   drawn as a thumbnail grid on the archived card. Plain paths, or objects when
+   the thumbnail is a separate file:
+     photos: ['images/events/48hfp-bestof-2026/01.jpg', ...]
+     photos: [{full:'.../01.jpg', thumb:'.../thumb/01.jpg', alt:'...'}]
+   Leave it out and the card draws nothing : no empty frame, no gap. */
 var SPOTLIGHT = [
   {
     id:    'detroit-48hfp-premiere-2026',

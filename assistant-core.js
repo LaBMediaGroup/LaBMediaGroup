@@ -206,16 +206,52 @@
     }
     function eventsAnswer(now,query){
       var today=localToday(now);
-      if(/\b(expired|past|old)\b/.test(normalize(query||''))){
-        return {kind:'events',confidence:1,answer:'No. Dated spotlight events are removed after their final day; multi-day events remain current through their inclusive `until` date.',
-          sources:[source('Michigan Film Events','events.html','Current-event behavior')]};
+      function endOf(e){ return parseDate(e.until)||parseDate(e.date); }
+
+      var live=[], past=[];
+      eventList.forEach(function(e){
+        var end=endOf(e);
+        if(!end)return;
+        (end>=today ? live : past).push(e);
+      });
+      live.sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
+      past.sort(function(a,b){return endOf(b)-endOf(a);});          // newest first
+
+      function listOf(events){
+        return events.slice(0,4).map(function(e){
+          return plain(e.title)+': '+dateLabel(e)+(e.where?' · '+plain(e.where):'')+(e.by?' · Presented by '+plain(e.by):'');
+        });
       }
-      var live=eventList.filter(function(e){
-        var end=parseDate(e.until)||parseDate(e.date);
-        return end && end>=today;
-      }).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
-      var named=live.filter(function(e){return eventMention(query||'',e);});
-      if(named.length)live=named;
+      function sourcesOf(events){
+        return events.slice(0,4).map(function(e){return source(plain(e.title),eventUrl(e),dateLabel(e));});
+      }
+
+      /* Asked about what has already been : answer from the archive, never
+         from the current list. Events stopped deleting themselves when Past
+         Events shipped, so there is now something real to point at. */
+      if(/\b(expired|past|old|already|happened|missed|last month|used to)\b/.test(normalize(query||''))){
+        if(!past.length){
+          return {kind:'events',confidence:1,answer:'Nothing has expired out of the list yet. Once an event’s final day passes it moves to the Past Events section at the bottom of the Events page rather than disappearing.',
+            sources:[source('Michigan Film Events','events.html#past-events','Past Events')]};
+        }
+        return {kind:'events',confidence:1,
+          answer:'These have already happened. They stay on the Events page under Past Events, struck through, with their links intact:\n'+listOf(past).join('\n'),
+          sources:sourcesOf(past)};
+      }
+
+      var namedLive=live.filter(function(e){return eventMention(query||'',e);});
+      var namedPast=past.filter(function(e){return eventMention(query||'',e);});
+
+      /* Named something that has been and gone : say so plainly rather than
+         falling through to "here is what is current", which reads like the
+         thing they asked about is still coming up. */
+      if(!namedLive.length && namedPast.length){
+        return {kind:'events',confidence:1,
+          answer:'That one has already happened : '+listOf(namedPast).join('\n')+'\nIt is still on the Events page under Past Events.',
+          sources:sourcesOf(namedPast)};
+      }
+
+      if(namedLive.length)live=namedLive;
       else{
         var months=['january','february','march','april','may','june','july','august','september','october','november','december'];
         var month=months.indexOf(tokens(query||'').filter(function(t){return months.indexOf(t)>-1;})[0]);
@@ -225,13 +261,13 @@
         });
       }
       if(!live.length){
-        return {kind:'events',confidence:1,answer:'I don’t have a current dated event in the spotlight list right now. The Events page still has Michigan organizations and recurring places to check.',sources:[source('Michigan Film Events','events.html')]};
+        var none='I don’t have a current dated event in the spotlight list right now. The Events page still has Michigan organizations and recurring places to check';
+        return {kind:'events',confidence:1,
+          answer:none+(past.length?', and everything that has already happened is archived under Past Events.':'.'),
+          sources:[source('Michigan Film Events','events.html')]};
       }
-      var lines=live.slice(0,4).map(function(e){
-        return plain(e.title)+': '+dateLabel(e)+(e.where?' · '+plain(e.where):'')+(e.by?' · Presented by '+plain(e.by):'');
-      });
-      return {kind:'events',confidence:1,answer:'Here’s what is still current in the event list:\n'+lines.join('\n'),
-        sources:live.slice(0,4).map(function(e){return source(plain(e.title),eventUrl(e),dateLabel(e));})};
+      return {kind:'events',confidence:1,answer:'Here’s what is still current in the event list:\n'+listOf(live).join('\n'),
+        sources:sourcesOf(live)};
     }
     function gearAnswer(query){
       var nq=normalize(query), borrowed=/\b(borrow|borrowed|shared|collaborator|not ours)\b/.test(nq);

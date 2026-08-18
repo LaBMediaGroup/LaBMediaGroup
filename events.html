@@ -117,6 +117,105 @@ a.ev-org:hover{color:var(--accent)}
 .ev em{font-style:italic}
 .ev p em{color:var(--ink);font-family:var(--f-display);font-size:16px}
 
+/* ── Past events ──────────────────────────────────────────────────────────
+   An expired event used to disappear. It moves here instead, struck through
+   and stepped back, but with nothing taken off it : a visitor who saw a
+   listing last month should be able to come back and confirm they were not
+   imagining it. The card lifts back to full strength on hover or as soon as
+   anything inside it takes focus, so the dimming never costs you the links. */
+.past-note{color:var(--faint);font-size:var(--t-sm);line-height:1.7;max-width:60ch;margin-bottom:var(--s-5)}
+.ev.event-past{
+  border-color:var(--line);background:transparent;
+  opacity:.72;transition:opacity var(--mid) var(--ease)
+}
+.ev.event-past:hover,.ev.event-past:focus-within{opacity:1}
+.ev.event-past .ev-date{border-right-color:var(--line)}
+.ev.event-past .ev-mon{color:var(--faint)}
+.ev.event-past .ev-mon,
+.ev.event-past .ev-day,
+.ev.event-past .ev-yr,
+.ev.event-past h3{text-decoration:line-through;text-decoration-thickness:1px}
+.ev.event-past .ev-day{color:var(--dim)}
+.ev.event-past h3 em{color:var(--dim)}
+.ev.event-past .ev-by{border-left-color:var(--line)}
+.ev-badge{
+  display:inline-block;margin-top:10px;padding:3px 7px;
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--faint);border:1px solid var(--line);text-decoration:none
+}
+
+/* Photos on a past card. The slot is always in the record format; it only
+   draws anything when `photos` is actually there, so a card without them is
+   the same card it was. Thumbnails carry the grid : the full file is only
+   fetched when one is opened. */
+.ev-photos{margin-top:var(--s-4)}
+.ev-photos-lbl{
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--faint);display:block;margin-bottom:9px
+}
+.ev-photos-lbl b{color:var(--dim);font-weight:400}
+.ev-shots{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));
+  grid-auto-rows:78px;gap:1px;background:var(--line);border:1px solid var(--line)
+}
+.ev-shot{
+  display:block;padding:0;border:0;overflow:hidden;background:var(--paper-3);cursor:zoom-in
+}
+.ev-shot img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.03);
+  transition:filter var(--mid) var(--ease),transform var(--slow) var(--ease)}
+.ev-shot:hover img,.ev-shot:focus-visible img{filter:grayscale(0) contrast(1);transform:scale(1.05)}
+.ev-shot:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ── Lightbox ──
+   The same furniture the portfolio galleries use : a column, so the control
+   bar sits under the frame instead of on top of the photograph. Trimmed of
+   the favourites heart, which belongs to films and the Kit page. */
+.lb{position:fixed;inset:0;z-index:900;display:none;
+  background:rgba(6,6,7,.965);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.lb.on{display:flex;flex-direction:column;
+  padding:clamp(18px,3.4vh,40px) var(--gutter) clamp(14px,2.6vh,30px)}
+.lb-frame{flex:1 1 0;min-height:0;position:relative}
+.lb img{position:absolute;inset:0;margin:auto;
+  max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;
+  box-shadow:0 24px 80px rgba(0,0,0,.55)}
+.lb img.is-in{animation:lb-fade 300ms var(--ease) both}
+@keyframes lb-fade{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
+.lb-bar{flex:0 0 auto;align-self:center;margin-top:clamp(14px,2.4vh,26px);
+  display:flex;align-items:center;gap:clamp(6px,1.1vw,12px);
+  padding:8px clamp(10px,1.4vw,16px);
+  background:rgba(244,241,236,.05);border:1px solid rgba(244,241,236,.13);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.lb-prev,.lb-next,.lb-close{background:transparent;border:1px solid rgba(244,241,236,.2);
+  color:#F4F1EC;width:44px;height:44px;display:grid;place-items:center;line-height:1;cursor:pointer;
+  transition:background var(--fast) var(--ease),border-color var(--fast) var(--ease),color var(--fast) var(--ease)}
+.lb-prev svg,.lb-next svg,.lb-close svg{display:block}
+.lb-prev:hover,.lb-next:hover,.lb-close:hover{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.lb-prev:focus-visible,.lb-next:focus-visible,.lb-close:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lb-rule{width:1px;height:26px;background:rgba(244,241,236,.16);margin-inline:clamp(2px,.6vw,6px)}
+.lb-meta{display:flex;flex-direction:column;align-items:center;gap:4px;
+  min-width:96px;padding-inline:clamp(4px,1vw,12px)}
+.lb-film{font-family:var(--f-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(244,241,236,.5);white-space:nowrap;max-width:34vw;overflow:hidden;text-overflow:ellipsis}
+.lb-count{font-family:var(--f-display);font-size:clamp(26px,3vw,36px);line-height:1;letter-spacing:.02em;
+  color:rgba(244,241,236,.5);white-space:nowrap}
+.lb-count .lb-cur{color:var(--accent)}
+.lb-count .lb-sep{color:rgba(244,241,236,.28);margin:0 5px;font-size:.6em}
+@media (max-width:520px){
+  .lb.on{padding-inline:var(--s-4)}
+  .lb-bar{gap:4px;padding:6px 8px}
+  .lb-prev,.lb-next,.lb-close{width:40px;height:40px}
+  .lb-meta{min-width:74px}
+  .lb-count{font-size:24px}
+  .ev-shots{grid-template-columns:repeat(3,1fr);grid-auto-rows:84px}
+}
+@media (max-width:420px){
+  .lb-film{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .lb img.is-in{animation:none}
+  .ev.event-past{transition:none}
+}
+
 @media (max-width:760px){
   .org{grid-template-columns:auto 1fr;gap:var(--s-4)}
   .org-go{grid-column:2;padding-top:0}
@@ -125,6 +224,7 @@ a.ev-org:hover{color:var(--accent)}
            border-bottom:1px solid var(--accent-dim);padding:0 0 var(--s-4)}
   .ev-day{font-size:34px;margin:0}
   .ev-when{margin-top:0}
+  .ev-badge{margin-top:0}
 }
 </style>
 </head>
@@ -190,11 +290,12 @@ a.ev-org:hover{color:var(--accent)}
   <p class="lede">When I come across something good, I put it up here. Under that is every Michigan festival, screening series, and crew group that publishes its own dates : so there's always somewhere current to look, whether or not I've been paying attention lately.</p>
 
   <div class="honest">
-    <p><strong>How this stays honest.</strong> Anything I post carries a date and takes itself down the day after it happens, so you'll never land on a dead listing. When I haven't added anything, the organizations below are still posting their own schedules : they're the ones actually worth following.</p>
+    <p><strong>How this stays honest.</strong> Anything I post carries a date. Once it happens it does not vanish : it moves down to <a href="#past-events">Past Events</a>, struck through, with every link and detail still on it, so you can always confirm what you saw here. When I haven&rsquo;t added anything, the organizations below are still posting their own schedules : they&rsquo;re the ones actually worth following.</p>
   </div>
 </section>
 
-<!-- SPOTLIGHT : self-expiring. Renders only future events; hides entirely when empty. -->
+<!-- SPOTLIGHT : current events only. Expired ones move to Past Events below;
+     this section hides entirely when nothing is upcoming. -->
 <section class="sec wrap" id="spotlight" hidden>
   <div class="sec-head"><h2>Worth Going To</h2><i></i><span class="mono" style="color:var(--faint)">Hand-picked</span></div>
   <div id="spotlightList"></div>
@@ -297,6 +398,15 @@ a.ev-org:hover{color:var(--accent)}
   </div>
 </section>
 
+<!-- PAST EVENTS : the archive. Anything whose final day has gone by lands here,
+     newest first, with everything it carried still on it. Hidden until there is
+     at least one. -->
+<section class="sec wrap" id="past-events" hidden>
+  <div class="sec-head"><h2>Past Events</h2><i></i><span class="mono" style="color:var(--faint)">Already happened</span></div>
+  <p class="past-note">These have come and gone. They stay up so you can check what was here, and where it was.</p>
+  <div id="pastList"></div>
+</section>
+
 </main>
 
 <footer class="foot">
@@ -359,10 +469,13 @@ a.ev-org:hover{color:var(--accent)}
    ------------------------------------------------------------
    The records live in spotlight-data.js so Events and the LaB Assistant read
    the same dates. To add one: copy a block there, fill it in, done.
-   To remove one: nothing. It deletes itself the day after
-   `date` passes, and when the last one expires the whole
-   "Worth Going To" heading disappears with it. This page can
-   never show a stale date, even if you forget about it.
+
+   To remove one: nothing, and that is the point. Events used to delete
+   themselves the day after `date` passed, which meant a visitor who saw a
+   listing here last month came back to a page that denied it ever existed.
+   Now the day after it ends an event moves down into "Past Events", struck
+   through and stepped back, carrying every link, tag and line it had. The
+   file only ever loses a record that was wrong or a duplicate.
 
    FIELDS : these are what the code below actually reads. The old note here
    said `host`, which nothing has ever looked at; the field is `by`.
@@ -381,6 +494,12 @@ a.ev-org:hover{color:var(--accent)}
    tags   : short labels, optional
    url    : tickets or info. A Facebook event link is fine.
    links  : optional [{label:'Tickets',url:'https://...'}] action list
+   photos : optional, and only drawn on a past card : photographs from the
+            night, in a thumbnail grid that opens into the lightbox. Either
+            plain paths, or objects when the thumbnail is a separate file:
+              photos: ['images/events/48hfp-bestof-2026/01.jpg', ...]
+              photos: [{full:'.../01.jpg', thumb:'.../thumb/01.jpg', alt:'...'}]
+            Leave it out and the card draws nothing : no empty frame, no gap.
 
    Copy this, fill it in, drop it in the SPOTLIGHT array in spotlight-data.js:
 
@@ -398,10 +517,11 @@ a.ev-org:hover{color:var(--accent)}
 
    Only `date` and `title` are required : leave out anything you do not have.
    Add `until: 'YYYY-MM-DD'` for anything running more than one day; it keeps the
-   entry listed through its final day and shows the span instead of a weekday.
+   entry current through its final day and shows the span instead of a weekday.
    ============================================================ */
 (function(){
   var sec=document.getElementById('spotlight'), list=document.getElementById('spotlightList');
+  var pastSec=document.getElementById('past-events'), pastList=document.getElementById('pastList');
   if(!sec||!list)return;
 
   var today=new Date(); today.setHours(0,0,0,0);
@@ -412,17 +532,24 @@ a.ev-org:hover{color:var(--accent)}
     if(p.length!==3)return null;
     return new Date(+p[0], +p[1]-1, +p[2]);            // local midnight, no timezone drift
   }
-
   /* An event runs until `until` if it has one, otherwise until `date`. Without
-     this a two-day event vanished from the list on the morning of day two, 
-     while it was still going on. */
-  var live=SPOTLIGHT.filter(function(e){
-    var end=dayOf(e.until)||dayOf(e.date);
-    return end && end>=today;
-  }).sort(function(a,b){return a.date<b.date?-1:1});
+     this a two-day event moved to the archive on the morning of day two, while
+     it was still going on. */
+  function endOf(e){ return dayOf(e.until)||dayOf(e.date); }
 
-  if(!live.length)return;                               // stays hidden : no empty state
-  sec.hidden=false;
+  var live=[], past=[];
+  SPOTLIGHT.forEach(function(e){
+    var end=endOf(e);
+    if(!end)return;                                    // no usable date : skip it
+    (end>=today ? live : past).push(e);
+  });
+  live.sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0});
+  /* Newest first down here : the thing you most likely just missed is the
+     thing you are most likely looking for. */
+  past.sort(function(a,b){
+    var ea=endOf(a),eb=endOf(b);
+    return eb-ea || (a.date<b.date?1:a.date>b.date?-1:0);
+  });
 
   function venueHTML(e){
     if(!e.venue&&!e.address)return '<span class="ev-where">'+(e.where||'')+'</span>';
@@ -443,7 +570,33 @@ a.ev-org:hover{color:var(--accent)}
     }).join('')+'</div>';
   }
 
-  list.innerHTML = live.map(function(e){
+  /* A photo is either a path or an object; everything downstream wants the
+     object, so normalise once here rather than checking at every use. */
+  function photosOf(e){
+    return (e.photos||[]).map(function(ph){
+      if(typeof ph==='string')return {full:ph,thumb:ph,alt:''};
+      var full=ph.full||ph.src||'';
+      return {full:full,thumb:ph.thumb||full,alt:ph.alt||''};
+    }).filter(function(ph){return ph.full});
+  }
+  function attr(v){ return String(v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;') }
+
+  function photosHTML(e){
+    var ph=photosOf(e);
+    if(!ph.length)return '';                            // absent : nothing drawn at all
+    return '<div class="ev-photos">'
+      + '<span class="ev-photos-lbl">Photos <b>'+ph.length+'</b></span>'
+      + '<div class="ev-shots">'
+      + ph.map(function(x,i){
+          return '<button class="ev-shot" type="button" data-full="'+attr(x.full)+'"'
+            + ' aria-label="'+attr(x.alt||('Open photo '+(i+1)+' of '+ph.length))+'">'
+            + '<img src="'+attr(x.thumb)+'" alt="" loading="lazy" decoding="async">'
+            + '</button>';
+        }).join('')
+      + '</div></div>';
+  }
+
+  function cardHTML(e,isPast){
     var d=dayOf(e.date), end=dayOf(e.until);
     var days=Math.round((d-today)/864e5);
     var when = days<0   ? 'On now'
@@ -454,16 +607,19 @@ a.ev-org:hover{color:var(--accent)}
     /* Multi-day events say so where the weekday goes, rather than pretending to
        be a single evening. */
     var span = end
-      ? MON[d.getMonth()]+' '+d.getDate()+'\u2013'+(end.getMonth()===d.getMonth()
+      ? MON[d.getMonth()]+' '+d.getDate()+'–'+(end.getMonth()===d.getMonth()
           ? end.getDate()
           : MON[end.getMonth()]+' '+end.getDate())
       : d.toLocaleDateString(undefined,{weekday:'long'});
-    return '<article class="ev" id="event-'+e.id+'">'
+
+    return '<article class="ev'+(isPast?' event-past':'')+'" id="event-'+e.id+'">'
       + '<div class="ev-date">'
         + '<div class="ev-mon">'+MON[d.getMonth()]+'</div>'
         + '<div class="ev-day">'+d.getDate()+'</div>'
         + '<div class="ev-yr">'+d.getFullYear()+'</div>'
-        + '<span class="ev-when">'+when+'</span>'
+        + (isPast
+            ? '<span class="ev-badge">Past</span>'
+            : '<span class="ev-when">'+when+'</span>')
       + '</div>'
       + '<div>'
         + '<h3>'+e.title+'</h3>'
@@ -480,11 +636,142 @@ a.ev-org:hover{color:var(--accent)}
         + '</div>'
         + (e.tags&&e.tags.length ? '<div class="ev-line">'+e.tags.map(function(t){return '<span>'+t+'</span>'}).join('')+'</div>' : '')
         + linksHTML(e)
+        + (isPast ? photosHTML(e) : '')
       + '</div>'
     + '</article>';
-  }).join('');
+  }
+
+  if(live.length){                                      // stays hidden : no empty state
+    sec.hidden=false;
+    list.innerHTML = live.map(function(e){return cardHTML(e,false)}).join('');
+  }
+  if(past.length && pastSec && pastList){
+    pastSec.hidden=false;
+    pastList.innerHTML = past.map(function(e){return cardHTML(e,true)}).join('');
+  }
 })();
 
+/* ---- Photo lightbox --------------------------------------------------------
+   Only exists once a past event actually carries photos, so a page with none
+   builds nothing. The set is scoped to the card you opened from, so an event
+   with four photos reads 01/04 rather than counting the whole page. Same
+   furniture as the portfolio galleries, without the favourites heart : that
+   one belongs to films and the Kit page. */
+(function(){
+  var all=[].slice.call(document.querySelectorAll('.ev-shots .ev-shot'));
+  if(!all.length)return;
+  var shots=[], i=0, last=null;
+
+  var lb=document.createElement('div');
+  lb.className='lb'; lb.setAttribute('role','dialog');
+  lb.setAttribute('aria-modal','true'); lb.setAttribute('aria-label','Event photos');
+  /* Drawn chevrons rather than the ‹ › characters : the text glyphs render
+     hairline-thin in the body face and all but vanish over a bright frame. */
+  var CHEV='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"'
+    +' stroke-width="1.7" stroke-linecap="square" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
+  lb.innerHTML='<div class="lb-frame"><img alt=""></div>'
+    +'<div class="lb-bar">'
+    +'<button class="lb-prev" type="button" aria-label="Previous photo">'+CHEV+'</button>'
+    +'<div class="lb-meta"><span class="lb-film"></span><span class="lb-count"></span></div>'
+    +'<button class="lb-next" type="button" aria-label="Next photo">'
+    +CHEV.replace('M15 5l-7 7 7 7','M9 5l7 7-7 7')+'</button>'
+    +'<span class="lb-rule" aria-hidden="true"></span>'
+    +'<button class="lb-close" type="button" aria-label="Close">'
+    +'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7"'
+    +' stroke-linecap="square" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>'
+    +'</div>';
+  document.body.appendChild(lb);
+
+  var img=lb.querySelector('img'), frame=lb.querySelector('.lb-frame'),
+      count=lb.querySelector('.lb-count'), evEl=lb.querySelector('.lb-film');
+
+  function eventOf(s){
+    var art=s.closest('article.ev'), h=art&&art.querySelector('h3');
+    return h ? h.textContent.replace(/\s+/g,' ').trim() : '';
+  }
+  function show(n){
+    i=(n+shots.length)%shots.length;
+    img.src=shots[i].dataset.full;
+    /* Where a photo describes itself, that beats a position count. The
+       generic "Open photo 3 of 14" labels are a count, so those fall through. */
+    var lab=shots[i].getAttribute('aria-label')||'';
+    img.alt=(!lab||/^Open photo/.test(lab))
+      ? eventOf(shots[i])+', photo '+(i+1)+' of '+shots.length
+      : lab;
+    /* restart the fade so paging reads as a change of frame, not a jump cut */
+    img.classList.remove('is-in'); void img.offsetWidth; img.classList.add('is-in');
+    evEl.textContent=eventOf(shots[i]);
+    count.innerHTML='<span class="lb-cur">'+String(i+1).padStart(2,'0')+'</span>'
+      +'<span class="lb-sep">/</span>'
+      +'<span class="lb-tot">'+String(shots.length).padStart(2,'0')+'</span>';
+    /* warm the neighbours so arrowing through feels instant */
+    [i+1,i-1].forEach(function(k){
+      var s=shots[(k+shots.length)%shots.length];
+      if(s){var pre=new Image();pre.src=s.dataset.full;}
+    });
+  }
+  function open(n){
+    last=document.activeElement;
+    show(n); lb.classList.add('on');
+    document.body.style.overflow='hidden';
+    lb.querySelector('.lb-close').focus();
+  }
+  function close(){
+    lb.classList.remove('on');
+    document.body.style.overflow='';
+    img.removeAttribute('src');
+    if(last)last.focus();
+  }
+
+  all.forEach(function(s){
+    s.addEventListener('click',function(){
+      shots=[].slice.call(s.closest('.ev-shots').querySelectorAll('.ev-shot'));
+      open(shots.indexOf(s));
+    });
+  });
+  lb.querySelector('.lb-close').addEventListener('click',close);
+  lb.querySelector('.lb-prev').addEventListener('click',function(e){e.stopPropagation();show(i-1)});
+  lb.querySelector('.lb-next').addEventListener('click',function(e){e.stopPropagation();show(i+1)});
+  lb.addEventListener('click',function(e){ if(e.target===lb||e.target===img||e.target===frame) close(); });
+
+  document.addEventListener('keydown',function(e){
+    if(!lb.classList.contains('on'))return;
+    if(e.key==='Escape'){close();}
+    else if(e.key==='ArrowRight'){show(i+1);}
+    else if(e.key==='ArrowLeft'){show(i-1);}
+    else if(e.key==='Tab'){
+      var controls=[].slice.call(lb.querySelectorAll('button'));
+      var first=controls[0], lastBtn=controls[controls.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();lastBtn.focus();}
+      else if(!e.shiftKey&&document.activeElement===lastBtn){e.preventDefault();first.focus();}
+    }
+  });
+
+  /* Swipe : on a phone this is how you page through photos. Arrows stay
+     for anyone using a mouse or a keyboard; neither replaces the other. */
+  (function(){
+    var x0=null, y0=null, t0=0;
+    lb.addEventListener('touchstart',function(e){
+      if(e.touches.length!==1)return;              /* let pinch-zoom through */
+      x0=e.touches[0].clientX; y0=e.touches[0].clientY; t0=Date.now();
+    },{passive:true});
+    lb.addEventListener('touchend',function(e){
+      if(x0===null)return;
+      var t=e.changedTouches[0];
+      var dx=t.clientX-x0, dy=t.clientY-y0, dt=Date.now()-t0;
+      x0=null;
+      if(dt>700)return;                            /* a slow drag isn't a swipe */
+      if(Math.abs(dx)>48 && Math.abs(dx)>Math.abs(dy)*1.6){
+        show(dx<0 ? i+1 : i-1);                    /* left = forward */
+      } else if(dy>90 && Math.abs(dy)>Math.abs(dx)*1.6){
+        close();                                   /* swipe down to dismiss */
+      }
+    },{passive:true});
+  })();
+})();
+</script>
+
+<script>
 (function(){
   var t=document.getElementById('navToggle'),l=document.getElementById('navLinks');
   var desktop=function(){return window.innerWidth>760};
