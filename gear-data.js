@@ -306,6 +306,17 @@ const gearData = [
     ]
   },
 
+  {
+    id: 'maker',
+    title: 'Maker &amp; <em>fabrication</em>',
+    blurb: 'Not film gear : a 3D printer for mounts, brackets, props and any small part that gets fabricated faster in-house than sourced. Listed here because it has saved a shoot.',
+    items: [
+      { name: 'FlashForge Adventurer 3',
+        what: 'Fully enclosed FDM printer. Custom extension arm rigged for larger filament rolls.',
+        note: 'The first place a missing part ends up getting made. A camera-mount shim, a lens-cap holder, a quick title plate : all the small things that would otherwise take a week of shipping.' }
+    ]
+  },
+
 ];
 
 function gearItemAnchor(section,item){
