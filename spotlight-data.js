@@ -84,6 +84,29 @@ var SPOTLIGHT = [
     url:   'https://www.royalstarr.org'
   },
   {
+    id:    'horror-film-roulette-xiii-kickoff-2026',
+    date:  '2026-09-01',
+    time:  '7:00 PM – 10:00 PM',
+    title: 'Horror Film Roulette XIII <em>Kick Off!</em>',
+    by:    'Horror Film Roulette',
+    byUrl: 'https://www.horrorfilmroulette.com',
+    venue: 'Senate Theater',
+    venueUrl: 'https://www.thesenatetheater.com/',
+    address: '6424 Michigan Ave, Detroit, MI 48210',
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Senate+Theater%2C+6424+Michigan+Ave%2C+Detroit%2C+MI+48210',
+    where: 'Senate Theater · 6424 Michigan Ave, Detroit',
+    body:  'The 13th annual Horror Film Roulette kicks off tonight at the Senate Theater. $2,000 grand prize, showcase on October 23. Spin the wheel, get your genre, start shooting. Entry fee required before the genre is given — cash at the door or via FilmFreeway. Remote teams can request a digital wheel via email. Trail Dead took Best Editing here in 2025.',
+    tags:  ['Horror','Timed comp','$2,000 grand prize','Showcase Oct 23','Beginner friendly'],
+    url:   'https://filmfreeway.com/horrorfilmroulette',
+    links: [
+      {label:'Tickets · FilmFreeway',url:'https://filmfreeway.com/horrorfilmroulette'},
+      {label:'Email · Digital wheel option',url:'mailto:info@horrorfilmroulette.com'}
+    ],
+    photos: [
+      {full:'images/events/hfr-2026/kickoff-poster.jpg', alt:'Horror Film Roulette XIII kickoff poster showing Senate Theater marquee with green fog and HFR backdrop'}
+    ]
+  },
+  {
     id:    'adam-evas-intimate-film',
     date:  '2026-08-05',
     time:  '6:30 PM',
