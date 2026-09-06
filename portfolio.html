@@ -434,6 +434,7 @@
 
 /* A still standing in where a video will go, once the film is public */
 .vid.still-lead img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.04);transition:filter var(--slow) var(--ease)}
+.vid.still-lead video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
 .vid.still-lead:hover img{filter:grayscale(0) contrast(1)}
 .spec .pending{color:var(--accent)}
 
@@ -1290,7 +1291,10 @@
     <p class="desc">Made for the Detroit 48 Hour Film Project. Assignment Friday night, shot and cut across Saturday and Sunday, uploaded with six minutes left on the clock.</p>
 
     <div class="vid still-lead">
-      <img src="images/scattered/scattered-01.jpg" alt="Still from Scattered : a billboard over Metro Detroit" loading="lazy" decoding="async" width="1600" height="900">
+      <video controls preload="none" playsinline poster="images/scattered/scattered-poster.jpg" aria-label="Play Scattered : the finished 48 Hour Film">
+        <source src="videos/scattered-48hfp-2026.mp4" type="video/mp4">
+      </video>
+      <span class="clip-cap">Scattered : the finished film · fixed-audio cut · YouTube upload coming</span>
     </div>
 
     <div class="awaiting">
