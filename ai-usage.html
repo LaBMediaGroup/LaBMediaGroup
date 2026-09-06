@@ -654,10 +654,11 @@ async function loadUsage(){
         const qs = statusForQuota(q);
         const known = typeof q.percentUsed === 'number';
         const w = known ? Math.min(q.percentUsed, 100) : 100;
-        const reset = q.resetsAt ? 'resets in ' + fmtCountdown(q.resetsAt) : (q.resetNote || '');
-        const readout = !known ? 'no reading'
-          : qs === 'stale' ? Math.round(q.percentUsed) + '% — unverified'
+        const reset_raw = q.resetsAt ? 'resets in ' + fmtCountdown(q.resetsAt) : (q.resetNote || '');
+        const readout = !known ? 'Unknown — no reading'
+          : qs === 'stale' ? 'Refresh needed — last reading ' + Math.round(q.percentUsed) + '%'
           : Math.round(q.percentUsed) + '% used';
+        const reset = qs === 'stale' ? 'countdown paused until refresh' : reset_raw;
         const provenance = q.syncedAt
           ? (q.source === 'api' ? 'API' : 'by hand') + ' · ' + fmtAge(ageHours(q.syncedAt)) + ' ago'
           : 'never synced';

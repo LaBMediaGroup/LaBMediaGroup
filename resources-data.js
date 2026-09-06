@@ -306,7 +306,7 @@ const resources = [
         ],
         features: ['Timed Competition', 'Michigan', 'Theater Screening', 'LaB Award Winner'],
         labPick: true,
-        paid: false
+        paid: true
     },
 
 
