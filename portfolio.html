@@ -134,13 +134,21 @@
 
 
 .still .hrt{display:none}
+
+/* Compact, touch-friendly theme control; desktop buttons are unchanged. */
+.mobile-theme{display:none}
+@media(max-width:620px){
+ .top>.theme{display:none}
+ .top .mobile-theme{display:block;flex:0 1 120px;min-width:100px;max-width:120px;min-height:44px;padding:8px 24px 8px 10px;border:1px solid var(--line);border-radius:4px;background:#17211c;color:inherit;font:12px/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+ .top .mobile-theme:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+}
 </style></head><body><a class="skip" href="#main">Skip to content</a><header class="top"><a class="brand" href="https://labmedia.work/" aria-label="LaB Media home"><img class="wordmark" src="assets/LaBMedia-mark.png" alt="LaB Media"><img class="mobile-mark" src="assets/TheLaB-mark.png" alt="The LaB"></a><nav aria-label="Site"><a href="https://labmedia.work/">Home</a><a href="https://labmedia.work/portfolio.html" aria-current="page">Reel</a><a href="https://labmedia.work/tools.html">Tools</a><a href="https://labmedia.work/resources.html">Notebook</a><a href="https://labmedia.work/contact.html">About</a></nav><div class="theme" role="group" aria-label="Colour theme">
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
       <button type="button" data-theme-set="timber" aria-pressed="false" title="Timber"><span class="sw sw-timber"></span><span class="vh">Timber</span></button>
       <button type="button" data-theme-set="forest" aria-pressed="false" title="Forest"><span class="sw sw-forest"></span><span class="vh">Forest</span></button>
-    </div><style></style><button class="motion" aria-pressed="false">Still / Motion</button></header><main id="main"><div class="container"><section class="theater" aria-labelledby="theater-title">
+    </div><select class="mobile-theme" aria-label="Colour theme"><option value="dark">Dark</option><option value="light">Light</option><option value="sepia">Sepia</option><option value="timber">Timber</option><option value="forest">Forest</option></select><button class="motion" aria-pressed="false">Still / Motion</button></header><main id="main"><div class="container"><section class="theater" aria-labelledby="theater-title">
 <div class="theater-topline"><span>LaB Media / Moving pictures</span><div><button class="reprise" aria-label="Replay the hero entrance">Replay entrance ↺</button></div></div>
 <div class="theater-stage">
 <div class="projection-wall" aria-hidden="true"><div class="wing wing-0" style="--i:0;--turn:-15deg;--height:58%;--crop:46%"><div class="wing-react"><div class="wing-drift"><video muted loop playsinline preload="metadata" poster="assets/hero-v5/MOZInteriors-clip.jpg" src="assets/hero-v5/MOZInteriors-clip.mp4"></video></div></div></div><div class="wing wing-1" style="--i:1;--turn:-11deg;--height:76%;--crop:50%"><div class="wing-react"><div class="wing-drift"><video muted loop playsinline preload="metadata" poster="assets/hero-v4/AnthonyBrass-Paintingclip.jpg" src="assets/hero-v4/AnthonyBrass-Paintingclip.mp4"></video></div></div></div><div class="wing wing-2" style="--i:2;--turn:-6deg;--height:91%;--crop:50%"><div class="wing-react"><div class="wing-drift"><video muted loop playsinline preload="metadata" poster="assets/hero-v5/ThePandys-Clip.jpg" src="assets/hero-v5/ThePandys-Clip.mp4"></video></div></div></div><div class="wing wing-3" style="--i:3;--turn:0deg;--height:100%;--crop:35%"><div class="wing-react"><div class="wing-drift"><video muted loop playsinline preload="metadata" poster="assets/hero-v4/SCATTERED-TUNNELWALK.jpg" src="assets/hero-v4/SCATTERED-TUNNELWALK.mp4"></video></div></div></div><div class="wing wing-4" style="--i:4;--turn:6deg;--height:91%;--crop:50%"><div class="wing-react"><div class="wing-drift"><video muted loop playsinline preload="metadata" poster="assets/hero-v4/LOOKOUT-Jab.jpg" src="assets/hero-v4/LOOKOUT-Jab.mp4"></video></div></div></div><div class="wing wing-5" style="--i:5;--turn:11deg;--height:76%;--crop:50%"><div class="wing-react"><div class="wing-drift"><video muted loop playsinline preload="metadata" poster="assets/hero-v5/ITSABOY-BLAST.jpg" src="assets/hero-v5/ITSABOY-BLAST.mp4"></video></div></div></div><div class="wing wing-6" style="--i:6;--turn:15deg;--height:58%;--crop:55%"><div class="wing-react"><div class="wing-drift"><video muted loop playsinline preload="metadata" poster="assets/hero-v4/TrailDead-Stab.jpg" src="assets/hero-v4/TrailDead-Stab.mp4"></video></div></div></div></div>
@@ -823,18 +831,21 @@ document.addEventListener('click',function(ev){
 (function(){
   var root=document.documentElement, KEY='lab-theme-v2';
   var btns=[].slice.call(document.querySelectorAll('[data-theme-set]'));
+  var mobileTheme=document.querySelector('.mobile-theme');
   if(!btns.length)return;
 
   function apply(t,save){
     if(t==='dark') root.removeAttribute('data-theme');
     else root.setAttribute('data-theme',t);
     btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.themeSet===t))});
+    if(mobileTheme) mobileTheme.value=t;
     if(save){try{localStorage.setItem(KEY,t)}catch(e){}}
   }
 
   var saved='dark';
   try{saved=localStorage.getItem(KEY)||'dark'}catch(e){}
   apply(saved,false);
+  if(mobileTheme) mobileTheme.addEventListener('change',function(){apply(mobileTheme.value,true)});
 
   btns.forEach(function(b){
     b.addEventListener('click',function(){apply(b.dataset.themeSet,true)});
