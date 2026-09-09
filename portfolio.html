@@ -196,6 +196,12 @@
 .projection-wall.dragging{cursor:grabbing}.projection-wall:focus-visible{outline:1px solid #f3905980}
 .wing{transition:none!important;filter:none!important}.wing-react{transition:none!important}.wing video{pointer-events:none}.projection-wall .wing-drift{animation:none!important}
 .entrance-choice select{font:11px var(--mono);color:var(--muted);background:transparent;border:1px solid var(--line);padding:8px;min-height:36px}.theater-topline>div{flex-wrap:wrap;justify-content:flex-end}.carousel-live{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+
+/* C0: keep the mobile reel within the wall that uncovers it. */
+@media(max-width:700px){
+ .theater .theater-screen,.theater.playing .theater-screen{top:192px;left:50%;right:auto;bottom:auto;width:min(100%,426px);height:auto;aspect-ratio:16/9;transform:translate(-50%,-50%)}
+ .theater.preparing .theater-stage,.theater.playing .theater-stage{height:calc(var(--title-bottom) + 120px)}
+}
 </style><link rel="stylesheet" href="assets/gallery/viewer.css?v=1"></head><body><a class="skip" href="#main">Skip to content</a><header class="top"><a class="brand" href="https://labmedia.work/" aria-label="LaB Media home"><img class="wordmark" src="assets/LaBMedia-mark.png" alt="LaB Media"><img class="mobile-mark" src="assets/TheLaB-mark.png" alt="The LaB"></a><nav aria-label="Site"><a href="https://labmedia.work/">Home</a><a href="https://labmedia.work/portfolio.html" aria-current="page">Reel</a><a href="https://labmedia.work/tools.html">Tools</a><a href="https://labmedia.work/resources.html">Notebook</a><a href="https://labmedia.work/contact.html">About</a></nav><div class="theme" role="group" aria-label="Colour theme">
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
