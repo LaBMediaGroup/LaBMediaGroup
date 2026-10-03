@@ -58,6 +58,7 @@ images/*/
 !images/thehook/
 !images/traildead/
 !images/og/
+!images/gone/
 
 # Camera formats, wherever they land. 26 HEIC originals (66 MB) were found
 # sitting inside images/itsaboy/ — a whitelisted folder, so the rules above
