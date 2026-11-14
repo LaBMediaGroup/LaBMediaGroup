@@ -450,3 +450,37 @@ test('notebook shelves and search combine without losing the complete library', 
   assert.ok(await page.locator('#groups .item:visible').count()>0);
   await page.close();
 });
+
+test('film gallery keeps production archives closed until requested',async()=>{
+ const page=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});
+ await page.route('**/*',r=>r.request().url().startsWith(baseURL)?r.continue():r.abort());
+ await page.goto(baseURL+'/portfolio.html');
+ assert.equal(await page.locator('.film-tile').count(),7);
+ assert.equal(await page.locator('.film-detail-host>section:visible').count(),0);
+ await page.getByRole('button',{name:'Behind the film: Scattered',exact:true}).click();
+ assert.equal(await page.locator('#scattered').isVisible(),true);
+ await page.locator('#scattered .film-notes-close').click();
+ assert.equal(await page.locator('.film-detail-host>section:visible').count(),0);
+ await page.goto(baseURL+'/portfolio.html#gone');
+ assert.equal(await page.locator('#gone').isVisible(),true);
+ await page.close();
+});
+
+test('contact form preserves messages on failure and confirms successful submission',async()=>{
+ const page=await browser.newPage({reducedMotion:'reduce'});
+ await page.route('**/*',r=>r.request().url().startsWith(baseURL)?r.continue():r.abort());
+ let fail=true;
+ await page.route('https://sideways.labmedia.work/api/lab-contact',r=>r.fulfill({status:fail?502:200,contentType:'application/json',body:JSON.stringify(fail?{ok:false,error:'Please try again.'}:{ok:true})}));
+ await page.goto(baseURL+'/contact.html');
+ assert.equal(await page.getByText('Fair Questions',{exact:true}).count(),0);
+ await page.locator('#contactForm [name=name]').fill('Test visitor');
+ await page.locator('#contactForm [name=email]').fill('test@example.com');
+ await page.locator('#contactForm [name=message]').fill('A test message');
+ await page.locator('#contactForm button[type=submit]').click();
+ await page.waitForFunction(()=>document.querySelector('#contactForm [role=status]').textContent==='Please try again.');
+ assert.equal(await page.locator('#contactForm textarea').inputValue(),'A test message');
+ fail=false;await page.locator('#contactForm button[type=submit]').click();
+ await page.waitForFunction(()=>document.querySelector('#contactForm [role=status]').textContent==='Message sent. Thank you.');
+ assert.equal(await page.locator('#contactForm textarea').inputValue(),'');
+ await page.close();
+});

@@ -300,3 +300,11 @@ illustration, not a photograph of identifiable crew or attendees.
 
 Changed experience scripts and styles carry content-version query strings in HTML
 to prevent returning visitors combining new markup with cached previous layouts.
+
+The Reel page now starts with seven film cards; production notes, credits and
+galleries open individually via “Behind the film.” Film thumbnails open the
+screening room directly, and existing film fragment links still open their notes.
+The About page’s Fair Questions section has been removed. Its contact form uses
+the existing Resend-backed Sideways Worker through an isolated LaB route; see
+contact-mailer/README.md. Automated delivery tests mock Resend; live checks verify
+CORS and validation without sending an email.

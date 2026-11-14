@@ -193,7 +193,7 @@
   .lb img.is-in{animation:none}
 }
 </style>
-<link rel="stylesheet" href="atmosphere.css?v=e2d65dc8247f"></head>
+<link rel="stylesheet" href="atmosphere.css?v=e2d65dc8247f"><style>.contact-form-section:has(form[hidden]){display:none}#contactForm{max-width:760px}#contactForm label{display:block;margin:20px 0;font-size:13px}#contactForm input,#contactForm textarea{display:block;width:100%;margin-top:8px;padding:14px;background:var(--paper-2);color:var(--ink);border:1px solid var(--line);font:inherit}#contactForm button{padding:14px 24px;background:var(--accent);color:var(--paper);border:0;cursor:pointer}#contactForm .contact-trap{position:absolute;left:-10000px}#contactForm[hidden]{display:none}</style></head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -405,32 +405,18 @@
   </details>
 </section>
 
-<section class="sec wrap" style="border-bottom:0">
-  <div class="sec-head"><h2 class="em-accent"><em>Fair</em> Questions</h2><i></i></div>
-  <div class="faq">
-    <div class="faq-item">
-      <h3>Can you shoot my <em>project?</em></h3>
-      <p>Honestly, probably not : I work full time and my weekends are mostly claimed by films of my own. But <strong>tell me about it anyway.</strong> I love hearing what people are making, and help doesn't always mean a crew slot : sometimes it's advice, a lens, or a spare pair of hands for an afternoon, and I'm glad to be that when I can. If you need someone reliably available, <a href="events.html" style="color:var(--accent)">Michigan Crew Calls</a> will serve you far better than I can.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Will you <em>build</em> me a website?</h3>
-      <p>Probably not : but I'll happily point you at the starting line. Most small sites don't need anything more complicated than what's running this page. To be straight about the money: <strong>hosting can genuinely be free</strong> (this site sits on GitHub Pages), but a domain runs somewhere around $12–20 a year, and your own time is the real cost. Ask me where to begin and I'll give you a straight answer. I'm just not able to be anyone's ongoing tech support.</p>
-    </div>
-    <div class="faq-item">
-      <h3>How <em>did</em> you&hellip;?</h3>
-      <p>Reach out. Anything on the reel : a shot, a setup, why something looks the way it does : this is my favorite kind of question to get. Most of it was small crews, natural light, and more takes than anyone would guess.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Can I suggest a <em>resource?</em></h3>
-      <p>Yes, please. If something on the list is dead or something great is missing, send it over. I'd rather the list be right than large.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Does any of this <em>cost money?</em></h3>
-      <p><strong>The site doesn't</strong> : nothing here charges you and nothing asks for your email. Plenty of the <em>tools</em> I list do cost money, though. This started as my own bookmarks folder, and I kept whatever was actually good regardless of price, so the list is a mix. Everything is tagged <em>Free</em> or <em>Paid</em>, with pricing shown where I have it, so you can see which is which before you click. If I ever add a link that earns me something, I'll label it right there rather than burying it in a policy page.</p>
-    </div>
-  </div>
-</section>
 
+
+<section class="sec wrap contact-form-section">
+<form id="contactForm" data-endpoint="https://sideways.labmedia.work/api/lab-contact" hidden>
+  <div class="sec-head"><h2>Say <em>hello.</em></h2><i></i></div>
+  <label>Your name<input name="name" autocomplete="name" maxlength="120" required></label>
+  <label>Email<input name="email" type="email" autocomplete="email" maxlength="200" required></label>
+  <label>Message<textarea name="message" rows="6" maxlength="5000" required></textarea></label>
+  <label class="contact-trap" aria-hidden="true">Company<input name="company" tabindex="-1" autocomplete="off"></label>
+  <button type="submit">Send message ↗</button><p role="status" aria-live="polite"></p>
+</form>
+</section>
 </main>
 
 <footer class="foot">
@@ -832,5 +818,5 @@
 <script src="flight-checklist.js"></script>
 <script src="assistant-guide.js"></script>
 <script src="assistant-widget.js"></script>
-<script src="atmosphere.js?v=d82dc5117c63"></script></body>
+<script src="atmosphere.js?v=d82dc5117c63"></script><script src="contact-form.js?v=1bf2bbe790dd"></script></body>
 </html>

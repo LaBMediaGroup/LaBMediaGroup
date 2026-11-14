@@ -1,0 +1,11 @@
+{
+  "name": "lab-media-contact",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-14",
+  "workers_dev": true,
+  "vars": {
+    "FROM_EMAIL": "LaB Media <contact@labmedia.work>",
+    "ALLOWED_ORIGINS": "https://labmedia.work,https://www.labmedia.work"
+  },
+  "ratelimits": [{"name":"LIMIT","namespace_id":"4518","simple":{"limit":3,"period":60}}]
+}
