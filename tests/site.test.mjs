@@ -303,7 +303,7 @@ test('local file references resolve', async (t) => {
 test('floating assistant coverage matches page intent', () => {
   for (const file of realPages) {
     const html = read(file);
-    if (file === 'ai-usage.html') {
+    if (['ai-usage.html', 'index.html', 'portfolio.html'].includes(file)) {
       assert.doesNotMatch(html, /assistant-widget\.js/);
       continue;
     }
@@ -316,7 +316,7 @@ test('floating assistant coverage matches page intent', () => {
 test('flight checklist follows visitors without exposing the private usage page', () => {
   for (const file of realPages) {
     const html = read(file);
-    if (file === 'ai-usage.html') assert.doesNotMatch(html, /flight-checklist\.js/);
+    if (['ai-usage.html', 'index.html', 'portfolio.html'].includes(file)) assert.doesNotMatch(html, /flight-checklist\.js/);
     else assert.match(html, /flight-checklist\.js/, `${file} is missing the persistent flight checklist`);
   }
   const checklist = read('flight-checklist.js');
@@ -401,6 +401,20 @@ test('every published page carries the shared nav and footer', () => {
   for (const file of realPages) {
     const html = read(file);
     if (file === 'ai-usage.html') continue;
+    // The film-led home and Reel have intentionally compact editorial shells.
+    // Validate their real navigation rather than requiring the directory template.
+    if (['index.html', 'portfolio.html'].includes(file)) {
+      assert.match(html, /<header\b/);
+      assert.match(html, /<nav\b/);
+      assert.match(html, /<footer\b/);
+      assert.match(html, /href="(?:https:\/\/labmedia.work\/)?tools\.html"/);
+      assert.doesNotMatch(html, /name="robots" content="noindex/);
+      if (file === 'index.html') {
+        assert.match(html, /home\.js/);
+        assert.match(html, /https:\/\/crew\.labmedia\.work/);
+      }
+      continue;
+    }
     assert.match(html, /<header class="nav">/, `${file} is missing the shared nav`);
     assert.match(html, /<footer class="foot">/, `${file} is missing the shared footer`);
     assert.match(html, /href="tools\.html"/, `${file} cannot reach the tools index`);

@@ -15,7 +15,7 @@ weekend. Nothing costs money and nothing asks for an email.
 
 | Page | What's on it |
 |---|---|
-| `index.html` | Hub — 2024 reel, film grid, resource shortlists |
+| `index.html` | Film-led homepage — Gone, interactive tool previews, notebook, Crew Room entrance |
 | `portfolio.html` | 8 films, 9 production timelines, 7 BTS galleries (81 photos) |
 | `learn.html` | Craft references and filmmaking education |
 | `resources.html` | Software, AI, music, stock, type and 3D resources |
@@ -247,3 +247,9 @@ Two things that will bite on deploy:
 ---
 
 *Shelby Township, MI*
+
+## Homepage refresh (November 14, 2026)
+
+`home.css` and `home.js` power the film-led homepage. Tool previews use the existing prompt library and solar calculator. `home-refresh.js` adds a guarded phone pull-to-refresh and an accessible refresh action in Appearance; its flask artwork comes from Bobby’s Crew Room project. This refresh operates only on the homepage. Other tools keep their own saved state and gestures.
+
+The compact homepage and Reel intentionally use editorial navigation without floating assistant or flight-checklist widgets. The full tools remain linked. Gone now has a public player on the Reel. The Reel reduced-motion class was renamed to avoid accidentally applying still-image sizing to every image.

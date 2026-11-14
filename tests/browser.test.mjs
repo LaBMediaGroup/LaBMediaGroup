@@ -93,14 +93,15 @@ test('pages load cleanly in mobile Chromium', async (t) => {
         return {
           duplicates,
           brokenLocalImages,
-          overflow: document.documentElement.scrollWidth - window.innerWidth
+          overflow: document.documentElement.scrollWidth - window.innerWidth,
+          overflowElements: [...document.querySelectorAll('body *')].filter(e => e.getBoundingClientRect().right > innerWidth + 1).slice(0, 12).map(e => ({tag:e.tagName, class:e.className, right:Math.round(e.getBoundingClientRect().right), width:getComputedStyle(e).width,height:getComputedStyle(e).height,natural:e.naturalWidth}))
         };
       });
 
       assert.deepEqual(errors, [], `${file} raised browser errors`);
       assert.deepEqual(state.duplicates, [], `${file} has duplicate runtime IDs`);
       assert.deepEqual(state.brokenLocalImages, [], `${file} has broken local images`);
-      assert.ok(state.overflow <= 1, `${file} overflows mobile viewport by ${state.overflow}px`);
+      assert.ok(state.overflow <= 1, `${file} overflows mobile viewport by ${state.overflow}px: ${JSON.stringify(state.overflowElements)}`);
       await page.close();
     });
   }
@@ -195,6 +196,15 @@ test('Golden Hour responds to date changes and exposes calculated windows', asyn
 
 test('solar scenes hand daylight to moonlight without changing the weather composition', async () => {
   const page = await browser.newPage({ viewport: { width: 1180, height: 820 }, reducedMotion: 'reduce' });
+  // These expected moon phases describe August 1, not the machine's current day.
+  await page.addInitScript(() => {
+    const OriginalDate = Date;
+    const now = OriginalDate.parse('2026-08-01T16:00:00Z');
+    window.Date = class extends OriginalDate {
+      constructor(...args) { super(...(args.length ? args : [now])); }
+      static now() { return now; }
+    };
+  });
   await page.route('**/*', (route) => {
     const url = route.request().url();
     if (url.startsWith(baseURL) || /^(?:data|blob):/.test(url)) route.continue();
