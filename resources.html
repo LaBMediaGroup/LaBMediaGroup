@@ -332,8 +332,8 @@ body.palette .item-main > p{margin-top:2px}
 body.palette .find-row{margin-top:10px;max-width:none;gap:var(--s-2)}
 body.palette .find-count{display:none}
 </style>
-<link rel="stylesheet" href="atmosphere.css"></head>
-<body class="palette">
+<link rel="stylesheet" href="atmosphere.css"><link rel="stylesheet" href="destinations.css"></head>
+<body class="palette notebook-destination">
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header class="nav">
@@ -368,13 +368,13 @@ body.palette .find-count{display:none}
         </button>
         <div class="nav-drop-menu">
           <a href="contact.html">About LaB</a>
-          <a href="colophon.html">About the Site</a>
+          
           <hr class="nav-sep" aria-hidden="true">
-          <a href="https://crew.labmedia.work" class="nav-crew" rel="nofollow">Crew Room <svg class="nav-crew-lock" viewBox="0 0 12 12" role="img" aria-label="crew only"><rect x="2.5" y="5.5" width="7" height="5" rx="1"/><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5"/></svg></a>
+          
         </div>
       </li>
       </ul></nav>
-    <div class="theme" role="group" aria-label="Colour theme">
+    <a class="crew-mark" href="https://crew.labmedia.work" aria-label="Crew access" title="Crew access"><i aria-hidden="true"></i><img src="assets/crew-mark.png" alt="" width="264" height="112"></a><div class="theme" role="group" aria-label="Colour theme">
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
@@ -393,10 +393,15 @@ body.palette .find-count{display:none}
   <div class="rule"><span class="mono">The Notebook</span><i></i><span class="mono" id="totalCount">127 entries</span></div>
 
   <div class="pal-lead">
-    <h1>What do you <em>need?</em></h1>
-    <p class="lede">127 things worth keeping: channels that teach, software worth opening, where to
-    buy and rent, and the people worth working with. Start typing, or pick a corner.</p>
+    <h1>Good things.<br><em>Kept.</em></h1>
+    <p class="lede">Open a shelf. Find your next obsession.</p>
 
+<div class="notebook-shelf" aria-label="Choose a notebook shelf">
+<button class="shelf-book book-learn" data-notebook-band="band-learn" aria-pressed="false"><span class="book-edge"></span><img src="assets/production.webp" alt="" loading="lazy"><span class="book-number">01 / Craft</span><strong>Watch.<br><em>Learn.</em></strong><small>Camera · Edit · Art ↗</small></button>
+<button class="shelf-book book-make" data-notebook-band="band-make" aria-pressed="false"><span class="book-edge"></span><span class="type-art" aria-hidden="true">Aa<span>∿∿∿</span></span><span class="book-number">02 / Materials</span><strong>Make<br><em>more.</em></strong><small>Software · Sound · Assets ↗</small></button>
+<button class="shelf-book book-gear" data-notebook-band="band-gear" aria-pressed="false"><span class="book-edge"></span><span class="lens-art" aria-hidden="true"><i></i></span><span class="book-number">03 / Equipment</span><strong>Find<br>your <em>kit.</em></strong><small>Buy · Rent · Fly ↗</small></button>
+<button class="shelf-book book-people" data-notebook-band="band-who" aria-pressed="false"><span class="book-edge"></span><img src="assets/screening.webp" alt="" loading="lazy"><span class="book-number">04 / Community</span><strong>Good<br><em>company.</em></strong><small>People · Festivals · Crews ↗</small></button>
+</div>
     <div class="find">
       <label class="vh" for="q">Search the notebook</label>
       <input type="search" id="q" placeholder="Search everything&hellip;" autocomplete="off">
@@ -404,7 +409,7 @@ body.palette .find-count{display:none}
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
     </div>
 
-    <div class="pal-chips" id="palChips"></div>
+    <details class="notebook-index"><summary>Browse every category <span>＋</span></summary><div class="pal-chips" id="palChips"></div></details>
 
     <div class="find-row">
       <div class="find-count" id="count" role="status" aria-live="polite"></div>
@@ -425,7 +430,7 @@ body.palette .find-count{display:none}
   <section class="sec wrap">
     <div class="callout">
       <p><strong>This list needs JavaScript.</strong> All 127 resources live in one data file and
-      are drawn into the page when it loads : that's how the search, the counts and the saved kit
+      are drawn into the page when it loads : that's how the search and the counts
       all stay in step. With scripts disabled there's nothing here to show you.
       <a href="https://labmedia.work/resources-data.js" style="color:var(--accent)">The raw data file</a>
       is readable on its own if you'd rather not enable them.</p>
@@ -472,7 +477,7 @@ body.palette .find-count{display:none}
           <li><a href="portfolio.html">Reel</a></li>
           <li><a href="events.html">Events</a></li>
           <li><a href="contact.html">About LaB</a></li>
-          <li><a href="colophon.html">About the Site</a></li>
+          
         </ul>
       </div>
       <div class="foot-col">
@@ -568,5 +573,5 @@ body.palette .find-count{display:none}
 <script src="flight-checklist.js"></script>
 <script src="assistant-guide.js"></script>
 <script src="assistant-widget.js"></script>
-<script src="atmosphere.js"></script></body>
+<script src="destinations.js"></script><script src="atmosphere.js"></script></body>
 </html>

@@ -199,7 +199,7 @@ test('public totals match their data sources', () => {
 test('the published page count follows the sitemap', () => {
   const sitemapCount = (read('sitemap.xml').match(/<loc>/g) || []).length;
   // Redirects are not pages: they are noindex and absent from the sitemap.
-  const indexablePages = realPages.filter((file) => !['404.html', 'ai-usage.html'].includes(file));
+  const indexablePages = realPages.filter((file) => !['404.html', 'ai-usage.html', 'colophon.html'].includes(file));
   assert.equal(sitemapCount, indexablePages.length);
 
   const colophon = read('colophon.html');
@@ -429,7 +429,7 @@ test('every published page carries the shared nav and footer', () => {
     assert.ok(shared || /dataset\.themeSet/.test(html),
       `${file} has theme swatches but nothing wires them`);
     // 404.html is rightly noindex; everything the sitemap advertises is not.
-    if (file === '404.html') continue;
+    if (file === '404.html' || file === 'colophon.html') continue;
     assert.doesNotMatch(html, /name="robots" content="noindex/,
       `${file} is in the sitemap but tells robots to skip it`);
   }
@@ -502,6 +502,7 @@ test('shared lunar arc keeps moon travel independent from the sun', () => {
 
 function numberWord(value) {
   const words = {
+    13: 'Thirteen',
     14: 'Fourteen',
     15: 'Fifteen',
     16: 'Sixteen',
@@ -512,3 +513,21 @@ function numberWord(value) {
   };
   return words[value] || String(value);
 }
+
+test('owner build notes are unlisted and the crew entrance uses the discreet mark',()=>{
+  assert.match(read('colophon.html'),/name="robots" content="noindex, nofollow"/);
+  assert.doesNotMatch(read('sitemap.xml'),/colophon\.html/);
+  for(const file of realPages){
+    if(file==='colophon.html')continue;
+    assert.doesNotMatch(read(file),/href="(?:https:\/\/labmedia.work\/)?colophon\.html/);
+  }
+  assert.match(read('index.html'),/class="crew-mark"[^>]*aria-label="Crew access"/);
+});
+
+test('reel projection track has valid low-frequency color samples for the real reel',()=>{
+  const track=JSON.parse(read('assets/reel-light-track.json'));
+  assert.equal(track.videoId,'UAFQ5KU-6Jg');assert.equal(track.sampleRate,4);
+  assert.ok(track.samples.length>=230&&track.samples.length<=245);
+  assert.ok(track.samples.every(s=>s.length===9&&s.every(v=>Number.isInteger(v)&&v>=0&&v<=255)));
+  assert.ok(new Set(track.samples.map(s=>s.join(','))).size>100);
+});

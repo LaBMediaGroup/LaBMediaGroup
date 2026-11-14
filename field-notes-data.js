@@ -7,7 +7,7 @@
   var notes = [
     {
       id: 'canon-log2-rec709-lut',
-      url: 'colophon.html#field-notes',
+      url: 'https://www.youtube.com/watch?v=RiAC7Ef0rEo',
       title: 'Canon Log 2 to Rec.709 conversion LUT',
       tags: 'canon eos r50 r5 r6 c70 c300 lut rec709 bt709 canon log 2 clog2 c-log2 bt2020 wide dr conversion technical color colour grade grading davinci resolve video explanation',
       filename: 'BT2020_CanonLog2-to-BT709_WideDR_33_FF.cube',
@@ -16,7 +16,6 @@
       note: 'This is the official Canon 33-grid technical conversion from C-Log 2 (BT.2020) to BT.709 Wide DR, not a stylized creative LUT. Apply it as the base conversion, then grade from there.',
       answer: 'The exact technical conversion LUT is:\nBT2020_CanonLog2-to-BT709_WideDR_33_FF LUT\n\nInside:\ncanon-lut-202510/3dlut/33grid-3dlut/\n\nUse it for Canon footage shot in:\n- Canon Log 2 (C-Log 2)\n- BT.2020 color space\n\nIt is the official Canon technical conversion to BT.709 Wide DR, not a stylized creative LUT. Apply it as the base conversion, then grade from there.\n\nHere is a video that helps explain the conversion process: https://www.youtube.com/watch?v=RiAC7Ef0rEo',
       sources: [
-        { title: 'Canon Log 2 Conversion LUT', url: 'colophon.html#field-notes', note: 'Curated LaB field note' },
         { title: 'LUT Explanation Video', url: 'https://www.youtube.com/watch?v=RiAC7Ef0rEo', note: 'YouTube video breakdown' }
       ]
     },

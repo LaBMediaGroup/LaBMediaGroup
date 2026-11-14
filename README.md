@@ -15,7 +15,7 @@ weekend. Nothing costs money and nothing asks for an email.
 
 | Page | What's on it |
 |---|---|
-| `index.html` | Film-led homepage — Gone, interactive tool previews, notebook, Crew Room entrance |
+| `index.html` | Film-led homepage — selectable previews, unfolding film cards, Tools and Notebook portals |
 | `portfolio.html` | 8 films, 9 production timelines, 7 BTS galleries (81 photos) |
 | `learn.html` | Craft references and filmmaking education |
 | `resources.html` | Software, AI, music, stock, type and 3D resources |
@@ -29,11 +29,11 @@ weekend. Nothing costs money and nothing asks for an email.
 | `aspect.html` | Aspect-ratio previewer |
 | `assistant.html` | LaB's grounded site guide |
 | `contact.html` | About LaB and contact details |
-| `colophon.html` | How the site is built, and what was quietly broken |
+| `colophon.html` | Owner build notes (unlisted, noindex; direct URL still public) |
 | `404.html` | Not-found page |
 
-There are 14 indexable pages. `404.html` and the deliberately tucked-away
-`ai-usage.html` dashboard are not listed in the sitemap.
+There are 13 indexable pages. `404.html` and the deliberately tucked-away
+`ai-usage.html` dashboard and `colophon.html` are not listed in the sitemap.
 
 ## Tech
 
@@ -263,3 +263,35 @@ The compact homepage and Reel intentionally use editorial navigation without flo
 Reference direction: Bobby supplied five November 14 PDF notes. The Son Daven notes informed masked reveals; United Carriers informed connected scenes; Auntie Land informed a more personal, playful experience. These are written reference notes rather than captured motion footage; no claim of reproducing their actual implementations. The design-tools and remote-camera notes were read for context, not treated as installation or hardware-control instructions.
 
 Verification: mobile overflow checks across published pages, shared palette at 320px, theater single-player/close/focus lifecycle, and manual desktop/mobile review. Physical phone pull-to-refresh and subjective audio level still benefit from Bobby’s live-device review.
+
+## Visual experience — November 14, 2026
+
+The homepage prioritizes actual film footage and titles, with a sticky shrinking
+film stage, staggered preview cards and animated destination artwork. Tools uses
+one keyboard-accessible workbench; Notebook uses category shelves with global
+search. Shared appearance settings include a deeper Forest palette and explicit
+UI sound controls. Preview files are silent; full films play with sound in the
+screening room. Motion can be paused and respects reduced-motion preferences.
+
+The screening room animates both entry and exit. Its audience is intentionally
+near-black. `projection.js` synchronizes a subtle three-zone color overlay to the
+demo reel's actual YouTube playback time, including seeking. The 4 Hz RGB track
+in `assets/reel-light-track.json` was sampled from Bobby's published reel
+https://www.youtube.com/watch?v=UAFQ5KU-6Jg using area averaging into three pixels.
+Only color samples ship, not the downloaded reel. Other films use neutral dim
+light; screen light has its own toggle.
+
+Crew access is a discreet slate-logo header link. Its mark comes from the deployed
+Crew Room's `public/splash/lg-mark-264.png`. Authentication is unchanged.
+Colophon has no visitor links or sitemap entry and requests no indexing; it is
+unlisted, not password protected.
+
+### Audience image provenance
+
+`assets/cinema-audience-v2.png` was generated with OpenAI's built-in image-generation
+tool for this site, then copied intact. CSS controls darkness and projection.
+The requested composition was a photorealistic transparent foreground cutout,
+roughly 3:1, rear view of seven seated adults with varied natural hair, heads,
+shoulders and cinema chairs; no visible faces, logos, scenery or text, with subtle
+screen-facing rim illumination and near-black clothing. This is an AI-generated
+illustration, not a photograph of identifiable crew or attendees.

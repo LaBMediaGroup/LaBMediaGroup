@@ -292,8 +292,8 @@
   .matte-bar,.matte-side{transition:none}
 }
 </style>
-<link rel="stylesheet" href="atmosphere.css"></head>
-<body>
+<link rel="stylesheet" href="atmosphere.css"><link rel="stylesheet" href="destinations.css"></head>
+<body class="tools-destination">
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header class="nav">
@@ -328,13 +328,13 @@
         </button>
         <div class="nav-drop-menu">
           <a href="contact.html">About LaB</a>
-          <a href="colophon.html">About the Site</a>
+          
           <hr class="nav-sep" aria-hidden="true">
-          <a href="https://crew.labmedia.work" class="nav-crew" rel="nofollow">Crew Room <svg class="nav-crew-lock" viewBox="0 0 12 12" role="img" aria-label="crew only"><rect x="2.5" y="5.5" width="7" height="5" rx="1"/><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5"/></svg></a>
+          
         </div>
       </li>
       </ul></nav>
-    <div class="theme" role="group" aria-label="Colour theme">
+    <a class="crew-mark" href="https://crew.labmedia.work" aria-label="Crew access" title="Crew access"><i aria-hidden="true"></i><img src="assets/crew-mark.png" alt="" width="264" height="112"></a><div class="theme" role="group" aria-label="Colour theme">
       <button type="button" data-theme-set="dark"  aria-pressed="true"  title="Dark"><span class="sw sw-dark"></span><span class="vh">Dark</span></button>
       <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><span class="sw sw-light"></span><span class="vh">Light</span></button>
       <button type="button" data-theme-set="sepia" aria-pressed="false" title="Sepia"><span class="sw sw-sepia"></span><span class="vh">Sepia</span></button>
@@ -351,9 +351,8 @@
 
 <section class="pg-hero wrap">
   <div class="rule"><span class="mono">Tools</span><i></i><span class="mono" style="color:var(--faint)">Free, no account</span></div>
-  <h1>Six tools, in the order you <em>reach for them.</em></h1>
-  <p class="lede">I built these to be useful to me, and they turned out to be worth leaving out
-  here. No account, no uploads. Two of them are already running further down the page.</p>
+  <h1>Make <em>something.</em></h1>
+  <p class="lede">A little curiosity. Six things to try.</p>
 
   <div class="livestrip">
     <div class="live-cell">
@@ -385,9 +384,7 @@
 
     <article class="tool">
       <h3 class="tool-name">Story <em>Generator</em></h3>
-      <p class="tool-desc">Short-film prompts you can actually shoot, filtered by tone, cast size and
-      budget. Every brief gets a share link keyed to its own text, so one you send stays pointing at
-      the same idea however the library grows.</p>
+      <p class="tool-desc">Find the first spark. Roll a real short-film premise, then shape it into a shootable brief.</p>
       <div class="demo">
         <p class="spark">Spark a <em class="rw" id="promptWord">honest</em> film.</p>
         <div class="concept-mini">
@@ -401,9 +398,7 @@
 
     <article class="tool">
       <h3 class="tool-name">Golden Hour <em>Helper</em></h3>
-      <p class="tool-desc">Sunrise, sunset, civil twilight, both golden windows, solar noon, azimuth,
-      elevation and a colour-temperature estimate, for any date and any location. Drag the slider and
-      the sun moves; the maths runs in your browser, so it never waits on a network.</p>
+      <p class="tool-desc">Find your light. Explore the sun, the moon, and the best time to roll camera.</p>
       <div class="demo">
         <span class="demo-k">Today, at the studio</span>
         <div class="gh-sky">
@@ -434,10 +429,7 @@
 
     <article class="tool">
       <h3 class="tool-name"><em>Weather</em></h3>
-      <p class="tool-desc">Live wind, gusts, temperature and visibility for Metro Detroit, with a
-      conservative go / no-go read: compensation at 12&nbsp;mph steady or 14&nbsp;mph gusts, grounded
-      at 18. The animated scene behind it reads the same numbers, so the picture and the advice can
-      never disagree.</p>
+      <p class="tool-desc">Read the sky before you fly. Live conditions and a conservative flight check.</p>
       <div class="demo">
         <span class="demo-k">Reading the model right now</span>
         <div class="wx-sky">
@@ -454,9 +446,7 @@
 
     <article class="tool">
       <h3 class="tool-name"><em>Drone</em></h3>
-      <p class="tool-desc">The route into drone and FPV without wasting money on the wrong first
-      aircraft: simulate before you buy, follow pilots worth learning from, build the kit in order,
-      then sit Part&nbsp;107. Written for the person who has not started yet.</p>
+      <p class="tool-desc">From first sim to first flight. A practical path into drone filmmaking.</p>
       <div class="demo">
         <span class="demo-k">The path, in order</span>
         <div class="sb-scene">
@@ -485,9 +475,7 @@
 
     <article class="tool">
       <h3 class="tool-name">Aspect Ratio <em>Previewer</em></h3>
-      <p class="tool-desc">Lay Scope, Flat, HD, Academy and Vertical mattes over a still, or over your
-      own photos and clips, and get the exact active pixel resolution instead of guessing at letterbox
-      edges in a timeline. Files are read in browser memory: nothing is uploaded.</p>
+      <p class="tool-desc">One frame, a different feeling. Try cinema and vertical crops before you cut.</p>
       <div class="demo">
         <span class="demo-k">Mattes over a 4K frame</span>
         <div class="matte-stage" id="matteStage" aria-hidden="true">
@@ -506,9 +494,7 @@
 
     <article class="tool">
       <h3 class="tool-name">LaB <em>Assistant</em></h3>
-      <p class="tool-desc">Ask the notebook a question and search answers first: film notes, the
-      resource list, the gear entries, dated events and hand-written field notes. Every factual answer
-      keeps its source, and following a citation walks you to the exact film or item of kit.</p>
+      <p class="tool-desc">Ask the LaB. Find films, resources, and production notes—with their sources.</p>
       <div class="demo">
         <span class="demo-k">Search in charge, live</span>
         <div class="chat" aria-label="Assistant demonstration">
@@ -523,24 +509,7 @@
   </div>
 </section>
 
-<section class="phase wrap closing">
-  <div class="phase-head">
-    <span class="phase-n">04</span>
-    <h2>The <em>terms</em></h2>
-    <i></i>
-    <span class="phase-when">Such as they are</span>
-  </div>
-  <p>All six are free and none of them want anything from you. There is no account to make, no email
-  to hand over and no trial that expires. Saved prompts and checklist progress live in your own
-  browser under <code>localStorage</code>, which also means clearing your site data clears them: that
-  is the trade for never holding your work on a server.</p>
-  <p>Two of these read a live weather model from Open-Meteo, without an API key and without sending
-  anything about you. The Aspect Ratio Previewer parses your own photos and clips locally through
-  <code>URL.createObjectURL()</code>, so a frame you drop in never crosses the network. If you want
-  the longer version of how any of it works, it is written up on the
-  <a href="colophon.html">colophon</a>, and what changed most recently is on
-  <a href="whats-new.html">What&rsquo;s New</a>.</p>
-</section>
+<section class="phase wrap closing"><p>Free to use. No account. Your files stay on your device.</p><a href="resources.html">Looking for inspiration? Open the notebook ↗</a></section>
 
 </main>
 
@@ -575,7 +544,7 @@
           <li><a href="portfolio.html">Reel</a></li>
           <li><a href="events.html">Events</a></li>
           <li><a href="contact.html">About LaB</a></li>
-          <li><a href="colophon.html">About the Site</a></li>
+          
         </ul>
       </div>
       <div class="foot-col">
@@ -1556,5 +1525,5 @@
 <script src="flight-checklist.js"></script>
 <script src="assistant-guide.js"></script>
 <script src="assistant-widget.js"></script>
-<script src="atmosphere.js"></script></body>
+<script src="destinations.js"></script><script src="atmosphere.js"></script></body>
 </html>

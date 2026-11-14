@@ -410,3 +410,35 @@ test('the reel enters a single screening room and Escape stops playback', async 
   assert.equal(await page.locator('.cinema-screen iframe').count(), 0);
   await page.close();
 });
+
+test('workbench switches live tools with keyboard controls', async () => {
+  const page = await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});
+  await page.route('**/*',r=>r.request().url().startsWith(baseURL)?r.continue():r.abort());
+  await page.goto(`${baseURL}/tools.html`);
+  assert.equal(await page.locator('#bench-panel-1').isVisible(),true);
+  await page.locator('#bench-tab-0').click();
+  const before=await page.locator('#promptText').textContent();
+  await page.locator('#promptBtn').click();
+  await page.waitForFunction(previous=>document.querySelector('#promptText').textContent!==previous,before);
+  await page.locator('#bench-tab-0').press('End');
+  assert.equal(await page.locator('#bench-tab-5').getAttribute('aria-selected'),'true');
+  assert.equal(await page.locator('.bench-stage .tool:visible').count(),1);
+  await page.close();
+});
+
+test('notebook shelves and search combine without losing the complete library', async () => {
+  const page=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});
+  await page.route('**/*',r=>r.request().url().startsWith(baseURL)?r.continue():r.abort());
+  await page.goto(`${baseURL}/resources.html`);
+  await page.locator('[data-notebook-band="band-make"]').click();
+  const groups=await page.locator('#groups .item:visible').evaluateAll(items=>[...new Set(items.map(i=>i.dataset.gid))]);
+  assert.ok(groups.length>0&&groups.every(g=>['ai','music','stock','fonts','3d','software'].includes(g)));
+  await page.locator('#q').fill('DaVinci');
+  assert.equal(await page.locator('[data-notebook-band][aria-pressed="true"]').count(),0);
+  assert.ok(await page.locator('#groups .item:visible').count()>0);
+  await page.locator('#q').fill('not-a-real-resource-974xyz');
+  assert.match(await page.locator('#restLabel').textContent(),/0 matches/);
+  await page.locator('#q').fill('');
+  assert.ok(await page.locator('#groups .item:visible').count()>0);
+  await page.close();
+});
