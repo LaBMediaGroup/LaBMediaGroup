@@ -90,11 +90,8 @@
   function resourceUrl(record){
     return pageForGroup(groupFor(record))+'#'+slug(record.id||record.name);
   }
-  function gearUrl(section,item){
-    var anchor=root.gearItemAnchor
-      ? root.gearItemAnchor(section,item)
-      : 'gear-'+String(section&&section.id||'kit')+'-'+slug(item&&item.name||'');
-    return 'gear.html#'+anchor;
+  function gearUrl(){
+    return 'gear-data.js';
   }
   function eventUrl(event){
     return event&&event.id?'events.html#event-'+event.id:'events.html';

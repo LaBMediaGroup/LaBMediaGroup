@@ -672,53 +672,6 @@ document.addEventListener('click',function(ev){
   window.addEventListener('hashchange',target);
 })();
 
-/* Keep a film. Same drawer as the kept frames : one list, one cap, one page
-   to find them on. A film entry carries its own anchor as its key, so it can
-   never collide with a photograph's file path. The control is a heart in the
-   rule line above each title and nowhere else : you have to be looking at the
-   film to find it. */
-(function(){
-  var arts=[].slice.call(document.querySelectorAll('article.proj'));
-  if(!arts.length)return;
-  var KEY='lab-favs-v1', MAX=50;
-  function read(){ try{ var v=JSON.parse(localStorage.getItem(KEY)||'[]'); return Array.isArray(v)?v:[] }catch(e){ return [] } }
-  function write(a){ try{ localStorage.setItem(KEY,JSON.stringify(a)) }catch(e){} }
-
-  arts.forEach(function(art){
-    var head=art.querySelector('.proj-head'), h=art.querySelector('h2');
-    if(!head||!h||!art.id)return;
-    var title=h.textContent.replace(/\s+/g,' ').trim();
-    var key='portfolio.html#'+art.id;
-    var poster=art.querySelector('.vid-btn img, .still img');
-
-    var b=document.createElement('button');
-    b.type='button'; b.className='proj-fav';
-    b.innerHTML='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"'
-      +' stroke-width="1.6" aria-hidden="true">'
-      +'<path d="M12 20.5c-5.2-3.3-8.5-6.6-8.5-10.4 0-2.7 2.1-4.6 4.4-4.6 1.6 0 3.1.9 4.1 2.3 1-1.4 2.5-2.3 4.1-2.3 2.3 0 4.4 1.9 4.4 4.6 0 3.8-3.3 7.1-8.5 10.4z"/>'
-      +'</svg>';
-
-    function sync(){
-      var on=read().some(function(f){ return f.src===key });
-      b.setAttribute('aria-pressed', on?'true':'false');
-      b.setAttribute('aria-label', (on?'Remove ':'Keep ')+title+(on?' from your Kit':' in your Kit'));
-    }
-    b.addEventListener('click',function(){
-      var f=read(), k=-1;
-      f.forEach(function(x,idx){ if(x.src===key)k=idx });
-      if(k>-1){ f.splice(k,1); }
-      else{
-        f.push({kind:'film',src:key,thumb:poster?poster.getAttribute('src'):'',
-                film:title,filmId:art.id,t:Date.now()});
-        while(f.length>MAX) f.shift();
-      }
-      write(f); sync();
-    });
-    sync();
-    head.appendChild(b);
-  });
-})();
-
 /* Behind-the-scenes lightbox.
    Thumbnails carry the grid; the full-size file only loads when opened. */
 (function(){
@@ -739,10 +692,6 @@ document.addEventListener('click',function(ev){
     +'<div class="lb-bar">'
     +'<button class="lb-prev"  type="button" aria-label="Previous photo">'+CHEV+'</button>'
     +'<div class="lb-meta"><span class="lb-film"></span><span class="lb-count"></span></div>'
-    +'<button class="lb-fav" type="button" aria-pressed="false" aria-label="Save this photo to your favorites">'
-    +'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">'
-    +'<path d="M12 20.5c-5.2-3.3-8.5-6.6-8.5-10.4 0-2.7 2.1-4.6 4.4-4.6 1.6 0 3.1.9 4.1 2.3 1-1.4 2.5-2.3 4.1-2.3 2.3 0 4.4 1.9 4.4 4.6 0 3.8-3.3 7.1-8.5 10.4z"/>'
-    +'</svg></button>'
     +'<button class="lb-next"  type="button" aria-label="Next photo">'
     +CHEV.replace('M15 5l-7 7 7 7','M9 5l7 7-7 7')+'</button>'
     +'<span class="lb-rule" aria-hidden="true"></span>'
@@ -754,31 +703,12 @@ document.addEventListener('click',function(ev){
 
   var img=lb.querySelector('img'), frame=lb.querySelector('.lb-frame'),
       count=lb.querySelector('.lb-count'),
-      filmEl=lb.querySelector('.lb-film'), favBtn=lb.querySelector('.lb-fav');
+      filmEl=lb.querySelector('.lb-film');
 
-  /* Favorites : the heart writes to the same place the Kit page reads.
-     This browser only, cap of 50, oldest drops off the end. */
-  var FAV_KEY='lab-favs-v1', FAV_MAX=50;
-  function favRead(){ try{ var v=JSON.parse(localStorage.getItem(FAV_KEY)||'[]'); return Array.isArray(v)?v:[] }catch(e){ return [] } }
-  function favWrite(a){ try{ localStorage.setItem(FAV_KEY,JSON.stringify(a)) }catch(e){} }
-  function favHas(src){ return favRead().some(function(f){ return f.src===src }) }
-  function favToggle(entry){
-    var f=favRead(), k=-1;
-    f.forEach(function(x,idx){ if(x.src===entry.src)k=idx });
-    if(k>-1){ f.splice(k,1); favWrite(f); return false }
-    f.push(entry);
-    while(f.length>FAV_MAX) f.shift();
-    favWrite(f); return true;
-  }
   function filmOf(s){
     var art=s && s.closest('article.proj');
     var h=art && art.querySelector('h2');
     return h ? h.textContent.replace(/\s+/g,' ').trim() : '';
-  }
-  function syncFav(){
-    var on=favHas(shots[i].dataset.full);
-    favBtn.setAttribute('aria-pressed', on?'true':'false');
-    favBtn.setAttribute('aria-label', on ? 'Remove this photo from your favorites' : 'Save this photo to your favorites');
   }
 
   /* A film can carry more than one gallery now : Scattered has behind the
@@ -804,7 +734,6 @@ document.addEventListener('click',function(ev){
     count.innerHTML='<span class="lb-cur">'+String(i+1).padStart(2,'0')+'</span>'
       +'<span class="lb-sep">/</span>'
       +'<span class="lb-tot">'+String(shots.length).padStart(2,'0')+'</span>';
-    syncFav();
     /* warm the neighbours so arrowing through feels instant */
     [i+1,i-1].forEach(function(k){
       var s=shots[(k+shots.length)%shots.length];
@@ -834,18 +763,7 @@ document.addEventListener('click',function(ev){
   lb.querySelector('.lb-close').addEventListener('click',close);
   lb.querySelector('.lb-prev').addEventListener('click',function(e){e.stopPropagation();show(i-1)});
   lb.querySelector('.lb-next').addEventListener('click',function(e){e.stopPropagation();show(i+1)});
-  favBtn.addEventListener('click',function(e){
-    e.stopPropagation();
-    var s=shots[i], th=s.querySelector('img'), art=s.closest('article.proj');
-    favToggle({
-      src:s.dataset.full,
-      thumb:th ? th.getAttribute('src') : s.dataset.full,
-      film:filmOf(s),
-      filmId:art ? art.id : '',
-      t:Date.now()
-    });
-    syncFav();
-  });
+
   lb.addEventListener('click',function(e){ if(e.target===lb||e.target===img||e.target===frame) close(); });
 
   document.addEventListener('keydown',function(e){
@@ -935,4 +853,4 @@ document.addEventListener('click',function(ev){
   btns.forEach(function(b){
     b.addEventListener('click',function(){apply(b.dataset.themeSet,true)});
   });
-})();</script><script src="assets/gallery/projects.js?v=1"></script><script src="assets/gallery/viewer.js?v=1"></script></body></html>
+})();</script><script src="assets/gallery/projects.js?v=1"></script><script src="assets/gallery/viewer.js?v=20261114"></script></body></html>

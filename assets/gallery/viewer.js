@@ -1,16 +1,14 @@
-/* Project galleries: original asset identities keep saved Kit photos working. */
+/* Project galleries. */
 (() => {
 'use strict';
-const projects=window.LaBGalleries || [], key='lab-favs-v1';
+const projects=window.LaBGalleries || [];
 if(!projects.length)return;
 const dialog=document.createElement('dialog');dialog.className='project-viewer';dialog.setAttribute('aria-label','Project gallery');
-dialog.innerHTML=`<header class="pg-head"><div><h2></h2><p class="pg-note"></p></div><button class="pg-close" aria-label="Close gallery">Close ×</button></header><div class="pg-tools"><label>Gallery <select aria-label="Gallery group"></select></label><span class="pg-count" aria-live="polite"></span></div><div class="pg-stage"></div><p class="pg-caption"></p><footer class="pg-controls"><button class="pg-prev" aria-label="Previous photo or clip">←</button><button class="pg-save" aria-pressed="false">♡ Keep photo</button><button class="pg-next" aria-label="Next photo or clip">→</button><button class="pg-browse" aria-expanded="false">All thumbnails</button></footer><div class="pg-thumbs" hidden></div>`;
+dialog.innerHTML=`<header class="pg-head"><div><h2></h2><p class="pg-note"></p></div><button class="pg-close" aria-label="Close gallery">Close ×</button></header><div class="pg-tools"><label>Gallery <select aria-label="Gallery group"></select></label><span class="pg-count" aria-live="polite"></span></div><div class="pg-stage"></div><p class="pg-caption"></p><footer class="pg-controls"><button class="pg-prev" aria-label="Previous photo or clip">←</button><button class="pg-next" aria-label="Next photo or clip">→</button><button class="pg-browse" aria-expanded="false">All thumbnails</button></footer><div class="pg-thumbs" hidden></div>`;
 document.body.append(dialog);
-const q=s=>dialog.querySelector(s),stage=q('.pg-stage'),select=q('select'),save=q('.pg-save');
+const q=s=>dialog.querySelector(s),stage=q('.pg-stage'),select=q('select');
 let project,items=[],index=0,last=null,oldOverflow='',touch=null;
-const read=()=>{try{const v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[]}catch{return []}};
 const flatten=p=>p.groups.flatMap(g=>g.items.map(i=>({...i,group:g.name,note:g.note})));
-function saved(){save.setAttribute('aria-pressed',String(read().some(f=>f.src===items[index].src)));save.textContent=save.getAttribute('aria-pressed')==='true'?'♥ Kept in your Kit':'♡ Keep photo';save.hidden=items[index].type==='video'}
 function stop(){stage.querySelector('video')?.pause();stage.replaceChildren()}
 function show(n){
  index=(n+items.length)%items.length;stop();const item=items[index];
@@ -20,7 +18,7 @@ function show(n){
  q('h2').textContent=project.title;q('.pg-note').textContent=item.note||item.group;
  q('.pg-caption').textContent=[item.caption,item.meta].filter(Boolean).join(' · ');
  q('.pg-count').textContent=`${String(index+1).padStart(2,'0')} / ${String(items.length).padStart(2,'0')}`;
- saved();q('.pg-prev').disabled=q('.pg-next').disabled=items.length<2;
+ q('.pg-prev').disabled=q('.pg-next').disabled=items.length<2;
  q('.pg-thumbs').querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-current',String(i===index)));
  if(item.type==='image'){const next=items[(index+1)%items.length];if(next.type==='image'){const im=new Image();im.src=next.src}}
 }
@@ -30,8 +28,6 @@ select.onchange=()=>{items=select.value==='-1'?flatten(project):project.groups[N
 q('.pg-close').onclick=()=>dialog.close();dialog.addEventListener('close',()=>{stop();document.body.style.overflow=oldOverflow;last?.focus({preventScroll:true})});
 q('.pg-prev').onclick=()=>show(index-1);q('.pg-next').onclick=()=>show(index+1);
 q('.pg-browse').onclick=()=>{const tray=q('.pg-thumbs');tray.hidden=!tray.hidden;q('.pg-browse').setAttribute('aria-expanded',String(!tray.hidden))};
-save.onclick=()=>{const item=items[index],f=read(),pos=f.findIndex(x=>x.src===item.src);if(pos>=0)f.splice(pos,1);else f.push({src:item.src,thumb:item.thumb,film:project.title,filmId:project.legacyId,t:Date.now()});try{localStorage.setItem(key,JSON.stringify(f.slice(-50)));saved()}catch{save.textContent='Storage unavailable'}};
-window.addEventListener('storage',()=>{if(dialog.open)saved()});
 dialog.addEventListener('keydown',e=>{if(e.target.matches('select,video'))return;if(e.key==='ArrowRight'){e.preventDefault();show(index+1)}if(e.key==='ArrowLeft'){e.preventDefault();show(index-1)}});
 stage.addEventListener('touchstart',e=>{touch=e.touches.length===1&&!e.target.closest('video')?{x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now()}:null},{passive:true});
 stage.addEventListener('touchend',e=>{if(!touch)return;const t=e.changedTouches[0],dx=t.clientX-touch.x,dy=t.clientY-touch.y;if(Date.now()-touch.t<700&&Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)*1.6)show(index+(dx<0?1:-1));touch=null},{passive:true});

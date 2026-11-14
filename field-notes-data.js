@@ -171,13 +171,13 @@
     },
     {
       id: 'lab-gear-and-editing-philosophy',
-      url: 'gear.html',
+      url: 'gear-data.js',
       title: 'Gear Rationale & DaVinci Resolve Editing Philosophy',
       tags: 'why dual canon r50 tascam portacapture x8 32-bit float audio davinci resolve workflow rough cut first fog machine audio foundation j-cuts l-cuts room tone color last',
       note: 'Practical gear choices and editing workflow in DaVinci Resolve.',
       answer: 'LaB’s gear choices are built on practical set efficiency: Two Canon EOS R50s allow rolling two simultaneous angles on a two-person crew. The Tascam Portacapture X8 provides 32-bit float audio so clipping is impossible. A simple fog machine provides atmosphere that no lens can replicate. In post, Bobby’s editing philosophy in DaVinci Resolve is "rough cut first": build the story naked with zero music or color. Once the story works, build the audio foundation (J-cuts, L-cuts, room tone under everything, foley), then grade color last.',
       sources: [
-        { title: 'LaB’s Kit Page', url: 'gear.html', note: 'Gear list & notes' }
+        { title: 'Equipment data', url: 'gear-data.js', note: 'Gear list & notes' }
       ]
     },
     {
@@ -193,13 +193,13 @@
     },
     {
       id: 'lab-gear-stabilization',
-      url: 'gear.html',
+      url: 'gear-data.js',
       title: 'Camera Stabilization (Gimbals & Dollies)',
       tags: 'stabilization gimbals dji rs 3 mini ronin dana dolly tabletop movement use for stabilization',
       note: 'Gimbal and dolly stabilization gear used by LaB Media.',
       answer: 'For camera stabilization, LaB Media uses two DJI RS 3 Mini gimbals (allowing two stabilized angles rolling simultaneously), a full-size DJI Ronin for heavier builds, a Dana Dolly 6ft rail system, and tabletop dollies.',
       sources: [
-        { title: 'LaB’s Kit', url: 'gear.html', note: 'Camera stabilization gear' }
+        { title: 'Equipment data', url: 'gear-data.js', note: 'Camera stabilization gear' }
       ]
     }
   ];

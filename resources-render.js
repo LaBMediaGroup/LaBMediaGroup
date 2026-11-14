@@ -102,7 +102,7 @@ var BANDS=[
   blurb:'Things you actually open: AI that earns its place in a workflow, music and effects that won\u2019t get an upload muted, stock, type, 3D and code.',
   groups:['ai','music','stock','fonts','3d','software']},
  {id:'band-gear',  title:'Gear &amp; <em>Flight</em>',
-  blurb:'Where to buy, rent and research. <a href="gear.html">LaB\u2019s Kit</a> and <a href="skybound.html">SkyBound</a> go deeper on what actually gets used.',
+  blurb:'Where to buy, rent and research. <a href="skybound.html">SkyBound</a> goes deeper on what actually gets used.',
   groups:['equipment','drone']},
  {id:'band-who',   title:'People &amp; <em>Community</em>',
   blurb:'Who to work with, where to send the finished thing, and who to sit in a room with.',
@@ -284,7 +284,7 @@ function itemHTML(r,i,isCopy,gid){
   /* In-the-LaB entries also appear in their normal group, so controls need a
      per-render id even though the resource's public anchor remains stable. */
   var detailId='detail-'+keyOf(r)+'-'+(++ITEM_RENDER_SEQ);
-  /* More, Save and Visit are one action group. The old renderer put More in
+  /* More and Visit are one action group. The old renderer put More in
      the copy column and the other two in an unstyled side span, which made
      More easy to miss and allowed Save / Visit to collide at narrow widths. */
   var more = d
@@ -302,9 +302,6 @@ function itemHTML(r,i,isCopy,gid){
     +'<div class="item-main"><h3>'+title+'</h3><p>'+esc(r.desc||'')+'</p>'
     +'<span class="item-tags">'+tags+'</span>'+socialsFor(r)
     +'<div class="item-actions'+(d?'':' no-more')+'">'+more
-    +  '<button class="save" type="button" data-k="'+esc(keyOf(r))+'" aria-pressed="false"'
-    +    ' aria-label="Save '+esc(r.name)+' to your kit">'
-    +    '<span class="star" aria-hidden="true">☆</span><span class="save-t">Save</span></button>'
     +  (r.url?'<a class="item-visit" href="'+esc(r.url)+'" target="_blank" rel="noopener">Visit site ↗</a>'
              :'<span class="item-visit is-missing" aria-disabled="true">No site listed</span>')
     +'</div>'
@@ -497,77 +494,6 @@ function groupOfEntry(r){
 })();
 
 /* ============================================================
-   SAVING TO YOUR KIT
-   The kit itself now lives on mykit.html. This page keeps the
-   stars : saving belongs next to the thing you are saving : but
-   no longer renders the list, which used to sit above the 127
-   entries most people came here for.
-
-   Keys come from keyOf(), derived from each name rather than its
-   position, so adding or reordering entries never invalidates a
-   saved kit or a link already out in the world.
-   ============================================================ */
-(function(){
-  var KEY='lab-kit', SEP='.';
-  var ptr=document.getElementById('kitPtr');
-
-  function read(){ try{ var v=JSON.parse(localStorage.getItem(KEY)||'[]'); return Array.isArray(v)?v:[] }catch(e){ return [] } }
-  function write(a){ try{ localStorage.setItem(KEY,JSON.stringify(a)) }catch(e){} }
-  var kit=read();
-  var byKey={}; ALL.forEach(function(r){ byKey[keyOf(r)]=r });
-
-  /* Any #kit= link that predates the split still lands here. Forward it rather
-     than drop it : the whole point of hashing keys by content was that a shared
-     link keeps working, and it would be a poor joke to break them by moving the
-     page they open. */
-  (function forwardLegacy(){
-    var m=/[#&]kit=([^&]+)/.exec(location.hash);
-    if(!m)return;
-    location.replace('mykit.html'+location.hash);
-  })();
-
-  function toast(msg){
-    var t=document.querySelector('.kit-toast');
-    if(!t){ t=document.createElement('div'); t.className='kit-toast'; t.setAttribute('role','status'); document.body.appendChild(t); }
-    t.textContent=msg; t.classList.add('on');
-    clearTimeout(t._x); t._x=setTimeout(function(){ t.classList.remove('on') },2200);
-  }
-
-  function syncButtons(){
-    document.querySelectorAll('.save').forEach(function(b){
-      var on=kit.indexOf(b.dataset.k)>-1;
-      b.setAttribute('aria-pressed',on?'true':'false');
-      b.querySelector('.star').textContent=on?'\u2605':'\u2606';
-      b.querySelector('.save-t').textContent=on?'Saved':'Save';
-    });
-  }
-
-  function paintPtr(){
-    kit=kit.filter(function(k){ return byKey[k] });
-    write(kit);
-    syncButtons();
-    if(!ptr)return;
-    if(!kit.length){ ptr.hidden=true; ptr.innerHTML=''; return; }
-    ptr.hidden=false;
-    ptr.innerHTML='<a class="kit-ptr" href="mykit.html">'
-      +'<span class="kit-ptr-n">\u2605 '+kit.length+'</span>'
-      +'<span>in your kit</span>'
-      +'<span class="arw" aria-hidden="true">\u2192</span></a>';
-  }
-
-  document.addEventListener('click',function(e){
-    var b=e.target.closest && e.target.closest('.save');
-    if(!b)return;
-    var k=b.dataset.k, i=kit.indexOf(k);
-    if(i>-1){ kit.splice(i,1); toast('Removed from your kit'); }
-    else { kit.push(k); toast('Saved \u2014 '+kit.length+' in your kit'); }
-    write(kit); paintPtr();
-  });
-
-  paintPtr();
-})();
-
-/* ============================================================
    IN THE LaB
    The tools money actually went on. Rendered from the `inLab`
    field rather than a hand-kept list, so it can never drift out
@@ -634,7 +560,7 @@ document.addEventListener('click',function(e){
   /* The palette layout is the same filter with a different resting state: it
      asks a question instead of presenting a menu, so at rest it answers with
      the picks rather than showing all 127 or nothing at all. The groups still
-     render exactly as before, which is what keeps the save-to-kit stars, the
+     render exactly as before, which is what keeps the
      detail panels and the deep-link anchors working untouched. */
   var PALETTE = document.body.classList.contains('palette');
   var activeGid = null;

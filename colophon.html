@@ -5,20 +5,20 @@
 <script>(function(){var K="lab-theme-v2",O="lab-theme",M={stone:"sepia",sepia:"timber"};try{var t=localStorage.getItem(K);if(t===null){var l=localStorage.getItem(O);if(l){t=M[l]||l;localStorage.setItem(K,t);}}if(t&&t!=="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How This Site Is Built | LaB Media</title>
-<meta name="description" content="Sixteen pages, one design system, no framework, no build step, and no first-party cookies. What it took and what broke along the way.">
+<meta name="description" content="Fourteen pages, one design system, no framework, no build step, and no first-party cookies. What it took and what broke along the way.">
 <link rel="canonical" href="https://labmedia.work/colophon.html">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://labmedia.work/colophon.html">
 <meta property="og:site_name" content="LaB Media">
 <meta property="og:title" content="How This Site Is Built">
-<meta property="og:description" content="Sixteen pages, one design system, no framework, no build step, and no first-party cookies.">
+<meta property="og:description" content="Fourteen pages, one design system, no framework, no build step, and no first-party cookies.">
 <meta property="og:image" content="https://labmedia.work/images/og/colophon.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="How This Site Is Built">
-<meta name="twitter:description" content="Sixteen pages, one design system, no framework, no build step, and no first-party cookies.">
+<meta name="twitter:description" content="Fourteen pages, one design system, no framework, no build step, and no first-party cookies.">
 <meta name="twitter:image" content="https://labmedia.work/images/og/colophon.jpg">
 
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -134,8 +134,6 @@
       <li><a href="portfolio.html">Reel</a></li>
       <li><a href="events.html">Events</a></li>
       <li><a href="resources.html">Resources</a></li>
-      <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
-      <li><a href="mykit.html">Your Kit</a></li>
       <li class="nav-drop">
         <button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">Tools
           <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
@@ -183,7 +181,7 @@
   <div class="rule"><span class="mono">Colophon</span><i></i><span class="mono" style="color:var(--faint)">Updated August 2026</span></div>
   <div class="hero-def">
     <div>
-      <h1>Sixteen pages, one <em>design system.</em></h1>
+      <h1>Fourteen pages, one <em>design system.</em></h1>
       <p class="lede">This site has no framework or build step. It&rsquo;s hand-written HTML, CSS and
       JavaScript on free hosting, plus one small Cloudflare Worker that protects the assistant&rsquo;s
       optional AI phrasing. If you&rsquo;re a filmmaker who also tinkers, this is the part you might find useful.</p>
@@ -207,7 +205,7 @@
   </div>
 
   <dl class="figs">
-    <div class="fig"><dt>Pages</dt><dd>16</dd></div>
+    <div class="fig"><dt>Pages</dt><dd>14</dd></div>
     <div class="fig"><dt>Stylesheets</dt><dd>02</dd></div>
     <div class="fig"><dt>Themes</dt><dd>05</dd></div>
     <div class="fig"><dt>Cloud Worker</dt><dd>01</dd></div>
@@ -241,7 +239,7 @@
     </div>
     <div class="col-side">
       <p>The notebook pages, gear list, Story Generator and LaB Assistant are built from shared data
-      files. JavaScript handles rendering, search, saved kits and live counts; each page includes a
+      files. JavaScript handles rendering, search and live counts; each page includes a
       plain <code>&lt;noscript&gt;</code> explanation instead of leaving an empty shell.</p>
       <p>That trade keeps 127 resources, 67 gear items and 1,334 prompts in one source of truth.</p>
     </div>
@@ -336,7 +334,7 @@
       <div class="bug-main">
         <h3>Share links keyed by <em>content</em>, not position</h3>
         <p>A brief you send someone is encoded as a short hash of its own text, never its position
-        in the list. So the prompt library can grow or be reordered entirely, and a link already out in the world still opens the same brief. Saved kits on the gear page work the same way.</p>
+        in the list. So the prompt library can grow or be reordered entirely, and a link already out in the world still opens the same brief.</p>
       </div>
       <div class="bug-side">
         <p><em>Index-based links would rot as soon as the data moved. Content keys let shared links
@@ -465,7 +463,7 @@
         <li>No first-party cookies. YouTube is contacted only after Play.</li>
         <li>No accounts, no sign-up, no email capture anywhere.</li>
         <li>No affiliate links. Nothing on the gear page was sent free.</li>
-        <li>Saved kits, prompts and checklist progress live in your own browser and are never sent anywhere.</li>
+        <li>Saved prompts and checklist progress live in your own browser and are never sent anywhere.</li>
         <li>Motion-heavy interactions respect <code>prefers-reduced-motion</code>, removing continuous or decorative animation.</li>
       </ul>
     </div>
@@ -512,8 +510,6 @@
         <h3>Resources</h3>
         <ul>
           <li><a href="resources.html">The Notebook</a></li>
-          <li><a href="gear.html">LaB&rsquo;s Kit</a></li>
-          <li><a href="mykit.html">Your Kit</a></li>
         </ul>
       </div>
       <div class="foot-col">

@@ -21,8 +21,6 @@ weekend. Nothing costs money and nothing asks for an email.
 | `resources.html` | Software, AI, music, stock, type and 3D resources |
 | `sourcing.html` | Gear shops, rentals and flight resources |
 | `people.html` | Collaborators, festivals and community |
-| `gear.html` | The Kit — what LaB actually owns, with verdicts and prices |
-| `mykit.html` | A visitor's saved resource kit |
 | `ideas.html` | Story generator — 1,334 prompts across 14 pools |
 | `events.html` | Self-expiring spotlight events plus an evergreen org list |
 | `skybound.html` | SkyBound case study |
@@ -34,7 +32,7 @@ weekend. Nothing costs money and nothing asks for an email.
 | `colophon.html` | How the site is built, and what was quietly broken |
 | `404.html` | Not-found page |
 
-There are 17 indexable pages. `404.html` and the deliberately tucked-away
+There are 14 indexable pages. `404.html` and the deliberately tucked-away
 `ai-usage.html` dashboard are not listed in the sitemap.
 
 ## Tech
@@ -75,22 +73,9 @@ duplicate IDs, broken local images and horizontal overflow.
   under `@media (hover:none)` they arrive in colour instead, because a finger
   can't hover and 106 photos would otherwise be permanently grey.
 
-## Your kit
-
-Resources can be starred into a personal kit — stored in `localStorage` under
-`lab-kit`, shown as a pinned group above group 01, hidden when empty.
-
-Keys come from `keyOf()`, which slugifies the entry **name**. Only 18 of the 127
-entries carry an explicit `id`, but all 127 names are unique and slugify
-uniquely, so no data file had to change. Deriving from name rather than array
-position means reordering or inserting entries never invalidates a saved kit or
-a link already shared. Stale keys are pruned silently on load.
-
-A kit encodes into `resources.html#kit=slug.slug.slug` — roughly 67 characters
-for three items. An incoming link never overwrites silently; it offers add,
-replace, or dismiss, and the hash is scrubbed from the URL either way.
-
 ## Data files
+
+Only 18 of the 127 resources have explicit IDs; the others use stable name-derived anchors.
 
 - `resources-data.js` — 127 entries. 6 are collaborators (people actually worked
   with) and are exempt from the Free/Paid tags.
@@ -186,42 +171,11 @@ Both pinned sections hide while searching or filtering, and the search set is
 scoped to `#groups` — counting the pinned copies reported more matches than
 were on screen.
 
-## The Kit
+## Retired Kit pages
 
-`gear.html`, driven by `gear-data.js`. Every field except `name` is optional and
-sections with no items are dropped from both the page and the jump rail, so a
-half-written list reads as deliberate rather than broken.
-
-Each item can carry a `verdict` — `again`, `maybe` or `no` — and a rough `paid`
-figure. That is the point of the page: a gear list without a verdict is a
-shopping list, and there are enough of those.
-
-66 items across 12 sections, in two layers. Seven items flagged `key: true`
-render as a headline strip at the top — the things that actually decide how the
-work gets made. Everything else sits in `<details>` sections, closed by default
-with a peek line, exactly like the resources page.
-
-The first version listed all 64 as equal full-width rows, which gave gaffer tape
-the same visual weight as a camera and read like an inventory audit. Nothing was
-removed in the rebuild — completeness is part of being honest — it is weighted
-instead. Thirteen items flagged `minor: true` render as compact chips under an
-"Also in the bag" heading at the foot of their section.
-
-`shared: true` marks gear that belongs to collaborators rather than to LaB —
-Bobby asked for that explicitly so the page never implies he owns the whole
-truck. Eight items carry it, and the badge is explained once at the foot.
-
-Verdicts are deliberately sparse: only the four confirmed directly carry one.
-Inventing "would buy again" opinions would defeat the point of the page.
-
-`resource: 'Name'` cross-links an item to `resources-data.js`, and those same
-links feed the **add-to-kit** button, which points at
-`resources.html#kit=…&from=lab`. It deliberately reuses the share-link
-mechanism rather than writing to a visitor's `localStorage` directly — consent
-is already handled by the incoming-kit bar over there, and there is no second
-code path to keep in sync. The `from=lab` flag only changes the wording, since
-"someone shared a kit with you" is wrong when it came from our own page. Read
-it before `history.replaceState` scrubs the hash, or it is always false.
+The Kit pages and save/favorite controls were retired on November 14, 2026.
+Their old URLs redirect to Resources. Existing browser storage is left untouched.
+Equipment data remains available to the site assistant: 67 items across 13 sections.
 
 ## Coming back
 
