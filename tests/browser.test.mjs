@@ -416,6 +416,14 @@ test('workbench switches live tools with keyboard controls', async () => {
   await page.route('**/*',r=>r.request().url().startsWith(baseURL)?r.continue():r.abort());
   await page.goto(`${baseURL}/tools.html`);
   assert.equal(await page.locator('#bench-panel-1').isVisible(),true);
+  await page.waitForFunction(()=>document.querySelector('#ghSky').width>0);
+  assert.equal(await page.locator('.gh-sky').getAttribute('data-phase'),'golden-evening');
+  await page.locator('#ghScrub').press('Home');
+  assert.equal(await page.locator('#ghClock').textContent(),'12:00 AM');
+  assert.equal(await page.locator('.gh-sky').getAttribute('data-phase'),'night');
+  await page.locator('#ghScrub').press('End');
+  assert.equal(await page.locator('#ghClock').textContent(),'11:59 PM');
+  assert.equal(await page.locator('#ghScrub').getAttribute('aria-valuetext'),'11:59 PM · Night');
   await page.locator('#bench-tab-0').click();
   const before=await page.locator('#promptText').textContent();
   await page.locator('#promptBtn').click();

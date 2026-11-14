@@ -8,3 +8,5 @@
 
 .bench-copy,.bench-stage .demo{min-width:0}.bench-stage canvas{max-width:100%}
 @media(min-width:950px){.tools-destination .livestrip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.tools-destination .live-cell{min-width:0}}
+
+.bench-stage .gh-sky{height:270px;border-radius:8px}.gh-sky canvas{image-rendering:pixelated}.gh-sky .gh-clock{top:15px;right:15px;font:30px var(--f-display);background:none;text-shadow:0 2px 8px #0008;letter-spacing:0}.gh-phase{position:absolute;left:14px;bottom:12px;color:#edf0e8;font:9px var(--f-mono);text-transform:uppercase;letter-spacing:.07em}.gh-scrub-label{display:block;font:9px var(--f-mono);color:var(--dim);margin:15px 0 20px}.gh-scrub-label input{display:block;width:100%;margin:12px 0 0;accent-color:var(--accent);cursor:ew-resize;height:24px}@media(max-width:650px){.bench-stage .gh-sky{height:210px}}

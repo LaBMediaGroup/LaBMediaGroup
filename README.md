@@ -268,7 +268,9 @@ Verification: mobile overflow checks across published pages, shared palette at 3
 
 The homepage prioritizes actual film footage and titles, with a sticky shrinking
 film stage, staggered preview cards and animated destination artwork. Tools uses
-one keyboard-accessible workbench; Notebook uses category shelves with global
+one keyboard-accessible workbench; its Golden Hour preview uses the full planner’s
+pixel pine silhouettes and sky palette with an accessible day scrubber and shared
+solar calculations, initially showing today’s evening golden window; Notebook uses category shelves with global
 search. Shared appearance settings include a deeper Forest palette and explicit
 UI sound controls. Preview files are silent; full films play with sound in the
 screening room. Motion can be paused and respects reduced-motion preferences.
@@ -295,3 +297,6 @@ roughly 3:1, rear view of seven seated adults with varied natural hair, heads,
 shoulders and cinema chairs; no visible faces, logos, scenery or text, with subtle
 screen-facing rim illumination and near-black clothing. This is an AI-generated
 illustration, not a photograph of identifiable crew or attendees.
+
+Changed experience scripts and styles carry content-version query strings in HTML
+to prevent returning visitors combining new markup with cached previous layouts.
