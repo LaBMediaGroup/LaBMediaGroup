@@ -1,0 +1,30 @@
+/* Shared atmosphere controls; page layouts keep their own design tokens. */
+.appearance{position:relative;flex:none;z-index:40}.appearance summary{cursor:pointer;list-style:none;width:44px;height:44px;display:grid;place-items:center;font-size:25px}.appearance summary::-webkit-details-marker{display:none}.appearance>div.palette-panel{position:absolute;right:0;top:54px;border:1px solid var(--line);color:var(--ink);text-align:left;line-height:1.5}.appearance button{font:inherit;color:inherit;cursor:pointer;box-sizing:border-box}.appearance .palette-choice{width:100%}.appearance .palette-heading p{max-width:none}.appearance .palette-choice small{line-height:1.4}.appearance .palette-choice>span{pointer-events:none}.appearance .palette-utilities button{justify-content:center}
+.site-appearance{--bg:var(--paper,#101412);--panel:var(--paper-2,#18201b);--muted:var(--dim,#a4b0a6);--serif:var(--f-display,Instrument,Georgia,serif);--mono:var(--f-mono,monospace);--ease:cubic-bezier(.22,1,.36,1);font-family:var(--f-body,Arial,sans-serif)}
+.site-appearance .micro{font:8px/1.6 var(--mono);letter-spacing:.09em;text-transform:uppercase}.site-appearance .palette-utilities button{background:var(--bg)}.site-appearance summary{padding:0;border:0}.site-appearance summary::after{display:none}.site-appearance[open]{z-index:100}.site-appearance strong{font-weight:400}.site-appearance .palette-heading p{margin:8px 0 20px}
+.site-appearance button:focus-visible,.site-appearance summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media(max-width:760px){.site-appearance>div.palette-panel{position:fixed;right:14px;top:74px;max-height:calc(100svh - 94px);overflow:auto}.site-appearance{margin-left:auto}.site-appearance .palette-heading strong{font-size:30px}}
+/* A hanging palette deck, rather than a settings form. */
+.appearance>div.palette-panel{width:min(370px,calc(100vw - 28px));padding:24px;border-radius:6px 6px 22px 22px;background:color-mix(in srgb,var(--panel) 99%,transparent);backdrop-filter:blur(28px);box-shadow:0 28px 80px #0006;transform-origin:90% 0;overflow:hidden}
+.appearance[open]>.palette-panel{animation:palette-drop .65s var(--ease)}
+@keyframes palette-drop{from{opacity:0;transform:perspective(900px) translateY(-18px) rotateX(-22deg) scale(.94);clip-path:inset(0 0 90% 0 round 20px)}to{opacity:1;transform:perspective(900px) translateY(0) rotateX(0) scale(1);clip-path:inset(0 round 6px 6px 22px 22px)}}
+.palette-heading .micro{color:var(--accent);font-size:8px}.palette-heading strong{display:block;font:36px/1.1 var(--serif);margin-top:8px}.palette-heading p{font-size:11px;color:var(--muted);margin:8px 0 20px}
+.appearance .palette-choice{display:flex;align-items:center;gap:13px;text-align:left;border:1px solid transparent;padding:9px 10px;margin:3px 0;background:transparent;border-radius:10px;transition:background .25s,transform .35s var(--ease),border-color .25s;min-height:57px}
+.appearance[open] .palette-choice{animation:palette-option .6s var(--ease) both}.palette-choice:nth-child(2){animation-delay:40ms!important}.palette-choice:nth-child(3){animation-delay:80ms!important}.palette-choice:nth-child(4){animation-delay:120ms!important}.palette-choice:nth-child(5){animation-delay:160ms!important}
+@keyframes palette-option{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+.appearance .palette-choice:hover{background:var(--bg);transform:translateX(4px)}.appearance .palette-choice[aria-pressed=true]{border-color:var(--line);background:var(--bg)}
+.palette-choice>span:nth-child(2){font-size:13px;flex:1}.palette-choice small{display:block;font-size:10px;color:var(--muted);margin-top:2px}.palette-check{opacity:0;color:var(--accent);font-size:13px}.palette-choice[aria-pressed=true] .palette-check{opacity:1}
+.palette-swatch{width:36px;height:36px;border-radius:50%;box-shadow:inset 0 0 0 1px #ffffff25;flex:none;transition:transform .5s var(--ease);background:conic-gradient(from -45deg,var(--sw-bg) 0 50%,var(--sw-ink) 50% 75%,var(--sw-accent) 75%)}.palette-choice:hover .palette-swatch{transform:rotate(90deg)}
+.swatch-dark{--sw-bg:#10110f;--sw-ink:#eeeae0;--sw-accent:#f29150}.swatch-light{--sw-bg:#f4f2eb;--sw-ink:#242822;--sw-accent:#a94719}.swatch-sepia{--sw-bg:#e8dfca;--sw-ink:#382f22;--sw-accent:#9c431d}.swatch-timber{--sw-bg:#211b17;--sw-ink:#efe4d3;--sw-accent:#f29150}.swatch-forest{--sw-bg:#101d18;--sw-ink:#e6edde;--sw-accent:#d9b86f}
+.palette-utilities{display:grid;grid-template-columns:1fr 1fr;gap:6px;border-top:1px solid var(--line);padding-top:14px;margin-top:14px}.appearance .palette-utilities button{width:auto;font-size:10px;border:0;border-radius:6px;padding:10px 6px;min-height:40px;margin:0}.appearance #refresh-page{grid-column:1/-1;background:transparent;color:var(--muted)}.appearance summary{transition:transform .6s var(--ease)}.appearance[open] summary{transform:rotate(180deg)}
+html.palette-spilling body{transition:none}html.palette-spilling::view-transition-old(root){z-index:1;animation:none}html.palette-spilling::view-transition-new(root){z-index:2;mix-blend-mode:normal;animation:none}html.palette-spilling::view-transition-group(root){animation:none}
+
+@media(prefers-reduced-motion:reduce){.appearance *{animation:none!important;transition:none!important}}
+html.motion-paused .appearance *{animation:none!important;transition:none!important}
+@view-transition{navigation:auto;types:page}
+html:active-view-transition-type(page)::view-transition-old(root){animation:page-leave .22s ease both}
+html:active-view-transition-type(page)::view-transition-new(root){animation:page-arrive .5s cubic-bezier(.22,1,.36,1) both}
+@keyframes page-leave{to{opacity:0;transform:translateY(-8px)}}@keyframes page-arrive{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){html::view-transition-group(*){animation-duration:0s!important}}
+html.motion-paused *,html.motion-paused *:before,html.motion-paused *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+.site-appearance .palette-utilities button:only-child{grid-column:1/-1}

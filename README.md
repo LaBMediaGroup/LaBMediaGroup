@@ -253,3 +253,13 @@ Two things that will bite on deploy:
 `home.css` and `home.js` power the film-led homepage. Tool previews use the existing prompt library and solar calculator. `home-refresh.js` adds a guarded phone pull-to-refresh and an accessible refresh action in Appearance; its flask artwork comes from Bobby’s Crew Room project. This refresh operates only on the homepage. Other tools keep their own saved state and gestures.
 
 The compact homepage and Reel intentionally use editorial navigation without floating assistant or flight-checklist widgets. The full tools remain linked. Gone now has a public player on the Reel. The Reel reduced-motion class was renamed to avoid accidentally applying still-image sizing to every image.
+
+## Atmosphere and screening room (November 14, 2026)
+
+`atmosphere.css` / `atmosphere.js` progressively replace the existing theme swatches with one shared palette panel on the 15 themed pages. The original controls remain as a no-JavaScript fallback. Palettes use the existing `lab-theme-v2` storage key. Supporting browsers reveal the new palette radially from its swatch; other browsers apply it directly. Cross-page View Transitions are progressive. Homepage-only scroll choreography uses IntersectionObserver and a bounded scroll frame; no scroll interception. Sound is synthesized locally and starts disabled.
+
+`cinema.css` / `cinema.js` provide a native modal screening room from the homepage reel button, Reel film wall, and film player metadata. The film-wall entrance captures its current panel positions and parts those panels into the screening room; other entrances use curtains. Abstract audience silhouettes sit below the picture. YouTube loads on click; closing removes the iframe, restores focus, and stops the entrance animations. The existing inline players remain available for shorts. Reduced motion bypasses the entrances.
+
+Reference direction: Bobby supplied five November 14 PDF notes. The Son Daven notes informed masked reveals; United Carriers informed connected scenes; Auntie Land informed a more personal, playful experience. These are written reference notes rather than captured motion footage; no claim of reproducing their actual implementations. The design-tools and remote-camera notes were read for context, not treated as installation or hardware-control instructions.
+
+Verification: mobile overflow checks across published pages, shared palette at 320px, theater single-player/close/focus lifecycle, and manual desktop/mobile review. Physical phone pull-to-refresh and subjective audio level still benefit from Bobby’s live-device review.

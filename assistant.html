@@ -221,7 +221,7 @@ main{background:var(--paper)}
 }
 @media(prefers-reduced-motion:reduce){.assistant-msg{scroll-behavior:auto}}
 </style>
-</head>
+<link rel="stylesheet" href="atmosphere.css"></head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -437,5 +437,5 @@ main{background:var(--paper)}
   fetch('https://'+CODE+'.goatcounter.com/counter/TOTAL.json').then(function(r){return r.ok?r.json():null;}).then(function(j){if(!j||!j.count)return;el.innerHTML='<b>'+j.count+'</b> visits';el.hidden=false;}).catch(function(){});
 })();
 </script>
-</body>
+<script src="atmosphere.js"></script></body>
 </html>

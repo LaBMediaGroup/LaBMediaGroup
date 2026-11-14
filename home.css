@@ -14,3 +14,18 @@ main{position:relative;top:var(--pull-distance,0px)}.pull-refresh{position:fixed
 .nav .crew-entry{color:var(--accent)}@media(max-width:650px){.nav nav{gap:12px;font-size:9px}.nav nav a:nth-child(3){display:none}.nav .brand img{width:55px}.nav{padding-inline:14px}.nav .appearance summary{width:35px}}
 
 .refresh-arrival{width:150px;left:calc(50% - 75px);top:calc(50% - 32px);visibility:hidden}
+
+/* Film mattes open; the workbench lifts into place; the notebook fans out. */
+.unfold{transition:transform 1.15s var(--ease),opacity .9s var(--ease),clip-path 1.2s var(--ease);transition-delay:var(--stagger,0ms)}
+.unfold:not(.unfolded){opacity:.12;transform:translateY(55px)}
+.project.unfold:not(.unfolded) .project-image{clip-path:inset(16% 0 16% 0)}.project-image{transition:clip-path 1.4s var(--ease)}.project.unfolded .project-image{clip-path:inset(0)}
+.experiment.unfold{transform-origin:50% 0}.experiment.unfold:not(.unfolded){transform:perspective(1200px) translateY(70px) rotateX(9deg) scale(.97)}
+#work>h2.unfold:not(.unfolded){clip-path:inset(0 0 80% 0);transform:translateY(30px)}
+.hero-film video{transform:translateY(var(--hero-drift,0px)) scale(1.15)}
+.lab{position:relative;isolation:isolate}.lab:before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--accent);transform:scaleX(var(--unfold,0));transform-origin:left}
+.notebook-object.unfold:not(.unfolded) .paper{transform:rotate(0) translateY(35px)}.notebook-object.unfolded .paper-back{transform:rotate(calc(4deg + var(--unfold,1)*8deg))}.notebook-object.unfolded .paper-mid{transform:rotate(calc(-3deg - var(--unfold,1)*5deg))}.notebook-object:hover .paper-front{transform:translateY(-15px) rotate(-3deg)}
+.about-image.unfold:not(.unfolded){clip-path:inset(0 35% 0 0)}
+.unfold:focus-within{opacity:1!important;transform:none!important;clip-path:none!important}
+@media(max-width:650px){.appearance>div.palette-panel{padding:18px;max-height:calc(100svh - 100px);overflow:auto}.palette-heading strong{font-size:30px}.hero-film video{transform:none}.unfold:not(.unfolded){transform:translateY(30px)}}
+@media(prefers-reduced-motion:reduce){.unfold{opacity:1!important;transform:none!important;clip-path:none!important}.project-image{clip-path:none!important}.hero-film video{transform:none!important}}
+html.motion-paused .unfold{opacity:1!important;transform:none!important;clip-path:none!important}html.motion-paused .project-image{clip-path:none!important}html.motion-paused .hero-film video{transform:none!important}

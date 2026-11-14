@@ -370,3 +370,43 @@ test('flight checklist stays hidden until requested, then persists and celebrate
   assert.equal(await page.locator('#lab-flight-checklist').getAttribute('data-complete'), 'true');
   await page.close();
 });
+
+test('shared atmosphere panel works at narrow widths and remembers the palette', async () => {
+  const context = await browser.newContext({ viewport: { width: 320, height: 740 }, reducedMotion: 'reduce' });
+  const page = await context.newPage();
+  await page.route('**/*', route => route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
+  for (const file of ['index.html', 'tools.html', 'portfolio.html']) {
+    await page.goto(`${baseURL}/${file}`);
+    await page.locator('.appearance summary').click();
+    await page.locator('[data-palette="forest"]').click();
+    assert.equal(await page.locator('html').getAttribute('data-theme'), 'forest');
+    assert.equal(await page.locator('[data-palette="forest"]').getAttribute('aria-pressed'), 'true');
+    const box = await page.locator('.palette-panel').boundingBox();
+    assert.ok(box.x >= 0 && box.x + box.width <= 321, `${file}: palette stays within the viewport`);
+    await page.keyboard.press('Escape');
+    assert.equal(await page.locator('.appearance').getAttribute('open'), null);
+  }
+  await context.close();
+});
+
+test('the reel enters a single screening room and Escape stops playback', async () => {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
+  await page.route('**/*', route => route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
+  await page.goto(`${baseURL}/portfolio.html`);
+  await page.locator('.theater-watch').click();
+  assert.equal(await page.locator('.cinema-room').evaluate(el => el.open), true);
+  assert.equal(await page.locator('.cinema-screen iframe').count(), 1);
+  assert.equal(await page.locator('.theater-player iframe').count(), 0, 'the old inline player must not launch too');
+  assert.match(await page.locator('.cinema-screen iframe').getAttribute('src'), /UAFQ5KU-6Jg/);
+  assert.equal(await page.locator('video').evaluateAll(videos => videos.filter(v => !v.paused).length), 0);
+  await page.keyboard.press('Escape');
+  await page.locator('.cinema-screen iframe').waitFor({state:'detached'});
+  assert.equal(await page.locator('.cinema-screen iframe').count(), 0);
+  assert.equal(await page.locator('.theater-watch').evaluate(el => el === document.activeElement), true);
+  await page.getByRole('button', { name: 'Watch Gone in the theater', exact: true }).click();
+  assert.match(await page.locator('.cinema-screen iframe').getAttribute('src'), /v3u32w66o-E/);
+  await page.getByRole('button', { name: 'Leave theater ×', exact: true }).click();
+  await page.locator('.cinema-screen iframe').waitFor({state:'detached'});
+  assert.equal(await page.locator('.cinema-screen iframe').count(), 0);
+  await page.close();
+});
