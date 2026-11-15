@@ -395,6 +395,7 @@ test('the reel enters a single screening room and Escape stops playback', async 
   await page.goto(`${baseURL}/portfolio.html`);
   await page.locator('.theater-watch').click();
   assert.equal(await page.locator('.cinema-room').evaluate(el => el.open), true);
+  assert.equal(await page.locator('.cinema-audience .audience-row').count(),5);
   assert.equal(await page.locator('.cinema-screen iframe').count(), 1);
   assert.equal(await page.locator('.theater-player iframe').count(), 0, 'the old inline player must not launch too');
   assert.match(await page.locator('.cinema-screen iframe').getAttribute('src'), /UAFQ5KU-6Jg/);
@@ -434,15 +435,17 @@ test('workbench switches live tools with keyboard controls', async () => {
   await page.close();
 });
 
-test('notebook shelves and search combine without losing the complete library', async () => {
+test('notebook category controls and search work without cover cards', async () => {
   const page=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});
   await page.route('**/*',r=>r.request().url().startsWith(baseURL)?r.continue():r.abort());
   await page.goto(`${baseURL}/resources.html`);
-  await page.locator('[data-notebook-band="band-make"]').click();
+  assert.equal(await page.locator('.notebook-shelf').count(),0);
+  await page.locator('.notebook-index summary').click();
+  await page.locator('#palChips [data-gid="software"]').click();
   const groups=await page.locator('#groups .item:visible').evaluateAll(items=>[...new Set(items.map(i=>i.dataset.gid))]);
-  assert.ok(groups.length>0&&groups.every(g=>['ai','music','stock','fonts','3d','software'].includes(g)));
+  assert.ok(groups.length>0&&groups.every(g=>g==='software'));
   await page.locator('#q').fill('DaVinci');
-  assert.equal(await page.locator('[data-notebook-band][aria-pressed="true"]').count(),0);
+  assert.equal(await page.locator('#palChips [aria-pressed="true"]').count(),0);
   assert.ok(await page.locator('#groups .item:visible').count()>0);
   await page.locator('#q').fill('not-a-real-resource-974xyz');
   assert.match(await page.locator('#restLabel').textContent(),/0 matches/);

@@ -564,30 +564,27 @@ document.addEventListener('click',function(e){
      detail panels and the deep-link anchors working untouched. */
   var PALETTE = document.body.classList.contains('palette');
   var activeGid = null;
-  var activeBand = null;
-  function clearShelf(){activeBand=null;document.querySelectorAll("[data-notebook-band]").forEach(function(b){b.setAttribute("aria-pressed","false")});}
 
   function run(){
     var v=q.value.trim().toLowerCase();
-    var filtering = !!v || freeOnly || (PALETTE && (activeGid || activeBand));
+    var filtering = !!v || freeOnly || (PALETTE && activeGid);
 
     var hits=0;
     items.forEach(function(el){
       var on = (!v || el.dataset.hay.indexOf(v)>-1)
             && (!freeOnly || el.dataset.paid!=='1')
-            && (!activeGid || el.dataset.gid===activeGid)
-            && (!activeBand || BANDS.find(function(b){return b.id===activeBand}).groups.indexOf(el.dataset.gid)>-1);
+            && (!activeGid || el.dataset.gid===activeGid);
       /* At rest the palette shows the picks: an empty page under a search box
          reads as broken, and 127 rows reads as the thing we just removed. */
-      if(PALETTE && !v && !freeOnly && !activeGid && !activeBand) on = el.dataset.pick==='1';
+      if(PALETTE && !v && !freeOnly && !activeGid) on = el.dataset.pick==='1';
       el.style.display = on ? '' : 'none';
       if(on) hits++;
     });
 
     if(PALETTE){
-      document.body.classList.toggle('palette-resting', !v && !freeOnly && !activeGid && !activeBand);
+      document.body.classList.toggle('palette-resting', !v && !freeOnly && !activeGid);
       if(restLabel){
-        restLabel.textContent = (!v && !freeOnly && !activeGid && !activeBand)
+        restLabel.textContent = (!v && !freeOnly && !activeGid)
           ? 'Start here \u00b7 ' + hits + ' LaB picks'
           : hits + (hits===1?' match':' matches');
       }
@@ -737,7 +734,7 @@ document.addEventListener('click',function(e){
       b.dataset.gid=sec.id;
       b.innerHTML=title.textContent.trim()+' <span>'+n+'</span>';
       b.addEventListener('click',function(){
-        clearShelf();activeGid = (activeGid===sec.id) ? null : sec.id;
+        activeGid = (activeGid===sec.id) ? null : sec.id;
         [].forEach.call(chipHost.children,function(c){
           c.setAttribute('aria-pressed', String(c.dataset.gid===activeGid));
         });
@@ -748,9 +745,7 @@ document.addEventListener('click',function(e){
     });
   }
 
-  document.querySelectorAll('[data-notebook-band]').forEach(function(button){button.addEventListener('click',function(){activeBand=activeBand===button.dataset.notebookBand?null:button.dataset.notebookBand;activeGid=null;q.value='';document.querySelectorAll('[data-notebook-band]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.notebookBand===activeBand))});if(chipHost)[].forEach.call(chipHost.children,function(b){b.setAttribute('aria-pressed','false')});run();document.getElementById('restLabel').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});});});
   q.addEventListener('input',function(){
-    if(q.value.trim())clearShelf();
     if(q.value.trim() && activeGid){
       activeGid=null;
       if(chipHost)[].forEach.call(chipHost.children,function(c){c.setAttribute("aria-pressed","false")});

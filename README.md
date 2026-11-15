@@ -270,18 +270,20 @@ The homepage prioritizes actual film footage and titles, with a sticky shrinking
 film stage, staggered preview cards and animated destination artwork. Tools uses
 one keyboard-accessible workbench; its Golden Hour preview uses the full planner’s
 pixel pine silhouettes and sky palette with an accessible day scrubber and shared
-solar calculations, initially showing today’s evening golden window; Notebook uses category shelves with global
-search. Shared appearance settings include a deeper Forest palette and explicit
+solar calculations, initially showing today’s evening golden window; Notebook uses global search and compact category controls. Shared appearance settings include a deeper Forest palette and explicit
 UI sound controls. Preview files are silent; full films play with sound in the
 screening room. Motion can be paused and respects reduced-motion preferences.
 
-The screening room animates both entry and exit. Its audience is intentionally
-near-black. `projection.js` synchronizes a subtle three-zone color overlay to the
-demo reel's actual YouTube playback time, including seeking. The 4 Hz RGB track
+The screening room animates both entry and exit. Five staggered audience rows
+remain near-black, with progressively smaller figures nearer the screen. `projection.js` synchronizes a three-zone color overlay to each
+film’s actual YouTube playback time, including seeking. The 4 Hz RGB track
 in `assets/reel-light-track.json` was sampled from Bobby's published reel
 https://www.youtube.com/watch?v=UAFQ5KU-6Jg using area averaging into three pixels.
-Only color samples ship, not the downloaded reel. Other films use neutral dim
-light; screen light has its own toggle.
+Only color samples ship, not downloaded videos. All seven films in the gallery
+now have their own 4 Hz tracks alongside the reel. Sources are the exact published
+YouTube versions identified by videoId in each assets/*-light-track.json file.
+Screen light has its own toggle and respects paused/reduced motion. The stronger
+spill uses luminance-based intensity (.09–.49) while base silhouettes stay dark.
 
 Crew access is a discreet slate-logo header link. Its mark comes from the deployed
 Crew Room's `public/splash/lg-mark-264.png`. Authentication is unchanged.

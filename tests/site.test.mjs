@@ -531,3 +531,14 @@ test('reel projection track has valid low-frequency color samples for the real r
   assert.ok(track.samples.every(s=>s.length===9&&s.every(v=>Number.isInteger(v)&&v>=0&&v<=255)));
   assert.ok(new Set(track.samples.map(s=>s.join(','))).size>100);
 });
+
+test('every published gallery film has its own complete color track',()=>{
+ const films={'gone':'v3u32w66o-E','scattered':'bwmKomu0xPo','itsaboy':'BsIad5S8bQc','trail-dead':'rtEs8chuDlM','lookout':'G0zfFWwQuZA','moz':'HtF4L9RpkaU','anthony-brass':'CPvxM8GrCg8'};
+ for(const [name,id] of Object.entries(films)){
+  const track=JSON.parse(read('assets/'+name+'-light-track.json'));
+  assert.equal(track.videoId,id);assert.equal(track.sampleRate,4);
+  assert.ok(track.samples.length>800);
+  assert.ok(track.samples.every(s=>s.length===9&&s.every(v=>Number.isInteger(v)&&v>=0&&v<=255)));
+  assert.match(read('projection.js'),new RegExp(id));
+ }
+});
