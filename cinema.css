@@ -39,3 +39,11 @@ body.cinema-open{overflow:hidden}.cinema-room{width:100vw;max-width:none;height:
 .audience-row-middle,.audience-row-far{mask-image:linear-gradient(#000 58%,transparent 98%);-webkit-mask-image:linear-gradient(#000 58%,transparent 98%)}
 
 .audience-row-back{width:135%;bottom:270px;margin-left:-12px;z-index:0}.audience-row-distant{width:111%;bottom:330px;margin-left:19px;z-index:0}.audience-row-back .audience-photo{filter:brightness(.14) saturate(.35)}.audience-row-distant .audience-photo{filter:brightness(.12) saturate(.3)}.audience-row-back .audience-projection,.audience-row-distant .audience-projection{opacity:calc(var(--screen-energy,.05)*.5)}.audience-row-back,.audience-row-distant{mask-image:linear-gradient(#000 58%,transparent 98%);-webkit-mask-image:linear-gradient(#000 58%,transparent 98%)}@media(max-height:650px){.audience-row-back{bottom:150px}.audience-row-distant{bottom:190px}}@media(max-height:500px) and (orientation:landscape){.audience-row-back{bottom:70px}.audience-row-distant{bottom:90px}}
+
+/* The shorts have darker frame averages than the reel: lift only their reflected light. */
+.cinema-room[data-projection=film] .audience-projection img{filter:grayscale(1) brightness(.9)}
+.cinema-room[data-projection=film] .audience-projection{transition:opacity .35s linear}
+.cinema-room[data-projection=film] .audience-projection:after{filter:saturate(1.65);transition:background .35s linear}
+/* Broad reflected fill is separate from the photographic edge highlights. */
+.cinema-room[data-projection=film] .audience-projection img{filter:grayscale(1) brightness(.9)}
+.cinema-room[data-projection=film] .audience-projection:after{mix-blend-mode:screen;opacity:.55;filter:saturate(1.4);mask-image:url('assets/cinema-audience-v2.png'),linear-gradient(#000 15%,#000b 55%,transparent 98%);mask-size:100% 100%;mask-repeat:no-repeat;mask-composite:intersect;-webkit-mask-image:url('assets/cinema-audience-v2.png'),linear-gradient(#000 15%,#000b 55%,transparent 98%);-webkit-mask-size:100% 100%;-webkit-mask-repeat:no-repeat;-webkit-mask-composite:source-in}

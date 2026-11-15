@@ -310,3 +310,8 @@ The About page’s Fair Questions section has been removed. Its contact form use
 the existing Resend-backed Sideways Worker through an isolated LaB route; see
 contact-mailer/README.md. Automated delivery tests mock Resend; live checks verify
 CORS and validation without sending an email.
+
+Film-only reflection tuning separates sampled hue from exposure, uses the
+brightest of the three screen zones for overall intensity, and adds a masked
+broad fill over heads/shoulders that fades toward the seats. The demo reel
+retains its previous lighting parameters. Film transitions settle in 350 ms.
