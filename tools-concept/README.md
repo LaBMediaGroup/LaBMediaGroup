@@ -11,3 +11,12 @@ Reuses ideas-data.js concepts and sun-calc.js at Shelby Township coordinates. Fr
 Verified: JavaScript syntax; all local HTML asset/link targets exist; prompt library and solar calculations load; browser prompt reroll, arrow-key tab switching, 9:16 result (1215 × 2160), solar slider end state, and motion pause. Browser viewport checks at 390 and 320 pixels showed no horizontal overflow. Inspected desktop and phone composition. No physical-phone or broad cross-browser certification. Reduced-motion CSS and media-query handling implemented; system preference emulation not tested.
 
 Review next: overall visual identity, the logo's material/depth, choice of lead tool, and whether a continuous logo-to-tool transition adds useful meaning. No backend changes or publishing.
+
+## Approved homepage — November 17
+Bobby approved the minimal layout and explicitly requested it replace labmedia.work and be pushed. Root index.html is now the production entry; this folder supplies its assets and Work page. Flat existing logo, minimal text, direct tool access. Added a moving selection indicator, bounded panel reveals, staggered prompt words, calculated daylight/stars, and draggable/keyboard-adjustable crops. Pause and reduced-motion paths remain immediate.
+
+All 184 repository checks passed before publication. Browser verified slider endpoint, prompt reroll, keyboard crop position and 1215 × 2160 vertical dimensions. Updated obsolete film-home assertions; shared palette tests still cover the pages carrying that UI.
+
+Era Residence was inspected in the browser following Bobby’s reference: expansive architectural imagery, day/night transitions, and restrained navigation. Use the motion language with LaB’s own footage and working tools; no copied assets. Broader scene refinement follows initial publication.
+
+Published refinement: the sun has a soft luminous disc, bloom, smooth layered horizon and calculated day/night response. Frame lazily plays the existing 1.4 MB MOZ interior clip only while selected, visible and motion-enabled; muted, with a still fallback. Pause, reduced motion, background tabs and leaving Frame stop playback. Added a browser regression covering keyboard access, prompt rerolls, solar endpoint, vertical crop dimensions/position, no reduced-motion video fetch, and 320px layout.

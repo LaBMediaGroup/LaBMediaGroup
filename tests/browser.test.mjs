@@ -487,3 +487,29 @@ test('contact form preserves messages on failure and confirms successful submiss
  assert.equal(await page.locator('#contactForm textarea').inputValue(),'');
  await page.close();
 });
+
+test('minimal home keeps previews usable with reduced motion and narrow screens', async () => {
+  const page = await browser.newPage({viewport:{width:320,height:740},reducedMotion:'reduce'});
+  await page.route('**/*', r => r.request().url().startsWith(baseURL) ? r.continue() : r.abort());
+  await page.goto(`${baseURL}/index.html`);
+  assert.equal(await page.locator('#motion').getAttribute('aria-pressed'),'true');
+  await page.locator('#daytime').press('End');
+  assert.equal(await page.locator('#phase').innerText(),'After the light');
+  await page.locator('#tab-story').click();
+  const before=await page.locator('#prompt').innerText();
+  await page.locator('#roll').click();
+  assert.notEqual(await page.locator('#prompt').innerText(),before);
+  await page.locator('#tab-story').press('ArrowRight');
+  assert.equal(await page.locator('#tab-frame').getAttribute('aria-selected'),'true');
+  await page.getByRole('button',{name:'9:16',exact:true}).click();
+  assert.equal(await page.locator('#dimensions').innerText(),'1215 × 2160');
+  const crop=await page.locator('#crop').getAttribute('style');
+  await page.locator('.frame-scene').press('ArrowRight');
+  assert.notEqual(await page.locator('#crop').getAttribute('style'),crop);
+  assert.equal(await page.locator('.frame-video').getAttribute('src'),null,'no video download in reduced motion');
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  await page.goto(`${baseURL}/tools-concept/work.html`);
+  assert.equal(await page.locator('h1').count(),1);
+  assert.equal(await page.evaluate(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0)),true);
+  await page.close();
+});
