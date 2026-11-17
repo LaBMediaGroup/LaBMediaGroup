@@ -375,7 +375,7 @@ test('shared atmosphere panel works at narrow widths and remembers the palette',
   const context = await browser.newContext({ viewport: { width: 320, height: 740 }, reducedMotion: 'reduce' });
   const page = await context.newPage();
   await page.route('**/*', route => route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
-  for (const file of ['index.html', 'tools.html', 'portfolio.html']) {
+  for (const file of ['tools.html', 'portfolio.html']) {
     await page.goto(`${baseURL}/${file}`);
     await page.locator('.appearance summary').click();
     await page.locator('[data-palette="forest"]').click();

@@ -181,7 +181,7 @@ test('assistant knowledge follows the current filmmaking tools', () => {
 
 test('public totals match their data sources', () => {
   const index = read('index.html');
-  assert.equal((index.match(new RegExp(`${resourceCount} vetted resources`, 'g')) || []).length, 3);
+  assert.match(index, /href="resources\.html"/); // Minimal home links to the authoritative resource count.
 
   // One notebook, one total. The other three carried the same count while the
   // list was split across them; they are redirects now.
@@ -410,7 +410,7 @@ test('every published page carries the shared nav and footer', () => {
       assert.match(html, /href="(?:https:\/\/labmedia.work\/)?tools\.html"/);
       assert.doesNotMatch(html, /name="robots" content="noindex/);
       if (file === 'index.html') {
-        assert.match(html, /home\.js/);
+        assert.match(html, /tools-concept\/main\.js/);
         assert.match(html, /https:\/\/crew\.labmedia\.work/);
       }
       continue;
