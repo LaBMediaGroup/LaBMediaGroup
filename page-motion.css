@@ -1,0 +1,18 @@
+/* Titles carry the reader between the directory and its destinations. */
+@view-transition{navigation:auto}
+@media(prefers-reduced-motion:no-preference){
+  html:not(.motion-paused) h1{view-transition-name:lab-page-title}
+  ::view-transition-old(root){animation:lab-leave 220ms ease-out both}
+  ::view-transition-new(root){animation:lab-arrive 480ms cubic-bezier(.2,.76,.2,1) both}
+  ::view-transition-group(lab-page-title){animation-duration:480ms}
+  @keyframes lab-leave{to{opacity:0}}
+  @keyframes lab-arrive{from{opacity:.2;clip-path:inset(0 0 12% 0)}to{opacity:1;clip-path:inset(0)}}
+}
+@media(prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
+@media(prefers-reduced-motion:no-preference){
+  html:not(.still):not(.motion-paused) :is(#light:not([hidden]) #sky,#sunSky){view-transition-name:solar-scene}
+  html:not(.still):not(.motion-paused) :is(#frame:not([hidden]) .frame-scene,#viewfinder){view-transition-name:interior-frame}
+  html:not(.still):not(.motion-paused) :is(#story:not([hidden]) #prompt,#conceptText){view-transition-name:story-prompt}
+  ::view-transition-group(solar-scene),::view-transition-group(interior-frame),::view-transition-group(story-prompt){animation-duration:650ms;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+}
+html:is(.still,.motion-paused)::view-transition-group(*),html:is(.still,.motion-paused)::view-transition-new(*),html:is(.still,.motion-paused)::view-transition-old(*){animation:none!important}
