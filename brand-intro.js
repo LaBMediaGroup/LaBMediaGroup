@@ -29,7 +29,7 @@
   const ticks = new Path2D('M568 109 H601 M568 137 H593 M568 165 H605');
   // Water climbs the sloping glass on the loaded side as it drains on the
   // other. The bulge crosses first; the run-up at the wall arrives later.
-  function liquidSegments(body,wall) {
+  function liquidSegments(body,wall,leading = 0,trailing = 0) {
     const push = Math.max(0,body);
     const runUp = Math.max(0,wall);
     const backwash = Math.max(0,-body);
@@ -38,7 +38,7 @@
     const leftX = 524 - leftDrop*64/105;
     const rightX = 691 + rightDrop*87/144;
     const shoulderX = 569 + 39*push - 9*backwash;
-    const shoulderY = 307 + 19*push - 40*backwash;
+    const shoulderY = 307 + 19*push - 40*backwash - 13*leading;
     const controlX = 546+11*push+3*backwash;
     const controlY = 310+leftDrop-19*backwash;
     // Continue the quadratic's tangent into the cubic, even at peak slosh.
@@ -46,13 +46,23 @@
     const left = leftX+' '+(298+leftDrop);
     const shoulder = shoulderX+' '+shoulderY;
     const right = rightX+' '+(260+rightDrop);
-    // Independently painted round caps overlap at the three surface joins.
-    // This keeps the magnified ink solid while the path is being revealed.
+    // Split the original cubic at its midpoint. Lift the midpoint and its
+    // two adjacent handles together so the travelling crest stays smooth.
+    const handleX = 638+14*push-24*backwash;
+    const handleY = 231-28*runUp+51*backwash;
+    const q0x = shoulderX+18, q0y = shoulderY+tangentY/2;
+    const q1x = (shoulderX+36+handleX)/2, q1y = (shoulderY+tangentY+handleY)/2;
+    const q2x = (handleX+rightX)/2, q2y = (handleY+260+rightDrop)/2;
+    const drift = 10*trailing, lift = -24*trailing;
+    const midInX = (q0x+q1x)/2+drift, midInY = (q0y+q1y)/2+lift;
+    const midOutX = (q1x+q2x)/2+drift, midOutY = (q1y+q2y)/2+lift;
+    const mid = (midInX+midOutX)/2+' '+(midInY+midOutY)/2;
+    // Separate round caps keep the ink solid at macro scale.
     return [
       `M590 439 H472 Q438 439 460 403 L${left}`,
       `M${left} Q${controlX} ${controlY} ${shoulder}`,
-      `M${shoulder} C${shoulderX+36} ${shoulderY+tangentY}
-        ${638+14*push-24*backwash} ${231-28*runUp+51*backwash} ${right}`,
+      `M${shoulder} C${q0x} ${q0y} ${midInX} ${midInY} ${mid}`,
+      `M${mid} C${midOutX} ${midOutY} ${q2x} ${q2y} ${right}`,
       `M${right} L778 404 Q798 440 766 440 L646 439 H590`
     ];
   }
@@ -91,15 +101,16 @@
     }
   }
 
-  let surge = 0, velocity = 0, wall = 0;
-  let previousY = scrollY, previousTime = performance.now();
+  let surge = 0, velocity = 0, front = 0, wall = 0;
+  let previousTime = performance.now();
   let shown = null;
+  let previousDrive = null;
 
-  function advanceWater(delta, elapsed, height) {
+  function advanceWater(delta, elapsed, height, landingImpulse) {
     // Weight displacement by speed: the same distance over a longer gesture
     // delivers a smaller impulse. Use viewport units across device sizes.
     const speed = Math.abs(delta)/(height*Math.max(elapsed,1/120));
-    velocity += 72*delta/height*clamp(speed/1.8);
+    velocity += 82*delta/height*clamp(speed/1.8) + landingImpulse;
     velocity = Math.max(-15,Math.min(15,velocity));
 
     // Integrate in small steps even on a low refresh-rate screen. The wall
@@ -107,13 +118,14 @@
     let remaining = Math.min(elapsed,1);
     while (remaining > 0) {
       const dt = Math.min(remaining,1/120);
-      velocity += (-76*surge - 8.6*velocity)*dt;
+      velocity += (-72*surge - 7.8*velocity)*dt;
       surge += velocity*dt;
-      wall += (surge-wall)*(1-Math.exp(-dt/.075));
+      front += (surge-front)*(1-Math.exp(-dt/.063));
+      wall += (front-wall)*(1-Math.exp(-dt/.085));
       remaining -= dt;
     }
-    if (delta === 0 && Math.abs(surge)+Math.abs(wall)+Math.abs(velocity)/9 < .006) {
-      surge = velocity = wall = 0;
+    if (delta === 0 && landingImpulse === 0 && Math.abs(surge)+Math.abs(front)+Math.abs(wall)+Math.abs(velocity)/9 < .006) {
+      surge = velocity = front = wall = 0;
     }
   }
 
@@ -129,26 +141,39 @@
     const mobile = width <= 720;
     const sloshEnd = mobile ? .716 : .67;
     const requested = clamp(scrollY/distance);
-    const dt = Math.max(0,(now-previousTime)/1000);
-    const withinCrest = y => Math.max(distance*.465, Math.min(distance*sloshEnd,y));
-    const delta = withinCrest(scrollY)-withinCrest(previousY);
-    // After an idle interval, only the new input belongs to this frame.
-    if (requested < .465) surge = velocity = wall = 0;
-    else advanceWater(delta,delta ? Math.min(dt,.05) : dt,height);
-    previousY = scrollY;
+    const dt = Math.min(.05,Math.max(0,(now-previousTime)/1000));
     previousTime = now;
-
-    const moving = surge !== 0 || velocity !== 0 || wall !== 0;
-    const goal = moving ? Math.min(requested,sloshEnd) : requested;
-    // When a flick outruns the crest, allow the water to finish. Catch up
-    // continuously afterwards without taking control of native scrolling.
-    const p = shown === null ? goal : Math.min(goal,shown+Math.max(.012,dt*1.45));
+    const last = shown ?? requested;
+    const gap = requested-last;
+    // Limit the photographed travel in both directions, particularly while
+    // rounding the heel on a wide screen. Native scroll and tap remain direct.
+    const travelRate = mobile ? 1.45 : mix(.22,1.1,beat(last,.30,.52));
+    const rate = mix(travelRate,.56,beat(last,.43,.70));
+    const step = Math.min(Math.abs(gap)*(1-Math.exp(-dt/(mobile ? .045 : .085))),rate*dt);
+    const p = Math.abs(gap)<.0002 ? requested : last+Math.sign(gap)*step;
     shown = p;
-    if (moving || p < goal) schedule();
+
+    const dockStart = mobile ? .884 : .86;
+    const dock = beat(p,dockStart,.97);
+    const dockDelta = dock-beat(last,dockStart,.97);
+    // The same water receives a small second impulse from the moving vessel.
+    // Acceleration loads one wall; braking lets the surface sweep back.
+    const landingImpulse = dockDelta*(mobile ? 4.5 : 7.5)*(1-2*dock);
+    // Read the gesture independently of the camera easing. A deliberate
+    // wheel flick can send a lively wave even on the slower desktop rail.
+    const drive = p < .465 ? .465 : Math.max(.465,Math.min(sloshEnd,requested));
+    const delta = (drive-(previousDrive ?? drive))*distance;
+    previousDrive = drive;
+    if (p < .465) surge = velocity = front = wall = 0;
+    else advanceWater(delta,dt,height,landingImpulse);
+    const energy = Math.abs(surge)+Math.abs(front)+Math.abs(wall)+Math.abs(velocity)/9;
+    const moving = energy > 0;
+    if (moving || p !== requested) schedule();
     const flying = p < .999;
     root.classList.toggle('logo-in-flight', flying);
-    canvas.hidden = !flying;
-    if (!flying) return;
+    root.classList.toggle('liquid-landing', !flying && moving);
+    canvas.hidden = !flying && !moving;
+    if (canvas.hidden) return;
 
     const ratio = Math.min(devicePixelRatio || 1, 3);
     const pixels = Math.round(width*ratio), rows = Math.round(height*ratio);
@@ -168,20 +193,22 @@
     const draw = beat(p,.197,.465);
     const crestFrame = beat(p,.331,.439);
     const pull = beat(p,sloshEnd+.014,mobile ? .819 : .79);
-    const dock = beat(p,mobile ? .884 : .86,.97);
+
 
     // Track the pen into the surface, then lock both camera axes and the
     // lens while the walls and waterline show the full outward and return flow.
-    const outer = rail.getPointAtLength(mix(278,railLength,turn));
+    const outer = rail.getPointAtLength(mix(mobile ? 278 : 309,railLength,turn));
     const tip = innerRail.getPointAtLength(penLength*draw);
     const focusX = mix(mix(outer.x,tip.x,transfer),608,crestFrame);
     const focusY = mix(mix(outer.y,tip.y,transfer),281,crestFrame);
     const pivotX = mix(focusX,622,pull), pivotY = mix(focusY,247,pull);
-    const trackingScale = scaleBetween(closeScale,portraitScale*3.6,beat(p,.166,.30));
+    const trackingScale = mobile
+      ? scaleBetween(closeScale,portraitScale*3.6,beat(p,.166,.30))
+      : scaleBetween(closeScale*.74,portraitScale*2.55,beat(p,.025,.30));
     const crestScale = Math.min(width*.78/175,height*.82/165);
     const lens = scaleBetween(trackingScale,crestScale,crestFrame);
     const scale = scaleBetween(scaleBetween(lens,portraitScale,pull),endScale,dock);
-    const bank = mix(mix(-.12,.27,turn),-.08,transfer)*(1-crestFrame);
+    const bank = mix(mix(-.12,.27,turn),-.08,transfer)*(1-crestFrame)*(mobile ? 1 : .28);
     const framedX = width*mix(mix(.52,.44,turn),.5,crestFrame);
     const framedY = height*mix(mix(.48,.58,turn),.48,crestFrame);
     const x = mix(framedX,target.left+622*endScale,dock);
@@ -210,7 +237,9 @@
         context.setLineDash([]);
       }
       if (moving && draw === 1) {
-        for (const data of liquidSegments(Math.tanh(surge),Math.tanh(wall))) {
+        const leading = Math.tanh(2.4*(surge-front));
+        const trailing = Math.tanh(3.2*(front-wall));
+        for (const data of liquidSegments(Math.tanh(surge),Math.tanh(wall),leading,trailing)) {
           context.stroke(new Path2D(data));
         }
       } else {
@@ -226,7 +255,7 @@
       context.drawImage(image,left,0,390-left,498,left,0,390-left,498);
       context.drawImage(image,850,0,right,498,850,0,right,498);
     }
-    const print = beat(p,.95,.989);
+    const print = beat(p,.95,.998)*(1-smooth(energy/.09));
     if (print > 0) {
       context.fillStyle = '#101311';
       context.globalAlpha = print;
@@ -242,7 +271,7 @@
     active = false;
     listeners.abort();
     cancelAnimationFrame(ticket);
-    root.classList.remove('logo-journey','logo-in-flight');
+    root.classList.remove('logo-journey','logo-in-flight','liquid-landing');
     root.style.removeProperty('--directory-in');
     canvas.remove();
   }
