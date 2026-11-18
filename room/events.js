@@ -2,23 +2,30 @@ const q = selector => document.querySelector(selector);
 const records = [...SPOTLIGHT].sort((a,b)=>a.date.localeCompare(b.date));
 const flyer = records.find(record=>record.photos?.length);
 const posterURL = 'light/kickoff-art.webp';
-q('#poster img').src = posterURL;
+
 const modal = q('dialog');
 function show(html) {
   q('#content').innerHTML = html;
   modal.showModal();
 }
 const pin = q('#poster');
-pin.insertAdjacentHTML('beforeend','<i class="blue-sheet" aria-hidden="true"></i>');
+
 const reduceMotion = matchMedia('(prefers-reduced-motion:reduce)');
 let flyerAnimation;
 function paperTransform(from,to) {
   return 'translate('+ (from.left-to.left+(from.width-to.width)/2) +'px,'+
     (from.top-to.top+(from.height-to.height)/2)+'px) scale('+from.width/to.width+') rotate(-3deg)';
 }
-pin.onclick = () => {
+function printBounds(){
+  const box=pin.getBoundingClientRect();
+  return {left:box.left+box.width*.23,top:box.top+box.height*.26,width:box.width*.54,height:box.height*.55};
+}
+let lifting=false;
+pin.onclick = async () => {
+  if(lifting)return;lifting=true;
+  await boardRender.roll();
   modal.removeAttribute('aria-labelledby');modal.setAttribute('aria-label','Festival flyer');
-  const start=pin.getBoundingClientRect();
+  const start=printBounds();
   modal.classList.add('flyer-view');
   show('<span class="loose-sheet"><img src="'+posterURL+'" alt="'+flyer.photos[0].alt+'"><i class="blue-sheet" aria-hidden="true"></i></span>');
   const image=q('.loose-sheet');
@@ -35,9 +42,11 @@ async function closeDetail(){
   if(modal.classList.contains('flyer-view')&&!reduceMotion.matches){
     flyerAnimation?.cancel();
     const image=q('.loose-sheet');
-    await image.animate([{transform:'none'},{transform:paperTransform(pin.getBoundingClientRect(),image.getBoundingClientRect())}],{duration:290,easing:'ease-in-out'}).finished;
+    await image.animate([{transform:'none'},{transform:paperTransform(printBounds(),image.getBoundingClientRect())}],{duration:290,easing:'ease-in-out'}).finished;
   }
-  modal.close();modal.classList.remove('flyer-view');pin.classList.remove('flyer-away');closing=false;
+  const wasFlyer=modal.classList.contains('flyer-view');modal.close();modal.classList.remove('flyer-view');pin.classList.remove('flyer-away');
+  if(wasFlyer)await boardRender.roll(true);
+  lifting=false;closing=false;
 }
 q('#close').onclick=closeDetail;
 modal.oncancel=event=>{event.preventDefault();closeDetail()};
@@ -65,7 +74,7 @@ function entry(record, agenda) {
   return button;
 }
 function render() {
-  q('h1').textContent = month.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  q('h1').innerHTML = month.toLocaleDateString('en-US',{month:'long'})+' <small>'+month.getFullYear()+'</small>';
   const grid = q('#days'), agenda = q('#agenda');
   grid.replaceChildren(); agenda.replaceChildren();
   for (const weekday of ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']) {

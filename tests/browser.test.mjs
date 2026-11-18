@@ -491,7 +491,7 @@ test('contact form preserves messages on failure and confirms successful submiss
 test('homepage directory opens all five tools without scripts', async () => {
   const page = await browser.newPage({javaScriptEnabled:false, viewport:{width:320,height:740}});
   await page.goto(baseURL);
-  for (const file of ['sun','ideas','droneweather','skybound','assistant']) {
+  for (const file of ['room/window','ideas','droneweather','skybound','assistant']) {
     const link = page.locator('main a[href^="'+file+'.html"]');
     assert.equal(await link.isVisible(), true);
     await link.click();
@@ -521,7 +521,7 @@ test('mobile tap carries the live crest into the anchored planner masthead', asy
     });
     await page.goto(baseURL+'/#directory');
     await page.getByRole('link',{name:'Light planner'}).tap();
-    await page.waitForURL('**/sun.html#sunStage');
+    await page.waitForURL(url=>url.pathname.endsWith('/room/window.html') && url.hash==='#planner');
     await page.waitForFunction(()=>window.headerWaveAligned === true);
     await page.waitForFunction(()=>!document.querySelector('header .mark-water'));
     assert.ok(await page.locator('header .nav-brand img').isVisible());

@@ -8,5 +8,5 @@
 @media(max-width:700px){.room-board img{object-fit:cover;object-position:7% center}}
 .room-rig iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;opacity:1}
 .reverse-stage{position:fixed;visibility:hidden;z-index:-1}.reverse-stage.engaged{visibility:visible;z-index:15}
-.live-board,.board-surface{background:inherit}.live-board{background:#898474 url(light/wall.webp) center/cover}
+.live-board{background:#898474 url(light/wall.webp) center/cover}
 .board-surface{min-height:100svh;touch-action:pan-y pinch-zoom}

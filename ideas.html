@@ -277,6 +277,7 @@ body.mode-48 .el[data-k="constraint"]{outline:1px solid var(--accent-dim)}
 </div>
 
 <section class="brief wrap">
+  <a href="room/story.html" style="display:inline-block;margin-bottom:1rem">Fridge magnets ↗</a>
   <div class="concept" id="concept" title="Click to lock this concept through the next roll">
     <span class="k">The Concept <span class="lockhint" id="conceptLock">: click to lock</span></span>
     <p id="conceptText">&nbsp;</p>
@@ -931,10 +932,15 @@ body.mode-48 .el[data-k="constraint"]{outline:1px solid var(--accent-dim)}
   if(incoming && restore(decodeURIComponent(incoming[1]))){
     $('briefMeta').textContent='Someone shared this brief with you. Roll to make your own.';
     history.replaceState(null,'',location.pathname);
-  } else if(/[#&]today\b/.test(location.hash)){
-    showDaily();
   } else {
     showDaily();
+    const magnet=new URLSearchParams(location.search).get('magnet');
+    const premises=new Map([['lunch','The fridge quit at lunch.'],['shadow','My shadow called in sick.'],['tuesday','Someone rewound Tuesday.']]);
+    if(premises.has(magnet)){
+      current.concept=premises.get(magnet);
+      locked.concept=true;
+      paintAll();
+    }
   }
 })();
 </script>

@@ -29,3 +29,18 @@ dialog:not(.flyer-view) #close{position:absolute;right:12px;top:10px;border:1px 
 @media(prefers-reduced-motion:no-preference){.picture-light::after{animation:lamp-on 1s ease-out 1}@keyframes lamp-on{0%,20%{opacity:.25}14%,100%{opacity:1}}}
 
 .sources{width:min(90%,1260px);margin:0 auto 2rem;background:#f1eddf;color:#302f26;padding:0 16px;box-shadow:0 4px 12px #17171333}.sources details+details{border-top:1px solid #bbb6a9}.sources summary{padding:14px 0;cursor:pointer}.sources a{display:inline-block;padding:8px 14px 14px 0}
+/* Typeset calendar and a close camera on the physical bulletin board. */
+.board-surface{background:#211f1b;color:#f3ead9;padding-bottom:36px}.board-surface>header{max-width:1480px;margin:auto;padding:20px 4vw;border-bottom:1px solid #ffffff21}.board-surface>header a{font-size:14px;color:#f3ead9;text-underline-offset:5px}
+.board-surface main{max-width:1480px;width:92%;padding:0;margin:clamp(20px,4vw,55px) auto;gap:clamp(20px,4vw,56px);grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+.paper{background:transparent;color:#f2e8d9;box-shadow:none;padding:0}.paper::before,.paper::after{display:none}
+.bar{align-items:flex-end;border-bottom:1px solid #ad9470;padding-bottom:17px;margin-bottom:17px}
+.bar h1{font:normal clamp(38px,5.4vw,76px)/.96 Georgia,serif;letter-spacing:-.065em}
+.bar h1 small{display:inline-block;color:#d7b787;font:13px/1 ui-monospace,monospace;letter-spacing:.06em;vertical-align:top;margin:8px 0 0 .35em}
+.bar button{border:1px solid #ffffff37;border-radius:50%;margin-left:4px;color:#efe7d7}
+.weekday{color:#c5bba9}.cell{border-color:#ffffff24;color:#bcaf99;min-height:clamp(52px,5vw,76px);font:11px ui-monospace,monospace}.event{font:500 clamp(12px,.98vw,15px)/1.22 system-ui;color:#fff5e1}.event em{font-style:normal}
+.board-surface aside{width:100%;max-width:none;padding:0;border:0;background:none;box-shadow:none;display:block;perspective:none}
+#poster{display:block;width:100%;padding:0;background:#363028;border:0;box-shadow:none;transform:none;animation:none}
+#poster::before,#poster::after{display:none}#poster:hover,#poster:focus-visible{animation:none}#poster canvas{display:block;width:100%;height:auto}
+.caption{margin:10px 0 0;padding:0;color:#e0d4be;background:none;font:12px/1.5 ui-monospace,monospace;text-align:left}
+.sources{max-width:1360px;width:92%;background:none;color:#e9decb;box-shadow:none;border-block:1px solid #ffffff30;padding:0}.sources details+details{border-color:#ffffff24}.sources summary{font-size:15px}.sources a{color:#ddcaa9}
+@media(max-width:760px){.board-surface main{display:flex;flex-direction:column;gap:24px}.board-surface aside{order:0;align-self:start}.board-surface .paper{order:1;width:100%}#poster{max-width:360px;margin:auto}.caption{text-align:center}.bar h1{font-size:46px}.agenda-item{border-color:#ffffff30;padding:14px 0}.agenda-item small{color:#d7b787;font:12px ui-monospace,monospace;margin-bottom:5px}.agenda-item strong{color:#fff5e2;font-size:22px}.agenda-item strong em{font-style:normal}}
