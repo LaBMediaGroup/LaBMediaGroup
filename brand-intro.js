@@ -27,11 +27,23 @@
   const outline = approach + ' H777 C825 471 840 445 814 401 L675.5 173 V81';
   const rim = new Path2D('M548 24 H693 C733 24 733 80.5 693 80.5 H548 C506 80.5 506 24 548 24 Z');
   const ticks = new Path2D('M568 109 H601 M568 137 H593 M568 165 H605');
-  // The starting cap lies directly above the last point of the outside rail.
-  // Only the free surface flexes. Both liquid-to-wall contacts stay pinned.
-  function liquidContour(lift) {
-    return `M590 439 H472 Q438 439 460 403 L524 298 Q546 ${310+lift} 569 ${307+lift}
-      C605 ${306+lift} 638 ${231-lift} 691 260 L778 404 Q798 440 766 440 L646 439`;
+  // Water climbs the sloping glass on the loaded side as it drains on the
+  // other. The bulge crosses first; the run-up at the wall arrives later.
+  function liquidContour(phase) {
+    const push = beat(phase,0,.28)*(1-beat(phase,.29,.64));
+    const runUp = beat(phase,.08,.39)*(1-beat(phase,.40,.71));
+    const backwash = beat(phase,.40,.73)*(1-beat(phase,.73,1));
+    const leftDrop = 25*push - 29*backwash;
+    const rightDrop = -35*runUp + 21*backwash;
+    const leftX = 524 - leftDrop*64/105;
+    const rightX = 691 + rightDrop*87/144;
+    const shoulderX = 569 + 39*push - 9*backwash;
+    const shoulderY = 307 + 19*push - 40*backwash;
+    return `M590 439 H472 Q438 439 460 403 L${leftX} ${298+leftDrop}
+      Q${546+11*push+3*backwash} ${310+leftDrop-19*backwash} ${shoulderX} ${shoulderY}
+      C${shoulderX+36} ${shoulderY-1-19*push+8*backwash}
+       ${638+14*push-24*backwash} ${231-28*runUp+51*backwash} ${rightX} ${260+rightDrop}
+      L778 404 Q798 440 766 440 L646 439`;
   }
   function measuredPath(data) {
     const guide = document.createElementNS('http://www.w3.org/2000/svg','path');
@@ -75,23 +87,29 @@
     const endScale = target.width/1165;
     const portraitScale = Math.min(width*(mobile ? .68 : .48)/430,height*.6/468);
     const closeScale = Math.min(width*.25/20,height*.23/20);
-    const turn = beat(p,0,.25);
-    const transfer = beat(p,.215,.32);
-    const draw = beat(p,.275,.625);
-    const pull = beat(p,.465,.68);
-    const dock = beat(p,mobile ? .825 : .79,.965);
+    const turn = beat(p,0,.207);
+    const transfer = beat(p,.178,.266);
+    const draw = beat(p,.224,.465);
+    const crestFrame = beat(p,.331,.439);
+    const sloshEnd = mobile ? .716 : .67;
+    const slosh = clamp((p-.465)/(sloshEnd-.465));
+    const pull = beat(p,sloshEnd+.014,mobile ? .819 : .79);
+    const dock = beat(p,mobile ? .884 : .86,.97);
 
-    // Round the left heel, cross the gap between the two strokes, then
-    // follow the drawing tip up the inside wall and across the liquid crest.
+    // Track the pen into the surface, then lock both camera axes and the
+    // lens while the walls and waterline show the full outward and return flow.
     const outer = rail.getPointAtLength(mix(278,railLength,turn));
     const tip = innerRail.getPointAtLength(inkLength*draw);
-    const pivotX = mix(mix(outer.x,tip.x,transfer),622,pull);
-    const pivotY = mix(mix(outer.y,tip.y,transfer),247,pull);
-    const trackingScale = scaleBetween(closeScale,portraitScale*3.6,beat(p,.2,.37));
-    const scale = scaleBetween(scaleBetween(trackingScale,portraitScale,pull),endScale,dock);
-    const bank = mix(mix(-.12,.27,turn),-.08,transfer)*(1-pull);
-    const framedX = width*mix(mix(.52,.44,turn),.5,pull);
-    const framedY = height*mix(mix(.48,.58,turn),.48,pull);
+    const focusX = mix(mix(outer.x,tip.x,transfer),608,crestFrame);
+    const focusY = mix(mix(outer.y,tip.y,transfer),281,crestFrame);
+    const pivotX = mix(focusX,622,pull), pivotY = mix(focusY,247,pull);
+    const trackingScale = scaleBetween(closeScale,portraitScale*3.6,beat(p,.166,.30));
+    const crestScale = Math.min(width*.78/175,height*.82/165);
+    const lens = scaleBetween(trackingScale,crestScale,crestFrame);
+    const scale = scaleBetween(scaleBetween(lens,portraitScale,pull),endScale,dock);
+    const bank = mix(mix(-.12,.27,turn),-.08,transfer)*(1-crestFrame);
+    const framedX = width*mix(mix(.52,.44,turn),.5,crestFrame);
+    const framedY = height*mix(mix(.48,.58,turn),.48,crestFrame);
     const x = mix(framedX,target.left+622*endScale,dock);
     const y = mix(framedY,target.top+247*endScale,dock) - height*.035*Math.sin(Math.PI*dock);
     context.translate(x,y);
@@ -108,17 +126,14 @@
     context.lineWidth = 14;
     context.stroke(ticks);
     if (draw > 0) {
-      // A single scroll-scrubbed swell decays before the portrait holds.
-      const phase = clamp((p-.625)/.083);
-      const lift = 30*Math.sin(2*Math.PI*phase)*Math.sin(Math.PI*phase)*(1-phase);
       context.lineWidth = 20;
       if (draw < 1) context.setLineDash([inkLength*draw,inkLength+2]);
-      context.stroke(phase > 0 && phase < 1 ? new Path2D(liquidContour(lift)) : ink);
+      context.stroke(slosh > 0 && slosh < 1 ? new Path2D(liquidContour(slosh)) : ink);
       context.setLineDash([]);
     }
 
     // The print takes over at display size. Reveal the letters from the A outward.
-    const letters = beat(p,.86,.985);
+    const letters = beat(p,.908,.985);
     if (letters > 0) {
       const left = 390*(1-letters);
       const right = 315*letters;
@@ -133,7 +148,7 @@
       context.drawImage(image,390,0,460,498,390,0,460,498);
       context.globalAlpha = 1;
     }
-    root.style.setProperty('--directory-in',String(beat(p,.905,.988)));
+    root.style.setProperty('--directory-in',String(beat(p,.928,.988)));
   }
 
   function schedule() { if (active && !ticket) ticket=requestAnimationFrame(render); }
