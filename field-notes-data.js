@@ -136,17 +136,6 @@
       ]
     },
     {
-      id: 'site-tool-aspect-ratio',
-      url: 'aspect.html',
-      title: 'Aspect Ratio Previewer : Current Features',
-      tags: 'aspect ratio previewer crop framing letterbox anamorphic scope flat widescreen vertical social image video multiple files local browser memory privacy upload active pixel dimensions 1080p 4k',
-      note: 'Current Aspect Ratio Previewer capabilities.',
-      answer: 'The Aspect Ratio Previewer tests common cinema, widescreen and vertical crops against sample frames or your own images and video. It accepts multiple local files, calculates exact active-pixel dimensions for 1080p and 4K UHD timelines, and processes the media entirely in browser memory with zero server uploads.',
-      sources: [
-        { title: 'Aspect Ratio Previewer', url: 'aspect.html', note: 'Local framing and crop tool' }
-      ]
-    },
-    {
       id: 'lab-films-le-juice',
       url: 'resources.html#le-juice-rochester',
       title: 'Le Juicé (2026) : Commercial Workflow & Color',

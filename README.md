@@ -26,7 +26,6 @@ weekend. Nothing costs money and nothing asks for an email.
 | `skybound.html` | SkyBound case study |
 | `droneweather.html` | Drone weather and flight-condition helper |
 | `sun.html` | Date/location-aware Golden Hour and sun-phase planner |
-| `aspect.html` | Aspect-ratio previewer |
 | `assistant.html` | LaB's grounded site guide |
 | `contact.html` | About LaB and contact details |
 | `colophon.html` | Owner build notes (unlisted, noindex; direct URL still public) |

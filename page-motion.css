@@ -11,7 +11,7 @@
 @media(prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
 @media(prefers-reduced-motion:no-preference){
   html:not(.still):not(.motion-paused) :is(#light:not([hidden]) #sky,#sunSky){view-transition-name:solar-scene}
-  html:not(.still):not(.motion-paused) :is(#frame:not([hidden]) .frame-scene,#viewfinder){view-transition-name:interior-frame}
+  html:not(.still):not(.motion-paused) :is(#frame:not([hidden]) .frame-scene){view-transition-name:interior-frame}
   html:not(.still):not(.motion-paused) :is(#story:not([hidden]) #prompt,#conceptText){view-transition-name:story-prompt}
   ::view-transition-group(solar-scene),::view-transition-group(interior-frame),::view-transition-group(story-prompt){animation-duration:650ms;animation-timing-function:cubic-bezier(.22,1,.36,1)}
 }
@@ -20,7 +20,6 @@ html:is(.still,.motion-paused)::view-transition-group(*),html:is(.still,.motion-
 /* Shared subjects connect the tools directory with the full instruments. */
 @media(prefers-reduced-motion:no-preference){
   html:not(.motion-paused) #ghSky{view-transition-name:solar-scene}
-  html:not(.motion-paused) #matteStage{view-transition-name:interior-frame}
   html:not(.motion-paused) #promptText{view-transition-name:story-prompt}
   html:not(.motion-paused) :is(#wxSky,#wxSceneStage){view-transition-name:weather-scene}
   html:not(.motion-paused) :is(#sbScene,body:has(#simulators) .hero h1){view-transition-name:drone-guide}
@@ -31,7 +30,6 @@ html:is(.still,.motion-paused)::view-transition-group(*),html:is(.still,.motion-
   html:not(.motion-paused) #roll:active .die{transform:rotate(55deg)}
   html:not(.motion-paused) #roll .die{transition:transform .23s ease}
   html:not(.motion-paused) #sunStage:has(#timeSlider:active) .sun-orb{filter:drop-shadow(0 0 12px #ffd681)}
-  html:not(.motion-paused) #viewfinder :is(.matte-top,.matte-bottom,.matte-left,.matte-right){transition:width .45s cubic-bezier(.22,1,.36,1),height .45s cubic-bezier(.22,1,.36,1)}
   @keyframes message-sent{from{opacity:.4;transform:translateX(12px)}}
   @keyframes message-received{from{opacity:.4;transform:translateY(8px)}}
   @keyframes guide-unfold{from{opacity:.4;transform:translateY(-6px)}}
@@ -39,7 +37,12 @@ html:is(.still,.motion-paused)::view-transition-group(*),html:is(.still,.motion-
 
 /* The homepage wordmark and the destination masthead share one flat mark. */
 @media(prefers-reduced-motion:no-preference){
-  html:not(.motion-paused) #directory h1{view-transition-name:none}
-  html:not(.motion-paused) :is(#directory h1 img,header img[src$="TheLaB-mark.png"]){view-transition-name:lab-wordmark}
-  ::view-transition-group(lab-wordmark){animation-duration:520ms;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+  html:not(.motion-paused) :is(#directory h1,header a:has(>img[src$="TheLaB-mark.png"])){view-transition-name:lab-wordmark}
+  ::view-transition-group(lab-wordmark){animation-duration:260ms;animation-timing-function:cubic-bezier(.22,.76,.24,1)}
+  html.wave-arrival::view-transition-old(lab-wordmark){animation:none;opacity:0}
+  html.wave-arrival::view-transition-new(lab-wordmark){animation:none}
+  html.wave-arrival::view-transition-new(root){animation:lab-leave 160ms ease-out reverse both}
 }
+header a:has(>img[src$="TheLaB-mark.png"]){position:relative;display:inline-flex}
+.live-water-mark>img{opacity:0!important;transition:none!important}
+.mark-water{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}

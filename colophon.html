@@ -6,20 +6,20 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How This Site Is Built | LaB Media</title>
-<meta name="description" content="Thirteen pages, one design system, no framework, no build step, and no first-party cookies. What it took and what broke along the way.">
+<meta name="description" content="Twelve pages, one design system, no framework, no build step, and no first-party cookies. What it took and what broke along the way.">
 <link rel="canonical" href="https://labmedia.work/colophon.html">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://labmedia.work/colophon.html">
 <meta property="og:site_name" content="LaB Media">
 <meta property="og:title" content="How This Site Is Built">
-<meta property="og:description" content="Thirteen pages, one design system, no framework, no build step, and no first-party cookies.">
+<meta property="og:description" content="Twelve pages, one design system, no framework, no build step, and no first-party cookies.">
 <meta property="og:image" content="https://labmedia.work/images/og/colophon.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="How This Site Is Built">
-<meta name="twitter:description" content="Thirteen pages, one design system, no framework, no build step, and no first-party cookies.">
+<meta name="twitter:description" content="Twelve pages, one design system, no framework, no build step, and no first-party cookies.">
 <meta name="twitter:image" content="https://labmedia.work/images/og/colophon.jpg">
 
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -122,7 +122,7 @@
   transition:color var(--fast) var(--ease)}
 .col-log a:hover{color:var(--accent)}
 </style>
-<link rel="stylesheet" href="atmosphere.css?v=e2d65dc8247f"><link rel="stylesheet" href="page-motion.css"><script defer src="page-motion.js"></script><script defer src="brand-motion.js"></script></head>
+<link rel="stylesheet" href="atmosphere.css?v=e2d65dc8247f"><link rel="stylesheet" href="page-motion.css?v=4"><script defer src="page-motion.js"></script><script defer src="brand-motion.js?v=4"></script></head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -148,7 +148,6 @@
           <a href="droneweather.html">SkyBound : Weather</a>
           <a href="skybound.html">SkyBound : Drone</a>
           <hr class="nav-sep" aria-hidden="true">
-          <a href="aspect.html">Aspect Ratio Previewer</a>
           <a href="assistant.html">LaB Assistant</a>
         </div>
       </li>
@@ -182,7 +181,7 @@
   <div class="rule"><span class="mono">Colophon</span><i></i><span class="mono" style="color:var(--faint)">Updated August 2026</span></div>
   <div class="hero-def">
     <div>
-      <h1>Thirteen pages, one <em>design system.</em></h1>
+      <h1>Twelve pages, one <em>design system.</em></h1>
       <p class="lede">This site has no framework or build step. It&rsquo;s hand-written HTML, CSS and
       JavaScript on free hosting, plus one small Cloudflare Worker that protects the assistant&rsquo;s
       optional AI phrasing. If you&rsquo;re a filmmaker who also tinkers, this is the part you might find useful.</p>
@@ -206,7 +205,7 @@
   </div>
 
   <dl class="figs">
-    <div class="fig"><dt>Pages</dt><dd>13</dd></div>
+    <div class="fig"><dt>Pages</dt><dd>12</dd></div>
     <div class="fig"><dt>Stylesheets</dt><dd>02</dd></div>
     <div class="fig"><dt>Themes</dt><dd>05</dd></div>
     <div class="fig"><dt>Cloud Worker</dt><dd>01</dd></div>
@@ -410,20 +409,8 @@
         same thresholds, so they cannot disagree.</em></p>
       </div>
     </div>
-    <div class="bug" id="aspect-previewer">
-      <span class="bug-n">10</span>
-      <div class="bug-main">
-        <h3>An interactive crop previewer that previews <em>local media</em></h3>
-        <p>The Aspect Ratio Previewer (<code>aspect.html</code>) overlays 2.39&#58;1 Scope, 1.85&#58;1 Flat, 16&#58;9 HD, 4&#58;3 Academy and 9&#58;16 Vertical mattes live over sample stills, or over your own photos and video clips. It computes exact active pixel resolutions rather than leaving you to guess letterbox boundaries in an NLE timeline.</p>
-      </div>
-      <div class="bug-side">
-        <p>3840&times;1607 is the real canvas for 4K at 2.39, so you know your working area before rendering rather than after.</p>
-        <p><em>Zero upload, 100% private. Photos and clips are parsed locally in browser memory via <code>URL.createObjectURL()</code> without sending a byte across the network.</em></p>
-      </div>
-    </div>
-
     <div class="bug" id="flight-checklist">
-      <span class="bug-n">11</span>
+      <span class="bug-n">10</span>
       <div class="bug-main">
         <h3>A checklist that can <em>leave its page</em></h3>
         <p>The 18-point pre-flight list stays absent until requested beside live conditions, then
@@ -439,7 +426,7 @@
     </div>
 
     <div class="bug">
-      <span class="bug-n">12</span>
+      <span class="bug-n">11</span>
       <div class="bug-main">
         <h3>The one page <em>nobody plans to visit</em></h3>
         <p>The zero on the <a href="404.html">missing page</a> is an eye: drawn, not typeset,
@@ -521,7 +508,6 @@
           <li><a href="sun.html">Golden Hour</a></li>
           <li><a href="droneweather.html">SkyBound : Weather</a></li>
           <li><a href="skybound.html">SkyBound : Drone</a></li>
-          <li><a href="aspect.html">Aspect Ratio</a></li>
           <li><a href="assistant.html">LaB Assistant</a></li>
         </ul>
       </div>
@@ -694,6 +680,6 @@
 <script src="lab-egg.js"></script>
 <script src="flight-checklist.js"></script>
 <script src="assistant-guide.js"></script>
-<script src="assistant-widget.js"></script>
+<script src="assistant-widget.js?v=3403d5e96883"></script>
 <script src="atmosphere.js?v=d82dc5117c63"></script></body>
 </html>

@@ -430,7 +430,7 @@ test('workbench switches live tools with keyboard controls', async () => {
   await page.locator('#promptBtn').click();
   await page.waitForFunction(previous=>document.querySelector('#promptText').textContent!==previous,before);
   await page.locator('#bench-tab-0').press('End');
-  assert.equal(await page.locator('#bench-tab-5').getAttribute('aria-selected'),'true');
+  assert.equal(await page.getByRole('tab',{name:/Ask/}).getAttribute('aria-selected'),'true');
   assert.equal(await page.locator('.bench-stage .tool:visible').count(),1);
   await page.close();
 });
@@ -488,10 +488,10 @@ test('contact form preserves messages on failure and confirms successful submiss
  await page.close();
 });
 
-test('homepage directory opens all six tools without scripts', async () => {
+test('homepage directory opens all five tools without scripts', async () => {
   const page = await browser.newPage({javaScriptEnabled:false, viewport:{width:320,height:740}});
   await page.goto(baseURL);
-  for (const file of ['sun','aspect','ideas','droneweather','skybound','assistant']) {
+  for (const file of ['sun','ideas','droneweather','skybound','assistant']) {
     const link = page.locator('main a[href^="'+file+'.html"]');
     assert.equal(await link.isVisible(), true);
     await link.click();
@@ -500,4 +500,32 @@ test('homepage directory opens all six tools without scripts', async () => {
   }
   assert.equal(await page.locator('video,canvas').count(),0);
   await page.close();
+});
+
+test('mobile tap carries the live crest into the anchored planner masthead', async () => {
+  const page = await browser.newPage({ viewport:{width:390,height:800}, isMobile:true, hasTouch:true });
+  try {
+    await page.route('**/*',route=>route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
+    await page.addInitScript(()=>{
+      // Record a painted frame, even if the wave settles before the load event.
+      const observe = new MutationObserver(()=>{
+        const ink = document.querySelector('header .mark-water');
+        if (!ink) return;
+        const mark = ink.previousElementSibling;
+        const box = ink.getBoundingClientRect(), target = mark.getBoundingClientRect();
+        window.headerWaveAligned = Math.abs(box.left-target.left)<1 &&
+          Math.abs(box.top-target.top)<1 && Math.abs(box.width-target.width)<1 &&
+          box.top>=0 && box.bottom<=innerHeight;
+      });
+      observe.observe(document,{subtree:true,childList:true});
+    });
+    await page.goto(baseURL+'/#directory');
+    await page.getByRole('link',{name:'Light planner'}).tap();
+    await page.waitForURL('**/sun.html#sunStage');
+    await page.waitForFunction(()=>window.headerWaveAligned === true);
+    await page.waitForFunction(()=>!document.querySelector('header .mark-water'));
+    assert.ok(await page.locator('header .nav-brand img').isVisible());
+  } finally {
+    await page.close();
+  }
 });

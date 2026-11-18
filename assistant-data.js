@@ -22,8 +22,6 @@ var LAB_ASSISTANT_KNOWLEDGE = {
       summary:'A date- and location-aware filmmaking planner with calculated light windows, live cloud-aware guidance for today, separate sun and phase-aware moon paths, and a copyable day plan.' },
     { title:'SkyBound : Weather', url:'droneweather.html', tags:'drone weather skybound live wind gusts visibility precipitation cloud cover overcast flight safety thresholds open meteo checklist night flying animated scene local time sunset twilight blue hour moon lunar phase waxing waning',
       summary:'Live Metro Detroit wind, cloud and weather guidance, conservative flight thresholds, a local-time scene with a phase-aware moon, and a persistent 18-point pre-flight checklist.' },
-    { title:'Aspect Ratio Previewer', url:'aspect.html', tags:'aspect ratio crop framing letterbox anamorphic scope vertical image video local privacy 1080p 4k multiple files',
-      summary:'Preview common cinema and social crops against sample frames or local images and video, with exact 1080p and 4K active-pixel dimensions and no uploads.' },
     { title:'SkyBound : Drone', url:'skybound.html', tags:'skybound drone fpv learn simulator part 107 flight path training licence license',
       summary:'A practical drone path: simulate, learn, build a kit, then work toward Part 107.' },
     { title:'LaB Assistant', url:'assistant.html', tags:'assistant ask search films gear resources events sourced model ollama nemotron hybrid privacy',

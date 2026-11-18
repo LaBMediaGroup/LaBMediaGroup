@@ -1,12 +1,12 @@
 :root{color-scheme:dark;background:#101311;color:#f1f3eb;font:16px/1.45 system-ui,sans-serif}
 *{box-sizing:border-box}body{margin:0;min-height:100svh;display:flex;flex-direction:column}main,footer{width:min(100% - 12vw,1160px);margin-inline:auto}
 main{flex:1;display:grid;grid-template-columns:1.05fr 1fr;gap:9%;align-items:center;padding-block:clamp(55px,10vh,140px)}
-h1,h2,ul{margin:0}h1 img{display:block;width:100%;max-width:455px;height:auto}
+h1,h2,ul{margin:0}h1{max-width:455px;position:relative}h1 img{display:block;width:100%;height:auto}
 nav{display:grid;grid-template-columns:1.25fr 1fr;gap:9%}h2{font:500 .78rem/1.4 ui-monospace,monospace;color:#aeb9ad;border-top:1px solid #455044;padding:16px 0 13px}
 ul{list-style:none;padding:0}a{color:inherit;text-decoration:none}li a{display:block;width:fit-content;padding:8px 0;font-size:clamp(16px,1.5vw,22px);letter-spacing:-.035em;transition:color .2s,transform .25s}
 a:hover{color:#dcf7aa}li a:hover{transform:translateX(4px)}a:focus-visible{outline:2px solid #dcf7aa;outline-offset:4px}
 footer{border-top:1px solid #323932;display:flex;align-items:center;gap:24px;padding:24px 0;color:#aeb9ad;font-size:.76rem}footer span{margin-right:auto}.skip{position:absolute;left:5%;top:-100px}.skip:focus{top:5px}
-@media(max-width:720px){main{display:block;padding:clamp(50px,10vh,96px) 0 45px}h1 img{width:min(63vw,300px);margin:0 0 54px}nav{gap:7%}li a{min-height:44px}footer{gap:16px}}
+@media(max-width:720px){main{display:block;padding:clamp(50px,10vh,96px) 0 45px}h1{width:min(63vw,300px);margin:0 0 54px}nav{gap:7%}li a{min-height:44px}footer{gap:16px}}
 @media(prefers-reduced-motion:reduce){li a{transition:none}li a:hover{transform:none}}
 
 .brand-track,.brand-stage{flex:1;display:flex;flex-direction:column}
@@ -16,7 +16,7 @@ footer{border-top:1px solid #323932;display:flex;align-items:center;gap:24px;pad
 @media(max-width:720px){.logo-journey .brand-track::after{height:277svh}}
 .logo-journey .brand-stage{position:sticky;top:0}
 .logo-in-flight main,.logo-in-flight footer{pointer-events:none}
-.logo-in-flight h1 img,.liquid-landing h1 img{opacity:0}
+.logo-in-flight h1 img{opacity:0}
 .brand-screen{position:fixed;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
 .logo-in-flight nav,.logo-in-flight footer{opacity:var(--directory-in,0);transform:translateY(calc((1 - var(--directory-in,0)) * 12px))}
 .skip:focus{z-index:5}

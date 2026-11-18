@@ -69,7 +69,7 @@ export class BeakerWater {
 
   step(elapsed, impulse = 0) {
     this.velocity = Math.max(-15,Math.min(15,this.velocity+impulse));
-    let remaining = Math.min(elapsed,1);
+    let remaining = Math.min(elapsed,2);
     while (remaining > 0) {
       const dt = Math.min(remaining,1/120);
       this.velocity += (-72*this.surge - 7.8*this.velocity)*dt;
@@ -95,4 +95,34 @@ export class BeakerWater {
   stroke(context) {
     for (const segment of this.segments) context.stroke(new Path2D(segment));
   }
+}
+
+// Keep the drawing in the logo's own layout and view-transition capture.
+// The printed image retains its intrinsic size and accessible name.
+export function mountWaterMark(mark) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return null;
+  canvas.className = 'mark-water';
+  canvas.setAttribute('aria-hidden','true');
+  const style = getComputedStyle(mark);
+  canvas.style.filter = style.filter;
+  canvas.style.opacity = style.opacity;
+  const scale = Math.min(1,(devicePixelRatio || 1)*mark.getBoundingClientRect().width/1165);
+  canvas.width = Math.max(1,Math.round(1165*scale));
+  canvas.height = Math.max(1,Math.round(498*scale));
+  ctx.setTransform(canvas.width/1165,0,0,canvas.height/498,0,0);
+  mark.after(canvas);
+  mark.parentElement.classList.add('live-water-mark');
+  return {
+    draw(water) {
+      ctx.clearRect(0,0,1165,498);
+      ctx.drawImage(mark,0,0,1165,498);
+      water.repaintSurface(ctx);
+    },
+    remove() {
+      canvas.remove();
+      mark.parentElement.classList.remove('live-water-mark');
+    }
+  };
 }

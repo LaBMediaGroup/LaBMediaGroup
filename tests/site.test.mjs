@@ -159,7 +159,7 @@ test('spotlight events have stable IDs, valid local dates, and usable links', ()
 });
 
 test('assistant knowledge follows the current filmmaking tools', () => {
-  for (const title of ['Golden Hour Planner', 'SkyBound : Weather', 'Aspect Ratio Previewer']) {
+  for (const title of ['Golden Hour Planner', 'SkyBound : Weather']) {
     assert.ok(assistantKnowledge.pages.some((page) => page.title === title), `${title} is missing from assistant page knowledge`);
   }
   const engine = assistantCore.createEngine({ fieldNotes, spotlight, knowledge: assistantKnowledge });
@@ -170,7 +170,6 @@ test('assistant knowledge follows the current filmmaking tools', () => {
     // should not fall off the edge of a rename.
     ['What does Drone Weather do?', /Open-Meteo[\s\S]*18-point pre-flight checklist/i],
     ['What does SkyBound Weather do?', /Open-Meteo[\s\S]*18-point pre-flight checklist/i],
-    ['What does the Aspect Ratio Previewer do?', /multiple local files[\s\S]*zero server uploads/i]
   ];
   for (const [query, expected] of checks) {
     const answer = engine.ask(query);
@@ -211,14 +210,14 @@ test('the published page count follows the sitemap', () => {
   assert.match(colophon, /14 mph\s+gusts/);
   assert.doesNotMatch(colophon, /stale-test|A test that had stopped watching/i);
   assert.equal((colophon.match(/press play/gi) || []).length, 1);
-  assert.match(colophon, /<div class="bug" id="flight-checklist">\s*<span class="bug-n">11<\/span>/);
-  assert.equal((colophon.match(/<h3>[^<]*<em>[^<]+<\/em>[^<]*<\/h3>/g) || []).length, 12);
+  assert.match(colophon, /<div class="bug" id="flight-checklist">\s*<span class="bug-n">10<\/span>/);
+  assert.equal((colophon.match(/<h3>[^<]*<em>[^<]+<\/em>[^<]*<\/h3>/g) || []).length, 11);
   // Entries get reordered as tools land, and the numbers are typed by hand, so
-  // check the run is still 01..12 with nothing repeated or skipped.
+  // check the run is still 01..11 with nothing repeated or skipped.
   const bugNumbers = (colophon.match(/<span class="bug-n">(\d+)<\/span>/g) || []).map((span) => span.replace(/\D/g, ''));
-  assert.deepEqual(bugNumbers, Array.from({ length: 12 }, (_, index) => String(index + 1).padStart(2, '0')));
+  assert.deepEqual(bugNumbers, Array.from({ length: 11 }, (_, index) => String(index + 1).padStart(2, '0')));
   // The joke only works if the missing page is the one you reach last.
-  assert.match(colophon, /<span class="bug-n">12<\/span>\s*<div class="bug-main">\s*<h3>The one page <em>nobody plans to visit<\/em><\/h3>/);
+  assert.match(colophon, /<span class="bug-n">11<\/span>\s*<div class="bug-main">\s*<h3>The one page <em>nobody plans to visit<\/em><\/h3>/);
   assert.match(colophon, /\.bug h3 em\{font-style:italic;color:var\(--accent\)\}/);
   // A deliberate contrast: the figures row keeps its square hairline corners,
   // and the definition card is the one that softens.
@@ -386,7 +385,7 @@ test('AI Usage is unlinked — the egg is the only way in', () => {
 });
 
 test('new tool pages have complete social preview metadata', () => {
-  for (const file of ['aspect.html', 'droneweather.html', 'sun.html', 'tools.html', 'whats-new.html']) {
+  for (const file of ['droneweather.html', 'sun.html', 'tools.html', 'whats-new.html']) {
     const html = read(file);
     assert.match(html, /property="og:image"/);
     assert.match(html, /name="twitter:card" content="summary_large_image"/);
@@ -438,7 +437,7 @@ test('every published page carries the shared nav and footer', () => {
 test('the tools index groups every tool and quotes the data honestly', () => {
   const tools = read('tools.html');
   for (const page of ['ideas.html', 'sun.html', 'droneweather.html',
-    'skybound.html', 'aspect.html', 'assistant.html']) {
+    'skybound.html', 'assistant.html']) {
     assert.match(tools, new RegExp(`href="${page.replace('.', '\\.')}"`), `tools.html omits ${page}`);
   }
   // The three counts on the Assistant card are typed by hand. They are only
@@ -502,6 +501,7 @@ test('shared lunar arc keeps moon travel independent from the sun', () => {
 
 function numberWord(value) {
   const words = {
+    12: 'Twelve',
     13: 'Thirteen',
     14: 'Fourteen',
     15: 'Fifteen',

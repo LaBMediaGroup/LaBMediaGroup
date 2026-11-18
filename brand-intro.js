@@ -1,4 +1,4 @@
-import { BeakerWater } from './beaker-water.js';
+import { BeakerWater, mountWaterMark } from './beaker-water.js?v=2';
 
 (() => {
   const root = document.documentElement;
@@ -69,6 +69,7 @@ import { BeakerWater } from './beaker-water.js';
   let shown = null;
   let previousDrive = null;
 
+  let liveMark;
   let ticket = 0;
   let active = false;
   const listeners = new AbortController();
@@ -93,7 +94,7 @@ import { BeakerWater } from './beaker-water.js';
     const p = Math.abs(gap)<.0002 ? requested : last+Math.sign(gap)*step;
     shown = p;
 
-    const dockStart = mobile ? .884 : .86;
+    const dockStart = mobile ? .810 : .782;
     const dock = beat(p,dockStart,.97);
     const dockDelta = dock-beat(last,dockStart,.97);
     // The same water receives a small second impulse from the moving vessel.
@@ -114,10 +115,17 @@ import { BeakerWater } from './beaker-water.js';
     }
     const moving = water.energy > 0;
     if (moving || p !== requested) schedule();
-    const flying = p < .999;
+    const flying = p < .97;
     root.classList.toggle('logo-in-flight', flying);
     root.classList.toggle('liquid-landing', !flying && moving);
-    canvas.hidden = !flying && !moving;
+    canvas.hidden = !flying;
+    if (!flying && moving) {
+      liveMark ??= mountWaterMark(image);
+      liveMark?.draw(water);
+    } else if (liveMark) {
+      liveMark.remove();
+      liveMark = null;
+    }
     if (canvas.hidden) return;
     if (!canvas.isConnected) stage.append(canvas);
 
@@ -157,7 +165,7 @@ import { BeakerWater } from './beaker-water.js';
     const framedX = width*mix(mix(.52,.44,turn),.5,crestFrame);
     const framedY = height*mix(mix(.48,.58,turn),.48,crestFrame);
     const x = mix(framedX,target.left+622*endScale,dock);
-    const y = mix(framedY,target.top+247*endScale,dock) - height*.035*Math.sin(Math.PI*dock);
+    const y = mix(framedY,target.top+247*endScale,dock);
     context.translate(x,y);
     context.rotate(bank);
     context.scale(scale,scale);
@@ -189,21 +197,14 @@ import { BeakerWater } from './beaker-water.js';
     }
 
     // The print takes over at display size. Reveal the letters from the A outward.
-    const letters = beat(p,.908,.985);
+    const letters = beat(p,.875,.97);
     if (letters > 0) {
       const left = 390*(1-letters);
       const right = 315*letters;
       context.drawImage(image,left,0,390-left,498,left,0,390-left,498);
       context.drawImage(image,850,0,right,498,850,0,right,498);
     }
-    if (dock === 1) {
-      // The glass is now the actual printed A. Only replace the waterline
-      // inside it, so a link impulse cannot dim or shift the rim.
-      context.clearRect(390,0,460,498);
-      context.drawImage(image,390,0,460,498,390,0,460,498);
-      if (moving) water.repaintSurface(context);
-    }
-    root.style.setProperty('--directory-in',String(beat(p,.928,.988)));
+    root.style.setProperty('--directory-in',String(beat(p,.898,.97)));
   }
 
   function schedule() { if (active && !ticket) ticket=requestAnimationFrame(render); }
@@ -217,6 +218,8 @@ import { BeakerWater } from './beaker-water.js';
     root.classList.remove('logo-journey','logo-in-flight','liquid-landing');
     root.style.removeProperty('--directory-in');
     canvas.remove();
+    liveMark?.remove();
+    liveMark = null;
   }
   function leave() {
     active = false;
@@ -238,11 +241,16 @@ import { BeakerWater } from './beaker-water.js';
       const impulse = touch || innerWidth <= 720 ? 2.4 : 4.7;
       // Add to the landing wave in place. Rapidly crossing links should
       // never pump a docked mark up to a full-screen flick.
+      const now = performance.now();
+      if (water.energy) water.step(Math.max(0,(now-previousTime)/1000));
+      previousTime = now;
       water.nudge(direction,impulse);
       schedule();
     },options);
     image.addEventListener('lab-wave-handoff',event=>{
       event.detail.water = {...water};
+      // Timestamp the drawn frame rather than the later click event.
+      event.detail.frameTime = performance.timeOrigin+previousTime;
     },options);
     document.addEventListener('keydown',event=>{
       if (event.key === 'Tab' && root.classList.contains('logo-in-flight')) skipIntro();
