@@ -36,3 +36,10 @@ html:is(.still,.motion-paused)::view-transition-group(*),html:is(.still,.motion-
   @keyframes message-received{from{opacity:.4;transform:translateY(8px)}}
   @keyframes guide-unfold{from{opacity:.4;transform:translateY(-6px)}}
 }
+
+/* The homepage wordmark and the destination masthead share one flat mark. */
+@media(prefers-reduced-motion:no-preference){
+  html:not(.motion-paused) #directory h1{view-transition-name:none}
+  html:not(.motion-paused) :is(#directory h1 img,header img[src$="TheLaB-mark.png"]){view-transition-name:lab-wordmark}
+  ::view-transition-group(lab-wordmark){animation-duration:520ms;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+}
