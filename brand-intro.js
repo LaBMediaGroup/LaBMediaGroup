@@ -1,11 +1,13 @@
+import { BeakerWater } from './beaker-water.js';
+
 (() => {
   const root = document.documentElement;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const image = document.querySelector('#directory h1 img');
   const track = document.querySelector('.brand-track');
   const stage = document.querySelector('.brand-stage');
-  if (!image || !track || !stage || reduced.matches || location.hash ||
-      performance.getEntriesByType('navigation')[0]?.type === 'back_forward') return;
+  if (!image || !track || !stage || reduced.matches) return;
+  let journey = !location.hash && performance.getEntriesByType('navigation')[0]?.type !== 'back_forward';
 
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
@@ -27,45 +29,6 @@
   const outline = approach + ' H777 C825 471 840 445 814 401 L675.5 173 V81';
   const rim = new Path2D('M548 24 H693 C733 24 733 80.5 693 80.5 H548 C506 80.5 506 24 548 24 Z');
   const ticks = new Path2D('M568 109 H601 M568 137 H593 M568 165 H605');
-  // Water climbs the sloping glass on the loaded side as it drains on the
-  // other. The bulge crosses first; the run-up at the wall arrives later.
-  function liquidSegments(body,wall,leading = 0,trailing = 0) {
-    const push = Math.max(0,body);
-    const runUp = Math.max(0,wall);
-    const backwash = Math.max(0,-body);
-    const leftDrop = 25*push - 29*backwash;
-    const rightDrop = -35*runUp + 21*Math.max(0,-wall);
-    const leftX = 524 - leftDrop*64/105;
-    const rightX = 691 + rightDrop*87/144;
-    const shoulderX = 569 + 39*push - 9*backwash;
-    const shoulderY = 307 + 19*push - 40*backwash - 13*leading;
-    const controlX = 546+11*push+3*backwash;
-    const controlY = 310+leftDrop-19*backwash;
-    // Continue the quadratic's tangent into the cubic, even at peak slosh.
-    const tangentY = 36*(shoulderY-controlY)/(shoulderX-controlX);
-    const left = leftX+' '+(298+leftDrop);
-    const shoulder = shoulderX+' '+shoulderY;
-    const right = rightX+' '+(260+rightDrop);
-    // Split the original cubic at its midpoint. Lift the midpoint and its
-    // two adjacent handles together so the travelling crest stays smooth.
-    const handleX = 638+14*push-24*backwash;
-    const handleY = 231-28*runUp+51*backwash;
-    const q0x = shoulderX+18, q0y = shoulderY+tangentY/2;
-    const q1x = (shoulderX+36+handleX)/2, q1y = (shoulderY+tangentY+handleY)/2;
-    const q2x = (handleX+rightX)/2, q2y = (handleY+260+rightDrop)/2;
-    const drift = 10*trailing, lift = -24*trailing;
-    const midInX = (q0x+q1x)/2+drift, midInY = (q0y+q1y)/2+lift;
-    const midOutX = (q1x+q2x)/2+drift, midOutY = (q1y+q2y)/2+lift;
-    const mid = (midInX+midOutX)/2+' '+(midInY+midOutY)/2;
-    // Separate round caps keep the ink solid at macro scale.
-    return [
-      `M590 439 H472 Q438 439 460 403 L${left}`,
-      `M${left} Q${controlX} ${controlY} ${shoulder}`,
-      `M${shoulder} C${q0x} ${q0y} ${midInX} ${midInY} ${mid}`,
-      `M${mid} C${midOutX} ${midOutY} ${q2x} ${q2y} ${right}`,
-      `M${right} L778 404 Q798 440 766 440 L646 439 H590`
-    ];
-  }
   function measuredPath(data) {
     const guide = document.createElementNS('http://www.w3.org/2000/svg','path');
     guide.setAttribute('d',data);
@@ -79,7 +42,8 @@
   const turnIn = 'M590 471 C613 471 613 439 590 439';
   const bridge = new Path2D(turnIn);
   const bridgeLength = measuredPath(turnIn).getTotalLength();
-  const restingSegments = liquidSegments(0,0);
+  const water = new BeakerWater();
+  const restingSegments = water.segments;
   const ink = restingSegments.map(data => ({
     path: new Path2D(data),
     length: measuredPath(data).getTotalLength()
@@ -101,33 +65,9 @@
     }
   }
 
-  let surge = 0, velocity = 0, front = 0, wall = 0;
   let previousTime = performance.now();
   let shown = null;
   let previousDrive = null;
-
-  function advanceWater(delta, elapsed, height, landingImpulse) {
-    // Weight displacement by speed: the same distance over a longer gesture
-    // delivers a smaller impulse. Use viewport units across device sizes.
-    const speed = Math.abs(delta)/(height*Math.max(elapsed,1/120));
-    velocity += 82*delta/height*clamp(speed/1.8) + landingImpulse;
-    velocity = Math.max(-15,Math.min(15,velocity));
-
-    // Integrate in small steps even on a low refresh-rate screen. The wall
-    // follows the body with a slight lag, then the return stroke loses energy.
-    let remaining = Math.min(elapsed,1);
-    while (remaining > 0) {
-      const dt = Math.min(remaining,1/120);
-      velocity += (-72*surge - 7.8*velocity)*dt;
-      surge += velocity*dt;
-      front += (surge-front)*(1-Math.exp(-dt/.063));
-      wall += (front-wall)*(1-Math.exp(-dt/.085));
-      remaining -= dt;
-    }
-    if (delta === 0 && landingImpulse === 0 && Math.abs(surge)+Math.abs(front)+Math.abs(wall)+Math.abs(velocity)/9 < .006) {
-      surge = velocity = front = wall = 0;
-    }
-  }
 
   let ticket = 0;
   let active = false;
@@ -140,7 +80,7 @@
     const height = innerHeight;
     const mobile = width <= 720;
     const sloshEnd = mobile ? .716 : .67;
-    const requested = clamp(scrollY/distance);
+    const requested = journey ? clamp(scrollY/distance) : 1;
     const dt = Math.min(.05,Math.max(0,(now-previousTime)/1000));
     previousTime = now;
     const last = shown ?? requested;
@@ -158,22 +98,28 @@
     const dockDelta = dock-beat(last,dockStart,.97);
     // The same water receives a small second impulse from the moving vessel.
     // Acceleration loads one wall; braking lets the surface sweep back.
+    const roll = beat(p,sloshEnd+.014,dockStart);
+    const rollDelta = roll-beat(last,sloshEnd+.014,dockStart);
+    const rollImpulse = rollDelta*(mobile ? 3.6 : 6.2);
     const landingImpulse = dockDelta*(mobile ? 4.5 : 7.5)*(1-2*dock);
     // Read the gesture independently of the camera easing. A deliberate
     // wheel flick can send a lively wave even on the slower desktop rail.
     const drive = p < .465 ? .465 : Math.max(.465,Math.min(sloshEnd,requested));
     const delta = (drive-(previousDrive ?? drive))*distance;
     previousDrive = drive;
-    if (p < .465) surge = velocity = front = wall = 0;
-    else advanceWater(delta,dt,height,landingImpulse);
-    const energy = Math.abs(surge)+Math.abs(front)+Math.abs(wall)+Math.abs(velocity)/9;
-    const moving = energy > 0;
+    if (p < .465) water.rest();
+    else {
+      const speed = Math.abs(delta)/(height*Math.max(dt,1/120));
+      water.step(dt,82*delta/height*clamp(speed/1.8)+rollImpulse+landingImpulse);
+    }
+    const moving = water.energy > 0;
     if (moving || p !== requested) schedule();
     const flying = p < .999;
     root.classList.toggle('logo-in-flight', flying);
     root.classList.toggle('liquid-landing', !flying && moving);
     canvas.hidden = !flying && !moving;
     if (canvas.hidden) return;
+    if (!canvas.isConnected) stage.append(canvas);
 
     const ratio = Math.min(devicePixelRatio || 1, 3);
     const pixels = Math.round(width*ratio), rows = Math.round(height*ratio);
@@ -193,7 +139,6 @@
     const draw = beat(p,.197,.465);
     const crestFrame = beat(p,.331,.439);
     const pull = beat(p,sloshEnd+.014,mobile ? .819 : .79);
-
 
     // Track the pen into the surface, then lock both camera axes and the
     // lens while the walls and waterline show the full outward and return flow.
@@ -237,11 +182,7 @@
         context.setLineDash([]);
       }
       if (moving && draw === 1) {
-        const leading = Math.tanh(2.4*(surge-front));
-        const trailing = Math.tanh(3.2*(front-wall));
-        for (const data of liquidSegments(Math.tanh(surge),Math.tanh(wall),leading,trailing)) {
-          context.stroke(new Path2D(data));
-        }
+        water.stroke(context);
       } else {
         drawRestingLiquid(draw === 1 ? Infinity : length-bridgeLength);
       }
@@ -255,47 +196,69 @@
       context.drawImage(image,left,0,390-left,498,left,0,390-left,498);
       context.drawImage(image,850,0,right,498,850,0,right,498);
     }
-    const print = beat(p,.95,.998)*(1-smooth(energy/.09));
-    if (print > 0) {
-      context.fillStyle = '#101311';
-      context.globalAlpha = print;
-      context.fillRect(390,0,460,498);
+    if (dock === 1) {
+      // The glass is now the actual printed A. Only replace the waterline
+      // inside it, so a link impulse cannot dim or shift the rim.
+      context.clearRect(390,0,460,498);
       context.drawImage(image,390,0,460,498,390,0,460,498);
-      context.globalAlpha = 1;
+      if (moving) water.repaintSurface(context);
     }
     root.style.setProperty('--directory-in',String(beat(p,.928,.988)));
   }
 
   function schedule() { if (active && !ticket) ticket=requestAnimationFrame(render); }
-  function leave() {
-    active = false;
-    listeners.abort();
+  function skipIntro() {
+    journey = false;
+    shown = 1;
+    previousDrive = null;
+    water.rest();
     cancelAnimationFrame(ticket);
+    ticket = 0;
     root.classList.remove('logo-journey','logo-in-flight','liquid-landing');
     root.style.removeProperty('--directory-in');
     canvas.remove();
   }
+  function leave() {
+    active = false;
+    listeners.abort();
+    skipIntro();
+  }
   function start() {
-    if (!image.naturalWidth || reduced.matches || document.activeElement?.closest('a')) return;
+    if (!image.naturalWidth || reduced.matches) return;
     active = true;
-    root.classList.add('logo-journey');
-    stage.append(canvas);
+    if (document.activeElement?.closest('a')) journey = false;
+    root.classList.toggle('logo-journey',journey);
     render();
     const options = {passive:true,signal:listeners.signal};
     addEventListener('scroll',schedule,options);
     addEventListener('resize',schedule,options);
+    image.addEventListener('lab-nav-wave',event=>{
+      if (root.classList.contains('logo-in-flight') || reduced.matches) return;
+      const {direction,touch} = event.detail;
+      const impulse = touch || innerWidth <= 720 ? 2.4 : 4.7;
+      // Add to the landing wave in place. Rapidly crossing links should
+      // never pump a docked mark up to a full-screen flick.
+      water.nudge(direction,impulse);
+      schedule();
+    },options);
+    image.addEventListener('lab-wave-handoff',event=>{
+      event.detail.water = {...water};
+    },options);
     document.addEventListener('keydown',event=>{
-      if (event.key === 'Tab' && root.classList.contains('logo-in-flight')) leave();
+      if (event.key === 'Tab' && root.classList.contains('logo-in-flight')) skipIntro();
     },options);
     document.addEventListener('focusin',event=>{
-      if (event.target.closest('a') && root.classList.contains('logo-in-flight')) leave();
+      if (event.target.closest('a') && root.classList.contains('logo-in-flight')) skipIntro();
     },options);
     stage.addEventListener('click',event=>{
       if (event.target.closest('a') || !root.classList.contains('logo-in-flight')) return;
-      leave();
+      skipIntro();
     },options);
     reduced.addEventListener('change',leave,options);
-    addEventListener('pagehide',leave,options);
+    addEventListener('pagehide',event=>{
+      if (event.persisted) skipIntro();
+      else leave();
+    },options);
   }
   if (image.complete) start();
   else image.addEventListener('load',start,{once:true});
