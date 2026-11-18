@@ -488,50 +488,16 @@ test('contact form preserves messages on failure and confirms successful submiss
  await page.close();
 });
 
-test('minimal home keeps previews usable with reduced motion and narrow screens', async () => {
-  const page = await browser.newPage({viewport:{width:320,height:740},reducedMotion:'reduce'});
-  await page.route('**/*', r => r.request().url().startsWith(baseURL) ? r.continue() : r.abort());
-  await page.goto(`${baseURL}/index.html`);
-  assert.equal(await page.locator('#motion').getAttribute('aria-pressed'),'true');
-  await page.locator('#daytime').press('End');
-  assert.equal(await page.locator('#phase').innerText(),'After the light');
-  await page.locator('#tab-story').click();
-  const before=await page.locator('#prompt').innerText();
-  await page.locator('#roll').click();
-  assert.notEqual(await page.locator('#prompt').innerText(),before);
-  await page.locator('#tab-story').press('ArrowRight');
-  assert.equal(await page.locator('#tab-frame').getAttribute('aria-selected'),'true');
-  await page.getByRole('button',{name:'9:16',exact:true}).click();
-  assert.equal(await page.locator('#dimensions').innerText(),'1215 × 2160');
-  const crop=await page.locator('#crop').getAttribute('style');
-  await page.locator('.frame-scene').press('ArrowRight');
-  assert.notEqual(await page.locator('#crop').getAttribute('style'),crop);
-  assert.equal(await page.locator('.frame-video').getAttribute('src'),null,'no video download in reduced motion');
-  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
-  await page.goto(`${baseURL}/tools-concept/work.html`);
-  assert.equal(await page.locator('h1').count(),1);
-  assert.equal(await page.evaluate(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0)),true);
-  await page.close();
-});
-
-test('immersive home fills the viewport and reveals accurate framing on demand', async () => {
-  for(const width of [320,1280]) {
-    const page=await browser.newPage({viewport:{width,height:800},reducedMotion:'reduce'});
-    await page.route('**/*',r=>r.request().url().startsWith(baseURL)?r.continue():r.abort());
-    await page.goto(`${baseURL}/index.html`);
-    const sky=await page.locator('#sky').boundingBox();
-    assert.equal(Math.round(sky.width),width);assert.equal(Math.round(sky.height),800);
-    await page.locator('#tab-frame').click();
-    const immersive=await page.locator('.frame-scene').boundingBox();
-    assert.equal(Math.round(immersive.width),width);
-    await page.getByRole('button',{name:'9:16',exact:true}).click();
-    const frame=await page.locator('.frame-scene').boundingBox();
-    assert.ok(frame.width<width);assert.ok(Math.abs(frame.width/frame.height-16/9)<.01);
-    const crop=await page.locator('#crop').boundingBox();
-    assert.ok(Math.abs(crop.width/crop.height-9/16)<.02);
-    const controls=await page.locator('.ratios').boundingBox();
-    assert.ok(frame.y+frame.height<controls.y,'framing stays above its controls');
-    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
-    await page.close();
+test('homepage directory opens all six tools without scripts', async () => {
+  const page = await browser.newPage({javaScriptEnabled:false, viewport:{width:320,height:740}});
+  await page.goto(baseURL);
+  for (const file of ['sun','aspect','ideas','droneweather','skybound','assistant']) {
+    const link = page.locator('main a[href^="'+file+'.html"]');
+    assert.equal(await link.isVisible(), true);
+    await link.click();
+    assert.equal(new URL(page.url()).pathname, '/'+file+'.html');
+    await page.goBack();
   }
+  assert.equal(await page.locator('video,canvas').count(),0);
+  await page.close();
 });

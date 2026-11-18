@@ -319,6 +319,7 @@
     <div>
       <label for="stillSelect">Sample Frame:</label>
       <select id="stillSelect">
+        <option value="assets/selected-work/moz-interior-v3.mp4" data-is-vid="true">MOZ Interiors · film</option>
         <option value="images/moz/moz-01.webp">MOZ Interiors (Architectural)</option>
         <option value="images/brass.jpg">Anthony Brass (Artist Studio)</option>
         <option value="images/kit/support.jpg">RS 3 Mini Gimbal (Set Photo)</option>
@@ -355,9 +356,9 @@
 
   <div class="aspect-stage">
     <div class="viewfinder" id="viewfinder">
-      <img id="sampleImg" src="images/moz/moz-01.webp" alt="Sample frame for aspect ratio preview"
+      <img id="sampleImg" src="assets/selected-work/moz-interior-v3.jpg" alt="Sample frame for aspect ratio preview"
            width="1800" height="1200" fetchpriority="high" decoding="async">
-      <video id="sampleVid" autoplay loop muted playsinline style="display:none;"></video>
+      <video id="sampleVid" controls loop muted playsinline style="display:none;"></video>
       <div class="matte-top" id="mTop"></div>
       <div class="matte-bottom" id="mBottom"></div>
       <div class="matte-left" id="mLeft"></div>
@@ -592,10 +593,32 @@
     }
   }
 
+  const filmPreference = matchMedia('(prefers-reduced-motion: reduce)');
+  function syncSampleFilm() {
+    if (stillSelect.value !== 'assets/selected-work/moz-interior-v3.mp4') return;
+    if (filmPreference.matches || document.documentElement.classList.contains('motion-paused') || document.hidden) {
+      loadMediaSource('assets/selected-work/moz-interior-v3.jpg', false);
+    } else if (sampleVid.getAttribute('src') !== stillSelect.value || sampleVid.style.display === 'none') {
+      loadMediaSource(stillSelect.value, true);
+    }
+  }
+  const filmVisibility = new IntersectionObserver(([entry]) => {
+    if (stillSelect.value !== 'assets/selected-work/moz-interior-v3.mp4') return;
+    if (entry.isIntersecting) {
+      syncSampleFilm();
+      if (sampleVid.style.display !== 'none' && !document.hidden) sampleVid.play().catch(function(){});
+    } else sampleVid.pause();
+  });
+  filmVisibility.observe(document.getElementById('viewfinder'));
+  filmPreference.addEventListener('change', syncSampleFilm);
+  document.addEventListener('lab-motion-change', syncSampleFilm);
+  document.addEventListener('visibilitychange', syncSampleFilm);
+
   stillSelect.addEventListener('change', function(){
     var opt = this.options[this.selectedIndex];
     var isVid = opt && opt.dataset.isVid === 'true';
-    loadMediaSource(this.value, isVid);
+    if (this.value === 'assets/selected-work/moz-interior-v3.mp4') syncSampleFilm();
+    else loadMediaSource(this.value, isVid);
   });
 
   if (customInput) {

@@ -16,3 +16,23 @@
   ::view-transition-group(solar-scene),::view-transition-group(interior-frame),::view-transition-group(story-prompt){animation-duration:650ms;animation-timing-function:cubic-bezier(.22,1,.36,1)}
 }
 html:is(.still,.motion-paused)::view-transition-group(*),html:is(.still,.motion-paused)::view-transition-new(*),html:is(.still,.motion-paused)::view-transition-old(*){animation:none!important}
+
+/* Shared subjects connect the tools directory with the full instruments. */
+@media(prefers-reduced-motion:no-preference){
+  html:not(.motion-paused) #ghSky{view-transition-name:solar-scene}
+  html:not(.motion-paused) #matteStage{view-transition-name:interior-frame}
+  html:not(.motion-paused) #promptText{view-transition-name:story-prompt}
+  html:not(.motion-paused) :is(#wxSky,#wxSceneStage){view-transition-name:weather-scene}
+  html:not(.motion-paused) :is(#sbScene,body:has(#simulators) .hero h1){view-transition-name:drone-guide}
+  html:not(.motion-paused) :is(#chat,#assistantLog){view-transition-name:lab-conversation}
+  html:not(.motion-paused) .assistant-msg.is-user{animation:message-sent .28s ease-out both}
+  html:not(.motion-paused) .assistant-msg.is-assistant{animation:message-received .4s ease-out both}
+  html:not(.motion-paused) details.section[open]>:not(summary){animation:guide-unfold .38s cubic-bezier(.2,.8,.2,1) both}
+  html:not(.motion-paused) #roll:active .die{transform:rotate(55deg)}
+  html:not(.motion-paused) #roll .die{transition:transform .23s ease}
+  html:not(.motion-paused) #sunStage:has(#timeSlider:active) .sun-orb{filter:drop-shadow(0 0 12px #ffd681)}
+  html:not(.motion-paused) #viewfinder :is(.matte-top,.matte-bottom,.matte-left,.matte-right){transition:width .45s cubic-bezier(.22,1,.36,1),height .45s cubic-bezier(.22,1,.36,1)}
+  @keyframes message-sent{from{opacity:.4;transform:translateX(12px)}}
+  @keyframes message-received{from{opacity:.4;transform:translateY(8px)}}
+  @keyframes guide-unfold{from{opacity:.4;transform:translateY(-6px)}}
+}

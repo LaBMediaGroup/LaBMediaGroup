@@ -410,7 +410,7 @@ test('every published page carries the shared nav and footer', () => {
       assert.match(html, /href="(?:https:\/\/labmedia.work\/)?tools\.html"/);
       assert.doesNotMatch(html, /name="robots" content="noindex/);
       if (file === 'index.html') {
-        assert.match(html, /tools-concept\/main\.js/);
+        assert.match(html, /aria-label="Directory"/);
         assert.match(html, /https:\/\/crew\.labmedia\.work/);
       }
       continue;

@@ -1,7 +1,30 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111513"><title>The LaB — Tools by Bobby Baldwin</title><meta name="description" content="Free tools for stories, light, framing, and drone weather. Built by Bobby Baldwin in Shelby Township, Michigan."><link rel="canonical" href="https://labmedia.work/"><meta property="og:title" content="The LaB — Tools by Bobby Baldwin"><meta property="og:description" content="Stories. Light. Framing. Free tools, ready to use."><meta property="og:type" content="website"><meta property="og:url" content="https://labmedia.work/"><meta property="og:image" content="https://labmedia.work/images/TheLaB-mark.png"><meta name="twitter:card" content="summary"><link rel="icon" href="favicon.ico"><link rel="stylesheet" href="tools-concept/style.css?v=18e44ca59c"><link rel="stylesheet" href="tools-concept/minimal.css?v=747ebfc503"><script src="ideas-data.js" defer></script><script src="sun-calc.js" defer></script><script src="tools-concept/main.js?v=2ec894af2c" defer></script><link rel="stylesheet" href="tools-concept/immersive.css?v=1a7b69e10e"><link rel="stylesheet" href="page-motion.css"><link rel="stylesheet" href="tools-concept/journey.css"><script defer src="tools-concept/journey.js"></script></head><body>
-<a class="skip" href="#tools">Skip to tools</a><header><a href="index.html" aria-label="The LaB home"><img class="wordmark" src="images/TheLaB-mark.png" alt="The LaB" width="1164" height="500"></a><nav aria-label="Main"><a href="resources.html">Notebook</a><a href="tools-concept/work.html">Work</a></nav><button id="motion" aria-pressed="false">Motion on <span>◉</span></button></header>
-<main id="tools"><h1 class="sr-only">LaB tools</h1><div class="bench"><div class="selector"><div role="tablist" aria-label="Try a tool" aria-orientation="vertical"><button role="tab" id="tab-light" aria-controls="light" aria-selected="true"><strong>Light</strong><b>↗</b></button><button role="tab" id="tab-story" aria-controls="story" aria-selected="false" tabindex="-1"><strong>Story</strong><b>↗</b></button><button role="tab" id="tab-frame" aria-controls="frame" aria-selected="false" tabindex="-1"><strong>Frame</strong><b>↗</b></button></div><div class="other-links"><a href="droneweather.html">Weather ↗</a><a href="skybound.html">Drones ↗</a><a href="assistant.html">Assistant ↗</a></div></div><div class="surface">
-<div class="panel" role="tabpanel" id="light" aria-labelledby="tab-light"><div class="light-scene" id="sky"><div class="sun" id="sun"></div><div class="land land-back"></div><div class="land land-front"></div><div class="light-readout"><span id="phase">Golden hour</span><strong id="time">—</strong></div><span class="scene-place">Shelby Township · Today</span></div><div class="scrubber"><label class="sr-only" for="daytime">Time of day</label><output class="sr-only" id="elevation" for="daytime"></output><input type="range" id="daytime" min="0" max="100" value="85" aria-label="Time of day"><div class="range-labels"><span id="start-time">Morning</span><span id="end-time">Evening</span></div></div><a class="open-tool" href="sun.html">Open planner ↗</a></div>
-<div class="panel" role="tabpanel" id="story" aria-labelledby="tab-story" hidden><div class="story-space"><p id="prompt" aria-live="polite">Open the generator to find a story.</p><div class="story-bottom"><button id="roll" class="primary">Again ↻</button><span id="take" class="sr-only">01</span></div></div><a class="open-tool" href="ideas.html">Open generator ↗</a></div>
-<div class="panel" role="tabpanel" id="frame" aria-labelledby="tab-frame" hidden><div class="frame-scene"><img src="images/MOZPage-still.jpg" alt="MOZ interior with adjustable framing"><video class="frame-video" muted loop playsinline preload="none" data-src="assets/selected-work/moz-interior-v3.mp4" aria-hidden="true" tabindex="-1"></video><div id="crop"></div><span id="dimensions">3840 × 2160</span></div><div class="ratios" role="group" aria-label="Aspect ratio"><button data-ratio="1.7777777778" aria-pressed="true">16:9</button><button data-ratio="2.39" aria-pressed="false">2.39:1</button><button data-ratio="1" aria-pressed="false">1:1</button><button data-ratio="0.5625" aria-pressed="false">9:16</button></div><a class="open-tool" href="aspect.html">Open previewer ↗</a></div>
-</div></div><noscript><a href="tools.html">All tools ↗</a></noscript></main><footer><a class="crew-mark" href="https://crew.labmedia.work" aria-label="Crew access"><img src="assets/crew-mark.png" alt="" width="26" height="11"></a><a href="contact.html">Bobby Baldwin</a><a href="https://bcp.labmedia.work">Ballcap ↗</a></footer></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111513"><title>The LaB — Tools by Bobby Baldwin</title><meta name="description" content="Free tools for stories, light, framing, and drone weather. Built by Bobby Baldwin in Shelby Township, Michigan."><link rel="canonical" href="https://labmedia.work/"><meta property="og:title" content="The LaB — Tools by Bobby Baldwin"><meta property="og:description" content="Stories. Light. Framing. Free tools, ready to use."><meta property="og:type" content="website"><meta property="og:url" content="https://labmedia.work/"><meta property="og:image" content="https://labmedia.work/images/TheLaB-mark.png"><meta name="twitter:card" content="summary"><link rel="icon" href="favicon.ico"><link rel="stylesheet" href="home-directory.css"><link rel="stylesheet" href="page-motion.css"></head>
+<body>
+<header><a class="skip" href="#directory">Skip to navigation</a></header>
+<main id="directory">
+  <h1><img src="images/TheLaB-mark.png" alt="The LaB" width="1164" height="500"></h1>
+  <nav aria-label="Directory">
+    <section aria-labelledby="tools-title">
+      <h2 id="tools-title"><a href="tools.html">Tools</a></h2>
+      <ul>
+        <li><a href="sun.html#sunStage">Light planner</a></li>
+        <li><a href="aspect.html#viewfinder">Aspect ratio</a></li>
+        <li><a href="ideas.html">Story generator</a></li>
+        <li><a href="droneweather.html">Drone weather</a></li>
+        <li><a href="skybound.html">Drone guide</a></li>
+        <li><a href="assistant.html">LaB Assistant</a></li>
+      </ul>
+    </section>
+    <section aria-labelledby="lab-title">
+      <h2 id="lab-title">Studio</h2>
+      <ul>
+        <li><a href="resources.html">Notebook</a></li>
+        <li><a href="tools-concept/work.html">Selected work</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="contact.html">About &amp; contact</a></li>
+      </ul>
+    </section>
+  </nav>
+</main>
+<footer><span>Bobby Baldwin</span><a href="https://bcp.labmedia.work">Ballcap films ↗</a><a class="crew-mark" href="https://crew.labmedia.work" aria-label="Crew access"><img src="assets/crew-mark.png" alt="" width="30" height="13"></a></footer>
+</body></html>
