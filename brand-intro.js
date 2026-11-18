@@ -29,21 +29,21 @@
   const ticks = new Path2D('M568 109 H601 M568 137 H593 M568 165 H605');
   // Water climbs the sloping glass on the loaded side as it drains on the
   // other. The bulge crosses first; the run-up at the wall arrives later.
-  function liquidContour(phase) {
-    const push = beat(phase,0,.28)*(1-beat(phase,.29,.64));
-    const runUp = beat(phase,.08,.39)*(1-beat(phase,.40,.71));
-    const backwash = beat(phase,.40,.73)*(1-beat(phase,.73,1));
+  function liquidContour(body,wall) {
+    const push = Math.max(0,body);
+    const runUp = Math.max(0,wall);
+    const backwash = Math.max(0,-body);
     const leftDrop = 25*push - 29*backwash;
-    const rightDrop = -35*runUp + 21*backwash;
+    const rightDrop = -35*runUp + 21*Math.max(0,-wall);
     const leftX = 524 - leftDrop*64/105;
     const rightX = 691 + rightDrop*87/144;
     const shoulderX = 569 + 39*push - 9*backwash;
     const shoulderY = 307 + 19*push - 40*backwash;
-    return `M590 439 H472 Q438 439 460 403 L${leftX} ${298+leftDrop}
+    return `H472 Q438 439 460 403 L${leftX} ${298+leftDrop}
       Q${546+11*push+3*backwash} ${310+leftDrop-19*backwash} ${shoulderX} ${shoulderY}
       C${shoulderX+36} ${shoulderY-1-19*push+8*backwash}
        ${638+14*push-24*backwash} ${231-28*runUp+51*backwash} ${rightX} ${260+rightDrop}
-      L778 404 Q798 440 766 440 L646 439`;
+      L778 404 Q798 440 766 440 L646 439 H590`;
   }
   function measuredPath(data) {
     const guide = document.createElementNS('http://www.w3.org/2000/svg','path');
@@ -53,27 +53,75 @@
   const rail = measuredPath(approach);
   const railLength = rail.getTotalLength();
   const vessel = new Path2D(outline);
-  const liquid = liquidContour(0);
-  const ink = new Path2D(liquid);
-  const innerRail = measuredPath(liquid);
-  const inkLength = innerRail.getTotalLength();
+  // Turn directly from the foot into the inner stroke. Both pieces share
+  // the point (590,439); the inner loop returns to it before the handoff.
+  const turnIn = 'M590 471 C613 471 613 439 590 439';
+  const bridge = new Path2D(turnIn);
+  const bridgeLength = measuredPath(turnIn).getTotalLength();
+  const liquid = liquidContour(0,0);
+  const ink = new Path2D('M590 439 '+liquid+' Z');
+  const innerRail = measuredPath(turnIn+' '+liquid);
+  const penLength = innerRail.getTotalLength();
+
+  let surge = 0, velocity = 0, wall = 0;
+  let previousY = scrollY, previousTime = performance.now();
+  let shown = null;
+
+  function advanceWater(delta, elapsed, height) {
+    // Weight displacement by speed: the same distance over a longer gesture
+    // delivers a smaller impulse. Use viewport units across device sizes.
+    const speed = Math.abs(delta)/(height*Math.max(elapsed,1/120));
+    velocity += 72*delta/height*clamp(speed/1.8);
+    velocity = Math.max(-15,Math.min(15,velocity));
+
+    // Integrate in small steps even on a low refresh-rate screen. The wall
+    // follows the body with a slight lag, then the return stroke loses energy.
+    let remaining = Math.min(elapsed,1);
+    while (remaining > 0) {
+      const dt = Math.min(remaining,1/120);
+      velocity += (-76*surge - 8.6*velocity)*dt;
+      surge += velocity*dt;
+      wall += (surge-wall)*(1-Math.exp(-dt/.075));
+      remaining -= dt;
+    }
+    if (delta === 0 && Math.abs(surge)+Math.abs(wall)+Math.abs(velocity)/9 < .006) {
+      surge = velocity = wall = 0;
+    }
+  }
 
   let ticket = 0;
   let active = false;
   const listeners = new AbortController();
 
-  function render() {
+  function render(now = performance.now()) {
     ticket = 0;
     const distance = Math.max(1, track.offsetHeight - stage.offsetHeight);
-    const p = clamp(scrollY/distance);
+    const width = document.documentElement.clientWidth;
+    const height = innerHeight;
+    const mobile = width <= 720;
+    const sloshEnd = mobile ? .716 : .67;
+    const requested = clamp(scrollY/distance);
+    const dt = Math.max(0,(now-previousTime)/1000);
+    const withinCrest = y => Math.max(distance*.465, Math.min(distance*sloshEnd,y));
+    const delta = withinCrest(scrollY)-withinCrest(previousY);
+    // After an idle interval, only the new input belongs to this frame.
+    if (requested < .465) surge = velocity = wall = 0;
+    else advanceWater(delta,delta ? Math.min(dt,.05) : dt,height);
+    previousY = scrollY;
+    previousTime = now;
+
+    const moving = surge !== 0 || velocity !== 0 || wall !== 0;
+    const goal = moving ? Math.min(requested,sloshEnd) : requested;
+    // When a flick outruns the crest, allow the water to finish. Catch up
+    // continuously afterwards without taking control of native scrolling.
+    const p = shown === null ? goal : Math.min(goal,shown+Math.max(.012,dt*1.45));
+    shown = p;
+    if (moving || p < goal) schedule();
     const flying = p < .999;
     root.classList.toggle('logo-in-flight', flying);
     canvas.hidden = !flying;
     if (!flying) return;
 
-    const width = document.documentElement.clientWidth;
-    const height = innerHeight;
-    const mobile = width <= 720;
     const ratio = Math.min(devicePixelRatio || 1, 3);
     const pixels = Math.round(width*ratio), rows = Math.round(height*ratio);
     if (canvas.width !== pixels || canvas.height !== rows) {
@@ -89,17 +137,15 @@
     const closeScale = Math.min(width*.25/20,height*.23/20);
     const turn = beat(p,0,.207);
     const transfer = beat(p,.178,.266);
-    const draw = beat(p,.224,.465);
+    const draw = beat(p,.197,.465);
     const crestFrame = beat(p,.331,.439);
-    const sloshEnd = mobile ? .716 : .67;
-    const slosh = clamp((p-.465)/(sloshEnd-.465));
     const pull = beat(p,sloshEnd+.014,mobile ? .819 : .79);
     const dock = beat(p,mobile ? .884 : .86,.97);
 
     // Track the pen into the surface, then lock both camera axes and the
     // lens while the walls and waterline show the full outward and return flow.
     const outer = rail.getPointAtLength(mix(278,railLength,turn));
-    const tip = innerRail.getPointAtLength(inkLength*draw);
+    const tip = innerRail.getPointAtLength(penLength*draw);
     const focusX = mix(mix(outer.x,tip.x,transfer),608,crestFrame);
     const focusY = mix(mix(outer.y,tip.y,transfer),281,crestFrame);
     const pivotX = mix(focusX,622,pull), pivotY = mix(focusY,247,pull);
@@ -127,8 +173,21 @@
     context.stroke(ticks);
     if (draw > 0) {
       context.lineWidth = 20;
-      if (draw < 1) context.setLineDash([inkLength*draw,inkLength+2]);
-      context.stroke(slosh > 0 && slosh < 1 ? new Path2D(liquidContour(slosh)) : ink);
+      const length = penLength*draw;
+      if (p < .443) {
+        context.globalAlpha = 1-beat(p,.36,.443);
+        if (length < bridgeLength) context.setLineDash([length,penLength+2]);
+        context.stroke(bridge);
+        context.globalAlpha = 1;
+        context.setLineDash([]);
+      }
+      if (length > bridgeLength) {
+        if (draw < 1) context.setLineDash([length-bridgeLength,penLength+2]);
+        const contour = moving && draw === 1
+          ? new Path2D('M590 439 '+liquidContour(Math.tanh(surge),Math.tanh(wall))+' Z')
+          : ink;
+        context.stroke(contour);
+      }
       context.setLineDash([]);
     }
 
@@ -177,7 +236,7 @@
     },options);
     stage.addEventListener('click',event=>{
       if (event.target.closest('a') || !root.classList.contains('logo-in-flight')) return;
-      scrollTo({top:track.offsetHeight-stage.offsetHeight,behavior:'smooth'});
+      leave();
     },options);
     reduced.addEventListener('change',leave,options);
     addEventListener('pagehide',leave,options);
