@@ -12,7 +12,8 @@ footer{border-top:1px solid #323932;display:flex;align-items:center;gap:24px;pad
 .brand-track,.brand-stage{flex:1;display:flex;flex-direction:column}
 .brand-stage{min-height:100svh}
 .logo-journey .brand-track{display:block}
-.logo-journey .brand-track::after{content:'';display:block;height:95svh}
+.logo-journey .brand-track::after{content:'';display:block;height:150svh}
+@media(max-width:720px){.logo-journey .brand-track::after{height:180svh}}
 .logo-journey .brand-stage{position:sticky;top:0}
 .logo-in-flight main,.logo-in-flight footer{pointer-events:none}
 .logo-in-flight h1 img{opacity:0}
