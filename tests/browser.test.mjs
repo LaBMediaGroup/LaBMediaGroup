@@ -513,3 +513,25 @@ test('minimal home keeps previews usable with reduced motion and narrow screens'
   assert.equal(await page.evaluate(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0)),true);
   await page.close();
 });
+
+test('immersive home fills the viewport and reveals accurate framing on demand', async () => {
+  for(const width of [320,1280]) {
+    const page=await browser.newPage({viewport:{width,height:800},reducedMotion:'reduce'});
+    await page.route('**/*',r=>r.request().url().startsWith(baseURL)?r.continue():r.abort());
+    await page.goto(`${baseURL}/index.html`);
+    const sky=await page.locator('#sky').boundingBox();
+    assert.equal(Math.round(sky.width),width);assert.equal(Math.round(sky.height),800);
+    await page.locator('#tab-frame').click();
+    const immersive=await page.locator('.frame-scene').boundingBox();
+    assert.equal(Math.round(immersive.width),width);
+    await page.getByRole('button',{name:'9:16',exact:true}).click();
+    const frame=await page.locator('.frame-scene').boundingBox();
+    assert.ok(frame.width<width);assert.ok(Math.abs(frame.width/frame.height-16/9)<.01);
+    const crop=await page.locator('#crop').boundingBox();
+    assert.ok(Math.abs(crop.width/crop.height-9/16)<.02);
+    const controls=await page.locator('.ratios').boundingBox();
+    assert.ok(frame.y+frame.height<controls.y,'framing stays above its controls');
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+    await page.close();
+  }
+});
