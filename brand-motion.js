@@ -9,7 +9,6 @@
   const enabled = () => !quiet.matches && !document.documentElement.classList.contains('motion-paused');
   let overlay;
   let animation = 0;
-  let intro;
   let direction = 1;
 
   function restore() {
@@ -20,7 +19,7 @@
     if (mark) mark.style.removeProperty('opacity');
   }
 
-  function ripple(sign, strength = 1, arrival = false) {
+  function ripple(sign, strength = 1) {
     if (!enabled() || !mark?.naturalWidth) return;
     restore();
     const box = mark.getBoundingClientRect();
@@ -43,13 +42,6 @@
     function draw(now) {
       const t = Math.max(0,(now-start)/800);
       if (t >= 1 || !enabled()) { restore(); return; }
-      if (arrival) {
-        // Lift the flat mark into its resting place. A swipe finishes the
-        // movement immediately, even on phones where the directory fits.
-        const remaining = (1-t)**3;
-        const lift = innerWidth <= 720 ? Math.min(86, innerHeight*.1) : 22;
-        canvas.style.transform = 'translateY('+lift*remaining+'px) scale('+(1+.035*remaining)+')';
-      }
       ctx.clearRect(0,0,1165,498);
       ctx.drawImage(mark,0,0,1165,498);
       const left = 533, width = 153, top = 225, height = 98;
@@ -65,8 +57,7 @@
     draw(start);
   }
 
-  function finishIntro() { intro?.finish(); intro = null; }
-  function reset() { finishIntro(); restore(); }
+  function reset() { restore(); }
   addEventListener('pagehide',reset);
   addEventListener('pageswap',reset);
   addEventListener('resize',reset,{passive:true});
@@ -78,7 +69,7 @@
     const links = [...document.querySelectorAll('nav a,footer a')];
     links.forEach((link,index) => {
       function prime() {
-        finishIntro();
+        if (document.documentElement.classList.contains('logo-in-flight')) return;
         direction = index % 2 ? -1 : 1;
         ripple(direction);
       }
@@ -90,18 +81,6 @@
         try { sessionStorage.setItem(key,JSON.stringify({path:link.pathname,sign:direction,time:Date.now()})); } catch {}
       });
     });
-    function arrive() {
-      if (!enabled() || !mark.animate) return;
-      const reload = performance.getEntriesByType('navigation')[0]?.type === 'reload';
-      // The directory is always live. A gesture settles its short entrance.
-      intro = home.querySelector('nav').animate([
-        {opacity:.45, transform:'translateY('+ (reload ? 6 : 14) +'px)'},
-        {opacity:1, transform:'none'}
-      ],{duration:reload ? 440 : 720,easing:'cubic-bezier(.16,1,.3,1)'});
-      ripple(reload ? -1 : 1,1.5,true);
-    }
-    addEventListener('wheel',finishIntro,{passive:true});
-    if (mark.complete) arrive(); else mark.addEventListener('load',arrive,{once:true});
   } else {
     let handoff;
     try {
