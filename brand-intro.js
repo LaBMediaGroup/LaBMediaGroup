@@ -29,7 +29,7 @@
   const ticks = new Path2D('M568 109 H601 M568 137 H593 M568 165 H605');
   // Water climbs the sloping glass on the loaded side as it drains on the
   // other. The bulge crosses first; the run-up at the wall arrives later.
-  function liquidContour(body,wall) {
+  function liquidSegments(body,wall) {
     const push = Math.max(0,body);
     const runUp = Math.max(0,wall);
     const backwash = Math.max(0,-body);
@@ -39,11 +39,22 @@
     const rightX = 691 + rightDrop*87/144;
     const shoulderX = 569 + 39*push - 9*backwash;
     const shoulderY = 307 + 19*push - 40*backwash;
-    return `H472 Q438 439 460 403 L${leftX} ${298+leftDrop}
-      Q${546+11*push+3*backwash} ${310+leftDrop-19*backwash} ${shoulderX} ${shoulderY}
-      C${shoulderX+36} ${shoulderY-1-19*push+8*backwash}
-       ${638+14*push-24*backwash} ${231-28*runUp+51*backwash} ${rightX} ${260+rightDrop}
-      L778 404 Q798 440 766 440 L646 439 H590`;
+    const controlX = 546+11*push+3*backwash;
+    const controlY = 310+leftDrop-19*backwash;
+    // Continue the quadratic's tangent into the cubic, even at peak slosh.
+    const tangentY = 36*(shoulderY-controlY)/(shoulderX-controlX);
+    const left = leftX+' '+(298+leftDrop);
+    const shoulder = shoulderX+' '+shoulderY;
+    const right = rightX+' '+(260+rightDrop);
+    // Independently painted round caps overlap at the three surface joins.
+    // This keeps the magnified ink solid while the path is being revealed.
+    return [
+      `M590 439 H472 Q438 439 460 403 L${left}`,
+      `M${left} Q${controlX} ${controlY} ${shoulder}`,
+      `M${shoulder} C${shoulderX+36} ${shoulderY+tangentY}
+        ${638+14*push-24*backwash} ${231-28*runUp+51*backwash} ${right}`,
+      `M${right} L778 404 Q798 440 766 440 L646 439 H590`
+    ];
   }
   function measuredPath(data) {
     const guide = document.createElementNS('http://www.w3.org/2000/svg','path');
@@ -58,10 +69,27 @@
   const turnIn = 'M590 471 C613 471 613 439 590 439';
   const bridge = new Path2D(turnIn);
   const bridgeLength = measuredPath(turnIn).getTotalLength();
-  const liquid = liquidContour(0,0);
-  const ink = new Path2D('M590 439 '+liquid+' Z');
-  const innerRail = measuredPath(turnIn+' '+liquid);
+  const restingSegments = liquidSegments(0,0);
+  const ink = restingSegments.map(data => ({
+    path: new Path2D(data),
+    length: measuredPath(data).getTotalLength()
+  }));
+  const innerRail = measuredPath([turnIn,...restingSegments].join(' '));
   const penLength = innerRail.getTotalLength();
+
+  function drawRestingLiquid(remaining) {
+    for (const segment of ink) {
+      if (remaining <= 0) break;
+      if (remaining < segment.length) {
+        context.setLineDash([remaining,penLength+2]);
+        context.stroke(segment.path);
+        context.setLineDash([]);
+        break;
+      }
+      context.stroke(segment.path);
+      remaining -= segment.length;
+    }
+  }
 
   let surge = 0, velocity = 0, wall = 0;
   let previousY = scrollY, previousTime = performance.now();
@@ -181,14 +209,13 @@
         context.globalAlpha = 1;
         context.setLineDash([]);
       }
-      if (length > bridgeLength) {
-        if (draw < 1) context.setLineDash([length-bridgeLength,penLength+2]);
-        const contour = moving && draw === 1
-          ? new Path2D('M590 439 '+liquidContour(Math.tanh(surge),Math.tanh(wall))+' Z')
-          : ink;
-        context.stroke(contour);
+      if (moving && draw === 1) {
+        for (const data of liquidSegments(Math.tanh(surge),Math.tanh(wall))) {
+          context.stroke(new Path2D(data));
+        }
+      } else {
+        drawRestingLiquid(draw === 1 ? Infinity : length-bridgeLength);
       }
-      context.setLineDash([]);
     }
 
     // The print takes over at display size. Reveal the letters from the A outward.
