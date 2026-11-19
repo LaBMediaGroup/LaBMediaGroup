@@ -6,12 +6,14 @@
 <meta name="robots" content="noindex">
 <title>Studio · The LaB</title>
 <meta name="description" content="Prototype: the LaB as one filmmaker's studio. Golden Hour at the window, Events on the next wall, story magnets on the fridge, the films on the projector.">
-<link rel="stylesheet" href="studio.css?v=35">
+<link rel="stylesheet" href="studio.css?v=47">
+<link rel="stylesheet" href="flat.css?v=2">
 <script src="../sun-calc.js"></script>
 <script src="../spotlight-data.js"></script>
 <script src="../ideas-data.js"></script>
 <script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
-<script type="module" src="studio.js?v=35"></script>
+<script type="module" src="flat.js?v=2"></script>
+<script type="module" src="studio.js?v=47"></script>
 </head>
 <body class="loading">
 <a class="skip" href="#plain-help">Skip the 3D room</a>
@@ -22,12 +24,19 @@
     <a href="../sun.html">Full light planner</a>
     <a href="../events.html">Events list</a>
     <a href="../ideas.html">Story generator</a>
-    <button type="button" id="plainToggle" aria-pressed="false">Plain view</button>
+    <button type="button" id="plainToggle" aria-pressed="false">Flat view</button>
   </nav>
 </header>
 
 <div id="stage">
   <canvas id="scene" aria-hidden="true"></canvas>
+  <!-- anamorphic lens flare and veiling glare when the low sun is in the lens -->
+  <div id="flare" class="flare" aria-hidden="true">
+    <i class="fl-veil"></i><i class="fl-glow"></i><i class="fl-streak"></i>
+    <i class="fl-ghost" data-k=".55" style="--s:46px;--c:#ffb35a33"></i><i class="fl-ghost" data-k=".9" style="--s:22px;--c:#7fd2ff40"></i>
+    <i class="fl-ghost hex" data-k="1.25" style="--s:74px;--c:#ff8a4a24"></i><i class="fl-ghost" data-k="1.6" style="--s:120px;--c:#9fe0ff18"></i>
+    <i class="fl-ghost hex" data-k="1.95" style="--s:38px;--c:#ffd27a30"></i>
+  </div>
 
   <!-- The real calendar. In 3D it is projected onto the paper on the wall; in plain view it is a normal page. -->
   <article id="calendar" class="wall-calendar" aria-labelledby="calMonth">
@@ -65,47 +74,59 @@
   <div class="gh-row">
     <span id="phase" class="phase">Golden hour</span>
     <label class="date">Date <input type="date" id="date"></label>
-    <button type="button" class="turn" data-go="events">Events wall <span aria-hidden="true">→</span></button>
+    <a class="gh-full" href="../sun.html">Full planner</a>
   </div>
   <p class="facts" id="facts"></p>
 </section>
 
-<section id="eventsDock" class="dock dock-events" aria-label="Events wall controls">
-  <button type="button" class="turn back" data-go="window"><span aria-hidden="true">←</span> Window <span class="mini" id="miniClock"></span></button>
-  <button type="button" class="turn portrait-only" data-go="board" id="toBoard">Corkboard <span aria-hidden="true">→</span></button>
-  <button type="button" class="turn portrait-only" data-go="calendar" id="toCalendar"><span aria-hidden="true">←</span> Calendar</button>
-  <button type="button" class="turn" data-go="fridge" id="toFridge">Fridge <span aria-hidden="true">→</span></button>
+<section id="eventsDock" class="dock dock-events" aria-label="Events wall">
+  <div class="seg portrait-seg" role="group" aria-label="On the events wall">
+    <button type="button" data-go="calendar" id="segCal">Calendar</button>
+    <button type="button" data-go="board" id="segBoard">Corkboard</button>
+  </div>
+  <p class="ev-hint" id="evHint">Tap the flyer to lift it off the board.</p>
 </section>
 
 <section id="fridgeDock" class="dock dock-fridge" aria-labelledby="frTitle">
+  <h1 id="frTitle" class="sr">Story magnets</h1>
   <div class="pj-row">
-    <button type="button" class="turn back" data-go="board" id="frBack"><span aria-hidden="true">←</span> <span id="frBackLabel">Events</span></button>
-    <h1 id="frTitle" class="sr">Story magnets</h1>
     <label class="pj-tone">Tone <select id="tone"></select></label>
     <button type="button" class="advance" id="shuffle">Shake it up</button>
-    <button type="button" class="turn next" data-go="projector">Projector <span aria-hidden="true">→</span></button>
   </div>
-  <div class="idea" aria-live="polite">
+  <details class="idea" id="ideaWrap" aria-live="polite">
+    <summary>The notes on the door</summary>
     <p class="sr" id="ideaConcept"></p>
     <dl class="idea-brief" id="ideaBrief"></dl>
-  </div>
-  <p class="pj-foot"><a href="../ideas.html">Full story generator</a> · locks, saving and 48-hour mode</p>
+    <p class="pj-foot"><a href="../ideas.html">Full story generator</a> · locks, saving and 48-hour mode</p>
+  </details>
 </section>
 
 <section id="projectorDock" class="dock dock-projector" aria-labelledby="pjTitle">
+  <h1 id="pjTitle" class="sr">Selected work</h1>
   <div class="pj-row">
-    <button type="button" class="turn back" data-go="fridge"><span aria-hidden="true">←</span> Fridge</button>
-    <h1 id="pjTitle" class="sr">Selected work</h1>
     <div class="reels" role="group" aria-label="Choose a reel">
       <button type="button" class="reel" data-film="moz" aria-pressed="true">MOZ Interiors</button>
       <button type="button" class="reel" data-film="brass" aria-pressed="false">Anthony Brass</button>
     </div>
-    <button type="button" class="turn next" id="bigScreen">Full screen</button>
-    <button type="button" class="advance" id="playPause">Pause</button>
+    <button type="button" class="advance" id="playPause">Play</button>
   </div>
-  <p class="film-note"><b id="filmTitle">MOZ Interiors</b> <span id="filmNote"></span> <span class="turn-hint">Turn your phone sideways for a bigger picture.</span></p>
+  <p class="film-note"><b id="filmTitle">MOZ Interiors</b> <span id="filmNote"></span></p>
   <p class="pj-foot"><a id="filmLink" target="_blank" rel="noopener">Watch the full film on YouTube ↗</a> · <a href="../tools-concept/work.html">Selected work</a></p>
 </section>
+
+<!-- During a screening the room's controls step away; these stay, small, in the corner -->
+<div id="cinemaBar" class="cinema-bar" role="group" aria-label="Screening">
+  <button type="button" id="bigScreen">Full screen</button>
+  <button type="button" id="cinemaPause">Pause</button>
+</div>
+
+<!-- One way around the room, always in the same place -->
+<nav id="stations" class="stations" aria-label="Studio stations">
+  <button type="button" data-go="window" data-station="window"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M12 3v18M4 12h16"/></svg><span>Window</span></button>
+  <button type="button" data-go="events" data-station="events"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="1"/><path d="M4 10h16M9 3v4M15 3v4"/></svg><span>Events</span></button>
+  <button type="button" data-go="fridge" data-station="fridge"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M8.5 8v4"/></svg><span>Fridge</span></button>
+  <button type="button" data-go="projector" data-station="projector"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="4"/><circle cx="16" cy="8" r="4"/><rect x="5" y="13" width="12" height="7" rx="1"/><path d="M17 15l4-2v6l-4-2"/></svg><span>Films</span></button>
+</nav>
 
 <dialog id="flyerDialog" aria-labelledby="flyerTitle">
   <div class="sheet" id="sheet">
@@ -121,9 +142,12 @@
   </div>
 </dialog>
 
+<!-- Flat view: a designed 2D studio, rendered by flat.js (no WebGL). -->
+<main id="flat" class="flat" hidden tabindex="-1" aria-label="The LaB studio, flat view"></main>
+
 <section id="plain-help" class="plain-help">
   <h2>Without the 3D room</h2>
-  <p>Every tool works on its own page too: <a href="../sun.html">Golden Hour light planner</a>, <a href="../events.html">Michigan film events</a>, <a href="../ideas.html">story generator</a>. <button type="button" class="linkish" data-plain>Switch this page to plain view</button></p>
+  <p>Every tool works on its own page too: <a href="../sun.html">Golden Hour light planner</a>, <a href="../events.html">Michigan film events</a>, <a href="../ideas.html">story generator</a>. <button type="button" class="linkish" data-plain>Switch this page to the flat view</button></p>
 </section>
 
 <noscript><style>#stage,.dock,.skip{display:none!important}</style>

@@ -143,25 +143,6 @@ dialog.lifting::backdrop{background:#0b0a0800}
 .nojs{padding:80px 20px}
 
 /* ---------- plain view: no WebGL, no motion, same tools ---------- */
-body.plain{overflow:auto;background:#191712}
-body.plain #stage{position:static;cursor:auto;touch-action:auto;display:flex;flex-direction:column;align-items:center;gap:20px;padding:calc(var(--top) + 220px) 12px 40px}
-body.plain #scene{display:none}
-body.plain .wall-calendar{position:relative;transform:none!important;visibility:visible;pointer-events:auto;mix-blend-mode:normal;background:#f4f0e6;
-  width:min(800px,100%);height:auto;padding:28px 22px;border-radius:4px}
-body.plain .cal-head h2{font-size:clamp(36px,9vw,64px)}
-body.plain .cal-nav{width:48px;height:48px;font-size:40px}
-body.plain .cal-grid{grid-auto-rows:clamp(44px,9vw,74px)}
-body.plain .cal-grid li{font-size:clamp(14px,3.4vw,24px)}
-body.plain .cal-grid li .tag{display:none}
-body.plain .cal-grid li.has .ring{width:clamp(26px,6vw,46px);height:clamp(22px,5vw,38px)}
-body.plain .cal-agenda{font-size:16px}
-body.plain .cal-agenda li{grid-template-columns:70px 1fr}
-body.plain .cal-agenda .when{font-size:14px}
-body.plain .cal-agenda .where{font-size:14px}
-body.plain .flyer-hit{position:relative;transform:none!important;visibility:visible;pointer-events:auto;width:auto;height:auto;padding:10px 16px;background:#f3eee2;color:#14130f;border-radius:999px;font-weight:600}
-body.plain .flyer-hit span:not(.sr){position:static;color:inherit}
-body.plain #windowDock{position:absolute;top:calc(var(--top) + 8px);bottom:auto;transform:translateX(-50%);opacity:1;pointer-events:auto}
-body.plain #windowDock .turn,body.plain #eventsDock{display:none!important}
 body.loading .dock,body.loading .wall-calendar{opacity:0}
 
 /* ---------- the reel on the wall: film and its halo are light, so they screen over the lit wall ---------- */
@@ -198,29 +179,96 @@ body.loading .dock,body.loading .wall-calendar{opacity:0}
 @media (max-width:560px){.pj-tone{order:3;width:100%}.pj-tone select{flex:1}.pj-foot{display:none}}
 
   background:#f6ead2;border-radius:4px;padding:24px 22px;gap:14px}
-body.plain #projectorDock{position:relative;left:auto;bottom:auto;transform:none;order:-1;opacity:1;pointer-events:auto;display:block!important}
-body.plain #pjBack{display:none}
 
 
 @media (max-width:560px){.reels{order:3;width:100%}.reel{flex:1}.film-note{font-size:11px}}
-body.plain .screen-light,body.plain .door-hit{display:none}
-body.plain .film{position:relative;transform:none!important;visibility:visible;mix-blend-mode:normal;width:min(800px,100%);height:auto;aspect-ratio:16/9;filter:none;-webkit-mask:none;mask:none;border-radius:4px}
-body.plain #fridgeDock,body.plain #projectorDock{position:relative;left:auto;bottom:auto;transform:none;opacity:1;pointer-events:auto;display:block!important;width:min(800px,100%)}
-body.plain #fridgeDock .back,body.plain #projectorDock .back,body.plain .pj-foot .linkish{display:none}
-body.plain .idea .sr{position:static;width:auto;height:auto;clip-path:none;white-space:normal;font:400 22px/1.25 Georgia,serif;margin:8px 2px 4px}
 
 .dock-fridge .advance{margin-left:auto}
 .turn.next{margin-left:0;background:#24221c;color:var(--ui-text);border:1px solid var(--ui-line)}
-body.plain .turn.next{display:none}
 
 /* screening: the dock steps back so the picture owns the room */
-body.cinema .dock-projector{opacity:.28}
-body.cinema .dock-projector:hover,body.cinema .dock-projector:focus-within{opacity:1}
-body.cinema .top{opacity:.35;transition:opacity .6s}
 .turn-hint{display:none}
 body.portrait:not(.plain) .turn-hint{display:inline;color:var(--amber)}
-.dock-projector #bigScreen{margin-left:auto}
 .dock-projector .advance{margin-left:0}
 .film:fullscreen{transform:none!important;mix-blend-mode:normal;filter:none;-webkit-mask:none;mask:none;width:100%;height:100%;object-fit:contain;visibility:visible;background:#000}
 .film:-webkit-full-screen{transform:none!important;mix-blend-mode:normal;filter:none;-webkit-mask:none;width:100%;height:100%;object-fit:contain;visibility:visible;background:#000}
-body.plain #bigScreen{display:none}
+
+/* ---------- flat view: the 3D room steps aside; flat.js owns #flat ---------- */
+#flat[hidden]{display:none}
+body.plain{overflow:auto;overscroll-behavior:auto;background:#12110e}
+body.plain #stage,body.plain .dock,body.plain #plain-help{display:none!important}
+body.plain #flat{display:block}
+
+/* ---------- one way around the room: the station bar ---------- */
+:root{--stations:64px}
+.stations{position:fixed;z-index:7;left:50%;transform:translateX(-50%);bottom:max(10px,env(safe-area-inset-bottom));
+  display:flex;gap:2px;padding:4px;background:#16140fee;border:1px solid var(--ui-line);border-radius:18px;
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);transition:opacity .4s,transform .5s cubic-bezier(.2,.8,.2,1)}
+.stations button{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:74px;min-height:52px;padding:6px 8px;border:0;border-radius:14px;
+  background:transparent;color:var(--ui-dim);font-size:11px;letter-spacing:.04em;cursor:pointer}
+.stations svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.stations button[aria-current]{background:#f3eee2;color:#14130f}
+.stations button:not([aria-current]):hover{color:var(--ui-text);background:#ffffff10}
+body.plain .stations{display:none}
+/* panels sit just above the station bar */
+.dock{bottom:calc(max(10px,env(safe-area-inset-bottom)) + var(--stations) + 8px)}
+.dock-events{display:flex;gap:10px;align-items:center;padding:6px 12px;border-radius:999px;width:auto}
+.ev-hint{margin:0;font-size:13px;color:var(--ui-dim);padding:4px 6px}
+.seg{display:none;gap:4px}
+body.portrait .seg{display:flex}
+.seg button{border:1px solid var(--ui-line);background:#24221c;color:var(--ui-text);border-radius:999px;padding:9px 14px;font-size:14px;cursor:pointer;min-height:40px}
+.seg button[aria-pressed="true"]{background:#f3eee2;color:#14130f;border-color:#f3eee2}
+.gh-full{margin-left:auto;font-size:13px;color:var(--ui-text)}
+.dock-fridge .pj-row{flex-wrap:nowrap}
+.dock-fridge .pj-tone{flex:1;min-width:0}
+.dock-fridge .pj-tone select{width:100%}
+.idea{margin-top:8px}
+.idea summary{cursor:pointer;font-size:13px;color:var(--ui-dim);padding:4px 2px;list-style:none}
+.idea summary::before{content:"▸ ";color:var(--amber)}
+.idea[open] summary::before{content:"▾ "}
+.idea summary::-webkit-details-marker{display:none}
+.dock-projector .pj-row{flex-wrap:nowrap}
+.dock-projector .reels{flex:1;min-width:0}
+.dock-projector .reel{flex:1;white-space:nowrap}
+.dock-projector .advance{margin-left:0}
+/* the screening: everything steps away except a small corner bar */
+.cinema-bar{position:fixed;z-index:8;left:50%;bottom:max(14px,env(safe-area-inset-bottom));display:flex;gap:8px;
+  opacity:0;pointer-events:none;transform:translate(-50%,8px);transition:opacity .5s,transform .5s}
+.cinema-bar button{border:1px solid #ffffff30;background:#000000a0;color:#f3eee2;border-radius:999px;padding:8px 14px;font-size:13px;cursor:pointer;min-height:40px;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+body.cinema .cinema-bar{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+body.cinema .dock,body.cinema .stations{opacity:0;pointer-events:none}
+body.cinema .stations{transform:translate(-50%,20px)}
+body.cinema .top{opacity:.45;background:none}
+body.cinema .top:hover,body.cinema .top:focus-within{opacity:1}
+body.plain .cinema-bar{display:none}
+@media (max-width:560px){
+  .stations button{min-width:70px;font-size:11px}
+  .dock{width:calc(100% - 20px)}
+  .gh-head h1{font-size:19px} #clock{font-size:19px}
+  .gh-row .phase{display:none}
+  .film-note{display:none}
+  .dock-projector .pj-foot{display:none}
+  .dock-fridge .pj-tone{font-size:12px}
+}
+@media (max-height:480px) and (orientation:landscape){
+  /* phone on its side: smaller chrome so the room (and the film) get the screen */
+  :root{--stations:50px}
+  .stations button{min-height:40px;flex-direction:row;gap:6px;padding:4px 10px}
+  .stations svg{width:18px;height:18px}
+  .top{height:44px}
+  .facts,.film-note,.dock .pj-foot,.gh-ticks{display:none}
+  .dock{padding:8px 12px}
+}
+
+/* ---------- lens flare: screen-blended light, positioned from the sun's place on screen ---------- */
+.flare{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:0;overflow:hidden}
+.flare i{position:absolute;left:0;top:0;display:block}
+.fl-veil{inset:0;width:100%;height:100%;background:radial-gradient(60% 60% at var(--sx) var(--sy),#ffb46a33,#ff8a3a10 45%,transparent 75%)}
+.fl-glow{width:520px;height:520px;transform:translate(calc(var(--sx) - 260px),calc(var(--sy) - 260px));
+  background:radial-gradient(circle,#fff6e6 0%,#ffd9a0cc 6%,#ffb05a55 18%,#ff8a3a1a 40%,transparent 66%)}
+.fl-streak{width:200vw;height:5px;transform:translate(calc(var(--sx) - 100vw),calc(var(--sy) - 2.5px));
+  background:linear-gradient(90deg,transparent,#6fb8ff22 20%,#bfe3ffaa 46%,#fff 50%,#bfe3ffaa 54%,#6fb8ff22 80%,transparent);filter:blur(1.5px)}
+.fl-streak::after{content:"";position:absolute;inset:-14px 30%;background:radial-gradient(50% 50%,#9fd4ff40,transparent);}
+.fl-ghost{width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(circle,transparent 45%,var(--c) 70%,transparent 72%),radial-gradient(circle,var(--c),transparent 70%)}
+.fl-ghost.hex{border-radius:0;clip-path:polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%);background:var(--c)}

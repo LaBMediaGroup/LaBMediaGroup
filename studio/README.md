@@ -21,6 +21,15 @@ node studio/check-studio.mjs webkit <outdir>
 
 It walks window → turn → events, drags back with a 0.9 s pause mid-drag, and lifts the flyer. Then it shakes the fridge (the idea must change), switches tone, and checks that the reel is rolling at the projector. It confirms the screening turns on (and reports how much of the width the picture fills), that Pause brings the lights back, switches to the Brass reel, and confirms the film pauses when you walk away. It also opens a deep link at dusk and plain view, at 1366×800 and 390×844, and fails if plain view scrolls sideways.
 
+## Round 3 (Nov 18, after Bobby's iPhone test)
+
+- **Flat view** is its own designed page: `flat.js` and `flat.css` render into `#flat`. The 3D room steps aside on the `lab:flat` event and hands over the URL state.
+- **Getting around:** one station bar (Window · Events · Fridge · Films) replaces the per-wall back/next buttons. Panels hold only their wall's controls. On phones, the events wall has a Calendar/Corkboard switch.
+- **Fridge on phones:** the words run the whole door (skipping the handle band) at up to 66 mm tiles, the camera frames the door, and the notes sit low. The brief is a tap away under "The notes on the door".
+- **Screenings:** the panels, station bar and header step away and a small corner bar (Full screen · Pause) remains. The camera frames the picture against the whole screen, which fills 94% of the width on desktop and 88% of the height on a phone held sideways.
+- **Golden hour:** the outside carries its own exposure (`expComp`), so dusk lamps and screenings never dim the sky. The sky has forward-scattering halos, a burning horizon band under a low sun, and clouds lit from below. The field has furrows that throw shadows at low sun, rye patches and aerial haze. There are two depths of bare November tree line, a farm fence and a run of utility poles with sagging lines. An anamorphic lens flare (streak, ghosts, veiling glare) appears when the low sun is in the lens through the glass. The mullions eclipse it and the shade blocks it.
+- **Baked AO:** `blender/bake_ao.py` gives the room's big surfaces a Lightmap UV and bakes Cycles ambient occlusion (1.1 m reach) into `assets/ao/*.jpg` (832 KB in all), applied as aoMaps. Rerun it after any `build_loft.py` rebuild, then re-export.
+
 ## How it's built
 
 | Part | Where |

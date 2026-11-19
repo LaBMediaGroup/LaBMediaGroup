@@ -208,10 +208,10 @@ function loadFilm(id) {
 }
 function syncFilm() {
   // only roll film while you are looking at it and the page is visible
-  const want = !filmPaused && !document.hidden && (document.body.classList.contains('plain') || stopName() === 'projector');
-  if (want && film.paused) film.play().catch(() => { filmPaused = true; $('playPause').textContent = 'Play'; });
+  const want = !filmPaused && !document.hidden && !document.body.classList.contains('plain') && stopName() === 'projector';
+  if (want && film.paused) film.play().catch(() => { filmPaused = true; $('playPause').textContent = $('cinemaPause').textContent = 'Play'; });
   if (!want && !film.paused) film.pause();
-  $('playPause').textContent = filmPaused ? 'Play' : 'Pause';
+  $('playPause').textContent = $('cinemaPause').textContent = filmPaused ? 'Play' : 'Pause';
 }
 document.querySelectorAll('.reel').forEach(b => b.addEventListener('click', async () => {
   if (b.dataset.film === filmId) return;
@@ -223,6 +223,7 @@ document.querySelectorAll('.reel').forEach(b => b.addEventListener('click', asyn
   loadFilm(b.dataset.film); film.classList.remove('flash'); syncFilm();
 }));
 $('playPause').addEventListener('click', () => { filmPaused = !filmPaused; syncFilm(); });
+$('cinemaPause').addEventListener('click', () => { filmPaused = !filmPaused; syncFilm(); });
 $('bigScreen').addEventListener('click', () => {
   film.controls = true;
   if (film.requestFullscreen) film.requestFullscreen().catch(() => film.webkitEnterFullscreen?.());
@@ -234,24 +235,41 @@ loadFilm(filmId);
 
 /* ------------------------------------------------------------------ plain view */
 function setPlain(on, remember = true) {
+  // Flat view is its own page (flat.js renders into #flat); the 3D room just steps aside and hands over the state.
   document.body.classList.toggle('plain', on);
   $('plainToggle').setAttribute('aria-pressed', String(on));
-  $('plainToggle').textContent = on ? '3D room' : 'Plain view';
+  $('plainToggle').textContent = on ? '3D room' : 'Flat view';
   if (remember) try { localStorage.setItem('lab-studio-plain', on ? '1' : '0'); } catch { }
-  $('windowDock').hidden = false; $('eventsDock').hidden = on; $('projectorDock').hidden = false; $('fridgeDock').hidden = false;
-  // plain view: the fridge and the films become ordinary sections in the page
-  if (on) { $('calendar').after($('flyerHit')); $('flyerHit').after($('fridgeDock')); $('fridgeDock').after($('film')); $('film').after($('projectorDock')); film.controls = true; }
-  else { $('stage').insertBefore($('film'), $('doorHit')); document.body.insertBefore($('fridgeDock'), $('flyerDialog')); document.body.insertBefore($('projectorDock'), $('flyerDialog')); film.controls = false; }
+  $('flat').hidden = !on;
   syncFilm();
-  $('calendar').inert = false;
-  if (!on && !renderer) boot3D();
+  document.dispatchEvent(new CustomEvent('lab:flat', { detail: { on, hash: location.hash.slice(1) || stopName() } }));
+  if (!on) {
+    window.scrollTo(0, 0);
+    // let the flat view finish writing the URL first, then take the state from it
+    requestAnimationFrame(() => setTimeout(() => { readURL(); if (!renderer) boot3D(); else { resize(); needsFrame = true; } }, 0));
+  }
+}
+// coming back from the flat view: it rewrote the URL, so take date, time, tone, film and wall from there
+function readURL() {
+  const q = new URLSearchParams(location.search);
+  const d = q.get('date');
+  if (/^\d{4}-\d{2}-\d{2}$/.test(d || '') && d !== state.date) { state.date = d; $('date').value = d; setDay(); calYear = +d.slice(0, 4); calMonth = +d.slice(5, 7) - 1; renderCalendar(); }
+  const m = parseInt(q.get('minute'), 10);
+  if (Number.isFinite(m)) { state.minute = clamp(m, +$('scrub').min, +$('scrub').max); $('scrub').value = state.minute; }
+  const t = q.get('tone') || '';
+  if (TONES.some(([id]) => (id || '') === t) && $('tone').value !== t) { $('tone').value = t; if (door && !shaking) { idea = rollStory(); writeIdea(); for (const it of [...magnets.children]) { magnets.remove(it); it.traverse(o => o.userData.dispose?.()); } placeIdea(idea, true); } }
+  const f = q.get('film');
+  if (FILMS[f] && f !== filmId) loadFilm(f);
+  const idx = stops.indexOf(alias(location.hash.slice(1) || 'window'));
+  if (idx >= 0) { state.view = idx; anim = null; }
+  applySun(); settle();
 }
 $('plainToggle').onclick = () => setPlain(!document.body.classList.contains('plain'));
-document.querySelector('[data-plain]').onclick = () => { setPlain(true); $('calMonth').focus(); };
+document.querySelector('[data-plain]').onclick = () => { setPlain(true); $('flat').focus?.(); };
 
 /* ------------------------------------------------------------------ 3D */
 const shade = { fabric: null, hem: null };
-let projector, reels = [], door = null, magnets = null, debris = [], treeLine, renderer, scene, camera, sunLight, hemi, bounce, practicalLights = [], bulbMat, sky, shafts, dust, flyerMesh, calPaperMat;
+let ground, farTrees, country, projector, reels = [], door = null, magnets = null, debris = [], treeLine, renderer, scene, camera, sunLight, hemi, bounce, practicalLights = [], bulbMat, sky, shafts, dust, flyerMesh, calPaperMat;
 const tmp = new THREE.Vector3();
 const B = (x, y, z) => new THREE.Vector3(x, z, -y);       // Blender -> three
 const WIN = { x: -3.2, y0: 0.45, y1: 3.0, z0: -1.5, z1: 1.5 };
@@ -334,7 +352,7 @@ function makeMaterials() {
     M_GearBlack: new THREE.MeshStandardMaterial({ color: '#141416', roughness: .5 }),
     M_Aluminium: new THREE.MeshStandardMaterial({ color: '#a9abae', roughness: .35, metalness: 1 }),
     M_ProjectorBeige: new THREE.MeshStandardMaterial({ color: '#b6a585', roughness: .55 }),
-    M_WindowGlass: new THREE.MeshBasicMaterial({ color: '#cfe2e8', transparent: true, opacity: .05, depthWrite: false }),
+    M_WindowGlass: new THREE.MeshBasicMaterial({ color: '#cfe2e8', transparent: true, opacity: .025, depthWrite: false }),
     M_FridgeEnamel: new THREE.MeshPhysicalMaterial({ color: '#7e9d8c', roughness: .34, clearcoat: .5, clearcoatRoughness: .25 }),
     M_Chrome: new THREE.MeshStandardMaterial({ color: '#e6e8ec', roughness: .08, metalness: 1 }),
     M_Stainless: new THREE.MeshStandardMaterial({ color: '#b9bcbf', roughness: .32, metalness: 1 }),
@@ -347,32 +365,116 @@ function makeMaterials() {
 }
 
 /* sky dome: gradient + sun glow, driven by solar elevation */
+/* sky dome: scattering gradient, a sun halo, golden-hour clouds. It carries its own exposure (expComp) so the
+   room's camera exposure (dusk lamps, screenings) never changes how the outside looks. */
+const NOISE = `
+  float hash(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }
+  float noise(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);
+    return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y); }
+  float fbm(vec2 p){ float v=0., a=.5; for(int i=0;i<5;i++){ v+=a*noise(p); p*=2.03; a*=.5; } return v; }`;
 function makeSky() {
   const mat = new THREE.ShaderMaterial({
     side: THREE.BackSide, depthWrite: false,
-    uniforms: { sunDir: { value: new THREE.Vector3(0, 1, 0) }, zenith: { value: new THREE.Color() }, horizon: { value: new THREE.Color() }, glow: { value: new THREE.Color() }, sunAmt: { value: 1 } },
+    uniforms: { sunDir: { value: new THREE.Vector3(0, 1, 0) }, zenith: { value: new THREE.Color() }, horizon: { value: new THREE.Color() }, glow: { value: new THREE.Color() },
+      sunAmt: { value: 1 }, golden: { value: 0 }, expComp: { value: 1 }, time: { value: 0 }, night: { value: 0 } },
     vertexShader: `varying vec3 vDir; void main(){ vDir = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
-    fragmentShader: `uniform vec3 sunDir,zenith,horizon,glow; uniform float sunAmt; varying vec3 vDir;
-      void main(){ vec3 d=normalize(vDir); float h=clamp(d.y,0.,1.);
-        vec3 c=mix(horizon,zenith,pow(h,.55));
-        float s=max(dot(d,normalize(sunDir)),0.);
-        c+=glow*(pow(s,6.)*.55+pow(s,60.)*.8)*(1.-h*.6);
-        c+=vec3(1.,.93,.8)*smoothstep(.9994,.9997,s)*4.*sunAmt;
-        if(d.y<0.) c=mix(horizon*.55,horizon*.25,clamp(-d.y*6.,0.,1.));
-        gl_FragColor=vec4(c,1.);
+    fragmentShader: `uniform vec3 sunDir,zenith,horizon,glow; uniform float sunAmt,golden,expComp,time,night; varying vec3 vDir;
+      ${NOISE}
+      void main(){ vec3 d=normalize(vDir); vec3 sd=normalize(sunDir); float h=clamp(d.y,0.,1.);
+        vec3 c=mix(horizon,zenith,pow(h,.5));
+        float s=max(dot(d,sd),0.);
+        // forward scattering: a wide halo, a tight bloom, the disc
+        c+=glow*(pow(s,4.)*.32+pow(s,26.)*.7+pow(s,240.)*1.6)*(1.-h*.5);
+        // golden hour: the band of fire along the horizon, strongest under the sun
+        vec2 a=normalize(d.xz+1e-4), b=normalize(sd.xz+1e-4); float toward=max(dot(a,b),0.);
+        c+=glow*golden*pow(1.-h,7.)*(.25+.75*pow(toward,3.))*1.1;
+        // clouds on a high deck, lit from below when the sun is low
+        if(d.y>.015){
+          vec2 uv=d.xz/(d.y+.12)*.55+vec2(time*.0035,time*.001);
+          float n=fbm(uv*1.3), n2=fbm(uv*3.1+7.);
+          float cov=smoothstep(.4,.7,n*.8+n2*.25)*smoothstep(.015,.2,d.y)*(1.-smoothstep(.6,.95,h));
+          vec3 lit=mix(vec3(.92,.93,.96),vec3(1.,.6,.34),golden)*(.55+1.1*pow(s,2.));
+          vec3 shade=mix(zenith*.85+.06,vec3(.42,.3,.38),golden);
+          vec3 cc=mix(shade,lit,smoothstep(.45,.9,n2+pow(s,3.)*.35));
+          cc=mix(cc,zenith*.25,night);
+          c=mix(c,cc,cov*.88);
+        }
+        c+=vec3(1.,.95,.86)*smoothstep(.99952,.99974,s)*7.*sunAmt;
+        if(d.y<0.) c=mix(horizon*.7,horizon*.35,clamp(-d.y*5.,0.,1.));
+        gl_FragColor=vec4(c*expComp,1.);
         #include <tonemapping_fragment>
         #include <colorspace_fragment>
       }`,
   });
   const m = new THREE.Mesh(new THREE.SphereGeometry(400, 48, 24), mat);
-  m.frustumCulled = false;
+  m.frustumCulled = false; m.renderOrder = -3;
   return m;
 }
 
+/* the field: stubble rows and aerial haze, lit by the sun but blind to the room's lights */
+function makeGround() {
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { sunDir: { value: new THREE.Vector3() }, sunCol: { value: new THREE.Color() }, sky: { value: new THREE.Color() }, haze: { value: new THREE.Color() }, expComp: { value: 1 }, sunAmt: { value: 1 } },
+    vertexShader: `varying vec3 vW; void main(){ vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,
+    fragmentShader: `uniform vec3 sunDir,sunCol,sky,haze; uniform float expComp,sunAmt; varying vec3 vW;
+      ${NOISE}
+      void main(){
+        vec2 p=vW.xz;
+        float rows=.5+.5*sin(p.y*2.4+noise(p*.05)*6.);              // harvested rows running away from the window
+        float patchy=fbm(p*.035), fine=noise(p*.9);
+        vec3 stubble=mix(vec3(.30,.25,.12),vec3(.48,.39,.2),patchy);
+        stubble=mix(stubble,vec3(.2,.24,.12),smoothstep(.55,.8,fbm(p*.012+3.)));   // green where the rye came up
+        float furrow=pow(rows,3.);                                   // low sun: every furrow throws a shadow
+        stubble*=(.5+.62*furrow)*(.85+.3*fine);
+        stubble=mix(stubble,vec3(.16,.11,.07),smoothstep(.6,.85,fbm(p*.02+9.))*.7);   // bare dark soil patches
+        float lambert=max(sunDir.y,0.);
+        vec3 c=stubble*(sky*.38+sunCol*lambert*1.1*sunAmt);
+        float dist=length(vW.xz-vec2(-3.,0.));
+        c=mix(c,haze*.85,(1.-exp(-dist*.0032))*.85);                 // aerial perspective: light, and only far off
+        gl_FragColor=vec4(c*expComp,1.);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+      }`,
+  });
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(1200, 1200), mat);
+  m.rotation.x = -Math.PI / 2; m.position.set(-400, -.25, 0); m.renderOrder = -2;
+  return m;
+}
+
+/* a farm fence and a run of utility poles: scale and depth against the low sun */
+function makeCountry() {
+  const g = new THREE.Group(), r = rng(53);
+  const wood = new THREE.MeshBasicMaterial({ color: '#2a2219' });
+  const post = new THREE.CylinderGeometry(.06, .07, 1.3, 6), rail = new THREE.BoxGeometry(.04, .07, 2.6);
+  for (let z = -34; z <= 34; z += 2.6) {
+    const p = new THREE.Mesh(post, wood); p.position.set(-15 + (r() - .5) * .2, .4, z); p.rotation.z = (r() - .5) * .08; g.add(p);
+    for (const y of [.55, .95]) { const rl = new THREE.Mesh(rail, wood); rl.position.set(-15, y + (r() - .5) * .04, z + 1.3); rl.rotation.x = (r() - .5) * .04; g.add(rl); }
+  }
+  const poleGeo = new THREE.CylinderGeometry(.13, .17, 11, 8), arm = new THREE.BoxGeometry(.12, .12, 2.4);
+  const tops = [];
+  for (let i = 0; i < 6; i++) {
+    const z = -120 + i * 48 + (r() - .5) * 4, x = -58 - i * 1.5;
+    const p = new THREE.Mesh(poleGeo, wood); p.position.set(x, 5.2, z); g.add(p);
+    const a = new THREE.Mesh(arm, wood); a.position.set(x, 10.1, z); g.add(a);
+    tops.push(new THREE.Vector3(x, 10.2, z));
+  }
+  // two sagging lines between the poles
+  for (const off of [-1, 1]) {
+    const pts = [];
+    for (let i = 0; i < tops.length - 1; i++) for (let k = 0; k <= 16; k++) {
+      const t = k / 16, a = tops[i], b = tops[i + 1];
+      pts.push(new THREE.Vector3(mix(a.x, b.x, t), mix(a.y, b.y, t) - Math.sin(Math.PI * t) * 1.1, mix(a.z, b.z, t) + off * 1.05));
+    }
+    g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: '#1a1611' })));
+  }
+  g.userData.wood = wood;
+  return g;
+}
+
 /* a painted November tree line on a far ring: bare hardwoods, a few spruce, soft edges */
-function makeTreeLine() {
+function makeTreeLine(radius = 170, seed = 31, height = 34) {
   const W = 4096, H = 512, c = document.createElement('canvas'); c.width = W; c.height = H;
-  const g = c.getContext('2d'), r = rng(31);
+  const g = c.getContext('2d'), r = rng(seed);
   g.lineCap = 'round';
   const branch = (x, y, len, ang, w, depth) => {
     if (depth === 0 || len < 3) return;
@@ -385,19 +487,19 @@ function makeTreeLine() {
     g.strokeStyle = g.fillStyle = layer ? 'rgba(26,30,24,1)' : 'rgba(48,52,48,.75)';
     for (let x = -40; x < W + 40; x += 14 + r() * 26) {
       const base = H - 4, h = (layer ? 150 : 110) + r() * (layer ? 190 : 120);
-      if (r() < .16) { // spruce
+      if (r() < .06) { // the odd spruce, ragged
         g.beginPath(); g.moveTo(x, base - h * 1.05);
-        for (let k = 0; k <= 10; k++) { const yy = base - h * 1.05 + k * h / 10, ww = k * h * .028; g.lineTo(x + ww * (k % 2 ? 1 : .7), yy); }
-        for (let k = 10; k >= 0; k--) { const yy = base - h * 1.05 + k * h / 10, ww = k * h * .028; g.lineTo(x - ww * (k % 2 ? 1 : .7), yy); }
+        for (let k = 0; k <= 14; k++) { const yy = base - h * 1.05 + k * h / 14, ww = k * h * .02 * (.6 + r() * .7); g.lineTo(x + ww, yy); }
+        for (let k = 14; k >= 0; k--) { const yy = base - h * 1.05 + k * h / 14, ww = k * h * .02 * (.6 + r() * .7); g.lineTo(x - ww, yy); }
         g.fill();
       } else branch(x, base, h * .34, Math.PI / 2 + (r() - .5) * .2, 2.6 + r() * 2.5, 7);
     }
     g.fillRect(0, H - 14, W, 14);
   }
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
-  const geo = new THREE.CylinderGeometry(170, 170, 34, 96, 1, true, Math.PI * 1.1, Math.PI * .8); // the window's half (centred on -x) of the horizon
+  const geo = new THREE.CylinderGeometry(radius, radius, height, 96, 1, true, Math.PI * 1.1, Math.PI * .8); // the window's half (centred on -x) of the horizon
   const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: t, transparent: true, alphaTest: .02, side: THREE.BackSide, depthWrite: false, color: '#9aa08f', fog: false }));
-  m.position.y = 34 / 2 - 1.5; m.renderOrder = -1;
+  m.position.y = height / 2 - 1.5; m.renderOrder = -1;
   m.userData.tint = m.material.color;
   return m;
 }
@@ -414,7 +516,7 @@ function makeShafts() {
       void main(){ float edge=smoothstep(0.,.35,vE.x)*smoothstep(0.,.35,1.-vE.x)*smoothstep(0.,.35,vE.y)*smoothstep(0.,.35,1.-vE.y);
         float fall=smoothstep(0.,.2,vA)*(1.-smoothstep(.55,1.,vA));
         float drift=.85+.15*sin(vW.x*3.1+time*.4)*sin(vW.y*2.3-time*.3);
-        gl_FragColor=vec4(color*strength*edge*fall*drift*.032,1.); }`,
+        gl_FragColor=vec4(color*strength*edge*fall*drift*.018,1.); }`,
   });
   const group = new THREE.Group();
   const cols = [-1.5, -0.75, 0, 0.75, 1.5], rows = [0.45, 1.15, 1.85, 2.45, 3.0], inset = .03;
@@ -597,12 +699,15 @@ const DOOR_W = FR.z1 - FR.z0;     // .597
 const measureCtx = document.createElement('canvas').getContext('2d');
 function wordAspect(word) { measureCtx.font = '600 46px Georgia, "Times New Roman", serif'; return Math.ceil(measureCtx.measureText(word).width + 32) / 64; }
 function layoutWords(words) {
-  const left = -DOOR_W / 2 + .045, right = DOOR_W / 2 - .045, top = 1.415, bottom = 1.025;   // under the emblem, above the handle
-  for (let h = stops === STOPS_TALL ? .046 : .056; h >= .024; h -= .003) {
+  // phones: words run the whole door (skipping the handle band) so they can be big; desktop: above the handle
+  const tall = stops === STOPS_TALL;
+  const left = -DOOR_W / 2 + .04, right = DOOR_W / 2 - .04, top = 1.415, bottom = tall ? .52 : 1.025, handle = [.915, 1.035];
+  for (let h = tall ? .066 : .056; h >= .024; h -= .003) {
     const out = []; let x = left, y = top - h / 2, ok = true;
     for (const word of words) {
       const w = h * wordAspect(word);
       if (x + w > right && x > left) { x = left; y -= h * 1.42; }
+      if (tall && y + h / 2 > handle[0] && y - h / 2 < handle[1]) y = handle[0] - h / 2 - .008;
       if (y - h / 2 < bottom) { ok = false; break; }
       out.push({ word, x: x + w / 2, y, h }); x += w + h * .2;
     }
@@ -621,7 +726,7 @@ function placeIdea(next, instant) {
     t.userData.target = { x: sp.x + (r() - .5) * .004, y: sp.y + (r() - .5) * .004, z: .002, rz: (r() - .5) * .08 };
     items.push(t);
   }
-  const notes = next.rows.slice(0, 4), cols = [-.13, .13], rows = [.8, .56];   // below the lever handle
+  const notes = next.rows.slice(0, 4), cols = [-.13, .13], rows = stops === STOPS_TALL ? [.36, .19] : [.8, .56];   // below the words
   const kinds = { Place: 'place', Who: 'who', Thing: 'thing', Twist: 'twist', Try: 'twist' };
   const colors = { place: '#b3301f', who: '#9a6a00', thing: '#7a5a12', twist: '#24589a' };
   notes.forEach(([label, text], i) => {
@@ -738,16 +843,16 @@ const MARKS = {
   // hand-placed: over the projector's shoulder, the beam leading to the picture
   projector: { wide: { pos: [-2.2, 1.36, 1.3], look: [2.99, 1.2, 1.52], vfov: 31 }, tall: { pos: [-1.6, 1.42, 1.42], look: [2.99, 1.22, 1.5], vfov: 45 } },
   // the screening seat: the picture fills the frame
-  screen: { wide: { t: [2.99, 1.5, 1.5], size: [1.74, 1.0], dir: [1, -.02, .015] }, tall: { t: [2.99, 1.5, 1.5], size: [1.6, .9], dir: [1, -.02, .01] } },
+  screen: { wide: { t: [2.99, 1.5, 1.5], size: [1.6, .9], dir: [1, -.02, .015] }, tall: { t: [2.99, 1.5, 1.5], size: [1.6, .9], dir: [1, -.02, .01] } },
   // walk up to the fridge: the magnet words fill the frame
-  fridge: { wide: { t: [2.27, 1.1, -1.19], size: [1.3, 1.02], dir: [1, -.07, .1] }, tall: { t: [2.27, 1.07, -1.19], size: [.74, 1.1], dir: [1, -.05, .06] } },
+  fridge: { wide: { t: [2.27, 1.1, -1.19], size: [1.3, 1.02], dir: [1, -.07, .1] }, tall: { t: [2.255, .98, -1.2005], size: [.62, .96], dir: [1, -.03, .03] } },
 };
 let insets = { top: 56, bottom: 150 };
 function frameMark(name) {
   const key = stops === STOPS_TALL ? 'tall' : 'wide';
   const m = MARKS[name][key] || MARKS[name].wide || MARKS[name].tall;
   if (m.pos) { const pos = new THREE.Vector3(...m.pos); return { pos, dir: new THREE.Vector3(...m.look).sub(pos).normalize(), vfov: m.vfov }; }
-  const W = innerWidth, H = innerHeight, avail = Math.max(.35, (H - insets.top - insets.bottom) / H);
+  const W = innerWidth, H = innerHeight, avail = Math.max(.35, (H - insetsNow.top - insetsNow.bottom) / H);
   const vfov = name === 'screen' ? (stops === STOPS_TALL ? 50 : 34) : stops === STOPS_TALL ? 60 : 44;
   const tv = Math.tan(THREE.MathUtils.degToRad(vfov / 2)) * avail, th = Math.tan(THREE.MathUtils.degToRad(vfov / 2)) * W / H;
   const dir = new THREE.Vector3(...m.dir).normalize();
@@ -771,8 +876,10 @@ function poseAt(v) {
   return { pos, dir, vfov: mix(a.vfov, b.vfov, f), roll: Math.sin(Math.PI * f) * .012 * Math.sign(dy) };
 }
 function placeCamera() {
-  const p = poseAt(state.view);
   const k = smooth(0, 1, cinema.v) * smooth(stops.length - 1.3, stops.length - 1, state.view);
+  // during a screening the panels step away: the picture gets the whole screen
+  insetsNow = { top: mix(insets.top, 12, k), bottom: mix(insets.bottom, 12, k) };
+  const p = poseAt(state.view);
   if (k > 0) {
     const sc = frameMark('screen');
     p.pos.lerp(sc.pos, k); p.dir.lerp(sc.dir, k).normalize(); p.vfov = mix(p.vfov, sc.vfov, k);
@@ -781,7 +888,7 @@ function placeCamera() {
   camera.up.set(Math.sin(p.roll), 1, 0).normalize();
   camera.lookAt(tmp.copy(p.pos).add(p.dir));
   camera.fov = p.vfov;
-  const shift = (insets.top - insets.bottom) / 2;
+  const shift = (insetsNow.top - insetsNow.bottom) / 2;
   camera.setViewOffset(innerWidth, innerHeight, 0, -shift, innerWidth, innerHeight);
   camera.updateProjectionMatrix();
 }
@@ -828,7 +935,6 @@ function applySun() {
   state.sun = { azimuth, elevation };
   const e = elevation, toSun = sunVector(azimuth, elevation);
   $('clock').textContent = fmtClock.format(t);
-  $('miniClock').textContent = fmtClock.format(t);
   const phase = LaBSun.phaseAt(t, state.day).replace(/-/g, ' ');
   $('phase').textContent = `${phase} · sun ${Math.round(e)}° up, ${LaBSun.direction ? LaBSun.direction(azimuth) : Math.round(azimuth) + '°'}`;
   $('scrub').setAttribute('aria-valuetext', `${fmtClock.format(t)}, ${phase}, sun ${Math.round(e)} degrees up`);
@@ -836,6 +942,8 @@ function applySun() {
 
   const day = smooth(-2, 3, e), gold = 1 - smooth(4, 22, e), blue = smooth(-7, -1, e) * (1 - smooth(-1, 3, e));
   const dim = smooth(.15, .85, cinema.v), shut = smooth(0, .75, cinema.v);   // screening: shade closed, house lights down
+  // the room's camera exposure; everything outside is divided by it so dusk lamps and screenings never touch the sky
+  const ec = 1 / mix(mix(1.05, 1.55, 1 - smooth(-6, 12, e)), 1.6, dim);
   // sun
   sunLight.position.copy(toSun).multiplyScalar(14).add(sunLight.target.position);
   sunLight.intensity = day * mix(5.2, 3.6, gold) * (1 - smooth(1.5, -1, e) * .7);
@@ -846,7 +954,15 @@ function applySun() {
   sky.material.uniforms.zenith.value.copy(zen); sky.material.uniforms.horizon.value.copy(hor);
   sky.material.uniforms.glow.value.copy(C('#ffb26b')).multiplyScalar(day * (.3 + gold * .9) + blue * .25);
   sky.material.uniforms.sunDir.value.copy(toSun); sky.material.uniforms.sunAmt.value = day;
-  treeLine.material.color.copy(hor).lerp(zen, .3).multiplyScalar(.62);
+  sky.material.uniforms.golden.value = day * gold; sky.material.uniforms.expComp.value = ec; sky.material.uniforms.night.value = 1 - smooth(-10, -2, e);
+  const gu = ground.material.uniforms;
+  gu.sunDir.value.copy(toSun); gu.sunCol.value.copy(sunLight.color).multiplyScalar(day); gu.sky.value.copy(zen).lerp(hor, .5).multiplyScalar(mix(.15, 1, smooth(-8, 10, e)));
+  gu.haze.value.copy(hor).lerp(C('#ffb070'), gold * day * .35); gu.expComp.value = ec; gu.sunAmt.value = day;
+  flareState.gold = day * gold * (1 - smooth(-1, 1.5, -e)); flareState.toSun.copy(toSun);
+  // outside never takes the room's exposure: everything out there is divided by it
+  treeLine.material.color.copy(hor).lerp(zen, .25).multiplyScalar(.5 * ec);
+  farTrees.material.color.copy(hor).lerp(zen, .15).multiplyScalar(.78 * ec);
+  country.userData.wood.color.copy(C('#2a2219')).lerp(hor, .12).multiplyScalar(ec);
   hemi.color.copy(zen).lerp(C('#ffffff'), .25); hemi.groundColor.copy(C('#6b4a33'));
   hemi.intensity = mix(.08, 1.1, smooth(-8, 18, e)) * (1 - .9 * shut);
   // bounce from the sunlit floor patch (documented fill: its source is the patch itself)
@@ -866,7 +982,7 @@ function applySun() {
   updateShafts(toSun);
   dust.material.uniforms.toSun.value.copy(toSun);
   dust.material.uniforms.strength.value = day * facing * mix(.6, 1.2, gold) * (1 - shut);
-  renderer.toneMappingExposure = mix(mix(1.05, 1.55, 1 - smooth(-6, 12, e)), 1.6, dim);
+  renderer.toneMappingExposure = 1 / ec;
   projectorLight();
   needsFrame = true;
 }
@@ -904,6 +1020,40 @@ function stepCinema(dt) {
   if (cinema.v !== before) applySun();
 }
 
+/* ------------------------------------------------------------------ lens flare: a cinema lens looking into a low sun */
+const flareState = { gold: 0, toSun: new THREE.Vector3(), amt: 0 };
+const flareEls = { root: $('flare') };
+function stepFlare() {
+  const root = flareEls.root; if (!root || !camera) return;
+  const sunPt = camera.position.clone().addScaledVector(flareState.toSun, 200);
+  const sp = toScreen(sunPt);
+  let vis = 0;
+  if (sp && flareState.toSun.x < -.05) {
+    // does the line to the sun pass through the glass (and miss the mullions and the shade)?
+    const t = (WIN.x - camera.position.x) / flareState.toSun.x;
+    const q = camera.position.clone().addScaledVector(flareState.toSun, t);
+    const inOpening = q.y > WIN.y0 && q.y < WIN.y1 && q.z > WIN.z0 && q.z < WIN.z1;
+    if (inOpening) {
+      const near = (v, list, w) => Math.min(...list.map(x => Math.abs(v - x))) / w;
+      const bar = Math.min(near(q.z, [-1.5, -.75, 0, .75, 1.5], .03), near(q.y, [.45, 1.15, 1.85, 2.45, 3.0], .025));
+      const shadeBottom = shade.fabric ? SHADE.top - SHADE.drop * shade.fabric.scale.y : 99;
+      vis = smooth(.6, 1.6, bar) * (q.y < shadeBottom ? 1 : 0);
+    }
+  }
+  const edge = sp ? smooth(-.15, .1, Math.min(sp.x / innerWidth, 1 - sp.x / innerWidth, sp.y / innerHeight, 1 - sp.y / innerHeight)) : 0;
+  const target = vis * edge * flareState.gold * (1 - cinema.v) * (document.body.classList.contains('plain') ? 0 : 1);
+  flareState.amt += (target - flareState.amt) * (quiet.matches ? 1 : .12);   // a lens breathes in and out of flare
+  const a = flareState.amt;
+  root.style.opacity = a.toFixed(3);
+  if (a < .003 || !sp) return;
+  const cx = innerWidth / 2, cy = innerHeight / 2, dx = cx - sp.x, dy = cy - sp.y;
+  root.style.setProperty('--sx', sp.x + 'px'); root.style.setProperty('--sy', sp.y + 'px');
+  root.querySelectorAll('.fl-ghost').forEach(gh => {
+    const k = +gh.dataset.k;
+    gh.style.transform = `translate(${sp.x + dx * k}px, ${sp.y + dy * k}px) translate(-50%, -50%)`;
+  });
+}
+
 /* ------------------------------------------------------------------ boot */
 let needsFrame = true, clock0 = performance.now(), anim = null;
 async function boot3D() {
@@ -920,9 +1070,10 @@ async function boot3D() {
   camera = new THREE.PerspectiveCamera(44, innerWidth / innerHeight, .05, 900);
 
   sky = makeSky(); scene.add(sky);
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(900, 900), new THREE.MeshStandardMaterial({ color: '#3d4226', roughness: 1 }));
-  ground.rotation.x = -Math.PI / 2; ground.position.set(-300, -.25, 0); scene.add(ground);
+  ground = makeGround(); scene.add(ground);
+  farTrees = makeTreeLine(290, 77, 46); farTrees.renderOrder = -2; scene.add(farTrees);
   treeLine = makeTreeLine(); scene.add(treeLine);
+  country = makeCountry(); scene.add(country);
   sunLight = new THREE.DirectionalLight('#fff', 3);
   sunLight.castShadow = true; sunLight.shadow.mapSize.setScalar(phone ? 1024 : 2048);
   Object.assign(sunLight.shadow.camera, { left: -5, right: 5, top: 5, bottom: -5, near: 1, far: 30 });
@@ -965,6 +1116,18 @@ async function boot3D() {
   });
   scene.add(gltf.scene);
   gltf.scene.updateMatrixWorld(true);
+  // baked ambient occlusion (Cycles, bake_ao.py): soft corners and contact shadows on the room's big surfaces.
+  // AO only shades the sky/ambient light, as it should; the sun and lamps stay direct.
+  const AO = ['Floor', 'Ceiling', 'Wall_North', 'Wall_South', 'Wall_East', 'Wall_West_Below', 'Wall_West_Head', 'Wall_West_Left', 'Wall_West_Right', 'Rug', 'Desk_Top', 'WindowSeat', 'Shelf_Case'];
+  const aoLoader = new THREE.TextureLoader();
+  for (const name of AO) {
+    const o = gltf.scene.getObjectByName(name); if (!o) continue;
+    const mesh = o.isMesh ? o : o.children.find(c => c.isMesh); if (!mesh) continue;
+    const ch = ['uv3', 'uv2', 'uv1'].map((k, i) => mesh.geometry.attributes[k] ? 3 - i : 0).find(Boolean);
+    if (!ch) continue;
+    const tex = aoLoader.load(`assets/ao/${name}.jpg`); tex.flipY = false; tex.channel = ch;
+    mesh.material = mesh.material.clone(); mesh.material.aoMap = tex; mesh.material.aoMapIntensity = 1.15;
+  }
   buildReels(gltf.scene); buildFridge(gltf.scene);
 
   resize(); applySun(); placeCamera();
@@ -979,6 +1142,9 @@ function resize() {
   const tall = innerWidth / innerHeight < 0.85;
   const before = stopName();
   stops = tall ? STOPS_TALL : STOPS_WIDE;
+  if (document.body.classList.contains('portrait') !== tall || !resize.ran) $('ideaWrap').open = !tall;   // the notes are open on desktop, a tap away on phones
+  const shapeChanged = resize.ran && document.body.classList.contains('portrait') !== tall;
+  resize.ran = true;
   document.body.classList.toggle('portrait', tall);
   // keep the same wall when the shape changes
   const idx = stops.indexOf(alias(before));
@@ -988,16 +1154,21 @@ function resize() {
   camera.aspect = innerWidth / innerHeight;
   dust.material.uniforms.px.value = renderer.getPixelRatio() * (innerHeight / 700) * 2.4;
   measureInsets(); placeCamera(); needsFrame = true;
+  if (shapeChanged && magnets && !shaking) {   // the door layout differs between phone and desktop: re-pin the words
+    for (const it of [...magnets.children]) { magnets.remove(it); it.traverse(o => o.userData.dispose?.()); }
+    placeIdea(idea, true);
+  }
 }
 function dockFor(name) { return name === 'window' ? $('windowDock') : name === 'projector' ? $('projectorDock') : name === 'fridge' ? $('fridgeDock') : $('eventsDock'); }
 function measureInsets() {
+  // frame each wall in the space the header, the panel and the station bar leave free
   const name = stopName(), dock = dockFor(name);
   const was = dock.hidden; dock.hidden = false;
   insets = { top: 58, bottom: Math.round(innerHeight - dock.getBoundingClientRect().top + 10) };
   dock.hidden = was;
-  if (name !== 'window') insets.bottom = Math.max(insets.bottom, 76);
-  insets.bottom = clamp(insets.bottom, 60, innerHeight * .4);
+  insets.bottom = clamp(insets.bottom, 70, innerHeight * .45);
 }
+let insetsNow = { top: 58, bottom: 150 };
 addEventListener('resize', resize);
 
 function updateOverlays() {
@@ -1005,10 +1176,14 @@ function updateOverlays() {
   const settled = !anim && !drag && Math.abs(state.view - Math.round(state.view)) < .02;
   const atEvents = name === 'events' || name === 'calendar' || name === 'board';
   if (!plain) for (const d of [$('windowDock'), $('eventsDock'), $('fridgeDock'), $('projectorDock')]) d.hidden = d !== dockFor(name);
-  $('toBoard').hidden = name !== 'calendar';
-  $('toCalendar').hidden = name !== 'board';
-  $('toFridge').hidden = !(name === 'events' || name === 'board');
-  $('frBackLabel').textContent = stops === STOPS_TALL ? 'Corkboard' : 'Events';
+  const station = atEvents ? 'events' : name;
+  if (updateOverlays.station !== station) {
+    updateOverlays.station = station;
+    document.querySelectorAll('#stations [data-station]').forEach(b => b.dataset.station === station ? b.setAttribute('aria-current', 'location') : b.removeAttribute('aria-current'));
+  }
+  $('segCal').setAttribute('aria-pressed', String(name === 'calendar'));
+  $('segBoard').setAttribute('aria-pressed', String(name === 'board'));
+  $('evHint').hidden = name === 'calendar';
   const cal = $('calendar'), hit = $('flyerHit'), doorHit = $('doorHit');
   if (plain) { cal.inert = hit.inert = false; return; }
   cal.inert = hit.inert = !atEvents; doorHit.inert = name !== 'fridge';
@@ -1159,10 +1334,12 @@ function frame(now) {
   shafts.userData.mat.uniforms.time.value = quiet.matches ? 0 : t;
   dust.material.uniforms.time.value = quiet.matches ? 0 : t;
   if (projector) projector.mat.uniforms.time.value = quiet.matches ? 0 : t;
+  sky.material.uniforms.time.value = quiet.matches ? 0 : t;
   stepFridge(now); stepReels(now); stepCinema(1 / 60);
   placeCamera();
   renderer.render(scene, camera);
   updateOverlays();
+  stepFlare();
 }
 document.addEventListener('visibilitychange', () => { renderer?.setAnimationLoop(document.hidden ? null : frame); syncFilm(); });
 
