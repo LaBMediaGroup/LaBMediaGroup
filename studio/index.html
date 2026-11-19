@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Studio · The LaB</title>
+<meta name="description" content="Prototype: the LaB as one filmmaker's studio. Golden Hour at the window, Events on the next wall, story magnets on the fridge, the films on the projector.">
+<link rel="stylesheet" href="studio.css?v=29">
+<script src="../sun-calc.js"></script>
+<script src="../spotlight-data.js"></script>
+<script src="../ideas-data.js"></script>
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+<script type="module" src="studio.js?v=29"></script>
+</head>
+<body class="loading">
+<a class="skip" href="#plain-help">Skip the 3D room</a>
+
+<header class="top">
+  <a class="mark" href="../index.html#directory"><img src="../room/mark.png" alt="The LaB: directory" width="56" height="30" draggable="false"></a>
+  <nav aria-label="Studio">
+    <a href="../sun.html">Full light planner</a>
+    <a href="../events.html">Events list</a>
+    <a href="../ideas.html">Story generator</a>
+    <button type="button" id="plainToggle" aria-pressed="false">Plain view</button>
+  </nav>
+</header>
+
+<div id="stage">
+  <canvas id="scene" aria-hidden="true"></canvas>
+
+  <!-- The real calendar. In 3D it is projected onto the paper on the wall; in plain view it is a normal page. -->
+  <article id="calendar" class="wall-calendar" aria-labelledby="calMonth">
+    <div class="cal-head">
+      <button type="button" id="calPrev" class="cal-nav" aria-label="Previous month">‹</button>
+      <h2 id="calMonth" tabindex="-1">November <span>2026</span></h2>
+      <button type="button" id="calNext" class="cal-nav" aria-label="Next month">›</button>
+    </div>
+    <div class="cal-page" id="calPage">
+      <div class="cal-dow" aria-hidden="true"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+      <ol class="cal-grid" id="calGrid" aria-label="Days"></ol>
+      <div class="cal-agenda" id="calAgenda" aria-live="polite"></div>
+    </div>
+  </article>
+
+  <!-- Selected work: the reel thrown on the east wall. The film is light, so it is screen-blended over the lit wall. -->
+  <div id="screenLight" class="screen-light" aria-hidden="true"></div>
+  <video id="film" class="film" muted playsinline loop preload="metadata" aria-labelledby="filmTitle"></video>
+
+  <!-- A real button over the fridge door: yank it for a new idea -->
+  <button type="button" id="doorHit" class="door-hit" aria-describedby="ideaConcept">Yank the fridge door for a new idea</button>
+
+  <button type="button" id="flyerHit" class="flyer-hit" aria-haspopup="dialog">
+    <span class="sr">Lift the flyer off the corkboard: </span><span id="flyerName">flyer</span>
+  </button>
+</div>
+
+<section id="windowDock" class="dock" aria-labelledby="ghTitle">
+  <div class="gh-head">
+    <h1 id="ghTitle">Golden Hour</h1>
+    <output id="clock" for="scrub" aria-live="off">4:12 PM</output>
+  </div>
+  <input id="scrub" type="range" min="0" max="1439" step="1" value="960" aria-describedby="phase">
+  <div class="gh-ticks" id="ticks" aria-hidden="true"></div>
+  <div class="gh-row">
+    <span id="phase" class="phase">Golden hour</span>
+    <label class="date">Date <input type="date" id="date"></label>
+    <button type="button" class="turn" data-go="events">Events wall <span aria-hidden="true">→</span></button>
+  </div>
+  <p class="facts" id="facts"></p>
+</section>
+
+<section id="eventsDock" class="dock dock-events" aria-label="Events wall controls">
+  <button type="button" class="turn back" data-go="window"><span aria-hidden="true">←</span> Window <span class="mini" id="miniClock"></span></button>
+  <button type="button" class="turn portrait-only" data-go="board" id="toBoard">Corkboard <span aria-hidden="true">→</span></button>
+  <button type="button" class="turn portrait-only" data-go="calendar" id="toCalendar"><span aria-hidden="true">←</span> Calendar</button>
+  <button type="button" class="turn" data-go="fridge" id="toFridge">Fridge <span aria-hidden="true">→</span></button>
+</section>
+
+<section id="fridgeDock" class="dock dock-fridge" aria-labelledby="frTitle">
+  <div class="pj-row">
+    <button type="button" class="turn back" data-go="board" id="frBack"><span aria-hidden="true">←</span> <span id="frBackLabel">Events</span></button>
+    <h1 id="frTitle" class="sr">Story magnets</h1>
+    <label class="pj-tone">Tone <select id="tone"></select></label>
+    <button type="button" class="advance" id="shuffle">Shake it up</button>
+    <button type="button" class="turn next" data-go="projector">Projector <span aria-hidden="true">→</span></button>
+  </div>
+  <div class="idea" aria-live="polite">
+    <p class="sr" id="ideaConcept"></p>
+    <dl class="idea-brief" id="ideaBrief"></dl>
+  </div>
+  <p class="pj-foot"><a href="../ideas.html">Full story generator</a> · locks, saving and 48-hour mode</p>
+</section>
+
+<section id="projectorDock" class="dock dock-projector" aria-labelledby="pjTitle">
+  <div class="pj-row">
+    <button type="button" class="turn back" data-go="fridge"><span aria-hidden="true">←</span> Fridge</button>
+    <h1 id="pjTitle" class="sr">Selected work</h1>
+    <div class="reels" role="group" aria-label="Choose a reel">
+      <button type="button" class="reel" data-film="moz" aria-pressed="true">MOZ Interiors</button>
+      <button type="button" class="reel" data-film="brass" aria-pressed="false">Anthony Brass</button>
+    </div>
+    <button type="button" class="turn next" id="bigScreen">Full screen</button>
+    <button type="button" class="advance" id="playPause">Pause</button>
+  </div>
+  <p class="film-note"><b id="filmTitle">MOZ Interiors</b> <span id="filmNote"></span> <span class="turn-hint">Turn your phone sideways for a bigger picture.</span></p>
+  <p class="pj-foot"><a id="filmLink" target="_blank" rel="noopener">Watch the full film on YouTube ↗</a> · <a href="../tools-concept/work.html">Selected work</a></p>
+</section>
+
+<dialog id="flyerDialog" aria-labelledby="flyerTitle">
+  <div class="sheet" id="sheet">
+    <img id="flyerImg" alt="" draggable="false">
+    <div class="sheet-body">
+      <p class="kicker" id="flyerWhen"></p>
+      <h2 id="flyerTitle"></h2>
+      <p id="flyerWhere"></p>
+      <div id="flyerBody" class="sheet-text"></div>
+      <p class="sheet-links"><a id="flyerLink" target="_blank" rel="noopener">Event page ↗</a> <a href="../events.html">All events</a></p>
+    </div>
+    <button type="button" class="pin-back" id="flyerClose">Pin it back</button>
+  </div>
+</dialog>
+
+<section id="plain-help" class="plain-help">
+  <h2>Without the 3D room</h2>
+  <p>Every tool works on its own page too: <a href="../sun.html">Golden Hour light planner</a>, <a href="../events.html">Michigan film events</a>, <a href="../ideas.html">story generator</a>. <button type="button" class="linkish" data-plain>Switch this page to plain view</button></p>
+</section>
+
+<noscript><style>#stage,.dock,.skip{display:none!important}</style>
+  <p class="nojs">The studio room needs JavaScript. The tools work without it: <a href="../sun.html">Golden Hour</a> · <a href="../events.html">Events</a> · <a href="../ideas.html">Story generator</a></p>
+</noscript>
+</body>
+</html>
