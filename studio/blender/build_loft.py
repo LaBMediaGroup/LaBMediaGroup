@@ -57,14 +57,16 @@ def plane(name, center, size, normal_axis, col, mat=None):
         f = [(0,1,2,3)] if normal_axis == '-Y' else [(3,2,1,0)]
     elif normal_axis in ('+X', '-X'):
         v = [(cx,cy+w/2,cz-h/2),(cx,cy-w/2,cz-h/2),(cx,cy-w/2,cz+h/2),(cx,cy+w/2,cz+h/2)]
-        f = [(0,1,2,3)] if normal_axis == '+X' else [(3,2,1,0)]
+        f = [(0,1,2,3)] if normal_axis == '-X' else [(3,2,1,0)]   # (0,1,2,3) winds to a -X normal
     else:
         v = [(cx-w/2,cy-h/2,cz),(cx+w/2,cy-h/2,cz),(cx+w/2,cy+h/2,cz),(cx-w/2,cy+h/2,cz)]
         f = [(0,1,2,3)]
     ob = mesh_object(name, v, f, col, mat)
     me = ob.data
     uv = me.uv_layers.new(name="UVMap")
-    for loop, co in zip(me.polygons[0].loop_indices, [(0,0),(1,0),(1,1),(0,1)]):
+    # reversed faces start at the top-left as seen from the front, so their UVs start there too (keeps decals upright)
+    uvs = {'+X': [(1,1),(0,1),(0,0),(1,0)], '+Y': [(1,1),(0,1),(0,0),(1,0)]}.get(normal_axis, [(0,0),(1,0),(1,1),(0,1)])
+    for loop, co in zip(me.polygons[0].loop_indices, uvs):
         uv.data[loop].uv = co
     return ob
 
@@ -414,15 +416,17 @@ def build(site_root):
     lever = bpy.data.objects.new("Fridge_Handle_Lever", lever_me); props.objects.link(lever); lever_me.materials.clear(); lever_me.materials.append(chrome)
     for poly in lever_me.polygons: poly.use_smooth = True
     cylinder("Fridge_Handle_Tip", (fx_door - 0.026, hy - 0.168, hz + 0.002), .0105, .02, props, chrome, segments=20, axis='Y')
-    # chrome nameplate: LaB, centred near the top of the door
-    tc = bpy.data.curves.new("Fridge_Badge_Text", 'FONT'); tc.body = "LaB"; tc.size = 0.07; tc.extrude = 0.003
-    tc.align_x = 'CENTER'; tc.align_y = 'CENTER'
-    tob = bpy.data.objects.new("Fridge_Badge_Text", tc); props.objects.link(tob)
-    tob.rotation_euler = (math.radians(90), 0, math.radians(-90)); tob.location = (fx_door - 0.003, (fy0 + fy1) / 2, H - 0.08)
-    dg = bpy.context.evaluated_depsgraph_get(); badge_me = bpy.data.meshes.new_from_object(tob.evaluated_get(dg))
-    mw = tob.matrix_world.copy(); bpy.data.objects.remove(tob, do_unlink=True)
-    badge = bpy.data.objects.new("Fridge_Badge", badge_me); badge.matrix_world = mw; props.objects.link(badge)
-    badge_me.materials.clear(); badge_me.materials.append(chrome)
+    # chrome emblem: the LaB mark (images/TheLaB-mark.png, 1165 x 498) where the FAB28 carries its script badge
+    em, ent, emb = node_mat("M_LabEmblem")
+    tex = ent.nodes.new("ShaderNodeTexImage")
+    try: tex.image = bpy.data.images.load(site_root + "/images/TheLaB-mark.png", check_existing=True)
+    except Exception: pass
+    emb.inputs["Base Color"].default_value = (0.86, 0.87, 0.89, 1); emb.inputs["Metallic"].default_value = 1; emb.inputs["Roughness"].default_value = .14
+    ent.links.new(tex.outputs["Alpha"], emb.inputs["Alpha"])
+    try: em.surface_render_method = 'DITHERED'
+    except Exception: pass
+    bw_, bh_ = 0.12, 0.12 * 498 / 1165
+    plane("Fridge_Badge", (fx_door - 0.004, (fy0 + fy1) / 2, H - 0.075), (bw_, bh_), "-X", props, em)
 
     # on top: a coffee tin and a mug, it is a working studio
     cylinder("Fridge_Tin", (2.70, 1.06, 1.62), .07, .17, props, simple("M_TinRed", (0.55, 0.08, 0.05), .35, .6))

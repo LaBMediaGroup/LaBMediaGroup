@@ -597,7 +597,7 @@ const DOOR_W = FR.z1 - FR.z0;     // .597
 const measureCtx = document.createElement('canvas').getContext('2d');
 function wordAspect(word) { measureCtx.font = '600 46px Georgia, "Times New Roman", serif'; return Math.ceil(measureCtx.measureText(word).width + 32) / 64; }
 function layoutWords(words) {
-  const left = -DOOR_W / 2 + .045, right = DOOR_W / 2 - .045, top = 1.395, bottom = 1.025;   // under the nameplate, above the handle
+  const left = -DOOR_W / 2 + .045, right = DOOR_W / 2 - .045, top = 1.415, bottom = 1.025;   // under the emblem, above the handle
   for (let h = stops === STOPS_TALL ? .046 : .056; h >= .024; h -= .003) {
     const out = []; let x = left, y = top - h / 2, ok = true;
     for (const word of words) {
@@ -946,6 +946,9 @@ async function boot3D() {
     const env = new THREE.PMREMGenerator(renderer).fromEquirectangular(eq).texture;
     for (const k of ['M_Chrome', 'M_Stainless', 'M_Aluminium']) { mats[k].envMap = env; mats[k].envMapIntensity = .9; }
     mats.M_FridgeEnamel.envMap = env; mats.M_FridgeEnamel.envMapIntensity = .35;
+    // the LaB mark as a chrome emblem: the PNG's own alpha cuts the shape (the GLB stores it as JPEG, no alpha)
+    const mark = new THREE.TextureLoader().load('../images/TheLaB-mark.png'); mark.flipY = false; mark.colorSpace = THREE.SRGBColorSpace; mark.anisotropy = 8;
+    mats.M_LabEmblem = new THREE.MeshStandardMaterial({ map: mark, color: '#d8dbe0', metalness: 1, roughness: .2, envMap: env, envMapIntensity: .95, alphaTest: .45, polygonOffset: true, polygonOffsetFactor: -2 });
   }
   const gltf = await new GLTFLoader().loadAsync('assets/loft.glb');
   gltf.scene.traverse(o => {
@@ -968,6 +971,7 @@ async function boot3D() {
   document.body.classList.remove('loading');
   renderer.setAnimationLoop(frame);
   document.body.dataset.view = stopName(); document.body.dataset.ready = '1';
+  if (params.has('debug')) window.__studio = { scene, camera, THREE };
 }
 
 /* ------------------------------------------------------------------ resize + overlays */
