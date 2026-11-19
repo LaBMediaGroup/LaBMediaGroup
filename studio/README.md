@@ -30,6 +30,8 @@ It walks window → turn → events, drags back with a 0.9 s pause mid-drag, and
 - **Golden hour:** the outside carries its own exposure (`expComp`), so dusk lamps and screenings never dim the sky. The sky has forward-scattering halos, a burning horizon band under a low sun, and clouds lit from below. The field has furrows that throw shadows at low sun, rye patches and aerial haze. There are two depths of bare November tree line, a farm fence and a run of utility poles with sagging lines. An anamorphic lens flare (streak, ghosts, veiling glare) appears when the low sun is in the lens through the glass. The mullions eclipse it and the shade blocks it.
 - **Baked AO:** `blender/bake_ao.py` gives the room's big surfaces a Lightmap UV and bakes Cycles ambient occlusion (1.1 m reach) into `assets/ao/*.jpg` (832 KB in all), applied as aoMaps. Rerun it after any `build_loft.py` rebuild, then re-export.
 
+- **Scanned surfaces:** floor, whitewashed brick and plaster now use Poly Haven CC0 scans (colour, normal and roughness maps at 1K, tiled at their real 2 m and 1.8 m sizes). The chrome, enamel, emblem and floor sheen reflect a real studio panorama. Credits are in `assets/tex/CREDITS.md`; the textures total 2.5 MB.
+
 ## How it's built
 
 | Part | Where |

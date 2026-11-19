@@ -336,12 +336,18 @@ const TEX = {
   rug: () => canvasTex(512, (g, s) => { const r = rng(4); g.fillStyle = '#6e2a1a'; g.fillRect(0, 0, s, s); for (let i = 0; i < 18; i++) { g.fillStyle = ['#8c3a22', '#4f1d14', '#b27a43', '#2f3a3a'][i % 4]; g.globalAlpha = .55; g.fillRect(0, i * s / 18 + 6, s, s / 60); } g.globalAlpha = 1; speckle(g, s, r, 6000, ['#5a2014', '#8a3c26'], .6, 1.4, .5); }, { repeat: [0.4, 0.4] }),
 };
 
+/* scanned CC0 surfaces (Poly Haven, assets/tex/CREDITS.md): colour, OpenGL normal and roughness maps,
+   tiled at the scan's real size on the room's metre UVs */
+function scanned(id, metres) {
+  const L = new THREE.TextureLoader(), rep = 1 / metres;
+  const load = (suffix, color) => { const t = L.load(`assets/tex/${id}_${suffix}.jpg`); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rep, rep); t.anisotropy = 8; if (color) t.colorSpace = THREE.SRGBColorSpace; return t; };
+  return { map: load('diff', true), normalMap: load('nor_gl'), roughnessMap: load('rough') };
+}
 function makeMaterials() {
-  const brickBump = TEX.brick(true), oakBump = TEX.oak(true);
   return {
-    M_Limewash: new THREE.MeshStandardMaterial({ map: TEX.plaster(), roughness: .95 }),
-    M_LimewashBrick: new THREE.MeshStandardMaterial({ map: TEX.brick(false), bumpMap: brickBump, bumpScale: 1.2, roughness: .92 }),
-    M_OakFloor: new THREE.MeshStandardMaterial({ map: TEX.oak(false), bumpMap: oakBump, bumpScale: .6, roughness: .55 }),
+    M_Limewash: new THREE.MeshStandardMaterial({ ...scanned('painted_plaster_wall', 2), color: '#f4e9d8', roughness: 1, normalScale: new THREE.Vector2(.8, .8) }),
+    M_LimewashBrick: new THREE.MeshStandardMaterial({ ...scanned('painted_worn_brick', 1.8), color: '#fbf3e6', roughness: 1, normalScale: new THREE.Vector2(1.2, 1.2) }),
+    M_OakFloor: new THREE.MeshStandardMaterial({ ...scanned('wood_floor_worn', 2), color: '#efe2d0', roughness: .9, normalScale: new THREE.Vector2(.9, .9) }),
     M_FirBeam: new THREE.MeshStandardMaterial({ map: TEX.grain('#7a5434', 21), roughness: .8 }),
     M_Walnut: new THREE.MeshStandardMaterial({ map: TEX.grain('#4a2f1e', 22), roughness: .5 }),
     M_Cork: new THREE.MeshStandardMaterial({ map: TEX.cork(), roughness: 1 }),
@@ -1096,6 +1102,13 @@ async function boot3D() {
     const eq = new THREE.CanvasTexture(c); eq.mapping = THREE.EquirectangularReflectionMapping; eq.colorSpace = THREE.SRGBColorSpace;
     const env = new THREE.PMREMGenerator(renderer).fromEquirectangular(eq).texture;
     for (const k of ['M_Chrome', 'M_Stainless', 'M_Aluminium']) { mats[k].envMap = env; mats[k].envMapIntensity = .9; }
+    new THREE.TextureLoader().load('assets/tex/art_studio_env.jpg', pano => {
+      pano.mapping = THREE.EquirectangularReflectionMapping; pano.colorSpace = THREE.SRGBColorSpace;
+      const real = new THREE.PMREMGenerator(renderer).fromEquirectangular(pano).texture;
+      for (const m of [mats.M_Chrome, mats.M_Stainless, mats.M_Aluminium, mats.M_FridgeEnamel, mats.M_LabEmblem]) if (m) { m.envMap = real; m.needsUpdate = true; }
+      mats.M_OakFloor.envMap = real; mats.M_OakFloor.envMapIntensity = .25;   // a little sheen in the worn finish
+      pano.dispose(); needsFrame = true;
+    });
     mats.M_FridgeEnamel.envMap = env; mats.M_FridgeEnamel.envMapIntensity = .35;
     // the LaB mark as a chrome emblem: the PNG's own alpha cuts the shape (the GLB stores it as JPEG, no alpha)
     const mark = new THREE.TextureLoader().load('../images/TheLaB-mark.png'); mark.flipY = false; mark.colorSpace = THREE.SRGBColorSpace; mark.anisotropy = 8;
