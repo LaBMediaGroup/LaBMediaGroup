@@ -46,3 +46,14 @@ html:is(.still,.motion-paused)::view-transition-group(*),html:is(.still,.motion-
 header a:has(>img[src$="TheLaB-mark.png"]){position:relative;display:inline-flex}
 .live-water-mark>img{opacity:0!important;transition:none!important}
 .mark-water{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+/* Match just the ink from the chosen tile with its working counterpart. */
+@media(prefers-reduced-motion:no-preference){
+  html:not(.motion-paused) .sky:is(:active,:focus,.departing) .token,
+  html:not(.motion-paused) body[data-instrument] #sunStage:target #sunOrb{view-transition-name:tile-sun}
+  html:not(.motion-paused) .story:is(:active,:focus,.departing) .token,
+  html:not(.motion-paused) #concept:target{view-transition-name:tile-card}
+  html #concept:target #conceptText{view-transition-name:none}
+  html::view-transition-group(tile-sun),html::view-transition-group(tile-card){animation-duration:260ms;animation-timing-function:cubic-bezier(.2,.78,.24,1)}
+  #concept:target{scroll-margin-top:clamp(80px,18svh,160px)}
+}

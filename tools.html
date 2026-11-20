@@ -267,7 +267,7 @@
   .tool:hover{transform:none}
 }
 </style>
-<link rel="stylesheet" href="atmosphere.css?v=e2d65dc8247f"><link rel="stylesheet" href="destinations.css?v=839ca70966d2"><link rel="stylesheet" href="page-motion.css?v=4"><script defer src="page-motion.js"></script><script defer src="brand-motion.js?v=4"></script></head>
+<link rel="stylesheet" href="atmosphere.css?v=e2d65dc8247f"><link rel="stylesheet" href="destinations.css?v=839ca70966d2"><link rel="stylesheet" href="page-motion.css?v=4"><script defer src="page-motion.js"></script><script defer src="brand-motion.js?v=4"></script><link rel="stylesheet" href="field-tools.css"><link rel="stylesheet" href="tool-surface.css"><script defer src="tool-surface.js"></script></head>
 <body class="tools-destination">
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -288,7 +288,7 @@
           <a href="tools.html" aria-current="page">All Tools</a>
           <hr class="nav-sep" aria-hidden="true">
           <a href="ideas.html">Story Generator</a>
-          <a href="room/window.html#planner">Golden Hour Helper</a>
+          <a href="sun.html">Golden Hour Helper</a>
           <hr class="nav-sep" aria-hidden="true">
           <a href="droneweather.html">SkyBound : Weather</a>
           <a href="skybound.html">SkyBound : Drone</a>
@@ -321,14 +321,77 @@
   </div>
 </header>
 
-<main id="main">
-
-<section class="pg-hero wrap">
-  <div class="rule"><span class="mono">Tools</span><i></i><span class="mono" style="color:var(--faint)">Free, no account</span></div>
-  <h1>Make <em>something.</em></h1>
-  <p class="lede">A little curiosity. Five things to try.</p>
-
-  <div class="livestrip">
+<main id="main" class="bench wrap"><aside class="bench-index"><h1>Tools<span>.</span></h1><nav aria-label="Tool previews"><a href="#light">Light planner<span aria-hidden="true">↘</span></a><a href="#story">Story generator<span aria-hidden="true">↘</span></a><a href="#weather">Drone weather<span aria-hidden="true">↘</span></a><a href="#guide">Drone guide<span aria-hidden="true">↘</span></a><a href="#assistant">LaB Assistant<span aria-hidden="true">↘</span></a></nav></aside><div class="bench-tools"><article class="tool" id="light">
+      <h2 class="tool-name">Light planner</h2>
+      <p class="tool-desc">Find your shooting window.</p>
+      <div class="demo">
+        <span class="demo-k">Today, at the studio</span>
+        <div class="gh-sky">
+          <canvas id="ghSky" aria-hidden="true"></canvas>
+          <span class="gh-clock" id="ghClock">&mdash;</span><span class="gh-phase" id="ghPhase"></span>
+        </div>
+        <label class="gh-scrub-label" for="ghScrub">Scrub the day<input id="ghScrub" type="range" min="0" max="1439" step="1" value="960"></label>
+        <div class="demo-line"><span>Sunrise</span><b id="ghSunrise">&mdash;</b></div>
+        <div class="demo-line"><span>Evening golden</span><b class="accent" id="ghGolden">&mdash;</b></div>
+        <div class="demo-line"><span>Sunset</span><b id="ghSunset">&mdash;</b></div>
+        <div class="demo-line"><span>Daylight</span><b id="ghLength">&mdash;</b></div>
+      </div>
+      <a class="tool-go" href="sun.html#sunStage">Open light planner</a>
+    </article><article class="tool" id="story">
+      <h2 class="tool-name">Story generator</h2>
+      <p class="tool-desc">Roll a premise. Lock the parts worth keeping.</p>
+      <div class="demo">
+        <p class="spark">Spark a <em class="rw" id="promptWord">honest</em> film.</p>
+        <div class="concept-mini">
+          <span class="demo-k">The concept</span>
+          <p class="prompt-text" id="promptText">Waiting on the prompt library&hellip;</p>
+        </div>
+        <button class="demo-btn" type="button" id="promptBtn"><span class="die" aria-hidden="true">&#9860;</span><span id="promptBtnLabel">Roll</span></button>
+      </div>
+      <a class="tool-go" href="ideas.html">Open story generator</a>
+    </article><article class="tool" id="weather">
+      <h2 class="tool-name">Drone weather</h2>
+      <p class="tool-desc">Check local conditions before a flight.</p>
+      <div class="demo">
+        <span class="demo-k">Reading the model right now</span>
+        <div class="wx-sky">
+          <canvas id="wxSky" aria-hidden="true"></canvas>
+          <span class="wx-temp" id="wxTemp">&mdash;</span>
+          <span class="wx-cond" id="wxCond"></span>
+        </div>
+        <div class="demo-line"><span>Steady wind</span><b id="wxW">&mdash;</b></div>
+        <div class="demo-line"><span>Gusting to</span><b id="wxG">&mdash;</b></div>
+        <div class="demo-line"><span>Verdict</span><b id="wxV">&mdash;</b></div>
+      </div>
+      <a class="tool-go" href="droneweather.html">Open drone weather</a>
+    </article><article class="tool" id="guide">
+      <h2 class="tool-name">Drone guide</h2>
+      <p class="tool-desc">Plan a path from your first simulation to the field.</p>
+      <div class="demo">
+        <span class="demo-k">The path, in order</span>
+        <div class="sb-scene">
+          <canvas id="sbScene" aria-hidden="true"></canvas>
+          <span class="sb-cap" id="sbCap">At the bench</span>
+        </div>
+        <div class="demo-line"><span>01</span><b>Simulate before you buy</b></div>
+        <div class="demo-line"><span>02</span><b>Learn from real pilots</b></div>
+        <div class="demo-line"><span>03</span><b>Build the kit</b></div>
+        <div class="demo-line"><span>04</span><b class="accent">Pass Part 107</b></div>
+      </div>
+      <a class="tool-go" href="skybound.html">Open drone guide</a>
+    </article><article class="tool" id="assistant">
+      <h2 class="tool-name">LaB Assistant</h2>
+      <p class="tool-desc">Search the studio’s films, kit and notes.</p>
+      <div class="demo">
+        <span class="demo-k">Search in charge, live</span>
+        <div class="chat" aria-label="Assistant demonstration">
+          <div class="chat-log" id="chat" aria-live="polite"></div>
+        </div>
+        <div class="chat-index">Searching <b>127</b> resources, <b>67</b> gear entries
+        and <b>1,334</b> story prompts &mdash; every answer keeps its source.</div>
+      </div>
+      <a class="tool-go" href="assistant.html">Ask the assistant</a>
+    </article><details class="bench-status"><summary>Studio conditions</summary><div class="livestrip">
     <div class="live-cell">
       <span class="live-k">Tonight&rsquo;s golden hour &middot; Shelby Twp</span>
       <span class="live-v is-wait" id="lsGolden">Calculating</span>
@@ -345,129 +408,7 @@
       <div class="live-sub" id="lsVerdictSub">LaB planning guidance, not aircraft limits</div>
     </div>
   </div>
-</section>
-
-<section class="phase wrap">
-  <div class="phase-head">
-    <span class="phase-n">01</span>
-    <h2>Before the <em>shoot</em></h2>
-    <i></i>
-    <span class="phase-when">Planning</span>
-  </div>
-  <div class="tool-grid">
-
-    <article class="tool">
-      <h3 class="tool-name">Story <em>Generator</em></h3>
-      <p class="tool-desc">Find the first spark. Roll a real short-film premise, then shape it into a shootable brief.</p>
-      <div class="demo">
-        <p class="spark">Spark a <em class="rw" id="promptWord">honest</em> film.</p>
-        <div class="concept-mini">
-          <span class="demo-k">The concept</span>
-          <p class="prompt-text" id="promptText">Waiting on the prompt library&hellip;</p>
-        </div>
-        <button class="demo-btn" type="button" id="promptBtn"><span class="die" aria-hidden="true">&#9860;</span><span id="promptBtnLabel">Roll</span></button>
-      </div>
-      <a class="tool-go" href="ideas.html">Open the generator<span class="tool-stretch"></span></a>
-    </article>
-
-    <article class="tool">
-      <h3 class="tool-name">Golden Hour <em>Helper</em></h3>
-      <p class="tool-desc">Find your light. Explore the sun, the moon, and the best time to roll camera.</p>
-      <div class="demo">
-        <span class="demo-k">Today, at the studio</span>
-        <div class="gh-sky">
-          <canvas id="ghSky" aria-hidden="true"></canvas>
-          <span class="gh-clock" id="ghClock">&mdash;</span><span class="gh-phase" id="ghPhase"></span>
-        </div>
-        <label class="gh-scrub-label" for="ghScrub">Scrub the day<input id="ghScrub" type="range" min="0" max="1439" step="1" value="960"></label>
-        <div class="demo-line"><span>Sunrise</span><b id="ghSunrise">&mdash;</b></div>
-        <div class="demo-line"><span>Evening golden</span><b class="accent" id="ghGolden">&mdash;</b></div>
-        <div class="demo-line"><span>Sunset</span><b id="ghSunset">&mdash;</b></div>
-        <div class="demo-line"><span>Daylight</span><b id="ghLength">&mdash;</b></div>
-      </div>
-      <a class="tool-go" href="room/window.html#planner">Open the planner<span class="tool-stretch"></span></a>
-    </article>
-
-  </div>
-</section>
-
-<section class="phase wrap">
-  <div class="phase-head">
-    <span class="phase-n">02</span>
-    <!-- Same split the two SkyBound pages use for their own titles, so the
-         name looks the same wherever it appears. -->
-    <h2><span style="color:var(--sky)">Sky</span><em>Bound</em></h2>
-    <i></i>
-    <span class="phase-when">On the day</span>
-  </div>
-  <div class="tool-grid">
-
-    <article class="tool">
-      <h3 class="tool-name"><em>Weather</em></h3>
-      <p class="tool-desc">Read the sky before you fly. Live conditions and a conservative flight check.</p>
-      <div class="demo">
-        <span class="demo-k">Reading the model right now</span>
-        <div class="wx-sky">
-          <canvas id="wxSky" aria-hidden="true"></canvas>
-          <span class="wx-temp" id="wxTemp">&mdash;</span>
-          <span class="wx-cond" id="wxCond"></span>
-        </div>
-        <div class="demo-line"><span>Steady wind</span><b id="wxW">&mdash;</b></div>
-        <div class="demo-line"><span>Gusting to</span><b id="wxG">&mdash;</b></div>
-        <div class="demo-line"><span>Verdict</span><b id="wxV">&mdash;</b></div>
-      </div>
-      <a class="tool-go" href="droneweather.html">Open the weather scene<span class="tool-stretch"></span></a>
-    </article>
-
-    <article class="tool">
-      <h3 class="tool-name"><em>Drone</em></h3>
-      <p class="tool-desc">From first sim to first flight. A practical path into drone filmmaking.</p>
-      <div class="demo">
-        <span class="demo-k">The path, in order</span>
-        <div class="sb-scene">
-          <canvas id="sbScene" aria-hidden="true"></canvas>
-          <span class="sb-cap" id="sbCap">At the bench</span>
-        </div>
-        <div class="demo-line"><span>01</span><b>Simulate before you buy</b></div>
-        <div class="demo-line"><span>02</span><b>Learn from real pilots</b></div>
-        <div class="demo-line"><span>03</span><b>Build the kit</b></div>
-        <div class="demo-line"><span>04</span><b class="accent">Pass Part 107</b></div>
-      </div>
-      <a class="tool-go" href="skybound.html">Open the guide<span class="tool-stretch"></span></a>
-    </article>
-
-  </div>
-</section>
-
-<section class="phase wrap">
-  <div class="phase-head">
-    <span class="phase-n">03</span>
-    <h2>Back at the <em>desk</em></h2>
-    <i></i>
-    <span class="phase-when">In the notebook</span>
-  </div>
-  <div class="tool-grid">
-
-    <article class="tool">
-      <h3 class="tool-name">LaB <em>Assistant</em></h3>
-      <p class="tool-desc">Ask the LaB. Find films, resources, and production notes—with their sources.</p>
-      <div class="demo">
-        <span class="demo-k">Search in charge, live</span>
-        <div class="chat" aria-label="Assistant demonstration">
-          <div class="chat-log" id="chat" aria-live="polite"></div>
-        </div>
-        <div class="chat-index">Searching <b>127</b> resources, <b>67</b> gear entries
-        and <b>1,334</b> story prompts &mdash; every answer keeps its source.</div>
-      </div>
-      <a class="tool-go" href="assistant.html">Ask the assistant<span class="tool-stretch"></span></a>
-    </article>
-
-  </div>
-</section>
-
-<section class="phase wrap closing"><p>Free to use. No account. Your files stay on your device.</p><a href="resources.html">Looking for inspiration? Open the notebook ↗</a></section>
-
-</main>
+</details></div></main>
 
 <footer class="foot">
   <div class="foot-in">
@@ -487,7 +428,7 @@
         <ul>
           <li><a href="tools.html" aria-current="page">All Tools</a></li>
           <li><a href="ideas.html">Story Generator</a></li>
-          <li><a href="room/window.html#planner">Golden Hour</a></li>
+          <li><a href="sun.html">Golden Hour</a></li>
           <li><a href="droneweather.html">SkyBound : Weather</a></li>
           <li><a href="skybound.html">SkyBound : Drone</a></li>
           <li><a href="assistant.html">LaB Assistant</a></li>
@@ -1338,5 +1279,5 @@
 <script src="flight-checklist.js"></script>
 <script src="assistant-guide.js"></script>
 <script src="assistant-widget.js?v=3403d5e96883"></script>
-<script src="destinations.js?v=b14a750307a3"></script><script src="atmosphere.js?v=d82dc5117c63"></script></body>
+<script src="atmosphere.js?v=d82dc5117c63"></script></body>
 </html>

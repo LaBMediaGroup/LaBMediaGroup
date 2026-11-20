@@ -279,6 +279,7 @@
     },55);
   }
 
+  var enterAtGolden = new URLSearchParams(location.search).get("light") === "golden";
   function renderDay(preserveTime){
     state.day=LaBSun.getDay(dateInput.value,state.lat,state.lon);
     if(!state.day){
@@ -301,15 +302,16 @@
     phaseRange('duskBlue',state.day.sunset,state.day.civilDusk);
 
     if(!preserveTime){
-      slider.value=isToday()
+      slider.value=isToday() && !enterAtGolden
         ? String(minutes(new Date()))
         : String(minutes(new Date((state.day.eveningGoldenStart.getTime()+state.day.sunset.getTime())/2)));
     }
+    enterAtGolden=false;
     renderTime(Number(slider.value));
     $('plannerStatus').textContent='Solar windows calculated locally · times shown in '+state.timeZone+'. No location or date leaves this browser.';
     try{
       var url=new URL(location.href);url.searchParams.set('date',dateInput.value);
-      history.replaceState(null,'',url.pathname+'?'+url.searchParams.toString());
+      history.replaceState(null,'',url.pathname+'?'+url.searchParams.toString()+url.hash);
     }catch(e){}
   }
 

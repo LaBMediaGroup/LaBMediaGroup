@@ -412,11 +412,11 @@ test('the reel enters a single screening room and Escape stops playback', async 
   await page.close();
 });
 
-test('workbench switches live tools with keyboard controls', async () => {
+test('tool index opens previews and supports keyboard controls', async () => {
   const page = await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});
   await page.route('**/*',r=>r.request().url().startsWith(baseURL)?r.continue():r.abort());
   await page.goto(`${baseURL}/tools.html`);
-  assert.equal(await page.locator('#bench-panel-1').isVisible(),true);
+  assert.equal(await page.locator('#light').isVisible(),true);
   await page.waitForFunction(()=>document.querySelector('#ghSky').width>0);
   assert.equal(await page.locator('.gh-sky').getAttribute('data-phase'),'golden-evening');
   await page.locator('#ghScrub').press('Home');
@@ -425,13 +425,13 @@ test('workbench switches live tools with keyboard controls', async () => {
   await page.locator('#ghScrub').press('End');
   assert.equal(await page.locator('#ghClock').textContent(),'11:59 PM');
   assert.equal(await page.locator('#ghScrub').getAttribute('aria-valuetext'),'11:59 PM · Night');
-  await page.locator('#bench-tab-0').click();
+  await page.locator('.bench-index a[href="#story"]').click();
   const before=await page.locator('#promptText').textContent();
   await page.locator('#promptBtn').click();
   await page.waitForFunction(previous=>document.querySelector('#promptText').textContent!==previous,before);
-  await page.locator('#bench-tab-0').press('End');
-  assert.equal(await page.getByRole('tab',{name:/Ask/}).getAttribute('aria-selected'),'true');
-  assert.equal(await page.locator('.bench-stage .tool:visible').count(),1);
+  await page.locator('.bench-index a[href="#assistant"]').press('Enter');
+  assert.equal(new URL(page.url()).hash, '#assistant');
+  assert.equal(await page.locator('.bench .tool:visible').count(),5);
   await page.close();
 });
 
@@ -491,7 +491,7 @@ test('contact form preserves messages on failure and confirms successful submiss
 test('homepage directory opens all five tools without scripts', async () => {
   const page = await browser.newPage({javaScriptEnabled:false, viewport:{width:320,height:740}});
   await page.goto(baseURL);
-  for (const file of ['room/window','ideas','droneweather','skybound','assistant']) {
+  for (const file of ['sun','ideas','droneweather','skybound','assistant']) {
     const link = page.locator('main a[href^="'+file+'.html"]');
     assert.equal(await link.isVisible(), true);
     await link.click();
@@ -521,11 +521,37 @@ test('mobile tap carries the live crest into the anchored planner masthead', asy
     });
     await page.goto(baseURL+'/#directory');
     await page.getByRole('link',{name:'Light planner'}).tap();
-    await page.waitForURL(url=>url.pathname.endsWith('/room/window.html') && url.hash==='#planner');
+    await page.waitForURL(url=>url.pathname.endsWith('/sun.html') && url.hash==='#sunStage');
     await page.waitForFunction(()=>window.headerWaveAligned === true);
     await page.waitForFunction(()=>!document.querySelector('header .mark-water'));
     assert.ok(await page.locator('header .nav-brand img').isVisible());
   } finally {
     await page.close();
   }
+});
+
+test('mobile wind tile stretches into the forecast and follows wind from the west', async () => {
+  const page = await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+  try {
+    await page.route('**/*', route => {
+      const url = route.request().url();
+      if (url.startsWith(baseURL)) return route.continue();
+      if (url.includes('wind_direction_10m')) return route.fulfill({json:{current:{
+        wind_speed_10m:24, wind_direction_10m:270, wind_gusts_10m:28, temperature_2m:55,
+        weather_code:0, visibility:16000, precipitation:0, cloud_cover:0, time:'2026-11-19T12:00'
+      }}});
+      return route.abort();
+    });
+    await page.addInitScript(() => {
+      const animate = Element.prototype.animate;
+      Element.prototype.animate = function(frames, options) {
+        if (this.id === 'forecastWind') window.windEnd = frames.at(-1).transform;
+        return animate.call(this,frames,options);
+      };
+    });
+    await page.goto(baseURL+'/#directory');
+    await page.getByRole('link',{name:'Drone weather'}).tap();
+    await page.waitForFunction(() => window.windEnd?.includes('translate(66px,0px) rotate(0deg)'));
+    assert.match(await page.locator('#wxWind').innerText(),/24/);
+  } finally { await page.close(); }
 });

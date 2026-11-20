@@ -1,0 +1,37 @@
+/* One thumb-reachable switcher across all five working surfaces. */
+.instrument-dock{position:fixed;inset:auto auto max(10px,env(safe-area-inset-bottom)) 50%;transform:translateX(-50%);z-index:50;display:flex;gap:3px;padding:4px;background:#171c19;color:#edf1e8;border:1px solid #515a50;border-radius:12px;box-shadow:0 4px 18px #0004}
+.instrument-dock a{display:grid;justify-items:center;align-content:center;gap:1px;width:clamp(52px,8vw,78px);min-height:48px;text-decoration:none;color:inherit;border-radius:8px;font:500 11px/1.2 system-ui}
+.instrument-dock svg{width:36px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.instrument-dock a:is(:hover,:focus-visible,[aria-current]){background:#333c35;color:#fff}
+body[data-instrument]{padding-bottom:82px}
+body[data-instrument] :is(.wx-card,.assistant-panel,.brief .el,.container .card,.planner-shell){border-radius:4px}
+body[data-instrument=ideas] .brief .el{border:1px solid var(--line);padding:clamp(14px,2vw,24px);background:var(--paper-2)}
+body[data-instrument=ideas] .brief .el.locked{border-color:var(--accent)}
+body[data-instrument=skybound] #flight-path{scroll-margin-top:90px}
+body[data-instrument=skybound] .grid-4 .card{border-top:2px solid var(--sky);transition:transform .16s ease-out}
+body[data-instrument=skybound] .grid-4 .card:focus-visible{outline:2px solid currentColor}
+body[data-instrument=assistant] #assistantTitle{scroll-margin-top:110px}
+@media(prefers-reduced-motion:no-preference){
+ html.tool-opening::view-transition-new(root){animation:tool-expand 290ms cubic-bezier(.18,.75,.2,1) both}
+ html.tool-opening::view-transition-old(root){animation:none}
+ @keyframes tool-expand{from{clip-path:circle(var(--tile-radius) at var(--tile-x) var(--tile-y))}to{clip-path:circle(150vmax at var(--tile-x) var(--tile-y))}}
+ .tool-opening #flight-path+.section-subtitle+.grid .card{animation:path-step 230ms ease-out backwards}
+ .tool-opening .grid-4 .card:nth-child(2){animation-delay:35ms}
+ .tool-opening .grid-4 .card:nth-child(3){animation-delay:70ms}
+ .tool-opening .grid-4 .card:nth-child(4){animation-delay:105ms}
+ @keyframes path-step{from{transform:translateY(9px);opacity:.6}}
+}
+@media(max-width:650px){body[data-instrument=skybound] .grid-4{display:grid;grid-template-columns:1fr 1fr;gap:8px}body[data-instrument=skybound] .grid-4 .card{padding:14px}body[data-instrument=skybound] .grid-4 .card-meta{display:none}}
+@media(prefers-reduced-motion:no-preference){
+ html:not(.motion-paused) .opening-tile,
+ html.tool-opening :is(.sun-controls,.brief #grid,.wx-card,.container:has(#flight-path) .grid-4,.as-shell .assistant-panel){view-transition-name:instrument-panel}
+ ::view-transition-group(instrument-panel){animation-duration:300ms;animation-timing-function:cubic-bezier(.19,.78,.22,1)}
+ ::view-transition-old(instrument-panel){animation-duration:115ms}
+ ::view-transition-new(instrument-panel){animation-duration:215ms}
+}
+[data-instrument] :is(.metrics-grid,.wx-grid){gap:1px;background:var(--line);border:1px solid var(--line)}
+[data-instrument] :is(.metric-card,.wx-metric){background:var(--paper-2);border:0;border-radius:0;padding:clamp(12px,2vw,25px)}
+[data-instrument] :is(.metric-card,.wx-metric) .v{font-variant-numeric:tabular-nums}
+[data-instrument=assistant] .assistant-form{border-top:1px solid var(--line);background:var(--paper-2)}
+[data-instrument=ideas] .brief .el.locked{box-shadow:inset 3px 0 var(--accent)}
+@media(max-width:650px){.instrument-dock{max-width:calc(100vw - 20px)}body[data-instrument] footer{padding-bottom:80px}}

@@ -1,0 +1,19 @@
+/* The directory and its five instruments share the existing LaB theme palette. */
+.bench{display:grid;grid-template-columns:minmax(190px,.55fr) minmax(0,1.45fr);gap:clamp(24px,6vw,100px);padding-block:clamp(28px,5vw,78px)}
+.bench-index{position:sticky;top:100px;align-self:start}
+.bench-index h1{font:500 clamp(64px,8.5vw,136px)/.88 var(--f-display);letter-spacing:-.075em;margin:0 0 .38em}.bench-index h1 span{color:var(--accent)}
+.bench-index nav{display:grid;border-top:1px solid var(--line)}
+.bench-index nav a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:46px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink);font-size:clamp(15px,1.4vw,21px)}
+.bench-index nav span{color:var(--accent);transition:transform .2s ease-out}.bench-index a:is(:hover,:focus-visible) span{transform:translate(2px,2px)}
+.bench-tools{min-width:0}.bench .tool{border:0;border-top:1px solid var(--line);padding:clamp(20px,3vw,42px) 0 clamp(42px,5vw,80px);border-radius:0;background:transparent;transform:none;overflow:visible;scroll-margin-top:90px}
+.bench .tool:first-child{padding-top:0;border-top:0}.bench .tool-name{font:400 clamp(38px,5vw,74px)/.98 var(--f-display);letter-spacing:-.055em;margin:0 0 10px}
+.bench .tool-desc{margin:0 0 18px;font-size:16px;color:var(--dim)}.bench .demo{padding:clamp(14px,2vw,28px);border-radius:2px;background:var(--paper-2)}
+.bench .gh-sky,.bench .wx-sky,.bench .sb-scene{height:clamp(160px,19vw,270px);border-radius:0}
+.bench .demo-line,.bench .gh-scrub-label{font-size:12px}.bench .demo-k{font-size:11px}.bench .gh-scrub-label input{min-height:32px}
+.bench .tool-go{align-self:flex-start;min-height:44px;padding-inline:18px;background:var(--ink);color:var(--paper);font:600 14px/1 system-ui;letter-spacing:0;text-transform:none;border-radius:2px}.bench-status summary{padding:14px 0;cursor:pointer}
+[data-instrument] .pg-hero,[data-instrument] .as-hero{padding-block:clamp(18px,3.6vw,54px)}
+[data-instrument] .pg-hero h1,[data-instrument] .as-hero h1{font-size:clamp(38px,5.2vw,78px);letter-spacing:-.055em;line-height:1.04}
+[data-instrument] .pg-hero .lede,[data-instrument] .as-hero .lede{max-width:60ch;font-size:clamp(16px,1.45vw,20px)}
+[data-instrument=skybound] .hero{min-height:0;padding-block:clamp(32px,5vw,75px)}
+@media(max-width:740px){.bench{display:block}.bench-index{position:static;margin-bottom:30px}.bench-index nav{display:flex;flex-wrap:wrap;gap:0 16px}.bench-index nav a{font-size:14px;min-height:44px}.bench-index nav span{display:none}.bench .tool{scroll-margin-top:75px}.bench .tool-go{width:100%;justify-content:space-between}}
+@media(prefers-reduced-motion:reduce){.bench-index nav span{transition:none}}

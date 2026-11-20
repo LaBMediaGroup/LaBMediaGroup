@@ -40,7 +40,7 @@
         remember(departing.link,departing.direction);
       }
     });
-    addEventListener('pageshow',()=>{ departing = null; });
+    addEventListener('pageshow',()=>{ departing?.link.classList.remove('departing'); departing = null; });
     links.forEach(link => {
       const direction = link.closest('section') === home.querySelector('nav section') ? 1 : -1;
       function prime(event) {
@@ -68,6 +68,13 @@
       link.addEventListener('click', e => {
         if (!enabled() || link.origin !== location.origin || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
         if (e.defaultPrevented || e.button !== 0 || link.hasAttribute('download') || (link.target && link.target !== '_self')) return;
+        if (link.matches(".instrument-link")) link.classList.add("departing");
+        if (link.matches('.instrument-link.wind')) {
+          const {left,top,width,height} = link.querySelector('svg').getBoundingClientRect();
+          try { sessionStorage.setItem('lab-wind-origin', JSON.stringify({
+            x:left+width/2, y:top+height/2, time:Date.now()
+          })); } catch {}
+        }
         departing = {link,direction};
         remember(link,direction,true);
       });
