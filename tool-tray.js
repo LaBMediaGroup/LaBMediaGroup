@@ -1,5 +1,5 @@
 (() => {
-  const links = [...document.querySelectorAll('.instrument-link,.bench .tool-go')];
+  const links = [...document.querySelectorAll('.instrument-link:not(.story),.bench .tool:not(#story) .tool-go')];
   if (!links.length || !window.HTMLDialogElement) return;
   const dialog = document.createElement('dialog');
   dialog.className = 'tool-tray';

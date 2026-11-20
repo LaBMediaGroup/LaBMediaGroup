@@ -511,7 +511,15 @@ test('mobile tiles expand real tools inside the directory and Back restores the 
       const link=page.locator('.instrument-link.'+tile);
       await link.tap();
       assert.equal(new URL(page.url()).pathname,'/');
-      await page.frameLocator('.tool-tray iframe').locator(control).waitFor();
+      if(tile==='story'){
+        const magnet=page.locator('.story-magnets button').first();
+        await page.locator('.story-board [data-roll]:enabled').waitFor();
+        await magnet.tap();
+        const held=await magnet.textContent();
+        await page.locator('.story-board [data-roll]').tap();
+        assert.equal(await magnet.textContent(),held);
+        assert.equal(await page.locator('.tool-tray').isVisible(),false);
+      }else await page.frameLocator('.tool-tray iframe').locator(control).waitFor();
       await page.goBack();
       await page.locator('.tool-tray').waitFor({state:'hidden'});
       await page.waitForFunction(key=>document.activeElement.matches('.instrument-link.'+key),tile,{timeout:2500});

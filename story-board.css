@@ -1,0 +1,25 @@
+body.story-editing{display:block;background:#171b18}
+body.story-editing>:not(.story-board){display:none!important}
+.story-board[hidden]{display:none}
+.story-board{--ink:#262922;--paper:#fae0cc;box-sizing:border-box;width:min(100% - 40px,820px);margin:0 auto;padding:clamp(22px,5vh,64px) 0 54px;color:#f3f0e8;font:400 16px/1.35 system-ui,sans-serif}
+.story-board *{box-sizing:border-box}
+.story-board header,.story-actions{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.story-board header{position:static;background:none;border:0;padding:0 0 20px}
+.story-board h1{font:500 13px/1.3 ui-monospace,monospace;margin:0;width:auto;letter-spacing:0;color:#d6c9bc}
+.story-board button,.story-actions a{min-height:44px;font:inherit;cursor:pointer}
+.story-board [data-back],.story-actions a{color:inherit;background:none;border:0;padding:10px 0;text-decoration:none}
+.story-sheet{position:relative;background:var(--paper);color:var(--ink);padding:clamp(22px,4vw,44px);border-radius:4px 4px 21px 4px}
+.story-board small{display:block;font:600 11px/1.4 ui-monospace,monospace;text-transform:uppercase;letter-spacing:.1em}
+.story-sheet p{font:400 clamp(29px,4vw,54px)/1.08 Georgia,serif;letter-spacing:-.035em;margin:18px 0 0}
+.story-magnets{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 24px}
+.story-magnets button{position:relative;text-align:left;border:0;border-radius:3px;padding:16px 20px;color:#212821;background:#ccdbc6;line-height:1.35}
+.story-magnets button:nth-child(2){background:#c8d8df}
+.story-magnets button:last-child{grid-column:1/-1;background:#ebdba8}
+.story-magnets small{margin-bottom:8px;padding-right:20px}
+.story-magnets button::after{content:'○';position:absolute;top:10px;right:13px}
+.story-magnets button[aria-pressed=true]::after{content:'●'}
+.story-actions [data-roll]{background:#f3f0e8;color:#20251f;border:0;border-radius:3px;padding:10px 28px;font-weight:650}
+.story-board :focus-visible{outline:3px solid #e88f61;outline-offset:3px}
+@media(max-width:520px){.story-board{width:calc(100% - 32px)}.story-magnets{gap:8px}.story-magnets button{padding:13px;font-size:15px}.story-sheet p{font-size:clamp(27px,7.7vw,38px)}}
+.magnet-caption{margin:15px 0 7px;color:#c2c9bd;font:12px/1.4 system-ui}
+.story-magnets{margin-top:0}
