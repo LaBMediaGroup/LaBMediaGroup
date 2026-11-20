@@ -502,32 +502,21 @@ test('homepage directory opens all five tools without scripts', async () => {
   await page.close();
 });
 
-test('mobile tap carries the live crest into the anchored planner masthead', async () => {
-  const page = await browser.newPage({ viewport:{width:390,height:800}, isMobile:true, hasTouch:true });
+test('mobile tiles expand real tools inside the directory and Back restores the picker', async () => {
+  const page = await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
   try {
-    await page.route('**/*',route=>route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
-    await page.addInitScript(()=>{
-      // Record a painted frame, even if the wave settles before the load event.
-      const observe = new MutationObserver(()=>{
-        const ink = document.querySelector('header .mark-water');
-        if (!ink) return;
-        const mark = ink.previousElementSibling;
-        const box = ink.getBoundingClientRect(), target = mark.getBoundingClientRect();
-        window.headerWaveAligned = Math.abs(box.left-target.left)<1 &&
-          Math.abs(box.top-target.top)<1 && Math.abs(box.width-target.width)<1 &&
-          box.top>=0 && box.bottom<=innerHeight;
-      });
-      observe.observe(document,{subtree:true,childList:true});
-    });
+    await page.route('**/*',r=>r.request().url().startsWith(baseURL)?r.continue():r.abort());
     await page.goto(baseURL+'/#directory');
-    await page.getByRole('link',{name:'Light planner'}).tap();
-    await page.waitForURL(url=>url.pathname.endsWith('/sun.html') && url.hash==='#sunStage');
-    await page.waitForFunction(()=>window.headerWaveAligned === true);
-    await page.waitForFunction(()=>!document.querySelector('header .mark-water'));
-    assert.ok(await page.locator('header .nav-brand img').isVisible());
-  } finally {
-    await page.close();
-  }
+    for (const [tile,control] of [['sky','#timeSlider'],['story','#roll'],['wind','#wxWind'],['route','#flight-path'],['search','#assistantInput']]) {
+      const link=page.locator('.instrument-link.'+tile);
+      await link.tap();
+      assert.equal(new URL(page.url()).pathname,'/');
+      await page.frameLocator('.tool-tray iframe').locator(control).waitFor();
+      await page.goBack();
+      await page.locator('.tool-tray').waitFor({state:'hidden'});
+      await page.waitForFunction(key=>document.activeElement.matches('.instrument-link.'+key),tile,{timeout:2500});
+    }
+  } finally {await page.close();}
 });
 
 test('mobile wind tile stretches into the forecast and follows wind from the west', async () => {
@@ -551,7 +540,9 @@ test('mobile wind tile stretches into the forecast and follows wind from the wes
     });
     await page.goto(baseURL+'/#directory');
     await page.getByRole('link',{name:'Drone weather'}).tap();
-    await page.waitForFunction(() => window.windEnd?.includes('translate(66px,0px) rotate(0deg)'));
-    assert.match(await page.locator('#wxWind').innerText(),/24/);
+    await page.frameLocator('.tool-tray iframe').locator('#wxWind').waitFor();
+    const forecast=page.frames().find(f=>f.url().includes('droneweather.html'));
+    await forecast.waitForFunction(() => window.windEnd?.includes('translate(66px,0px) rotate(0deg)'));
+    assert.match(await forecast.locator('#wxWind').innerText(),/24/);
   } finally { await page.close(); }
 });
