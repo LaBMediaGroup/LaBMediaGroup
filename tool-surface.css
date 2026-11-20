@@ -35,3 +35,8 @@ body[data-instrument=assistant] #assistantTitle{scroll-margin-top:110px}
 [data-instrument=assistant] .assistant-form{border-top:1px solid var(--line);background:var(--paper-2)}
 [data-instrument=ideas] .brief .el.locked{box-shadow:inset 3px 0 var(--accent)}
 @media(max-width:650px){.instrument-dock{max-width:calc(100vw - 20px)}body[data-instrument] footer{padding-bottom:80px}}
+@media(max-width:650px){
+ body[data-instrument] .lab-chat{left:auto;bottom:calc(72px + env(safe-area-inset-bottom));pointer-events:none}
+ body[data-instrument] .lab-chat :is(.lab-chat-launch,.lab-chat-panel){pointer-events:auto}
+ body[data-instrument] .lab-chat-panel{bottom:calc(136px + env(safe-area-inset-bottom));max-height:calc(100dvh - 155px)}
+}
