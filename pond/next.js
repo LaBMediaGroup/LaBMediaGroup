@@ -7,7 +7,7 @@
   var LAT = 42.67, LON = -83.03;
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var W = function () { return window.LabWorld; };
+  var W = function () { return document.documentElement.classList.contains('no-world') ? null : window.LabWorld; };
   var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
 
   /* ---------- the work ---------- */
@@ -150,6 +150,7 @@
   }
   var sceneReady = W() || document.documentElement.classList.contains('no-world') ? Promise.resolve() :
     new Promise(function(resolve){ addEventListener('labworld:ready',resolve,{once:true}); });
+  addEventListener('labworld:unavailable',finishLoader);
   var brandImage = brandMark.querySelector('img');
   var brandReady = brandImage.decode ? brandImage.decode().catch(function(){}) : Promise.resolve();
   Promise.all([sceneReady,brandReady]).then(finishLoader);
@@ -243,7 +244,29 @@
   /* ---------- scroll: dive, tiles, ink ---------- */
   var hero = $('.hero-in'), windInstrument = $('.wind-instrument'), cue = $('.cue'), toolsSection=$('#tools'), workSection=$('#work'), filmFrame=$('.film-frame');
   var make = $('#make'), mkH = $('#mk');
-  const ascentSpace=$('.pond-ascent');
+  const ascentSpace=$('.pond-ascent'), opening=$('.opening'), invitation=$('.enter-field');
+  const browse=$('#browseChapters'), chapterLinks=[...document.querySelectorAll('#chapters a, .hud .cta')];
+  const setMenu=open=>browse.setAttribute('aria-expanded',String(open));
+  browse.addEventListener('click',()=>setMenu(browse.getAttribute('aria-expanded')!=='true'));
+  document.addEventListener('click',event=>{if(!event.target.closest('.chapter-nav') || event.target.closest('#chapters a'))setMenu(false);});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape' && browse.getAttribute('aria-expanded')==='true'){setMenu(false);browse.focus();}});
+  let currentChapter='';
+  function markChapter(hash){
+    if(hash===currentChapter)return;
+    currentChapter=hash;
+    for(const a of chapterLinks){
+      if(a.hash===hash)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');
+    }
+  }
+  function phase(value,from,to){
+    const t=clamp((value-from)/(to-from),0,1);
+    return t*t*(3-2*t);
+  }
+  function openingLayer(el,opacity,dy){
+    el.style.opacity=String(opacity);
+    el.style.transform=reduce?'none':'translateY('+dy+'px)';
+    el.inert=opacity<.08;
+  }
   var workSeen = false;
   let wantedUnder=0,leavingFilms=false;
   function filmApproach(rendered){
@@ -258,12 +281,12 @@
     var vh = innerHeight, y = scrollY;
     var filmRect = filmSection.getBoundingClientRect();
     var under = Math.min(
-      clamp((vh * 0.89 - filmRect.top) / (vh * 0.85), 0, 1),
+      clamp((vh * 1.48 - filmRect.top) / (vh * 1.44), 0, 1),
       clamp((filmRect.bottom - vh * 0.08) / (vh * 0.76), 0, 1)
     );
     const exiting=filmRect.top < -1;
     wantedUnder=under;leavingFilms=exiting;
-    if (W()) W().setUnder(under,exiting);
+    if (W()) W().setUnder(under,exiting,filmRect.top>vh*1.62);
     filmApproach(!W() || document.documentElement.classList.contains('no-film-world')?under:W().under);
     var workRect = workSection.getBoundingClientRect();
     var deckVisible = under <= 0.35 && workRect.top < vh && workRect.bottom > 0;
@@ -286,11 +309,18 @@
       W().setDive(dive);
       W().setDrift(Math.max(0,-workRect.top)/document.body.scrollHeight);
     }
-    var h = clamp(y / (vh * 0.55), 0, 1);
-    hero.style.transform = 'translateY(' + (-h * 60) + 'px) scale(' + (1 - h * 0.06) + ')';
-    hero.style.opacity = String(1 - h);
-    windInstrument.style.opacity = String(1-h); cue.style.opacity = String(1-h);
-    if (previewWind && y >= vh*.65) endPreview();
+    const span=Math.max(1,opening.offsetHeight-hero.parentElement.offsetHeight);
+    const p=y/span, intro=phase(p,.05,.36), wind=phase(p,.23,.50);
+    const exit=1-phase(p,.81,1.06);
+    openingLayer(invitation,1-phase(p,.035,.20),-10*intro);
+    openingLayer(hero,intro*exit,18*(1-intro)-12*(1-exit));
+    openingLayer(windInstrument,wind*exit,12*(1-wind));
+    openingLayer(cue,wind*exit,8*(1-wind));
+    opening.style.setProperty('--field-shade',String(intro*exit));
+    W()?.setFieldRead?.(phase(p,0,.80));
+    if(previewWind && exit<.2)endPreview();
+    const contactTop=make.getBoundingClientRect().top;
+    markChapter(contactTop<vh*.75?'#make':filmRect.top<vh*.65?'#films':workRect.top<vh*.65?'#work':toolRect.top<vh*.65?'#tools':'#top');
     // One ascent starts as the last screen leaves and ends with the inquiry.
     const rise=exiting ? clamp((vh*.97-filmRect.bottom)/ascentSpan(vh),0,1) : 0;
     if(W()) W().setRise(rise);

@@ -554,3 +554,70 @@ test('mobile wind tile stretches into the forecast and follows wind from the wes
     assert.match(await forecast.locator('#wxWind').innerText(),/24/);
   } finally { await page.close(); }
 });
+
+test('a hashless reload opens on the field and a Films bookmark still lands at the gallery', async () => {
+  const page = await browser.newPage({viewport:{width:390,height:844}, reducedMotion:'reduce'});
+  try {
+    await page.route('**/*', route => route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
+    await page.goto(baseURL+'/#films');
+    await page.waitForFunction(() => Math.abs(document.querySelector('#films').getBoundingClientRect().top)<2);
+    await page.evaluate(() => history.replaceState(null, '', '/'));
+    await page.reload();
+    await page.waitForFunction(() => scrollY===0 && document.querySelector('#loader').classList.contains('done'));
+    assert.equal(await page.locator('.hero-in').evaluate(el=>getComputedStyle(el).opacity), '0');
+    await page.locator('.enter-field').click();
+    await page.waitForFunction(() => !document.querySelector('.wind-instrument').inert);
+    await page.locator('#browseChapters').click();
+    await page.locator('#chapters a[href="#films"]').click();
+    await page.goBack();
+    await page.waitForFunction(() => location.hash==='#wind' && !document.querySelector('.wind-instrument').inert);
+  } finally { await page.close(); }
+});
+
+test('the phone fridge and onward route work when the 3D renderer is unavailable', async () => {
+  const page=await browser.newPage({viewport:{width:320,height:568}, reducedMotion:'reduce'});
+  try {
+    await page.addInitScript(() => {
+      const getContext=HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext=function(type,...options){
+        return type.includes('webgl') ? null : getContext.call(this,type,...options);
+      };
+    });
+    await page.route('**/*', route => route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
+    await page.goto(baseURL+'/#tools');
+    await page.waitForSelector('html.no-world');
+    const still=await page.locator('.station-frame').evaluate(frame=>getComputedStyle(frame,'::before').backgroundImage);
+    assert.match(still,/story-fridge\.webp/);
+    assert.equal((await page.request.get(baseURL+'/pond/img/story-fridge.webp')).status(),200);
+    await page.locator('#roll').click();
+    await page.locator('#readBrief').click();
+    assert.equal(await page.locator('#briefLines dd').count(),10);
+    await page.locator('#briefClose').click();
+    for(const tab of ['book','sun','flight']){
+      await page.locator('#stationNext').click();
+      assert.equal(await page.locator('#tools').getAttribute('data-instrument'),tab);
+    }
+    await page.locator('#stationNext').click();
+    assert.equal(new URL(page.url()).hash,'#work');
+  } finally { await page.close(); }
+});
+
+test('closing a film returns to its TV after scrolling away from a bookmarked tool', async () => {
+  const page=await browser.newPage({viewport:{width:1280,height:800},reducedMotion:'reduce'});
+  try {
+    await page.route('**/*', route => route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
+    await page.goto(baseURL+'/#tools');
+    await page.evaluate(()=>document.querySelector('#films').scrollIntoView());
+    await page.waitForFunction(()=>!document.querySelector('.film-frame').inert);
+    const galleryY=await page.evaluate(()=>scrollY);
+    for(const closeWith of ['button','browser']){
+      await page.locator('#filmPlay').click();
+      await page.waitForSelector('#filmViewer[open]');
+      if(closeWith==='browser') await page.goBack();
+      else await page.locator('#filmBack').click();
+      await page.waitForFunction(()=>!document.querySelector('#filmViewer').open && !history.state?.labFeature && history.scrollRestoration==='auto');
+      assert.equal(await page.evaluate(()=>scrollY),galleryY);
+      assert.equal(new URL(page.url()).hash,'#tools');
+    }
+  } finally {await page.close();}
+});

@@ -25,7 +25,7 @@ import * as THREE from 'three';
 import {buildPoleCutout} from './pole-cutout.js';
 import { createPondPort } from './pond-port.js?v=15';
 import { buildOak } from './oak.js';
-import { buildFieldStation } from './field-station.js';
+import { buildFieldStation } from './field-station.js?v=16';
 import {pondCamera} from './pond-camera.js?v=15';
 import {fieldStationCamera} from './station-camera.js?v=12';
 import { buildFieldBird } from './field-bird.js';
@@ -38,7 +38,7 @@ let renderer;
 try {
   renderer = new THREE.WebGLRenderer({ canvas, antialias: !small, alpha: false, powerPreference: 'high-performance' });
 } catch (e) { document.documentElement.classList.add('no-world'); throw e; }
-const DPR = Math.min(devicePixelRatio || 1, small ? 1.5 : 1.25);
+const DPR = Math.min(devicePixelRatio || 1, small ? 1.2 : 1.25);
 renderer.setPixelRatio(DPR);
 renderer.setSize(innerWidth, innerHeight, false);
 renderer.outputColorSpace = THREE.LinearSRGBColorSpace; // shaders author display values directly
@@ -707,7 +707,7 @@ function poseQuats() {
   // Step back on a narrow screen so both wind indicators fit in the shot.
   const standZ=portrait ? THREE.MathUtils.clamp(7.7/camera.aspect-2.5,2,20) : 1.8;
   standPos.set(0,H(0,standZ)+1.62,standZ);
-  m4.lookAt(standPos, new THREE.Vector3(portrait ? .6 : .2, portrait ? 3.3 : 6.4, portrait ? -32 : -40), new THREE.Vector3(0, 1, 0)); qStand.setFromRotationMatrix(m4);
+  m4.lookAt(standPos, new THREE.Vector3(portrait ? 1.6 : .2, portrait ? 2.7 : 6.4, portrait ? -32 : -40), new THREE.Vector3(0, 1, 0)); qStand.setFromRotationMatrix(m4);
   pondShot.frameOverlook(camera,qDive);
 
   camera.fov = portrait ? 62 : 48; camera.updateProjectionMatrix();
@@ -734,6 +734,7 @@ function prepareFilmRoom() {
 }
 const stationCamera=fieldStationCamera(THREE,station);
 let renderStationControls=null,stationRevision=0,fieldExitListener=null;
+let fieldRead=0;
 let fieldTool='story',departure=0,sunTracking=0,reportedExit=-1,reportedLight=-1;
 const screenPoint=new THREE.Vector3();
 function viewportPoint(point){
@@ -741,8 +742,7 @@ function viewportPoint(point){
   return {x:(screenPoint.x+1)*innerWidth/2,y:(1-screenPoint.y)*innerHeight/2};
 }
 function placeCamera() {
-  const onSunRoute=fieldTool==='book' || fieldTool==='sun';
-  const finishExit=onSunRoute && !reduce && S.station>.85 && S.underT<.01 && S.riseT<.01;
+  const finishExit=!reduce && S.station>.85 && S.underT<.01 && S.riseT<.01;
   const d=ease(finishExit?Math.min(S.dive,ss(.66,1,1-S.inside)):S.dive);
   const exit=1-S.inside,light=S.station*(1-ss(.62,.99,S.under))*(1-ss(.03,.65,S.rise));
   if(fieldExitListener && (Math.abs(exit-reportedExit)>1e-7 || Math.abs(light-reportedLight)>1e-7)){
@@ -752,6 +752,9 @@ function placeCamera() {
   camera.position.copy(pa.lerp(pb, d));
   qTmp.slerpQuaternions(qStand, qDive, ss(0.15, 1, S.dive));
   camera.quaternion.copy(qTmp);
+  const bankStep=reduce?0:fieldRead*(1-d)*(1-ss(0,.28,S.station));
+  camera.translateZ(-bankStep*.76);
+  camera.rotateY(-bankStep*.035);
   // Slide around the near bank to the station. Its pose becomes the start
   // of the pond approach, so leaving the tools never sends us back to the hero.
   stationCamera(camera,S.station,S.inside,S.book,S.flight,U.uSunDir.value,
@@ -790,10 +793,11 @@ function applyQuality(lv) {
   resize();
 }
 function watchFrames(ms) {
-  if (S.t < 3 || QL.level >= 3) return;
+  if (S.t < (small ? 1 : 3) || QL.level >= 3) return;
   QL.buf.push(ms);
-  if (QL.buf.length >= 90) { // median, so a single stall (a screenshot, a tab switch) never counts
-    const med = QL.buf.sort((a, b) => a - b)[45]; QL.buf = [];
+  const samples=small?36:90;
+  if (QL.buf.length >= samples) { // Ignore isolated stalls.
+    const med = QL.buf.sort((a, b) => a - b)[samples/2]; QL.buf = [];
     if (med > 24) applyQuality(QL.level + 1);
   }
 }
@@ -801,18 +805,21 @@ function frame(now) {
   running = false;
   if (!visible) return;
   watchFrames(now - last);
-  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  // The pond simulation takes short steps. Camera travel keeps wall-clock
+  // timing on phones that paint fewer than twenty frames per second.
+  const cameraDt=Math.min(.16,(now-last)/1000);
+  const dt=Math.min(.05,cameraDt); last=now;
   S.t += dt;
   U.uSplashAge.value += dt; U.uStarAge.value += dt;
   const k = 1 - Math.pow(0.0015, dt);
-  const cameraK=reduce ? 1 : k;
+  const cameraK=reduce ? 1 : 1-Math.pow(.0015,cameraDt);
   // A wheel flick or anchor jump still passes the wide exterior and sill.
   const gap=S.stationT-S.station;
-  const approachStep=dt/(gap>0?3.1:2.3);
+  const approachStep=cameraDt/(gap>0?1.85:1.4);
   S.station+=reduce?gap:THREE.MathUtils.clamp(gap*cameraK,-approachStep,approachStep);
   S.flight+=(S.flightT-S.flight)*cameraK;
   const desiredInside=S.insideT*(1-departure);
-  const travelStep=reduce?1:dt/(desiredInside<S.inside?6.1:3.2);
+  const travelStep=reduce?1:cameraDt/(departure>.02?1.9:desiredInside<S.inside?6.1:3.2);
   const pursuit=fieldTool==='sun'||fieldTool==='book'?1:0;
   sunTracking+=(pursuit-sunTracking)*cameraK;
   S.inside+=THREE.MathUtils.clamp(desiredInside-S.inside,-travelStep,travelStep);
@@ -846,7 +853,7 @@ function frame(now) {
   }
   placeCamera();
   if(room && reportFilmApproach && reportedUnder!==S.under){reportedUnder=S.under;reportFilmApproach(S.under);}
-  if(renderStationControls)renderStationControls();
+  if(renderStationControls)renderStationControls(S.station);
   const submerged = !!room && camera.position.y < 0;
   const splitting = !!room && !reduce && (S.under>.0001 || S.rise>.00001) && Math.abs(camera.position.y)<.118;
   const eyeHeight=camera.position.y;
@@ -896,6 +903,7 @@ function frame(now) {
 }
 function loop() { if (!running) { running = true; requestAnimationFrame(frame); } }
 function resize() {
+  canvas.style.height=innerHeight+"px";
   renderer.setSize(innerWidth, innerHeight, false);
   camera.aspect = innerWidth / innerHeight; poseQuats();
   const pr = renderer.getPixelRatio();
@@ -903,8 +911,17 @@ function resize() {
   reflRT.setSize(Math.round(innerWidth * pr * QL.refl), Math.round(innerHeight * pr * QL.refl));
 }
 addEventListener('resize', resize); resize();
+canvas.addEventListener('webglcontextlost',event=>{
+  event.preventDefault();visible=false;
+  document.documentElement.classList.add('no-world');
+  dispatchEvent(new Event('labworld:unavailable'));
+});
+canvas.addEventListener('webglcontextrestored',()=>{
+  document.documentElement.classList.remove('no-world');resize();visible=!document.hidden;last=performance.now();loop();
+  dispatchEvent(new Event('labworld:ready'));
+});
 document.addEventListener('visibilitychange', () => {
-  visible=!document.hidden;
+  visible=!document.hidden && !renderer.getContext().isContextLost();
   if(visible){last=performance.now();loop();}
   else port.impact.clear();
 });
@@ -921,6 +938,7 @@ setSun(0.06);
 window.LabWorld = {
   setSun(elDeg,offsetDeg=11.46) { setSun(elDeg*Math.PI/180,offsetDeg*Math.PI/180); },
   setStation(weight) { S.stationT=weight; },
+  setFieldRead(value){fieldRead=value;},
   setFieldDeparture(value){departure=value;},
   bindFieldExit(callback){fieldExitListener=callback;reportedLight=-1;},
   setFieldTool(tool,height) {
@@ -962,7 +980,9 @@ window.LabWorld = {
   setDive(p) { S.diveT = Math.max(0, Math.min(1, p)); },
   setDrift(p) { S.driftT = p; },
   bindFilmApproach(fn){reportFilmApproach=fn;reportedUnder=-1;},
-  setUnder(p,exiting=false) {
+  setUnder(p,exiting=false,outside=false) {
+    // A return to an earlier chapter can skip the entire pond approach.
+    if(outside && !p){S.under=0;immersionStroke=0;forwardCross=false;}
     S.exitT=exiting?1:0;
     S.underT = THREE.MathUtils.clamp(p,0,1);
     if (p>0 || S.diveT>.86) prepareFilmRoom();

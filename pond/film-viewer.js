@@ -6,6 +6,7 @@ window.createFilmViewer = function createFilmViewer(world, resumeGallery) {
   const clock = get('featureClock'), seek = get('featureSeek'), play = get('featurePlay');
   const mute = get('featureSound'), gain = get('featureGain'), full = get('featureFullscreen');
   const problem = get('featureProblem'), external = get('featureExternal');
+  let galleryPosition;
   let origin, film, returnFromHistory = false, ownsHistory = false;
   let userVolume, userMuted, hasOpened = false;
   let bufferedURL, fetching, requestedTime = null;
@@ -152,7 +153,18 @@ window.createFilmViewer = function createFilmViewer(world, resumeGallery) {
     if(e.code==='Space' && !e.target.closest('button,input,a')){e.preventDefault();toggle();}
   });
   window.addEventListener('popstate',()=>{
-    if(dialog.open && !history.state?.labFeature) {returnFromHistory=true;close();}
+    if (!galleryPosition || history.state?.labFeature) return;
+    if (dialog.open) {returnFromHistory=true;close();}
+    const point=galleryPosition;
+    galleryPosition=null;
+    window.scrollTo({top:point.y,behavior:'instant'});
+    // Restore the entry's normal policy after native history traversal finishes.
+    setTimeout(()=>{
+      if (!galleryPosition) {
+        window.scrollTo({top:point.y,behavior:'instant'});
+        history.scrollRestoration=point.restoration;
+      }
+    },0);
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&dialog.open)video.pause();});
   dialog.addEventListener('close',()=>{
@@ -170,6 +182,7 @@ window.createFilmViewer = function createFilmViewer(world, resumeGallery) {
     get open(){return dialog.open;},
     openFilm(item,trigger,previewLevel,previewMuted){
       if(dialog.open)return;
+      const point={y:window.scrollY,restoration:history.scrollRestoration};
       film=item;origin=trigger;problem.hidden=true;
       const online=item.links.find(([label,url])=>/watch/i.test(label)&&/^https?:/.test(url));
       external.hidden=!online;
@@ -184,8 +197,10 @@ window.createFilmViewer = function createFilmViewer(world, resumeGallery) {
       dialog.showModal();
       get('filmBack').focus({preventScroll:true});
       try{
-        history.pushState({...history.state,labFeature:item.id},'');ownsHistory=true;
-      }catch{ownsHistory=false;}
+        history.scrollRestoration='manual';
+        history.pushState({...history.state,labFeature:item.id},'');
+        galleryPosition=point;ownsHistory=true;
+      }catch{history.scrollRestoration=point.restoration;ownsHistory=false;}
       start();
     }
   };

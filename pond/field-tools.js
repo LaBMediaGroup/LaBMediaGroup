@@ -12,6 +12,13 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
   const fridge=window.createStoryFridge({get,world,onShuffle});
   const surfaces=window.createStationSurfaces(section,world,()=>active);
   const chooser=get('chooseTool');
+  const onward=get('stationNext');
+  const nextStop={story:'book',book:'sun',sun:'flight',flight:'work',events:'book',ask:'book'};
+  onward.addEventListener('click',()=>{
+    const dest=nextStop[active];
+    if(dest==='work'){location.hash='work';return;}
+    select(get('tab-'+dest));
+  });
   function menu(open){chooser.setAttribute('aria-expanded',String(open));}
   chooser.addEventListener('click',()=>menu(chooser.getAttribute('aria-expanded')!=='true'));
   section.addEventListener('keydown',e=>{if(e.key==='Escape' && chooser.getAttribute('aria-expanded')==='true'){menu(false);chooser.focus();}});
@@ -221,6 +228,9 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
     if(bounds.top>innerHeight*.09 || bounds.bottom<innerHeight*.86)section.scrollIntoView({block:'start',behavior:reduced?'instant':'smooth'});
     const prior=active;
     active=tab.dataset.tool;menu(false);
+    const dest=nextStop[active], name=dest==='work'?'Websites':get('tab-'+dest).textContent;
+    onward.firstElementChild.textContent=name;
+    onward.setAttribute('aria-label','Continue to '+name);
     const pond=active==='sun'||active==='flight';
     section.dataset.place=pond?'pond':'shed';section.dataset.instrument=active;
     get('choicePlace').textContent=pond?'Over the pond':'Inside the shed';

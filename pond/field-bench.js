@@ -1,6 +1,6 @@
 // The refrigerator uses the signed production loft export. See fridge-magnets-reference.md.
 import {createNotebookTurn} from './notebook-turn.js';
-import {buildFridgeMagnets} from './fridge-magnets.js';
+import {buildFridgeMagnets} from './fridge-magnets.js?v=16';
 import {fridgeStudy} from './fridge-study.js';
 
 export function buildFieldBench({THREE:T, uniforms:U, group, floor, placement, box, add, cylinder}) {
@@ -228,7 +228,12 @@ export function buildFieldBench({THREE:T, uniforms:U, group, floor, placement, b
       const eye=bookFrame.localToWorld(V(0,.005+distance*.971,center+distance*.239));
       return {eye:eye.toArray(),look:look.toArray()};
     }
-    return portrait?frame([-.73,1.48,.91],[-.73,1.39,-.407]):frame([-.74,1.46,.54],[-.73,1.398,-.407]);
+    if(portrait){
+      // Keep the signed door below both navigation rows on short phones.
+      const topRoom=T.MathUtils.clamp((740-innerHeight)/180,0,1);
+      return frame([-.73,1.43,1.27+.06*topRoom],[-.73,1.15+.19*topRoom,-.407]);
+    }
+    return frame([-.74,1.46,.54],[-.73,1.398,-.407]);
   }
   function path(tool,portrait=false){
     return [frame([-.52,1.79,2.78],[-.48,1.46,.15]),

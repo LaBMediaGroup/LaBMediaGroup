@@ -343,7 +343,7 @@ export function buildFridgeMagnets(T,door,uniforms) {
     });
   }
   function controlCorners(portrait=window.innerWidth<window.innerHeight){
-    const bottom=portrait?.678:.757;
+    const bottom=portrait?.40:.757;
     return [[-.264,.913],[.264,.913],[.264,bottom],[-.264,bottom]].map(([x,y])=>localToWorld(v(x,y,.112)));
   }
   function fieldAnchors(){

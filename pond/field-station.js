@@ -1,5 +1,5 @@
 // The boards, roof panels and openings are cut in metres. See field-station-reference.md.
-import {buildFieldBench} from './field-bench.js';
+import {buildFieldBench} from './field-bench.js?v=16';
 
 export function buildFieldStation({ THREE, height, uniforms, x = -13.1, z = -4.4, yaw = -.15 }) {
   const group = new THREE.Group();
