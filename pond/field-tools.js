@@ -13,7 +13,26 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
   const surfaces=window.createStationSurfaces(section,world,()=>active);
   const chooser=get('chooseTool');
   const onward=get('stationNext');
-  const nextStop={story:'book',book:'sun',sun:'flight',flight:'work',events:'book',ask:'book'};
+  const frame=section.querySelector('.station-frame');
+  // Fractions of the sticky section's travel. Each instrument has a level
+  // stretch on either side of its camera move so one can stop and use it.
+  const beats={wallStart:.11,wallEnd:.23,panStart:.34,panEnd:.46,liftStart:.58,doorEnd:.80,drone:.92};
+  const landing={story:.05,book:.52,events:.28,ask:.52,sun:.86,flight:.96};
+  let notebookTool='book';
+  const trackLength=()=>Math.max(1,section.offsetHeight-frame.offsetHeight);
+  function journey(bounds){
+    const p=Math.min(1,Math.max(0,-bounds.top/trackLength()));
+    const stop=p<(beats.wallStart+beats.wallEnd)/2?'story':p<(beats.panStart+beats.panEnd)/2?'events':p<beats.liftStart?'book':p<beats.drone?'sun':'flight';
+    if(stop!=='book')notebookTool='book';
+    const tool=stop==='book'?notebookTool:stop;
+    const book=reduced?Number(!['story','events'].includes(stop)):ease(beats.panStart,beats.panEnd,p);
+    const outside=reduced?Number(stop==='sun'||stop==='flight'):ease(beats.liftStart,beats.doorEnd,p);
+    const wall=reduced?Number(stop==='events'):ease(beats.wallStart,beats.wallEnd,p)*(1-ease(beats.panStart,beats.panEnd,p));
+    world()?.setStationJourney(book,outside,wall);
+    if(bounds.top<innerHeight && bounds.bottom>0 && tool!==active)activate(get('tab-'+tool));
+    if(!world())setExit(outside,carry);
+  }
+  const nextStop={story:'events',book:'sun',sun:'flight',flight:'work',events:'book',ask:'book'};
   onward.addEventListener('click',()=>{
     const dest=nextStop[active];
     if(dest==='work'){location.hash='work';return;}
@@ -166,7 +185,8 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
     }));
     return loaded.get(file);
   }
-  let bookIndex=0,eventIndex=0,engine,bookItem=null,bookDetail='';
+  const board=window.createEventBoard(get,dayKey);
+  let bookIndex=0,engine,bookItem=null,bookDetail='';
   function kit() {try{const k=JSON.parse(localStorage.getItem('lab-kit')||'[]');return Array.isArray(k)?k:[];}catch{return [];}}
   function kitKey(item){return (item.id||item.name).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');}
   function paintSave(){if(!bookItem)return;const saved=kit().includes(kitKey(bookItem));get('bookSave').setAttribute('aria-pressed',String(saved));get('bookSave').textContent=saved?'Saved to my kit':'Save to my kit';}
@@ -190,21 +210,7 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
   function turnPage(direction){bookIndex+=direction;notebook(direction);}
   get('bookNext').addEventListener('click',()=>turnPage(1));
   get('bookPrev').addEventListener('click',()=>turnPage(-1));
-  function events() {
-    const today=dayKey(new Date()),all=window.SPOTLIGHT||[];
-    const upcoming=all.filter(e=>(e.until||e.date)>=today).sort((a,b)=>a.date.localeCompare(b.date));
-    const past=all.filter(e=>(e.until||e.date)<today).sort((a,b)=>b.date.localeCompare(a.date));
-    const list=upcoming.concat(past);
-    if(!list.length){get('eventDate').textContent='No dated listings';get('eventNext').disabled=true;return;}
-    const entry=list[eventIndex%list.length],name=get('eventName');
-    name.textContent=entry.title.replace(/<[^>]*>/g,'');name.href='../events.html#event-'+entry.id;
-    const date=new Date(entry.date+'T12:00:00Z').toLocaleDateString('en-US',{timeZone:'America/Detroit',month:'short',day:'numeric',year:'numeric'});
-    get('eventDate').textContent=((entry.until||entry.date)<today?'From the archive':'On the calendar')+' · '+date;
-    get('eventWhere').textContent=entry.where||entry.venue||entry.by||'';
-    if(active==='events')world()?.setNotebookPage?.(name.textContent,'Michigan events',get('eventDate').textContent);
-    get('eventNext').disabled=list.length<2;
-  }
-  get('eventNext').addEventListener('click',()=>{eventIndex++;events()});
+  function loadEvents(){return load('spotlight-data').then(()=>board.load(window.SPOTLIGHT||[])).catch(()=>board.load([]));}
   get('fieldAsk').addEventListener('submit',async e=>{
     e.preventDefault();
     const query=get('fieldQuery').value.trim();if(!query)return;
@@ -223,11 +229,19 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
     }catch{box.textContent='The index is unavailable. Open the assistant below.';}
   });
   function select(tab,focus=false) {
-    const wasOpen=chooser.getAttribute('aria-expanded')==='true';
+    const tool=tab.dataset.tool;
+    notebookTool=tool==='ask'?tool:'book';
     const bounds=section.getBoundingClientRect();
-    if(bounds.top>innerHeight*.09 || bounds.bottom<innerHeight*.86)section.scrollIntoView({block:'start',behavior:reduced?'instant':'smooth'});
+    // The shortcut lands on the same track as a swipe. The next gesture
+    // continues from that shot, including after visiting a notebook extra.
+    window.scrollTo({top:scrollY+bounds.top+landing[tool]*trackLength(),behavior:'instant'});
+    activate(tab,true,focus);
+    journey(section.getBoundingClientRect());
+  }
+  function activate(tab,fromControl=false,focus=false) {
+    const wasOpen=fromControl && chooser.getAttribute('aria-expanded')==='true';
     const prior=active;
-    active=tab.dataset.tool;menu(false);
+    active=tab.dataset.tool;if(fromControl)menu(false);
     const dest=nextStop[active], name=dest==='work'?'Websites':get('tab-'+dest).textContent;
     onward.firstElementChild.textContent=name;
     onward.setAttribute('aria-label','Continue to '+name);
@@ -240,7 +254,7 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
     if(active==='sun' && selected===null && presence>.5){
       const d=solarDay();
       if(d){
-        following=!reduced && !!world() && prior!=='flight' && exit<.98;
+        following=!reduced && !!world() && (!fromControl || (prior!=='flight' && exit<.98));
         if(following)followExit();else{selected=+d.times.eveningGoldenStart;renderSun();}
       }
     }
@@ -256,7 +270,7 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
     flight();
     if(livePosition && selected===null && !releaseFrame)world()?.setSun(livePosition.elevation,pondHeading(livePosition));
     if(active==='book')load('resources-data').then(notebook).catch(()=>{get('bookDesc').textContent='Open the notebook to browse its resources.'});
-    if(active==='events')load('spotlight-data').then(events).catch(()=>{get('eventWhere').textContent='Open Michigan events to browse listings.'});
+    if(active==='events')loadEvents();
   }
   tabs.forEach((tab,i)=>{
     tab.addEventListener('click',()=>select(tab));
@@ -290,8 +304,9 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden){stopPlay();stopFlight();}});
 
-  stopPlay();stopFlight();idle();flight();surfaces.connect();world()?.bindFieldExit(setExit);
+  loadEvents();stopPlay();stopFlight();idle();flight();surfaces.connect();world()?.bindFieldExit(setExit);
   return {
+    journey,
     setLive(pos){livePosition=pos;if(active==='book' && exit>0 && carry>0 && !reduced){followExit();return true;}if(selected!==null){renderSun();return true;}idle();if(releaseFrame)return true;
       if(presence>0 && (active==='sun'||active==='flight')){world()?.setSun(pos.elevation,pondHeading(pos));return true;}return false;},
     setPresence(value,light){

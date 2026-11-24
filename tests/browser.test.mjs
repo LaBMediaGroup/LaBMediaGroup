@@ -584,6 +584,8 @@ test('the phone fridge and onward route work when the 3D renderer is unavailable
       };
     });
     await page.route('**/*', route => route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
+    await page.route('**/spotlight-data.js',route=>route.fulfill({contentType:'text/javascript',body:
+      'window.SPOTLIGHT=[{id:"test-screening",date:"2026-08-30",until:"2026-09-02",title:"Weekend screening",venue:"Theater"}];'}));
     await page.goto(baseURL+'/#tools');
     await page.waitForSelector('html.no-world');
     const still=await page.locator('.station-frame').evaluate(frame=>getComputedStyle(frame,'::before').backgroundImage);
@@ -593,9 +595,23 @@ test('the phone fridge and onward route work when the 3D renderer is unavailable
     await page.locator('#readBrief').click();
     assert.equal(await page.locator('#briefLines dd').count(),10);
     await page.locator('#briefClose').click();
-    for(const tab of ['book','sun','flight']){
+    for(const tab of ['events','book','sun','flight']){
       await page.locator('#stationNext').click();
       assert.equal(await page.locator('#tools').getAttribute('data-instrument'),tab);
+      if(tab==='events'){
+        await page.locator('[data-day="2026-08-31"]').click();
+        await page.locator('#boardLater').click();
+        await page.locator('[data-day="2026-09-02"]').click();
+        assert.match(await page.locator('#eventName').getAttribute('href'),/events\.html#event-test-screening$/);
+        await page.locator('#boardLater').click();
+        assert.equal(await page.locator('#eventName').textContent(),'No listings this month');
+        await page.locator('#eventNext').click();
+        assert.equal(await page.locator('#eventName').textContent(),'Weekend screening');
+      }
+      if(tab==='flight'){
+        assert.equal(await page.locator('#panel-flight nav a').count(),4);
+        assert.equal(await page.locator('#flyShot').isDisabled(),true);
+      }
     }
     await page.locator('#stationNext').click();
     assert.equal(new URL(page.url()).hash,'#work');
@@ -619,5 +635,29 @@ test('closing a film returns to its TV after scrolling away from a bookmarked to
       assert.equal(await page.evaluate(()=>scrollY),galleryY);
       assert.equal(new URL(page.url()).hash,'#tools');
     }
+  } finally {await page.close();}
+});
+
+test('scroll visits the shed tools in both directions and resumes after a shortcut', async () => {
+  const page=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});
+  try {
+    await page.route('**/*', route => route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
+    await page.goto(baseURL+'/#tools');
+    const station=page.locator('#tools');
+    async function at(fraction,expected){
+      await station.evaluate((section,f)=>{
+        const travel=section.offsetHeight-section.querySelector('.station-frame').offsetHeight;
+        scrollTo(0,scrollY+section.getBoundingClientRect().top+f*travel);
+      },fraction);
+      await page.waitForFunction(name=>document.querySelector('#tools').dataset.instrument===name,expected);
+      assert.equal(await page.locator('#tab-'+expected).getAttribute('aria-selected'),'true');
+    }
+    for(const [fraction,tool] of [[0,'story'],[.28,'events'],[.52,'book'],[.86,'sun'],[.96,'flight'],[.86,'sun'],[.52,'book'],[.28,'events'],[0,'story']]) await at(fraction,tool);
+    await page.locator('#stationNext').click();
+    await page.locator('#stationNext').click();
+    await page.waitForFunction(()=>document.querySelector('#tools').dataset.instrument==='book');
+    const position=await station.evaluate(s=>-s.getBoundingClientRect().top/(s.offsetHeight-s.querySelector('.station-frame').offsetHeight));
+    assert.ok(position>.46 && position<.58);
+    await at(.8,'sun');
   } finally {await page.close();}
 });

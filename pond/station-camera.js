@@ -58,7 +58,7 @@ export function fieldStationCamera(T,station) {
     matrix.lookAt(exitEye,direction,vUp);rotation.setFromRotationMatrix(matrix);
   }
   const vUp=v(0,1,0);
-  return function position(camera,w,interior,book,flight,sun,tracking,descent,pondEye,pondRotation) {
+  return function position(camera,w,interior,book,board,flight,sun,tracking,descent,pondEye,pondRotation) {
     if(w<=.00001 || descent>=1)return;
     baseEye.copy(camera.position);baseRotation.copy(camera.quaternion);
     const story=paths(camera,'story'),notebook=paths(camera,'book');
@@ -83,6 +83,10 @@ export function fieldStationCamera(T,station) {
     if(walked>0){
       story.inside.getPointAt(walked,inner);notebook.inside.getPointAt(walked,other);
       eye.copy(inner.lerp(other,book));innerAim.copy(story.focus).lerp(notebook.focus,book);
+      if(board>.0001){
+        const pose=station.eventWall.pose(camera);
+        eye.lerp(pose.eye,board*walked);innerAim.lerp(pose.aim,board);
+      }
       aim.lerp(innerAim,smooth(0,.95,walked));
     }
     camera.position.copy(eye);matrix.lookAt(eye,aim,camera.up);camera.quaternion.setFromRotationMatrix(matrix);

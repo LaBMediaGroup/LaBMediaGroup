@@ -133,7 +133,7 @@ main,.foot{position:relative;z-index:1}
 @media(prefers-reduced-motion:reduce){.card video{transition:none}}
 
 /* Tool controls leave the middle of each shot available for the physical instrument. */
-.tools{position:relative;min-height:215svh;isolation:isolate}
+.tools{position:relative;min-height:780svh;isolation:isolate}
 .station-frame{position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;gap:clamp(110px,19svh,220px);padding:clamp(80px,12svh,116px) var(--gut) clamp(24px,4svh,48px);isolation:isolate}
 .hero::before{content:"";pointer-events:none;position:absolute;inset:0;z-index:-1;opacity:var(--field-shade,0);background:radial-gradient(ellipse 72% 58% at 16% 88%,#07120de0 0%,#07120d83 46%,transparent 100%)}
 .hero-in,.wind-instrument,.cue{opacity:0}
@@ -425,7 +425,7 @@ html.film-watching .hud,html.film-watching .film-bar,html.film-watching .film-fa
 #filmSurface:is(:hover,:focus-visible){border-color:var(--paper);background:#243a31}
 @media(max-width:590px){#filmSurface{right:auto;left:0}}
 
-@media(prefers-reduced-motion:reduce){.opening{height:165svh}.wind-stop{top:43svh}.tools{min-height:155svh}}
+@media(prefers-reduced-motion:reduce){.opening{height:165svh}.wind-stop{top:43svh}.tools{min-height:570svh}}
 .hud .cta{white-space:nowrap}.physical-tools .tool-picker{transition:opacity .25s}
 .physical-tools[data-approaching] .tool-picker{opacity:0}
 @media(max-width:360px){.hud{padding-inline:10px}.hud .mark img{width:59px}.hud nav .snd{padding-inline:6px}.hud nav .cta{padding-inline:11px}#browseChapters{padding-inline:9px}}
@@ -438,7 +438,7 @@ html.film-watching .hud,html.film-watching .film-bar,html.film-watching .film-fa
   .physical-tools #panel-story :is(#pinLine,#shuffleLine,#roll,#readBrief){width:100%;height:100%;font-size:16px}
 }
 .no-world #world{height:100%;background:#20271d url("img/field-still.webp") center / cover no-repeat}
-.no-world .tools{min-height:100svh}
+.no-world .tools{min-height:570svh}
 .no-world .tools[data-instrument=story] .station-frame{gap:12px}
 .no-world .tools[data-instrument=story] .tool-picker{align-self:flex-start}
 .no-world .tools[data-instrument=story] .station-frame::before{content:"";order:1;width:min(100%,35svh);height:42svh;align-self:center;background:#293028 url("img/story-fridge.webp") center / cover no-repeat;border-radius:6px}
@@ -452,3 +452,26 @@ html.film-watching .hud,html.film-watching .film-bar,html.film-watching .film-fa
 @media(prefers-reduced-motion:reduce){
   ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none}
 }
+
+#panel-events{position:relative;margin:auto;width:min(330px,84vw,48svh);aspect-ratio:400/610;padding:0;border:5px solid #a77f56;background:#b38150;border-radius:1px}
+#boardPrint,.board-hitbox{position:absolute;inset:0;width:100%;height:100%}
+#panel-events .board-hitbox :is(a,button){position:absolute;display:block;margin:0;padding:0;min-height:0;border:0;color:transparent;background:transparent;overflow:hidden;font-size:0;pointer-events:auto;cursor:pointer;border-radius:2px}
+#panel-events .board-hitbox :is(a,button):is(:hover,:focus-visible){outline:2px solid #ad583a;outline-offset:-2px;background:#a8633b12}
+.physical-tools[data-instrument=events] .instruments{position:static}
+.physical-tools #panel-events{width:400px;height:610px;max-width:none;position:fixed;left:0;top:0;transform-origin:0 0;border:0;background:transparent;box-shadow:none;visibility:hidden;pointer-events:none}
+.physical-tools #boardPrint{visibility:hidden}
+.physical-tools.surface-ready #panel-events:not([hidden]){visibility:visible}
+
+#panel-flight{width:min(390px,100%);text-align:left}
+.flight-heading,.flight-camera,.flight-links>div{display:flex;align-items:center;gap:10px}
+.flight-heading{justify-content:space-between}.flight-heading h2{margin:0;font:500 30px/1 var(--body)}
+.flight-heading output,.flight-links span{font:12px var(--mono);color:var(--quiet)}
+.flight-models{font:14px var(--body);color:var(--quiet)}
+.flight-camera input{min-width:50px;flex:1;accent-color:#efa766}
+.flight-links{border-top:1px solid #ffffff46}.flight-links>div{display:grid;grid-template-columns:55px 1fr 1fr}
+.flight-links a{display:flex;align-items:center;min-height:40px;text-decoration:underline;text-underline-offset:3px;font:600 14px var(--body)}
+@media(max-width:760px){.flight-links a{min-height:44px}}
+.no-world .station-frame{height:100svh;gap:8px}
+.no-world .station-frame .instruments{min-height:0;overflow:auto;max-height:calc(100svh - 135px)}
+.no-world .tools[data-instrument=story] .station-frame::before{flex:1 1 0;min-height:58px;max-height:34svh;background-size:contain;background-color:transparent}
+.no-world .tools[data-instrument=story] .instruments{flex:0 1 auto;max-height:calc(100svh - 220px)}

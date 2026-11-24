@@ -1,4 +1,5 @@
 // The boards, roof panels and openings are cut in metres. See field-station-reference.md.
+import {buildEventWall} from './event-wall.js?v=17';
 import {buildFieldBench} from './field-bench.js?v=16';
 
 export function buildFieldStation({ THREE, height, uniforms, x = -13.1, z = -4.4, yaw = -.15 }) {
@@ -250,6 +251,7 @@ export function buildFieldStation({ THREE, height, uniforms, x = -13.1, z = -4.4
   for(const px of [-1.04,-.43,.23,.89])box(px,floor+.86,-D/2+.038,.079,1.72,.063,door,wood,'y');
   for(let j=0;j<15;j++)box((j+.5)*W/15-W/2,floor+.001,0,W/15-.002,.002,D-.022,pine,wood,'z',identity,.80);
   const bench=buildFieldBench({THREE,uniforms,group,floor,placement,box,add,cylinder});
+  const eventWall=buildEventWall({THREE,group,placement,box,add,cylinder,uniforms});
   const geometry = new THREE.BufferGeometry();
   for (const [key,data,size] of [['position',position,3],['normal',normal,3],['uv',uv,2],['color',color,3],['surface',surface,1]]) {
     geometry.setAttribute(key,new THREE.Float32BufferAttribute(data,size));
@@ -357,5 +359,5 @@ export function buildFieldStation({ THREE, height, uniforms, x = -13.1, z = -4.4
   const mesh = new THREE.Mesh(geometry,material);
   mesh.name = 'Timber, standing seams, hardware and foundation';
   group.add(mesh);
-  return {group, bench, padHalfWidth:padWidth+shoulder, padHalfDepth:padDepth+shoulder, yaw};
+  return {group, bench, eventWall, padHalfWidth:padWidth+shoulder, padHalfDepth:padDepth+shoulder, yaw};
 }

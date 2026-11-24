@@ -28,7 +28,7 @@ window.createStationSurfaces=function(section,world,currentTool){
     if(surface.unchanged && tool===lastTool)return;
     const {corners,anchors,key,revision}=surface;
     if(!corners)return;
-    const isStory=tool==='story',el=isStory?fridge:book;
+    const isStory=tool==='story',el=tool==='events'?doc.getElementById('panel-events'):isStory?fridge:book;
     if(!projectQuad(el,corners,el.offsetWidth,el.offsetHeight))return;
     lastTool=tool;lastProjection=key;lastRevision=revision;
     section.classList.add('surface-ready');section.classList.toggle('page-moving',Boolean(surface.turning));layer.hidden=!isStory;

@@ -300,11 +300,10 @@
     const presence=arrival*(1-departure);
 
     var dive=clamp((vh*1.45-workRect.top)/(vh*1.12),0,1);
-    const fromDesk=clamp((vh-toolRect.bottom)/(vh*1.02),0,1);
     const sunCarry=arrival*(1-dive*dive*(3-2*dive));
     fieldTools.setPresence(presence,sunCarry);
+    fieldTools.journey(toolRect);
     if (W()) {
-      W().setFieldDeparture(fromDesk);
       W().setStation(arrival);
       W().setDive(dive);
       W().setDrift(Math.max(0,-workRect.top)/document.body.scrollHeight);

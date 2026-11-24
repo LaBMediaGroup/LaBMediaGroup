@@ -25,9 +25,10 @@ import * as THREE from 'three';
 import {buildPoleCutout} from './pole-cutout.js';
 import { createPondPort } from './pond-port.js?v=15';
 import { buildOak } from './oak.js';
-import { buildFieldStation } from './field-station.js?v=16';
+import { buildFieldStation } from './field-station.js?v=17';
 import {pondCamera} from './pond-camera.js?v=15';
-import {fieldStationCamera} from './station-camera.js?v=12';
+import {fieldStationCamera} from './station-camera.js?v=17';
+import {fieldDrones} from './field-drones.js?v=17';
 import { buildFieldBird } from './field-bird.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
@@ -273,6 +274,7 @@ function groundSurface(x,z) {
 }
 const station = buildFieldStation({THREE,height:groundSurface,uniforms:U});
 scene.add(station.group);
+const aircraft=fieldDrones(THREE,station,U,reduce);scene.add(aircraft.object);
 const stationCos=Math.cos(station.yaw), stationSin=Math.sin(station.yaw);
 function onStationPad(x,z) {
   const dx=x-station.group.position.x, dz=z-station.group.position.z;
@@ -734,8 +736,8 @@ function prepareFilmRoom() {
 }
 const stationCamera=fieldStationCamera(THREE,station);
 let renderStationControls=null,stationRevision=0,fieldExitListener=null;
-let fieldRead=0;
-let fieldTool='story',departure=0,sunTracking=0,reportedExit=-1,reportedLight=-1;
+let fieldRead=0,board=0,boardTarget=0;
+let fieldTool='story',sunTracking=0,reportedExit=-1,reportedLight=-1;
 const screenPoint=new THREE.Vector3();
 function viewportPoint(point){
   screenPoint.copy(point).project(camera);
@@ -757,7 +759,7 @@ function placeCamera() {
   camera.rotateY(-bankStep*.035);
   // Slide around the near bank to the station. Its pose becomes the start
   // of the pond approach, so leaving the tools never sends us back to the hero.
-  stationCamera(camera,S.station,S.inside,S.book,S.flight,U.uSunDir.value,
+  stationCamera(camera,S.station,S.inside,S.book,board,S.flight,U.uSunDir.value,
     sunTracking,d,diveBase,qDive);
   const after = reduce ? 0 : ss(0.85, 1, S.dive) * (1 - S.rise);
   camera.position.z -= Math.min(S.drift, 0.6) * 0.9 * after;
@@ -818,12 +820,14 @@ function frame(now) {
   const approachStep=cameraDt/(gap>0?1.85:1.4);
   S.station+=reduce?gap:THREE.MathUtils.clamp(gap*cameraK,-approachStep,approachStep);
   S.flight+=(S.flightT-S.flight)*cameraK;
-  const desiredInside=S.insideT*(1-departure);
-  const travelStep=reduce?1:cameraDt/(departure>.02?1.9:desiredInside<S.inside?6.1:3.2);
+  // Follow the scroll sample within a few frames. Anchor jumps still pass
+  // through the doorway, while a paused swipe holds its exact composition.
+  const travelStep=reduce?1:cameraDt/1.55;
   const pursuit=fieldTool==='sun'||fieldTool==='book'?1:0;
   sunTracking+=(pursuit-sunTracking)*cameraK;
-  S.inside+=THREE.MathUtils.clamp(desiredInside-S.inside,-travelStep,travelStep);
-  S.book+=(S.bookT-S.book)*(reduce?1:1-Math.exp(-4.5*dt));
+  S.inside+=THREE.MathUtils.clamp((S.insideT-S.inside)*cameraK,-travelStep,travelStep);
+  S.book+=(S.bookT-S.book)*cameraK;
+  board+=(boardTarget-board)*cameraK;
 
   S.exitMix+=(S.exitT-S.exitMix)*cameraK;
   S.dive += (S.diveT - S.dive) * cameraK; S.rise += (S.riseT - S.rise) * (reduce ? 1 : 1 - Math.pow(0.02, dt)); S.drift += (S.driftT - S.drift) * k; S.ink += (S.inkT - S.ink) * (1 - Math.pow(0.05, dt));
@@ -852,6 +856,7 @@ function frame(now) {
     immersionStroke=THREE.MathUtils.clamp(immersionStroke+(forwardCross?move:-move),0,1);
   }
   placeCamera();
+  aircraft.update(cameraDt,S.station>.85 && S.inside<.22 && S.dive<.68 && S.under<.05 && S.rise<.05,S.flight);
   if(room && reportFilmApproach && reportedUnder!==S.under){reportedUnder=S.under;reportFilmApproach(S.under);}
   if(renderStationControls)renderStationControls(S.station);
   const submerged = !!room && camera.position.y < 0;
@@ -939,13 +944,11 @@ window.LabWorld = {
   setSun(elDeg,offsetDeg=11.46) { setSun(elDeg*Math.PI/180,offsetDeg*Math.PI/180); },
   setStation(weight) { S.stationT=weight; },
   setFieldRead(value){fieldRead=value;},
-  setFieldDeparture(value){departure=value;},
+  setStationJourney(book,outside,wallWeight){boardTarget=wallWeight;S.bookT=book;S.insideT=1-outside;},
   bindFieldExit(callback){fieldExitListener=callback;reportedLight=-1;},
   setFieldTool(tool,height) {
     fieldTool=tool;
     S.flightT=height;
-    S.insideT=(tool==='sun'||tool==='flight')?0:1;
-    if(S.insideT)S.bookT=tool==='story'?0:1;
   },
   setStoryLine(text,label,animate,pins=[]){station.bench?.setStory(text,label,animate&&!reduce,pins);stationRevision++;},
   setNotebookPage(title,category,detail,direction=0){station.bench?.setNotebook(title,category,detail,direction);},
@@ -953,11 +956,12 @@ window.LabWorld = {
   stationSurface(tool,previousKey,previousRevision){
     if(S.station<.94 || S.inside<.88 || S.dive>.055 || S.under>.01)return null;
     const bench=station.bench,isStory=tool==='story';
-    if(!bench || (isStory?S.book>.12:tool!=='book' || S.book<.88))return null;
+    if(tool==='events'){if(board<.94)return null;}
+    else if(board>.10 || !bench || (isStory?S.book>.12:tool!=='book' || S.book<.88))return null;
     const turning=!isStory && bench.turningPage;
     const key=tool+'|'+Number(turning)+'|'+innerWidth+','+innerHeight+'|'+camera.matrixWorld.elements.map(n=>Math.round(n*10000)).join(',');
     if(key===previousKey && previousRevision===stationRevision)return {unchanged:true};
-    const corners=isStory?bench.controlCorners?.():bench.bookControlsAnchors?.();if(!corners)return null;
+    const corners=tool==='events'?station.eventWall.corners():isStory?bench.controlCorners?.():bench.bookControlsAnchors?.();if(!corners)return null;
     const anchors=isStory?(bench.wordAnchors?.()||[]).map(a=>{
       const p=viewportPoint(a.point);
       const box=(a.corners||[]).map(viewportPoint);
@@ -1013,7 +1017,7 @@ window.LabWorld = {
   // checks: every wire end sits on its insulator, and the crossarm runs across the line
   _debug() {
     const ends = wires.slice(0, 5).map(w => ({ a: w.a.toArray().map(v => +v.toFixed(3)), b: w.b.toArray().map(v => +v.toFixed(3)) }));
-    return { sunDirection:U.uSunDir.value.toArray(),station:S.station,inside:S.inside,book:S.book,flight:S.flight, immersed: !!room && camera.position.y < 0, camera: camera.position.toArray(), roomCenter: room?.stations.current.center.toArray(), stations:room?.stations.inspect(camera), oak:oakDebug(), bird:jay.inspect(), armDotLine: +armDir.dot(lineDir).toFixed(4), ends, standY: +standPos.y.toFixed(2), treeY: +tree.position.y.toFixed(2), depthAtDive: +(-H(0, -12.5)).toFixed(2), corn: corn.count };
+    return { sunDirection:U.uSunDir.value.toArray(),station:S.station,inside:S.inside,book:S.book,board,flight:S.flight,aircraft:aircraft.inspect(camera), immersed: !!room && camera.position.y < 0, camera: camera.position.toArray(), roomCenter: room?.stations.current.center.toArray(), stations:room?.stations.inspect(camera), oak:oakDebug(), bird:jay.inspect(), armDotLine: +armDir.dot(lineDir).toFixed(4), ends, standY: +standPos.y.toFixed(2), treeY: +tree.position.y.toFixed(2), depthAtDive: +(-H(0, -12.5)).toFixed(2), corn: corn.count };
   },
   _cam(pos, look) { S.diveT = S.dive = 0; placeCamera = () => { camera.position.set(...pos); camera.lookAt(...look); camera.updateMatrixWorld(); }; }
 };
