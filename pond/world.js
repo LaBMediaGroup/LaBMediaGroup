@@ -76,7 +76,14 @@ float h1(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float n2(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h1(i),h1(i+vec2(1,0)),f.x),mix(h1(i+vec2(0,1)),h1(i+vec2(1,1)),f.x),f.y);}
 float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n2(p);p=p*2.03+vec2(17.1,9.2);a*=.5;}return v;}
 float fbm3(vec2 p){float v=0.,a=.5;for(int i=0;i<3;i++){v+=a*n2(p);p=p*2.1+3.7;a*=.5;}return v;}`;
-const COMMON_U = `uniform float uT,uDay,uGold,uNight,uEl,uWind,uWindAmp,uGustE,uCloud,uSplashAge,uStarAge;uniform vec2 uBreach;uniform vec3 uZen,uHor,uSunC,uSunDir,uWindDir;`;
+const COMMON_U = `uniform float uT,uDay,uGold,uNight,uEl,uWind,uWindAmp,uGustE,uCloud,uSplashAge,uStarAge;uniform vec2 uBreach;uniform vec3 uZen,uHor,uSunC,uSunDir,uWindDir;
+vec3 nightHorizon(vec3 ray){
+  if(uNight<.001)return vec3(0.);
+  vec2 bearing=normalize(uSunDir.xz+vec2(.0001));
+  float toward=max(0.,dot(normalize(ray.xz+vec2(.0001)),bearing));
+  float band=exp(-pow((ray.y-.12)/.16,2.));
+  return vec3(.13,.18,.25)*pow(toward,8.)*band*uNight;
+}`;
 const FOG = `vec3 fogged(vec3 c,vec3 w,float k){float d=length(w-cameraPosition);return mix(c,uHor*mix(.55,.9,uDay),1.-exp(-d*k));}`;
 let seed = 7;
 const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
@@ -177,6 +184,7 @@ const sky = new THREE.Mesh(new THREE.SphereGeometry(2000, 48, 24), new THREE.Sha
     if(y>0.){vec2 sp=vec2(atan(rd.x,-rd.z),y)*260.;vec2 c=floor(sp);float hs=h1(c);vec2 o=vec2(h1(c+3.1),h1(c+7.7))*.8+.1;
       float st=step(.985,hs)*smoothstep(.09,0.,length(fract(sp)-o));
       col+=vec3(st)*uNight*(.5+.5*h1(c+1.))*smoothstep(0.,.2,y)*(.75+.25*sin(uT*1.7+hs*60.));
+      col+=nightHorizon(rd);
       col+=vec3(.09,.05,.025)*uNight*exp(-y*9.)*(.6+.4*smoothstep(-.6,.6,rd.x));
       float t=900./max(y,.02);vec2 cp=(rd.xz*t)*.0011+uWindDir.xz*uT*.0009*(2.+uWind);
       float cc=fbm(cp);float cov=mix(.7,.36,uCloud);float cm=smoothstep(cov,cov+.22,cc)*smoothstep(0.,.16,y);
@@ -656,6 +664,11 @@ const water = new THREE.Mesh(new THREE.PlaneGeometry(64, 64, 1, 1).rotateX(-Math
     glit+=pow(alignment,72.)*mix(.012,facets,resolved)*1.24*shelter*smoothstep(.13,.52,dist)
          *smoothstep(.04,.30,V.y)*(1.-smoothstep(.74,.98,V.y));
     col+=uSunC*glit*smoothstep(-.02,.03,uEl)*(.6+.4*uGold);
+    // The strip of open night sky is also visible in the water. Tiny facets
+    // break up its grazing reflection between the darker silhouettes.
+    vec3 reflectedSky=reflect(-V,n);
+    col+=nightHorizon(reflectedSky)*(.11+.54*mix(.05,facets,resolved))*
+         smoothstep(.025,.16,reflectedSky.y)*shelter;
     // shoreline: a thin darker meniscus and floating scum where it meets the bank
     col*=mix(.75,1.,smoothstep(.0,.04,depth));
     // the orange ink spreading from a drop
