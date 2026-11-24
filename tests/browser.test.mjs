@@ -687,3 +687,65 @@ test('one wheel burst stops at the next tool and a short scroll can leave it', a
     await page.waitForFunction(()=>Math.abs(document.querySelector('#films').getBoundingClientRect().top)<3);
   } finally {await page.close();}
 });
+
+test('vertical travel and website shortcuts use the same four stops before the pond', async () => {
+  const page=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce',isMobile:true,hasTouch:true});
+  try {
+    await page.route('**/*',route=>route.request().url().startsWith(baseURL)?route.continue():route.abort());
+    await page.route('**/world.js*',route=>route.abort());
+    await page.goto(baseURL+'/#work');
+    await page.waitForSelector('#loader.done',{state:'attached'});
+    const cards=['Ballcap Productions','Splitbone','Sweet Babe','Sideways'];
+    const positions=await page.locator('#work,.site-stop,#films').evaluateAll(els=>els.map(el=>el.getBoundingClientRect().top+scrollY));
+    assert.equal(positions.length,6);
+    for(const i of [0,1,2,3,2,1,0]){
+      await page.evaluate(y=>scrollTo(0,y),positions[i]);
+      await page.waitForFunction(name=>document.querySelector('.card.open h3')?.textContent===name,cards[i]);
+      assert.equal(await page.locator('.card.open button').getAttribute('tabindex'),'0');
+    }
+    await page.locator('#next').click();
+    await page.waitForFunction(y=>Math.abs(scrollY-y)<2 && document.querySelector(".card.open h3").textContent==="Splitbone",positions[1]);
+    await page.locator('.card.open button').click();
+    assert.match(await page.locator('#sheet[open]').innerText(),/Splitbone/i);
+    await page.locator('#sX').click();
+    assert.ok(Math.abs(await page.evaluate(()=>scrollY)-positions[1])<2);
+    await page.evaluate(y=>scrollTo(0,y),positions[4]);
+    await page.waitForFunction(()=>document.querySelector('.work-frame').inert);
+    await page.evaluate(y=>scrollTo(0,y),positions[5]);
+    await page.waitForFunction(()=>!document.querySelector('.film-frame').inert);
+    assert.ok(await page.locator('#filmPlay').isVisible());
+  } finally {await page.close();}
+});
+
+test('a phone drag can rest between previews and a fast flick settles at one site', async () => {
+  const page=await browser.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true,reducedMotion:'reduce'});
+  try {
+    await page.route('**/*',route=>route.request().url().startsWith(baseURL)?route.continue():route.abort());
+    await page.route('**/world.js*',route=>route.abort());
+    await page.goto(baseURL+'/#work');
+    await page.waitForSelector('#loader.done',{state:'attached'});
+    const touch=await page.context().newCDPSession(page);
+    async function swipe(direction,fast){
+      let y=direction>0?645:180;
+      const start=Date.now()/1000,step=fast?.013:.05;
+      const send=(type,time)=>touch.send('Input.dispatchTouchEvent',{type,timestamp:start+time,touchPoints:type==='touchEnd'?[]:[{x:185,y}]});
+      await send('touchStart',0);
+      for(let i=1;i<=6;i++){
+        y-=direction*(fast?72:15);
+        await send('touchMove',i*step);
+      }
+      await send('touchEnd',6*step+(fast?.003:.16));
+    }
+    const initial=await page.evaluate(()=>scrollY);
+    await swipe(1,false);
+    await page.waitForTimeout(400);
+    const distance=await page.evaluate(()=>scrollY)-initial;
+    assert.ok(distance>24 && distance<170,'short drag moved '+distance+'px');
+    for(const [direction,selector] of [[1,'[data-site="splitbone"]'],[1,'[data-site="sweetbabe"]'],[-1,'[data-site="splitbone"]']]){
+      await swipe(direction,true);
+      await page.waitForFunction(s=>Math.abs(document.querySelector(s).getBoundingClientRect().top)<3,selector);
+      await page.waitForTimeout(400);
+      assert.ok(Math.abs(await page.locator(selector).evaluate(el=>el.getBoundingClientRect().top))<3);
+    }
+  } finally {await page.close();}
+});

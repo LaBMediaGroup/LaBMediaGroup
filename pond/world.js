@@ -26,7 +26,7 @@ import {buildPoleCutout} from './pole-cutout.js';
 import { createPondPort } from './pond-port.js?v=15';
 import { buildOak } from './oak.js';
 import { buildFieldStation } from './field-station.js?v=17';
-import {pondCamera} from './pond-camera.js?v=15';
+import {pondCamera} from './pond-camera.js?v=19';
 import {fieldStationCamera} from './station-camera.js?v=17';
 import {fieldDrones} from './field-drones.js?v=18';
 import { buildFieldBird } from './field-bird.js';
@@ -51,7 +51,7 @@ const lin = (r, g, b) => new THREE.Color().setRGB(r, g, b, THREE.LinearSRGBColor
 /* ---------------- shared state ---------------- */
 const S = {
   el: 0.06, wind: 6, gust: 10, cloud: 0.5,
-  dive: 0, diveT: 0, rise: 0, riseT: 0, under: 0, underT: 0, station:0,stationT:0,flight:0,flightT:0,inside:1,insideT:1,book:0,bookT:0,exitMix:0,exitT:0,drift: 0, driftT: 0, ink: 0, inkT: 0, inkC: new THREE.Vector2(0, -12),
+  dive: 0, diveT: 0, rise: 0, riseT: 0, under: 0, underT: 0, station:0,stationT:0,flight:0,flightT:0,inside:1,insideT:1,book:0,bookT:0,exitMix:0,exitT:0,shore:0,shoreRelease:0, ink: 0, inkT: 0, inkC: new THREE.Vector2(0, -12),
   px: 0, py: 0, pxT: 0, pyT: 0, t: 0
 };
 const ss = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
@@ -763,10 +763,10 @@ function placeCamera() {
   stationCamera(camera,S.station,S.inside,S.book,board,S.flight,U.uSunDir.value,
     sunTracking,d,diveBase,qDive);
   const after = reduce ? 0 : ss(0.85, 1, S.dive) * (1 - S.rise);
-  camera.position.z -= Math.min(S.drift, 0.6) * 0.9 * after;
   camera.position.x += (S.px * 0.35 + Math.sin(S.t * 0.13) * 0.12) * after;
   camera.position.y += (S.py * 0.12 + Math.sin(S.t * 0.21) * 0.05) * after;
   aircraft.follow(camera,acquire,escort,S.flight,diveBase,qDive);
+  if(!reduce)pondShot.shore(camera,S.shore,S.shoreRelease,U.uSunDir.value);
   if (S.rise>.00001 && S.exitT) {
     room?.cameraPose(camera.aspect,camera.fov,roomPos,roomTarget);
     pondShot.leave(camera,reduce ? (S.rise<.25 ? 0 : 1) : S.rise,roomPos,roomTarget,U.uSunDir.value);
@@ -833,13 +833,13 @@ function frame(now) {
   acquire+=(acquireTarget-acquire)*cameraK;escort+=(escortTarget-escort)*cameraK;
 
   S.exitMix+=(S.exitT-S.exitMix)*cameraK;
-  S.dive += (S.diveT - S.dive) * cameraK; S.rise += (S.riseT - S.rise) * (reduce ? 1 : 1 - Math.pow(0.02, dt)); S.drift += (S.driftT - S.drift) * k; S.ink += (S.inkT - S.ink) * (1 - Math.pow(0.05, dt));
+  S.dive += (S.diveT - S.dive) * cameraK; S.rise += (S.riseT - S.rise) * (reduce ? 1 : 1 - Math.pow(0.02, dt)); S.ink += (S.inkT - S.ink) * (1 - Math.pow(0.05, dt));
   if(room){
     const gap=S.underT-S.under;
     // A fast wheel or the dive link still passes the reflection and the lit
     // screen. The upper limit only applies on the approach side of the films.
-    const limit=S.exitT?1:dt/3.8;
-    S.under+=reduce?gap:THREE.MathUtils.clamp(gap*k,-limit,limit);
+    const limit=S.exitT?1:cameraDt/1.05;
+    S.under+=reduce?gap:THREE.MathUtils.clamp(gap*cameraK,-limit,limit);
   }
   if (S.rise > .72 && starArmed && !reduce && U.uNight.value>.05) { U.uStarAge.value=0; starArmed=false; }
   if (S.rise < .02) starArmed=true;
@@ -855,7 +855,7 @@ function frame(now) {
   if(room && !reduce){
     if(S.under>=.45)forwardCross=true;
     else if(S.under<=.32)forwardCross=false;
-    const move=dt/(forwardCross ? .45 : .56);
+    const move=cameraDt/(forwardCross ? .45 : .56);
     immersionStroke=THREE.MathUtils.clamp(immersionStroke+(forwardCross?move:-move),0,1);
   }
   aircraft.update(cameraDt,S.station>.85 && S.inside<.22 && escort<.993 && S.under<.05 && S.rise<.05,S.flight);
@@ -918,7 +918,13 @@ function resize() {
   port.resize(innerWidth*pr*.85,innerHeight*pr*.85);
   reflRT.setSize(Math.round(innerWidth * pr * QL.refl), Math.round(innerHeight * pr * QL.refl));
 }
-addEventListener('resize', resize); resize();
+let resizeTimer,renderWidth=innerWidth;
+addEventListener('resize',()=>{
+  clearTimeout(resizeTimer);
+  if(!small || innerWidth!==renderWidth){renderWidth=innerWidth;resize();return;}
+  resizeTimer=setTimeout(resize,140);
+});
+resize();
 canvas.addEventListener('webglcontextlost',event=>{
   event.preventDefault();visible=false;
   document.documentElement.classList.add('no-world');
@@ -986,7 +992,7 @@ window.LabWorld = {
   },
   setCloud(c) { S.cloud = c; U.uCloud.value = c; },
   setDive(p) { S.diveT = Math.max(0, Math.min(1, p)); },
-  setDrift(p) { S.driftT = p; },
+  setShore(progress,release){S.shore=progress;S.shoreRelease=release;},
   bindFilmApproach(fn){reportFilmApproach=fn;reportedUnder=-1;},
   setUnder(p,exiting=false,outside=false) {
     // A return to an earlier chapter can skip the entire pond approach.
@@ -1021,7 +1027,7 @@ window.LabWorld = {
   // checks: every wire end sits on its insulator, and the crossarm runs across the line
   _debug() {
     const ends = wires.slice(0, 5).map(w => ({ a: w.a.toArray().map(v => +v.toFixed(3)), b: w.b.toArray().map(v => +v.toFixed(3)) }));
-    return { sunDirection:U.uSunDir.value.toArray(),station:S.station,inside:S.inside,book:S.book,board,escort,acquire,flight:S.flight,aircraft:aircraft.inspect(camera), immersed: !!room && camera.position.y < 0, camera: camera.position.toArray(), roomCenter: room?.stations.current.center.toArray(), stations:room?.stations.inspect(camera), oak:oakDebug(), bird:jay.inspect(), armDotLine: +armDir.dot(lineDir).toFixed(4), ends, standY: +standPos.y.toFixed(2), treeY: +tree.position.y.toFixed(2), depthAtDive: +(-H(0, -12.5)).toFixed(2), corn: corn.count };
+    return { sunDirection:U.uSunDir.value.toArray(),station:S.station,inside:S.inside,book:S.book,board,escort,acquire,flight:S.flight,aircraft:aircraft.inspect(camera), immersed: !!room && camera.position.y < 0, camera: camera.position.toArray(),shore:S.shore,shoreRelease:S.shoreRelease, roomCenter: room?.stations.current.center.toArray(), stations:room?.stations.inspect(camera), oak:oakDebug(), bird:jay.inspect(), armDotLine: +armDir.dot(lineDir).toFixed(4), ends, standY: +standPos.y.toFixed(2), treeY: +tree.position.y.toFixed(2), depthAtDive: +(-H(0, -12.5)).toFixed(2), corn: corn.count };
   },
   _cam(pos, look) { S.diveT = S.dive = 0; placeCamera = () => { camera.position.set(...pos); camera.lookAt(...look); camera.updateMatrixWorld(); }; }
 };

@@ -85,8 +85,11 @@ main,.foot{position:relative;z-index:1}
 .dive{height:145svh}
 
 /* work deck */
-.work{position:relative;height:100svh;min-height:600px;overflow:hidden;touch-action:pan-y}
-.deck-bar{position:absolute;z-index:5;left:var(--gut);right:var(--gut);bottom:max(22px,env(safe-area-inset-bottom));display:flex;justify-content:space-between;align-items:center}
+.work{--site-step:clamp(340px,78svh,760px);--site-legs:0;position:relative;height:calc(150svh + var(--site-step) * var(--site-legs))}
+.work-frame{position:sticky;top:0;height:100svh;overflow:hidden;isolation:isolate}
+.site-stop{position:absolute;top:calc(var(--site-step) * var(--stop));pointer-events:none;height:1px;width:1px}
+.site-stop.reflection{top:calc(var(--site-step) * var(--site-legs) + 98svh)}
+.deck-bar{position:absolute;z-index:20;left:var(--gut);right:var(--gut);bottom:max(22px,env(safe-area-inset-bottom));display:flex;justify-content:space-between;align-items:center}
 .deck-bar .micro{color:var(--dim)}
 .deck-bar b{color:var(--paper);font-weight:400}
 .arrows{display:flex;align-items:center;gap:8px}
@@ -95,7 +98,7 @@ main,.foot{position:relative;z-index:1}
 .round{width:46px;height:46px;border-radius:50%;border:1px solid var(--faint);background:rgba(11,13,12,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);cursor:pointer;font-size:18px;display:grid;place-items:center;transition:background .3s,transform .3s var(--ease)}
 .round:hover{background:rgba(255,255,255,.14)}
 .round:active{transform:scale(.92)}
-.stage{position:absolute;inset:0;perspective:1150px;perspective-origin:50% 65%;touch-action:pan-y}
+.stage{position:absolute;inset:0;perspective:1150px;perspective-origin:50% 65%;touch-action:pan-y pinch-zoom}
 .card{
   --cw:min(40vw,630px,74svh);--r:clamp(6px,1vw,12px);
   position:absolute;left:calc(var(--gut) + var(--cw)/2);top:47%;width:var(--cw);aspect-ratio:16/10;
@@ -106,7 +109,7 @@ main,.foot{position:relative;z-index:1}
   position:absolute;inset:0;display:block;width:100%;height:100%;padding:0;border:0;
   border-radius:var(--r);background:#141614;overflow:hidden;cursor:grab;
   box-shadow:0 2px 0 #414541,0 5px 0 #20231f,0 14px 24px -13px #000c;
-  touch-action:pan-y;
+  touch-action:pan-y pinch-zoom;
 }
 .pulling .body{cursor:grabbing}
 .card .body::after{
@@ -121,13 +124,6 @@ main,.foot{position:relative;z-index:1}
 .cap .micro{color:var(--dim);text-align:right;padding-bottom:.45em}
 .cap .tag-live{color:var(--accent)}
 .arrows [aria-disabled=true]{opacity:.36;cursor:default}
-.skim-wake{
-  position:absolute;z-index:2;width:clamp(90px,14vw,210px);height:clamp(12px,1.9vw,28px);
-  margin-left:clamp(-105px,-7vw,-45px);pointer-events:none;border-radius:50%;
-  border:1px solid transparent;border-bottom-color:#e0ecdc9c;border-left-color:#bccebe68;
-  box-shadow:0 1px 1px #303a2b4d;animation:skim-wake .76s ease-out forwards;
-}
-@keyframes skim-wake{from{transform:scale(.28,.4);opacity:.72}to{transform:scale(1.45,1.18);opacity:0}}
 @media(max-width:640px){.card{--cw:min(76vw,50svh);left:50%;top:55%}.card .cap{top:calc(100% + 14px)}.cap h3{font-size:clamp(43px,12.6vw,76px)}.cap .micro{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.card video{transition:none}}
 
@@ -284,7 +280,7 @@ main,.foot{position:relative;z-index:1}
 @media (max-width:640px){.hud nav .snd{display:flex}}
 
 /* The TV lives in the world. The accessible controls travel with its section. */
-.films{margin-top:80svh;position:relative;z-index:2;isolation:isolate;height:146svh;min-height:480px;touch-action:pan-y}
+.films{margin-top:65svh;position:relative;z-index:2;isolation:isolate;height:146svh;min-height:480px;touch-action:pan-y pinch-zoom}
 .film-frame{position:sticky;top:0;height:100svh;min-height:430px}
 .film-bar{position:absolute;left:var(--gut);right:var(--gut);bottom:max(5svh,env(safe-area-inset-bottom));display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
 .film-details{min-width:0;max-width:62%;text-align:left;color:var(--paper);background:none;border:0;padding:0;cursor:pointer;text-shadow:0 1px 12px #07110d}
@@ -390,7 +386,7 @@ html.film-watching .hud,html.film-watching .film-bar,html.film-watching .film-fa
 .physical-tools #panel-book #bookSave{right:5%;bottom:13%;color:#743c25}
 .physical-tools #bookPrev{bottom:1%;left:2%}.physical-tools #bookNext{bottom:1%;right:2%}
 .physical-tools #panel-story[hidden],.physical-tools #panel-book[hidden]{display:none}
-.physical-tools[data-instrument=book]{touch-action:pan-y}
+.physical-tools[data-instrument=book]{touch-action:pan-y pinch-zoom}
 .magnet-layer{position:fixed;inset:0;pointer-events:none;z-index:1}
 .magnet-layer .word-strip button{position:absolute;margin:0;padding:0;min-height:0;border:0;transform:translate(-50%,-50%);border-radius:4px;background:transparent;color:transparent;overflow:hidden;font-size:0;outline:0;pointer-events:none}
 .magnet-layer .word-strip button:focus-visible{outline:3px solid #fcecc1;box-shadow:0 0 0 5px #234139}
@@ -475,5 +471,12 @@ html.film-watching .hud,html.film-watching .film-bar,html.film-watching .film-fa
 .no-world .tools[data-instrument=story] .station-frame::before{flex:1 1 0;min-height:58px;max-height:34svh;background-size:contain;background-color:transparent}
 .no-world .tools[data-instrument=story] .instruments{flex:0 1 auto;max-height:calc(100svh - 220px)}
 
+.chapter-stop{position:absolute;top:0;left:0;width:1px;height:1px;pointer-events:none}
+.make{position:relative}
 .scroll-stop{position:absolute;left:0;width:1px;height:1px;pointer-events:none}
 @supports(overflow:clip){body{overflow-x:clip}}
+@media(max-height:520px){.card{--cw:min(54vw,56svh);top:43%}.card .cap{top:calc(100% + 6px)}.cap h3{font-size:clamp(22px,6svh,40px)}.deck-bar{bottom:max(6px,env(safe-area-inset-bottom))}}
+
+html.settle-touch{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.settle-touch .touch-landing{scroll-snap-align:start;scroll-snap-stop:always}
+@media(prefers-reduced-motion:reduce){html.settle-touch{scroll-behavior:auto}}

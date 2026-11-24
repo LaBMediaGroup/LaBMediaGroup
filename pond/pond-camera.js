@@ -14,6 +14,23 @@ export function pondCamera(T, tree) {
     aim.set(tree.x-(portrait?.9:4.8),portrait?1.8:2.85,tree.y);
     return face(overlook,aim,q);
   }
+  // Travel just above the west bank with a distinct eye position at each site.
+  // The last leg turns toward the stripe of light feeding the entry point.
+  const bankRail=new T.CatmullRomCurve3([
+    overlook,v(-6.15,1.48,-3.57),v(-4.72,1.33,-3.70),v(-3.44,1.12,-4.28)
+  ],false,'centripetal');
+  const bankEye=v(),reflected=v(),glintRotation=new T.Quaternion();
+  function shore(camera,progress,release,sun){
+    if(progress<=0 && release<=0)return;
+    bankRail.getPoint(progress,bankEye);
+    camera.position.add(bankEye.sub(overlook));
+    // Track the reflected sky along the same azimuth as the light. At
+    // night a shallow angle holds the brighter horizon in the water.
+    reflected.set(sun.x,-T.MathUtils.clamp(sun.y,.10,.46),sun.z).normalize();
+    aim.copy(camera.position).add(reflected);
+    face(camera.position,aim,glintRotation);
+    camera.quaternion.slerp(glintRotation,.36*smooth(progress,0,1)+.64*smooth(release,0,.83));
+  }
   function enter(camera,p,stroke,exitMix,roomEye,roomLook,sun,reduced){
     dryOrigin.copy(camera.position);
     returnEye.copy(dryOrigin).lerp(roomEye,smooth(p,0,1));
@@ -81,5 +98,5 @@ export function pondCamera(T, tree) {
     oakAim.lerp(farAim,smooth(p,.73,.99));
     camera.quaternion.slerp(face(camera.position,oakAim,rotation),smooth(p,.325,.57));
   }
-  return {overlook,contact,breach,frameOverlook,enter,leave};
+  return {overlook,contact,breach,frameOverlook,shore,enter,leave};
 }

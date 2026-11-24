@@ -1,6 +1,6 @@
 /* LaB Media rebuild v2 · page motion.
    Scroll drives the camera (dive), the tiles (stand up out of the water) and the
-   ink (the ending). The work deck is played by hand: drag, swipe, arrows or keys.
+   ink (the ending). The work deck and shoreline share one vertical scroll route.
    Everything that lands or leaves drops a ripple into the pond. */
 (function () {
   'use strict';
@@ -268,7 +268,7 @@
     el.style.transform=reduce?'none':'translateY('+dy+'px)';
     el.inert=opacity<.08;
   }
-  var workSeen = false;
+
   let wantedUnder=0,leavingFilms=false;
   function filmApproach(rendered){
     const visible=Math.min(wantedUnder,rendered);
@@ -279,7 +279,7 @@
   }
   function ascentSpan(vh){return ascentSpace.offsetHeight ? vh*.12+ascentSpace.offsetHeight : vh*.77;}
   function onScroll() {
-    var vh = innerHeight, y = scrollY;
+    var vh = workFrame.offsetHeight, y = scrollY;
     var filmRect = filmSection.getBoundingClientRect();
     var under = Math.min(
       clamp((vh * 1.48 - filmRect.top) / (vh * 1.44), 0, 1),
@@ -295,6 +295,10 @@
       deckInView = deckVisible;
       syncCardVideo();
     }
+    const step=siteStep();
+    const siteTravel=clamp(-workRect.top/step,0,websites.length-1);
+    const release=clamp((-workRect.top-(websites.length-1)*step)/vh,0,1);
+    if(workRect.top<vh && workRect.bottom>0)showSites(siteTravel,release);
     const toolRect=toolsSection.getBoundingClientRect();
     const arrival=clamp((vh-toolRect.top)/vh,0,1);
     const departure=clamp((vh-toolRect.bottom)/(vh*.86),0,1);
@@ -311,7 +315,7 @@
       W().setFieldEscort(phase(stationProgress,.865,.96),escort);
       W().setStation(arrival);
       W().setDive(dive);
-      W().setDrift(Math.max(0,-workRect.top)/document.body.scrollHeight);
+      W().setShore(siteTravel/Math.max(1,websites.length-1),release);
     }
     const span=Math.max(1,opening.offsetHeight-hero.parentElement.offsetHeight);
     const p=y/span, intro=phase(p,.05,.36), wind=phase(p,.23,.50);
@@ -329,13 +333,22 @@
     const rise=exiting ? clamp((vh*.97-filmRect.bottom)/ascentSpan(vh),0,1) : 0;
     if(W()) W().setRise(rise);
     if(rise>.80 || make.getBoundingClientRect().top<vh)mkH.classList.add('in');
-    var wr = workRect;
-    if (!workSeen && wr.top < vh * 1.08) { workSeen = true; deck.start(); }
   }
   // Keep the browser's native drag and wheel response. A fling may coast
   // as far as the next reading mark. A new gesture can leave immediately.
   let gesture=null,lastWheel=-Infinity;
-  function releaseStops(){gesture=null;}
+  // A tall sticky section is a free-panning snap area in CSS. Give its
+  // entrance a point-sized target, so a fling lands at the start of the shot.
+  for(const section of [opening,workSection,$('#films'),make]){
+    const mark=document.createElement('span');mark.className='chapter-stop';
+    mark.setAttribute('aria-hidden','true');section.prepend(mark);
+  }
+  const scrollMarks=()=>[...document.querySelectorAll('.chapter-stop,#wind,.scroll-stop,.site-stop')];
+  function releaseStops(){
+    document.documentElement.classList.remove('settle-touch');
+    gesture?.landing?.classList.remove('touch-landing');
+    gesture=null;
+  }
   function armStops(event){
     const target=event.target;
     if(target.closest?.('dialog') || document.querySelector('dialog[open]')){releaseStops();return;}
@@ -345,11 +358,38 @@
     if(wheel && gesture && gesture.wheel && now-lastWheel<180 && dir===gesture.dir){lastWheel=now;return;}
     if(wheel)lastWheel=now;
     const y=scrollY;
-    const marks=[...document.querySelectorAll('.opening,#wind,.scroll-stop,#work,#films,#make')]
-      .map(el=>y+el.getBoundingClientRect().top);
-    gesture={wheel,dir,start:y,lower:marks.filter(v=>v<y-6).at(-1)??0,upper:marks.find(v=>v>y+6)??Infinity};
+    releaseStops();
+    const marks=scrollMarks().map(el=>({el,top:y+el.getBoundingClientRect().top}));
+    const lower=marks.findLast(mark=>mark.top<y-6),upper=marks.find(mark=>mark.top>y+6);
+    gesture={wheel,dir,start:y,lower:lower?.top??0,upper:upper?.top??Infinity};
+    if(!wheel){
+      const touch=event.touches[0];
+      Object.assign(gesture,{x:touch.clientX,y:touch.clientY,lastY:touch.clientY,time:event.timeStamp,lowerMark:lower?.el,upperMark:upper?.el});
+    }
   }
-  addEventListener('touchstart',armStops,{passive:true});
+  addEventListener('touchstart',e=>{
+    if(e.touches.length===1)armStops(e);else releaseStops();
+  },{passive:true});
+  addEventListener('touchmove',e=>{
+    if(!gesture || gesture.wheel || e.touches.length!==1)return;
+    const finger=e.touches[0],dy=gesture.y-finger.clientY,dx=gesture.x-finger.clientX;
+    const speed=(gesture.lastY-finger.clientY)/Math.max(1,e.timeStamp-gesture.time);
+    gesture.lastY=finger.clientY;gesture.time=e.timeStamp;
+    gesture.speed=Math.abs(dy)>24 && Math.abs(dy)>1.3*Math.abs(dx)?speed:0;
+  },{passive:true});
+  addEventListener('touchend',e=>{
+    if(!gesture || gesture.wheel || e.timeStamp-gesture.time>110 || Math.abs(scrollY-gesture.start)<10)return;
+    const speed=gesture.speed||0;
+    if(Math.abs(speed)<.65)return;
+    const landing=speed>0?gesture.upperMark:gesture.lowerMark;
+    if(!landing || Math.abs(landing.getBoundingClientRect().top)>Math.abs(speed)*400)return;
+    // The user's finger is up. Give a flick that would coast past a stop
+    // one native landing point. Slow travel never changes the scroll position.
+    gesture.landing=landing;
+    landing.classList.add('touch-landing');
+    document.documentElement.classList.add('settle-touch');
+  },{passive:true});
+  addEventListener('touchcancel',releaseStops,{passive:true});
   addEventListener('wheel',event=>{
     if(event.ctrlKey || Math.abs(event.deltaX)>Math.abs(event.deltaY))return;
     // An overflow panel gets its normal wheel travel until it reaches an edge.
@@ -366,13 +406,16 @@
       scrollTo({top:limit,behavior:'instant'});
     }
   },{passive:false});
-  addEventListener('scroll',()=>{
-    if(!gesture)return;
+  function boundCoast(){
+    if(!gesture?.wheel)return;
     const y=scrollY,limit=clamp(y,gesture.lower,gesture.upper);
-    if(Math.abs(y-limit)>1)scrollTo({top:limit,behavior:'instant'});
-  },{passive:true});
+    if(Math.abs(y-limit)>1){
+      scrollTo({top:limit,behavior:'instant'});
+    }
+  }
+  addEventListener('scroll',boundCoast,{passive:true});
   addEventListener('scrollend',()=>{
-    if(!gesture)return;
+    if(!gesture?.wheel)return;
     const y=scrollY,travel=y-gesture.start;
     if(Math.abs(travel)<8)return;
     const next=travel>0?gesture.upper:gesture.lower;
@@ -389,6 +432,7 @@
   /* the pointer leaves a wake on the water */
   var lastDrop = 0;
   addEventListener('pointermove', function (e) {
+    if(e.pointerType==='touch')return;
     if (W()) W().setPointer((e.clientX / innerWidth - 0.5) * 2, (e.clientY / innerHeight - 0.5) * 2);
     var t = performance.now();
     if (t - lastDrop < 45 || !W() || W().dive < 0.95 || e.target.closest('.films,.card,.tile,.slate,.hud,.sheet,.me-in')) return;
@@ -401,7 +445,17 @@
 
   /* ---------- website previews skim over the pond ---------- */
   var stage = $('#stage'), previousSite = $('#prev'), nextSite = $('#next');
-  var cards = [], idx = 0, position = -1, deckFrame = 0, deckInView = false;
+  const workFrame=workSection.querySelector('.work-frame');
+  workSection.style.setProperty('--site-legs',String(websites.length-1));
+  const siteMarks=websites.map((project,i)=>{
+    if(!i)return workSection;
+    const mark=document.createElement('span');mark.className='site-stop';mark.dataset.site=project.id;
+    mark.setAttribute('aria-hidden','true');mark.style.setProperty('--stop',i);workSection.append(mark);return mark;
+  });
+  const reflection=document.createElement('span');reflection.className='site-stop reflection';
+  reflection.setAttribute('aria-hidden','true');workSection.append(reflection);
+  const siteStep=()=>siteMarks[1]?.offsetTop||workFrame.offsetHeight;
+  var cards = [], idx = -1, position = -1, deckInView = false;
   var pointer = null, suppressClick = false;
   $('#deckAll').textContent = String(websites.length).padStart(2, '0');
 
@@ -420,7 +474,7 @@
     card._button.setAttribute('aria-label', 'Open ' + project.title + ' project details');
     card._button.addEventListener('click', function (e) {
       if (suppressClick && e.detail !== 0) { suppressClick = false; return; }
-      if (index !== idx) selectSite(index);
+      if (index !== idx) seekSite(index);
       else openSheet(project, card._button);
     });
     stage.appendChild(card);
@@ -465,43 +519,23 @@
     });
   }
 
-  function wake(card, relativeEdge) {
-    var box = card._button.getBoundingClientRect(), bounds = stage.getBoundingClientRect();
-    var x = box.left + box.width * relativeEdge, y = box.bottom - box.height * .085;
-    if (!deckInView || x < 0 || x > innerWidth || y < 0 || y > innerHeight) return;
-    if (W()) W().drop(x, y, .036, .43);
-    var crest = document.createElement('span');
-    crest.className = 'skim-wake';
-    crest.setAttribute('aria-hidden', 'true');
-    crest.style.left = (x - bounds.left) + 'px';
-    crest.style.top = (y - bounds.top) + 'px';
-    crest.addEventListener('animationend', function () { crest.remove(); }, { once: true });
-    stage.appendChild(crest);
+  function showSites(raw,release){
+    if(!cards.length)cards=websites.map(buildCard);
+    // A short plateau on either side of each stop keeps a caption readable
+    // during a small thumb adjustment. Between them the pose follows the finger.
+    const leg=Math.floor(raw),nextPosition=reduce?Math.round(raw):leg+phase(raw-leg,.12,.88);
+    if(position!==nextPosition){position=nextPosition;paintDeck();}
+    const active=Math.round(raw);
+    if(idx!==active)selectSite(active);
+    const opacity=1-phase(release,.08,.72);
+    workFrame.style.opacity=String(opacity);
+    workFrame.inert=opacity<.05;
   }
-
-  function travel() {
-    cancelAnimationFrame(deckFrame);
-    var from = position, distance = idx - from;
-    if (reduce || Math.abs(distance) < .005) { position = idx; paintDeck(); return; }
-    var start = performance.now(), duration = Math.min(500, 270 + 220 * Math.abs(distance));
-    var lastWake = 0;
-    function glide(time) {
-      var t = clamp((time - start) / duration, 0, 1);
-      // A tender launch, a fast skim and a long enough landing to see the edge rise.
-      var ease = t * t * (3 - 2 * t);
-      position = from + distance * ease;
-      paintDeck();
-      var remaining = Math.abs(idx - position);
-      if (remaining < .78 && remaining > .22 && time - lastWake > 65) {
-        wake(cards[idx], distance > 0 ? .17 : .83);
-        if (!lastWake) SND.plip(.28);
-        lastWake = time;
-      }
-      if (t < 1) deckFrame = requestAnimationFrame(glide);
-    }
-    deckFrame = requestAnimationFrame(glide);
+  function seekSite(index){
+    releaseStops();
+    const mark=siteMarks[clamp(index,0,siteMarks.length-1)];
+    scrollTo({top:scrollY+mark.getBoundingClientRect().top,behavior:reduce?'instant':'smooth'});
   }
-
   function selectSite(next) {
     var moveFocus = cards.some(function (card) { return card._button === document.activeElement; });
     idx = clamp(next, 0, websites.length - 1);
@@ -513,22 +547,9 @@
     previousSite.setAttribute('aria-disabled', String(idx === 0));
     nextSite.setAttribute('aria-disabled', String(idx === websites.length - 1));
     if (moveFocus) cards[idx]._button.focus({ preventScroll: true });
-    travel();
     syncCardVideo();
   }
-  var deck = {
-    start: function () {
-      if (cards.length) return;
-      cards = websites.map(buildCard);
-      position=0;
-      selectSite(0);
-    }
-  };
-  function stepSite(direction) {
-    deck.start();
-    var target = clamp(idx + direction, 0, websites.length - 1);
-    if (target !== idx) selectSite(target);
-  }
+  function stepSite(direction){seekSite(idx+direction);}
   previousSite.onclick = function () { stepSite(-1); };
   nextSite.onclick = function () { stepSite(1); };
   addEventListener('resize', function () { if (cards.length) paintDeck(); });
@@ -544,7 +565,7 @@
 
   stage.addEventListener('pointerdown', function (e) {
     if (!e.isPrimary || e.button !== 0 || !e.target.closest('.body')) return;
-    pointer = { id:e.pointerId, x:e.clientX, y:e.clientY, position:position, time:e.timeStamp, pulling:false };
+    pointer = { id:e.pointerId, x:e.clientX, y:e.clientY, index:idx, startY:scrollY, time:e.timeStamp, pulling:false };
     suppressClick = false;
   });
   stage.addEventListener('pointermove', function (e) {
@@ -554,15 +575,13 @@
       if (Math.max(Math.abs(dx),Math.abs(dy)) < 7) return;
       if (Math.abs(dy) >= Math.abs(dx)) { pointer = null; suppressClick = true; return; }
       pointer.pulling = true;
-      cancelAnimationFrame(deckFrame);
-      pointer.position = position;
+      releaseStops();
       stage.setPointerCapture(e.pointerId);
       stage.classList.add('pulling');
     }
-    if (!reduce) {
-      position = clamp(pointer.position - dx / Math.max(160, innerWidth * .62), 0, websites.length - 1);
-      paintDeck();
-    }
+    const span=siteStep(),start=scrollY+workSection.getBoundingClientRect().top;
+    const y=pointer.startY-dx/Math.max(160,innerWidth*.62)*span;
+    scrollTo({top:clamp(y,start,start+span*(siteMarks.length-1)),behavior:'instant'});
   });
   function release(e) {
     if (!pointer || e.pointerId !== pointer.id) return;
@@ -575,7 +594,7 @@
     var dx = e.clientX - pull.x;
     var advance = e.type === 'pointerup' && (Math.abs(dx) > Math.min(75,innerWidth * .12) ||
       (Math.abs(dx) > 14 && Math.abs(dx) / Math.max(1,e.timeStamp-pull.time) > .55));
-    selectSite(advance ? idx - Math.sign(dx) : idx);
+    seekSite(advance ? pull.index - Math.sign(dx) : pull.index);
   }
   stage.addEventListener('pointerup', release);
   stage.addEventListener('pointercancel', release);
