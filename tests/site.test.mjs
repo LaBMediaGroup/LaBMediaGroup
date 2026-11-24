@@ -76,6 +76,10 @@ test('inline JavaScript parses on every page', async (t) => {
       scripts.forEach((match, index) => {
         const attrs = match[1];
         if (/\bsrc\s*=/i.test(attrs) || /application\/ld\+json/i.test(attrs)) return;
+        if (/type=["']importmap["']/i.test(attrs)) {
+          assert.doesNotThrow(() => JSON.parse(match[2]), file + ' import map must be valid JSON');
+          return;
+        }
         assert.doesNotThrow(
           () => new vm.Script(match[2], { filename: `${file}:inline-${index + 1}` }),
           `${file} inline script ${index + 1} does not parse`
@@ -287,12 +291,16 @@ test('primary navigation and Explore footer links stay in sync', () => {
 test('local file references resolve', async (t) => {
   for (const file of htmlFiles) {
     await t.test(file, () => {
-      for (const match of read(file).matchAll(/\s(?:href|src|poster)=["']([^"']+)["']/gi)) {
+      const html = read(file);
+      const pageURL = new URL(file, 'https://labmedia.work/');
+      const base = html.match(/<base\s+href=["']([^"']+)["']/i);
+      const assetBase = base ? new URL(base[1], pageURL) : pageURL;
+      for (const match of html.replace(/<base\b[^>]*>/gi, '').matchAll(/\s(?:href|src|poster)=["']([^"']+)["']/gi)) {
         const value = match[1];
         if (!value || value.includes('${') || /^(?:[a-z]+:|\/\/|#|mailto:|tel:|data:|javascript:)/i.test(value)) continue;
         const clean = decodeURIComponent(value.split('#')[0].split('?')[0]);
         if (!clean) continue;
-        const target = clean.startsWith('/') ? path.join(root, clean) : path.resolve(root, clean);
+        const target = path.join(root, decodeURIComponent(new URL(clean, assetBase).pathname));
         assert.ok(fs.existsSync(target), `${file} references missing ${value}`);
       }
     });
@@ -302,7 +310,7 @@ test('local file references resolve', async (t) => {
 test('floating assistant coverage matches page intent', () => {
   for (const file of realPages) {
     const html = read(file);
-    if (['ai-usage.html', 'index.html', 'portfolio.html'].includes(file)) {
+    if (['ai-usage.html', 'index.html', 'portfolio.html', 'events.html'].includes(file)) {
       assert.doesNotMatch(html, /assistant-widget\.js/);
       continue;
     }
@@ -315,7 +323,7 @@ test('floating assistant coverage matches page intent', () => {
 test('flight checklist follows visitors without exposing the private usage page', () => {
   for (const file of realPages) {
     const html = read(file);
-    if (['ai-usage.html', 'index.html', 'portfolio.html'].includes(file)) assert.doesNotMatch(html, /flight-checklist\.js/);
+    if (['ai-usage.html', 'index.html', 'portfolio.html', 'events.html'].includes(file)) assert.doesNotMatch(html, /flight-checklist\.js/);
     else assert.match(html, /flight-checklist\.js/, `${file} is missing the persistent flight checklist`);
   }
   const checklist = read('flight-checklist.js');
@@ -400,6 +408,11 @@ test('every published page carries the shared nav and footer', () => {
   for (const file of realPages) {
     const html = read(file);
     if (file === 'ai-usage.html') continue;
+    if (file === 'events.html') {
+      assert.match(html, /aria-label="The LaB directory"/);
+      assert.match(html, /href="\.\.\/events-archive\.html#past-events"/);
+      continue;
+    }
     // The film-led home and Reel have intentionally compact editorial shells.
     // Validate their real navigation rather than requiring the directory template.
     if (['index.html', 'portfolio.html'].includes(file)) {

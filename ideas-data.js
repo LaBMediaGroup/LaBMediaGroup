@@ -1602,3 +1602,39 @@ if (typeof window !== 'undefined') {
     window.rollIdea = rollIdea;
     window.LOCAL_FILMMAKER_PRESET = LOCAL_FILMMAKER_PRESET;
 }
+
+// Original lines keep their existing share hashes. Magnet edits travel as
+// a sequence of stable word hashes from that same curated field library.
+if (typeof window !== 'undefined') {
+    const indexes = new Map();
+    function hash(value) {
+        let n = 5381;
+        for (let i=0; i<value.length; i++) n=(Math.imul(n,33)+value.charCodeAt(i))>>>0;
+        return n.toString(36);
+    }
+    function index(pool) {
+        if(indexes.has(pool))return indexes.get(pool);
+        const lines=new Map(),words=new Map();
+        for(const entry of ideasData[pool] || []) {
+            const line=typeof entry==='string' ? entry : entry.text;
+            if(!line)continue;
+            lines.set(hash(line),line);
+            for(const word of line.split(/\s+/))words.set(hash(word),word);
+        }
+        const result={lines,words};indexes.set(pool,result);return result;
+    }
+    window.LaBBriefLink={
+        encode(text,pool){
+            if(!text)return '';
+            const key=hash(text);
+            return index(pool).lines.get(key)===text ? key : '~'+text.trim().split(/\s+/).map(hash).join('-');
+        },
+        decode(part,pool){
+            const {lines,words}=index(pool);
+            if(!part.startsWith('~'))return lines.get(part);
+            if(part.length>2400)return;
+            const tokens=part.slice(1).split('-').map(k=>words.get(k));
+            return tokens.every(Boolean) ? tokens.join(' ') : undefined;
+        }
+    };
+}

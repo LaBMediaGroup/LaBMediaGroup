@@ -359,7 +359,7 @@ body.mode-48 .el[data-k="constraint"]{outline:1px solid var(--accent-dim)}
   </div>
 </footer>
 
-<script src="ideas-data.js"></script>
+<script src="ideas-data.js?v=magnet-1"></script>
 <script>
 /* Nav */
 (function(){
@@ -750,22 +750,8 @@ body.mode-48 .el[data-k="constraint"]{outline:1px solid var(--accent-dim)}
      brief still beats an error. */
   var ALLFIELDS = [['concept','Concept','concepts']].concat(FIELDS);
 
-  function hsh(s){
-    var x=5381;
-    s=String(s);
-    for(var i=0;i<s.length;i++){ x=((x<<5)+x+s.charCodeAt(i))>>>0; }
-    return x.toString(36);
-  }
-
-  var BYHASH={};
-  ALLFIELDS.forEach(function(f){
-    var pool=DATA[f[2]]||[];
-    BYHASH[f[2]]={};
-    pool.forEach(function(e){ BYHASH[f[2]][hsh(txt(e))]=txt(e); });
-  });
-
   function shareURL(o){
-    var parts=ALLFIELDS.map(function(f){ return o[f[0]] ? hsh(o[f[0]]) : ''; });
+    var parts=ALLFIELDS.map(function(f){ return window.LaBBriefLink.encode(o[f[0]],f[2]); });
     return location.origin+location.pathname+'#b='+parts.join('.');
   }
 
@@ -775,7 +761,7 @@ body.mode-48 .el[data-k="constraint"]{outline:1px solid var(--accent-dim)}
     ALLFIELDS.forEach(function(f,i){
       var k=parts[i];
       if(!k) return;
-      var t=BYHASH[f[2]][k];
+      var t=window.LaBBriefLink.decode(k,f[2]);
       if(t){ got[f[0]]=t; hits++; }
     });
     if(!hits) return false;

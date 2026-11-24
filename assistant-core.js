@@ -333,6 +333,7 @@
       if(/\b(rent|rental|rentals|hire)\b/.test(nq))wanted=['equipment'];
       else if(/\b(drone|fpv)\b/.test(nq)&&/\b(training|learn|tutorial|links)\b/.test(nq))wanted=['drone'];
       else if(/\b(community|groups)\b/.test(nq))wanted=['community'];
+      else if(/\b(sound effects?|sfx)\b/.test(nq))wanted=['soundfx'];
       else if(/\bmusic\b/.test(nq))wanted=['music','soundfx'];
       else if(/\bstock\b/.test(nq))wanted=['stock'];
       else if(/\b(font|fonts|typeface|typefaces)\b/.test(nq))wanted=['fonts'];
@@ -467,7 +468,7 @@
       if(/\b(music video|48 hour|48 hours|award|won|winner|comedies|brand pieces|horror film)\b/.test(nq)){
         var earlyFilm=filmAnswer(query);if(earlyFilm)return earlyFilm;
       }
-      if(/\b(rent|rental|rentals|resource|resources|free|training|tutorial|tutorials|community|groups|links)\b/.test(nq)){
+      if(/\b(rent|rental|rentals|resource|resources|sound effects?|sfx|free|training|tutorial|tutorials|community|groups|links)\b/.test(nq)){
         var directResource=resourceAnswer(query,/\bfree\b/.test(nq));if(directResource)return directResource;
       }
       if(/\b(camera|cameras|lens|lenses|gear|kit|own|owned|yours|borrowed|shared|gimbal|gimbals|tripod|light|lighting|audio|sound|mic|microphone|recorder|drone|fpv|software|edit|editing|editor|nas)\b/.test(nq)){

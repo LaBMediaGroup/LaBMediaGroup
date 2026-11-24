@@ -492,13 +492,13 @@ test('homepage directory opens all five tools without scripts', async () => {
   const page = await browser.newPage({javaScriptEnabled:false, viewport:{width:320,height:740}});
   await page.goto(baseURL);
   for (const file of ['sun','ideas','droneweather','skybound','assistant']) {
-    const link = page.locator('main a[href^="'+file+'.html"]');
+    const link = page.locator('#plainDirectory a[href^="'+file+'.html"]');
     assert.equal(await link.isVisible(), true);
     await link.click();
     assert.equal(new URL(page.url()).pathname, '/'+file+'.html');
     await page.goBack();
   }
-  assert.equal(await page.locator('video,canvas').count(),0);
+  assert.equal(await page.locator('video:visible,canvas:visible').count(),0);
   await page.close();
 });
 
@@ -510,7 +510,7 @@ test('mobile tiles expand real tools inside the directory and Back restores the 
     for (const [tile,control] of [['sky','#timeSlider'],['story','#roll'],['wind','#wxWind'],['route','#flight-path'],['search','#assistantInput']]) {
       const link=page.locator('.instrument-link.'+tile);
       await link.tap();
-      assert.equal(new URL(page.url()).pathname,'/');
+      assert.equal(new URL(page.url()).pathname,'/directory/index.html');
       if(tile==='story'){
         const magnet=page.locator('.story-magnets button').first();
         await page.locator('.story-board [data-roll]:enabled').waitFor();

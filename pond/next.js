@@ -1,0 +1,634 @@
+/* LaB Media rebuild v2 · page motion.
+   Scroll drives the camera (dive), the tiles (stand up out of the water) and the
+   ink (the ending). The work deck is played by hand: drag, swipe, arrows or keys.
+   Everything that lands or leaves drops a ripple into the pond. */
+(function () {
+  'use strict';
+  var LAT = 42.67, LON = -83.03;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W = function () { return window.LabWorld; };
+  var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+
+  /* ---------- the work ---------- */
+  var P = [
+    { type: 'Website', id: 'ballcap', title: 'Ballcap Productions', year: '2026', img: '/pond/img/ballcap.jpg', vid: '/pond/img/clips/ballcap.mp4', w: '#382d26', tag: 'Film studio', live: true,
+      line: 'Step into the tunnel from Scattered, watch the films, and see how the crew made them.',
+      cred: [['Studio', 'Ballcap Productions'], ['Built', 'Film chapters, screening room and behind-the-scenes archive']],
+      links: [['Visit Ballcap Productions ↗', 'https://bcp.labmedia.work/']] },
+    { type: 'Website', id: 'splitbone', title: 'Splitbone', year: '2026', img: '/pond/img/splitbone-home.jpg', vid: '/pond/img/clips/splitbone.mp4', w: '#4a2614', tag: 'Redesign pitch',
+      line: 'A recording studio you can walk through: a 3D tour of the garage, real rates, booking.',
+      cred: [['Client', 'Splitbone Studios · St. Clair County, MI'], ['Built', '3D room, baked light, booking flow'], ['Status', 'Pitched, not live']],
+      links: [['Walk through it ↗', 'https://splitbone-room.labmedia.work']] },
+    { type: 'Website', id: 'sweetbabe', title: 'Sweet Babe', year: '2026', img: '/pond/img/sweetbabe.jpg', vid: '/pond/img/clips/sweetbabe.mp4', w: '#3a340a', tag: 'Live', live: true,
+      line: 'Booking for Kyle’s live acoustic act. The record spins; a few taps send a date straight to Kyle.',
+      cred: [['Client', 'Kyle Keaser · Metro Detroit'], ['Built', 'Booking flow, venues, show alerts, sound'], ['Status', 'Live']],
+      links: [['Visit the site ↗', 'https://sweetbabemusic.com']] },
+    { type: 'Website', id: 'sideways', title: 'Sideways', year: '2026', img: '/pond/img/sideways.jpg', vid: '/pond/img/clips/sideways.mp4', w: '#5a4a1c', tag: 'Redesign demo',
+      line: 'Al and Joe’s hand-drawn animation shop, finally moving like their work.',
+      cred: [['Client', 'Sideways Studio · Metro Detroit'], ['Built', 'Film-in-letters wordmark, character cameos'], ['Status', 'Demo']],
+      links: [['See the demo ↗', 'https://ssa.labmedia.work']] },
+    { type: 'Film', id: 'gone', title: 'Gone', year: '2026', img: '/images/gone/gone-poster.jpg', vid: '/pond/film-clips/gone.mp4', full: '/pond/film-full/gone.mp4', w: '#16202b', tag: 'Sci-fi',
+      line: 'One building. No way out.', cred: [['Festival', 'Horror Film Roulette XIII'], ['Premiere', 'Senate Theater, Detroit']], links: [['Behind the film ↗', '/portfolio.html']] },
+    { type: 'Film', id: 'scattered', title: 'Scattered', year: '2026', img: '/assets/scattered-still.webp', vid: '/pond/film-clips/scattered.mp4', full: '/videos/scattered-48hfp-2026.mp4', w: '#2a1d14', tag: '48 hours',
+      line: 'Shot and cut in a weekend. Uploaded with six minutes left.', cred: [['Festival', 'Detroit 48HFP 2026'], ['Awards', 'Best Use of Character · 3rd Best Film']], links: [['Watch ↗', 'https://www.youtube.com/watch?v=bwmKomu0xPo']] },
+    { type: 'Film', id: 'trail', title: 'Trail Dead', year: '2025', img: '/assets/trail.webp', vid: '/pond/film-clips/trail.mp4', full: '/pond/film-full/trail.mp4', w: '#14231a', tag: 'Horror',
+      line: 'A bike ride, and a camera that seems to be haunted.', cred: [['Festival', 'Horror Film Roulette 2025'], ['Award', 'Best Editing']], links: [['Watch ↗', 'https://www.youtube.com/watch?v=rtEs8chuDlM']] },
+    { type: 'Film', id: 'lookout', title: 'Lookout', year: '2025', img: '/assets/lookout.webp', vid: '/pond/film-clips/lookout.mp4', full: '/pond/film-full/lookout.mp4', w: '#2b2218', tag: 'Comedy',
+      line: 'Joining the gym was easy. Cancelling is another story.', cred: [['Festival', 'The Comedy Roll 2025'], ['Result', 'Top 25']], links: [['Watch ↗', 'https://www.youtube.com/watch?v=G0zfFWwQuZA']] },
+    { type: 'Film', id: 'boy', title: 'It’s a Boy', year: '2026', img: '/images/itsaboy/poster.jpg', vid: '/pond/film-clips/boy.mp4', full: '/pond/film-full/boy.mp4', w: '#2a2a16', tag: 'Comedy',
+      line: 'Thirteen crew, four days, more footage than time.', cred: [['Festival', 'The Comedy Roll 2026'], ['Directed', 'Bobby & Al']], links: [['Watch ↗', 'https://www.youtube.com/watch?v=BsIad5S8bQc']] },
+    { type: 'Film', id: 'moz', title: 'MOZ Interiors', year: '2024', img: '/assets/selected-work/moz-interior-v3.jpg', vid: '/pond/film-clips/moz.mp4', full: '/pond/film-full/moz.mp4', w: '#2d261d', tag: 'Brand film',
+      line: 'A Detroit-designed space, filmed in one day.', cred: [['Client', 'MOZ Interiors']], links: [['Watch ↗', 'https://www.youtube.com/watch?v=HtF4L9RpkaU']] },
+    { type: 'Film', id: 'brass', title: 'Anthony Brass', year: '2024', img: '/assets/hero-v4/AnthonyBrass-Paintingclip.jpg', vid: '/pond/film-clips/brass.mp4', full: '/pond/film-full/brass.mp4', w: '#1c2328', tag: 'Artist film',
+      line: 'A painter’s home studio, in his own words.', cred: [['Subject', 'Anthony Brass']], links: [['Watch ↗', 'https://www.youtube.com/watch?v=CPvxM8GrCg8']] }
+  ];
+
+  var websites = P.filter(function (project) { return project.type === 'Website'; });
+  var films = P.filter(function (project) { return project.type === 'Film'; });
+
+  /* ---------- tiny animation helpers ---------- */
+  var eOut = function (t) { return 1 - Math.pow(1 - t, 3); };
+  function ripple(el, s, r, at) {
+    if (!W() || !el) return;
+    var b = el.getBoundingClientRect();
+    W().drop(b.left + b.width * (at ? at[0] : 0.5), b.top + b.height * (at ? at[1] : 0.5), s, r);
+  }
+  function splitText(el) {
+    var words = el.textContent.split(' ');
+    el.setAttribute('aria-label', el.textContent);
+    el.innerHTML = words.map(function (w) {
+      return '<span class="w" aria-hidden="true">' + w.split('').map(function (c) { return '<span class="ch">' + c + '</span>'; }).join('') + '</span>';
+    }).join(' ');
+    el.querySelectorAll('.ch').forEach(function (c, i) { c.style.transitionDelay = (i * 0.028) + 's'; });
+  }
+
+
+  /* ---------- sound: off until asked, synthesised, quiet ----------
+     Beds: wind in the field (follows the live wind and gusts), a faint 60 Hz
+     line hum near the poles, water lapping once you're over the pond.
+     Hits: water plip, TV tuning, whoosh, a low bloop for the ink. */
+  var SND = (function () {
+    var ctx = null, on = false, master, windG, windF, humG, waterG, waterF, nb = null;
+    function noise(sec, brown) {
+      var b = ctx.createBuffer(1, ctx.sampleRate * sec, ctx.sampleRate), d = b.getChannelData(0), last = 0;
+      for (var i = 0; i < d.length; i++) { var w = Math.random() * 2 - 1; if (brown) { last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; } else d[i] = w; }
+      return b;
+    }
+    function bed(buf, type, f, q) { var s = ctx.createBufferSource(); s.buffer = buf; s.loop = true; var fl = ctx.createBiquadFilter(); fl.type = type; fl.frequency.value = f; fl.Q.value = q || 0.7; var g = ctx.createGain(); g.gain.value = 0; s.connect(fl); fl.connect(g); g.connect(master); s.start(); return [g, fl]; }
+    function start() {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
+      nb = noise(2, false);
+      var w = bed(noise(6, true), 'bandpass', 420, 0.5); windG = w[0]; windF = w[1];
+      var wa = bed(noise(5, true), 'lowpass', 520, 0.8); waterG = wa[0]; waterF = wa[1];
+      humG = ctx.createGain(); humG.gain.value = 0; humG.connect(master);
+      [60, 120, 180].forEach(function (f, i) { var o = ctx.createOscillator(); o.frequency.value = f; var g = ctx.createGain(); g.gain.value = [1, .5, .2][i]; o.connect(g); g.connect(humG); o.start(); });
+      (function tick() {
+        if (ctx && on) {
+          var t = ctx.currentTime, lw = W(), dive = lw ? lw.dive : 0, gust = lw ? lw.gust : 0, mph = sceneMph;
+          var lvl = Math.min(1, (mph + gust * 8) / 26);
+          var wet = lw ? lw.immersion : 0;
+          windG.gain.setTargetAtTime((0.015 + lvl * 0.11) * (1 - dive * 0.6) * (1-wet*.95), t, 0.4);
+          windF.frequency.setTargetAtTime(280 + lvl * 520 + gust * 200, t, 0.5);
+          humG.gain.setTargetAtTime(0.0035 * (1 - dive), t, 0.5);
+          waterG.gain.setTargetAtTime(dive * (0.03 + 0.025 * Math.sin(t * 0.9) + 0.015 * Math.sin(t * 2.3)), t, 0.3);
+          waterF.frequency.setTargetAtTime((380 + 220 * Math.sin(t * 0.7))*(1-.64*wet), t, 0.3);
+        }
+        setTimeout(tick, 120);
+      })();
+    }
+    function burst(dur, type, f0, f1, gain, q) {
+      if (!on) return; var t = ctx.currentTime, s = ctx.createBufferSource(); s.buffer = nb; s.loop = true;
+      var fl = ctx.createBiquadFilter(); fl.type = type; fl.Q.value = q || 1; fl.frequency.setValueAtTime(f0, t); fl.frequency.exponentialRampToValueAtTime(f1, t + dur);
+      var g = ctx.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain, t + Math.min(.04, dur / 4)); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      s.connect(fl); fl.connect(g); g.connect(master); s.start(t, Math.random()); s.stop(t + dur + 0.05);
+    }
+    return {
+      toggle: function () { if (!ctx) start(); on = !on; if (ctx.state === 'suspended') ctx.resume(); master.gain.setTargetAtTime(on ? 1 : 0, ctx.currentTime, 0.25); return on; },
+      get on() { return on; },
+      plip: function (s) { if (!on) return; s = s || .5; var t = ctx.currentTime, o = ctx.createOscillator(), g = ctx.createGain();
+        o.frequency.setValueAtTime(700 + Math.random() * 400, t); o.frequency.exponentialRampToValueAtTime(240, t + 0.09);
+        g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.06 * s, t + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+        o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.2); burst(0.18, 'bandpass', 2400, 900, 0.025 * s, 1.2); },
+      crinkle: function () { if (!on) return; for (var i = 0; i < 4; i++) setTimeout(function () { burst(0.05, 'bandpass', 3800 + Math.random() * 1500, 3000, 0.05, 2); }, i * 60 + Math.random() * 40); },
+      splash: function () { if(on){burst(.15,'bandpass',3200,1150,.16,.55);burst(.36,'lowpass',850,170,.14,.8);} },
+      whoosh: function () { burst(0.55, 'bandpass', 500, 2200, 0.05, .8); },
+      bloop: function () { if (!on) return; var t = ctx.currentTime, o = ctx.createOscillator(), g = ctx.createGain();
+        o.frequency.setValueAtTime(190, t); o.frequency.exponentialRampToValueAtTime(70, t + 0.5); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.09, t + 0.03); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.8);
+        o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.9); burst(0.6, 'lowpass', 900, 200, 0.04, .7); }
+    };
+  })();
+  addEventListener('lab-pond-impact',()=>SND.splash());
+  addEventListener('lab-pond-breach',()=>SND.whoosh());
+  var sndBtn = $('#snd');
+  try { if (localStorage.getItem('lab-sound') === '1') sndBtn.dataset.want = '1'; } catch (e) {}
+  // if sound was on last visit, turn it back on at the first tap (phones only unlock audio on a click)
+  if (sndBtn.dataset.want) addEventListener('click', function first(e) { removeEventListener('click', first, true); if (!SND.on && e.target !== sndBtn) sndBtn.click(); }, true);
+  sndBtn.addEventListener('click', function () { var o = SND.toggle(); sndBtn.setAttribute('aria-pressed', String(o)); try { localStorage.setItem('lab-sound', o ? '1' : '0'); } catch (e) {} if (o) SND.plip(.6); });
+
+  /* ---------- loader ---------- */
+  var loader = $('#loader'), brandMark = $('.loader-mark'), done = false;
+  function finishLoader() {
+    if (done) return;
+    done = true;
+    var dock = !reduce && !location.hash && brandMark.animate;
+    function reveal() {
+      $('.hero h1').classList.add('in');
+      loader.classList.add('leaving');
+      if (!dock) { loader.classList.add('done'); return; }
+      var source = brandMark.getBoundingClientRect(), target = $('.mark img').getBoundingClientRect();
+      var move = brandMark.animate([
+        {transform:'none'},
+        {transform:'translate('+(target.left-source.left)+'px,'+(target.top-source.top)+'px) scale('+target.width/source.width+')'}
+      ], {duration:520,easing:'cubic-bezier(.35,0,.16,1)',fill:'forwards'});
+      move.onfinish = move.oncancel = function () { loader.classList.add('done'); };
+    }
+    var exposure = dock && brandImage.getAnimations && brandImage.getAnimations()[0];
+    if (exposure) exposure.finished.then(reveal,reveal);
+    else reveal();
+  }
+  var sceneReady = W() || document.documentElement.classList.contains('no-world') ? Promise.resolve() :
+    new Promise(function(resolve){ addEventListener('labworld:ready',resolve,{once:true}); });
+  var brandImage = brandMark.querySelector('img');
+  var brandReady = brandImage.decode ? brandImage.decode().catch(function(){}) : Promise.resolve();
+  Promise.all([sceneReady,brandReady]).then(finishLoader);
+  setTimeout(finishLoader,3500);
+  splitText($('.hero h1'));
+  splitText($('.make h2'));
+
+  /* ---------- live sky + wind ---------- */
+  var wx = null, sunAz = 230, sampleWind = false;
+  var previewWind = false, previewTimer, windFrame, sceneMph = 6;
+  var demoButton = $('#windDemo');
+  var AT = location.search.match(/[?&]at=(\d{1,2}):(\d{2})/);
+  var WIND = location.search.match(/[?&]wind=(\d+)/);
+  const detroitDate=new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Detroit',year:'numeric',month:'2-digit',day:'2-digit'});
+  const detroitClock=new Intl.DateTimeFormat('en-GB',{timeZone:'America/Detroit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+  function ymd(d) { return detroitDate.format(d); }
+  function now() {
+    const current=new Date();
+    if(!AT)return current;
+    const noon=new Date(ymd(current)+'T16:00:00Z');
+    const [h,m]=detroitClock.format(noon).split(':').map(Number);
+    return new Date(+noon+((Number(AT[1])-h)*60+Number(AT[2])-m)*60000);
+  }
+  var fieldTools=window.createFieldTools({world:W,now:now,dayKey:ymd,live:live,lat:LAT,lon:LON,reduced:reduce,onShuffle:()=>SND.crinkle()});
+  function compass(deg) { return ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(((deg % 360) + 360) % 360 / 45) % 8]; }
+  function live() {
+    if (!window.LaBSun) return;
+    var t = now(), pos = LaBSun.position(t, LAT, LON);
+    var light = pos.elevation>6 ? 'Daylight' : pos.elevation>-.833 ? 'Golden hour' : pos.elevation>-6 ? 'Blue hour' : 'Night';
+    $('#fieldLight').textContent=t.toLocaleTimeString('en-US',{timeZone:'America/Detroit',hour:'numeric',minute:'2-digit'})+' · '+light;
+    sunAz = pos.azimuth;
+    if (!fieldTools.setLive(pos) && W()) W().setSun(pos.elevation);
+  }
+  function updateWind(animate) {
+    var data = wx || {wind:6,gust:10,dir:270,cloud:.4};
+    var mph = previewWind ? 30 : data.wind;
+    $('#tWind').textContent = previewWind || wx ? Math.round(mph) : '—';
+    $('#windBearing').textContent = previewWind || wx ? compass(data.dir) : '';
+    var status = previewWind ? 'Wind preview' : !wx ? 'Getting local wind…' :
+      sampleWind ? 'Sample conditions' : 'Current · gusts '+Math.round(data.gust)+' mph';
+    var fieldStatus = $('#windStatus');
+    if (fieldStatus.textContent !== status) fieldStatus.textContent = status;
+    demoButton.textContent = previewWind ? 'End preview' : 'Preview 30 mph wind';
+    demoButton.setAttribute('aria-pressed',String(previewWind));
+    if (!W()) return;
+    demoButton.hidden = reduce;
+    W().setCloud(data.cloud);
+    cancelAnimationFrame(windFrame);
+    var start = performance.now(), from = sceneMph;
+    function apply(time) {
+      var f = animate ? clamp((time-start)/550,0,1) : 1;
+      sceneMph = from + (mph-from)*f*f*(3-2*f);
+      W().setWind(sceneMph,previewWind ? sceneMph : Math.max(sceneMph,data.gust),data.dir,sunAz);
+      if (f<1) windFrame=requestAnimationFrame(apply);
+    }
+    apply(start);
+  }
+  function endPreview() {
+    clearTimeout(previewTimer);
+    if (!previewWind) return;
+    previewWind = false;
+    updateWind(true);
+  }
+  demoButton.addEventListener('click',function(){
+    if (previewWind) { endPreview(); return; }
+    previewWind = true;
+    updateWind(true);
+    previewTimer = setTimeout(endPreview,7000);
+  });
+  function weather() {
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=42.67&longitude=-83.03&current=wind_speed_10m,wind_gusts_10m,wind_direction_10m,cloud_cover&wind_speed_unit=mph&timezone=auto')
+      .then(function (r) { if (!r.ok) throw Error('Weather unavailable'); return r.json(); })
+      .then(function (j) {
+        var c = j.current;
+        if (!c || ![c.wind_speed_10m,c.wind_gusts_10m,c.wind_direction_10m].every(Number.isFinite)) throw Error('Wind unavailable');
+        wx = {wind:c.wind_speed_10m,gust:c.wind_gusts_10m,dir:c.wind_direction_10m,cloud:(c.cloud_cover ?? 40)/100};
+        sampleWind = !!WIND;
+        if (WIND) { wx.wind = +WIND[1]; wx.gust = wx.wind*1.5; }
+        updateWind(false);
+      }).catch(function () {
+        sampleWind = true;
+        var speed = WIND ? +WIND[1] : 6;
+        wx = {wind:speed,gust:WIND ? speed*1.5 : 10,dir:270,cloud:.4};
+        updateWind(false);
+      });
+  }
+  live(); weather(); updateWind(false);
+  setInterval(live,30000); setInterval(weather,600000);
+  addEventListener('labworld:ready',function(){live();updateWind(false);fieldTools.syncWorld();});
+
+  /* ---------- scroll: dive, tiles, ink ---------- */
+  var hero = $('.hero-in'), windInstrument = $('.wind-instrument'), cue = $('.cue'), toolsSection=$('#tools'), workSection=$('#work'), filmFrame=$('.film-frame');
+  var make = $('#make'), mkH = $('#mk');
+  const ascentSpace=$('.pond-ascent');
+  var workSeen = false;
+  let wantedUnder=0,leavingFilms=false;
+  function filmApproach(rendered){
+    const visible=Math.min(wantedUnder,rendered);
+    const fade=leavingFilms?clamp((visible-.70)/.29,0,1):clamp((visible-.80)/.19,0,1);
+    filmFrame.style.opacity=String(fade);
+    if(filmFrame.inert!==(fade<.08))filmFrame.inert=fade<.08;
+    filmPlayer.setInView(visible>.65);
+  }
+  function ascentSpan(vh){return ascentSpace.offsetHeight ? vh*.12+ascentSpace.offsetHeight : vh*.77;}
+  function onScroll() {
+    var vh = innerHeight, y = scrollY;
+    var filmRect = filmSection.getBoundingClientRect();
+    var under = Math.min(
+      clamp((vh * 0.89 - filmRect.top) / (vh * 0.85), 0, 1),
+      clamp((filmRect.bottom - vh * 0.08) / (vh * 0.76), 0, 1)
+    );
+    const exiting=filmRect.top < -1;
+    wantedUnder=under;leavingFilms=exiting;
+    if (W()) W().setUnder(under,exiting);
+    filmApproach(!W() || document.documentElement.classList.contains('no-film-world')?under:W().under);
+    var workRect = workSection.getBoundingClientRect();
+    var deckVisible = under <= 0.35 && workRect.top < vh && workRect.bottom > 0;
+    if (deckVisible !== deckInView) {
+      deckInView = deckVisible;
+      syncCardVideo();
+    }
+    const toolRect=toolsSection.getBoundingClientRect();
+    const arrival=clamp((vh-toolRect.top)/vh,0,1);
+    const departure=clamp((vh-toolRect.bottom)/(vh*.86),0,1);
+    const presence=arrival*(1-departure);
+
+    var dive=clamp((vh*1.45-workRect.top)/(vh*1.12),0,1);
+    const fromDesk=clamp((vh-toolRect.bottom)/(vh*1.02),0,1);
+    const sunCarry=arrival*(1-dive*dive*(3-2*dive));
+    fieldTools.setPresence(presence,sunCarry);
+    if (W()) {
+      W().setFieldDeparture(fromDesk);
+      W().setStation(arrival);
+      W().setDive(dive);
+      W().setDrift(Math.max(0,-workRect.top)/document.body.scrollHeight);
+    }
+    var h = clamp(y / (vh * 0.55), 0, 1);
+    hero.style.transform = 'translateY(' + (-h * 60) + 'px) scale(' + (1 - h * 0.06) + ')';
+    hero.style.opacity = String(1 - h);
+    windInstrument.style.opacity = String(1-h); cue.style.opacity = String(1-h);
+    if (previewWind && y >= vh*.65) endPreview();
+    // One ascent starts as the last screen leaves and ends with the inquiry.
+    const rise=exiting ? clamp((vh*.97-filmRect.bottom)/ascentSpan(vh),0,1) : 0;
+    if(W()) W().setRise(rise);
+    if(rise>.80 || make.getBoundingClientRect().top<vh)mkH.classList.add('in');
+    var wr = workRect;
+    if (!workSeen && dive > 0.9 && wr.top < vh * 0.45) { workSeen = true; deck.start(); }
+  }
+  var ticking = false;
+  addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(function () { ticking = false; onScroll(); }); } }, { passive: true });
+  addEventListener('resize', onScroll);
+
+  /* the pointer leaves a wake on the water */
+  var lastDrop = 0;
+  addEventListener('pointermove', function (e) {
+    if (W()) W().setPointer((e.clientX / innerWidth - 0.5) * 2, (e.clientY / innerHeight - 0.5) * 2);
+    var t = performance.now();
+    if (t - lastDrop < 45 || !W() || W().dive < 0.95 || e.target.closest('.films,.card,.tile,.slate,.hud,.sheet,.me-in')) return;
+    lastDrop = t; W().drop(e.clientX, e.clientY, e.pointerType === 'mouse' ? 0.006 : 0.012, 0.12);
+  }, { passive: true });
+  addEventListener('pointerdown', function (e) {
+    if (!W() || W().dive < 0.95 || e.target.closest('.films,.card,.tile,.slate,.hud,.sheet,.me-in,button,a,input')) return;
+    W().drop(e.clientX, e.clientY, 0.03, 0.3); SND.plip(.4);
+  });
+
+  /* ---------- website previews skim over the pond ---------- */
+  var stage = $('#stage'), previousSite = $('#prev'), nextSite = $('#next');
+  var cards = [], idx = 0, position = -1, deckFrame = 0, deckInView = false;
+  var pointer = null, suppressClick = false;
+  $('#deckAll').textContent = String(websites.length).padStart(2, '0');
+
+  function buildCard(project, index) {
+    var card = document.createElement('article');
+    card.className = 'card site';
+    card.innerHTML =
+      '<button class="body" type="button" aria-haspopup="dialog">' +
+        '<img alt="" draggable="false" src="' + project.img + '">' +
+        '<video muted loop playsinline preload="none" src="' + project.vid + '"></video>' +
+      '</button><div class="cap"><h3>' + project.title + '</h3>' +
+        '<p class="micro">' + project.type + ' · ' + project.year + '<br>' +
+        '<span class="' + (project.live ? 'tag-live' : '') + '">' + project.tag + '</span></p></div>';
+    card._button = card.querySelector('button');
+    card._video = card.querySelector('video');
+    card._button.setAttribute('aria-label', 'Open ' + project.title + ' project details');
+    card._button.addEventListener('click', function (e) {
+      if (suppressClick && e.detail !== 0) { suppressClick = false; return; }
+      if (index !== idx) selectSite(index);
+      else openSheet(project, card._button);
+    });
+    stage.appendChild(card);
+    return card;
+  }
+
+  function syncCardVideo() {
+    cards.forEach(function (card, i) {
+      var video = card._video;
+      if (i !== idx || reduce || !deckInView || document.hidden || sheet.open) {
+        video.pause();
+      } else {
+        video.play().then(function () { video.classList.add('on'); }).catch(function () {});
+      }
+    });
+  }
+  document.addEventListener('visibilitychange', syncCardVideo);
+
+  function paintDeck() {
+    var spacing = innerWidth * (innerWidth < 641 ? .80 : .65);
+    cards.forEach(function (card, i) {
+      var offset = i - position, distance = Math.abs(offset);
+      var angle = Math.min(distance, 1) * Math.PI / 2;
+      var bank = Math.sin(angle);
+      // Lower the outside edge near mid-travel, where it throws a wake.
+      var dip = Math.sin(angle * 2);
+      var side = Math.sign(offset);
+      // Park the next site beside the active card so the oak and glint
+      // stay clear on the right. Keep the full banked sweep during travel.
+      var tuck=innerWidth<641?1:1-.80*bank*bank*bank;
+      var x = offset * spacing * tuck;
+      var y = innerHeight * (.033 * bank + .063 * dip);
+      var depth = -275 * bank;
+      var pitch = 55 * bank + 17 * dip;
+      var yaw = -side * 26 * bank;
+      var roll = side * (7 * bank + 10 * dip);
+      card.style.transform = 'translate3d(' + x + 'px,' + y + 'px,' + depth +
+        'px) rotateY(' + yaw + 'deg) rotateZ(' + roll + 'deg) rotateX(' + pitch + 'deg)';
+      card.style.zIndex = String(10 - Math.round(distance * 4));
+      card.style.visibility = distance > 1.55 ? 'hidden' : '';
+      card.style.setProperty('--caption', String(clamp(1 - distance * 3.3, 0, 1)));
+    });
+  }
+
+  function wake(card, relativeEdge) {
+    var box = card._button.getBoundingClientRect(), bounds = stage.getBoundingClientRect();
+    var x = box.left + box.width * relativeEdge, y = box.bottom - box.height * .085;
+    if (!deckInView || x < 0 || x > innerWidth || y < 0 || y > innerHeight) return;
+    if (W()) W().drop(x, y, .036, .43);
+    var crest = document.createElement('span');
+    crest.className = 'skim-wake';
+    crest.setAttribute('aria-hidden', 'true');
+    crest.style.left = (x - bounds.left) + 'px';
+    crest.style.top = (y - bounds.top) + 'px';
+    crest.addEventListener('animationend', function () { crest.remove(); }, { once: true });
+    stage.appendChild(crest);
+  }
+
+  function travel() {
+    cancelAnimationFrame(deckFrame);
+    var from = position, distance = idx - from;
+    if (reduce || Math.abs(distance) < .005) { position = idx; paintDeck(); return; }
+    var start = performance.now(), duration = Math.min(500, 270 + 220 * Math.abs(distance));
+    var lastWake = 0;
+    function glide(time) {
+      var t = clamp((time - start) / duration, 0, 1);
+      // A tender launch, a fast skim and a long enough landing to see the edge rise.
+      var ease = t * t * (3 - 2 * t);
+      position = from + distance * ease;
+      paintDeck();
+      var remaining = Math.abs(idx - position);
+      if (remaining < .78 && remaining > .22 && time - lastWake > 65) {
+        wake(cards[idx], distance > 0 ? .17 : .83);
+        if (!lastWake) SND.plip(.28);
+        lastWake = time;
+      }
+      if (t < 1) deckFrame = requestAnimationFrame(glide);
+    }
+    deckFrame = requestAnimationFrame(glide);
+  }
+
+  function selectSite(next) {
+    var moveFocus = cards.some(function (card) { return card._button === document.activeElement; });
+    idx = clamp(next, 0, websites.length - 1);
+    $('#deckNow').textContent = String(idx + 1).padStart(2, '0');
+    cards.forEach(function (card, i) {
+      card.classList.toggle('open', i === idx);
+      card._button.tabIndex = i === idx ? 0 : -1;
+    });
+    previousSite.setAttribute('aria-disabled', String(idx === 0));
+    nextSite.setAttribute('aria-disabled', String(idx === websites.length - 1));
+    if (moveFocus) cards[idx]._button.focus({ preventScroll: true });
+    travel();
+    syncCardVideo();
+  }
+  var deck = {
+    start: function () {
+      if (cards.length) return;
+      cards = websites.map(buildCard);
+      if (!reduce) paintDeck();
+      selectSite(0);
+    }
+  };
+  function stepSite(direction) {
+    deck.start();
+    var target = clamp(idx + direction, 0, websites.length - 1);
+    if (target !== idx) selectSite(target);
+  }
+  previousSite.onclick = function () { stepSite(-1); };
+  nextSite.onclick = function () { stepSite(1); };
+  addEventListener('resize', function () { if (cards.length) paintDeck(); });
+  addEventListener('keydown', function (e) {
+    if (e.altKey || e.ctrlKey || e.metaKey || $('#sheet').open || e.target.closest('input,textarea')) return;
+    var r = $('#work').getBoundingClientRect();
+    if (r.top > innerHeight * .5 || r.bottom < innerHeight * .5) return;
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      stepSite(e.key === 'ArrowRight' ? 1 : -1);
+    }
+  });
+
+  stage.addEventListener('pointerdown', function (e) {
+    if (!e.isPrimary || e.button !== 0 || !e.target.closest('.body')) return;
+    pointer = { id:e.pointerId, x:e.clientX, y:e.clientY, position:position, time:e.timeStamp, pulling:false };
+    suppressClick = false;
+  });
+  stage.addEventListener('pointermove', function (e) {
+    if (!pointer || e.pointerId !== pointer.id) return;
+    var dx = e.clientX - pointer.x, dy = e.clientY - pointer.y;
+    if (!pointer.pulling) {
+      if (Math.max(Math.abs(dx),Math.abs(dy)) < 7) return;
+      if (Math.abs(dy) >= Math.abs(dx)) { pointer = null; suppressClick = true; return; }
+      pointer.pulling = true;
+      cancelAnimationFrame(deckFrame);
+      pointer.position = position;
+      stage.setPointerCapture(e.pointerId);
+      stage.classList.add('pulling');
+    }
+    if (!reduce) {
+      position = clamp(pointer.position - dx / Math.max(160, innerWidth * .62), 0, websites.length - 1);
+      paintDeck();
+    }
+  });
+  function release(e) {
+    if (!pointer || e.pointerId !== pointer.id) return;
+    var pull = pointer;
+    pointer = null;
+    if (!pull.pulling) return;
+    stage.classList.remove('pulling');
+    suppressClick = true;
+    if (stage.hasPointerCapture(e.pointerId)) stage.releasePointerCapture(e.pointerId);
+    var dx = e.clientX - pull.x;
+    var advance = e.type === 'pointerup' && (Math.abs(dx) > Math.min(75,innerWidth * .12) ||
+      (Math.abs(dx) > 14 && Math.abs(dx) / Math.max(1,e.timeStamp-pull.time) > .55));
+    selectSite(advance ? idx - Math.sign(dx) : idx);
+  }
+  stage.addEventListener('pointerup', release);
+  stage.addEventListener('pointercancel', release);
+  var wheelX = 0, wheelAt = 0, wheelStepped = false;
+  $('#work').addEventListener('wheel', function (e) {
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || e.ctrlKey) return;
+    var time = performance.now();
+    if (time - wheelAt > 180) { wheelX = 0; wheelStepped = false; }
+    wheelAt = time;
+    e.preventDefault();
+    wheelX += e.deltaX;
+    if (!wheelStepped && Math.abs(wheelX) > 45) {
+      stepSite(Math.sign(wheelX));
+      wheelStepped = true;
+    }
+  }, { passive: false });
+
+  /* ---------- production sheet: grows out of the card ---------- */
+  var sheet = $('#sheet');
+  function openSheet(p, origin) {
+    var isFilm = p.type === 'Film';
+    sheet.dataset.kind = p.type;
+    sheet.style.setProperty('--w', p.w);
+    if (isFilm) filmPlayer.presentIn($('#sMedia'));
+    else $('#sMedia').innerHTML = p.vid && !reduce ? '<video autoplay muted loop playsinline poster="' + p.img + '" src="' + p.vid + '"></video>' : '<img src="' + p.img + '" alt="">';
+    $('#sKick').textContent = p.type + ' · ' + p.year + ' · ' + p.tag;
+    $('#sTitle').textContent = p.title;
+    $('#sLine').textContent = p.line;
+    $('#sCred').innerHTML = p.cred.map(function (c) { return '<dt>' + c[0] + '</dt><dd>' + c[1] + '</dd>'; }).join('');
+    $('#sAct').innerHTML = p.links.map(function (l) { return '<a href="' + l[1] + '"' + (/^https?:/.test(l[1]) ? ' target="_blank" rel="noopener"' : '') + '>' + l[0] + '</a>'; }).join('') +
+      (isFilm ? '<a href="#make" data-close>Build yours</a>' : '<a href="#make" data-close>One like this?</a>');
+    sheet.showModal();
+    syncCardVideo();
+    if (origin && !reduce && sheet.animate) {
+      var a = origin.getBoundingClientRect(), b = sheet.getBoundingClientRect();
+      sheet.animate([
+        { transform: 'translate(' + (a.left - b.left) + 'px,' + (a.top - b.top) + 'px) scale(' + (a.width / b.width) + ',' + (a.height / b.height) + ')', transformOrigin: '0 0', borderRadius: '40px' },
+        { transform: 'none', transformOrigin: '0 0', borderRadius: '24px' }
+      ], { duration: 650, easing: 'cubic-bezier(.2,.75,.1,1)' });
+    }
+    if (!isFilm) ripple(origin, 0.03, 0.6);
+  }
+  $('#sX').onclick = function () { sheet.close(); };
+  sheet.addEventListener('click', function (e) { if (e.target === sheet || e.target.closest('[data-close]')) sheet.close(); });
+  sheet.addEventListener('close', function () {
+    filmPlayer.leaveSheet();
+    $('#sMedia').replaceChildren();
+    syncCardVideo();
+  });
+
+  // Scroll remains the shot clock, so reversing the wheel retraces the same
+  // path. The last cabinet also offers a hands-free ride to the form.
+  let ascentFrame=0;
+  function cancelAscent(){cancelAnimationFrame(ascentFrame);ascentFrame=0;}
+  for(const type of ['wheel','touchstart','pointerdown','keydown','popstate','resize'])
+    addEventListener(type,cancelAscent,{passive:true});
+  $('#filmSurface').addEventListener('click',event=>{
+    if(event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ||
+       reduce || !ascentSpace.offsetHeight || !W())return;
+    event.preventDefault();cancelAscent();
+    const start=scrollY, distance=make.getBoundingClientRect().top, begin=performance.now();
+    if(location.hash!=='#make')history.pushState(null,'','#make');
+    // Give most of the ride to the water and oak, even when the link was
+    // clicked at the very top of the sticky gallery. Adjacent scroll segments
+    // have the same velocity at their shared endpoint.
+    const lip=filmSection.getBoundingClientRect().bottom-innerHeight*.97;
+    const departure=clamp(lip,0,distance), landing=clamp(lip+ascentSpan(innerHeight),departure,distance);
+    const pace=(landing-departure)/.66;
+    const firstSpeed=Math.min(pace,departure/.14), lastSpeed=Math.min(pace,(distance-landing)/.2);
+    function segment(a,b,t,duration,v0,v1){
+      const u=t/duration, h=1-u;
+      return a+(b-a)*u*u*(3-2*u)+duration*u*h*(v0*h-v1*u);
+    }
+    function glide(now){
+      const t=Math.min(1,(now-begin)/8600);
+      let offset;
+      if(t<.14)offset=segment(0,departure,t,.14,0,firstSpeed);
+      else if(t<.80)offset=segment(departure,landing,t-.14,.66,firstSpeed,lastSpeed);
+      else offset=segment(landing,distance,t-.80,.20,lastSpeed,0);
+      scrollTo({top:start+offset,behavior:'instant'});
+      if(t<1){ascentFrame=requestAnimationFrame(glide);return;}
+      ascentFrame=0;
+      mkH.focus({preventScroll:true});
+    }
+    ascentFrame=requestAnimationFrame(glide);
+  });
+
+  var filmSection = $('#films');
+  var filmPlayer = window.createFilmPlayer(films, {
+    reducedMotion: reduce,
+    world: W,
+    onTune: function () { SND.crinkle(); },
+    onDetails: function (film, origin) { openSheet(film, origin); }
+  });
+  function bindFilmApproach(){W()?.bindFilmApproach(filmApproach);onScroll();}
+  if(W())bindFilmApproach();
+  addEventListener('labworld:ready',bindFilmApproach);
+
+  /* Website inquiries use the existing LaB contact Worker. */
+  var inquiry = $('#slate'), submitInquiry = inquiry.querySelector('[type=submit]');
+  inquiry.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    if (submitInquiry.disabled || !inquiry.reportValidity()) return;
+    var fields = new FormData(inquiry);
+    var kind = inquiry.querySelector('[name=kind]:checked').nextElementSibling.textContent;
+    var payload = {
+      name: fields.get('name').trim(),
+      email: fields.get('email').trim(),
+      message: 'Website inquiry · ' + kind + '\n\n' + fields.get('idea').trim(),
+      company: fields.get('company')
+    };
+    submitInquiry.disabled = true;
+    $('#contactFallback').hidden = true;
+    $('#msg').textContent = 'Sending…';
+    try {
+      var response = await fetch(inquiry.dataset.endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(15000)
+      });
+      var result = await response.json();
+      if (!response.ok || result.ok !== true) {
+        $('#msg').textContent = result.error || 'Please try again.';
+        $('#contactFallback').hidden = false;
+        return;
+      }
+      inquiry.reset();
+      $('#msg').textContent = 'Message sent. Thanks for reaching out.';
+      SND.plip(.45);
+    } catch (error) {
+      $('#msg').textContent = 'Couldn’t reach the mailer. Your draft is still here.';
+      $('#contactFallback').hidden = false;
+    } finally {
+      submitInquiry.disabled = false;
+    }
+  });
+
+  onScroll();
+})();
