@@ -33,12 +33,12 @@ if(!location.hash && entry?.type!=='back_forward' && 'scrollRestoration' in hist
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Space+Mono&display=swap">
 <link rel="preload" as="image" href="images/TheLaB-mark.png">
-<link rel="stylesheet" href="/pond/next.css?v=17">
+<link rel="stylesheet" href="/pond/next.css?v=18">
 <script type="importmap">{"imports":{"three":"/pond/vendor/three/three.module.js","three/addons/":"/pond/vendor/three/addons/"}}</script>
 <script defer src="sun-calc.js"></script>
 <script defer src="ideas-data.js?v=magnet-1"></script>
 <script type="module">
-import('/pond/world.js?v=17').catch(()=>{
+import('/pond/world.js?v=18').catch(()=>{
   document.documentElement.classList.add('no-world');
   dispatchEvent(new Event('labworld:unavailable'));
 });
@@ -48,8 +48,8 @@ import('/pond/world.js?v=17').catch(()=>{
 <script defer src="/pond/station-story.js?v=11"></script>
 <script defer src="/pond/surface-controls.js?v=17"></script>
 <script defer src="/pond/event-board.js?v=17"></script>
-<script defer src="/pond/field-tools.js?v=17"></script>
-<script defer src="/pond/next.js?v=17"></script>
+<script defer src="/pond/field-tools.js?v=18"></script>
+<script defer src="/pond/next.js?v=18"></script>
 </head>
 <body>
 <canvas id="world" aria-hidden="true"></canvas>

@@ -244,6 +244,7 @@
   /* ---------- scroll: dive, tiles, ink ---------- */
   var hero = $('.hero-in'), windInstrument = $('.wind-instrument'), cue = $('.cue'), toolsSection=$('#tools'), workSection=$('#work'), filmFrame=$('.film-frame');
   var make = $('#make'), mkH = $('#mk');
+  const toolFrame=toolsSection.querySelector('.station-frame');
   const ascentSpace=$('.pond-ascent'), opening=$('.opening'), invitation=$('.enter-field');
   const browse=$('#browseChapters'), chapterLinks=[...document.querySelectorAll('#chapters a, .hud .cta')];
   const setMenu=open=>browse.setAttribute('aria-expanded',String(open));
@@ -302,8 +303,12 @@
     var dive=clamp((vh*1.45-workRect.top)/(vh*1.12),0,1);
     const sunCarry=arrival*(1-dive*dive*(3-2*dive));
     fieldTools.setPresence(presence,sunCarry);
-    fieldTools.journey(toolRect);
+    const stationProgress=fieldTools.journey(toolRect);
+    const escort=clamp((vh-toolRect.bottom)/Math.max(1,workRect.top-toolRect.bottom+vh),0,1);
+    toolFrame.style.opacity=String(1-phase(escort,0,.20));
+    toolFrame.inert=escort>.20;
     if (W()) {
+      W().setFieldEscort(phase(stationProgress,.865,.96),escort);
       W().setStation(arrival);
       W().setDive(dive);
       W().setDrift(Math.max(0,-workRect.top)/document.body.scrollHeight);
@@ -325,8 +330,58 @@
     if(W()) W().setRise(rise);
     if(rise>.80 || make.getBoundingClientRect().top<vh)mkH.classList.add('in');
     var wr = workRect;
-    if (!workSeen && dive > 0.9 && wr.top < vh * 0.45) { workSeen = true; deck.start(); }
+    if (!workSeen && wr.top < vh * 1.08) { workSeen = true; deck.start(); }
   }
+  // Keep the browser's native drag and wheel response. A fling may coast
+  // as far as the next reading mark. A new gesture can leave immediately.
+  let gesture=null,lastWheel=-Infinity;
+  function releaseStops(){gesture=null;}
+  function armStops(event){
+    const target=event.target;
+    if(target.closest?.('dialog') || document.querySelector('dialog[open]')){releaseStops();return;}
+    const wheel=event.type==='wheel',now=performance.now();
+    if(wheel && (event.ctrlKey || Math.abs(event.deltaX)>Math.abs(event.deltaY)))return;
+    const dir=wheel?Math.sign(event.deltaY):0;
+    if(wheel && gesture && gesture.wheel && now-lastWheel<180 && dir===gesture.dir){lastWheel=now;return;}
+    if(wheel)lastWheel=now;
+    const y=scrollY;
+    const marks=[...document.querySelectorAll('.opening,#wind,.scroll-stop,#work,#films,#make')]
+      .map(el=>y+el.getBoundingClientRect().top);
+    gesture={wheel,dir,start:y,lower:marks.filter(v=>v<y-6).at(-1)??0,upper:marks.find(v=>v>y+6)??Infinity};
+  }
+  addEventListener('touchstart',armStops,{passive:true});
+  addEventListener('wheel',event=>{
+    if(event.ctrlKey || Math.abs(event.deltaX)>Math.abs(event.deltaY))return;
+    // An overflow panel gets its normal wheel travel until it reaches an edge.
+    for(let el=event.target;el instanceof HTMLElement && el!==document.body;el=el.parentElement){
+      if(el.scrollHeight<=el.clientHeight+1 || !/auto|scroll/.test(getComputedStyle(el).overflowY))continue;
+      if(event.deltaY<0?el.scrollTop>1:el.scrollTop+el.clientHeight<el.scrollHeight-1){releaseStops();return;}
+    }
+    armStops(event);
+    if(!gesture || !event.cancelable)return;
+    const units=event.deltaMode===1?16:event.deltaMode===2?innerHeight:1;
+    const proposed=scrollY+event.deltaY*units,limit=clamp(proposed,gesture.lower,gesture.upper);
+    if(Math.abs(proposed-limit)>1){
+      event.preventDefault();
+      scrollTo({top:limit,behavior:'instant'});
+    }
+  },{passive:false});
+  addEventListener('scroll',()=>{
+    if(!gesture)return;
+    const y=scrollY,limit=clamp(y,gesture.lower,gesture.upper);
+    if(Math.abs(y-limit)>1)scrollTo({top:limit,behavior:'instant'});
+  },{passive:true});
+  addEventListener('scrollend',()=>{
+    if(!gesture)return;
+    const y=scrollY,travel=y-gesture.start;
+    if(Math.abs(travel)<8)return;
+    const next=travel>0?gesture.upper:gesture.lower;
+    if(Math.abs(next-y)>1 && Math.abs(next-y)<=Math.min(64,innerHeight*.08))
+      scrollTo({top:next,behavior:reduce?'instant':'smooth'});
+  },{passive:true});
+  document.addEventListener('click',releaseStops,true);
+  addEventListener('pointerdown',e=>{if(e.pointerType!=='touch')releaseStops();},true);
+  for(const type of ['keydown','popstate','hashchange','orientationchange'])addEventListener(type,releaseStops,true);
   var ticking = false;
   addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(function () { ticking = false; onScroll(); }); } }, { passive: true });
   addEventListener('resize', onScroll);
@@ -465,7 +520,7 @@
     start: function () {
       if (cards.length) return;
       cards = websites.map(buildCard);
-      if (!reduce) paintDeck();
+      position=0;
       selectSite(0);
     }
   };

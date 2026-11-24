@@ -661,3 +661,29 @@ test('scroll visits the shed tools in both directions and resumes after a shortc
     await at(.8,'sun');
   } finally {await page.close();}
 });
+
+test('one wheel burst stops at the next tool and a short scroll can leave it', async () => {
+  const page=await browser.newPage({viewport:{width:1280,height:800},reducedMotion:'reduce'});
+  try {
+    await page.route('**/*',route=>route.request().url().startsWith(baseURL)?route.continue():route.abort());
+    await page.route('**/world.js*',route=>route.abort());
+    await page.goto(baseURL+'/#tools');
+    await page.waitForFunction(()=>document.querySelector('#loader').classList.contains('done') &&
+      Math.abs(document.querySelector('#tools').getBoundingClientRect().top)<2);
+    const story=page.locator('[data-stop="story"]');
+    await story.waitFor({state:'attached'});
+    await page.mouse.move(45,250);
+    await page.mouse.wheel(0,4500);
+    await page.waitForFunction(()=>Math.abs(document.querySelector('[data-stop="story"]').getBoundingClientRect().top)<2);
+    await page.waitForTimeout(300);
+    const start=await page.evaluate(()=>scrollY);
+    await page.mouse.wheel(0,75);
+    await page.waitForTimeout(550);
+    const travel=await page.evaluate(()=>scrollY)-start;
+    assert.ok(travel>30 && travel<150,'short scroll moved '+travel+'px');
+    await page.mouse.wheel(0,4500);
+    await page.waitForFunction(()=>Math.abs(document.querySelector('[data-stop="events"]').getBoundingClientRect().top)<2);
+    await page.locator('#chapters a[href="#films"]').click();
+    await page.waitForFunction(()=>Math.abs(document.querySelector('#films').getBoundingClientRect().top)<3);
+  } finally {await page.close();}
+});

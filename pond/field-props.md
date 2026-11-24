@@ -19,3 +19,11 @@ The two circuits use the bank-side camera mark in world space. The Mini flies a 
 ## Verification
 
 The mobile browser rendered the close-up, changed months and selected a marked date. Four rear-facing raycasts through the fastener positions found the blocking against the studs at local z −1.1495 m and the board backing at −1.1305 m. The 36-sample portrait camera pass kept at least 0.363 m from the merged timber and hardware geometry. Each of eight rotor pivots was sampled at 10° increments against its aircraft’s fixed mesh using Blender BVH, with the mating hub excluded. All blade checks passed. The simplified Avata measures 0.185 × 0.212 × 0.064 m. The Mini’s unfurled blade orientation changes its measured width as the propellers turn.
+
+## Flight to Ballcap
+
+The camera picks up the Avata during the last part of the Golden Hour stop. Its view follows the actual guarded aircraft while the Mini continues its field circuit. Two curves carry the camera and Avata across the near bank. The Avata rolls into the turn and crosses behind the Ballcap preview at an endpoint fitted to the viewport. The camera levels out at the original website overlook. Reduced motion retains the reading stops with a stationary aircraft pose.
+
+The painted turtle rests and rows on the bottom shelf beside the first cabinet. Its neck starts a turn before the shell follows. Opposite limbs row together, with a quieter glide between strokes. The bluegill use their paired fins asymmetrically to steer. [Painted turtle rowing study](https://pmc.ncbi.nlm.nih.gov/articles/PMC3052254/) · [Bluegill maneuvering study](https://pubmed.ncbi.nlm.nih.gov/11171296/)
+
+Across an 81-second cycle sampled every 0.25 seconds, the turtle's projected bounds cleared the playing glass on all seven cabinets. The check covered four viewport shapes and five camera positions from the gallery to the head-on film view. A separate 450-pose mesh check found no intersections with the cabinets or solid debris. At rest the lowest foot entered the mud by approximately 1.5 mm. In the swimming portion the turtle cleared the bed by at least 0.109 m.

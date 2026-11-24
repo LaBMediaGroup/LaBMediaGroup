@@ -2,7 +2,7 @@
 // Units are metres. The console front faces +Z. See tv- and pond-life reference notes.
 import * as THREE from 'three';
 import { createFilmStations, footprints } from './film-stations.js?v=14';
-import { createPondLife, floorLitter } from './pond-life.js?v=14';
+import { createPondLife, floorLitter } from './pond-life.js?v=18';
 
 const vertex = `
 varying vec3 point;

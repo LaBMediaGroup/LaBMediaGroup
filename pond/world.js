@@ -28,7 +28,7 @@ import { buildOak } from './oak.js';
 import { buildFieldStation } from './field-station.js?v=17';
 import {pondCamera} from './pond-camera.js?v=15';
 import {fieldStationCamera} from './station-camera.js?v=17';
-import {fieldDrones} from './field-drones.js?v=17';
+import {fieldDrones} from './field-drones.js?v=18';
 import { buildFieldBird } from './field-bird.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
@@ -724,7 +724,7 @@ let crossingLatched=false, forwardCross=false, immersionStroke=0, previousEyeHei
 const entryDirection=new THREE.Vector3();
 const roomPos=new THREE.Vector3(0,-1.4,-11.6), roomTarget=new THREE.Vector3(0,-1.4,-10);
 function prepareFilmRoom() {
-  if (!loadingRoom) loadingRoom = import('./underwater.js?v=15').then(({buildFilmRoom}) => {
+  if (!loadingRoom) loadingRoom = import('./underwater.js?v=18').then(({buildFilmRoom}) => {
     room = buildFilmRoom({height:H, uniforms:U, simSize:SIM_SIZE, simZ:SIM_Z, reduced:reduce});
     port.impact.attach(room.scene);
     if (filmCanvas) room.setSource(filmCanvas,filmList);
@@ -737,6 +737,7 @@ function prepareFilmRoom() {
 const stationCamera=fieldStationCamera(THREE,station);
 let renderStationControls=null,stationRevision=0,fieldExitListener=null;
 let fieldRead=0,board=0,boardTarget=0;
+let acquire=0,acquireTarget=0,escort=0,escortTarget=0;
 let fieldTool='story',sunTracking=0,reportedExit=-1,reportedLight=-1;
 const screenPoint=new THREE.Vector3();
 function viewportPoint(point){
@@ -765,6 +766,7 @@ function placeCamera() {
   camera.position.z -= Math.min(S.drift, 0.6) * 0.9 * after;
   camera.position.x += (S.px * 0.35 + Math.sin(S.t * 0.13) * 0.12) * after;
   camera.position.y += (S.py * 0.12 + Math.sin(S.t * 0.21) * 0.05) * after;
+  aircraft.follow(camera,acquire,escort,S.flight,diveBase,qDive);
   if (S.rise>.00001 && S.exitT) {
     room?.cameraPose(camera.aspect,camera.fov,roomPos,roomTarget);
     pondShot.leave(camera,reduce ? (S.rise<.25 ? 0 : 1) : S.rise,roomPos,roomTarget,U.uSunDir.value);
@@ -828,6 +830,7 @@ function frame(now) {
   S.inside+=THREE.MathUtils.clamp((S.insideT-S.inside)*cameraK,-travelStep,travelStep);
   S.book+=(S.bookT-S.book)*cameraK;
   board+=(boardTarget-board)*cameraK;
+  acquire+=(acquireTarget-acquire)*cameraK;escort+=(escortTarget-escort)*cameraK;
 
   S.exitMix+=(S.exitT-S.exitMix)*cameraK;
   S.dive += (S.diveT - S.dive) * cameraK; S.rise += (S.riseT - S.rise) * (reduce ? 1 : 1 - Math.pow(0.02, dt)); S.drift += (S.driftT - S.drift) * k; S.ink += (S.inkT - S.ink) * (1 - Math.pow(0.05, dt));
@@ -855,8 +858,8 @@ function frame(now) {
     const move=dt/(forwardCross ? .45 : .56);
     immersionStroke=THREE.MathUtils.clamp(immersionStroke+(forwardCross?move:-move),0,1);
   }
+  aircraft.update(cameraDt,S.station>.85 && S.inside<.22 && escort<.993 && S.under<.05 && S.rise<.05,S.flight);
   placeCamera();
-  aircraft.update(cameraDt,S.station>.85 && S.inside<.22 && S.dive<.68 && S.under<.05 && S.rise<.05,S.flight);
   if(room && reportFilmApproach && reportedUnder!==S.under){reportedUnder=S.under;reportFilmApproach(S.under);}
   if(renderStationControls)renderStationControls(S.station);
   const submerged = !!room && camera.position.y < 0;
@@ -943,6 +946,7 @@ setSun(0.06);
 window.LabWorld = {
   setSun(elDeg,offsetDeg=11.46) { setSun(elDeg*Math.PI/180,offsetDeg*Math.PI/180); },
   setStation(weight) { S.stationT=weight; },
+  setFieldEscort(acquisition,progress){acquireTarget=acquisition;escortTarget=progress;},
   setFieldRead(value){fieldRead=value;},
   setStationJourney(book,outside,wallWeight){boardTarget=wallWeight;S.bookT=book;S.insideT=1-outside;},
   bindFieldExit(callback){fieldExitListener=callback;reportedLight=-1;},
@@ -1017,7 +1021,7 @@ window.LabWorld = {
   // checks: every wire end sits on its insulator, and the crossarm runs across the line
   _debug() {
     const ends = wires.slice(0, 5).map(w => ({ a: w.a.toArray().map(v => +v.toFixed(3)), b: w.b.toArray().map(v => +v.toFixed(3)) }));
-    return { sunDirection:U.uSunDir.value.toArray(),station:S.station,inside:S.inside,book:S.book,board,flight:S.flight,aircraft:aircraft.inspect(camera), immersed: !!room && camera.position.y < 0, camera: camera.position.toArray(), roomCenter: room?.stations.current.center.toArray(), stations:room?.stations.inspect(camera), oak:oakDebug(), bird:jay.inspect(), armDotLine: +armDir.dot(lineDir).toFixed(4), ends, standY: +standPos.y.toFixed(2), treeY: +tree.position.y.toFixed(2), depthAtDive: +(-H(0, -12.5)).toFixed(2), corn: corn.count };
+    return { sunDirection:U.uSunDir.value.toArray(),station:S.station,inside:S.inside,book:S.book,board,escort,acquire,flight:S.flight,aircraft:aircraft.inspect(camera), immersed: !!room && camera.position.y < 0, camera: camera.position.toArray(), roomCenter: room?.stations.current.center.toArray(), stations:room?.stations.inspect(camera), oak:oakDebug(), bird:jay.inspect(), armDotLine: +armDir.dot(lineDir).toFixed(4), ends, standY: +standPos.y.toFixed(2), treeY: +tree.position.y.toFixed(2), depthAtDive: +(-H(0, -12.5)).toFixed(2), corn: corn.count };
   },
   _cam(pos, look) { S.diveT = S.dive = 0; placeCamera = () => { camera.position.set(...pos); camera.lookAt(...look); camera.updateMatrixWorld(); }; }
 };

@@ -3,11 +3,18 @@ import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 export function fieldDrones(T,station,uniforms,reduced){
   const V=(x,y,z)=>new T.Vector3(x,y,z), object=new T.Group();
   const light=new T.ShaderMaterial({vertexColors:true,uniforms,
-    vertexShader:'varying vec3 n,c; void main(){n=mat3(modelMatrix)*normal;c=color;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-    fragmentShader:'uniform vec3 uSunDir;uniform float uDay;varying vec3 n,c;void main(){vec3 N=normalize(n);float k=.59+.16*N.y+.43*max(dot(N,uSunDir),0.);gl_FragColor=vec4(c*k*(.71+.29*uDay),1.);}'});
+    vertexShader:`varying vec3 n,c,viewDir;
+      void main(){n=mat3(modelMatrix)*normal;c=color;viewDir=cameraPosition-(modelMatrix*vec4(position,1.)).xyz;
+        gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+    fragmentShader:`uniform vec3 uSunDir,uSunC;uniform float uDay;varying vec3 n,c,viewDir;
+      void main(){vec3 N=normalize(n),V=normalize(viewDir),L=normalize(uSunDir);
+        float rim=pow(1.-abs(dot(N,V)),2.5);
+        float gloss=pow(max(0.,dot(normalize(V+L),N)),23.);
+        vec3 body=c*(.66+.16*N.y+.39*max(dot(N,L),0.));
+        gl_FragColor=vec4((body+rim*vec3(.08,.10,.11)+.27*uSunC*gloss)*(.71+.29*uDay),1.);}`});
   function build(fpv){
     const fixed=[],blades=[],rotors=[];
-    const gray=fpv?[.40,.41,.42]:[.76,.78,.78],dark=[.105,.12,.13],glass=[.13,.23,.29];
+    const gray=fpv?[.40,.41,.42]:[.76,.78,.78],dark=fpv?[.19,.20,.21]:[.105,.12,.13],glass=[.13,.23,.29];
     function part(g,p,color,rot=null,dest=fixed){
       if(g.index)g=g.toNonIndexed();g.deleteAttribute('uv');
       if(rot)g.applyQuaternion(rot);
@@ -59,8 +66,49 @@ export function fieldDrones(T,station,uniforms,reduced){
     a.rotation.order='YXZ';a.rotation.set(pitch,Math.atan2(-velocity.x,-velocity.z),roll,'YXZ');
     for(const rotor of model.rotors)rotor.rotation.y=time*42*rotor.userData.sign;
   }
+  // Both camera and aircraft travel in pond coordinates. At the website
+  // stop the aircraft meets the preview on the existing overlook sightline.
+  const cameraRail=new T.CatmullRomCurve3([bank.clone(),bank.clone().addScaledVector(forward,1.18).addScaledVector(right,-.64),
+    V(-7.22,2.06,-3.40),V(-6.13,1.43,-4.94),V(-7.2,1.48,-3.95)],false,'centripetal');
+  const route=new T.CatmullRomCurve3([bank.clone().addScaledVector(forward,2.05).add(V(-.22,.65,0)),
+    V(-6.32,1.99,-3.25),V(-4.75,1.22,-5.05),V(-3.40,.91,-6.59),V(0,1,0)],false,'centripetal');
+  const rider=V(0,0,0),railEye=V(0,0,0),tangent=V(0,0,0),ahead=V(0,0,0),target=V(0,0,0);
+  const attitude=new T.Quaternion(),bankRotation=new T.Euler(),sight=new T.Matrix4(),up=V(0,1,0);
+  const smooth=(a,b,p)=>T.MathUtils.smoothstep(p,a,b);
+  let chaseAspect=0;
+  function follow(camera,acquire,progress,height,overlook,overlookRotation){
+    if(reduced || !object.visible || !acquire)return;
+    const p=progress;
+    if(chaseAspect!==camera.aspect){
+      chaseAspect=camera.aspect;
+      const slope=Math.tan(T.MathUtils.degToRad(camera.fov/2));
+      // Left-of-centre on the desktop deck, centred in the portrait stack.
+      const x=innerWidth<641?0:-.55, y=innerWidth<641?-.05:.07;
+      route.points.at(-1).set(x*slope*camera.aspect,y*slope,-1).multiplyScalar(3.9)
+        .applyQuaternion(overlookRotation).add(overlook);
+      route.updateArcLengths();
+    }
+    const join=smooth(0,.24,p),settle=smooth(.70,1,p);
+    if(p>0){
+      route.getPointAt(p,rider);route.getTangentAt(p,tangent);route.getTangentAt(Math.min(1,p+.035),ahead);
+      const altitude=height*(1-smooth(0,.64,p));
+      rider.y+=altitude*.91;avata.craft.position.lerp(rider,join);
+      const bankAngle=T.MathUtils.clamp(5*(ahead.x*tangent.z-ahead.z*tangent.x),-.66,.66);
+      attitude.setFromEuler(bankRotation.set(Math.asin(T.MathUtils.clamp(tangent.y,-.65,.65)),
+        Math.atan2(-tangent.x,-tangent.z),bankAngle,'YXZ'));
+      avata.craft.quaternion.slerp(attitude,join);
+      cameraRail.getPointAt(p,railEye);railEye.y+=altitude;railEye.x+=altitude*.24;railEye.z-=altitude*.22;
+      camera.position.lerp(railEye,join);
+    }
+    // Offset the framing just below the nose and ease onto the page as
+    // the FPV crosses its leading edge. The camera stays level in the turn.
+    target.copy(avata.craft.position);target.y-=.15*(1-settle);
+    sight.lookAt(camera.position,target,up);attitude.setFromRotationMatrix(sight);
+    camera.quaternion.slerp(attitude,acquire*(.72+.28*join)*(1-settle));
+    if(settle)camera.quaternion.slerp(overlookRotation,settle);
+  }
   object.visible=false;
-  return {object,update(dt,visible,height){
+  return {object,follow,update(dt,visible,height){
     object.visible=visible;if(!visible)return;
     if(!reduced)time+=dt;
     const a=time*.30+.7,b=time*.69+2.20;

@@ -19,7 +19,13 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
   const beats={wallStart:.11,wallEnd:.23,panStart:.34,panEnd:.46,liftStart:.58,doorEnd:.80,drone:.92};
   const landing={story:.05,book:.52,events:.28,ask:.52,sun:.86,flight:.96};
   let notebookTool='book';
+  const stops=['story','events','book','sun','flight'].map(tool=>{
+    const mark=document.createElement('span');mark.className='scroll-stop';mark.dataset.stop=tool;
+    mark.setAttribute('aria-hidden','true');section.append(mark);return mark;
+  });
   const trackLength=()=>Math.max(1,section.offsetHeight-frame.offsetHeight);
+  function layoutStops(){const span=trackLength();for(const mark of stops)mark.style.top=(span*landing[mark.dataset.stop])+'px';}
+  const sizes=new ResizeObserver(layoutStops);sizes.observe(frame);sizes.observe(section);layoutStops();
   function journey(bounds){
     const p=Math.min(1,Math.max(0,-bounds.top/trackLength()));
     const stop=p<(beats.wallStart+beats.wallEnd)/2?'story':p<(beats.panStart+beats.panEnd)/2?'events':p<beats.liftStart?'book':p<beats.drone?'sun':'flight';
@@ -31,6 +37,7 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
     world()?.setStationJourney(book,outside,wall);
     if(bounds.top<innerHeight && bounds.bottom>0 && tool!==active)activate(get('tab-'+tool));
     if(!world())setExit(outside,carry);
+    return p;
   }
   const nextStop={story:'events',book:'sun',sun:'flight',flight:'work',events:'book',ask:'book'};
   onward.addEventListener('click',()=>{
@@ -260,7 +267,7 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
     }
     if(active==='ask')world()?.setNotebookPage?.(get('fieldQuery').value||'Ask the LaB','Index',get('fieldAnswer').textContent);
 
-    if(selected!==null && active!=='sun') clearSun();
+    if(selected!==null && !pond) clearSun();
     revealPanel();
     tabs.forEach(item=>{
       const current=item===tab;item.setAttribute('aria-selected',String(current));item.tabIndex=current?0:-1;
@@ -313,7 +320,7 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
       if(!world())setExit(exit,light);
       if(value===presence)return;
       presence=value;
-      if(active==='flight' && livePosition && !releaseFrame)world()?.setSun(livePosition.elevation,pondHeading(livePosition));
+      if(active==='flight' && selected===null && livePosition && !releaseFrame)world()?.setSun(livePosition.elevation,pondHeading(livePosition));
       if(value===0){menu(false);stopFlight();height.value=0;flight();}
     },
     syncWorld(){world()?.bindFieldExit(setExit);surfaces.connect();flight();fridge.refresh();if(active==='book')notebook();if(selected!==null)renderSun();}

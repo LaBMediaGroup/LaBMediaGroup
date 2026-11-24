@@ -219,7 +219,9 @@ function paintedTurtle(THREE) {
     lobe([0,.020,side*.042],[.042,.007,.007],0,()=>red);
   }
   lobe([.071,.020,0],[.020,.005,.005],-.11,()=>skin,18,10);
-  mount('Carapace, bridges and plastron',[0,0,0]);
+  const carapace=mount('Carapace, bridges and plastron',[0,0,0]);
+  const scuteFinish=material.clone();scuteFinish.onBeforeCompile=material.onBeforeCompile;
+  scuteFinish.roughness=.39;carapace.material=scuteFinish;
 
   // The neck enters the front opening. The maxilla overhangs a separate lower
   // jaw; the mouth seam, nostrils and small lateral eyes follow the actual head.
@@ -312,21 +314,24 @@ function paintedTurtle(THREE) {
     limb.attach(foot);
     limbs.push({limb,foot,front,side});
   }
-  function pose(time,swim) {
-    const p=time*2.35;
+  function pose(time,swim,turn=0) {
+    // Row in diagonal pairs, feather the web on recovery, and let a stroke
+    // finish before the next reach. A resting turtle occasionally surveys the shelf.
+    const p=time*2.35+.22*Math.sin(time*.51);
     const breathe=.5+.5*Math.sin(time*1.07);
     neck.position.x=vertebra[0]-.0035*breathe-.007*swim;
-    neck.rotation.y=.17*Math.sin(time*.35+.9);
+    neck.rotation.y=.11*Math.sin(time*.35+.9)+turn*.12*swim;
     neck.rotation.z=-.095-.095*Math.sin(time*.23)-.055*breathe;
     for(const {limb,foot,front,side} of limbs){
       const phase=p+((front && side<0)||(!front && side>0)?Math.PI:0);
-      const flap=Math.sin(phase);
+      const flap=Math.sin(phase+.32*Math.sin(phase));
+      const reach=1+turn*side*.16;
       // The contralateral hind foot and forefoot retract together. Each web
       // turns edge-on for recovery. Rest holds three supports while one flexes.
       const restLift=front && side===1 ? .12*Math.max(0,Math.sin(time*.68)) : 0;
-      limb.rotation.y=side*(front?-1:1)*(swim*(.24+.71*flap));
+      limb.rotation.y=side*(front?-1:1)*(swim*(.19+.71*flap)*reach);
       limb.rotation.x=side*(-restLift*(1-swim)+swim*(.29+.17*Math.cos(phase)));
-      foot.rotation.x=side*swim*(.30+.34*Math.cos(phase-.67));
+      foot.rotation.x=side*swim*(.23+.48*Math.cos(phase-.60));
       foot.rotation.z=(front?-1:1)*swim*.19*Math.sin(phase-.55);
     }
   }
@@ -377,7 +382,7 @@ export function floorLitter(THREE, floorHeight, patch) {
     const x=(i%2?1:-1)*(.78+rand()*.85), z=-.9+rand()*1.9, width=.06+rand()*.13;
     if (patch && !patch.clear(x,z)) continue;
     // Keep the twig fork and the turtle’s resting pocket clear of solid cobbles.
-    if ((x < 1.30 && x > .53 && z > -.44 && z < .61) || Math.hypot(x+.67,z-.27)<.22) continue;
+    if ((x < 1.30 && x > .53 && z > -.44 && z < .61) || Math.hypot((x+.92)/.50,(z-.07)/.49)<1) continue;
     const g=new THREE.IcosahedronGeometry(1,1), p=g.attributes.position;
     for(let j=0;j<p.count;j++){
       const a=p.getX(j),b=p.getY(j),c=p.getZ(j);
@@ -445,8 +450,8 @@ export function createPondLife(THREE, floorHeight, {centerZ=2.34,reduced=false}=
   const turtle=paintedTurtle(THREE);
   turtle.group.name='Painted turtle';
   const turtlePath=new THREE.CatmullRomCurve3([
-    [-.22,.60],[-.04,.68],[.025,.83],[-.14,1.01],[-.43,1.02],
-    [-.66,.89],[-.71,.67],[-.61,.55],[-.40,.54]
+    [-.72,.23],[-.84,.32],[-1.01,.31],[-1.15,.18],[-1.17,-.04],
+    [-1.05,-.17],[-.87,-.18],[-.72,-.065],[-.67,.09]
   ].map(([x,z])=>new THREE.Vector3(x,0,z)),true);
   const nose=new THREE.Vector3(),location=new THREE.Vector3();
   const home=turtlePath.getPointAt(0),initialHeading=turtlePath.getTangentAt(0);
@@ -507,30 +512,37 @@ export function createPondLife(THREE, floorHeight, {centerZ=2.34,reduced=false}=
       position(f,t,f.mesh.position,lens);
       position(f,t-.13,past,lens);position(f,t+.13,future,lens);
       direction.subVectors(future,past).divideScalar(.26);
-      const speed=direction.length(),phase=t*(5.8+f.depth)+f.angle;
+      const speed=direction.length();
+      const headingIn=Math.atan2(f.mesh.position.z-past.z,f.mesh.position.x-past.x);
+      const headingOut=Math.atan2(future.z-f.mesh.position.z,future.x-f.mesh.position.x);
+      const turn=THREE.MathUtils.clamp(Math.sin(headingOut-headingIn)*17,-1,1);
+      const phase=t*(5.8+f.depth)+f.angle+.38*Math.sin(t*.83+f.angle);
       const glide=.55+.45*Math.cos(t*.79+f.angle);
       const stroke=THREE.MathUtils.smoothstep(speed,.035,.13)*(.62+.38*glide);
       const bend=THREE.MathUtils.smoothstep(speed,.083,.18)*(.24+.76*glide);
       f.mesh.rotation.set(.105*Math.sin(t*.44+f.angle)+.08*stroke*Math.sin(phase),
         Math.atan2(direction.z,-direction.x),-Math.asin(THREE.MathUtils.clamp(direction.y/speed,-.7,.7)),'YXZ');
       const w=f.mesh.morphTargetInfluences;
-      w[0]=bend*Math.sin(phase);w[1]=-bend*Math.cos(phase);
-      const balance=.17*Math.sin(t*.31+f.angle);
+      w[0]=bend*Math.sin(phase)+turn*.11;w[1]=-bend*Math.cos(phase);
+      const balance=.17*Math.sin(t*.31+f.angle)+.44*turn;
       for(let side=0;side<2;side++) {
         const p=phase*.78+(side?balance:-balance);
-        w[2+2*side]=(.54+.42*Math.sin(p))*(.68+.32*stroke);
+        w[2+2*side]=(.54+.42*Math.sin(p))*(.68+.32*stroke)*(1+(side?1:-1)*.17*turn);
         w[3+2*side]=Math.cos(p)*(.64+.36*stroke);
       }
     }
     const cycle=t%81;
-    const progress=THREE.MathUtils.smoothstep(cycle,10,70);
+    const moving=THREE.MathUtils.smoothstep(cycle,10,70);
+    const progress=moving-.0022*Math.sin(moving*Math.PI*42);
     const swim=Math.min(THREE.MathUtils.smoothstep(cycle,9,15),1-THREE.MathUtils.smoothstep(cycle,66,71));
     turtlePath.getPointAt(progress,location);turtlePath.getTangentAt(progress,nose);
-    const lift=.21*swim+.012*swim*Math.sin(t*.28);
+    turtlePath.getTangentAt((progress+.035)%1,future);
+    const turn=THREE.MathUtils.clamp((nose.x*future.z-nose.z*future.x)*3,-1,1);
+    const lift=.15*swim+.008*swim*Math.sin(t*.28);
     turtle.group.position.set(location.x,floorHeight(location.x,location.z)+planted+lift,location.z);
-    turtle.group.rotation.set(swim*.032*Math.sin(t*2.35),Math.atan2(nose.z,-nose.x),
+    turtle.group.rotation.set(swim*(.022*Math.sin(t*2.35)+.065*turn),Math.atan2(nose.z,-nose.x),
       swim*.035*Math.sin(t*.49),'YXZ');
-    turtle.pose(t,swim);
+    turtle.pose(t,swim,turn);
   }
   update(0);
   return {group,update};

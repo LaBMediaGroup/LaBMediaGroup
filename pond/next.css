@@ -82,8 +82,7 @@ main,.foot{position:relative;z-index:1}
 .cue span{color:var(--accent);font:400 18px/1 var(--body)}
 @media(max-width:640px){.hud nav a.tool-nav{display:inline-flex;align-items:center;min-height:44px}.hero h1{font-size:clamp(42px,11vw,66px)}.hero{min-height:0;gap:12px;padding-bottom:22px}.cue{position:static;align-self:flex-start;min-height:38px}.wind-instrument{gap:17px}.wind-controls{padding-left:17px}.wind-link,#windDemo{min-height:44px}}
 @media(max-height:540px) and (min-width:641px){.hero{min-height:390px;gap:8px;padding-bottom:16px}.hero h1{font-size:56px}}
-.dive{height:105svh}
-.tools:is([data-instrument="book"],[data-instrument="sun"])~.dive{height:152svh}
+.dive{height:145svh}
 
 /* work deck */
 .work{position:relative;height:100svh;min-height:600px;overflow:hidden;touch-action:pan-y}
@@ -475,3 +474,6 @@ html.film-watching .hud,html.film-watching .film-bar,html.film-watching .film-fa
 .no-world .station-frame .instruments{min-height:0;overflow:auto;max-height:calc(100svh - 135px)}
 .no-world .tools[data-instrument=story] .station-frame::before{flex:1 1 0;min-height:58px;max-height:34svh;background-size:contain;background-color:transparent}
 .no-world .tools[data-instrument=story] .instruments{flex:0 1 auto;max-height:calc(100svh - 220px)}
+
+.scroll-stop{position:absolute;left:0;width:1px;height:1px;pointer-events:none}
+@supports(overflow:clip){body{overflow-x:clip}}
