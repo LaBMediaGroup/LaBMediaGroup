@@ -10,7 +10,7 @@ export function fieldStationCamera(T,station) {
   const doorLook=local(-.25,1.57,.35);
   const jamb=local(-.49,1.56,1.25), landing=local(-.49,1.72,3.10);
   const inner=v(),innerAim=v(),rails=new Map();
-  const exitEye=v(),angles=v(),direction=v(),sunAngles=v();
+  const exitEye=v(),angles=v(),direction=v();
   const exitRotation=new T.Quaternion(),secondRotation=new T.Quaternion();
   const baseEye=v(),baseRotation=new T.Quaternion();
   function bearings(from,to){
@@ -45,20 +45,19 @@ export function fieldStationCamera(T,station) {
     const gaze=new T.CatmullRomCurve3(headings,false,'catmullrom',.42);
     const path={wide,front,inside,focus,exit,gaze};rails.set(tool,path);return path;
   }
-  function outbound(path,t,sun,tracking,flight,rotation){
+  function outbound(path,t,flight,rotation){
     path.exit.getPoint(t,exitEye);path.gaze.getPoint(t,angles);
-    // Let the disc travel within the frame. Keep some water beneath it
-    // and lead the westward motion slightly on the narrow composition.
-    const lock=smooth(.68,1,t)*tracking;
-    sunAngles.set(unwrap(Math.atan2(sun.x,sun.z)+.07,angles.x),Math.asin(sun.y)-.065,0);
-    angles.lerp(sunAngles,lock);
+    // The evening planner is centered on a 47-degree field bearing. Hold
+    // that landscape composition as the slider moves the sun across it.
+    const outside=smooth(.68,1,t);
+    angles.x=T.MathUtils.lerp(angles.x,unwrap(Math.PI-T.MathUtils.degToRad(47),angles.x),outside);
+    angles.y=T.MathUtils.lerp(angles.y,.075,outside)-Math.atan2(flight,23);
     exitEye.x+=flight*.24;exitEye.y+=flight;exitEye.z-=flight*.22;
-    angles.y-=Math.atan2(flight,23)*(1-lock);
     direction.set(Math.sin(angles.x)*Math.cos(angles.y),Math.sin(angles.y),Math.cos(angles.x)*Math.cos(angles.y)).add(exitEye);
     matrix.lookAt(exitEye,direction,vUp);rotation.setFromRotationMatrix(matrix);
   }
   const vUp=v(0,1,0);
-  return function position(camera,w,interior,book,board,flight,sun,tracking,descent,pondEye,pondRotation) {
+  return function position(camera,w,interior,book,board,flight,descent,pondEye,pondRotation) {
     if(w<=.00001 || descent>=1)return;
     baseEye.copy(camera.position);baseRotation.copy(camera.quaternion);
     const story=paths(camera,'story'),notebook=paths(camera,'book');
@@ -92,8 +91,8 @@ export function fieldStationCamera(T,station) {
     camera.position.copy(eye);matrix.lookAt(eye,aim,camera.up);camera.quaternion.setFromRotationMatrix(matrix);
     const t=1-Math.pow(1-smooth(0,1,1-interior),1.25);
     if(t>0){
-      outbound(story,t,sun,tracking,flight,exitRotation);outside.copy(exitEye);
-      outbound(notebook,t,sun,tracking,flight,secondRotation);
+      outbound(story,t,flight,exitRotation);outside.copy(exitEye);
+      outbound(notebook,t,flight,secondRotation);
       const weight=smooth(.28,.98,w)*smooth(0,.10,t);
       camera.position.lerp(outside.lerp(exitEye,book),weight);
       camera.quaternion.slerp(exitRotation.slerp(secondRotation,book),weight);

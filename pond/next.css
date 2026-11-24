@@ -280,9 +280,13 @@ main,.foot{position:relative;z-index:1}
 @media (max-width:640px){.hud nav .snd{display:flex}}
 
 /* The TV lives in the world. The accessible controls travel with its section. */
-.films{margin-top:65svh;position:relative;z-index:2;isolation:isolate;height:146svh;min-height:480px;touch-action:pan-y pinch-zoom}
+.films{--film-step:clamp(360px,82svh,800px);--film-legs:0;margin-top:65svh;position:relative;z-index:2;isolation:isolate;height:calc(112svh + var(--film-step) * var(--film-legs));min-height:100svh;touch-action:pan-y pinch-zoom}
+.surface-stop{display:none}
+@media(prefers-reduced-motion:no-preference){html:not(.no-world):not(.no-film-world) .has-tv .surface-stop{display:block;position:absolute;top:calc(var(--film-step) * var(--film-legs) + 96svh);width:1px;height:1px;pointer-events:none}}
+.film-stop{position:absolute;top:calc(var(--film-step) * var(--stop));width:1px;height:1px;pointer-events:none}
 .film-frame{position:sticky;top:0;height:100svh;min-height:430px}
-.film-bar{position:absolute;left:var(--gut);right:var(--gut);bottom:max(5svh,env(safe-area-inset-bottom));display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+.film-bar:focus-within{opacity:1}
+.film-bar{opacity:var(--film-controls-opacity,1);position:absolute;left:var(--gut);right:var(--gut);bottom:max(5svh,env(safe-area-inset-bottom));display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
 .film-details{min-width:0;max-width:62%;text-align:left;color:var(--paper);background:none;border:0;padding:0;cursor:pointer;text-shadow:0 1px 12px #07110d}
 .film-details .micro{display:block;color:var(--dim);margin-bottom:4px}
 .film-title{display:flex;align-items:baseline;gap:9px}

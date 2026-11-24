@@ -1,5 +1,5 @@
 /* A feature uses its complete release. The gallery loop keeps its own decoder and time. */
-window.createFilmViewer = function createFilmViewer(world, resumeGallery) {
+window.createFilmViewer = function createFilmViewer(world, resumeGallery, captureReturn) {
   'use strict';
   const get = id => document.getElementById(id);
   const dialog = get('filmViewer'), stage = get('featureStage'), video = get('featureFilm');
@@ -157,11 +157,11 @@ window.createFilmViewer = function createFilmViewer(world, resumeGallery) {
     if (dialog.open) {returnFromHistory=true;close();}
     const point=galleryPosition;
     galleryPosition=null;
-    window.scrollTo({top:point.y,behavior:'instant'});
+    window.scrollTo({top:point.scrollTop(),behavior:'instant'});
     // Restore the entry's normal policy after native history traversal finishes.
     setTimeout(()=>{
       if (!galleryPosition) {
-        window.scrollTo({top:point.y,behavior:'instant'});
+        window.scrollTo({top:point.scrollTop(),behavior:'instant'});
         history.scrollRestoration=point.restoration;
       }
     },0);
@@ -182,7 +182,7 @@ window.createFilmViewer = function createFilmViewer(world, resumeGallery) {
     get open(){return dialog.open;},
     openFilm(item,trigger,previewLevel,previewMuted){
       if(dialog.open)return;
-      const point={y:window.scrollY,restoration:history.scrollRestoration};
+      const point={scrollTop:captureReturn(),restoration:history.scrollRestoration};
       film=item;origin=trigger;problem.hidden=true;
       const online=item.links.find(([label,url])=>/watch/i.test(label)&&/^https?:/.test(url));
       external.hidden=!online;

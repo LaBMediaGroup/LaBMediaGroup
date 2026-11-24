@@ -749,3 +749,61 @@ test('a phone drag can rest between previews and a fast flick settles at one sit
     }
   } finally {await page.close();}
 });
+
+test('each film has a vertical stop and playback returns to it after rotation', async () => {
+  const page=await browser.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true,reducedMotion:'reduce'});
+  try {
+    await page.route('**/*',route=>route.request().url().startsWith(baseURL)?route.continue():route.abort());
+    await page.route('**/world.js*',route=>route.abort());
+    await page.goto(baseURL+'/#films');
+    await page.waitForSelector('#loader.done',{state:'attached'});
+    const titles=['Gone','Scattered','Trail Dead','Lookout','It’s a Boy','MOZ Interiors','Anthony Brass'];
+    const marks=page.locator('#films,.film-stop');
+    assert.equal(await marks.count(),titles.length);
+    for(let i=0;i<titles.length;i++){
+      if(i)await page.locator('#filmNext').click();
+      await page.waitForFunction(title=>document.querySelector('#filmTitle').textContent===title,titles[i]);
+      assert.ok(Math.abs(await marks.nth(i).evaluate(el=>el.getBoundingClientRect().top))<2);
+    }
+    await page.locator('#filmNext').click();
+    await page.waitForFunction(()=>location.hash==='#make');
+    await marks.nth(3).evaluate(el=>el.scrollIntoView());
+    await page.waitForFunction(()=>document.querySelector('#filmTitle').textContent==='Lookout');
+    await page.locator('#filmPlay').click();
+    await page.waitForSelector('#filmViewer[open]');
+    await page.setViewportSize({width:844,height:390});
+    assert.equal(await page.locator('#featureTitle').textContent(),'Lookout');
+    await page.goBack();
+    await page.waitForFunction(()=>!document.querySelector('#filmViewer').open &&
+      Math.abs(document.querySelector('[data-film="lookout"]').getBoundingClientRect().top)<2);
+    assert.equal(await page.locator('#filmTitle').textContent(),'Lookout');
+    await page.keyboard.press('ArrowLeft');
+    await page.waitForFunction(()=>document.querySelector('#filmTitle').textContent==='Trail Dead');
+  } finally {await page.close();}
+});
+
+test('the gallery camera faces every glass and retraces a paused swim',async()=>{
+  const page=await browser.newPage();
+  try{
+    await page.route('**/*',route=>route.request().url().startsWith(baseURL)?route.continue():route.abort());
+    await page.route('**/world.js*',route=>route.abort());
+    await page.goto(baseURL+'/');
+    const result=await page.evaluate(async()=>{
+      const T=await import('three');
+      const {createFilmStations}=await import('/pond/film-stations.js');
+      const stations=createFilmStations(new T.Scene(),()=>-2,false),eye=new T.Vector3(),look=new T.Vector3();
+      function pose(p){
+        stations.setTravel(p);stations.cameraPose(390/844,62,eye,look);
+        return eye.toArray().concat(look.toArray());
+      }
+      const alignment=stations.sets.map((set,i)=>{
+        pose(i);return eye.clone().sub(set.faceCenter).normalize().dot(set.faceNormal);
+      });
+      const halfway=pose(2.5);pose(3);const back=pose(2.5),earlier=pose(2.25);
+      return {alignment,halfway,back,earlier};
+    });
+    assert.ok(result.alignment.every(dot=>dot>.9999));
+    assert.deepEqual(result.halfway,result.back);
+    assert.notDeepEqual(result.halfway,result.earlier);
+  }finally{await page.close();}
+});

@@ -1,7 +1,7 @@
 // One cabinet per film. The camera travels inside the ring so the visitor
 // approaches each faceplate from inside the circle.
 import * as THREE from 'three';
-import {gallerySwim} from './gallery-swim.js?v=14';
+import {gallerySwim} from './gallery-swim.js?v=20';
 import { createTelevision } from './tv-console.js';
 import { createTVVariant } from './tv-variants.js';
 
@@ -102,12 +102,10 @@ export function createFilmStations(scene, ground, reduced) {
     center.x=THREE.MathUtils.lerp(center.x,foot.x,.56);
     center.z=THREE.MathUtils.lerp(center.z,foot.y,.18);
     const forward=new THREE.Vector3(Math.sin(yaw),0,Math.cos(yaw));
-    // Orbitel has controls on opposite sides of its curved equator.
-    const sideView=i===3 ? .23 : 1;
-    return {...tv,contacts,center,foot,forward,sideView,faceCenter,faceNormal,faceUp,glassSize,width:size.x,height:Math.min(size.y,size.x*1.1),standby:tv.screen.material};
+    return {...tv,contacts,center,foot,forward,faceCenter,faceNormal,faceUp,glassSize,width:size.x,height:Math.min(size.y,size.x*1.1),standby:tv.screen.material};
   });
-  const swim=gallerySwim(THREE,sets,new THREE.Vector3(0,0,startZ+radius),reduced);
-  let selected=0;
+  const swim=gallerySwim(THREE,sets,new THREE.Vector3(0,0,startZ+radius));
+  let selected=0,travel=0;
   let liveCanvas, liveMat, revision=-1, lastAudible, lastVolume;
   function select(index) {
     if (!Number.isInteger(index) || !sets[index] || index===selected) return;
@@ -116,8 +114,13 @@ export function createFilmStations(scene, ground, reduced) {
     departed.setVolumeState(false,0);
     lastAudible=undefined;
     selected=index;
-    swim.select(index,performance.now());
+
     revision=-1;
+  }
+  function setTravel(position){
+    travel=THREE.MathUtils.clamp(position,0,sets.length-1);
+    if(reduced)travel=Math.round(travel);
+    select(Math.round(travel));
   }
   function setSource(canvas,films) {
     if (liveCanvas===canvas) return;
@@ -133,7 +136,7 @@ export function createFilmStations(scene, ground, reduced) {
     liveMat=phosphor(texture);
     select(canvas.channelIndex||0);
   }
-  let focusSet=sets[0];
+  let focusSet=sets[0],focusIndex=0;
   let feature = null, featureMat = null, focusStart = 0, focusFrom = 0, focusTo = 0;
   const focusMatrix = new THREE.Matrix4(), focusRotation = new THREE.Quaternion(), focusEye = new THREE.Vector3();
   const filmFit = {value:new THREE.Vector2(1,1)};
@@ -150,7 +153,7 @@ export function createFilmStations(scene, ground, reduced) {
     }
     feature = media;
     if (!media) return;
-    focusSet=sets[selected];
+    focusIndex=selected;focusSet=sets[selected];
     const texture = new THREE.VideoTexture(media);
     texture.colorSpace = THREE.SRGBColorSpace;
     featureMat = new THREE.MeshBasicMaterial({map:texture,toneMapped:false,fog:false});
@@ -165,7 +168,7 @@ export function createFilmStations(scene, ground, reduced) {
     sets[selected].screen.material = featureMat;
   }
   function focusCamera(camera) {
-    const t=focusAmount();
+    const t=focusAmount()*(feature?1:1-THREE.MathUtils.smoothstep(Math.abs(travel-focusIndex),0,.8));
     if(t<=0) return;
     const set=focusSet, tan=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
     const distance=Math.max(.11,set.glassSize.x/(2*tan*camera.aspect*.86),set.glassSize.y/(2*tan*.69));
@@ -194,7 +197,7 @@ export function createFilmStations(scene, ground, reduced) {
     sets[selected].screen.material=liveMat;
   }
   function cameraPose(aspect,fov,pos,look){
-    swim.pose(aspect,fov,pos,look,performance.now());
+    swim(travel,aspect,fov,pos,look);
   }
   const ray=new THREE.Raycaster(), pointer=new THREE.Vector2();
   const targets=sets.map(set=>set.group);
@@ -260,9 +263,9 @@ export function createFilmStations(scene, ground, reduced) {
         const depth=ground(point.x,point.z)-point.y;
         minFoot=Math.min(minFoot,depth);maxFoot=Math.max(maxFoot,depth);
       }
-      return {model:set.group.name,center:set.center.toArray(), screenPixel:samplePixel(set.screen,camera),knobPixel:samplePixel(set.knob,camera),volumePixel:samplePixel(set.volumeControl,camera),minFootingBurial:minFoot,maxFootingBurial:maxFoot,screenClearance:bedClearance(set.screen),volumeClearance:bedClearance(set.volumeControl)};
+      return {model:set.group.name,center:set.center.toArray(),face:set.faceCenter.toArray(),normal:set.faceNormal.toArray(),screenPixel:samplePixel(set.screen,camera),knobPixel:samplePixel(set.knob,camera),volumePixel:samplePixel(set.volumeControl,camera),minFootingBurial:minFoot,maxFootingBurial:maxFoot,screenClearance:bedClearance(set.screen),volumeClearance:bedClearance(set.volumeControl)};
     });
   }
-  return {sets,select,setSource,setFeature,focusCamera,update,cameraPose,pick,inspect,
-    get current(){return sets[selected];},get travel(){return swim.travel;},get selected(){return selected;}};
+  return {sets,select:setTravel,setTravel,setSource,setFeature,focusCamera,update,cameraPose,pick,inspect,
+    get current(){return sets[selected];},get travel(){return travel;},get selected(){return selected;}};
 }

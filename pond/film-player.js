@@ -48,7 +48,7 @@ window.createFilmPlayer = function createFilmPlayer(films, options) {
   let lastAudibleVolume = Number(volumeSlider.value) / 100;
   let audioContext, speakerGain, soundChosen=false;
   const previewButton=document.getElementById('filmPreview');
-  const viewer=window.createFilmViewer(options.world,()=>{syncPlayback();requestDraw();});
+  const viewer=window.createFilmViewer(options.world,()=>{syncPlayback();requestDraw();},options.captureReturn);
   video.volume = lastAudibleVolume;
 
   // On systems that reserve native volume for the device buttons, adjust a
@@ -113,6 +113,8 @@ window.createFilmPlayer = function createFilmPlayer(films, options) {
     canvas.channelIndex = index;
     title.textContent = film.title;
     document.getElementById('filmSurface').hidden=index!==films.length-1;
+    document.getElementById('filmNext').setAttribute('aria-label',index===films.length-1?'Surface to Contact':'Next television');
+    document.getElementById('filmPrev').setAttribute('aria-label',index===0?'Return to pond reflection':'Previous television');
     status.textContent = 'Channel ' + channelNumber() + ', ' + film.title + ', ' + film.year;
     details.setAttribute('aria-label','Production sheet for '+film.title);
     fallback.setAttribute('aria-label','Watch '+film.title+', full film');
@@ -236,13 +238,13 @@ window.createFilmPlayer = function createFilmPlayer(films, options) {
   function visit(destination) {
     if (destination === index) return;
     index = destination;
-    options.world()?.selectFilm?.(index);
-    loadChannel();
+    channelLoaded=false;
+    if(inView || inSheet)loadChannel();
     syncLabels();
-    options.onTune();
+    if(inView)options.onTune();
     syncPlayback();
   }
-  function change(direction) { visit((index+direction+films.length)%films.length); }
+  function change(direction) { options.seek(index+direction); }
   function open(origin) {
     if (!origin) details.focus({ preventScroll: true });
     options.onDetails(current(), origin);
@@ -318,7 +320,7 @@ window.createFilmPlayer = function createFilmPlayer(films, options) {
     if (skipClick && event.detail !== 0) { skipClick = false; return; }
     const target = event.target.closest('.film-fallback') ? 'screen' :
       options.world()?.pickFilm?.(event.clientX, event.clientY);
-    if (Number.isInteger(target?.station)) visit(target.station);
+    if (Number.isInteger(target?.station)) options.seek(target.station);
     else if (target === 'screen') watch(event.target.closest('.film-fallback') || playButton);
     else if (target === 'knob') change(1);
     else if (target === 'volume') toggleSound();
@@ -338,6 +340,8 @@ window.createFilmPlayer = function createFilmPlayer(films, options) {
   syncSound();
   bindWorld();
   return {
+    visit,
+    get watching(){return viewer.open;},
     setInView(visible) {
       if (visible === inView) return;
       inView = visible;
