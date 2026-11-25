@@ -804,3 +804,23 @@ test('the gallery camera faces every glass and retraces a paused swim',async()=>
     assert.notDeepEqual(result.halfway,result.earlier);
   }finally{await page.close();}
 });
+
+test('the contact heading clears the fixed header at the bottom of a short phone', async () => {
+  const page=await browser.newPage({viewport:{width:320,height:568},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
+  try{
+    await page.route('**/*',route=>route.request().url().startsWith(baseURL)?route.continue():route.abort());
+    await page.route('**/world.js*',route=>route.abort());
+    await page.goto(baseURL+'/#make');
+    await page.waitForFunction(()=>document.querySelector('#loader').classList.contains('done'));
+    await page.evaluate(()=>scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'}));
+    await page.waitForFunction(()=>document.querySelector('#chapterName').textContent==='Contact');
+    const bounds=await page.evaluate(()=>({
+      heading:document.querySelector('#mk').getBoundingClientRect().top,
+      header:document.querySelector('.hud').getBoundingClientRect().bottom,
+      footer:document.querySelector('.foot').getBoundingClientRect().bottom,
+      viewport:innerHeight
+    }));
+    assert.ok(bounds.heading>=bounds.header);
+    assert.ok(Math.abs(bounds.viewport-bounds.footer)<2);
+  }finally{await page.close();}
+});

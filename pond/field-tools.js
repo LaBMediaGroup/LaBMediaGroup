@@ -271,7 +271,7 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
     }
     if(active==='ask')world()?.setNotebookPage?.(get('fieldQuery').value||'Ask the LaB','Index',get('fieldAnswer').textContent);
 
-    if(selected!==null && !pond) clearSun();
+    if(selected!==null && (!pond || active==='flight')) clearSun();
     revealPanel();
     tabs.forEach(item=>{
       const current=item===tab;item.setAttribute('aria-selected',String(current));item.tabIndex=current?0:-1;

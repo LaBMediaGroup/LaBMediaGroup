@@ -245,6 +245,9 @@
   var hero = $('.hero-in'), windInstrument = $('.wind-instrument'), cue = $('.cue'), toolsSection=$('#tools'), workSection=$('#work'), filmFrame=$('.film-frame');
   var make = $('#make'), mkH = $('#mk');
   const toolFrame=toolsSection.querySelector('.station-frame');
+  const approach=$('.shed-approach'),footer=$('.foot');
+  const measureFooter=()=>make.style.setProperty('--footer-height',footer.offsetHeight+'px');
+  new ResizeObserver(measureFooter).observe(footer);measureFooter();
   const ascentSpace=$('.pond-ascent'), opening=$('.opening'), invitation=$('.enter-field');
   const browse=$('#browseChapters'), chapterLinks=[...document.querySelectorAll('#chapters a, .hud .cta')];
   const setMenu=open=>browse.setAttribute('aria-expanded',String(open));
@@ -313,11 +316,15 @@
       syncCardVideo();
     }
     const step=siteStep();
-    const siteTravel=clamp(-workRect.top/step,0,websites.length-1);
-    const release=clamp((-workRect.top-(websites.length-1)*step)/vh,0,1);
+    const rawSite=clamp(-workRect.top/step,0,websites.length-1);
+    const legSite=Math.floor(rawSite);
+    const siteTravel=reduce?Math.round(rawSite):legSite+phase(rawSite-legSite,.22,.78);
+    const pastLast=(-workRect.top-(websites.length-1)*step)/vh;
+    const release=clamp((pastLast-.22)/.78,0,1);
     if(workRect.top<vh && workRect.bottom>0)showSites(siteTravel,release);
     const toolRect=toolsSection.getBoundingClientRect();
-    const arrival=clamp((vh-toolRect.top)/vh,0,1);
+    const approachSpan=vh+approach.offsetHeight;
+    const arrival=clamp((approachSpan-toolRect.top)/approachSpan,0,1);
     const departure=clamp((vh-toolRect.bottom)/(vh*.86),0,1);
     const presence=arrival*(1-departure);
 
@@ -549,13 +556,10 @@
     });
   }
 
-  function showSites(raw,release){
+  function showSites(travel,release){
     if(!cards.length)cards=websites.map(buildCard);
-    // A short plateau on either side of each stop keeps a caption readable
-    // during a small thumb adjustment. Between them the pose follows the finger.
-    const leg=Math.floor(raw),nextPosition=reduce?Math.round(raw):leg+phase(raw-leg,.12,.88);
-    if(position!==nextPosition){position=nextPosition;paintDeck();}
-    const active=Math.round(raw);
+    if(position!==travel){position=travel;paintDeck();}
+    const active=Math.round(travel);
     if(idx!==active)selectSite(active);
     const opacity=1-phase(release,.08,.72);
     workFrame.style.opacity=String(opacity);

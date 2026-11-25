@@ -27,8 +27,8 @@ import { createPondPort } from './pond-port.js?v=15';
 import { buildOak } from './oak.js';
 import { buildFieldStation } from './field-station.js?v=17';
 import {pondCamera} from './pond-camera.js?v=19';
-import {fieldStationCamera} from './station-camera.js?v=20';
-import {fieldDrones} from './field-drones.js?v=21';
+import {fieldStationCamera} from './station-camera.js?v=23';
+import {fieldDrones} from './field-drones.js?v=23';
 import { buildFieldBird } from './field-bird.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
@@ -69,6 +69,7 @@ const U = {
   uZen: { value: new THREE.Color() }, uHor: { value: new THREE.Color() }, uSunC: { value: new THREE.Color() },
   uSunDir: { value: new THREE.Vector3(0, 0.1, -1).normalize() },
   uWind: { value: 6 }, uWindAmp: { value: 0.2 }, uWindDir: { value: new THREE.Vector3(0.6, 0, -0.8) }, uGustE: { value: 0 },
+  uCourseLight:{value:0},uCourseBake:{value:null},
   uCloud: { value: 0.5 }, uBreach: {value:new THREE.Vector2()}, uSplashAge: {value: 8}, uStarAge: {value: 8}
 };
 const NOISE = `
@@ -125,7 +126,7 @@ terrainGeo.translate(C.x, 0, C.y);
 const terrain = new THREE.Mesh(terrainGeo, new THREE.ShaderMaterial({
   uniforms: U,
   vertexShader: `varying vec3 vW;varying vec3 vN;void main(){vec4 w=modelMatrix*vec4(position,1.);vW=w.xyz;vN=normal;gl_Position=projectionMatrix*viewMatrix*w;}`,
-  fragmentShader: COMMON_U + NOISE + FOG + `varying vec3 vW;varying vec3 vN;
+  fragmentShader: COMMON_U + NOISE + FOG + `uniform float uCourseLight;uniform sampler2D uCourseBake;varying vec3 vW;varying vec3 vN;
   void main(){
     vec2 p=vW.xz;float h=vW.y;vec3 n=normalize(vN);
     // stubble field: dry straw over dark soil, rows of corn stubble
@@ -152,6 +153,11 @@ const terrain = new THREE.Mesh(terrainGeo, new THREE.ShaderMaterial({
     float wet=bank*pow(max(dot(reflect(normalize(vW-cameraPosition),n),normalize(uSunDir)),0.),40.)*.6;
     lit+=uSunC*wet*smoothstep(-.03,.04,uEl);
     lit*=mix(.1,1.,uDay);lit+=vec3(.008,.007,.006)*uNight;
+    vec2 courseUV=(p-vec2(-9.,0.))/vec2(16.,17.);
+    if(uCourseLight>.001 && all(greaterThan(courseUV,vec2(0.))) && all(lessThan(courseUV,vec2(1.)))){
+      float beam=texture2D(uCourseBake,courseUV).r;
+      lit+=uCourseLight*beam*field*vec3(1.35,1.16,.92);
+    }
     gl_FragColor=vec4(fogged(lit,vW,.012),1.);
   }`
 }));
@@ -288,6 +294,8 @@ function groundSurface(x,z) {
 const station = buildFieldStation({THREE,height:groundSurface,uniforms:U});
 scene.add(station.group);
 const aircraft=fieldDrones(THREE,groundSurface,U,reduce);scene.add(aircraft.object,aircraft.course);
+U.uCourseBake.value=new THREE.TextureLoader().load(new URL('./img/course-beams.png',import.meta.url).href);
+U.uCourseBake.value.flipY=false;
 const stationCos=Math.cos(station.yaw), stationSin=Math.sin(station.yaw);
 function onStationPad(x,z) {
   const dx=x-station.group.position.x, dz=z-station.group.position.z;
@@ -884,6 +892,7 @@ function frame(now) {
   }
   // The course and its drones belong to the south field: keep them out of the opening shot.
   aircraft.course.visible=aircraft.object.visible=S.station>.5||S.flight>.01;
+  U.uCourseLight.value=aircraft.course.visible?1-ss(-.10,-.035,U.uEl.value):0;
   aircraft.update(cameraDt,S.station>.85 && S.inside<.22 && escort<.993 && S.under<.05 && S.rise<.05,escort);
   placeCamera();
   if(room && reportFilmApproach && reportedUnder!==S.under){reportedUnder=S.under;reportFilmApproach(S.under);}

@@ -1,6 +1,7 @@
 // Display models follow DJI's published flying envelopes. See field-props.md.
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {raceCourse} from './race-course.js?v=21';
+import {courseLights,aircraftGlow,beaconTrail} from './course-lights.js?v=23';
 export function fieldDrones(T,ground,uniforms,reduced){
   const V=(x,y,z)=>new T.Vector3(x,y,z), object=new T.Group();
   const light=new T.ShaderMaterial({vertexColors:true,side:T.DoubleSide,uniforms,
@@ -59,6 +60,9 @@ export function fieldDrones(T,ground,uniforms,reduced){
     return {craft,rotors};
   }
   const mini=build(false),avata=build(true), course=raceCourse(T,ground,light);
+  const trace=reduced?null:beaconTrail(T,object,uniforms);
+  const lamps=courseLights(T,ground,course.mesh,course.lap,uniforms);
+  const miniLight=aircraftGlow(T,mini.craft,false),fpvLight=aircraftGlow(T,avata.craft,true);
   const center=V(-1.65,ground(-1.65,8),8);
   const overview=V(-5.9,ground(-5.9,17)+6.4,17);
   const cameraRail=new T.CatmullRomCurve3([overview.clone(),V(-5.7,4.6,12),V(-4.3,2.2,5),
@@ -110,6 +114,7 @@ export function fieldDrones(T,ground,uniforms,reduced){
         Math.atan2(-tangent.x,-tangent.z),bankAngle,'YXZ'));
       avata.craft.quaternion.slerp(attitude,join);
     }
+    trace?.(time,avata.craft.position,p);
     target.copy(center);
     target.z+=narrow?2.1:.8;
     if(narrow)target.x-=.45;
@@ -119,18 +124,24 @@ export function fieldDrones(T,ground,uniforms,reduced){
     if(settle)camera.quaternion.slerp(overlookRotation,settle);
   }
   object.visible=false;
-  return {object,course:course.mesh,follow,update(dt,visible,progress){
+  return {object,lamps,course:course.mesh,follow,update(dt,visible,progress){
     object.visible=visible;if(!visible)return;
     if(!reduced)time+=dt;
     if(!reduced && progress<.0001)lapDistance=(lapDistance+dt*.086)%1;
+    const night=uniforms.uCourseLight.value;
+    miniLight.opacity=night*(reduced?.86:.62+.38*Math.cos(time*3.1)**4);fpvLight.opacity=night;
     const t=lapDistance;
     course.lap.getPointAt(t,avata.craft.position);
     course.lap.getTangentAt(t,tangent);course.lap.getTangentAt((t+.018)%1,ahead);
     const roll=T.MathUtils.clamp((ahead.x*tangent.z-ahead.z*tangent.x)*1.5,-.52,.52);
-    avata.craft.rotation.set(-.07,Math.atan2(-tangent.x,-tangent.z),roll,'YXZ');
+    const wind=T.MathUtils.clamp(uniforms.uWind.value/30,0,1);
+    const gust=reduced?0:wind*Math.sin(time*2.4)*(.3+.7*uniforms.uGustE.value);
+    avata.craft.position.addScaledVector(uniforms.uWindDir.value,.06*gust);
+    avata.craft.rotation.set(-.07-.04*wind,Math.atan2(-tangent.x,-tangent.z),roll+.12*gust,'YXZ');
     const a=time*.26;
     mini.craft.position.set(center.x+2.2*Math.sin(a),center.y+2.85+.22*Math.sin(a*2),center.z+4*Math.cos(a));
-    mini.craft.rotation.set(-.04,Math.atan2(-2.2*Math.cos(a),4*Math.sin(a)),.085,'YXZ');
+    mini.craft.position.addScaledVector(uniforms.uWindDir.value,.28*gust);
+    mini.craft.rotation.set(-.04-.07*wind,Math.atan2(-2.2*Math.cos(a),4*Math.sin(a)),.085+.08*gust,'YXZ');
     for(const {rotors} of [mini,avata])for(const rotor of rotors)rotor.rotation.y=time*42*rotor.userData.sign;
   },inspect(camera){return [mini,avata].map(({craft})=>({name:craft.name,position:craft.position.toArray(),ndc:craft.position.clone().project(camera).toArray(),visible:object.visible}));}};
 }

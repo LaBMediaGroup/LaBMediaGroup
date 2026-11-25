@@ -33,10 +33,13 @@ export function fieldStationCamera(T,station) {
     const inside=new T.CatmullRomCurve3([landing,local(-.49,1.75,1.45),local(-.46,1.68,.70),p],false,'centripetal');
     // Lift off the instrument with space behind the bench. The third mark
     // faces the open doors from inside; the turn to the sun starts outside.
-    const marks=[p,local(tool==='book'?.62:-.59,1.50,tool==='book'?-.45:.48),local(tool==='book'?.04:-.18,1.54,tool==='book'?-.78:.34),
+    // Pull straight up and back from the actual page pose before turning.
+    // This keeps the page edge and doorway in frame as the bench recedes.
+    const bookLift=p.clone().add(v(0,.29,0)).addScaledVector(v(0,0,1).applyQuaternion(group.quaternion),.16);
+    const marks=[p,tool==='book'?bookLift:local(-.59,1.50,.48),local(tool==='book'?.15:-.18,1.65,tool==='book'?.02:.34),
       local(-.42,1.62,.48),local(-.48,1.68,1.76),local(.12,1.72,3.05),
       local(2.5,1.84,3.76),local(4.55,1.85,3.60)];
-    const sights=[focus,local(tool==='book'?.63:-1.05,1.30,.90),local(-.51,1.70,1.40),
+    const sights=[focus,tool==='book'?focus.clone().lerp(jamb,.45):local(-1.05,1.30,.90),local(-.51,1.70,1.40),
       local(-.48,1.70,2.75),local(-.17,1.68,4.26),local(2.15,1.83,4.38),
       marks[6].clone().add(v(3,.20,-1.25)),marks[7].clone().add(v(2.2,.14,-2.8))];
     const headings=marks.map((m,i)=>bearings(m,sights[i]));
