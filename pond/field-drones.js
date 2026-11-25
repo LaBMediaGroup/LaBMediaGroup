@@ -72,7 +72,19 @@ export function fieldDrones(T,ground,uniforms,reduced){
   outbound.y+=.20;
   const route=new T.CatmullRomCurve3([gateExit,outbound,V(-2.7,1.65,.50),
     V(-5.6,1.7,-2.8),V(-4.75,1.22,-5.05),V(-3.4,.91,-6.59),V(0,1,0)],false,'centripetal');
-  let time=0,lapDistance=.11;
+  let time=0,lapDistance=.11,landed=0;
+  const padYaw=-.55,pad=V(1.85,-Infinity,12.2),foot=V(0,0,0),vertical=V(0,1,0);
+  mini.craft.updateWorldMatrix(true,true);
+  mini.craft.traverse(part=>{
+    if(!part.isMesh)return;
+    const vertices=part.geometry.attributes.position;
+    for(let i=0;i<vertices.count;i++){
+      foot.fromBufferAttribute(vertices,i).applyMatrix4(part.matrixWorld);
+      if(foot.y>-.045)continue;
+      foot.applyAxisAngle(vertical,padYaw);
+      pad.y=Math.max(pad.y,ground(pad.x+foot.x,pad.z+foot.z)-foot.y);
+    }
+  });
   const rider=V(0,0,0),railEye=V(0,0,0),tangent=V(0,0,0),ahead=V(0,0,0),target=V(0,0,0);
   const attitude=new T.Quaternion(),bankRotation=new T.Euler(),sight=new T.Matrix4(),up=V(0,1,0);
   const smooth=(a,b,p)=>T.MathUtils.smoothstep(p,a,b);
@@ -124,7 +136,7 @@ export function fieldDrones(T,ground,uniforms,reduced){
     if(settle)camera.quaternion.slerp(overlookRotation,settle);
   }
   object.visible=false;
-  return {object,lamps,course:course.mesh,follow,update(dt,visible,progress){
+  return {object,lamps,course:course.mesh,follow,update(dt,visible,progress,hold){
     object.visible=visible;if(!visible)return;
     if(!reduced)time+=dt;
     if(!reduced && progress<.0001)lapDistance=(lapDistance+dt*.086)%1;
@@ -141,7 +153,20 @@ export function fieldDrones(T,ground,uniforms,reduced){
     const a=time*.26;
     mini.craft.position.set(center.x+2.2*Math.sin(a),center.y+2.85+.22*Math.sin(a*2),center.z+4*Math.cos(a));
     mini.craft.position.addScaledVector(uniforms.uWindDir.value,.28*gust);
-    mini.craft.rotation.set(-.04-.07*wind,Math.atan2(-2.2*Math.cos(a),4*Math.sin(a)),.085+.08*gust,'YXZ');
-    for(const {rotors} of [mini,avata])for(const rotor of rotors)rotor.rotation.y=time*42*rotor.userData.sign;
+    // At the local course wind limit the camera drone moves clear of the
+    // racing line, then descends to the grass. On release it climbs first.
+    const goal=hold?1:0;
+    landed=reduced?goal:T.MathUtils.clamp(landed+Math.sign(goal-landed)*dt*.24,0,1);
+    const steer=smooth(0,.55,landed),sink=smooth(.55,1,landed);
+    mini.craft.position.x=T.MathUtils.lerp(mini.craft.position.x,pad.x,steer);
+    mini.craft.position.z=T.MathUtils.lerp(mini.craft.position.z,pad.z,steer);
+    mini.craft.position.y=T.MathUtils.lerp(mini.craft.position.y,pad.y,sink);
+    const heading=Math.atan2(-2.2*Math.cos(a),4*Math.sin(a));
+    const yaw=heading+Math.atan2(Math.sin(padYaw-heading),Math.cos(padYaw-heading))*sink;
+    mini.craft.rotation.set((-.04-.07*wind)*(1-sink),yaw,(.085+.08*gust)*(1-sink),'YXZ');
+    for(const model of [mini,avata]){
+      const speed=model===mini?1-smooth(.90,1,landed):1;
+      for(const rotor of model.rotors)rotor.rotation.y+=reduced?0:dt*42*speed*rotor.userData.sign;
+    }
   },inspect(camera){return [mini,avata].map(({craft})=>({name:craft.name,position:craft.position.toArray(),ndc:craft.position.clone().project(camera).toArray(),visible:object.visible}));}};
 }

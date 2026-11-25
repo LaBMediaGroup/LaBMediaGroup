@@ -25,10 +25,11 @@ import * as THREE from 'three';
 import {buildPoleCutout} from './pole-cutout.js';
 import { createPondPort } from './pond-port.js?v=15';
 import { buildOak } from './oak.js';
-import { buildFieldStation } from './field-station.js?v=17';
+import { buildFieldStation } from './field-station.js?v=24';
 import {pondCamera} from './pond-camera.js?v=19';
 import {fieldStationCamera} from './station-camera.js?v=23';
-import {fieldDrones} from './field-drones.js?v=23';
+import {fieldDrones} from './field-drones.js?v=24';
+import {outdoorInstruments} from './outdoor-instruments.js?v=24';
 import { buildFieldBird } from './field-bird.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
@@ -294,6 +295,10 @@ function groundSurface(x,z) {
 const station = buildFieldStation({THREE,height:groundSurface,uniforms:U});
 scene.add(station.group);
 const aircraft=fieldDrones(THREE,groundSurface,U,reduce);scene.add(aircraft.object,aircraft.course);
+const instruments=outdoorInstruments(THREE,groundSurface,station,aircraft.course.material,reduce);
+scene.add(instruments.group);
+let activeTool='story',detailOpen=false,detailWeight=0,windSource='Sample wind';
+const detailEye=new THREE.Vector3(),detailAim=new THREE.Vector3(),detailQ=new THREE.Quaternion();
 U.uCourseBake.value=new THREE.TextureLoader().load(new URL('./img/course-beams.png',import.meta.url).href);
 U.uCourseBake.value.flipY=false;
 const stationCos=Math.cos(station.yaw), stationSin=Math.sin(station.yaw);
@@ -732,6 +737,9 @@ const pondShot=pondCamera(THREE,TREE);
 const standPos=new THREE.Vector3(),diveBase=pondShot.overlook;
 
 const qStand = new THREE.Quaternion(), qDive = new THREE.Quaternion(), qTmp = new THREE.Quaternion(), m4 = new THREE.Matrix4();
+const hubEye=new THREE.Vector3(),hubLook=new THREE.Vector3(-4,.5,-5);
+const hubQ=new THREE.Quaternion(),hubCamera=camera.clone();
+const hubPlaces=[[-13.1,2.65,-4.4],[-7.2,1.2,-3.95],[2,.05,-12],[-1.8,1,8]];
 function poseQuats() {
   const portrait = innerHeight > innerWidth;
   // Step back on a narrow screen so both wind indicators fit in the shot.
@@ -741,6 +749,10 @@ function poseQuats() {
   pondShot.frameOverlook(camera,qDive);
 
   camera.fov = portrait ? 62 : 48; camera.updateProjectionMatrix();
+  const distance=THREE.MathUtils.clamp(19/camera.aspect,18,54);
+  hubEye.set(6+distance*.23,8+distance*.32,8+distance*.76);
+  hubCamera.copy(camera);hubCamera.position.copy(hubEye);hubCamera.lookAt(hubLook);hubCamera.updateMatrixWorld();
+  hubQ.copy(hubCamera.quaternion);
 }
 poseQuats();
 const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -766,6 +778,7 @@ function prepareFilmRoom() {
 }
 const stationCamera=fieldStationCamera(THREE,station);
 let renderStationControls=null,stationRevision=0,fieldExitListener=null;
+let hubWeight=0;
 let fieldRead=0,board=0,boardTarget=0;
 let acquire=0,acquireTarget=0,escort=0,escortTarget=0;
 let reportedExit=-1,reportedLight=-1;
@@ -807,6 +820,19 @@ function placeCamera() {
   } else if (room && S.under > .0001) {
     room.cameraPose(camera.aspect,camera.fov,roomPos,roomTarget);
     pondShot.enter(camera,S.under,immersionStroke,S.exitMix,roomPos,roomTarget,U.uSunDir.value,reduce);
+  }
+  if(hubWeight>0){
+    camera.position.lerp(hubEye,hubWeight);camera.quaternion.slerp(hubQ,hubWeight);
+  }
+  if(detailWeight>.001 && (activeTool==='flight'||activeTool==='sun')){
+    const isMeter=activeTool==='flight',object=isMeter?instruments.board:instruments.lcd;
+    object.getWorldPosition(detailAim);
+    object.getWorldQuaternion(detailQ);
+    const fit=(isMeter?.63:.127)/Math.min(1,camera.aspect);
+    detailEye.set(isMeter?.035:.012,fit*.12,fit*(isMeter?1.04:camera.aspect<.85?1.19:1.63)).applyQuaternion(detailQ).add(detailAim);
+    m4.lookAt(detailEye,detailAim,camera.up);detailQ.setFromRotationMatrix(m4);
+    const blend=detailWeight*(1-escort)*(1-S.under)*S.station;
+    camera.position.lerp(detailEye,blend);camera.quaternion.slerp(detailQ,blend);
   }
   room?.stations.focusCamera(camera);
   camera.updateMatrixWorld();
@@ -856,6 +882,7 @@ function frame(now) {
   const approachStep=cameraDt/(gap>0?1.85:1.4);
   S.station+=reduce?gap:THREE.MathUtils.clamp(gap*cameraK,-approachStep,approachStep);
   S.flight+=(S.flightT-S.flight)*cameraK;
+  detailWeight+=((detailOpen?1:0)-detailWeight)*cameraK;
   // Follow the scroll sample within a few frames. Anchor jumps still pass
   // through the doorway, while a paused swipe holds its exact composition.
   const travelStep=reduce?1:cameraDt/1.55;
@@ -891,9 +918,10 @@ function frame(now) {
     immersionStroke=THREE.MathUtils.clamp(immersionStroke+(forwardCross?move:-move),0,1);
   }
   // The course and its drones belong to the south field: keep them out of the opening shot.
-  aircraft.course.visible=aircraft.object.visible=S.station>.5||S.flight>.01;
+  aircraft.course.visible=aircraft.object.visible=hubWeight>.05||S.station>.5||S.flight>.01;
   U.uCourseLight.value=aircraft.course.visible?1-ss(-.10,-.035,U.uEl.value):0;
-  aircraft.update(cameraDt,S.station>.85 && S.inside<.22 && escort<.993 && S.under<.05 && S.rise<.05,escort);
+  aircraft.update(cameraDt,S.station>.85 && S.inside<.22 && escort<.993 && S.under<.05 && S.rise<.05,escort,S.wind>=18);
+  instruments.wind(dt,S.wind,U.uWindDir.value,S.wind>=18?'HOLD':'COURSE OPEN',windSource);
   placeCamera();
   if(room && reportFilmApproach && reportedUnder!==S.under){reportedUnder=S.under;reportFilmApproach(S.under);}
   if(renderStationControls)renderStationControls(S.station);
@@ -939,6 +967,7 @@ function frame(now) {
     renderer.render(room.scene, camera);
   } else {
     if (!QL.skipRefl || QL.odd) renderReflection();
+    instruments.expose(renderer,scene,S.t,activeTool==='sun' && S.station>.95 && S.inside<.4 && S.dive<.1 && acquire<.85);
     renderer.render(scene, camera);
   }
   port.wetFilm(renderer, U.uSplashAge.value);
@@ -975,7 +1004,10 @@ document.addEventListener('visibilitychange', () => {
   else port.impact.clear();
 });
 
+let fieldSun=.06,fieldBearing=.2;
 function setSun(elRad,off=.2) {
+  fieldSun=elRad;fieldBearing=off;
+  elRad+=Math.max(0,.105-elRad)*hubWeight;
   S.el = elRad; const p = palette(elRad);
   U.uEl.value = elRad; U.uDay.value = p.day; U.uGold.value = p.gold; U.uNight.value = p.night;
   U.uZen.value.setRGB(...p.zen, THREE.LinearSRGBColorSpace); U.uHor.value.setRGB(...p.hor, THREE.LinearSRGBColorSpace); U.uSunC.value.setRGB(...p.sun, THREE.LinearSRGBColorSpace);
@@ -988,10 +1020,34 @@ window.LabWorld = {
   setSun(elDeg,offsetDeg=11.46) { setSun(elDeg*Math.PI/180,offsetDeg*Math.PI/180); },
   setStation(weight) { S.stationT=weight; },
   setFieldEscort(acquisition,progress){acquireTarget=acquisition;escortTarget=progress;},
+  hubPoints(){return hubPlaces.map(xyz=>{
+    const v=new THREE.Vector3(...xyz).project(hubCamera);
+    return {x:(v.x+1)*innerWidth/2,y:(1-v.y)*innerHeight/2};
+  });},
+  setHubOverview(weight){if(weight!==hubWeight){hubWeight=weight;setSun(fieldSun,fieldBearing);}},
   setFieldRead(value){fieldRead=value;},
   setStationJourney(book,outside,wallWeight){boardTarget=wallWeight;S.bookT=book;S.insideT=1-outside;},
   bindFieldExit(callback){fieldExitListener=callback;reportedLight=-1;},
-  setFieldTool(_tool,height) {
+  setWindEditing(edit){instruments.editWind(edit);},
+  setCourseLesson(value){instruments.setLesson(value);},
+  instrumentCorners(){
+    if(detailWeight<.04 || !detailOpen || escort>.01)return null;
+    const meter=activeTool==='flight',surface=meter?instruments.board:instruments.lcd;
+    const w=meter?.30:.0555,h=meter?.1475:.03125;
+    return [[-w,h],[w,h],[w,-h],[-w,-h]].map(([x,y])=>
+      viewportPoint(surface.localToWorld(new THREE.Vector3(x,y,.0003))));
+  },
+  setWindSource(value){windSource=value;},
+  setInstrumentDetail(open){detailOpen=open;},
+  instrumentPoint(){
+    if(detailOpen||detailWeight>.12||S.station<.98||S.inside>.08||escort>.015||S.under>.01)return null;
+    const item=activeTool==='sun' && acquire<.05?instruments.lcd:activeTool==='flight' && acquire>.97?instruments.board:null;
+    if(!item)return null;item.getWorldPosition(screenPoint);screenPoint.project(camera);
+    return screenPoint.z>0 && screenPoint.z<1?{x:(screenPoint.x+1)*innerWidth/2,y:(1-screenPoint.y)*innerHeight/2}:null;
+  },
+  setFieldTool(tool,height) {
+    if(activeTool!==tool){detailOpen=false;detailWeight=0;}
+    activeTool=tool;
     S.flightT=height;
   },
   setStoryLine(text,label,animate,pins=[]){station.bench?.setStory(text,label,animate&&!reduce,pins);stationRevision++;},
@@ -1001,7 +1057,7 @@ window.LabWorld = {
     if(S.station<.94 || S.inside<.88 || S.dive>.055 || S.under>.01)return null;
     const bench=station.bench,isStory=tool==='story';
     if(tool==='events'){if(board<.94)return null;}
-    else if(board>.10 || !bench || (isStory?S.book>.12:tool!=='book' || S.book<.88))return null;
+    else if(board>.10 || !bench || (isStory?S.book>.12:(tool!=='book' && tool!=='ask') || S.book<.88))return null;
     const turning=!isStory && bench.turningPage;
     const key=tool+'|'+Number(turning)+'|'+innerWidth+','+innerHeight+'|'+camera.matrixWorld.elements.map(n=>Math.round(n*10000)).join(',');
     if(key===previousKey && previousRevision===stationRevision)return {unchanged:true};

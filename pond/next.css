@@ -534,3 +534,61 @@ html.settle-touch{scroll-snap-type:y mandatory;scroll-behavior:smooth}
   .kinds span{padding:7px 0;text-align:center;font-size:12px}
   .foot .micro{font-size:9px;letter-spacing:.035em}
 }
+
+#fieldHub{position:absolute;inset:0;display:grid;grid-template-columns:repeat(2,max-content);align-content:center;justify-content:center;gap:8px;pointer-events:none;z-index:2}
+#fieldHub a{position:relative;display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 13px;pointer-events:auto;background:#192820e8;color:#fff3d8;border:1px solid #c2b79f99;border-radius:4px;font:600 14px var(--body);white-space:nowrap;text-decoration:none}
+#fieldHub a:is(:hover,:focus-visible){background:#f0dfc1;color:#1e2c23;outline:2px solid #ca8b51;outline-offset:2px}
+#fieldHub.mapped{display:block}#fieldHub.mapped a{position:absolute}
+#fieldHub i{display:none;pointer-events:none;position:absolute;height:1px;transform-origin:0 50%;background:#f7e6c3;box-shadow:0 1px 2px #181d15}
+#fieldHub.mapped i{display:block}#fieldHub i::after{content:"";position:absolute;right:-2px;top:-2px;width:5px;height:5px;border-radius:50%;background:#f8d4a4}
+#fieldHub[inert] a{pointer-events:none}
+.wind-dial,.course-meter label{display:inline-flex;align-items:center;gap:8px;font:600 12px var(--body)}
+.wind-dial input,.course-meter input{min-height:32px;accent-color:#dda06a;width:clamp(78px,12vw,150px)}
+.wind-controls{flex-wrap:wrap}
+.course-meter{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.course-meter output{font:500 12px var(--mono);color:#e6d3b7}
+.course-meter .instrument-view,.course-meter label{min-height:36px}
+.scene-locator{position:fixed;z-index:1;transform:translate(-50%,-100%);min-height:44px;padding:0 10px;cursor:pointer;border:1px solid #ede0bd99;border-radius:4px;background:#17271fe8;color:#fff1cd;font:600 12px var(--body)}
+.scene-locator:after{content:"";position:absolute;bottom:-9px;left:50%;height:8px;border-left:1px solid #e0cfaa}
+.scene-locator[hidden]{display:none}
+.no-world .instrument-view{display:none}
+@media(max-width:640px){.course-meter{gap:6px}.course-meter input{width:80px}.wind-instrument{gap:10px}.wind-controls{max-width:48vw}}
+.physical-tools #bookAsk{left:36%;bottom:1%;color:#73482f}
+.physical-tools[data-instrument=ask] .instruments{position:static}
+.physical-tools #panel-ask{
+  position:fixed;top:0;left:0;transform-origin:0 0;width:500px;height:385px;padding:12px 16px;
+  display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:8px;align-content:stretch;
+  background:transparent;border:0;border-radius:0;box-shadow:none;visibility:hidden;color:#282d27;
+  font:var(--paper-type,22px)/1.2 var(--body);animation:none;overflow:visible
+}
+.physical-tools.surface-ready #panel-ask:not([hidden]){visibility:visible}
+.physical-tools #panel-ask[hidden]{display:none}
+.physical-tools #panel-ask .instrument-meta{font:600 1em var(--serif);color:#714230}
+.physical-tools #fieldAsk{display:flex;gap:8px}
+.physical-tools #fieldAsk input,.physical-tools #fieldAsk button,.physical-tools .ask-foot button{font:inherit;color:inherit;border-radius:0;border:0;border-bottom:1px solid #8a7e69;background:#fff8e66e;min-height:34px}
+.physical-tools #fieldAsk input{flex:1;min-width:0;width:1em}
+.physical-tools #panel-ask .tool-answer{grid-row:3;overflow:auto;max-height:none;background:transparent;color:inherit;border:0;padding:0 3px;font:inherit}
+.ask-foot{display:flex;justify-content:space-between;align-items:center;gap:5px}
+.physical-tools .ask-foot{grid-row:4}.physical-tools #panel-ask .full-tool{color:#503c29;font:inherit}
+#guideKeys[hidden]{display:none}
+#guideKeys{display:grid;gap:10px;color:inherit;font:500 14px var(--body)}
+#guideKeys>div{display:flex;align-items:center;justify-content:space-between;gap:6px}
+#guideKeys a,#guideKeys button{color:inherit;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+#guideKeys.on-sign{position:fixed;left:0;top:0;z-index:2;width:480px;height:236px;transform-origin:0 0;display:flex;align-items:flex-end;color:#263c30;padding:0 16px 8px;pointer-events:none}
+#guideKeys.on-sign #guideTitle{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
+#guideKeys.on-sign>div{width:100%;pointer-events:auto;border-top:1px solid #82765b}
+#guideKeys.on-sign a,#guideKeys.on-sign button{font:600 21px var(--body);background:transparent;border:0;padding-inline:12px}
+#guideKeys button:disabled{opacity:.3}
+.tools[data-detail=guide] .flight-camera,.tools[data-detail=guide] .flight-links,.tools[data-detail=guide] .flight-models,.tools[data-detail=guide] .course-meter label,.tools[data-detail=guide] .course-meter output,.tools[data-detail=guide] #courseWeather,.tools[data-detail=wind] .flight-camera,.tools[data-detail=wind] .flight-links{display:none}
+#windKeys{display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+#windKeys.on-sign,.solar-track.on-sign{position:fixed;top:0;left:0;z-index:2;transform-origin:0 0;width:480px;height:236px;display:flex;align-items:flex-end;justify-content:center;padding:0 16px 8px;pointer-events:none}
+#windKeys.on-sign label,#windKeys.on-sign button,#windKeys.on-sign output{font:600 19px var(--body);color:#ffefce;pointer-events:auto}
+#windKeys.on-sign label{display:flex;align-items:center;gap:10px}
+#windKeys.on-sign input{width:190px;min-height:var(--touch-height,44px);accent-color:#e7a873}
+#windKeys.on-sign output{display:none}#windKeys.on-sign button{min-height:var(--touch-height,44px);background:none;border:0;text-decoration:underline;cursor:pointer}
+.solar-track.on-sign{width:480px;height:270px;gap:0;padding:0 14px 5px}
+.solar-track.on-sign input{pointer-events:auto;min-height:var(--touch-height,44px);width:100%;accent-color:#efac68;cursor:ew-resize}
+.solar-track.on-sign .range-labels{display:none}
+#guideKeys.on-sign a,#guideKeys.on-sign button{min-height:var(--touch-height,44px)}
+.no-world .hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:var(--hub-photo,1);background:center/cover url('img/hub-wide.webp')}
+@media(orientation:portrait){.no-world .hero::after{background-image:url('img/hub-portrait.webp')}}

@@ -16,6 +16,7 @@ window.createStationSurfaces=function(section,world,currentTool){
     return true;
   }
   function paint(arrival){
+    surfaceUI.onFrame?.(projectQuad);
     picker.inert=arrival<.78;
     const approaching=arrival<.78;
     if(section.hasAttribute('data-approaching')!==approaching)section.toggleAttribute('data-approaching',approaching);
@@ -28,8 +29,12 @@ window.createStationSurfaces=function(section,world,currentTool){
     if(surface.unchanged && tool===lastTool)return;
     const {corners,anchors,key,revision}=surface;
     if(!corners)return;
-    const isStory=tool==='story',el=tool==='events'?doc.getElementById('panel-events'):isStory?fridge:book;
+    const isStory=tool==='story',el=tool==='events'?doc.getElementById('panel-events'):isStory?fridge:tool==='ask'?doc.getElementById('panel-ask'):book;
     if(!projectQuad(el,corners,el.offsetWidth,el.offsetHeight))return;
+    if(tool==='ask'){
+      const pageWidth=Math.hypot(corners[1].x-corners[0].x,corners[1].y-corners[0].y);
+      el.style.setProperty('--paper-type',Math.max(17,Math.min(33,16*el.offsetWidth/pageWidth))+'px');
+    }
     lastTool=tool;lastProjection=key;lastRevision=revision;
     section.classList.add('surface-ready');section.classList.toggle('page-moving',Boolean(surface.turning));layer.hidden=!isStory;
     if(isStory)for(const a of anchors){
@@ -43,9 +48,10 @@ window.createStationSurfaces=function(section,world,currentTool){
     section.classList.remove('physical-tools','surface-ready');section.removeAttribute('data-approaching');
     picker.inert=false;layer.hidden=true;hint.before(words);
   });
-  return {connect(){
+  const surfaceUI={connect(){
     const api=world();if(!api?.stationSurface||bound===api)return;
     bound=api;section.classList.add('physical-tools');layer.append(words);
     api.bindStationControls(paint);
   }};
+  return surfaceUI;
 };

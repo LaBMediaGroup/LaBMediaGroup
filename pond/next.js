@@ -160,7 +160,7 @@
 
   /* ---------- live sky + wind ---------- */
   var wx = null, sunAz = 230, sampleWind = false;
-  var previewWind = false, previewTimer, windFrame, sceneMph = 6;
+  var previewWind = false, previewOwner='',previewMph=6,windFrame,sceneMph=6;
   var demoButton = $('#windDemo');
   var AT = location.search.match(/[?&]at=(\d{1,2}):(\d{2})/);
   var WIND = location.search.match(/[?&]wind=(\d+)/);
@@ -186,17 +186,23 @@
   }
   function updateWind(animate) {
     var data = wx || {wind:6,gust:10,dir:270,cloud:.4};
-    var mph = previewWind ? 30 : data.wind;
+    var mph = previewWind ? previewMph : data.wind;
     $('#tWind').textContent = previewWind || wx ? Math.round(mph) : '—';
     $('#windBearing').textContent = previewWind || wx ? compass(data.dir) : '';
     var status = previewWind ? 'Wind preview' : !wx ? 'Getting local wind…' :
       sampleWind ? 'Sample conditions' : 'Current · gusts '+Math.round(data.gust)+' mph';
     var fieldStatus = $('#windStatus');
     if (fieldStatus.textContent !== status) fieldStatus.textContent = status;
-    demoButton.textContent = previewWind ? 'End preview' : 'Preview 30 mph wind';
-    demoButton.setAttribute('aria-pressed',String(previewWind));
+    for(const id of ['windRange','courseWind']){
+      const range=$('#'+id);range.value=String(Math.round(mph));range.setAttribute('aria-valuetext',Math.round(mph)+' mph');
+    }
+    $('#courseWindValue').textContent=Math.round(mph)+' mph';
+    $('.flight-models').textContent = mph >= 18
+      ? 'Avata 2 on the course · Mini 4 Pro on wind hold'
+      : 'Avata 2 on the course · Mini 4 Pro overhead';
+    demoButton.hidden=!previewWind;$('#courseWeather').hidden=!previewWind;
     if (!W()) return;
-    demoButton.hidden = reduce;
+    W().setWindSource(previewWind?'Wind preview':sampleWind||!wx?'Sample wind':'Local wind');
     W().setCloud(data.cloud);
     cancelAnimationFrame(windFrame);
     var start = performance.now(), from = sceneMph;
@@ -209,17 +215,15 @@
     apply(start);
   }
   function endPreview() {
-    clearTimeout(previewTimer);
     if (!previewWind) return;
-    previewWind = false;
-    updateWind(true);
+    previewWind=false;previewOwner='';updateWind(true);
   }
-  demoButton.addEventListener('click',function(){
-    if (previewWind) { endPreview(); return; }
-    previewWind = true;
-    updateWind(true);
-    previewTimer = setTimeout(endPreview,7000);
-  });
+  for(const [id,owner] of [['windRange','opening'],['courseWind','flight']]){
+    $('#'+id).addEventListener('input',e=>{
+      previewOwner=owner;previewMph=e.currentTarget.valueAsNumber;previewWind=true;updateWind(false);
+    });
+  }
+  demoButton.addEventListener('click',endPreview);$('#courseWeather').addEventListener('click',endPreview);
   function weather() {
     fetch('https://api.open-meteo.com/v1/forecast?latitude=42.67&longitude=-83.03&current=wind_speed_10m,wind_gusts_10m,wind_direction_10m,cloud_cover&wind_speed_unit=mph&timezone=auto')
       .then(function (r) { if (!r.ok) throw Error('Weather unavailable'); return r.json(); })
@@ -244,6 +248,7 @@
   /* ---------- scroll: dive, tiles, ink ---------- */
   var hero = $('.hero-in'), windInstrument = $('.wind-instrument'), cue = $('.cue'), toolsSection=$('#tools'), workSection=$('#work'), filmFrame=$('.film-frame');
   var make = $('#make'), mkH = $('#mk');
+  const hub=window.createFieldHub(W,reduce);
   const toolFrame=toolsSection.querySelector('.station-frame');
   const approach=$('.shed-approach'),footer=$('.foot');
   const measureFooter=()=>make.style.setProperty('--footer-height',footer.offsetHeight+'px');
@@ -347,13 +352,16 @@
     const span=Math.max(1,opening.offsetHeight-hero.parentElement.offsetHeight);
     const p=y/span, intro=phase(p,.05,.36), wind=phase(p,.23,.50);
     const exit=1-phase(p,.81,1.06);
+    const overview=1-phase(p,0,.50);
+    W()?.setHubOverview(reduce ? Number(p < .18) : overview);
+    hub.update(1-phase(p,.025,.19));
     openingLayer(invitation,1-phase(p,.035,.20),-10*intro);
     openingLayer(hero,intro*exit,18*(1-intro)-12*(1-exit));
     openingLayer(windInstrument,wind*exit,12*(1-wind));
     openingLayer(cue,wind*exit,8*(1-wind));
     opening.style.setProperty('--field-shade',String(intro*exit));
     W()?.setFieldRead?.(phase(p,0,.80));
-    if(previewWind && exit<.2)endPreview();
+    if(previewWind && (previewOwner==='opening'?exit<.2:toolsSection.dataset.instrument!=='flight' || escort>.15))endPreview();
     const contactTop=make.getBoundingClientRect().top;
     const chapter=contactTop<vh*.75?'#make':filmRect.top<vh*.65?'#films':workRect.top<vh*.65?'#work':stationProgress>=.92?'#drone-school':toolRect.top<vh*.65?'#tools':'#top';
     const toolOrder=['story','events','book','sun'];
@@ -787,5 +795,5 @@
     }
   });
 
-  onScroll();
+  onScroll();hub.layout();
 })();

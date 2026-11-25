@@ -824,3 +824,32 @@ test('the contact heading clears the fixed header at the bottom of a short phone
     assert.ok(Math.abs(bounds.viewport-bounds.footer)<2);
   }finally{await page.close();}
 });
+
+test('portrait field hub supports keyboard travel and a working pilot guide without WebGL', async () => {
+  const page = await browser.newPage({ viewport: { width: 320, height: 568 }, reducedMotion: 'reduce' });
+  try {
+    await page.route('**/world.js*', route => route.abort());
+    await page.goto(baseURL);
+    await page.locator('html.no-world #fieldHub.mapped').waitFor();
+    await page.locator('#loader.done').waitFor({ state: 'attached' });
+    const links = page.locator('#fieldHub a');
+    const boxes = await links.evaluateAll(items => items.map(item => item.getBoundingClientRect().toJSON()));
+    assert.equal(boxes.length, 4);
+    for (const [i, box] of boxes.entries()) {
+      assert.ok(box.height >= 44 && box.left >= 0 && box.right <= 320 && box.top >= 0 && box.bottom <= 568);
+      for (const other of boxes.slice(i + 1)) {
+        assert.ok(box.right <= other.left || other.right <= box.left || box.bottom <= other.top || other.bottom <= box.top);
+      }
+    }
+    await links.filter({ hasText: /drone school/i }).focus();
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(() => document.querySelector('#tools').dataset.instrument === 'flight');
+    await page.locator('#guideView').click();
+    await page.locator('#guideNext').click();
+    assert.equal(await page.locator('#guideLink').getAttribute('href'), 'skybound.html#watch-learn');
+    await page.goBack();
+    await page.waitForFunction(() => window.scrollY < 2);
+  } finally {
+    await page.close();
+  }
+});

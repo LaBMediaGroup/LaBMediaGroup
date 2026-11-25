@@ -33,12 +33,12 @@ if(!location.hash && entry?.type!=='back_forward' && 'scrollRestoration' in hist
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Space+Mono&display=swap">
 <link rel="preload" as="image" href="images/TheLaB-mark.png">
-<link rel="stylesheet" href="/pond/next.css?v=23">
+<link rel="stylesheet" href="/pond/next.css?v=24">
 <script type="importmap">{"imports":{"three":"/pond/vendor/three/three.module.js","three/addons/":"/pond/vendor/three/addons/"}}</script>
 <script defer src="sun-calc.js"></script>
 <script defer src="ideas-data.js?v=magnet-1"></script>
 <script type="module">
-import('/pond/world.js?v=23').catch(()=>{
+import('/pond/world.js?v=24').catch(()=>{
   document.documentElement.classList.add('no-world');
   dispatchEvent(new Event('labworld:unavailable'));
 });
@@ -46,10 +46,11 @@ import('/pond/world.js?v=23').catch(()=>{
 <script defer src="/pond/film-viewer.js?v=20"></script>
 <script defer src="/pond/film-player.js?v=20"></script>
 <script defer src="/pond/station-story.js?v=11"></script>
-<script defer src="/pond/surface-controls.js?v=17"></script>
+<script defer src="/pond/surface-controls.js?v=24"></script>
 <script defer src="/pond/event-board.js?v=17"></script>
-<script defer src="/pond/field-tools.js?v=23"></script>
-<script defer src="/pond/next.js?v=23"></script>
+<script defer src="/pond/field-tools.js?v=24"></script>
+<script defer src="/pond/field-hub.js?v=24"></script>
+<script defer src="/pond/next.js?v=24"></script>
 </head>
 <body>
 <canvas id="world" aria-hidden="true"></canvas>
@@ -62,7 +63,7 @@ import('/pond/world.js?v=23').catch(()=>{
 </div>
 
 <header class="hud">
-  <a class="mark" href="#top" aria-label="Back to top"><img src="images/TheLaB-mark.png" alt="The LaB" width="1165" height="498"></a>
+  <a class="mark" href="#top" aria-label="Return to the field hub"><img src="images/TheLaB-mark.png" alt="The LaB" width="1165" height="498"></a>
   <nav aria-label="Main"><button type="button" class="snd" id="snd" aria-pressed="false" aria-label="Pond ambience" title="Pond ambience"><i></i><i></i><i></i><i></i></button><div class="chapter-nav"><button type="button" id="browseChapters" aria-expanded="false" aria-controls="chapters" aria-label="Browse chapters, Field"><b id="chapterName">Field</b> <span aria-hidden="true">⌄</span></button><div id="chapters"><a href="#top">Field</a><a href="#tools">Tools</a><a href="#drone-school">Drone school</a><a href="#work">Websites</a><a href="#films">Films</a><a class="contact-stop" href="#make">Contact</a></div></div><a class="cta" href="#make">Build yours</a></nav>
 </header>
 
@@ -72,6 +73,12 @@ import('/pond/world.js?v=23').catch(()=>{
   <section class="opening" aria-labelledby="h1">
     <span class="wind-stop" id="wind" aria-hidden="true"></span>
     <div class="hero">
+    <nav id="fieldHub" aria-label="Places in the field">
+      <a href="#tools" data-side="left" data-lift="-42"><i aria-hidden="true"></i>Tool shed</a>
+      <a href="#work" data-side="left" data-lift="34"><i aria-hidden="true"></i>Websites</a>
+      <a href="#films" data-side="right" data-lift="-37"><i aria-hidden="true"></i>Film pond</a>
+      <a href="#drone-school" data-side="right" data-lift="32"><i aria-hidden="true"></i>Drone school</a>
+    </nav>
     <a href="#wind" class="enter-field">Explore the field <span aria-hidden="true">↓</span></a>
     <div class="hero-in">
       <p class="micro" id="where">Bobby Baldwin · Shelby Twp, Michigan<span id="fieldLight"></span></p>
@@ -84,7 +91,7 @@ import('/pond/world.js?v=23').catch(()=>{
       </div>
       <div class="wind-controls">
         <span class="micro" id="windStatus" role="status">Getting local wind…</span>
-        <button type="button" id="windDemo" aria-pressed="false" hidden>Preview 30 mph wind</button>
+        <label class="wind-dial">Preview wind <input id="windRange" type="range" min="0" max="30" value="6" aria-label="Preview field wind in miles per hour"></label><button type="button" id="windDemo" hidden>Return to weather</button>
       </div>
     </div>
     <a href="#tools" class="cue micro">Enter the shed <span aria-hidden="true">↓</span></a>
@@ -94,6 +101,7 @@ import('/pond/world.js?v=23').catch(()=>{
   <section class="tools" id="tools" aria-label="Field station" data-place="shed" data-instrument="story">
     <span class="scroll-stop" id="drone-school" data-stop="flight" aria-hidden="true"></span>
     <div class="station-frame">
+    <button class="scene-locator" id="inspectInstrument" type="button" hidden></button>
     <div class="tool-picker">
       <button type="button" id="chooseTool" aria-expanded="false" aria-controls="stationIndex"><span id="choicePlace">Inside the shed</span><strong id="choiceName">Story fridge</strong><span aria-hidden="true">⌄</span></button>
       <div id="stationIndex" class="tool-tabs" role="tablist" aria-label="Field station tools"><div class="tool-group" role="presentation"><span aria-hidden="true">Inside the shed</span><div role="presentation"><button type="button" role="tab" id="tab-story" aria-controls="panel-story" aria-selected="true" tabindex="0" data-tool="story">Story fridge</button><button type="button" role="tab" id="tab-events" aria-controls="panel-events" aria-selected="false" tabindex="-1" data-tool="events">Events</button><button type="button" role="tab" id="tab-book" aria-controls="panel-book" aria-selected="false" tabindex="-1" data-tool="book">Notebook</button><button type="button" role="tab" id="tab-ask" aria-controls="panel-ask" aria-selected="false" tabindex="-1" data-tool="ask">Ask the LaB</button></div></div><div class="tool-group" role="presentation"><span aria-hidden="true">Over the pond</span><div role="presentation"><button type="button" role="tab" id="tab-sun" aria-controls="panel-sun" aria-selected="false" tabindex="-1" data-tool="sun">Golden hour</button><button type="button" role="tab" id="tab-flight" aria-controls="panel-flight" aria-selected="false" tabindex="-1" data-tool="flight">Drone school</button></div></div></div>
@@ -111,17 +119,27 @@ import('/pond/world.js?v=23').catch(()=>{
         <div class="instrument-head"><label for="bookTopic">Resource notebook</label><select id="bookTopic"><option value="music">Music</option><option value="soundfx">Sound effects</option><option value="stock">Stock footage</option><option value="software">Software</option></select></div>
         <h2 class="result-text"><a id="bookName"></a></h2><p id="bookDesc" class="tool-copy"></p>
         <div class="instrument-actions"><button id="bookPrev" type="button" aria-label="Previous notebook page">← Back</button><button class="action" id="bookNext" type="button" aria-label="Next notebook page">Next →</button><button id="bookSave" type="button" aria-pressed="false">Save to my kit</button></div>
-        <div class="tool-links"><a href="mykit.html">My kit ↗</a><a href="resources.html">Full notebook ↗</a></div>
+        <button id="bookAsk" class="paper-tab" type="button">Ask the LaB</button><div class="tool-links"><a href="mykit.html">My kit ↗</a><a href="resources.html">Full notebook ↗</a></div>
       </div>
       <div class="instrument" role="tabpanel" id="panel-sun" aria-labelledby="tab-sun" hidden>
         <div class="instrument-head"><span>Golden hour</span><span id="sunPhase">Shelby Township</span></div><h2 id="sunTime">Golden hour</h2>
         <p class="tool-copy" id="sunWindow"></p>
         <div class="solar-track"><input type="range" id="sunClock" min="0" max="1000" step="1" value="0" aria-label="Preview time in Shelby Township"><div class="range-labels"><span id="sunEarly">Afternoon</span><span id="sunBearing"></span><span id="sunLate">Dusk</span></div></div>
-        <div class="instrument-actions"><button class="action" id="sunPlay" type="button">Play sunset</button><button id="sunReset" type="button" hidden>Return to now</button><a class="full-tool" href="sun.html">Sun planner ↗</a></div>
+        <div class="instrument-actions"><button type="button" class="instrument-view" id="monitorView" aria-pressed="false">Viewfinder</button><button class="action" id="sunPlay" type="button">Play sunset</button><button id="sunReset" type="button" hidden>Return to now</button><a class="full-tool" href="sun.html">Sun planner ↗</a></div>
       </div>
       <div class="instrument" role="tabpanel" id="panel-flight" aria-labelledby="tab-flight" hidden>
         <div class="flight-heading"><h2>Drone school</h2><output id="flightReadout" for="flightHeight">6.4 m</output></div>
         <p class="flight-models">Avata 2 on the course · Mini 4 Pro overhead</p>
+        <div class="course-meter">
+          <button type="button" class="instrument-view" id="meterView" aria-pressed="false">Wind station</button>
+          <button type="button" id="guideView" aria-pressed="false">Pilot guide</button>
+          <div id="windKeys"><label>Wind <input id="courseWind" type="range" min="0" max="30" value="6" aria-label="Preview course wind in miles per hour"></label>
+          <output for="courseWind" id="courseWindValue">—</output><button id="courseWeather" type="button" hidden>Restore</button></div>
+        </div>
+        <div id="guideKeys" hidden>
+          <span id="guideTitle" aria-live="polite"></span>
+          <div><button id="guidePrev" type="button" aria-label="Previous lesson">←</button><a id="guideLink" href="skybound.html#simulators">Open lesson ↗</a><button id="guideNext" type="button" aria-label="Next lesson">→</button></div>
+        </div>
         <div class="flight-camera"><button type="button" class="action" id="flyShot">Fly the reveal</button><input type="range" id="flightHeight" min="0" max="16" step=".1" value="0" aria-label="Course camera altitude" aria-describedby="flightNote"><span id="flightNote" class="sr"></span></div>
         <nav class="flight-links" aria-label="Drone school resources">
           <div><span>Practice</span><a href="https://store.steampowered.com/app/410340/Liftoff_FPV_Drone_Racing/" target="_blank" rel="noopener">Liftoff ↗</a><a href="https://www.velocidrone.com/" target="_blank" rel="noopener">VelociDrone ↗</a></div>
@@ -138,8 +156,8 @@ import('/pond/world.js?v=23').catch(()=>{
 </div>
 </div>
 <div class="instrument" role="tabpanel" id="panel-ask" aria-labelledby="tab-ask" hidden>
-<label for="fieldQuery" class="instrument-meta">Search the LaB’s filmmaking index</label><form id="fieldAsk" action="assistant.html"><input id="fieldQuery" name="q" placeholder="Where can I find sound effects?" required maxlength="300"><button type="submit">Ask ↗</button></form><div class="tool-answer" id="fieldAnswer" role="status" tabindex="0" hidden></div>
-<a class="full-tool" href="assistant.html">Open the assistant ↗</a>
+<label for="fieldQuery" class="instrument-meta">Ask the LaB</label><form id="fieldAsk" action="assistant.html"><input id="fieldQuery" name="q" placeholder="Where can I find sound effects?" required maxlength="300"><button type="submit">Ask ↗</button></form><div class="tool-answer" id="fieldAnswer" role="status" tabindex="0" hidden></div>
+<div class="ask-foot"><button id="askBook" type="button">← Notebook</button><a class="full-tool" href="assistant.html">Full index ↗</a></div>
 </div></div>
     </div>
   </section>

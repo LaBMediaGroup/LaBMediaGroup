@@ -200,6 +200,7 @@ export function buildFieldBench({THREE:T, uniforms:U, group, floor, placement, b
     const crease=ctx.createLinearGradient(475,0,551,0);
     crease.addColorStop(0,'#43392800');crease.addColorStop(.5,'#43392835');crease.addColorStop(1,'#43392800');
     ctx.fillStyle=crease;ctx.fillRect(475,0,76,768);
+    if(category==='Ask the LaB')return; // Search and response are live ink controls on these pages.
     ctx.fillStyle='#834434';ctx.font='600 27px Georgia';ctx.fillText('FIELD INDEX',38,118);
     ctx.fillStyle='#6e604f';fitText(ctx,category||'Production resources',39,169,418,70,31,24);
     ctx.strokeStyle='#9a8d77';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(39,208);ctx.lineTo(421,207);ctx.stroke();

@@ -163,12 +163,75 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
     frame(start);
   });
   reset.addEventListener('click',clearSun);
+  const locator=get('inspectInstrument'),meterView=get('meterView'),monitorView=get('monitorView');
+  const guideView=get('guideView'),guide=get('guideKeys');
+  const plateControls={guide,wind:get('windKeys'),sun:get('sunClock').closest('.solar-track')};
+  const homes=new Map();
+  for(const el of Object.values(plateControls)){
+    const home=document.createComment('instrument controls');el.before(home);homes.set(el,home);
+  }
+  const lessons=[
+    ['Simulator practice','Learn stick control before the first flight.','simulators'],
+    ['Watch a pilot','Read a line through the gates with a pilot.','watch-learn'],
+    ['Build your kit','Compare aircraft, radios and goggles.','gear'],
+    ['Part 107','Find the certification study resources.','part107']
+  ];
+  let detail='',lessonIndex=0;
+  function writeGuide(){
+    const [title,note,hash]=lessons[lessonIndex],step=(lessonIndex+1)+' / '+lessons.length;
+    get('guideTitle').textContent=step+' · '+title;get('guideLink').href='skybound.html#'+hash;
+    get('guidePrev').disabled=lessonIndex===0;get('guideNext').disabled=lessonIndex===lessons.length-1;
+    world()?.setCourseLesson(detail==='guide'?{title,note,step}:null);
+  }
+  function setDetail(next){
+    detail=next||'';world()?.setInstrumentDetail(Boolean(detail));
+    section.dataset.detail=detail;
+    for(const [button,id,name] of [[meterView,'wind','Wind station'],[monitorView,'sun','Viewfinder'],[guideView,'guide','Pilot guide']]){
+      const on=detail===id;button.setAttribute('aria-pressed',String(on));button.textContent=on?'Back to field':name;
+    }
+    guide.hidden=detail!=='guide';
+    for(const [id,el] of Object.entries(plateControls)){
+      const mounted=Boolean(world() && detail===id);
+      if(mounted){frame.append(el);el.classList.add('on-sign');}
+      else if(el.classList.contains('on-sign')){
+        el.classList.remove('on-sign');el.style.transform='';el.style.visibility='';homes.get(el).after(el);
+      }
+    }
+    world()?.setWindEditing(detail==='wind');
+    writeGuide();if(detail)locator.hidden=true;
+  }
+  for(const [id,step] of [['guidePrev',-1],['guideNext',1]])get(id).addEventListener('click',()=>{
+    lessonIndex=Math.max(0,Math.min(lessons.length-1,lessonIndex+step));writeGuide();
+  });
+  function positionLocator(projectQuad){
+    const el=plateControls[detail];
+    if(el?.classList.contains('on-sign')){
+      const corners=world()?.instrumentCorners();
+      el.style.visibility=corners?'visible':'hidden';
+      if(corners){
+        projectQuad(el,corners,el.offsetWidth,el.offsetHeight);
+        const w=Math.hypot(corners[1].x-corners[0].x,corners[1].y-corners[0].y);
+        el.style.setProperty('--touch-height',Math.min(130,Math.max(40,44*el.offsetWidth/Math.max(1,w)))+'px');
+      }
+    }
+    const point=world()?.instrumentPoint();
+    locator.hidden=!point || point.x<24 || point.x>innerWidth-24 || point.y<80 || point.y>innerHeight-75;
+    if(!locator.hidden){
+      locator.textContent=active==='sun'?'Viewfinder':'Wind station';
+      locator.style.left=Math.min(innerWidth-61,Math.max(61,point.x))+'px';
+      locator.style.top=(point.y-9)+'px';
+    }
+  }
+  locator.addEventListener('click',()=>{setDetail(active==='sun'?'sun':'wind');(active==='sun'?monitorView:meterView).focus({preventScroll:true});});
+  for(const [button,id] of [[meterView,'wind'],[monitorView,'sun'],[guideView,'guide']])button.addEventListener('click',()=>setDetail(detail===id?'':id));
+  addEventListener('labworld:unavailable',()=>{locator.hidden=true;setDetail(false);});
   const height=get('flightHeight');
   let flying=0;
   function stopFlight(){cancelAnimationFrame(flying);flying=0;get('flyShot').textContent=reduced?'Show aerial view':'Fly the reveal';}
   function flight() {
     const unavailable=document.documentElement.classList.contains('no-world');
     height.disabled=unavailable;get('flyShot').disabled=unavailable;
+    meterView.disabled=monitorView.disabled=unavailable;
     get('flightNote').textContent=unavailable?'Open the simulator guide below.':height.valueAsNumber<3?'Look across the gates from the south field.':height.valueAsNumber<10?'Rise above the course.':'Hold the wide shot over the field.';
     get('flightReadout').textContent=unavailable?'3D unavailable':(6.4+height.valueAsNumber).toFixed(1)+' m';
     height.setAttribute('aria-valuetext',get('flightReadout').textContent);
@@ -222,6 +285,8 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
   get('bookNext').addEventListener('click',()=>turnPage(1));
   get('bookPrev').addEventListener('click',()=>turnPage(-1));
   function loadEvents(){return load('spotlight-data').then(()=>board.load(window.SPOTLIGHT||[])).catch(()=>board.load([]));}
+  get('bookAsk').addEventListener('click',()=>{select(get('tab-ask'));get('fieldQuery').focus({preventScroll:true});});
+  get('askBook').addEventListener('click',()=>{select(get('tab-book'));get('bookAsk').focus({preventScroll:true});});
   get('fieldAsk').addEventListener('submit',async e=>{
     e.preventDefault();
     const query=get('fieldQuery').value.trim();if(!query)return;
@@ -252,6 +317,7 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
   function activate(tab,fromControl=false,focus=false) {
     const wasOpen=fromControl && chooser.getAttribute('aria-expanded')==='true';
     const prior=active;
+    if(tab.dataset.tool!==active)setDetail(false);
     active=tab.dataset.tool;if(fromControl)menu(false);
     const dest=nextStop[active], name=dest==='work'?'Websites':get('tab-'+dest).textContent;
     onward.firstElementChild.textContent=name;
@@ -269,7 +335,7 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
         if(following)followExit();else{selected=+d.times.eveningGoldenStart;renderSun();}
       }
     }
-    if(active==='ask')world()?.setNotebookPage?.(get('fieldQuery').value||'Ask the LaB','Index',get('fieldAnswer').textContent);
+    if(active==='ask')world()?.setNotebookPage?.(get('fieldQuery').value||'Ask the LaB','Ask the LaB',get('fieldAnswer').textContent,1);
 
     if(selected!==null && (!pond || active==='flight')) clearSun();
     revealPanel();
@@ -315,6 +381,7 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden){stopPlay();stopFlight();}});
 
+  surfaces.onFrame=positionLocator;
   loadEvents();stopPlay();stopFlight();idle();flight();surfaces.connect();world()?.bindFieldExit(setExit);
   return {
     journey,
@@ -325,8 +392,8 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
       if(value===presence)return;
       presence=value;
       if(active==='flight' && selected===null && livePosition && !releaseFrame)world()?.setSun(livePosition.elevation,pondHeading(livePosition));
-      if(value===0){menu(false);stopFlight();height.value=0;flight();}
+      if(value===0){setDetail(false);menu(false);stopFlight();height.value=0;flight();}
     },
-    syncWorld(){world()?.bindFieldExit(setExit);surfaces.connect();flight();fridge.refresh();if(active==='book')notebook();if(selected!==null)renderSun();}
+    syncWorld(){world()?.bindFieldExit(setExit);surfaces.connect();flight();fridge.refresh();if(active==='book')notebook();if(active==='ask')world()?.setNotebookPage?.('','Ask the LaB','');if(selected!==null)renderSun();}
   };
 };
