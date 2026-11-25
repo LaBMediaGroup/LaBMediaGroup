@@ -114,13 +114,16 @@ export function buildFilmRoom({ height, uniforms, simSize, simZ, reduced }) {
     scene.add(haze);return haze;
   });
   const toViewer=new THREE.Vector3();
-  function scatterFromGlass(tv,haze,camera){
+  // The set you're heading to leads the eye: it glows even seen from an angle,
+  // while the others hold back until their turn. At the pond entry that's Gone.
+  function scatterFromGlass(tv,haze,camera,lead){
     toViewer.subVectors(camera.position,tv.faceCenter);
     const distance=toViewer.length(),facing=toViewer.normalize().dot(tv.faceNormal);
     const tan=Math.tan(camera.fov*Math.PI/360);
     const restingDistance=Math.max(tv.width*.60/(tan*camera.aspect),tv.height*.69/tan,.28)+tv.width*.34;
+    const aspect=lead?Math.max(.72,THREE.MathUtils.smoothstep(facing,-.2,.5)):.38*THREE.MathUtils.smoothstep(facing,.04,.68);
     const strength=THREE.MathUtils.smoothstep(distance,restingDistance,restingDistance+1.05)
-      *THREE.MathUtils.smoothstep(facing,.04,.68)*Math.exp(-.08*Math.max(0,distance-3.));
+      *aspect*Math.exp(-(lead?.05:.08)*Math.max(0,distance-3.))*(lead?1.25:1);
     const map=tv.screen.material.map;
     haze.visible=!!map && strength>.008;
     if(haze.visible){haze.material.uniforms.picture.value=map;haze.material.uniforms.strength.value=strength;}
@@ -323,7 +326,8 @@ export function buildFilmRoom({ height, uniforms, simSize, simZ, reduced }) {
     bubble.visible=!reduced && age<3;
     bubble.position.set(.31+.012*Math.sin(age*5),stations.sets[0].center.y+.19+age*.46,centerZ+.06);
     stations.update();
-    for(let i=0;i<glows.length;i++)scatterFromGlass(stations.sets[i],glows[i],camera);
+    const lead=Math.min(glows.length-1,Math.floor(stations.travel+.7));
+    for(let i=0;i<glows.length;i++)scatterFromGlass(stations.sets[i],glows[i],camera,i===lead);
 
   }
   return {scene,update,stations, setSource:stations.setSource,

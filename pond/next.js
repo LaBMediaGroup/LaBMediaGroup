@@ -277,9 +277,10 @@
   }
 
   let wantedUnder=0,leavingFilms=false;
+  let exitClear=1;
   function filmApproach(rendered){
     const visible=Math.min(wantedUnder,rendered);
-    const fade=leavingFilms?clamp((visible-.70)/.29,0,1):clamp((visible-.80)/.19,0,1);
+    const fade=(leavingFilms?clamp((visible-.70)/.29,0,1):clamp((visible-.80)/.19,0,1))*exitClear;
     filmFrame.style.opacity=String(fade);
     if(filmFrame.inert!==(fade<.08))filmFrame.inert=fade<.08;
     filmPlayer.setInView(visible>.65);
@@ -302,6 +303,7 @@
     filmPlayer.visit(Math.round(travel));
     filmFrame.style.setProperty('--film-controls-opacity',String(1-.55*Math.sin(Math.PI*travel)**2));
     wantedUnder=under;leavingFilms=exiting;
+    exitClear=1-clamp((-filmRect.top-(films.length-1)*spacing)/(vh*.22),0,1);
     if (W()) W().setUnder(under,exiting,filmRect.top>vh*1.62);
     filmApproach(!W() || document.documentElement.classList.contains('no-film-world')?under:W().under);
     var workRect = workSection.getBoundingClientRect();
@@ -324,8 +326,11 @@
     fieldTools.setPresence(presence,sunCarry);
     const stationProgress=fieldTools.journey(toolRect);
     const escort=clamp((vh-toolRect.bottom)/Math.max(1,workRect.top-toolRect.bottom+vh),0,1);
-    toolFrame.style.opacity=String(1-phase(escort,0,.20));
-    toolFrame.inert=escort>.20;
+    // The climb to the course starts at .865 but Drone school takes over at .92:
+    // clear the Golden Hour panel out of the climb, then bring the course panel in.
+    const climbing=phase(stationProgress,.865,.895)*(1-phase(stationProgress,.92,.945));
+    toolFrame.style.opacity=String((1-phase(escort,0,.20))*(1-climbing));
+    toolFrame.inert=escort>.20||climbing>.5;
     if (W()) {
       W().setFieldEscort(phase(stationProgress,.865,.96),escort);
       W().setStation(arrival);

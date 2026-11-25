@@ -38,7 +38,7 @@ if(!location.hash && entry?.type!=='back_forward' && 'scrollRestoration' in hist
 <script defer src="sun-calc.js"></script>
 <script defer src="ideas-data.js?v=magnet-1"></script>
 <script type="module">
-import('/pond/world.js?v=21').catch(()=>{
+import('/pond/world.js?v=22').catch(()=>{
   document.documentElement.classList.add('no-world');
   dispatchEvent(new Event('labworld:unavailable'));
 });
@@ -49,7 +49,7 @@ import('/pond/world.js?v=21').catch(()=>{
 <script defer src="/pond/surface-controls.js?v=17"></script>
 <script defer src="/pond/event-board.js?v=17"></script>
 <script defer src="/pond/field-tools.js?v=21"></script>
-<script defer src="/pond/next.js?v=21"></script>
+<script defer src="/pond/next.js?v=22"></script>
 </head>
 <body>
 <canvas id="world" aria-hidden="true"></canvas>

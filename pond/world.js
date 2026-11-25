@@ -745,7 +745,7 @@ let crossingLatched=false, forwardCross=false, immersionStroke=0, previousEyeHei
 const entryDirection=new THREE.Vector3();
 const roomPos=new THREE.Vector3(0,-1.4,-11.6), roomTarget=new THREE.Vector3(0,-1.4,-10);
 function prepareFilmRoom() {
-  if (!loadingRoom) loadingRoom = import('./underwater.js?v=20').then(({buildFilmRoom}) => {
+  if (!loadingRoom) loadingRoom = import('./underwater.js?v=21').then(({buildFilmRoom}) => {
     room = buildFilmRoom({height:H, uniforms:U, simSize:SIM_SIZE, simZ:SIM_Z, reduced:reduce});
     port.impact.attach(room.scene);
     if (filmCanvas) room.setSource(filmCanvas,filmList);
@@ -882,6 +882,8 @@ function frame(now) {
     const move=cameraDt/(forwardCross ? .45 : .56);
     immersionStroke=THREE.MathUtils.clamp(immersionStroke+(forwardCross?move:-move),0,1);
   }
+  // The course and its drones belong to the south field: keep them out of the opening shot.
+  aircraft.course.visible=aircraft.object.visible=S.station>.5||S.flight>.01;
   aircraft.update(cameraDt,S.station>.85 && S.inside<.22 && escort<.993 && S.under<.05 && S.rise<.05,escort);
   placeCamera();
   if(room && reportFilmApproach && reportedUnder!==S.under){reportedUnder=S.under;reportFilmApproach(S.under);}
