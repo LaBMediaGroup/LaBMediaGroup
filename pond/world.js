@@ -28,7 +28,7 @@ import { buildOak } from './oak.js';
 import { buildFieldStation } from './field-station.js?v=17';
 import {pondCamera} from './pond-camera.js?v=19';
 import {fieldStationCamera} from './station-camera.js?v=20';
-import {fieldDrones} from './field-drones.js?v=18';
+import {fieldDrones} from './field-drones.js?v=21';
 import { buildFieldBird } from './field-bird.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
@@ -133,6 +133,11 @@ const terrain = new THREE.Mesh(terrainGeo, new THREE.ShaderMaterial({
     vec3 soil=mix(vec3(.07,.055,.04),vec3(.12,.095,.065),fbm3(p*.9));
     vec3 straw=mix(vec3(.24,.19,.12),vec3(.38,.31,.2),fbm3(p*2.3+3.));
     vec3 field=mix(soil,straw,smoothstep(.35,.75,fbm3(p*1.7))*.75+.15*smoothstep(.3,.8,row));
+    // Short, alternating mower passes pick out the school grounds in the wider field.
+    vec2 edge=abs(p-vec2(-1.55,7.85))-vec2(3.65,5.75);
+    float cut=1.-smoothstep(-.25,.52,length(max(edge,0.))+min(max(edge.x,edge.y),0.)+.22*(row-.5));
+    vec3 turf=mix(vec3(.24,.255,.135),vec3(.38,.38,.20),fbm3(p*3.));
+    field=mix(field,turf*(.92+.08*cos(p.x*3.7)),cut);
     // the bank: wet mud near the water, darker and glossier the lower it gets
     vec3 mud=mix(vec3(.05,.04,.03),vec3(.1,.08,.055),fbm3(p*3.));
     float bank=1.-smoothstep(.05,.24,h);
@@ -282,7 +287,7 @@ function groundSurface(x,z) {
 }
 const station = buildFieldStation({THREE,height:groundSurface,uniforms:U});
 scene.add(station.group);
-const aircraft=fieldDrones(THREE,station,U,reduce);scene.add(aircraft.object);
+const aircraft=fieldDrones(THREE,groundSurface,U,reduce);scene.add(aircraft.object,aircraft.course);
 const stationCos=Math.cos(station.yaw), stationSin=Math.sin(station.yaw);
 function onStationPad(x,z) {
   const dx=x-station.group.position.x, dz=z-station.group.position.z;
@@ -401,7 +406,9 @@ const bendGLSL = `float bendAmt(float f,vec3 base){return f*f*(uWindAmp*1.5*(.6+
     const h = H(pos.x, pos.z); if (h < 0.1 || onStationPad(pos.x,pos.z)) continue;
     pos.y = h - 0.02;
     q.setFromAxisAngle(new THREE.Vector3(0, 1, 0), rnd() * Math.PI).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), (rnd() - 0.5) * 0.5));
-    const s = 0.6 + rnd() * 0.9; sc.set(s, s * (0.7 + rnd() * 0.8), s);
+    const s = 0.6 + rnd() * 0.9;
+    const cut=Math.abs(pos.x+1.55)<3.7 && Math.abs(pos.z-7.85)<5.8;
+    sc.set(s, s * (0.7 + rnd() * 0.8)*(cut?.12:1), s);
     m.compose(pos, q, sc); grass.setMatrixAt(placed++, m);
   }
   grass.count = placed; grass.frustumCulled = false; scene.add(grass);
@@ -875,7 +882,7 @@ function frame(now) {
     const move=cameraDt/(forwardCross ? .45 : .56);
     immersionStroke=THREE.MathUtils.clamp(immersionStroke+(forwardCross?move:-move),0,1);
   }
-  aircraft.update(cameraDt,S.station>.85 && S.inside<.22 && escort<.993 && S.under<.05 && S.rise<.05,S.flight);
+  aircraft.update(cameraDt,S.station>.85 && S.inside<.22 && escort<.993 && S.under<.05 && S.rise<.05,escort);
   placeCamera();
   if(room && reportFilmApproach && reportedUnder!==S.under){reportedUnder=S.under;reportFilmApproach(S.under);}
   if(renderStationControls)renderStationControls(S.station);

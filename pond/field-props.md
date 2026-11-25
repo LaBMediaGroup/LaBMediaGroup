@@ -14,7 +14,7 @@ DJI’s Mini 4 Pro has a published flying envelope of 0.298 × 0.373 × 0.101 m,
 
 DJI’s Avata 2 measures 0.185 × 0.212 × 0.064 m. Four integral guards enclose the propellers. The elongated housing carries the battery and front camera. Dark polymer guards, open braces and the camera cradle follow the diagram. Both aircraft are simplified for the field camera. Shell sections, bracket dimensions and the terrain-relative flight paths are authored approximations. [DJI dimensions](https://www.dji.com/avata-2/specs) · [Aircraft diagram, page 23](https://dl.djicdn.com/downloads/DJI_Avata_2/UM/20240424/DJI_Avata_2_User_Manual_v1.0_en.pdf#page=23)
 
-The two circuits use the bank-side camera mark in world space. The Mini flies a slower pass, and the guarded FPV aircraft banks through a wider circuit. Each motor has a separate propeller pivot. Reduced motion holds a static flight pose. The school links are drawn from the existing SkyBound guide.
+The original two circuits used the bank-side camera mark. The south-field course below supersedes that staging. The Mini flies a slower pass, and the guarded FPV aircraft banks through a wider circuit. Each motor has a separate propeller pivot. Reduced motion holds a static flight pose. The school links are drawn from the existing SkyBound guide.
 
 ## Verification
 
@@ -27,3 +27,13 @@ The camera picks up the Avata during the last part of the Golden Hour stop. Its 
 The painted turtle rests and rows on the bottom shelf beside the first cabinet. Its neck starts a turn before the shell follows. Opposite limbs row together, with a quieter glide between strokes. The bluegill use their paired fins asymmetrically to steer. [Painted turtle rowing study](https://pmc.ncbi.nlm.nih.gov/articles/PMC3052254/) · [Bluegill maneuvering study](https://pubmed.ncbi.nlm.nih.gov/11171296/)
 
 Across an 81-second cycle sampled every 0.25 seconds, the turtle's projected bounds cleared the playing glass on all seven cabinets. The check covered four viewport shapes and five camera positions from the gallery to the head-on film view. A separate 450-pose mesh check found no intersections with the cabinets or solid debris. At rest the lowest foot entered the mud by approximately 1.5 mm. In the swimming portion the turtle cleared the bed by at least 0.109 m.
+
+## South field practice course
+
+The three rectangular gates use the MultiGP standard chapter opening, 1.524 m square, with a 2.134 m top pipe and an overall height of 1.829 m. The frame has two vertical PVC supports and a crossbar. Three thin panels represent the matte vinyl mesh. The gate color, checker layout and marker spacing were designed for this field. [MultiGP obstacle guide](https://www.multigp.com/multigp-drone-race-course-obstacles/) · [Dimensioned assembly drawing](https://www.multigp.com/wp-content/uploads/2018/07/multigp-drone-racing-course-obstacle-5x5-gate.jpg)
+
+The four circular gates use Gemfan’s nominal 0.78 m outer diameter. The narrow hoop binding, alternating textile panels, paired lower supports and ground feet follow its portable gate family. The 0.534 m model opening, fabric pattern and support placement are scene choices. The catalog gives an assembled height range of 1.00–1.45 m. The modeled hoop tops are about 1.25 m above the turf. [Gemfan racing gates](https://www.gemfanhobby.com/FPV-Racing-Gate) · [Illustrated catalog](https://img03.71360.com/w3/5p3560/20251117/50ffa18f7578335345b42f12d991fd78.pdf?dl=1&dlf=2025+Gemfan+Product+Catalog.pdf)
+
+Three hoops form the tunnel on the west leg. Each gate faces its flight-line tangent. Each support samples the terrain triangle at its own foot. The Avata finishes its lap to a common exit before banking toward the pond. The Mini circles about 2.85 m above the center of the field. Gate fabric and posts share a single vertex-colored mesh. The field shader provides the cropped-grass boundary and mower passes. These props use solid colors without decal textures or moving joints.
+
+A browser check used a triangle bounding-volume hierarchy over the 5,260 course triangles. Across 3,132 sampled aircraft poses on the circuit and departure, minimum center-to-mesh distances were 0.267 m for the Avata and 0.834 m for the Mini. Minimum center-to-terrain heights were 0.806 m and 2.613 m respectively. Downward rays at seven gate locations agreed with the sampled terrain height within 0.001 m.

@@ -644,21 +644,18 @@ test('scroll visits the shed tools in both directions and resumes after a shortc
     await page.route('**/*', route => route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
     await page.goto(baseURL+'/#tools');
     const station=page.locator('#tools');
-    async function at(fraction,expected){
-      await station.evaluate((section,f)=>{
-        const travel=section.offsetHeight-section.querySelector('.station-frame').offsetHeight;
-        scrollTo(0,scrollY+section.getBoundingClientRect().top+f*travel);
-      },fraction);
+    for(const expected of ['story','events','book','sun','flight','sun','book','events','story']){
+      await station.locator('[data-stop="'+expected+'"]').evaluate(mark=>mark.scrollIntoView({behavior:'instant'}));
       await page.waitForFunction(name=>document.querySelector('#tools').dataset.instrument===name,expected);
       assert.equal(await page.locator('#tab-'+expected).getAttribute('aria-selected'),'true');
     }
-    for(const [fraction,tool] of [[0,'story'],[.28,'events'],[.52,'book'],[.86,'sun'],[.96,'flight'],[.86,'sun'],[.52,'book'],[.28,'events'],[0,'story']]) await at(fraction,tool);
     await page.locator('#stationNext').click();
     await page.locator('#stationNext').click();
     await page.waitForFunction(()=>document.querySelector('#tools').dataset.instrument==='book');
-    const position=await station.evaluate(s=>-s.getBoundingClientRect().top/(s.offsetHeight-s.querySelector('.station-frame').offsetHeight));
-    assert.ok(position>.46 && position<.58);
-    await at(.8,'sun');
+    const book=station.locator('[data-stop="book"]');
+    assert.ok(Math.abs(await book.evaluate(el=>el.getBoundingClientRect().top))<2);
+    await station.locator('[data-stop="sun"]').evaluate(el=>el.scrollIntoView({behavior:'instant'}));
+    await page.waitForFunction(()=>document.querySelector('#tools').dataset.instrument==='sun');
   } finally {await page.close();}
 });
 

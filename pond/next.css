@@ -128,7 +128,7 @@ main,.foot{position:relative;z-index:1}
 @media(prefers-reduced-motion:reduce){.card video{transition:none}}
 
 /* Tool controls leave the middle of each shot available for the physical instrument. */
-.tools{position:relative;min-height:780svh;isolation:isolate}
+.tools{position:relative;min-height:875svh;isolation:isolate}
 .station-frame{position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;gap:clamp(110px,19svh,220px);padding:clamp(80px,12svh,116px) var(--gut) clamp(24px,4svh,48px);isolation:isolate}
 .hero::before{content:"";pointer-events:none;position:absolute;inset:0;z-index:-1;opacity:var(--field-shade,0);background:radial-gradient(ellipse 72% 58% at 16% 88%,#07120de0 0%,#07120d83 46%,transparent 100%)}
 .hero-in,.wind-instrument,.cue{opacity:0}
@@ -322,7 +322,11 @@ html:not(.no-world):not(.no-film-world) .films.has-tv .film-fallback{display:non
 
 
 /* The selected picture tube carries the film. Fullscreen uses the master video directly. */
-.film-controls .film-play{display:inline-flex;align-items:center;justify-content:center;gap:.45em;width:auto;padding:0 .8em}
+.film-controls .film-play,#featureStage #featurePlay{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid #eee4cc;border-radius:5px;background:#eee4cc;color:#17221e;box-shadow:0 2px 0 #655e4e;cursor:pointer}
+.film-play span{border-width:6px 0 6px 10px}
+.film-controls .film-play:hover,#featureStage #featurePlay:hover{background:#fff4d8}
+#featurePlay::before{content:"";border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent currentColor}
+#featurePlay[aria-label="Pause film"]::before{height:11px;width:3px;border:0;border-inline:3px solid currentColor}
 .film-play b{font:600 13px var(--body)}
 html.film-watching{overflow:hidden}
 html.film-watching .hud,html.film-watching .film-bar,html.film-watching .film-fallback{visibility:hidden}
@@ -424,7 +428,7 @@ html.film-watching .hud,html.film-watching .film-bar,html.film-watching .film-fa
 #filmSurface:is(:hover,:focus-visible){border-color:var(--paper);background:#243a31}
 @media(max-width:590px){#filmSurface{right:auto;left:0}}
 
-@media(prefers-reduced-motion:reduce){.opening{height:165svh}.wind-stop{top:43svh}.tools{min-height:570svh}}
+@media(prefers-reduced-motion:reduce){.opening{height:165svh}.wind-stop{top:43svh}.tools{min-height:665svh}}
 .hud .cta{white-space:nowrap}.physical-tools .tool-picker{transition:opacity .25s}
 .physical-tools[data-approaching] .tool-picker{opacity:0}
 @media(max-width:360px){.hud{padding-inline:10px}.hud .mark img{width:59px}.hud nav .snd{padding-inline:6px}.hud nav .cta{padding-inline:11px}#browseChapters{padding-inline:9px}}
@@ -437,7 +441,7 @@ html.film-watching .hud,html.film-watching .film-bar,html.film-watching .film-fa
   .physical-tools #panel-story :is(#pinLine,#shuffleLine,#roll,#readBrief){width:100%;height:100%;font-size:16px}
 }
 .no-world #world{height:100%;background:#20271d url("img/field-still.webp") center / cover no-repeat}
-.no-world .tools{min-height:570svh}
+.no-world .tools{min-height:665svh}
 .no-world .tools[data-instrument=story] .station-frame{gap:12px}
 .no-world .tools[data-instrument=story] .tool-picker{align-self:flex-start}
 .no-world .tools[data-instrument=story] .station-frame::before{content:"";order:1;width:min(100%,35svh);height:42svh;align-self:center;background:#293028 url("img/story-fridge.webp") center / cover no-repeat;border-radius:6px}
@@ -484,3 +488,26 @@ html.film-watching .hud,html.film-watching .film-bar,html.film-watching .film-fa
 html.settle-touch{scroll-snap-type:y mandatory;scroll-behavior:smooth}
 .settle-touch .touch-landing{scroll-snap-align:start;scroll-snap-stop:always}
 @media(prefers-reduced-motion:reduce){html.settle-touch{scroll-behavior:auto}}
+
+/* The mobile chapter picker keeps the current stop visible during travel. */
+#chapters .contact-stop{display:none}
+#drone-school{top:83%}
+@media(max-width:640px){
+  .hud #chapters .contact-stop{display:flex}
+  #browseChapters{position:relative;overflow:hidden;max-width:36vw;border-radius:6px;background:#102019dc}
+  #browseChapters b{font:inherit;white-space:nowrap}
+  #browseChapters::after{position:absolute;content:"";bottom:2px;left:7px;right:7px;height:2px;background:linear-gradient(to right,#dfa979 var(--chapter-fill,16.67%),#58655a 0)}
+  #chapters{border-radius:7px}
+  #chapters a[aria-current=location]{background:#354439;text-decoration:none}
+}
+
+@media(min-width:641px){
+  #chapters a[data-step]::after{content:attr(data-step);font:10px var(--mono);margin-left:4px;color:#e5be96;text-decoration:none}
+}
+.tools[data-instrument=flight] #chooseTool{display:flex;align-items:center;min-height:44px;gap:9px;background:#14241eeb;color:var(--paper);border:1px solid #67756a;border-radius:5px;padding:0 12px;font:600 13px var(--body)}
+.tools[data-instrument=flight] #choicePlace{display:none}
+.tools[data-instrument=flight] #stationIndex{position:absolute;top:calc(100% + 4px);left:0;display:none}
+.tools[data-instrument=flight] #chooseTool[aria-expanded=true]+#stationIndex{display:flex}
+.no-world .tools[data-instrument=flight] .station-frame{background:linear-gradient(0deg,#10191690,transparent 55%),url("img/course-overview.webp") center / cover}
+@media(max-width:640px){.no-world .tools[data-instrument=flight] .station-frame{background-image:linear-gradient(0deg,#10191690,transparent 55%),url("img/course-portrait.webp")}}
+@media(min-width:641px){.film-controls .film-sound{border-radius:5px}}

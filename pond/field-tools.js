@@ -20,11 +20,14 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
   const landing={story:.05,book:.52,events:.28,ask:.52,sun:.86,flight:.96};
   let notebookTool='book';
   const stops=['story','events','book','sun','flight'].map(tool=>{
+    if(tool==='flight')return get('drone-school');
     const mark=document.createElement('span');mark.className='scroll-stop';mark.dataset.stop=tool;
     mark.setAttribute('aria-hidden','true');section.append(mark);return mark;
   });
-  const trackLength=()=>Math.max(1,section.offsetHeight-frame.offsetHeight);
-  function layoutStops(){const span=trackLength();for(const mark of stops)mark.style.top=(span*landing[mark.dataset.stop])+'px';}
+  const courseHold=()=>frame.offsetHeight*.95;
+  const trackLength=()=>Math.max(1,section.offsetHeight-frame.offsetHeight-courseHold());
+  const stopOffset=tool=>trackLength()*landing[tool]+(tool==='flight'?courseHold()*.32:0);
+  function layoutStops(){for(const mark of stops)mark.style.top=stopOffset(mark.dataset.stop)+'px';}
   const sizes=new ResizeObserver(layoutStops);sizes.observe(frame);sizes.observe(section);layoutStops();
   function journey(bounds){
     const p=Math.min(1,Math.max(0,-bounds.top/trackLength()));
@@ -166,11 +169,12 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
   function flight() {
     const unavailable=document.documentElement.classList.contains('no-world');
     height.disabled=unavailable;get('flyShot').disabled=unavailable;
-    get('flightNote').textContent=unavailable?'Open the simulator guide below.':height.valueAsNumber<3?'Start at eye level on the bank.':height.valueAsNumber<10?'Climb past the reeds and reveal the water.':'Hold the wide shot over the pond.';
-    get('flightReadout').textContent=unavailable?'3D unavailable':(1.62+height.valueAsNumber).toFixed(1)+' m';
+    get('flightNote').textContent=unavailable?'Open the simulator guide below.':height.valueAsNumber<3?'Look across the gates from the south field.':height.valueAsNumber<10?'Rise above the course.':'Hold the wide shot over the field.';
+    get('flightReadout').textContent=unavailable?'3D unavailable':(6.4+height.valueAsNumber).toFixed(1)+' m';
     height.setAttribute('aria-valuetext',get('flightReadout').textContent);
     world()?.setFieldTool(active,active==='flight'?height.valueAsNumber:0);
   }
+  addEventListener('labworld:unavailable',()=>{stopFlight();flight();});
   height.addEventListener('input',()=>{stopFlight();flight();});
   get('flyShot').addEventListener('click',()=>{
     if(flying){stopFlight();return;}
@@ -241,7 +245,7 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
     const bounds=section.getBoundingClientRect();
     // The shortcut lands on the same track as a swipe. The next gesture
     // continues from that shot, including after visiting a notebook extra.
-    window.scrollTo({top:scrollY+bounds.top+landing[tool]*trackLength(),behavior:'instant'});
+    window.scrollTo({top:scrollY+bounds.top+stopOffset(tool),behavior:'instant'});
     activate(tab,true,focus);
     journey(section.getBoundingClientRect());
   }
@@ -254,8 +258,8 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
     onward.setAttribute('aria-label','Continue to '+name);
     const pond=active==='sun'||active==='flight';
     section.dataset.place=pond?'pond':'shed';section.dataset.instrument=active;
-    get('choicePlace').textContent=pond?'Over the pond':'Inside the shed';
-    get('choiceName').textContent=tab.textContent;
+    get('choicePlace').textContent=active==='flight'?'South field':pond?'Over the pond':'Inside the shed';
+    get('choiceName').textContent=active==='flight'?'Field tools':tab.textContent;
     if(active!=='flight')stopFlight();
     if(active==='story')fridge.refresh();
     if(active==='sun' && selected===null && presence>.5){

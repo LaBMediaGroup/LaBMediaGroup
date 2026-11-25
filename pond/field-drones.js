@@ -1,8 +1,9 @@
 // Display models follow DJI's published flying envelopes. See field-props.md.
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
-export function fieldDrones(T,station,uniforms,reduced){
+import {raceCourse} from './race-course.js?v=21';
+export function fieldDrones(T,ground,uniforms,reduced){
   const V=(x,y,z)=>new T.Vector3(x,y,z), object=new T.Group();
-  const light=new T.ShaderMaterial({vertexColors:true,uniforms,
+  const light=new T.ShaderMaterial({vertexColors:true,side:T.DoubleSide,uniforms,
     vertexShader:`varying vec3 n,c,viewDir;
       void main(){n=mat3(modelMatrix)*normal;c=color;viewDir=cameraPosition-(modelMatrix*vec4(position,1.)).xyz;
         gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
@@ -57,27 +58,23 @@ export function fieldDrones(T,station,uniforms,reduced){
     craft.add(new T.Mesh(mergeGeometries(fixed),light));object.add(craft);
     return {craft,rotors};
   }
-  const mini=build(false),avata=build(true),forward=V(2.2,0,-2.8).normalize(),right=V(-forward.z,0,forward.x);
-  const bank=station.group.localToWorld(V(4.55,1.85,3.60)), velocity=V(0,0,0);
-  let time=0;
-  function fly(model,x,y,z,dx,dz,roll,pitch){
-    const a=model.craft;a.position.copy(bank).addScaledVector(right,x).addScaledVector(forward,z);a.position.y+=y;
-    velocity.copy(right).multiplyScalar(dx).addScaledVector(forward,dz);
-    a.rotation.order='YXZ';a.rotation.set(pitch,Math.atan2(-velocity.x,-velocity.z),roll,'YXZ');
-    for(const rotor of model.rotors)rotor.rotation.y=time*42*rotor.userData.sign;
-  }
-  // Both camera and aircraft travel in pond coordinates. At the website
-  // stop the aircraft meets the preview on the existing overlook sightline.
-  const cameraRail=new T.CatmullRomCurve3([bank.clone(),bank.clone().addScaledVector(forward,1.18).addScaledVector(right,-.64),
-    V(-7.22,2.06,-3.40),V(-6.13,1.43,-4.94),V(-7.2,1.48,-3.95)],false,'centripetal');
-  const route=new T.CatmullRomCurve3([bank.clone().addScaledVector(forward,2.05).add(V(-.22,.65,0)),
-    V(-6.32,1.99,-3.25),V(-4.75,1.22,-5.05),V(-3.40,.91,-6.59),V(0,1,0)],false,'centripetal');
+  const mini=build(false),avata=build(true), course=raceCourse(T,ground,light);
+  const center=V(-1.65,ground(-1.65,8),8);
+  const overview=V(-5.9,ground(-5.9,17)+6.4,17);
+  const cameraRail=new T.CatmullRomCurve3([overview.clone(),V(-5.7,4.6,12),V(-4.3,2.2,5),
+    V(-5.65,1.95,-.7),V(-7.22,2.06,-3.40),V(-6.13,1.43,-4.94),V(-7.2,1.48,-3.95)],false,'centripetal');
+  const lap=course.lap,exitDistance=.84,gateExit=lap.getPointAt(exitDistance);
+  const outbound=gateExit.clone().addScaledVector(lap.getTangentAt(exitDistance),1.35);
+  outbound.y+=.20;
+  const route=new T.CatmullRomCurve3([gateExit,outbound,V(-2.7,1.65,.50),
+    V(-5.6,1.7,-2.8),V(-4.75,1.22,-5.05),V(-3.4,.91,-6.59),V(0,1,0)],false,'centripetal');
+  let time=0,lapDistance=.11;
   const rider=V(0,0,0),railEye=V(0,0,0),tangent=V(0,0,0),ahead=V(0,0,0),target=V(0,0,0);
   const attitude=new T.Quaternion(),bankRotation=new T.Euler(),sight=new T.Matrix4(),up=V(0,1,0);
   const smooth=(a,b,p)=>T.MathUtils.smoothstep(p,a,b);
   let chaseAspect=0;
   function follow(camera,acquire,progress,height,overlook,overlookRotation){
-    if(reduced || !object.visible || !acquire)return;
+    if(!object.visible || !acquire)return;
     const p=progress;
     if(chaseAspect!==camera.aspect){
       chaseAspect=camera.aspect;
@@ -88,41 +85,52 @@ export function fieldDrones(T,station,uniforms,reduced){
         .applyQuaternion(overlookRotation).add(overlook);
       route.updateArcLengths();
     }
-    const join=smooth(0,.24,p),settle=smooth(.70,1,p);
+    const join=smooth(0,.30,p),settle=smooth(.7,1,p);
+    // Bank up from Golden Hour into a held wide. Frame the dry course above
+    // the instrument card; the camera operator can change altitude independently.
+    const narrow=camera.aspect<.85,altitude=height*(1-smooth(0,.55,p));
+    cameraRail.getPointAt(p,railEye);
+    railEye.y+=altitude;
+    if(narrow){railEye.x+=2.4*(1-join);railEye.z+=3.8*(1-join); }
+    camera.position.lerp(railEye,acquire);
     if(p>0){
-      route.getPointAt(p,rider);route.getTangentAt(p,tangent);route.getTangentAt(Math.min(1,p+.035),ahead);
-      const altitude=height*(1-smooth(0,.64,p));
-      rider.y+=altitude*.91;avata.craft.position.lerp(rider,join);
+      // Finish on the gate line before peeling off. A crossfade between two
+      // world positions could send the aircraft sideways through a hoop.
+      const exitBeat=.32;
+      if(p<exitBeat){
+        const distance=(lapDistance+((exitDistance-lapDistance+1)%1)*p/exitBeat)%1;
+        lap.getPointAt(distance,rider);lap.getTangentAt(distance,tangent);lap.getTangentAt((distance+.018)%1,ahead);
+      }else{
+        const leg=(p-exitBeat)/(1-exitBeat);
+        route.getPointAt(leg,rider);route.getTangentAt(leg,tangent);route.getTangentAt(Math.min(1,leg+.035),ahead);
+      }
+      avata.craft.position.copy(rider);
       const bankAngle=T.MathUtils.clamp(5*(ahead.x*tangent.z-ahead.z*tangent.x),-.66,.66);
       attitude.setFromEuler(bankRotation.set(Math.asin(T.MathUtils.clamp(tangent.y,-.65,.65)),
         Math.atan2(-tangent.x,-tangent.z),bankAngle,'YXZ'));
       avata.craft.quaternion.slerp(attitude,join);
-      cameraRail.getPointAt(p,railEye);railEye.y+=altitude;railEye.x+=altitude*.24;railEye.z-=altitude*.22;
-      camera.position.lerp(railEye,join);
     }
-    // Offset the framing just below the nose and ease onto the page as
-    // the FPV crosses its leading edge. The camera stays level in the turn.
-    target.copy(avata.craft.position);target.y-=.15*(1-settle);
+    target.copy(center);
+    target.z+=narrow?2.1:.8;
+    if(narrow)target.x-=.45;
+    target.lerp(avata.craft.position,join);
     sight.lookAt(camera.position,target,up);attitude.setFromRotationMatrix(sight);
-    camera.quaternion.slerp(attitude,acquire*(.72+.28*join)*(1-settle));
+    camera.quaternion.slerp(attitude,acquire*(1-settle));
     if(settle)camera.quaternion.slerp(overlookRotation,settle);
   }
   object.visible=false;
-  return {object,follow,update(dt,visible,height){
+  return {object,course:course.mesh,follow,update(dt,visible,progress){
     object.visible=visible;if(!visible)return;
     if(!reduced)time+=dt;
-    const a=time*.30+.7,b=time*.69+2.20;
-    // Independent circuits over the bank. Both paths keep their metre scale
-    // as the operator raises the field camera for the aerial view.
-    const lift=height*.91,back=height*.40,side=height*.05;
-    function circuit(model,phase,radius,spread,near,depth,y,climb,offset,bankAngle,pitch){
-      const sin=Math.sin(phase),cos=Math.cos(phase),far=(1-cos)/2;
-      const width=radius+spread*far;
-      const dx=width*cos+.5*spread*sin*sin, dz=depth*far*sin;
-      fly(model,side+offset+width*sin,y+lift+climb*far+.06*Math.sin(phase*2),near+back+depth*far*far,
-        dx,dz,-bankAngle*cos,pitch);
-    }
-    circuit(mini,a,.32,.75,1.72,4.2,.33,.65,-.08,.10,-.05);
-    circuit(avata,b,.47,2.1,2.14,8.1,.54,1.85,.06,.48,-.13);
+    if(!reduced && progress<.0001)lapDistance=(lapDistance+dt*.086)%1;
+    const t=lapDistance;
+    course.lap.getPointAt(t,avata.craft.position);
+    course.lap.getTangentAt(t,tangent);course.lap.getTangentAt((t+.018)%1,ahead);
+    const roll=T.MathUtils.clamp((ahead.x*tangent.z-ahead.z*tangent.x)*1.5,-.52,.52);
+    avata.craft.rotation.set(-.07,Math.atan2(-tangent.x,-tangent.z),roll,'YXZ');
+    const a=time*.26;
+    mini.craft.position.set(center.x+2.2*Math.sin(a),center.y+2.85+.22*Math.sin(a*2),center.z+4*Math.cos(a));
+    mini.craft.rotation.set(-.04,Math.atan2(-2.2*Math.cos(a),4*Math.sin(a)),.085,'YXZ');
+    for(const {rotors} of [mini,avata])for(const rotor of rotors)rotor.rotation.y=time*42*rotor.userData.sign;
   },inspect(camera){return [mini,avata].map(({craft})=>({name:craft.name,position:craft.position.toArray(),ndc:craft.position.clone().project(camera).toArray(),visible:object.visible}));}};
 }

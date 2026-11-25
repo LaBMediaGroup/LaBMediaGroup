@@ -251,12 +251,19 @@
   browse.addEventListener('click',()=>setMenu(browse.getAttribute('aria-expanded')!=='true'));
   document.addEventListener('click',event=>{if(!event.target.closest('.chapter-nav') || event.target.closest('#chapters a'))setMenu(false);});
   document.addEventListener('keydown',event=>{if(event.key==='Escape' && browse.getAttribute('aria-expanded')==='true'){setMenu(false);browse.focus();}});
-  let currentChapter='';
-  function markChapter(hash){
-    if(hash===currentChapter)return;
+  const chapterNames={'#top':'Field','#tools':'Tools','#drone-school':'Drone school','#work':'Websites','#films':'Films','#make':'Contact'};
+  let currentChapter='',currentDetail='';
+  function markChapter(hash,detail=''){
+    if(hash===currentChapter && detail===currentDetail)return;
+    currentDetail=detail;
     currentChapter=hash;
+    const label=chapterNames[hash]+(detail?' '+detail:'');
+    $('#chapterName').textContent=label;
+    browse.setAttribute('aria-label','Browse chapters, '+label);
+    browse.style.setProperty('--chapter-fill',((Object.keys(chapterNames).indexOf(hash)+1)/6*100)+'%');
     for(const a of chapterLinks){
       if(a.hash===hash)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');
+      if(a.hash===hash && detail)a.dataset.step=detail;else delete a.dataset.step;
     }
   }
   function phase(value,from,to){
@@ -336,7 +343,11 @@
     W()?.setFieldRead?.(phase(p,0,.80));
     if(previewWind && exit<.2)endPreview();
     const contactTop=make.getBoundingClientRect().top;
-    markChapter(contactTop<vh*.75?'#make':filmRect.top<vh*.65?'#films':workRect.top<vh*.65?'#work':toolRect.top<vh*.65?'#tools':'#top');
+    const chapter=contactTop<vh*.75?'#make':filmRect.top<vh*.65?'#films':workRect.top<vh*.65?'#work':stationProgress>=.92?'#drone-school':toolRect.top<vh*.65?'#tools':'#top';
+    const toolOrder=['story','events','book','sun'];
+    const tool=toolsSection.dataset.instrument;
+    const localStep=chapter==='#films'?(Math.round(travel)+1)+'/'+films.length:chapter==='#work'?(Math.round(siteTravel)+1)+'/'+websites.length:chapter==='#tools'?(1+toolOrder.indexOf(tool==='ask'?'book':tool))+'/4':'';
+    markChapter(chapter,localStep);
     // One ascent starts as the last screen leaves and ends with the inquiry.
     const rise=exiting ? clamp((vh*.97-filmRect.bottom)/ascentSpan(vh),0,1) : 0;
     if(W()) W().setRise(rise);
@@ -367,7 +378,7 @@
     if(wheel)lastWheel=now;
     const y=scrollY;
     releaseStops();
-    const marks=scrollMarks().map(el=>({el,top:y+el.getBoundingClientRect().top}));
+    const marks=scrollMarks().map(el=>({el,top:y+el.getBoundingClientRect().top})).sort((a,b)=>a.top-b.top);
     const lower=marks.findLast(mark=>mark.top<y-6),upper=marks.find(mark=>mark.top>y+6);
     gesture={wheel,dir,start:y,lower:lower?.top??0,upper:upper?.top??Infinity};
     if(!wheel){

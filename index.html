@@ -33,12 +33,12 @@ if(!location.hash && entry?.type!=='back_forward' && 'scrollRestoration' in hist
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Space+Mono&display=swap">
 <link rel="preload" as="image" href="images/TheLaB-mark.png">
-<link rel="stylesheet" href="/pond/next.css?v=20">
+<link rel="stylesheet" href="/pond/next.css?v=21">
 <script type="importmap">{"imports":{"three":"/pond/vendor/three/three.module.js","three/addons/":"/pond/vendor/three/addons/"}}</script>
 <script defer src="sun-calc.js"></script>
 <script defer src="ideas-data.js?v=magnet-1"></script>
 <script type="module">
-import('/pond/world.js?v=20').catch(()=>{
+import('/pond/world.js?v=21').catch(()=>{
   document.documentElement.classList.add('no-world');
   dispatchEvent(new Event('labworld:unavailable'));
 });
@@ -48,8 +48,8 @@ import('/pond/world.js?v=20').catch(()=>{
 <script defer src="/pond/station-story.js?v=11"></script>
 <script defer src="/pond/surface-controls.js?v=17"></script>
 <script defer src="/pond/event-board.js?v=17"></script>
-<script defer src="/pond/field-tools.js?v=18"></script>
-<script defer src="/pond/next.js?v=20"></script>
+<script defer src="/pond/field-tools.js?v=21"></script>
+<script defer src="/pond/next.js?v=21"></script>
 </head>
 <body>
 <canvas id="world" aria-hidden="true"></canvas>
@@ -63,7 +63,7 @@ import('/pond/world.js?v=20').catch(()=>{
 
 <header class="hud">
   <a class="mark" href="#top" aria-label="Back to top"><img src="images/TheLaB-mark.png" alt="The LaB" width="1165" height="498"></a>
-  <nav aria-label="Main"><button type="button" class="snd" id="snd" aria-pressed="false" aria-label="Pond ambience" title="Pond ambience"><i></i><i></i><i></i><i></i></button><div class="chapter-nav"><button type="button" id="browseChapters" aria-expanded="false" aria-controls="chapters">Menu <span aria-hidden="true">⌄</span></button><div id="chapters"><a href="#top">Field</a><a href="#tools">Tools</a><a href="#work">Websites</a><a href="#films">Films</a></div></div><a class="cta" href="#make">Build yours</a></nav>
+  <nav aria-label="Main"><button type="button" class="snd" id="snd" aria-pressed="false" aria-label="Pond ambience" title="Pond ambience"><i></i><i></i><i></i><i></i></button><div class="chapter-nav"><button type="button" id="browseChapters" aria-expanded="false" aria-controls="chapters" aria-label="Browse chapters, Field"><b id="chapterName">Field</b> <span aria-hidden="true">⌄</span></button><div id="chapters"><a href="#top">Field</a><a href="#tools">Tools</a><a href="#drone-school">Drone school</a><a href="#work">Websites</a><a href="#films">Films</a><a class="contact-stop" href="#make">Contact</a></div></div><a class="cta" href="#make">Build yours</a></nav>
 </header>
 
 <main id="top">
@@ -91,6 +91,7 @@ import('/pond/world.js?v=20').catch(()=>{
     </div>
   </section>
   <section class="tools" id="tools" aria-label="Field station" data-place="shed" data-instrument="story">
+    <span class="scroll-stop" id="drone-school" data-stop="flight" aria-hidden="true"></span>
     <div class="station-frame">
     <div class="tool-picker">
       <button type="button" id="chooseTool" aria-expanded="false" aria-controls="stationIndex"><span id="choicePlace">Inside the shed</span><strong id="choiceName">Story fridge</strong><span aria-hidden="true">⌄</span></button>
@@ -118,9 +119,9 @@ import('/pond/world.js?v=20').catch(()=>{
         <div class="instrument-actions"><button class="action" id="sunPlay" type="button">Play sunset</button><button id="sunReset" type="button" hidden>Return to now</button><a class="full-tool" href="sun.html">Sun planner ↗</a></div>
       </div>
       <div class="instrument" role="tabpanel" id="panel-flight" aria-labelledby="tab-flight" hidden>
-        <div class="flight-heading"><h2>Drone school</h2><output id="flightReadout" for="flightHeight">1.6 m</output></div>
-        <p class="flight-models">DJI Mini 4 Pro · Avata 2 FPV</p>
-        <div class="flight-camera"><button type="button" class="action" id="flyShot">Fly the reveal</button><input type="range" id="flightHeight" min="0" max="16" step=".1" value="0" aria-label="Raise the field camera" aria-describedby="flightNote"><span id="flightNote" class="sr"></span></div>
+        <div class="flight-heading"><h2>Drone school</h2><output id="flightReadout" for="flightHeight">6.4 m</output></div>
+        <p class="flight-models">Avata 2 on the course · Mini 4 Pro overhead</p>
+        <div class="flight-camera"><button type="button" class="action" id="flyShot">Fly the reveal</button><input type="range" id="flightHeight" min="0" max="16" step=".1" value="0" aria-label="Course camera altitude" aria-describedby="flightNote"><span id="flightNote" class="sr"></span></div>
         <nav class="flight-links" aria-label="Drone school resources">
           <div><span>Practice</span><a href="https://store.steampowered.com/app/410340/Liftoff_FPV_Drone_Racing/" target="_blank" rel="noopener">Liftoff ↗</a><a href="https://www.velocidrone.com/" target="_blank" rel="noopener">VelociDrone ↗</a></div>
           <div><span>Learn</span><a href="skybound.html#simulators">SkyBound guide ↗</a><a href="https://www.youtube.com/@MrMigsClassroom" target="_blank" rel="noopener">Mr. Migs ↗</a></div>
@@ -172,7 +173,7 @@ import('/pond/world.js?v=20').catch(()=>{
         </div>
         <button type="button" class="round film-sound" id="filmSound" aria-label="TV sound" aria-pressed="false" title="Turn TV sound on"><span class="speaker" aria-hidden="true"></span><span class="sound-word">Sound</span></button>
         <button type="button" class="round" id="filmPreview" aria-label="Pause gallery preview" title="Pause gallery preview">Ⅱ</button>
-        <button type="button" class="round film-play" id="filmPlay" aria-haspopup="dialog" aria-label="Watch full film"><span aria-hidden="true"></span><b>Watch</b></button>
+        <button type="button" class="film-play" id="filmPlay" aria-haspopup="dialog" aria-label="Watch full film"><span aria-hidden="true"></span><b>Watch</b></button>
         <button type="button" class="round" id="filmPrev" aria-label="Previous television">←</button>
         <button type="button" class="round" id="filmNext" aria-label="Next television">→</button>
       </div>
