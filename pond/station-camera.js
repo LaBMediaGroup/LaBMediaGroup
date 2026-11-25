@@ -9,7 +9,7 @@ export function fieldStationCamera(T,station) {
   const eye=v(),aim=v(),other=v(),outside=v(),q=new T.Quaternion(),matrix=new T.Matrix4();
   const doorLook=local(-.25,1.57,.35);
   const jamb=local(-.49,1.56,1.25), landing=local(-.49,1.72,3.10);
-  const inner=v(),innerAim=v(),rails=new Map();
+  const innerAim=v(),rails=new Map();
   const exitEye=v(),angles=v(),direction=v();
   const exitRotation=new T.Quaternion(),secondRotation=new T.Quaternion();
   const baseEye=v(),baseRotation=new T.Quaternion();
@@ -29,8 +29,10 @@ export function fieldStationCamera(T,station) {
     const pullback=portrait?2.5:0;
     const wide=local(6.6+pullback,3.45,8.4+pullback);
     const side=local(2.25,2.4,6.15+pullback*.35);
-    const front=new T.CatmullRomCurve3([wide,side,landing],false,'centripetal');
-    const inside=new T.CatmullRomCurve3([landing,local(-.49,1.75,1.45),local(-.46,1.68,.70),p],false,'centripetal');
+    // One spline crosses the landing and sill. Its tangent carries through the
+    // open doors while the gaze transfers from the opening to the fridge.
+    const threshold=tool==='story'&&portrait?local(-.59,1.51,1.14):local(-.46,1.62,.70);
+    const walk=new T.CatmullRomCurve3([wide,side,landing,local(-.49,1.64,1.45),threshold,p],false,'centripetal');
     // Lift off the instrument with space behind the bench. The third mark
     // faces the open doors from inside; the turn to the sun starts outside.
     // Pull straight up and back from the actual page pose before turning.
@@ -46,7 +48,7 @@ export function fieldStationCamera(T,station) {
     for(let i=1;i<headings.length;i++)headings[i].x=unwrap(headings[i].x,headings[i-1].x);
     const exit=new T.CatmullRomCurve3(marks,false,'centripetal');
     const gaze=new T.CatmullRomCurve3(headings,false,'catmullrom',.42);
-    const path={wide,front,inside,focus,exit,gaze};rails.set(tool,path);return path;
+    const path={wide,walk,focus,exit,gaze};rails.set(tool,path);return path;
   }
   function outbound(path,t,flight,rotation){
     path.exit.getPoint(t,exitEye);path.gaze.getPoint(t,angles);
@@ -73,24 +75,17 @@ export function fieldStationCamera(T,station) {
       camera.quaternion.slerp(q,smooth(0,.23,w));
       return;
     }
-    if(w<.66){
-      story.front.getPointAt(smooth(.28,.66,w),eye);
-      aim.copy(doorLook).lerp(jamb,.42*smooth(.39,.66,w));
-    }else{
-      eye.copy(landing);
-      aim.copy(doorLook).lerp(jamb,.42);
+    const step=smooth(.28,1,w);
+    story.walk.getPoint(step,eye);
+    if(book>0)eye.lerp(notebook.walk.getPoint(step,other),book);
+    aim.copy(doorLook).lerp(jamb,.35*smooth(.30,.60,w));
+    const walked=smooth(.62,.98,w);
+    innerAim.copy(story.focus).lerp(notebook.focus,book);
+    if(board>.0001){
+      const pose=station.eventWall.pose(camera);
+      eye.lerp(pose.eye,board*walked);innerAim.lerp(pose.aim,board);
     }
-    // The last stretch of the entrance passes between the jambs.
-    const walked=smooth(.66,1,w);
-    if(walked>0){
-      story.inside.getPointAt(walked,inner);notebook.inside.getPointAt(walked,other);
-      eye.copy(inner.lerp(other,book));innerAim.copy(story.focus).lerp(notebook.focus,book);
-      if(board>.0001){
-        const pose=station.eventWall.pose(camera);
-        eye.lerp(pose.eye,board*walked);innerAim.lerp(pose.aim,board);
-      }
-      aim.lerp(innerAim,smooth(0,.95,walked));
-    }
+    aim.lerp(innerAim,walked);
     camera.position.copy(eye);matrix.lookAt(eye,aim,camera.up);camera.quaternion.setFromRotationMatrix(matrix);
     const t=1-Math.pow(1-smooth(0,1,1-interior),1.25);
     if(t>0){

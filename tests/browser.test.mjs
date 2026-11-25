@@ -853,3 +853,24 @@ test('portrait field hub supports keyboard travel and a working pilot guide with
     await page.close();
   }
 });
+
+test('a mobile shed arrival gives the fridge a usable scroll hold', async t => {
+  const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+  try{
+    await page.goto(baseURL);
+    await page.waitForFunction(()=>window.LabWorld || document.documentElement.classList.contains('no-world'));
+    if(!await page.evaluate(()=>Boolean(window.LabWorld))){t.skip('Requires a WebGL camera');return;}
+    await page.locator('#fieldHub a[href="#tools"]').tap();
+    await page.waitForFunction(()=>Math.abs(document.querySelector('[data-stop=story]').getBoundingClientRect().top)<2);
+    await page.waitForSelector('#tools.surface-ready[data-instrument=story]');
+    const magnet=page.locator('#wordButtons button').first();
+    await magnet.tap();
+    assert.equal(await magnet.getAttribute('aria-pressed'),'true');
+    await page.evaluate(()=>scrollBy({top:innerHeight*.6,behavior:'instant'}));
+    await page.waitForFunction(()=>document.querySelector('[data-stop=story]').getBoundingClientRect().top<-innerHeight*.55);
+    assert.equal(await page.locator('#tools').getAttribute('data-instrument'),'story');
+    assert.equal(await magnet.getAttribute('aria-pressed'),'true');
+    await page.locator('#readBrief').tap();
+    await page.waitForSelector('#briefSheet[open]');
+  }finally{await page.close();}
+});

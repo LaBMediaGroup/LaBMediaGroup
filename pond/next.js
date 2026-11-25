@@ -174,7 +174,7 @@
     const [h,m]=detroitClock.format(noon).split(':').map(Number);
     return new Date(+noon+((Number(AT[1])-h)*60+Number(AT[2])-m)*60000);
   }
-  var fieldTools=window.createFieldTools({world:W,now:now,dayKey:ymd,live:live,lat:LAT,lon:LON,reduced:reduce,onShuffle:()=>SND.crinkle()});
+  var fieldTools=window.createFieldTools({world:W,now:now,dayKey:ymd,live:live,lat:LAT,lon:LON,reduced:reduce,travel:(...args)=>hub.travel(...args),onShuffle:()=>SND.crinkle()});
   function compass(deg) { return ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(((deg % 360) + 360) % 360 / 45) % 8]; }
   function live() {
     if (!window.LaBSun) return;
@@ -248,7 +248,7 @@
   /* ---------- scroll: dive, tiles, ink ---------- */
   var hero = $('.hero-in'), windInstrument = $('.wind-instrument'), cue = $('.cue'), toolsSection=$('#tools'), workSection=$('#work'), filmFrame=$('.film-frame');
   var make = $('#make'), mkH = $('#mk');
-  const hub=window.createFieldHub(W,reduce);
+  const hub=window.createFieldHub(W,reduce,onScroll);
   const toolFrame=toolsSection.querySelector('.station-frame');
   const approach=$('.shed-approach'),footer=$('.foot');
   const measureFooter=()=>make.style.setProperty('--footer-height',footer.offsetHeight+'px');
@@ -352,7 +352,7 @@
     const span=Math.max(1,opening.offsetHeight-hero.parentElement.offsetHeight);
     const p=y/span, intro=phase(p,.05,.36), wind=phase(p,.23,.50);
     const exit=1-phase(p,.81,1.06);
-    const overview=1-phase(p,0,.50);
+    const overview=1-phase(p,0,.71);
     W()?.setHubOverview(reduce ? Number(p < .18) : overview);
     hub.update(1-phase(p,.025,.19));
     openingLayer(invitation,1-phase(p,.035,.20),-10*intro);
@@ -367,7 +367,9 @@
     const toolOrder=['story','events','book','sun'];
     const tool=toolsSection.dataset.instrument;
     const localStep=chapter==='#films'?(Math.round(travel)+1)+'/'+films.length:chapter==='#work'?(Math.round(siteTravel)+1)+'/'+websites.length:chapter==='#tools'?(1+toolOrder.indexOf(tool==='ask'?'book':tool))+'/4':'';
-    markChapter(chapter,localStep);
+    const destination=document.documentElement.dataset.fieldDestination;
+    if(destination)markChapter('#'+destination);
+    else markChapter(chapter,localStep);
     // One ascent starts as the last screen leaves and ends with the inquiry.
     const rise=exiting ? clamp((vh*.97-filmRect.bottom)/ascentSpan(vh),0,1) : 0;
     if(W()) W().setRise(rise);

@@ -25,9 +25,9 @@ import * as THREE from 'three';
 import {buildPoleCutout} from './pole-cutout.js';
 import { createPondPort } from './pond-port.js?v=15';
 import { buildOak } from './oak.js';
-import { buildFieldStation } from './field-station.js?v=24';
+import { buildFieldStation } from './field-station.js?v=25';
 import {pondCamera} from './pond-camera.js?v=19';
-import {fieldStationCamera} from './station-camera.js?v=23';
+import {fieldStationCamera} from './station-camera.js?v=25';
 import {fieldDrones} from './field-drones.js?v=24';
 import {outdoorInstruments} from './outdoor-instruments.js?v=24';
 import { buildFieldBird } from './field-bird.js';
@@ -779,6 +779,14 @@ function prepareFilmRoom() {
 const stationCamera=fieldStationCamera(THREE,station);
 let renderStationControls=null,stationRevision=0,fieldExitListener=null;
 let hubWeight=0;
+const windEye=new THREE.Vector3(),windSight=new THREE.Vector3(),windRotation=new THREE.Quaternion();
+const flightFrom=new THREE.Vector3(),flightRotation=new THREE.Quaternion(),flightAim=new THREE.Vector3();
+let landmarkBlend=1,landmarkPlace=0,landmarkLight=0;
+function approachLandmark(t){
+  landmarkBlend=t;
+  landmarkLight=1-ss(.12,.91,t);
+  setSun(fieldSun,fieldBearing);
+}
 let fieldRead=0,board=0,boardTarget=0;
 let acquire=0,acquireTarget=0,escort=0,escortTarget=0;
 let reportedExit=-1,reportedLight=-1;
@@ -822,7 +830,15 @@ function placeCamera() {
     pondShot.enter(camera,S.under,immersionStroke,S.exitMix,roomPos,roomTarget,U.uSunDir.value,reduce);
   }
   if(hubWeight>0){
-    camera.position.lerp(hubEye,hubWeight);camera.quaternion.slerp(hubQ,hubWeight);
+    // Descend on the field side of the wires. Turn into the span before
+    // leveling at the familiar wind reading, in either scroll direction.
+    const t=1-hubWeight,h=1-t;
+    windEye.set(hubEye.x+1.4,standPos.y+4.8,standPos.z+4.5);
+    camera.position.multiplyScalar(t*t).addScaledVector(windEye,2*t*h).addScaledVector(hubEye,h*h);
+    windSight.copy(lineBase);windSight.y=H(lineBase.x,lineBase.z)+ARM_Y;
+    m4.lookAt(camera.position,windSight,camera.up);windRotation.setFromRotationMatrix(m4);
+    camera.quaternion.slerpQuaternions(hubQ,qTmp.copy(camera.quaternion),ss(0,1,t));
+    camera.quaternion.slerp(windRotation,.54*Math.sin(Math.PI*t)**2);
   }
   if(detailWeight>.001 && (activeTool==='flight'||activeTool==='sun')){
     const isMeter=activeTool==='flight',object=isMeter?instruments.board:instruments.lcd;
@@ -833,6 +849,19 @@ function placeCamera() {
     m4.lookAt(detailEye,detailAim,camera.up);detailQ.setFromRotationMatrix(m4);
     const blend=detailWeight*(1-escort)*(1-S.under)*S.station;
     camera.position.lerp(detailEye,blend);camera.quaternion.slerp(detailQ,blend);
+  }
+  if(landmarkBlend<1){
+    // The destination camera stays on its own rail. Approach it from above
+    // and frame the actual landmark before matching its exact position and lens.
+    const t=landmarkBlend,h=1-t;
+    const spot=hubPlaces[landmarkPlace];
+    windEye.set(flightFrom.x*.26+camera.position.x*.74,Math.max(camera.position.y+2.7,flightFrom.y*.86),
+      flightFrom.z*.42+camera.position.z*.58);
+    camera.position.multiplyScalar(t*t).addScaledVector(windEye,2*t*h).addScaledVector(flightFrom,h*h);
+    flightAim.set(...spot);
+    m4.lookAt(camera.position,flightAim,camera.up);windRotation.setFromRotationMatrix(m4);
+    camera.quaternion.slerpQuaternions(flightRotation,qTmp.copy(camera.quaternion),t);
+    camera.quaternion.slerp(windRotation,.8*Math.sin(Math.PI*t)**2);
   }
   room?.stations.focusCamera(camera);
   camera.updateMatrixWorld();
@@ -918,7 +947,7 @@ function frame(now) {
     immersionStroke=THREE.MathUtils.clamp(immersionStroke+(forwardCross?move:-move),0,1);
   }
   // The course and its drones belong to the south field: keep them out of the opening shot.
-  aircraft.course.visible=aircraft.object.visible=hubWeight>.05||S.station>.5||S.flight>.01;
+  aircraft.course.visible=aircraft.object.visible=landmarkBlend<1||hubWeight>.05||S.station>.5||S.flight>.01;
   U.uCourseLight.value=aircraft.course.visible?1-ss(-.10,-.035,U.uEl.value):0;
   aircraft.update(cameraDt,S.station>.85 && S.inside<.22 && escort<.993 && S.under<.05 && S.rise<.05,escort,S.wind>=18);
   instruments.wind(dt,S.wind,U.uWindDir.value,S.wind>=18?'HOLD':'COURSE OPEN',windSource);
@@ -1007,7 +1036,11 @@ document.addEventListener('visibilitychange', () => {
 let fieldSun=.06,fieldBearing=.2;
 function setSun(elRad,off=.2) {
   fieldSun=elRad;fieldBearing=off;
-  elRad+=Math.max(0,.105-elRad)*hubWeight;
+  // The opening is a staged establishing shot. Keep the cables and eaves
+  // silhouetted against civil twilight, then return to field time at the sill.
+  const exterior=(1-ss(.68,.98,S.stationT))*(1-ss(0,.10,S.diveT))*(1-ss(0,.10,S.riseT));
+  elRad+=Math.max(0,-.032-elRad)*exterior;
+  elRad+=Math.max(0,.105-elRad)*Math.max(hubWeight,landmarkLight);
   S.el = elRad; const p = palette(elRad);
   U.uEl.value = elRad; U.uDay.value = p.day; U.uGold.value = p.gold; U.uNight.value = p.night;
   U.uZen.value.setRGB(...p.zen, THREE.LinearSRGBColorSpace); U.uHor.value.setRGB(...p.hor, THREE.LinearSRGBColorSpace); U.uSunC.value.setRGB(...p.sun, THREE.LinearSRGBColorSpace);
@@ -1018,12 +1051,19 @@ setSun(0.06);
 
 window.LabWorld = {
   setSun(elDeg,offsetDeg=11.46) { setSun(elDeg*Math.PI/180,offsetDeg*Math.PI/180); },
-  setStation(weight) { S.stationT=weight; },
+  setStation(weight) { if(weight!==S.stationT){S.stationT=weight;setSun(fieldSun,fieldBearing);} },
   setFieldEscort(acquisition,progress){acquireTarget=acquisition;escortTarget=progress;},
   hubPoints(){return hubPlaces.map(xyz=>{
     const v=new THREE.Vector3(...xyz).project(hubCamera);
     return {x:(v.x+1)*innerWidth/2,y:(1-v.y)*innerHeight/2};
   });},
+  beginLandmark(place){
+    landmarkPlace=place;
+    flightFrom.copy(camera.position);flightRotation.copy(camera.quaternion);
+    if(place===2)prepareFilmRoom();
+    approachLandmark(0);
+  },
+  approachLandmark,
   setHubOverview(weight){if(weight!==hubWeight){hubWeight=weight;setSun(fieldSun,fieldBearing);}},
   setFieldRead(value){fieldRead=value;},
   setStationJourney(book,outside,wallWeight){boardTarget=wallWeight;S.bookT=book;S.insideT=1-outside;},

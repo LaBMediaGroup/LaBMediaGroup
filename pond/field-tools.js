@@ -1,6 +1,6 @@
 'use strict';
 // Tool controls on the bank. The planner and scene share the same solar calculation.
-window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShuffle}) {
+window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShuffle,travel}) {
   const get=id=>document.getElementById(id);
   const section=get('tools'), tabs=[...section.querySelectorAll('[role=tab]')];
   const clock=get('sunClock'),play=get('sunPlay'),reset=get('sunReset');
@@ -25,12 +25,14 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
     mark.setAttribute('aria-hidden','true');section.append(mark);return mark;
   });
   const courseHold=()=>frame.offsetHeight*.95;
-  const trackLength=()=>Math.max(1,section.offsetHeight-frame.offsetHeight-courseHold());
-  const stopOffset=tool=>trackLength()*landing[tool]+(tool==='flight'?courseHold()*.32:0);
+  // Leave a full swipe of usable fridge after the lens has cleared the doors.
+  const fridgeHold=()=>!reduced && world() && frame.offsetWidth<700?frame.offsetHeight*.85:0;
+  const trackLength=()=>Math.max(1,section.offsetHeight-frame.offsetHeight-courseHold()-fridgeHold());
+  const stopOffset=tool=>(tool==='story'?fridgeHold()*.20:fridgeHold())+trackLength()*landing[tool]+(tool==='flight'?courseHold()*.32:0);
   function layoutStops(){for(const mark of stops)mark.style.top=stopOffset(mark.dataset.stop)+'px';}
   const sizes=new ResizeObserver(layoutStops);sizes.observe(frame);sizes.observe(section);layoutStops();
   function journey(bounds){
-    const p=Math.min(1,Math.max(0,-bounds.top/trackLength()));
+    const p=Math.min(1,Math.max(0,(-bounds.top-fridgeHold())/trackLength()));
     const stop=p<(beats.wallStart+beats.wallEnd)/2?'story':p<(beats.panStart+beats.panEnd)/2?'events':p<beats.liftStart?'book':p<beats.drone?'sun':'flight';
     if(stop!=='book')notebookTool='book';
     const tool=stop==='book'?notebookTool:stop;
@@ -45,7 +47,10 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
   const nextStop={story:'events',book:'sun',sun:'flight',flight:'work',events:'book',ask:'book'};
   onward.addEventListener('click',()=>{
     const dest=nextStop[active];
-    if(dest==='work'){location.hash='work';return;}
+    if(dest==='work'){
+      if(location.hash!=='#work')history.pushState(null,'','#work');
+      travel(get('work'));return;
+    }
     select(get('tab-'+dest));
   });
   function menu(open){chooser.setAttribute('aria-expanded',String(open));}
@@ -285,7 +290,7 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
   get('bookNext').addEventListener('click',()=>turnPage(1));
   get('bookPrev').addEventListener('click',()=>turnPage(-1));
   function loadEvents(){return load('spotlight-data').then(()=>board.load(window.SPOTLIGHT||[])).catch(()=>board.load([]));}
-  get('bookAsk').addEventListener('click',()=>{select(get('tab-ask'));get('fieldQuery').focus({preventScroll:true});});
+  get('bookAsk').addEventListener('click',()=>{select(get('tab-ask'));});
   get('askBook').addEventListener('click',()=>{select(get('tab-book'));get('bookAsk').focus({preventScroll:true});});
   get('fieldAsk').addEventListener('submit',async e=>{
     e.preventDefault();
@@ -306,13 +311,20 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
   });
   function select(tab,focus=false) {
     const tool=tab.dataset.tool;
-    notebookTool=tool==='ask'?tool:'book';
-    const bounds=section.getBoundingClientRect();
-    // The shortcut lands on the same track as a swipe. The next gesture
-    // continues from that shot, including after visiting a notebook extra.
-    window.scrollTo({top:scrollY+bounds.top+stopOffset(tool),behavior:'instant'});
-    activate(tab,true,focus);
-    journey(section.getBoundingClientRect());
+    if(['book','ask'].includes(active) && ['book','ask'].includes(tool) && active!==tool){
+      notebookTool=tool;activate(tab,true,focus);
+      if(tool==='ask')get('fieldQuery').focus({preventScroll:true});
+      return;
+    }
+    const mark=stops.find(item=>item.dataset.stop===(tool==='ask'?'book':tool));
+    menu(false);
+    travel(mark,{onArrive(){
+      notebookTool=tool==='ask'?'ask':'book';
+      activate(tab,true,focus);
+      journey(section.getBoundingClientRect());
+      if(tool==='ask')get('fieldQuery').focus({preventScroll:true});
+    }});
+
   }
   function activate(tab,fromControl=false,focus=false) {
     const wasOpen=fromControl && chooser.getAttribute('aria-expanded')==='true';
@@ -394,6 +406,6 @@ window.createFieldTools = function ({world,now,dayKey,live,lat,lon,reduced,onShu
       if(active==='flight' && selected===null && livePosition && !releaseFrame)world()?.setSun(livePosition.elevation,pondHeading(livePosition));
       if(value===0){setDetail(false);menu(false);stopFlight();height.value=0;flight();}
     },
-    syncWorld(){world()?.bindFieldExit(setExit);surfaces.connect();flight();fridge.refresh();if(active==='book')notebook();if(active==='ask')world()?.setNotebookPage?.('','Ask the LaB','');if(selected!==null)renderSun();}
+    syncWorld(){world()?.bindFieldExit(setExit);surfaces.connect();layoutStops();flight();fridge.refresh();if(active==='book')notebook();if(active==='ask')world()?.setNotebookPage?.('','Ask the LaB','');if(selected!==null)renderSun();}
   };
 };

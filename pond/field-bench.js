@@ -232,7 +232,9 @@ export function buildFieldBench({THREE:T, uniforms:U, group, floor, placement, b
     if(portrait){
       // Keep the signed door below both navigation rows on short phones.
       const topRoom=T.MathUtils.clamp((740-innerHeight)/180,0,1);
-      return frame([-.73,1.43,1.27+.06*topRoom],[-.73,1.15+.19*topRoom,-.407]);
+      // Rest inside the sill. Aim slightly higher on shorter phones
+      // so the chapter controls clear the top of the door.
+      return frame([-.73,1.43,1.015+.035*topRoom],[-.73,1.21+.19*topRoom,-.407]);
     }
     return frame([-.74,1.46,.54],[-.73,1.398,-.407]);
   }
