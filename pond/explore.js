@@ -6,7 +6,7 @@
    walk there, click or tap Labcoon (or press F) to follow him, F / Esc to walk again. */
 import * as THREE from 'three';
 import {fieldSteps} from './wildlife/wildlife-motion.js?v=2';
-import {fieldWildlife} from './field-wildlife.js?v=3';
+import {fieldWildlife} from './field-wildlife.js?v=4';
 import {precipitation} from './precipitation.js?v=2';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
@@ -755,7 +755,7 @@ function update(dt, camera) {
 /* ---------------- boot ---------------- */
 W = LabWorld.explore(update);
 ground = W.ground; depth = W.depth;
-if(localField){updatePrecipitation=precipitation(W,reduce);updateWildlife=fieldWildlife(W,displayEncode);}
+if(localField){updatePrecipitation=precipitation(W,reduce);updateWildlife=fieldWildlife(W,displayEncode,reduce);}
 W.scene.add(marker);
 places = buildPlaces({THREE, ground, encode: displayEncode});
 W.scene.add(places.group); SOLID.push(...places.colliders);
