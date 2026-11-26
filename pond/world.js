@@ -82,14 +82,14 @@ const U = {
   uSunDir: { value: new THREE.Vector3(0, 0.1, -1).normalize() },
   uWind: { value: 6 }, uWindAmp: { value: 0.2 }, uWindDir: { value: new THREE.Vector3(0.6, 0, -0.8) }, uGustE: { value: 0 },
   uCourseLight:{value:0},uCourseBake:{value:null},
-  uRain: {value:0}, uCloud: { value: 0.5 }, uBreach: {value:new THREE.Vector2()}, uSplashAge: {value: 8}, uStarAge: {value: 8}
+  uLightning: {value:0}, uStrikeAngle: {value:0}, uRain: {value:0}, uCloud: { value: 0.5 }, uBreach: {value:new THREE.Vector2()}, uSplashAge: {value: 8}, uStarAge: {value: 8}
 };
 const NOISE = `
 float h1(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float n2(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h1(i),h1(i+vec2(1,0)),f.x),mix(h1(i+vec2(0,1)),h1(i+vec2(1,1)),f.x),f.y);}
 float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n2(p);p=p*2.03+vec2(17.1,9.2);a*=.5;}return v;}
 float fbm3(vec2 p){float v=0.,a=.5;for(int i=0;i<3;i++){v+=a*n2(p);p=p*2.1+3.7;a*=.5;}return v;}`;
-const COMMON_U = `uniform float uT,uDay,uGold,uNight,uEl,uWind,uWindAmp,uGustE,uCloud,uSplashAge,uStarAge;uniform vec2 uBreach;uniform vec3 uZen,uHor,uSunC,uSunDir,uWindDir;
+const COMMON_U = `uniform float uT,uDay,uGold,uNight,uEl,uWind,uWindAmp,uGustE,uCloud,uSplashAge,uStarAge;uniform vec2 uBreach;uniform float uLightning,uStrikeAngle;uniform vec3 uZen,uHor,uSunC,uSunDir,uWindDir;
 vec3 nightHorizon(vec3 ray){
   if(uNight<.001)return vec3(0.);
   vec2 bearing=normalize(uSunDir.xz+vec2(.0001));
@@ -221,6 +221,14 @@ const sky = new THREE.Mesh(new THREE.SphereGeometry(2000, 48, 24), new THREE.Sha
       float along=dot(v,axis),width=abs(dot(v,vec2(-axis.y,axis.x)));
       float tail=smoothstep(-.20,0.,along)*(1.-smoothstep(-.001,.004,along));
       col+=vec3(.72,.84,.97)*tail*(1.-smoothstep(.0004,.0034,width))*uNight*smoothstep(0.,.12,uStarAge)*(1.-smoothstep(.72,1.15,uStarAge));
+    }
+    if(uLightning>.001 && rd.y>0.) {
+      float az=atan(rd.x,-rd.z)-uStrikeAngle;
+      float dx=atan(sin(az),cos(az));
+      float bend=.018*sin(rd.y*52.+uStrikeAngle)+.006*sin(rd.y*171.);
+      float bolt=(1.-smoothstep(.001,.006,abs(dx-bend)))*smoothstep(.017,.08,rd.y)*(1.-smoothstep(.22,.32,rd.y));
+      float glow=exp(-dx*dx*1.7-(rd.y-.24)*(rd.y-.24)*8.);
+      col+=uLightning*vec3(.56,.64,.82)*(.06+.52*glow+bolt);
     }
     gl_FragColor=vec4(col,1.);
   }`

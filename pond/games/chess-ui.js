@@ -2,7 +2,7 @@
    project-gate0 Shoot-N-Scrap's Chess module). You play white; he plays black at the level you pick.
    Pieces are drawn shapes, not font glyphs, so they look the same on every phone. */
 import * as Chess from './chess-engine.js?v=1';
-import {sfx} from '../explore-audio.js?v=1';
+import {sfx} from '../explore-audio.js?v=2';
 
 const LEVEL = {easy: 'BEGINNER', normal: 'EASY', best: 'MEDIUM'};
 const SHAPE = {   // 40×40 silhouettes, base at y≈35

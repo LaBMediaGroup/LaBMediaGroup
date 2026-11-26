@@ -244,3 +244,9 @@
 .book-turn button:disabled{opacity:.47;cursor:default}
 [data-pane=journal] details{margin-top:16px;color:#4f5d52}
 @media(max-width:420px){.book-tabs{gap:3px;padding-left:5px}.book-tabs button{padding:9px 10px 7px}.book-leaf{padding:16px 17px 12px}.book-words{margin-top:10px}}
+
+.swap-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.swap-choices .st-pill{text-transform:capitalize;min-height:48px;background:#f8f2e6}
+.swap-choices .st-pill:hover:enabled{background:#dcead7}
+.swap-hint{margin:12px 0 4px}
+.swap-receipt:empty{display:none}

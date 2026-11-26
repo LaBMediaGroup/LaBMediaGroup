@@ -1,11 +1,12 @@
+import {swapTable} from './swap-table.js';
 import {fieldNotebook} from './field-notebook.js?v=2';
 /* Explore HUD v4 (Nov 26 2026): a game UI in LaB × toy-sticker style (see PINO-UI-NOTES.md).
    Needs strip · "right now" card · clock and sound · radar map · status line · two bottom sheets:
    "Leave him something" (Say hi, Note, Doodle, Swap, Yours) and "His things" (Art, Songs, Journal, Map).
    explore.js feeds it: set(hud, journalLine), mapDots(me, coonPos), clock(text, night), heard(song), …
    No accounts, no public wall: visitors' notes go only to him; "Yours" lives in this browser. */
-import {openGame} from './games/games-ui.js?v=3';
-import {sound, sfx, playTune, ensure} from './explore-audio.js?v=1';
+import {openGame} from './games/games-ui.js?v=4';
+import {sound, sfx, playTune, ensure} from './explore-audio.js?v=2';
 export {playTune};
 const $ = s => document.querySelector(s);
 const NEEDS = [['hunger', 'Hunger'], ['energy', 'Energy'], ['joy', 'Joy'], ['boredom', 'Boredom'], ['curiosity', 'Curiosity']];
@@ -87,7 +88,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
         <div class="swatches" id="swatches"></div>
         <div class="row"><button class="st-pill" id="doodleClear" type="button">Clear</button><button class="st-pill primary" id="doodleSend" type="button">Mail it</button></div>
         <div class="note-hint" id="doodleHint">One doodle a day. Draw, don't write: he can't read.</div></div></div></div>
-      <div class="pane" data-pane="swap" hidden><div class="tile st-card"><span class="chip">coming soon</span><p style="margin-top:10px">Trade trinkets at the picnic table. Offer him one of four little finds; he washes it, holds it up to the moon, and keeps it or hands it back with a sniff. If he keeps it, he gives you one from his stash.</p></div></div>
+      <div class="pane" data-pane="swap" hidden><p>Leave a find on the picnic table. When he’s awake he’ll turn it over in his paws. If he wants to trade, you get a trinket from his stash.</p><div class="swap-choices" role="group" aria-label="Choose a trinket to offer"></div><p class="swap-receipt" aria-live="polite"></p><div class="note-hint swap-hint" role="status"></div></div>
       <div class="pane" data-pane="yours" hidden><ul class="journal" id="yoursList"></ul></div>
     </section>
     <section class="sheet st-card pe" id="thingsSheet" hidden role="dialog" aria-label="His things">
@@ -158,15 +159,25 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
   const yoursKey = 'labcoon-yours';
   const yours = () => { try { return JSON.parse(localStorage.getItem(yoursKey) || '[]'); } catch { return []; } };
   function remember(item) { try { localStorage.setItem(yoursKey, JSON.stringify([{...item, at: Date.now()}, ...yours()].slice(0, 40))); } catch {} }
-  onTab.yours = () => {
-    const y = yours();
-    $('#yoursList').innerHTML = y.length ? y.map(i => `<li><time>${new Date(i.at).toLocaleTimeString([], {hour: 'numeric', minute: '2-digit'})}</time><span>${i.kind === 'hi' ? `You: “${esc(i.text)}”${i.reply ? `<br><i>Labcoon: ${esc(i.reply)}</i>` : ''}` : i.kind === 'doodle' ? 'You mailed him a doodle.' : i.kind === 'game' ? `Picnic table · ${esc(i.text)}` : `You mailed him: “${esc(i.text)}”`}</span></li>`).join('') : '<li class="empty">Nothing yet. Say hi, or mail him a note.</li>';
+  let trades=[];
+  const renderYours = () => {
+    const y = [...yours(),...trades].sort((a,b)=>b.at-a.at);
+    $('#yoursList').innerHTML = y.length ? y.map(i => `<li><time>${new Date(i.at).toLocaleTimeString([], {hour: 'numeric', minute: '2-digit'})}</time><span>${i.kind === 'hi' ? `You: “${esc(i.text)}”${i.reply ? `<br><i>Labcoon: ${esc(i.reply)}</i>` : ''}` : i.kind === 'doodle' ? 'You mailed him a doodle.' : i.kind === 'swap' ? esc(i.text) : i.kind === 'game' ? `Picnic table · ${esc(i.text)}` : `You mailed him: “${esc(i.text)}”`}</span></li>`).join('') : '<li class="empty">Nothing yet. Say hi, or mail him a note.</li>';
   };
 
   /* ---------- say hi (5 a day) ---------- */
   const dayKey = 'labcoon-hi-' + new Date().toDateString();
   const used = () => { try { return +localStorage.getItem(dayKey) || 0; } catch { return 0; } };
   const updateLeft = () => { const n = 5 - used(); $('#hiLeft').textContent = n > 0 ? `${n} hellos left today${live ? '' : ' · offline preview: he answers for real when he’s live'}` : 'That’s your five for today. He’ll be here tomorrow.'; $('#hiInput').disabled = n <= 0; };
+  const refreshSwaps=swapTable($('#lcSheet [data-pane=swap]'),api,records=>{
+    trades=records;
+    if(openSheet===$('#lcSheet') && !$('#lcSheet [data-pane=yours]').hidden)renderYours();
+  });
+  onTab.swap=refreshSwaps;
+  onTab.yours=()=>{renderYours();refreshSwaps();};
+  setInterval(()=>{
+    if(!document.hidden && openSheet===$('#lcSheet') && (!$('#lcSheet [data-pane=swap]').hidden||!$('#lcSheet [data-pane=yours]').hidden))refreshSwaps();
+  },5000);
   onTab.hi = updateLeft;
   $('#hiForm').addEventListener('submit', async e => {
     e.preventDefault(); const v = $('#hiInput').value.trim(); if (!v || used() >= 5) return;
@@ -263,7 +274,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
   const recKey = 'labcoon-games';
   const record = () => { try { return JSON.parse(localStorage.getItem(recKey) || '{}'); } catch { return {}; } };
   let chessUI = null;
-  import('./games/chess-ui.js?v=2').then(m => { chessUI = m.playChess; }).catch(() => {});
+  import('./games/chess-ui.js?v=3').then(m => { chessUI = m.playChess; }).catch(() => {});
   function gameResult(r) {
     try { const rec = record(); const g = rec[r.game] || {w: 0, l: 0, d: 0}; g[r.result[0]]++; rec[r.game] = g; localStorage.setItem(recKey, JSON.stringify(rec)); } catch {}
     remember({kind: 'game', text: `${r.game}: you ${r.result === 'win' ? 'won' : r.result === 'loss' ? 'lost' : 'drew'}`});
@@ -336,6 +347,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
   }
 
   let state = {};
+  if(new URLSearchParams(location.search).get('swap')==='1')show($('#lcSheet'),'swap');
   if (['1','thoughts','notes','nights'].includes(requestedJournal)) show($('#thingsSheet'), 'journal');
   return {
     set(h, line) {

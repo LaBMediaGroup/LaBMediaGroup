@@ -57,6 +57,11 @@ function tone(f, dur, {type = 'sine', gain = .2, at = 0, to = null, bus = sfxBus
 }
 
 /* ---------------- game and HUD sounds ---------------- */
+export function distantThunder(){
+  if(!live())return;
+  burst(2.9,'lowpass',230,48,.18,.55,ambBus);
+  burst(2.2,'bandpass',115,53,.10,.65,ambBus,.44);
+}
 export function sfx(kind) {
   if (!live()) return;
   const r = 1 + (Math.random() - .5) * .08;

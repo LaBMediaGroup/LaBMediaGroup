@@ -5,14 +5,14 @@
    Controls: WASD / arrows to walk (Shift runs), drag to look, click or tap the ground to
    walk there, click or tap Labcoon (or press F) to follow him, F / Esc to walk again. */
 import * as THREE from 'three';
-import {precipitation} from './precipitation.js';
+import {precipitation} from './precipitation.js?v=2';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=3';
-import {createHud} from './explore-hud.js?v=15';
-import {field as fieldSound} from './explore-audio.js?v=1';
+import {createHud} from './explore-hud.js?v=17';
+import {field as fieldSound} from './explore-audio.js?v=2';
 
 const LAT = 42.67, LON = -83.03;
 const q = new URLSearchParams(location.search);
@@ -328,6 +328,7 @@ function plan(e) {
       T.push({type:'face',yaw:()=>faceTo(desk.x,desk.y)});
       clip(e.move==='inspect_computer'?'sniff':'beg'); idle(4); break;
     }
+    case 'swap': faceAt('picnic_table'); clip('wash'); clip('hold_find',{loops:1}); clip('set_down'); break;
     case 'check_mail': faceAt('mailbox'); clip('beg'); idle(1.5); break;
     case 'pry_lid': case 'dig_in': faceAt('trash_can'); clip('pry'); break;
     case 'draw': case 'hand_paint': faceAt('art_shed'); clip('draw'); break;

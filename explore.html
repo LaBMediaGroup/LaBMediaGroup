@@ -8,7 +8,7 @@
 <title>Explore — LaB Media (prototype)</title>
 <link rel="icon" href="favicon.ico">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,600;0,700;0,800;1,600&display=swap">
-<link rel="stylesheet" href="/pond/explore.css?v=10">
+<link rel="stylesheet" href="/pond/explore.css?v=11">
 <style>
   html,body{margin:0;height:100%;overflow:hidden;background:#12191a;overscroll-behavior:none;touch-action:none}
   #world{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:grab}
@@ -18,9 +18,9 @@
 <script defer src="sun-calc.js"></script>
 <script type="module">
 try {
-  await import('/pond/world.js?v=29');
+  await import('/pond/world.js?v=30');
   document.getElementById('loadCoon').style.left = '45%'; document.getElementById('loadingText').textContent = 'Waking Labcoon…';
-  await import('/pond/explore.js?v=28');
+  await import('/pond/explore.js?v=30');
 } catch (e) {
   console.error(e);
   document.documentElement.classList.add('no-world');

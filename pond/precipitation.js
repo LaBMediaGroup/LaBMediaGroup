@@ -1,5 +1,6 @@
 // World-space precipitation around the current camera. Terrain and prop depth hide drops behind them.
 import * as THREE from 'three';
+import {distantThunder} from './explore-audio.js?v=2';
 
 function layer(snow,capacity,uniforms) {
   const vertices=snow ? 1 : 2;
@@ -63,8 +64,22 @@ export function precipitation(world,reduced){
   const uniforms={elapsed:{value:0},drift:{value:new THREE.Vector2()},pixelRatio:{value:world.renderer.getPixelRatio()},daylight:{value:1}};
   const rain=layer(false,reduced?700:2400,uniforms),snow=layer(true,reduced?480:1600,uniforms);
   world.scene.add(rain.mesh,snow.mesh);
-  let drops=0,flakes=0;
+  let drops=0,flakes=0,lastRumble=-1;
+  function stormSky(active){
+    world.uniforms.uLightning.value=0;
+    if(!active || document.hidden)return;
+    // Visitors share the timing of these distant illustrative strikes during a storm report.
+    const now=Date.now()/1000, block=Math.floor(now/60);
+    const seed=Math.abs(Math.sin(block*31.13)*1697.3)%1;
+    const age=now-block*60-(6+seed*37);
+    world.uniforms.uStrikeAngle.value=seed*Math.PI*2;
+    if(!reduced && age>=0 && age<.8)world.uniforms.uLightning.value=.76*Math.exp(-age*5)*Math.min(1,age/.08);
+    if(age>=3+seed*4 && age<4+seed*4 && lastRumble!==block){
+      lastRumble=block;distantThunder();
+    }
+  }
   return (dt,weather)=>{
+    stormSky(weather?.storm);
     const blend=1-Math.exp(-dt*1.4);
     drops+=((weather?.rain||0)-drops)*blend;flakes+=((weather?.snow||0)-flakes)*blend;
     rain.set(drops);snow.set(flakes);
