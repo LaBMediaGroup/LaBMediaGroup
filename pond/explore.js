@@ -8,6 +8,7 @@ import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=2';
 import {createHud} from './explore-hud.js?v=1';
 
@@ -53,7 +54,7 @@ function liveSky() {
 
 /* ---------------- Labcoon ---------------- */
 const coon = {root: null, mixer: null, actions: {}, current: null, pos: new THREE.Vector3(), yaw: 0,
-  queue: [], task: null, swimming: false, irises: [], findHeld: false, bone: null, home: new THREE.Vector2()};
+  queue: [], task: null, swimming: false, irises: [], envMats: [], teeth: [], findHeld: false, bone: null, home: new THREE.Vector2()};
 const WALK_SPEED = .21, CLIP_SPEED = .165;     // clip is authored for 0.165 m/s at rate 1
 const cap = new THREE.Mesh(new THREE.CylinderGeometry(.0105, .0115, .006, 21),
   new THREE.MeshStandardMaterial({color: 0x8c0d0a, metalness: .85, roughness: .32}));
@@ -117,6 +118,10 @@ function lightFromSky() {
   const facing = Math.max(0, toCam.x * Math.sin(coon.yaw) + toCam.z * Math.cos(coon.yaw));
   const glow = night * Math.pow(facing, 3) * (coon.asleep ? 0 : 1);
   for (const m of coon.irises) m.emissiveIntensity = glow * 2.2;
+  const envK = .25 + .75 * day;
+  for (const m of coon.envMats) m.envMapIntensity = (m.name.startsWith('Corneal') ? .55 : m.name.startsWith('Iris') ? .3 : .45) * envK;
+  const open = /yawn|^wake$|grumble/.test(coon.clip || '');                 // teeth only when the mouth is open
+  for (const o of coon.teeth) o.visible = open;
 }
 const MOON = new THREE.Color(.55, .66, .95), TMP2 = new THREE.Vector3();
 
@@ -126,6 +131,8 @@ async function loadLabcoon() {
   loader.setKTX2Loader(ktx).setMeshoptDecoder(MeshoptDecoder);
   const gltf = await loader.loadAsync('/pond/labcoon/labcoon_v07.glb');
   const root = gltf.scene, coats = [];
+  // a small reflection environment for Labcoon's own materials: catchlights in his eyes and on his nose
+  const pm = new THREE.PMREMGenerator(W.renderer), env = pm.fromScene(new RoomEnvironment(), .04).texture; pm.dispose();
   root.traverse(o => {
     if (!o.isMesh) return;
     o.frustumCulled = false;
@@ -134,7 +141,12 @@ async function loadLabcoon() {
     if (mat?.transparent && /fur|fibres|hair|strand/i.test(mat.name)) {
       mat.alphaTest = .025; mat.opacity = .52; mat.depthWrite = false; mat.color.multiplyScalar(.74);
     }
-    if (mat?.name.startsWith('Iris')) { mat.emissive = new THREE.Color(.62, .78, .32); mat.emissiveIntensity = 0; coon.irises.push(mat); }
+    if (mat?.name.startsWith('Iris')) { mat.emissive = new THREE.Color(.62, .78, .32); mat.emissiveIntensity = 0; coon.irises.push(mat); mat.color.multiplyScalar(1.6); mat.roughness = .18; }
+    if (mat?.name.startsWith('Corneal')) { mat.roughness = .05; mat.metalness = 0; mat.opacity = .07; mat.color.setRGB(0, 0, 0); }
+    if (mat?.name.startsWith('Rhinarium') || mat?.name.startsWith('Lip and nostril')) mat.roughness = Math.min(mat.roughness, .32);
+    if (mat?.name.startsWith('Lip')) mat.color.setRGB(.34, .32, .3);             // the web fur is thinner than Blender's: keep the lip line from drawing a frown
+    if (/^(Corneal|Iris|Rhinarium)/.test(mat?.name || '')) { mat.envMap = env; coon.envMats.push(mat); }
+    if (o.name.startsWith('Tooth')) coon.teeth.push(o);
     if (mat) displayEncode(mat);
   });
   for (const c of coats) addFur(c);
@@ -534,4 +546,4 @@ me.pos.y = ground(me.pos.x, me.pos.z);
 liveSky(); setInterval(liveSky, 60000);
 loadLabcoon().then(() => document.documentElement.classList.add('labcoon-ready'))
   .catch(err => { console.error(err); say('Labcoon could not load: ' + err.message); });
-window.LabExplore = {me, coon, world: W, follow: toggleFollow, tapAt, get perf() { return perf?.textContent; }};
+window.LabExplore = {me, coon, world: W, follow: toggleFollow, followCam: follow, tapAt, get perf() { return perf?.textContent; }};
