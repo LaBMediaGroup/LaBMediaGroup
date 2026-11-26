@@ -82,7 +82,7 @@ const U = {
   uSunDir: { value: new THREE.Vector3(0, 0.1, -1).normalize() },
   uWind: { value: 6 }, uWindAmp: { value: 0.2 }, uWindDir: { value: new THREE.Vector3(0.6, 0, -0.8) }, uGustE: { value: 0 },
   uCourseLight:{value:0},uCourseBake:{value:null},
-  uCloud: { value: 0.5 }, uBreach: {value:new THREE.Vector2()}, uSplashAge: {value: 8}, uStarAge: {value: 8}
+  uRain: {value:0}, uCloud: { value: 0.5 }, uBreach: {value:new THREE.Vector2()}, uSplashAge: {value: 8}, uStarAge: {value: 8}
 };
 const NOISE = `
 float h1(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
@@ -651,6 +651,7 @@ const water = new THREE.Mesh(new THREE.PlaneGeometry(64, 64, 1, 1).rotateX(-Math
   }, U),
   vertexShader: `uniform mat4 texMat;varying vec4 vR;varying vec3 vW;void main(){vR=texMat*vec4(position,1.);vec4 w=modelMatrix*vec4(position,1.);vW=w.xyz;gl_Position=projectionMatrix*viewMatrix*w;}`,
   fragmentShader: COMMON_U + NOISE + FOG + `uniform sampler2D tRefl,tSim,tDepth;uniform vec2 uSimTexel,entryOrigin;uniform float entryAge,uInk;uniform vec2 uInkC;uniform vec3 uAccent;varying vec4 vR;varying vec3 vW;
+  uniform float uRain;
   vec2 wave(vec2 p,vec2 d,float k,float sp,float a){float ph=dot(p,d)*k-uT*sp;return d*cos(ph)*a*k;}
   void main(){
     vec2 p=vW.xz;
@@ -673,6 +674,13 @@ const water = new THREE.Mesh(new THREE.PlaneGeometry(64, 64, 1, 1).rotateX(-Math
     g+=(vec2(n2(p*14.+uT*.9),n2(p*14.-uT*.8))-.5)*.03*rough*shelter;  // capillary chop
     g+=(vec2(n2(p*3.+uT*.12),n2(p*3.1-uT*.1))-.5)*.006;               // slow swell, never a perfect mirror
     g*=1./(1.+dist*.025);
+    if(uRain>.005 && dist<15.) {
+      vec2 cell=floor(p*3.3), offset=fract(p*3.3)-.5;
+      offset-=.23*vec2(sin(dot(cell,vec2(12.8,4.1))),cos(dot(cell,vec2(7.3,23.2))));
+      float t=fract(uT*1.6+n2(cell*2.3)), r=length(offset);
+      float ring=1.-smoothstep(.012,.065,abs(r-t*.26));
+      g+=uRain*.24*ring*(1.-t)*offset/max(r,.01)*(1.-smoothstep(6.,15.,dist));
+    }
     // The breach sends a short-lived radial crest through the existing ripples.
     vec2 radial=p-uBreach; float radius=length(radial);
     float ring=radius-(.14+uSplashAge*1.45);

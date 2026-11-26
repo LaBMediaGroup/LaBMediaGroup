@@ -5,6 +5,7 @@
    Controls: WASD / arrows to walk (Shift runs), drag to look, click or tap the ground to
    walk there, click or tap Labcoon (or press F) to follow him, F / Esc to walk again. */
 import * as THREE from 'three';
+import {precipitation} from './precipitation.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
@@ -44,6 +45,18 @@ function blocked(x, z) {
 }
 
 /* ---------------- sun and wind ---------------- */
+const localField = ['127.0.0.1','localhost'].includes(location.hostname) && location.port==='5430';
+let observedWeather=null, updatePrecipitation;
+const windNow=()=>q.has('wind')?Number(q.get('wind')):observedWeather?.wind??6;
+const gustNow=()=>q.has('wind')?windNow()+4:observedWeather?.gust??windNow();
+async function refreshFieldWeather() {
+  try {
+    const r=await fetch('http://127.0.0.1:5437/weather',{cache:'no-store',signal:AbortSignal.timeout(8500)});
+    if(r.ok) observedWeather=await r.json();
+  } catch { /* Allow a local reader restart without blinking the weather off. */ }
+  if(!(observedWeather?.observedAt>=Date.now()-7200000)) observedWeather=null;
+  liveSky();
+}
 function liveSky() {
   let t = new Date();
   const at = q.get('at')?.match(/^(\d{1,2}):(\d{2})$/);
@@ -51,10 +64,10 @@ function liveSky() {
   if (window.LaBSun) {
     const p = LaBSun.position(t, LAT, LON);
     LabWorld.setSun(p.elevation);
-    LabWorld.setWind(+(q.get('wind') || 6), +(q.get('wind') || 6) + 4, 270, p.azimuth);
+    LabWorld.setWind(windNow(), gustNow(), observedWeather?.dir??270, p.azimuth);
     H?.clock(t.toLocaleTimeString([], {hour: 'numeric', minute: '2-digit'}), p.elevation < -2);
   }
-  LabWorld.setCloud(.4);
+  LabWorld.setCloud(observedWeather?.cloud??.4);
 }
 
 /* ---------------- Labcoon ---------------- */
@@ -694,13 +707,14 @@ function update(dt, camera) {
   if(me.mode==='follow'&&!clearShot(camera.position))camera.position.copy(camPos);
   W.uniforms.uFollowSubject.value.set(coon.pos.x,coon.pos.y,coon.pos.z,me.mode==='follow'?1:0);
   camera.lookAt(look);
+  updatePrecipitation?.(dt,observedWeather);
   updateLabcoon(dt * LIFE_SPEED, now);   // ?speed=4 runs Labcoon's night faster for review
   marker.material.opacity = Math.max(0, marker.material.opacity - dt * .9);
   // the field's sound: wind, night or day, how near the water and the poles are, and your steps
   { const U = W.uniforms, x = me.mode === 'follow' ? coon.pos.x : me.pos.x, z = me.mode === 'follow' ? coon.pos.z : me.pos.z;
     const shore = Math.hypot(x / 12, (z + 11.5) / 9), pole = Math.max(0, 1 - Math.min(Math.hypot(x + 7, z + 20), Math.hypot(x - 18.6, z - 10.8)) / 9);
     const moved = Math.hypot(me.pos.x - lastStep.x, me.pos.z - lastStep.z) / Math.max(dt, 1e-3); lastStep.copy(me.pos);
-    fieldSound(dt, {wind: +(q.get('wind') || 6), gust: +(q.get('wind') || 6) + 4, night: U.uNight.value, day: U.uDay.value, water: Math.max(0, Math.min(1, 1.7 - shore)), pole,
+    fieldSound(dt, {wind: windNow(), gust: gustNow(), night: U.uNight.value, day: U.uDay.value, water: Math.max(0, Math.min(1, 1.7 - shore)), pole,
       walking: me.mode === 'walk' ? Math.min(1, moved / WALK) : 0}); }
   if (H && coon.root) {
     H.mapDots(me, coon.pos);
@@ -728,6 +742,7 @@ function update(dt, camera) {
 /* ---------------- boot ---------------- */
 W = LabWorld.explore(update);
 ground = W.ground; depth = W.depth;
+if(localField) updatePrecipitation=precipitation(W,reduce);
 W.scene.add(marker);
 places = buildPlaces({THREE, ground, encode: displayEncode});
 W.scene.add(places.group); SOLID.push(...places.colliders);
@@ -743,6 +758,11 @@ H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onFollo
   onGame: r => { if (liveOn) api('/game', r).catch(() => {}); }});   // results reach his brain; he'll think about them later
 me.pos.y = ground(me.pos.x, me.pos.z);
 liveSky(); setInterval(liveSky, 60000);
+if(localField){
+  refreshFieldWeather();
+  setInterval(refreshFieldWeather,60000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshFieldWeather();});
+}
 loadLabcoon().then(() => { document.documentElement.classList.add('labcoon-ready'); const l = document.getElementById('loading'); if (l) { document.getElementById('loadCoon').style.left = 'calc(100% - 54px)'; setTimeout(() => l.classList.add('gone'), 450); setTimeout(() => l.remove(), 1100); } })
   .catch(err => { console.error(err); say('Labcoon could not load: ' + err.message); });
 window.LabExplore = {me, coon, world: W, get live() { return liveOn; }, follow: toggleFollow, followCam: follow, tapAt, get perf() { return perf?.textContent; }};
