@@ -2,6 +2,7 @@
    project-gate0 Shoot-N-Scrap's Chess module). You play white; he plays black at the level you pick.
    Pieces are drawn shapes, not font glyphs, so they look the same on every phone. */
 import * as Chess from './chess-engine.js?v=1';
+import {sfx} from '../explore-audio.js?v=1';
 
 const LEVEL = {easy: 'BEGINNER', normal: 'EASY', best: 'MEDIUM'};
 const SHAPE = {   // 40×40 silhouettes, base at y≈35
@@ -69,7 +70,7 @@ export function playChess(root, {onResult, say: speak}) {
   function end(result) {
     const youLost = result === 'checkmate' && p.side === 1, youWon = result === 'checkmate' && p.side === -1;
     over = youWon ? 'You won!' : youLost ? 'Labcoon won' : 'Draw';
-    speak(say(youWon ? 'lose' : youLost ? 'win' : 'draw'));
+    speak(say(youWon ? 'lose' : youLost ? 'win' : 'draw')); sfx(youWon ? 'win' : youLost ? 'lose' : 'crown');
     if (!reported) { reported = true; onResult?.({game: 'chess', result: youWon ? 'win' : youLost ? 'loss' : 'draw', moves: p.history.length}); }
     render();
   }
@@ -79,6 +80,7 @@ export function playChess(root, {onResult, say: speak}) {
       const m = Chess.find(p, sel, i);
       if (m != null) {
         const [san, took] = Chess.play(p, m); sel = null;
+        sfx(took ? 'capture' : 'place'); if (san.includes('+')) setTimeout(() => sfx('check'), 140);
         if (took) speak(say('lost'));
         render(); if (over) return;
         if (Chess.status(p)[1]) speak(say('inCheck'));
@@ -87,6 +89,7 @@ export function playChess(root, {onResult, say: speak}) {
       }
     }
     sel = legal.some(([a]) => a === i) ? i : null;
+    sfx(sel != null ? 'pick' : 'tick');
     render();
   }
   function himMove() {
@@ -97,6 +100,7 @@ export function playChess(root, {onResult, say: speak}) {
       const m = Chess.bestMove(p, Chess.botOpts(LEVEL[level]));
       if (m == null) return render();
       const [san, took] = Chess.play(p, m);
+      sfx(took ? 'lost' : 'his'); if (san.includes('+')) setTimeout(() => sfx('check'), 140);
       speak(san.includes('#') ? say('win') : san.includes('+') ? say('check') : took ? say('took') : say('after'));
       render();
     }, 350);

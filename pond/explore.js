@@ -10,7 +10,8 @@ import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=2';
-import {createHud} from './explore-hud.js?v=10';
+import {createHud} from './explore-hud.js?v=11';
+import {field as fieldSound} from './explore-audio.js?v=1';
 
 const LAT = 42.67, LON = -83.03;
 const q = new URLSearchParams(location.search);
@@ -536,7 +537,7 @@ function takeMeTo(k) {
 }
 
 /* ---------------- per frame ---------------- */
-const camPos = new THREE.Vector3(), look = new THREE.Vector3(), fwd = new THREE.Vector3(), side = new THREE.Vector3();
+const lastStep = new THREE.Vector3(), camPos = new THREE.Vector3(), look = new THREE.Vector3(), fwd = new THREE.Vector3(), side = new THREE.Vector3();
 let frames = [], first = true;
 function update(dt, camera) {
   const now = performance.now() / 1000;
@@ -596,6 +597,12 @@ function update(dt, camera) {
   camera.lookAt(look);
   updateLabcoon(dt * LIFE_SPEED, now);   // ?speed=4 runs Labcoon's night faster for review
   marker.material.opacity = Math.max(0, marker.material.opacity - dt * .9);
+  // the field's sound: wind, night or day, how near the water and the poles are, and your steps
+  { const U = W.uniforms, x = me.mode === 'follow' ? coon.pos.x : me.pos.x, z = me.mode === 'follow' ? coon.pos.z : me.pos.z;
+    const shore = Math.hypot(x / 12, (z + 11.5) / 9), pole = Math.max(0, 1 - Math.min(Math.hypot(x + 7, z + 20), Math.hypot(x - 18.6, z - 10.8)) / 9);
+    const moved = Math.hypot(me.pos.x - lastStep.x, me.pos.z - lastStep.z) / Math.max(dt, 1e-3); lastStep.copy(me.pos);
+    fieldSound(dt, {wind: +(q.get('wind') || 6), gust: +(q.get('wind') || 6) + 4, night: U.uNight.value, day: U.uDay.value, water: Math.max(0, Math.min(1, 1.7 - shore)), pole,
+      walking: me.mode === 'walk' ? Math.min(1, moved / WALK) : 0}); }
   if (H && coon.root) {
     H.mapDots(me, coon.pos);
     // find Labcoon: when he's off-screen (or behind you), his face waits at the matching screen edge

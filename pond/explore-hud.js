@@ -3,7 +3,9 @@
    "Leave him something" (Say hi, Note, Doodle, Swap, Yours) and "His things" (Art, Songs, Journal, Map).
    explore.js feeds it: set(hud, journalLine), mapDots(me, coonPos), clock(text, night), heard(song), …
    No accounts, no public wall: visitors' notes go only to him; "Yours" lives in this browser. */
-import {openGame} from './games/games-ui.js?v=2';
+import {openGame} from './games/games-ui.js?v=3';
+import {sound, sfx, playTune, ensure} from './explore-audio.js?v=1';
+export {playTune};
 const $ = s => document.querySelector(s);
 const NEEDS = [['hunger', 'Hunger'], ['energy', 'Energy'], ['joy', 'Joy'], ['boredom', 'Boredom'], ['curiosity', 'Curiosity']];
 const MOVE_WORDS = {walk_to: 'go to', swim_to: 'swim to', sit_and_watch: 'watch', hold_up_to_moon: 'hold it up to the moon', pick_up: 'pick something up',
@@ -34,45 +36,8 @@ function third(text) {
 }
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'})[c]);
 
-/* ---------------- his instruments: a tiny synth ---------------- */
-const NOTE_HZ = {C5: 523.25, D5: 587.33, E5: 659.25, G5: 783.99, A5: 880, C6: 1046.5, D6: 1174.66};
-let actx = null, uiSound = true;
-export function blip(kind = 'tick') {           // soft UI sounds: a tick on buttons, a swoop when a sheet opens
-  if (!uiSound || !actx || actx.state !== 'running') return;
-  const t = actx.currentTime, o = actx.createOscillator(), g = actx.createGain();
-  o.type = 'sine'; const [f0, f1, d] = kind === 'swoop' ? [380, 760, .16] : kind === 'close' ? [620, 340, .12] : [900, 1150, .05];
-  o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + d);
-  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.06, t + .01); g.gain.exponentialRampToValueAtTime(.0001, t + d);
-  o.connect(g).connect(actx.destination); o.start(t); o.stop(t + d + .02);
-}
-function audio() { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch {} return actx; }
-export function playTune(song, volume = .35) {
-  const ac = audio(); if (!ac) return 0;
-  const beat = .34, inst = song.instrument || 'ocarina'; let t = ac.currentTime + .05;
-  const out = ac.createGain(); out.gain.value = volume; out.connect(ac.destination);
-  for (const [n, beats] of song.notes || []) {
-    const d = beat * beats;
-    if (n !== 'rest' && NOTE_HZ[n]) {
-      const f = NOTE_HZ[n] * (inst === 'harmonica' ? .5 : 1), o = ac.createOscillator(), g = ac.createGain();
-      o.type = inst === 'harmonica' ? 'sawtooth' : inst === 'tin_whistle' ? 'triangle' : 'sine';
-      o.frequency.value = f;
-      if (inst === 'ocarina' || inst === 'tin_whistle') {        // breathy vibrato
-        const lfo = ac.createOscillator(), lg = ac.createGain(); lfo.frequency.value = 5.2; lg.gain.value = f * .006;
-        lfo.connect(lg).connect(o.frequency); lfo.start(t); lfo.stop(t + d + .1);
-      }
-      const plucked = inst === 'thumb_piano' || inst === 'toy_xylophone';
-      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(plucked ? .9 : .55, t + (plucked ? .005 : .05));
-      if (plucked) g.gain.exponentialRampToValueAtTime(.001, t + Math.max(.25, d * 1.3));
-      else { g.gain.setValueAtTime(.5, t + d * .8); g.gain.linearRampToValueAtTime(0, t + d); }
-      let node = o;
-      if (inst === 'harmonica') { const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1400; o.connect(lp); node = lp; }
-      node.connect(g).connect(out); o.start(t); o.stop(t + d + .4);
-    }
-    t += d;
-  }
-  return t - ac.currentTime;
-}
-
+/* sound lives in explore-audio.js (one engine for the field, the HUD, his tunes and the games) */
+const blip = k => sfx(k);
 export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, live = false, api = null, onGame = null}) {
   const hud = $('#hud2');
   hud.innerHTML = `
@@ -183,12 +148,10 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
   $('#finder').addEventListener('click', () => onTakeMe('labcoon'));
 
   /* ---------- sound ---------- */
-  let soundOn = (() => { try { return localStorage.getItem('labcoon-sound') !== 'off'; } catch { return true; } })(); uiSound = soundOn;
   const soundBtn = $('#soundBtn');
-  const paintSound = () => { soundBtn.innerHTML = soundOn ? I.sound : I.mute; soundBtn.setAttribute('aria-pressed', soundOn); soundBtn.setAttribute('aria-label', soundOn ? 'Sound on' : 'Sound off'); };
+  const paintSound = () => { soundBtn.innerHTML = sound.on ? I.sound : I.mute; soundBtn.setAttribute('aria-pressed', sound.on); soundBtn.setAttribute('aria-label', sound.on ? 'Sound on' : 'Sound off'); };
   paintSound();
-  soundBtn.addEventListener('click', () => { soundOn = !soundOn; uiSound = soundOn; try { localStorage.setItem('labcoon-sound', soundOn ? 'on' : 'off'); } catch {} if (soundOn) audio(); paintSound(); });
-  addEventListener('pointerup', () => { if (soundOn) audio(); }, {once: true});   // phones unlock audio on a release, not a press
+  soundBtn.addEventListener('click', () => { sound.set(!sound.on); paintSound(); if (sound.on) setTimeout(() => sfx('tick'), 60); });
 
   /* ---------- "Yours": what you sent him and what he said, kept in this browser ---------- */
   const yoursKey = 'labcoon-yours';
@@ -269,7 +232,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
   const recKey = 'labcoon-games';
   const record = () => { try { return JSON.parse(localStorage.getItem(recKey) || '{}'); } catch { return {}; } };
   let chessUI = null;
-  import('./games/chess-ui.js?v=1').then(m => { chessUI = m.playChess; }).catch(() => {});
+  import('./games/chess-ui.js?v=2').then(m => { chessUI = m.playChess; }).catch(() => {});
   function gameResult(r) {
     try { const rec = record(); const g = rec[r.game] || {w: 0, l: 0, d: 0}; g[r.result[0]]++; rec[r.game] = g; localStorage.setItem(recKey, JSON.stringify(rec)); } catch {}
     remember({kind: 'game', text: `${r.game}: you ${r.result === 'win' ? 'won' : r.result === 'loss' ? 'lost' : 'drew'}`});
@@ -370,7 +333,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
       const f = $('#finder'); if (x == null) { f.hidden = true; return; }
       f.hidden = false; f.style.left = Math.round(x) + 'px'; f.style.top = Math.round(y) + 'px'; f.querySelector('.arrow').style.transform = `rotate(${angle}rad)`;
     },
-    heard(song, near) { if (soundOn && near && actx) playTune(song, .28); },
+    heard(song, near) { if (sound.ready && near) playTune(song, .28); },
     remember,
     get state() { return state; },
   };

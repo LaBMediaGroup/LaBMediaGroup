@@ -3,6 +3,7 @@
    openGame(kind, {onResult}) shows the table; onResult({game, result:'win'|'loss'|'draw', moves}) is
    called once at the end, so the HUD can tell his brain and keep it in "Yours". */
 import * as C from './checkers.js?v=2';
+import {sfx, music} from '../explore-audio.js?v=1';
 
 const FACE = '<svg viewBox="0 0 40 40"><path d="M9 14 7 5l9 5M31 14l2-9-9 5" fill="#8d8f8c" stroke="#22302f" stroke-width="2" stroke-linejoin="round"/><ellipse cx="20" cy="22" rx="14" ry="12" fill="#b9bbb7" stroke="#22302f" stroke-width="2"/><path d="M7 20c4-3 9-3 13 0 4-3 9-3 13 0-2 5-8 6-13 2-5 4-11 3-13-2z" fill="#22302f"/><circle cx="14" cy="20" r="2.2" fill="#fffaf1"/><circle cx="26" cy="20" r="2.2" fill="#fffaf1"/><ellipse cx="20" cy="28" rx="7" ry="5" fill="#f5ecdc"/><circle cx="20" cy="26.5" r="2" fill="#22302f"/></svg>';
 const ACORN = '<svg viewBox="0 0 40 40"><ellipse cx="20" cy="24" rx="11" ry="12" fill="#b9793f" stroke="#22302f" stroke-width="2.5"/><path d="M8 18c0-6 5-9 12-9s12 3 12 9c-4 2-20 2-24 0z" fill="#6d4a2b" stroke="#22302f" stroke-width="2.5" stroke-linejoin="round"/><path d="M20 9V5" stroke="#22302f" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="16" cy="25" rx="2.5" ry="4" fill="#fff" opacity=".25"/></svg>';
@@ -20,13 +21,13 @@ export function openGame(kind, {onResult, chess} = {}) {
     <div class="game-foot"><span class="st-pill turn" id="gameTurn">Your move</span><span class="score" id="gameScore"></span><button class="st-pill" type="button" id="gameNew">New game</button></div>
   </section>`;
   document.getElementById('hud2').appendChild(root);
-  requestAnimationFrame(() => root.classList.add('on'));
+  requestAnimationFrame(() => root.classList.add('on')); music(true);
   root.querySelector('[data-leave]').addEventListener('click', closeGame);
   root.addEventListener('click', e => { if (e.target === root) closeGame(); });
   if (kind === 'chess' && chess) chess(root, {onResult, FACE, say: t => sayLine(t)});
   else checkers(onResult);
 }
-export function closeGame() { if (!root) return; const r = root; root = null; r.classList.remove('on'); setTimeout(() => r.remove(), 250); }
+export function closeGame() { if (!root) return; music(false); const r = root; root = null; r.classList.remove('on'); setTimeout(() => r.remove(), 250); }
 function sayLine(t) { const s = root?.querySelector('#gameSay'); if (!s) return; s.textContent = t; s.classList.remove('pop'); void s.offsetWidth; s.classList.add('pop'); }
 
 function checkers(onResult) {
@@ -57,6 +58,7 @@ function checkers(onResult) {
   function finish(w) {
     over = w; render();
     sayLine(C.say(w === C.YOU ? 'lose' : 'win'));
+    sfx(w === C.YOU ? 'win' : 'lose');
     if (!reported) { reported = true; onResult?.({game: 'checkers', result: w === C.YOU ? 'win' : 'loss', moves}); }
     if (w === C.YOU) confetti();
   }
@@ -65,13 +67,16 @@ function checkers(onResult) {
     if (target) {
       const wasKing = b[sel[0]][sel[1]]?.king;
       b = C.play(b, target); last = target.path; sel = null; moves++;
-      if (target.taken.length) sayLine(C.say('jumpYou')); else if (!wasKing && b[target.path.at(-1)[0]][target.path.at(-1)[1]].king) sayLine(C.say('youKing'));
+      const crowned = !wasKing && b[target.path.at(-1)[0]][target.path.at(-1)[1]].king;
+      sfx(target.taken.length ? 'capture' : 'place'); if (crowned) setTimeout(() => sfx('crown'), 120);
+      if (target.taken.length) sayLine(C.say('jumpYou')); else if (crowned) sayLine(C.say('youKing'));
       const w = C.winner(b, C.HIM); if (w) return finish(w);
       turn = C.HIM; render(); setTimeout(himMove, 650 + Math.random() * 600);
       return;
     }
     const p = b[r][c];
     sel = p?.side === C.YOU && legal().some(m => m.path[0][0] === r && m.path[0][1] === c) ? [r, c] : null;
+    sfx(sel ? 'pick' : p ? 'nope' : 'tick');
     if (p?.side === C.YOU && !sel && legal().some(m => m.taken.length)) sayLine('you have to jump. house rules.');
     render();
   }
@@ -83,7 +88,9 @@ function checkers(onResult) {
       const m = C.labcoonMove(b); if (!m) return finish(C.YOU);
       const wasKing = b[m.path[0][0]][m.path[0][1]].king;
       b = C.play(b, m); last = m.path; moves++;
-      if (m.taken.length) sayLine(C.say('jumpHim')); else if (!wasKing && b[m.path.at(-1)[0]][m.path.at(-1)[1]].king) sayLine(C.say('king')); else sayLine(C.say('after'));
+      const crowned = !wasKing && b[m.path.at(-1)[0]][m.path.at(-1)[1]].king;
+      sfx(m.taken.length ? 'lost' : 'his'); if (crowned) setTimeout(() => sfx('crown'), 120);
+      if (m.taken.length) sayLine(C.say('jumpHim')); else if (crowned) sayLine(C.say('king')); else sayLine(C.say('after'));
       const w = C.winner(b, C.YOU); if (w) return finish(w);
       turn = C.YOU; render();
     }, 500);
