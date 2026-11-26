@@ -363,7 +363,11 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
       const mood = h.asleep ? 'asleep · zz' : h.mood || 'content';
       $('#lcMood').textContent = mood; $('#lcChipMood').textContent = mood;
       $('#lcPlace').textContent = 'At ' + (places[h.place]?.label || h.place?.replace(/_/g, ' ') || 'the pond') + (h.holding ? ` · holding a ${h.holding}` : '');
-      $('#lcThought').textContent = h.asleep ? 'Dreaming. Tap him to wake him (it takes a few pokes).' : h.thought ? '“' + h.thought + '”' : 'Just pottering.';
+      // The public feed swaps his private thought for a stock line about the current step ("You explore the field."),
+      // which isn't a thought and repeats the plan below, so the quote only shows real words of his.
+      const realThought = h.thought && !/^You\b/.test(h.thought);
+      $('#lcThought').textContent = h.asleep ? 'Dreaming. Tap him to wake him (it takes a few pokes).' : realThought ? '“' + h.thought + '”' : '';
+      $('#lcThought').hidden = !h.asleep && !realThought;
       const plan = $('#lcPlan'); plan.innerHTML = '';
       (h.asleep ? [] : h.plan || []).slice(0, 5).forEach((m, i) => {
         const li = document.createElement('li'), [mv, ...rest] = m.split(' '), arg = rest.join(' ');
@@ -372,7 +376,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
       });
       plan.hidden = !plan.children.length; plan.previousElementSibling.hidden = plan.hidden;
       for (const [k] of NEEDS) { const b = hud.querySelector(`.need[data-k="${k}"] b`); if (b) b.style.width = Math.round((h.needs?.[k] ?? 0) * 100) + '%'; }
-      $('#lcProject').textContent = h.project ? 'Lately: ' + h.project : 'Lately: pottering';
+      $('#lcProject').textContent = !h.project ? 'Lately: pottering' : /^A project in progress/.test(h.project) ? 'Lately: busy with a project of his own' : 'Lately: ' + h.project;
     },
     mapDots(me, coonPos) {
       for (const m of [radar, bigMap]) {

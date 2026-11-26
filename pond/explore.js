@@ -13,7 +13,7 @@ import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=3';
-import {createHud} from './explore-hud.js?v=18';
+import {createHud} from './explore-hud.js?v=19';
 import {field as fieldSound} from './explore-audio.js?v=2';
 
 const LAT = 42.67, LON = -83.03;
