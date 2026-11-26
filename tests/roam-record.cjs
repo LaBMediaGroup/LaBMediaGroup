@@ -7,7 +7,7 @@ const out = process.argv[2]; fs.mkdirSync(out, {recursive: true});
     args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist']});
   const ctx = await browser.newContext({viewport: {width: 1280, height: 720}, recordVideo: {dir: out, size: {width: 1280, height: 720}}});
   const page = await ctx.newPage();
-  await page.goto('http://127.0.0.1:5430/explore.html?at=15:10', {waitUntil: 'domcontentloaded'});
+  await page.goto('http://127.0.0.1:5430/explore.html?at=15:10&speed=2', {waitUntil: 'domcontentloaded'});
   await page.waitForFunction(() => document.documentElement.classList.contains('labcoon-ready'), null, {timeout: 60000});
   await page.evaluate(() => { const m = LabExplore.me; m.pos.set(-1.2, 0, 7.5); m.yaw = -.15; m.pitch = -.12; });
   await page.waitForTimeout(1500);

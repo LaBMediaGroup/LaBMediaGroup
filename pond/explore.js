@@ -8,18 +8,21 @@ import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
+import {buildPlaces, PLACES} from './labcoon-places.js?v=1';
 
 const LAT = 42.67, LON = -83.03;
 const q = new URLSearchParams(location.search);
+const LIFE_SPEED = Math.min(8, Math.max(.25, +(q.get('speed') || 1)));
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const coarse = matchMedia('(pointer: coarse)').matches;
 const hud = document.getElementById('hud'), act = document.getElementById('labcoonDoing'), perf = document.getElementById('perf');
 
 /* ---------------- walker ---------------- */
+const SOLID = [[-7, -20, .3], [18.6, 10.8, .3]];   // the two poles inside the field; places add theirs
 const EYE = 1.55, WALK = 1.35, RUN = 3.2;
-const me = {pos: new THREE.Vector3(0, 0, 4.2), yaw: 0, pitch: -0.08, target: null, mode: 'walk'};
+const me = {pos: new THREE.Vector3(3.2, 0, 3.6), yaw: .55, pitch: -0.08, target: null, mode: 'walk'};
 const keys = new Set();
-let W, ground, depth, follow = {yaw: 0, dist: 1.35, h: .55};
+let W, ground, depth, places, follow = {yaw: 0, dist: 1.35, h: .55};
 
 function dry(x, z, margin = .04) {            // ground above the water line, inside the field
   if (Math.abs(x - W.pond.center.x) > W.extent / 2 - 3 || Math.abs(z - W.pond.center.y) > W.extent / 2 - 3) return false;
@@ -29,6 +32,7 @@ function blocked(x, z) {
   if (!dry(x, z, -.02)) return true;
   if (Math.hypot(x - W.oak.x, z - W.oak.y) < .55) return true;     // the oak's trunk
   if (W.onShed(x, z)) return true;                                  // the shed and its pad (no walking in yet)
+  for (const [cx, cz, r] of SOLID) if (Math.hypot(x - cx, z - cz) < r) return true;
   return false;
 }
 
@@ -47,7 +51,7 @@ function liveSky() {
 
 /* ---------------- Labcoon ---------------- */
 const coon = {root: null, mixer: null, actions: {}, current: null, pos: new THREE.Vector3(), yaw: 0,
-  state: 'idle', until: 0, path: null, find: null, findHeld: false, bone: null, home: new THREE.Vector2(), loops: 0};
+  queue: [], task: null, swimming: false, findHeld: false, bone: null, home: new THREE.Vector2()};
 const WALK_SPEED = .21, CLIP_SPEED = .165;     // clip is authored for 0.165 m/s at rate 1
 const cap = new THREE.Mesh(new THREE.CylinderGeometry(.0105, .0115, .006, 21),
   new THREE.MeshStandardMaterial({color: 0x8c0d0a, metalness: .85, roughness: .32}));
@@ -124,83 +128,193 @@ async function loadLabcoon() {
   coon.mixer = new THREE.AnimationMixer(root);
   for (const clip of gltf.animations) coon.actions[clip.name.replace(/^Labcoon_/, '')] = coon.mixer.clipAction(clip);
   coon.bone = root.getObjectByName('interaction_target');
-  coon.mixer.addEventListener('finished', e => onClipEnd(e.action));
-  coon.mixer.addEventListener('loop', e => {           // two turns of the hold loop, then set it down
-    if (e.action === coon.actions.hold_find && coon.state === 'hold' && ++coon.loops >= 2) {
-      coon.state = 'drop'; play('set_down', {once: true, fade: .12}); say('putting it down');
-    }
-  });
-  // home: the first dry stretch of bank between the walker and the pond
-  for (let z = 1.5; z > -4; z -= .1) if (dry(.9, z, .08) && !dry(.9, z - .8, .02)) { coon.home.set(.9, z + .6); break; }
-  coon.pos.set(coon.home.x, ground(coon.home.x, coon.home.y), coon.home.y); coon.yaw = Math.PI * .8;
-  play('idle'); think(0);
+  coon.mixer.addEventListener('finished', e => { if (coon.task?.clip === e.action) taskDone(); });
+  coon.mixer.addEventListener('loop', e => { if (coon.task?.clip === e.action && coon.task.loops && ++coon.task.turns >= coon.task.loops) taskDone(); });
+  buildRing();
+  // every place's stand spot must be dry ground: nudge any that the shoreline sampling put in the water
+  for (const [name, p] of Object.entries(PLACES)) {
+    if (!p.stand || p.water) continue;
+    let [x, z] = p.stand;
+    if (dry(x, z, .06)) continue;
+    let best = null;
+    for (let r = .1; r < 3 && !best; r += .1) for (let a = 0; a < 6.28; a += .26) { const X = x + Math.cos(a) * r, Z = z + Math.sin(a) * r; if (dry(X, Z, .08)) { best = [X, Z]; break; } }
+    if (best) { console.info('Explore: moved', name, 'stand to dry ground', best.map(v => +v.toFixed(2))); p.stand = best; }
+  }
+  // home is the culvert on the north-east bank
+  coon.home.set(...PLACES.culvert.stand);
+  coon.pos.set(coon.home.x, ground(coon.home.x, coon.home.y), coon.home.y); coon.yaw = -Math.PI * .75;
+  try { NIGHT = await (await fetch('/pond/labcoon/night.json')).json(); } catch { NIGHT = []; }
+  nightIndex = Math.floor(Math.random() * Math.max(1, NIGHT.length));
+  play('idle'); nextTask(performance.now() / 1000);
 }
 function play(name, {once = false, rate = 1, fade = .28} = {}) {
   const a = coon.actions[name];
-  if (!a) return;
+  if (!a) return null;
+  if (coon.current === a && !once) { a.setEffectiveTimeScale(rate); return a; }
   a.reset().setEffectiveTimeScale(rate).setEffectiveWeight(1);
   a.setLoop(once ? THREE.LoopOnce : THREE.LoopRepeat, once ? 1 : Infinity); a.clampWhenFinished = once;
   if (coon.current && coon.current !== a) a.crossFadeFrom(coon.current, fade, false);
-  a.play(); coon.current = a; coon.clip = name;
+  a.play(); coon.current = a; coon.clip = name; return a;
 }
 const say = text => { if (act) act.textContent = text; };
 
-/* What Labcoon does next: wander along the bank, stop and sniff, and now and then find
-   a bottle cap, pick it up, turn it over at his chest and put it down again. */
-function think(now) {
-  const r = Math.random();
-  if (coon.state === 'walk' || coon.state === 'idle' && r < .45) return wander(now);
-  if (r < .7) { coon.state = 'sniff'; play('sniff', {once: true}); say('sniffing the grass'); return; }
-  findSomething();
-}
-function wander(now) {
-  for (let i = 0; i < 30; i++) {
-    const a = Math.random() * Math.PI * 2, d = .8 + Math.random() * 2.4;
-    const x = coon.home.x + Math.cos(a) * d * 1.4, z = coon.home.y + Math.sin(a) * d * .7;
-    let ok = dry(x, z, .07);
-    for (let s = 1; ok && s < 6; s++) ok = dry(coon.pos.x + (x - coon.pos.x) * s / 6, coon.pos.z + (z - coon.pos.z) * s / 6, .05);
-    if (!ok) continue;
-    coon.path = new THREE.Vector2(x, z); coon.state = 'walk';
-    play('walk', {rate: WALK_SPEED / CLIP_SPEED}); say('pottering along the bank'); return;
+/* ---------------- what Labcoon does ----------------
+   His night comes from the brain: a replay of a simulated night (pond/labcoon/night.json, made from
+   brain/sim.js output: move + place + his own first sentence). Each event becomes a few tasks:
+   walk or trot along a route that goes round the pond, then the clip that fits the move.
+   Live, the brain service will send the same events. */
+let NIGHT = [], nightIndex = 0;
+const TROT_SPEED = .58, TROT_RATE = .58 / .291, SWIM_SPEED = .2, WATER_Y = -.055;
+const ring = [];            // walkable points round the pond, used to go the long way round on foot
+function buildRing() {
+  const c = W.pond.center;
+  for (let k = 0; k < 36; k++) {
+    const a = k / 36 * Math.PI * 2, ca = Math.cos(a), sa = Math.sin(a);
+    let s = 1; while (s < 1.8 && !dry(c.x + ca * (W.pond.radius.x + 2.2) * s, c.y + sa * (W.pond.radius.y + 2.6) * s, .08)) s += .04;
+    ring.push(new THREE.Vector2(c.x + ca * (W.pond.radius.x + 2.2) * s, c.y + sa * (W.pond.radius.y + 2.6) * s));
   }
-  coon.state = 'idle'; coon.until = now + 2; play('idle');
+}
+const clearLine = (a, b, wet = false) => {
+  const n = Math.ceil(a.distanceTo(b) / .4);
+  for (let i = 1; i < n; i++) { const x = a.x + (b.x - a.x) * i / n, z = a.y + (b.y - a.y) * i / n; if (wet ? dry(x, z, .02) : !dry(x, z, .04)) return false; }
+  return true;
+};
+function routeTo(target) {
+  const from = new THREE.Vector2(coon.pos.x, coon.pos.z);
+  if (clearLine(from, target)) return [target];
+  const c = W.pond.center, ang = v => Math.atan2(v.y - c.y, v.x - c.x);
+  const i0 = Math.round(((ang(from) / (Math.PI * 2)) * 36 + 36)) % 36, i1 = Math.round(((ang(target) / (Math.PI * 2)) * 36 + 36)) % 36;
+  const fwd = (i1 - i0 + 36) % 36, dir = fwd <= 18 ? 1 : -1, steps = dir > 0 ? fwd : 36 - fwd, path = [];
+  for (let s = 0; s <= steps; s++) path.push(ring[(i0 + dir * s + 36) % 36].clone());
+  path.push(target); return path;
+}
+function shorePoint(toward) {
+  // On land: the last dry spot before the water, heading for `toward`.
+  // Afloat: the first dry spot on the way to `toward` (where he climbs out).
+  const from = new THREE.Vector2(coon.pos.x, coon.pos.z), d = toward.clone().sub(from), L = d.length(); d.normalize();
+  const afloat = !dry(from.x, from.y, .02);
+  let last = from.clone();
+  for (let s = 0; s < L; s += .1) {
+    const p = from.clone().addScaledVector(d, s), ok = dry(p.x, p.y, .03);
+    if (afloat && ok) return p.addScaledVector(d, .25);
+    if (!afloat && !ok) return last;
+    last = p;
+  }
+  return toward.clone();
+}
+const placeXZ = name => { const p = PLACES[name]; return p && new THREE.Vector2(...(p.stand || p.at)); };
+const pondCentre = () => new THREE.Vector2(W.pond.center.x, W.pond.center.y);
+const faceTo = (x, z) => Math.atan2(x - coon.pos.x, z - coon.pos.z);
+function plan(e) {
+  const T = [], idle = s => T.push({type: 'idle', secs: s}), clip = (name, extra = {}) => T.push({type: 'clip', name, ...extra});
+  const faceWater = () => T.push({type: 'face', yaw: () => faceTo(W.pond.center.x, W.pond.center.y)});
+  const faceAt = name => T.push({type: 'face', yaw: () => faceTo(...PLACES[name].at)});
+  switch (e.move) {
+    case 'walk_to': {
+      const p = placeXZ(e.arg);
+      if (!p || PLACES[e.arg]?.water) { idle(2); break; }
+      if (coon.swimming) T.push({type: 'swim', to: () => shorePoint(p), out: true});
+      T.push({type: 'walk', to: p}); idle(1.2); break;
+    }
+    case 'swim_to': case 'row_out':
+      if (!coon.swimming) T.push({type: 'walk', to: () => shorePoint(pondCentre())});
+      T.push({type: 'swim', to: () => pondCentre().add(new THREE.Vector2((Math.random() - .5) * 3, (Math.random() - .5) * 3))}); idle(3); break;
+    case 'surface': case 'dive': case 'lie_back_in_boat': idle(4); break;
+    case 'sit_and_watch': faceWater(); if (/moon|star/.test(e.arg)) clip('moon'); idle(6); break;
+    case 'hold_up_to_moon': T.push({type: 'find'}); clip('moon'); clip('set_down'); break;
+    case 'pick_up': case 'take_from_stash': case 'build_sculpture':
+      T.push({type: 'find'}); clip('hold_find', {loops: 1}); clip('set_down'); break;
+    case 'wash': faceWater(); clip('wash'); break;
+    case 'watch_fish': faceWater(); clip('look_back'); idle(4); break;
+    case 'swat_at_fish': faceWater(); clip('fish'); break;
+    case 'check_mail': faceAt('mailbox'); clip('beg'); idle(1.5); break;
+    case 'pry_lid': case 'dig_in': faceAt('trash_can'); clip('pry'); break;
+    case 'draw': case 'hand_paint': faceAt('art_shed'); clip('draw'); break;
+    case 'nap': clip('sleep', {loops: 3}); clip('wake'); break;
+    case 'explore': for (let i = 0; i < 2; i++) T.push({type: 'wander'}); clip('sniff'); break;
+    case 'sniff': case 'stash': case 'write_on_board': clip('sniff'); idle(1.5); break;
+    case 'eat': case 'eat_here': clip('sniff'); idle(2); break;
+    default: idle(2.5);
+  }
+  return T;
+}
+function nextEvent(now) {
+  if (!NIGHT.length) { coon.queue.push({type: 'wander'}, {type: 'idle', secs: 2}); return; }
+  const e = NIGHT[nightIndex++ % NIGHT.length];
+  coon.queue.push(...plan(e)); say(e.time + ' · ' + e.text);
+}
+function nextTask(now) {
+  if (!coon.queue.length) nextEvent(now);
+  coon.task = coon.queue.shift(); startTask(coon.task, now);
+}
+function taskDone() { const now = performance.now() / 1000; coon.task = null; nextTask(now); }
+function startTask(k, now) {
+  k.turns = 0;
+  if (k.type === 'idle') { k.until = now + k.secs / LIFE_SPEED; play(coon.swimming ? 'swim' : 'idle'); }
+  else if (k.type === 'face') { k.target = k.yaw(); }
+  else if (k.type === 'clip') {
+    if (coon.swimming) { k.until = now + 2 / LIFE_SPEED; return; }       // nothing but paddling while afloat
+    k.clip = play(k.name, {once: !k.loops, fade: k.name === 'set_down' || k.name === 'hold_find' ? .12 : .28});
+    if (!k.clip) taskDone();
+  }
+  else if (k.type === 'find') { findSomething(); k.clip = coon.current; }
+  else if (k.type === 'wander') {
+    for (let i = 0; i < 30; i++) {
+      const a = Math.random() * Math.PI * 2, d = .8 + Math.random() * 2.2, p = new THREE.Vector2(coon.pos.x + Math.cos(a) * d, coon.pos.z + Math.sin(a) * d);
+      if (dry(p.x, p.y, .07) && clearLine(new THREE.Vector2(coon.pos.x, coon.pos.z), p)) { k.path = [p]; break; }
+    }
+    if (!k.path) k.path = []; k.walk = true;
+  }
+  else if (k.type === 'walk') { const to = typeof k.to === 'function' ? k.to() : k.to; k.path = routeTo(to); k.walk = true; }
+  else if (k.type === 'swim') {
+    const to = k.to(); k.path = [to]; k.walk = true; coon.swimming = !k.out; play('swim', {fade: .4});
+  }
 }
 function findSomething() {
-  coon.state = 'pick'; coon.findHeld = false;
+  coon.findHeld = false;
   const f = new THREE.Vector3(Math.sin(coon.yaw), 0, Math.cos(coon.yaw));
   findSpot.copy(coon.pos).addScaledVector(f, .210); findSpot.y = ground(findSpot.x, findSpot.z) + .003;
   cap.position.copy(findSpot); cap.rotation.set(0, coon.yaw, 0); cap.visible = true;
-  play('pick_up', {once: true, fade: .35}); say('found a bottle cap');
-}
-function onClipEnd(a) {
-  const name = a.getClip().name.replace(/^Labcoon_/, '');
-  const now = performance.now() / 1000;
-  if (name === 'sniff') { coon.state = 'idle'; coon.until = now + 1 + Math.random() * 2; play('idle'); }
-  else if (name === 'pick_up') { coon.state = 'hold'; coon.loops = 0; play('hold_find', {fade: .12}); say('turning it over in his paws'); }
-  else if (name === 'set_down') { coon.state = 'idle'; coon.until = now + 2 + Math.random() * 3; play('idle', {fade: .4}); say('leaving it for later'); }
+  play('pick_up', {once: true, fade: .35});
 }
 const TMP = new THREE.Vector3();
+function steer(dt, target, speed) {
+  const dx = target.x - coon.pos.x, dz = target.y - coon.pos.z, d = Math.hypot(dx, dz);
+  const turn = ((Math.atan2(dx, dz) - coon.yaw + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+  coon.yaw += THREE.MathUtils.clamp(turn, -2.4 * dt, 2.4 * dt);
+  const step = Math.min(d, speed * dt * Math.max(0, Math.cos(turn)));
+  coon.pos.x += Math.sin(coon.yaw) * step; coon.pos.z += Math.cos(coon.yaw) * step;
+  return d < .08;
+}
 function updateLabcoon(dt, now) {
   if (!coon.root) return;
   coon.mixer.update(dt);
-  if (coon.state === 'walk') {
-    const dx = coon.path.x - coon.pos.x, dz = coon.path.y - coon.pos.z, d = Math.hypot(dx, dz);
-    const want = Math.atan2(dx, dz);
-    let turn = ((want - coon.yaw + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
-    coon.yaw += THREE.MathUtils.clamp(turn, -2.2 * dt, 2.2 * dt);
-    const step = Math.min(d, WALK_SPEED * dt * Math.max(0, Math.cos(turn)));
-    coon.pos.x += Math.sin(coon.yaw) * step; coon.pos.z += Math.cos(coon.yaw) * step;
-    if (d < .06) { coon.state = 'idle'; coon.until = now + .8 + Math.random() * 2.5; play('idle'); say('looking around'); }
-  } else if (coon.state === 'idle' && now > coon.until) think(now);
+  const k = coon.task;
+  if (k?.walk) {
+    if (!k.path.length) taskDone();
+    else {
+      let left = 0, prev = new THREE.Vector2(coon.pos.x, coon.pos.z); for (const p of k.path) { left += prev.distanceTo(p); prev = p; }
+      const swim = k.type === 'swim', trot = !swim && left > 5;
+      if (swim) play('swim'); else if (trot) play('trot', {rate: TROT_RATE}); else play('walk', {rate: WALK_SPEED / CLIP_SPEED});
+      if (steer(dt, k.path[0], swim ? SWIM_SPEED : trot ? TROT_SPEED : WALK_SPEED)) {
+        k.path.shift();
+        if (!k.path.length) { if (k.out) coon.swimming = false; taskDone(); }
+      }
+    }
+  } else if (k?.type === 'face') {
+    const turn = ((k.target - coon.yaw + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+    coon.yaw += THREE.MathUtils.clamp(turn, -2 * dt, 2 * dt);
+    if (Math.abs(turn) < .05) taskDone();
+  } else if (k?.until && now > k.until) taskDone();
 
-  coon.pos.y = ground(coon.pos.x, coon.pos.z);
+  coon.pos.y = coon.swimming ? WATER_Y : ground(coon.pos.x, coon.pos.z);
   coon.root.position.copy(coon.pos); coon.root.rotation.set(0, coon.yaw, 0);
   // the cap rides interaction_target from the grip (27/24 s) until the release (35/24 s)
-  const t = coon.current?.time ?? 0;
-  const held = coon.state === 'hold' || coon.state === 'pick' && t >= 27 / 24 || coon.state === 'drop' && t < 35 / 24;
+  const t = coon.current?.time ?? 0, c = coon.clip;
+  const held = c === 'hold_find' || c === 'moon' || c === 'pick_up' && t >= 27 / 24 || c === 'set_down' && t < 35 / 24;
   if (cap.visible && held && coon.bone) {
     coon.bone.getWorldPosition(TMP); cap.position.copy(TMP); cap.position.y = Math.max(TMP.y, ground(TMP.x, TMP.z) + .003);
-  } else if (coon.state === 'drop' && !held && !coon.findHeld) {
+  } else if (c === 'set_down' && !held && !coon.findHeld) {
     coon.findHeld = true; cap.position.y = ground(cap.position.x, cap.position.z) + .003;
   }
   lightFromSky();
@@ -303,7 +417,7 @@ function update(dt, camera) {
   if (first || reduce) { camera.position.copy(camPos); first = false; }
   else camera.position.lerp(camPos, 1 - Math.pow(.0005, dt));
   camera.lookAt(look);
-  updateLabcoon(dt, now);
+  updateLabcoon(dt * LIFE_SPEED, now);   // ?speed=4 runs Labcoon's night faster for review
   marker.material.opacity = Math.max(0, marker.material.opacity - dt * .9);
   if (perf && frames.length > 30) {
     const sorted = [...frames].sort((a, b) => a - b), med = sorted[sorted.length >> 1] * 1000;
@@ -315,6 +429,8 @@ function update(dt, camera) {
 W = LabWorld.explore(update);
 ground = W.ground; depth = W.depth;
 W.scene.add(marker);
+places = buildPlaces({THREE, ground, encode: displayEncode});
+W.scene.add(places.group); SOLID.push(...places.colliders);
 me.pos.y = ground(me.pos.x, me.pos.z);
 liveSky(); setInterval(liveSky, 60000);
 loadLabcoon().then(() => document.documentElement.classList.add('labcoon-ready'))

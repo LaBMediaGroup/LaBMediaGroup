@@ -137,7 +137,7 @@ const terrain = new THREE.Mesh(terrainGeo, new THREE.ShaderMaterial({
     float row=abs(fract(p.x*.7+n2(p*.05)*.6)-.5)*2.;
     vec3 soil=mix(vec3(.07,.055,.04),vec3(.12,.095,.065),fbm3(p*.9));
     vec3 straw=mix(vec3(.24,.19,.12),vec3(.38,.31,.2),fbm3(p*2.3+3.));
-    vec3 field=mix(soil,straw,smoothstep(.35,.75,fbm3(p*1.7))*.75+.15*smoothstep(.3,.8,row));
+    vec3 field=mix(soil,straw,smoothstep(.35,.75,fbm3(p*1.7))*${EXPLORE_PAGE?'.62+.3':'.75'}+.15*smoothstep(.3,.8,row));
     // Short, alternating mower passes pick out the school grounds in the wider field.
     vec2 edge=abs(p-vec2(-1.55,7.85))-vec2(3.65,5.75);
     float cut=1.-smoothstep(-.25,.52,length(max(edge,0.))+min(max(edge.x,edge.y),0.)+.22*(row-.5));
@@ -179,7 +179,7 @@ const farGround = new THREE.Mesh(new THREE.PlaneGeometry(4000, 4000).rotateX(-Ma
     g*=(mix(uZen,uHor,.6)*.55+uSunC*.5*smoothstep(-.03,.04,uEl))*1.4;
     g*=mix(.1,1.,uDay);
     float aerial=1.-smoothstep(145.,650.,length(p-cameraPosition.xz));
-    gl_FragColor=vec4(fogged(g,vW,.012),aerial);}`
+    gl_FragColor=vec4(fogged(g,vW,${EXPLORE_PAGE?'.0055':'.012'}),aerial);}`
 }));
 farGround.position.y = 0.19;
 scene.add(farGround);
@@ -505,12 +505,19 @@ const corn = (() => {
   const tassel = new THREE.ConeGeometry(0.06, 0.34, 4, 1, true); tassel.translate(0, 2.55, 0); parts.push(tag(tassel, 3));
   const geo = mergeGeometries(parts);
   // where it grows
-  const pts = [], spacing = small ? 0.3 : 0.22, rowGap = 0.76, rowAng = 0.12;
+  const pts = [], spacing = EXPLORE_PAGE ? (small ? 0.5 : 0.32) : small ? 0.3 : 0.22, rowGap = 0.76, rowAng = 0.12;
   const ca = Math.cos(rowAng), sa = Math.sin(rowAng);
-  for (let rz = -24; rz > -50; rz -= rowGap) {
+  for (let rz = EXPLORE_PAGE ? 44 : -24; rz > (EXPLORE_PAGE ? -56 : -50); rz -= rowGap) {
     for (let rx = -48; rx < 48; rx += spacing) {
       const x = rx * ca - rz * sa + (rnd() - 0.5) * 0.06, z = rx * sa + rz * ca + (rnd() - 0.5) * 0.05;
-      if (Math.abs(x) > 9 + (-z) * 0.85) continue;                  // outside the view: don't plant
+      if (EXPLORE_PAGE) {
+        // Explore walks all the way round: a ring of corn from the clearing out to the
+        // terrain edge, thinning raggedly at its inner edge, with the farm lane cut through it.
+        if (Math.abs(x - C.x) > EXT / 2 - .6 || Math.abs(z - C.y) > EXT / 2 - .6) continue;
+        const e = Math.hypot(x / 27, (z + 8) / 25);
+        if (e < 1 || (e < 1.14 && rnd() > (e - 1) / .14)) continue;
+        if (Math.abs(x + 17.4) < 2.3) continue;
+      } else if (Math.abs(x) > 9 + (-z) * 0.85) continue;           // outside the view: don't plant
       if (pondMetric(x, z) < 1.42 || H(x, z) < 0.12) continue;      // keep back from the bank
       if (segDist(x, z, TREE, SPIT_END) < 4) continue;
       if (rnd() < 0.05) continue;                                   // gaps where plants failed
