@@ -11,9 +11,10 @@ const base = process.argv[3] || 'http://192.168.1.38:5431', svc = process.argv[4
   const errors = [], hosts = {}, private5437 = [];
   p.on('pageerror', e => errors.push(e.message));
   p.on('console', m => { if (m.type() === 'error') errors.push(m.text().slice(0, 200)); });
+  const bad = []; p.on('response', r => { if (r.status() >= 400) bad.push(r.status() + ' ' + r.url()); });
   p.on('request', r => { const u = new URL(r.url()); hosts[u.host] = (hosts[u.host] || 0) + 1; if (u.port === '5437') private5437.push(r.url()); });
   const t0 = Date.now();
-  await p.goto(`${base}/explore.html?live=${encodeURIComponent(svc)}`, {waitUntil: 'domcontentloaded'});
+  await p.goto(svc === "default" ? `${base}/explore.html` : `${base}/explore.html?live=${encodeURIComponent(svc)}`, {waitUntil: 'domcontentloaded'});
   await p.waitForFunction(() => document.documentElement.classList.contains('labcoon-ready'), null, {timeout: 90000});
   const ready = Date.now() - t0;
   await p.waitForTimeout(4000);
@@ -42,6 +43,6 @@ const base = process.argv[3] || 'http://192.168.1.38:5431', svc = process.argv[4
     if (await t.count() && await t.isVisible()) { await t.click(); await p.waitForTimeout(500); await p.screenshot({path: path.join(out, `v4_${tab}.png`)}); report[tab] = await tx(`#lcSheet [data-pane=${tab}]`); }
   }
   report.fps = await p.evaluate(() => new Promise(r => { let n = 0; const t = performance.now(); (function f() { n++; if (performance.now() - t < 3000) requestAnimationFrame(f); else r(Math.round(n / 3)); })(); }));
-  console.log(JSON.stringify({...report, hosts, private5437, errors}, null, 1));
+  console.log(JSON.stringify({...report, hosts, private5437, bad, errors}, null, 1));
   await b.close();
 })();

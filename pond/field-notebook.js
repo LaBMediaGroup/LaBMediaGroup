@@ -1,5 +1,7 @@
-// The local owner's notebook uses the same pond sheet as the art wall and games.
-export function fieldNotebook(host,places,initialSection) {
+// His notebook, on the same pond sheet as the art wall and games. The owner's Mac reads the private local
+// reader; visitors get the filtered copy the brain publishes to the service (load = () => api('/writing')).
+const ownerLoad = async () => { const r=await fetch('http://127.0.0.1:5437/entries',{cache:'no-store',credentials:'omit'}); if(!r.ok)throw Error(); return r.json(); };
+export function fieldNotebook(host,places,initialSection,load=ownerLoad) {
   const labels = {thoughts:'Thoughts',notes:'Field notes',nights:'Nightly entries',searches:'Searches'};
   const headings = {thoughts:'On his mind',notes:'From his notebook',nights:'At the end of the day',searches:'At the shed computer'};
   const blank = {thoughts:'His next thought will appear here.',notes:'He hasn’t written his first field note yet.',nights:'His first nightly entry will appear after his long sleep.',searches:'He hasn’t looked anything up yet.'};
@@ -63,10 +65,8 @@ export function fieldNotebook(host,places,initialSection) {
     if(pending || !force && Date.now()-fetched<30000)return;
     pending=true;
     try{
-      const resp=await fetch('http://127.0.0.1:5437/entries',{cache:'no-store',credentials:'omit'});
-      if(!resp.ok)throw Error();
-      const next=await resp.json(), prior=data[section][index];
-      data={...next,searches:next.searches||[]};
+      const next=await load(), prior=data[section][index];
+      data={thoughts:next.thoughts||[],notes:next.notes||[],nights:next.nights||[],searches:next.searches||[]};
       const same=prior?data[section].findIndex(p=>p.stamp===prior.stamp&&p.text===prior.text):-1;
       index=same<0?data[section].length-1:same;
       error=false;

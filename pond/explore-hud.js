@@ -1,5 +1,5 @@
 import {swapTable} from './swap-table.js';
-import {fieldNotebook} from './field-notebook.js?v=3';
+import {fieldNotebook} from './field-notebook.js?v=4';
 /* Explore HUD v4 (Nov 26 2026): a game UI in LaB × toy-sticker style (see PINO-UI-NOTES.md).
    Needs strip · "right now" card · clock and sound · radar map · status line · two bottom sheets:
    "Leave him something" (Say hi, Note, Doodle, Swap, Yours) and "His things" (Art, Songs, Journal, Map).
@@ -297,9 +297,9 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
   const ownerWriting = $('#ownerWriting');
   const requestedJournal = new URLSearchParams(location.search).get('journal');
   let refreshWriting = null;
-  if (ownerHere) {
+  if (ownerHere || (live && api)) {                       // visitors read the filtered copy the brain publishes
     ownerWriting.hidden=false; $('#sharedNotes').hidden=true;
-    refreshWriting=fieldNotebook(ownerWriting,places,requestedJournal);
+    refreshWriting=ownerHere ? fieldNotebook(ownerWriting,places,requestedJournal) : fieldNotebook(ownerWriting,places,requestedJournal,()=>api('/writing'));
   }
   const journal = [];
   onTab.journal = () => {
