@@ -20,7 +20,9 @@ const LAT = 42.67, LON = -83.03;
 const q = new URLSearchParams(location.search);
 const LIFE_SPEED = Math.min(8, Math.max(.25, +(q.get('speed') || 1)));
 // Live: ?live=<service base> (local dev: http://<mac>:8788/api/labcoon). Without it, a replayed brain night.
-const LIVE_BASE = q.get('live') || '';
+// On labmedia.work itself the service is same-origin at /api/labcoon; ?live= (empty) forces the replay.
+// If the service is missing or down, startLive fails and the page falls back to the replayed night.
+const LIVE_BASE = q.has('live') ? q.get('live') : /(^|\.)labmedia\.work$/.test(location.hostname) ? '/api/labcoon' : '';
 const VID = (() => { try { let v = localStorage.getItem('labcoon-vid'); if (!v) { v = crypto.randomUUID().replace(/-/g, '').slice(0, 24); localStorage.setItem('labcoon-vid', v); } return v; } catch { return 'anon' + Math.random().toString(36).slice(2, 14); } })();
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const coarse = matchMedia('(pointer: coarse)').matches;
