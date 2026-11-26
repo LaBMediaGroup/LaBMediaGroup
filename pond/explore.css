@@ -98,6 +98,12 @@
 .art b{display:block;margin:7px 2px 0;font-size:13px}
 .art small{display:block;margin:0 2px;color:var(--ink-soft);font-size:11.5px}
 .big{display:grid;gap:10px}
+.art-nav{display:flex;align-items:center;gap:12px;text-align:center}
+.art-nav div{flex:1;min-width:0;overflow-wrap:anywhere}
+.art-nav small{display:block;color:var(--muted)}
+.art-nav .st-round{flex:none;font-size:1.3rem}
+.art-nav [hidden]{display:none}
+#artBack{justify-self:center}
 .big .frame{border:var(--line);border-radius:16px;overflow:hidden;background:#fffaf1}
 .song{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:18px}
 .song+.song{margin-top:10px}
@@ -219,3 +225,22 @@
 .board.chess .sq.light{background:#efe2c6}.board.chess .sq.dark{background:#8fae9f}
 .board.chess .pc{inset:6%}
 .sq.check{box-shadow:inset 0 0 0 100px rgba(239,127,168,.45);animation:pulse .6s ease-in-out infinite alternate}
+
+.book-tabs{display:flex;gap:5px;padding:4px 10px 0;flex-wrap:wrap}
+.book-tabs button{appearance:none;border:1.5px solid #5b6657;border-bottom:0;border-radius:9px 9px 0 0;padding:9px 13px 7px;font:700 .88rem Nunito,sans-serif;background:#e1e3cc;color:#364838;cursor:pointer}
+.book-tabs button[aria-pressed=true]{background:#385a47;color:#fffaf0}
+.field-book{padding:8px 9px 5px 13px;border:2px solid #24392e;border-radius:8px 15px 14px 9px;background:#385a47;box-shadow:0 3px 0 #263d30}
+.book-leaf{position:relative;min-height:9rem;padding:20px clamp(18px,4vw,36px) 16px;border-radius:4px 9px 7px 4px;color:#233e43;background:linear-gradient(90deg,#e5d7b8 0,#fff8e8 11px,#fff9eb 100%);box-shadow:0 2px #c7bb9f,0 4px #f6e9cf}
+.book-leaf::after{content:"";position:absolute;right:20px;top:0;width:13px;height:20px;background:#ba663b;clip-path:polygon(0 0,100% 0,100% 100%,50% 75%,0 100%);pointer-events:none}
+.book-leaf header{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 16px;padding-right:20px}
+.book-leaf h3{margin:0;font:700 clamp(23px,4vw,30px)/1.14 Georgia,serif;color:#254c3b}
+.page-num,.book-leaf small{font:700 .8rem/1.4 Nunito,sans-serif;color:#586657}
+.book-leaf small{display:block;margin-top:5px}
+.book-words{margin-top:14px;background:repeating-linear-gradient(transparent 0,transparent calc(1.65em - 1px),#abc6b947 1.65em);font:clamp(17px,2.8vw,21px)/1.65 Georgia,serif}
+.book-words p{font:inherit;color:inherit;margin:0 0 .8em;white-space:pre-line;overflow-wrap:anywhere}
+.book-words a,.book-words button{color:#355646}.book-words h4{font:800 .82rem Nunito,sans-serif;margin:12px 0 2px}
+.book-turn{display:flex;justify-content:space-between;gap:12px;padding:6px 0 0}
+.book-turn button{background:none;color:#fff8df;border:0;min-height:40px;padding:4px 12px;cursor:pointer;font:800 .94rem Nunito,sans-serif}
+.book-turn button:disabled{opacity:.47;cursor:default}
+[data-pane=journal] details{margin-top:16px;color:#4f5d52}
+@media(max-width:420px){.book-tabs{gap:3px;padding-left:5px}.book-tabs button{padding:9px 10px 7px}.book-leaf{padding:16px 17px 12px}.book-words{margin-top:10px}}

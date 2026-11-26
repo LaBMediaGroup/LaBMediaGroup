@@ -10,7 +10,7 @@ import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=3';
-import {createHud} from './explore-hud.js?v=11';
+import {createHud} from './explore-hud.js?v=15';
 import {field as fieldSound} from './explore-audio.js?v=1';
 
 const LAT = 42.67, LON = -83.03;
@@ -134,7 +134,7 @@ async function loadLabcoon() {
   const loader = new GLTFLoader();
   const ktx = new KTX2Loader().setTranscoderPath('/pond/vendor/three/addons/libs/basis/').detectSupport(W.renderer);
   loader.setKTX2Loader(ktx).setMeshoptDecoder(MeshoptDecoder);
-  const gltf = await loader.loadAsync('/pond/labcoon/labcoon_v07.glb');
+  const gltf = await loader.loadAsync('/pond/labcoon/labcoon_v07.glb?v=rest2');
   const root = gltf.scene, coats = [];
   // a small reflection environment for Labcoon's own materials: catchlights in his eyes and on his nose
   const pm = new THREE.PMREMGenerator(W.renderer), env = pm.fromScene(new RoomEnvironment(), .04).texture; pm.dispose();
@@ -179,11 +179,12 @@ async function loadLabcoon() {
   nightIndex = Math.floor(Math.random() * Math.max(1, NIGHT.length));
   play('idle'); nextTask(performance.now() / 1000);
 }
-function play(name, {once = false, rate = 1, fade = .28} = {}) {
+function play(name, {once = false, rate = 1, fade = .28, reverse = false} = {}) {
   const a = coon.actions[name];
   if (!a) return null;
   if (coon.current === a && !once) { a.setEffectiveTimeScale(rate); return a; }
-  a.reset().setEffectiveTimeScale(rate).setEffectiveWeight(1);
+  a.reset().setEffectiveTimeScale(reverse ? -rate : rate).setEffectiveWeight(1);
+  if (reverse) a.time = a.getClip().duration;
   a.setLoop(once ? THREE.LoopOnce : THREE.LoopRepeat, once ? 1 : Infinity); a.clampWhenFinished = once;
   if (coon.current && coon.current !== a) a.crossFadeFrom(coon.current, fade, false);
   a.play(); coon.current = a; coon.clip = name; return a;
@@ -320,7 +321,7 @@ function plan(e) {
     case 'draw_in_mud': faceWater(); clip('wash'); clip('sniff'); break;                      // scratching at the mud with a stick
     case 'play_ocarina': case 'play_tin_whistle': case 'play_thumb_piano': case 'play_toy_xylophone': case 'play_harmonica':
       clip('beg'); idle(3); break;                                                             // sits up and plays
-    case 'nap': clip('sleep', {loops: 3}); clip('wake'); break;
+    case 'nap': clip('sleep', {loops: liveOn ? 1 : 3}); if (!liveOn) clip('wake'); break;
     case 'explore': for (let i = 0; i < 2; i++) T.push({type: 'wander'}); clip('sniff'); break;
     case 'sniff': case 'stash': case 'write_on_board': clip('sniff'); idle(1.5); break;
     case 'eat': case 'eat_here': clip('sniff'); idle(2); break;
@@ -328,11 +329,12 @@ function plan(e) {
   }
   return T;
 }
-let liveQueue = [], liveOn = false, liveLast = 0;
+let liveQueue = [], liveOn = false, liveLast = 0, liveAsleep = false;
+let restingStyle = null, lastStyle = Math.random() < .5 ? 'curl' : 'sprawl';
 function nextEvent(now) {
   let e;
   if (liveOn) {
-    if (!liveQueue.length) { coon.queue.push(coon.hud?.asleep ? {type: 'clip', name: 'sleep', loops: 2} : {type: 'idle', secs: 1.5}); return; }
+    if (!liveQueue.length) { coon.queue.push(liveAsleep ? {type: 'clip', name: 'sleep', loops: 1} : {type: 'idle', secs: 1.5}); return; }
     e = liveQueue.shift();
   } else {
     if (!NIGHT.length) { coon.queue.push({type: 'wander'}, {type: 'idle', secs: 2}); return; }
@@ -358,46 +360,80 @@ function placeAt(name) {
 }
 async function startLive() {
   const s = await api('/state');
-  liveOn = true; liveLast = s.events.at(-1)?.id || 0;
+  liveOn = true; liveAsleep = !!s.asleep; liveLast = s.events.at(-1)?.id || 0;
   const hud = s.state?.hud || s.events.at(-1)?.hud;
   if (hud) { coon.hud = {...hud, asleep: s.asleep}; coon.mood = hud.mood; placeAt(hud.place); }
   H?.set(coon.hud, s.events.at(-1) ? s.events.at(-1).time + ' · ' + s.events.at(-1).text : 'He’s around somewhere.');
-  coon.queue = [s.asleep ? {type: 'clip', name: 'sleep', loops: 99} : {type: 'idle', secs: 1}]; taskDone();
+  coon.queue = [s.asleep ? {type: 'clip', name: 'sleep', loops: 1, joinSleeping: true} : {type: 'idle', secs: 1}]; taskDone();
   setInterval(pollLive, 3000);
 }
 async function pollLive() {
   try {
     const r = await api('/events?since=' + liveLast);
+    liveAsleep = !!r.asleep;
     for (const e of r.events) { liveLast = e.id; liveQueue.push(e); }
     if (liveQueue.length > 4) {                         // fell behind: jump to the newest state
       const newest = liveQueue.at(-1); liveQueue = [newest];
       if (newest.hud?.place) placeAt(newest.hud.place); coon.queue = []; taskDone();
     }
     if (r.hud) { coon.hud = {...coon.hud, ...r.hud, asleep: r.asleep}; coon.mood = r.hud.mood; if (!coon.task?.walk) H?.set(coon.hud); }
+    if (/^sleep_(curl|sprawl)$/.test(coon.clip) && (!liveAsleep || liveQueue.length)) {
+      coon.queue = [];
+      if (!liveAsleep && !liveQueue.some(e=>e.animation==='Labcoon_wake')) coon.queue.push({type:'clip',name:'wake'});
+      taskDone();
+    }
     if (r.asleep !== !!coon.asleep && !liveQueue.length && coon.task?.type === 'idle') { coon.queue = []; taskDone(); }
   } catch {}
 }
 function nextTask(now) {
   if (!coon.queue.length) nextEvent(now);
-  coon.task = coon.queue.shift(); startTask(coon.task, now);
+  let next = coon.queue.shift();
+  if (next.type === 'clip' && next.name === 'sleep' && coon.actions.sleep_curl && coon.actions.sleep_sprawl) {
+    const entering = !restingStyle;
+    const afterReaction = ['nap_ear_twitch','nap_yawn_roll'].includes(coon.clip);
+    if (entering) {
+      if (!afterReaction) lastStyle = lastStyle === 'curl' ? 'sprawl' : 'curl';
+      restingStyle = lastStyle;
+    }
+    next = {...next, name:'sleep_' + restingStyle, loops:liveOn ? 1 : next.loops || 1, napPart:true};
+    if (entering && !next.joinSleeping) {
+      const settle = {type:'clip',name:'settle_' + restingStyle,napPart:true};
+      coon.queue.unshift(next);
+      if (afterReaction || coon.clip === 'sleepy_yawn') next = settle;
+      else { coon.queue.unshift(settle); next = {type:'clip',name:'nap_lie_down',napPart:true}; }
+    }
+  } else if (restingStyle && !next.napPart) {
+    // The original yawn, ear flick and planted wake all start on the same flank.
+    // Return through the matched bridge before handing them the skeleton.
+    coon.queue.unshift(next);
+    if (!(next.type === 'clip' && ['wake','nap_ear_twitch','nap_yawn_roll'].includes(next.name))) {
+      coon.queue.unshift({type:'clip', name:'wake'});
+    }
+    next = {type:'clip',name:'settle_' + restingStyle, reverse:true, napPart:true};
+    restingStyle = null;
+  }
+  coon.task = next; startTask(next, now);
 }
 function taskDone() { const now = performance.now() / 1000; coon.task = null; nextTask(now); }
 function startTask(k, now) {
   k.turns = 0;
   if (k.type === 'idle') { k.until = now + k.secs / LIFE_SPEED; play(coon.swimming ? 'swim' : 'idle'); }
   else if (k.type === 'face') { k.target = k.yaw(); }
-  coon.asleep = k.type === 'clip' && /^(sleep|nap_)/.test(k.name);   // asleep while a sleep clip plays
+  coon.asleep = k.type === 'clip' && /^(sleep|nap_|settle_)/.test(k.name);   // asleep while a sleep clip plays
   if (coon.hud) H?.set({...coon.hud, asleep: coon.asleep});
   if (k.type === 'clip') {
     if (coon.swimming) { k.until = now + 2 / LIFE_SPEED; return; }       // nothing but paddling while afloat
-    k.clip = play(k.name, {once: !k.loops, fade: k.name === 'set_down' || k.name === 'hold_find' ? .12 : .28});
+    k.clip = play(k.name, {once: !k.loops, reverse: !!k.reverse, fade: k.name === 'set_down' || k.name === 'hold_find' ? .12 : .28});
     if (!k.clip) taskDone();
   }
   else if (k.type === 'find') { findSomething(); k.clip = coon.current; }
   else if (k.type === 'wander') {
     for (let i = 0; i < 30; i++) {
       const a = Math.random() * Math.PI * 2, d = .8 + Math.random() * 2.2, p = new THREE.Vector2(coon.pos.x + Math.cos(a) * d, coon.pos.z + Math.sin(a) * d);
-      if (dry(p.x, p.y, .07) && clearLine(new THREE.Vector2(coon.pos.x, coon.pos.z), p)) { k.path = [p]; break; }
+      if (dry(p.x,p.y,.07) && Math.hypot(p.x-PLACES.culvert.at[0],p.y-PLACES.culvert.at[1])>1.6) {
+        const route=routeTo(p);
+        if(route.length && route.at(-1).equals(p)) { k.path=route; break; }
+      }
     }
     if (!k.path) k.path = []; k.walk = true;
   }
@@ -528,7 +564,7 @@ function tapLabcoon() {
   if (coon.asleep) {
     coon.wakeTaps = (coon.wakeTaps || 0) + 1;
     const n = coon.wakeTaps;
-    coon.queue = coon.queue.filter(k => !(k.type === 'clip' && k.name === 'wake'));
+    coon.queue = coon.queue.filter(k => !(k.type === 'clip' && (k.name === 'wake' || k.napPart)));
     if (n < 3) coon.queue.unshift({type: 'clip', name: n === 1 ? 'nap_ear_twitch' : 'nap_yawn_roll'}, {type: 'clip', name: 'sleep', loops: 2}, {type: 'clip', name: 'wake'});
     else { coon.queue.unshift({type: 'clip', name: 'wake'}, {type: 'clip', name: 'wake_grumble'}); coon.wakeTaps = 0; coon.mood = 'grumbly (just woken)'; }
     H.sheet(n < 3 ? (n === 1 ? 'His ear flicks. Still asleep. (1 of 3)' : 'A big yawn, and he rolls over. (2 of 3)') : 'He’s up. Not thrilled about it.', false);

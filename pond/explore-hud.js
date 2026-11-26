@@ -1,3 +1,4 @@
+import {fieldNotebook} from './field-notebook.js?v=2';
 /* Explore HUD v4 (Nov 26 2026): a game UI in LaB × toy-sticker style (see PINO-UI-NOTES.md).
    Needs strip · "right now" card · clock and sound · radar map · status line · two bottom sheets:
    "Leave him something" (Say hi, Note, Doodle, Swap, Yours) and "His things" (Art, Songs, Journal, Map).
@@ -96,7 +97,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
       <div class="pane" data-pane="art"><div class="grid" id="artGrid"></div><div class="big" id="artBig" hidden></div></div>
       <div class="pane" data-pane="songs" hidden><div id="songList"></div></div>
       <div class="pane" data-pane="games" hidden><p>Pull up a stool at the picnic table. He plays for fun, and win or lose, he’ll be thinking about it later.</p><div class="games" id="gameList"></div></div>
-      <div class="pane" data-pane="journal" hidden><ul class="journal" id="journalList"></ul></div>
+      <div class="pane" data-pane="journal" hidden><div id="ownerWriting" hidden></div><div id="sharedNotes"><h3>Field notes</h3><ul class="journal" id="journalList"></ul></div><details><summary>Recent activity</summary><ul class="journal" id="activityList"></ul></details></div>
       <div class="pane mapbox" data-pane="map" hidden><svg id="mapSvg" viewBox="-29 -36 56 50" role="img" aria-label="Map of the field"></svg><div class="take" id="mapList"></div></div>
     </section>`;
 
@@ -203,19 +204,49 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
     if (api) { try { const r = await api('/art?kind=' + kind); if (r.items?.length) return r.items; } catch {} }
     try { const s = await (await fetch('/pond/labcoon/art-sample.json')).json(); return s[kind] || []; } catch { return []; }
   }
+  let artLoad = 0;
   onTab.art = async () => {
+    const revision = ++artLoad;
     const grid = $('#artGrid'), big = $('#artBig'); big.hidden = true; grid.hidden = false;
     grid.innerHTML = '<div class="empty">Looking in the art shed…</div>';
     const items = await load('drawing');
+    if (revision !== artLoad) return;
     grid.innerHTML = items.length ? '' : '<div class="empty">Nothing pinned up yet. He draws when the itch hits.</div>';
-    for (const a of items) {
+    if (!items.length) return;
+    big.innerHTML = `<div class="frame"></div><div class="art-nav">
+      <button class="st-round" type="button" aria-label="Previous drawing" data-step="-1">←</button>
+      <div aria-live="polite" aria-atomic="true"><b></b><small></small></div>
+      <button class="st-round" type="button" aria-label="Next drawing" data-step="1">→</button>
+      </div><button class="st-pill" type="button" id="artBack">Back to the wall</button>`;
+    let current = 0;
+    function display(index) {
+      current = (index + items.length) % items.length;
+      const drawing = items[current];
+      big.querySelector('.frame').innerHTML = drawing.svg;
+      big.querySelector('b').textContent = drawing.title;
+      big.querySelector('small').textContent = (current + 1) + ' of ' + items.length;
+    }
+    for (const arrow of big.querySelectorAll('[data-step]')) {
+      arrow.hidden = items.length < 2;
+      arrow.addEventListener('click', () => display(current + Number(arrow.dataset.step)));
+    }
+    big.onkeydown = event => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault(); event.stopPropagation();
+      display(current + (event.key === 'ArrowLeft' ? -1 : 1));
+    };
+    $('#artBack').addEventListener('click', () => {
+      big.hidden = true; grid.hidden = false; grid.children[current].focus();
+    });
+    items.forEach((a, index) => {
       const b = document.createElement('button'); b.type = 'button'; b.className = 'art st-card';
       b.innerHTML = `<div class="frame">${a.svg}</div><b>${esc(a.title)}</b><small>${esc(a.medium === 'mud' ? 'stick in mud' : a.medium === 'paw_paint' ? 'paw paint' : 'crayon')}</small>`;
-      b.addEventListener('click', () => { grid.hidden = true; big.hidden = false;
-        big.innerHTML = `<div class="frame">${a.svg}</div><div class="row" style="justify-content:space-between"><b>${esc(a.title)}</b><button class="st-pill" type="button" id="artBack">Back to the wall</button></div>`;
-        $('#artBack').addEventListener('click', () => { big.hidden = true; grid.hidden = false; }); });
+      b.addEventListener('click', () => {
+        grid.hidden = true; big.hidden = false; display(index);
+        big.querySelector(items.length > 1 ? '[data-step="1"]' : '#artBack').focus();
+      });
       grid.appendChild(b);
-    }
+    });
   };
   onTab.songs = async () => {
     const list = $('#songList'); list.innerHTML = '<div class="empty">Finding his tunes…</div>';
@@ -251,6 +282,14 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
       list.appendChild(b);
     }
   };
+  const ownerHere = live && ['127.0.0.1','localhost'].includes(location.hostname) && location.port === '5430';
+  const ownerWriting = $('#ownerWriting');
+  const requestedJournal = new URLSearchParams(location.search).get('journal');
+  let refreshWriting = null;
+  if (ownerHere) {
+    ownerWriting.hidden=false; $('#sharedNotes').hidden=true;
+    refreshWriting=fieldNotebook(ownerWriting,places,requestedJournal);
+  }
   const journal = [];
   onTab.journal = () => {
     const notes = (state.fieldNotes || []).slice().reverse().map(n=>{
@@ -259,7 +298,9 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
       return `<li><time>field note</time><span>Wondering about ${esc(subject)}${source}</span></li>`;
     });
     const events = journal.map(j=>`<li><time>${esc(j.time)}</time><span>${esc(j.text)}</span></li>`);
-    $('#journalList').innerHTML = [...notes,...events].join('') || '<li class="empty">His journal fills in as he goes about his night.</li>';
+    $('#journalList').innerHTML = notes.join('') || '<li class="empty">He hasn’t shared a field note yet.</li>';
+    $('#activityList').innerHTML = events.join('') || '<li class="empty">No recent activity.</li>';
+    refreshWriting?.();
   };
 
   /* ---------- map (sheet tab) and radar (corner) ---------- */
@@ -295,6 +336,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
   }
 
   let state = {};
+  if (['1','thoughts','notes','nights'].includes(requestedJournal)) show($('#thingsSheet'), 'journal');
   return {
     set(h, line) {
       if (line) {
