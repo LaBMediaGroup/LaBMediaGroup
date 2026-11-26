@@ -252,7 +252,15 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
     }
   };
   const journal = [];
-  onTab.journal = () => { $('#journalList').innerHTML = journal.length ? journal.map(j => `<li><time>${esc(j.time)}</time><span>${esc(j.text)}</span></li>`).join('') : '<li class="empty">His journal fills in as he goes about his night.</li>'; };
+  onTab.journal = () => {
+    const notes = (state.fieldNotes || []).slice().reverse().map(n=>{
+      const subject = n.topic || ('something at '+(places[n.place]?.label || 'the pond'));
+      const source = Number.isSafeInteger(n.page) && n.page>0 ? ` · <a href="https://en.wikipedia.org/?curid=${n.page}" target="_blank" rel="noopener noreferrer">what he read</a>` : '';
+      return `<li><time>field note</time><span>Wondering about ${esc(subject)}${source}</span></li>`;
+    });
+    const events = journal.map(j=>`<li><time>${esc(j.time)}</time><span>${esc(j.text)}</span></li>`);
+    $('#journalList').innerHTML = [...notes,...events].join('') || '<li class="empty">His journal fills in as he goes about his night.</li>';
+  };
 
   /* ---------- map (sheet tab) and radar (corner) ---------- */
   const ns = 'http://www.w3.org/2000/svg';
@@ -297,6 +305,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
         if (!document.querySelector('#thingsSheet [data-pane=journal]').hidden) onTab.journal();
       }
       if (!h) return; state = h;
+      if (!document.querySelector('#thingsSheet [data-pane=journal]').hidden) onTab.journal();
       const mood = h.asleep ? 'asleep · zz' : h.mood || 'content';
       $('#lcMood').textContent = mood; $('#lcChipMood').textContent = mood;
       $('#lcPlace').textContent = 'At ' + (places[h.place]?.label || h.place?.replace(/_/g, ' ') || 'the pond') + (h.holding ? ` · holding a ${h.holding}` : '');

@@ -1,3 +1,4 @@
+import { shedComputer } from './shed-computer.js';
 /* Labcoon's places in the field (Explore prototype, Nov 26 2026).
 
    The brain names these places (labmedia-raccoon/brain/lib/world.js PLACES). Here they get real
@@ -132,6 +133,7 @@ export function buildPlaces({THREE, ground, encode}) {
     const roof = new THREE.Mesh(roofG, std(0x7e8279, .5, .65, {side: THREE.DoubleSide}));
     roof.position.set(0, .8, -.02); roof.rotation.x = -Math.PI / 2 + .36; shed.add(roof);
     const crate = new THREE.Mesh(new THREE.BoxGeometry(.4, .26, .3), wood); crate.position.set(.2, .13, -.12); shed.add(crate);
+    const computer = shedComputer(THREE,std); computer.position.set(.2,.26,-.12); shed.add(computer);
     // drawings pinned to the pallet: pencil scribbles on paper, a different one each sheet
     for (let i = 0; i < 3; i++) {
       const c = document.createElement('canvas'); c.width = 96; c.height = 128; const k = c.getContext('2d');

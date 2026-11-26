@@ -264,6 +264,13 @@ function plan(e) {
     case 'wash': faceWater(); clip('wash'); break;
     case 'watch_fish': faceWater(); clip('look_back'); idle(4); break;
     case 'swat_at_fish': faceWater(); clip('fish'); break;
+    case 'journal_question': clip('draw'); idle(2); break;
+    case 'inspect_computer': case 'look_up_question': {
+      const [x,z]=PLACES.art_shed.at, desk=new THREE.Vector2(x-.20,z+.12);
+      T.push({type:'walk',to:new THREE.Vector2(desk.x,desk.y-.39)});
+      T.push({type:'face',yaw:()=>faceTo(desk.x,desk.y)});
+      clip(e.move==='inspect_computer'?'sniff':'beg'); idle(4); break;
+    }
     case 'check_mail': faceAt('mailbox'); clip('beg'); idle(1.5); break;
     case 'pry_lid': case 'dig_in': faceAt('trash_can'); clip('pry'); break;
     case 'draw': case 'hand_paint': faceAt('art_shed'); clip('draw'); break;
