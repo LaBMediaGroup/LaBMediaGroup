@@ -68,7 +68,7 @@ These numbers come from the Mac's GPU. **Real-phone speed is unmeasured.** It ne
 ## Still open
 
 1. Real-phone speed, especially the corn ring and stubble counts. Needs a Wi-Fi test on Bobby's phone.
-2. The brain's own map (`labmedia-raccoon/brain/lib/world.js` PLACES) is still a rough sketch with different coordinates. Move it to these field positions so walk times match what visitors see. Keep one shared list.
+2. ~~One map~~ **Done Nov 26:** `pond/labcoon/places.json` is a synced copy of the brain's `brain/lib/places.json` (field metres, stand spots, flags). The brain's walk times follow the route round the pond. Edit the brain's file, then `node tests/places-sync.cjs --write`. `tests/map-check.cjs` boots Explore from it: no errors, no stand spot in the water, Labcoon never more than a damp paw into the pond except swimming. It also fixed a swim-back bug, where he walked the pond floor home.
 3. No collision on course gates, the anemometer mast, cattails or corn; Labcoon himself ignores the walker colliders. The shed still can't be entered.
 4. Swimming uses the surface `swim` clip at a guessed waterline (y = −0.055). It needs a close look at the water.
 5. Finds are always a red bottle cap. The brain's items (nail, toy car wheel, acorn…) should each get their own small model.

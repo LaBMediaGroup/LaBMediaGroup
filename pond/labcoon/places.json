@@ -1,0 +1,23 @@
+{
+  "about": "Labcoon's territory: ONE shared map for the brain (lib/world.js) and the 3D field (labmedia.work pond/labcoon/places.json, a synced copy). Coordinates are metres on the field: x east-west, z north-south (the 3D world's x and z). 'at' is the thing itself, 'stand' is where Labcoon stands to use it. Edit here, then run the site's tests/places-sync.cjs --write.",
+  "pond": {"center": [0, -11.5], "radius": [12, 9], "margin": 1.6},
+  "amble_m_per_min": 6,
+  "places": {
+    "culvert":      {"name": "the culvert (home, nest and stash)", "label": "the culvert (home)", "at": [8.6, -2.9], "stand": [8.25, -2.25]},
+    "washing_rock": {"name": "the washing rock at the pond edge", "label": "the washing rock", "at": [12.05, -8.35], "stand": [13.1, -7.8]},
+    "cattails":     {"name": "the cattails and shallows", "label": "the cattails", "at": [9.3, -13.9], "stand": [10.5, -14.3]},
+    "oak":          {"name": "the big oak", "label": "the big oak", "at": [4.6, -15.5], "stand": [5.4, -14.6]},
+    "pond_middle":  {"name": "the middle of the pond", "label": "the middle of the pond", "at": [0, -11.5], "water": true},
+    "pond_floor":   {"name": "the pond floor, where old TVs glow", "label": "the pond floor", "at": [0, -11.5], "water": true, "under": true},
+    "trash_can":    {"name": "the trash can by the lane", "label": "the trash can by the lane", "at": [-15.6, -0.6], "stand": [-15.2, 0.2]},
+    "mailbox":      {"name": "the dented mailbox by the lane", "label": "the mailbox by the lane", "at": [-16.0, 7.0], "stand": [-15.4, 7.4]},
+    "pole_line":    {"name": "under the humming power line", "label": "under the power line", "at": [18.6, 10.8], "stand": [17.6, 10.0]},
+    "bird_feeder":  {"name": "the bird feeder on its post", "label": "the bird feeder", "at": [-9.5, 6.5], "stand": [-9.0, 6.0]},
+    "corn_rows":    {"name": "the corn rows", "label": "the corn rows", "at": [0, -31], "stand": [0, -29.5]},
+    "picnic_table": {"name": "the picnic table (swap spot)", "label": "the picnic table", "at": [3.2, 1.2], "stand": [3.2, 0.4]},
+    "art_shed":     {"name": "the lean-to art shed", "label": "the art shed", "at": [-6.2, 1.4], "stand": [-6.2, 0.4]},
+    "drone_course": {"name": "the little drone racecourse, with lit gates in the south field", "label": "the drone course", "at": [-1.5, 8.0], "stand": [1.2, 3.5]},
+    "the_hole":     {"name": "a hole between the oak roots that drops into a dug-out room full of odd glowing things", "label": "the hole in the oak roots", "at": [4.9, -15.0], "stand": [5.4, -14.6]},
+    "rail_line":    {"name": "the railroad tracks, far out past the corn", "label": "the railroad tracks", "at": [-160, 60], "far": true}
+  }
+}

@@ -8,7 +8,7 @@ import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
-import {buildPlaces, PLACES} from './labcoon-places.js?v=1';
+import {buildPlaces, PLACES} from './labcoon-places.js?v=2';
 
 const LAT = 42.67, LON = -83.03;
 const q = new URLSearchParams(location.search);
@@ -267,7 +267,7 @@ function startTask(k, now) {
   }
   else if (k.type === 'walk') { const to = typeof k.to === 'function' ? k.to() : k.to; k.path = routeTo(to); k.walk = true; }
   else if (k.type === 'swim') {
-    const to = k.to(); k.path = [to]; k.walk = true; coon.swimming = !k.out; play('swim', {fade: .4});
+    const to = k.to(); k.path = [to]; k.walk = true; coon.swimming = true; play('swim', {fade: .4});   // stays afloat until the bank (out) or the target
   }
 }
 function findSomething() {

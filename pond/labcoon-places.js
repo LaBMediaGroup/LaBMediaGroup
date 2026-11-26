@@ -14,22 +14,10 @@
      floor about 1.1 m up (USPS 41-45 in), facing the lane, a bit dented.
    Everything samples its own ground height. Each place has a walk spot for Labcoon and a
    collision circle for the walker. */
-export const PLACES = {
-  culvert:      {at: [8.6, -2.9], label: 'the culvert (home)', stand: [8.25, -2.25]},
-  washing_rock: {at: [12.05, -8.35], label: 'the washing rock', stand: [12.7, -7.9]},
-  cattails:     {at: [9.3, -13.9], label: 'the cattails', stand: [10.5, -14.3]},
-  oak:          {at: [4.6, -15.5], label: 'the big oak', stand: [5.4, -14.6]},
-  pond_middle:  {at: [0, -11.5], label: 'the middle of the pond', water: true},
-  art_shed:     {at: [-6.2, 1.4], label: 'the art shed', stand: [-6.2, 0.4]},
-  trash_can:    {at: [-15.6, -0.6], label: 'the trash can by the lane', stand: [-15.2, 0.2]},
-  mailbox:      {at: [-16.0, 7.0], label: 'the mailbox by the lane', stand: [-15.4, 7.4]},
-  drone_course: {at: [-1.5, 8.0], label: 'the drone course', stand: [1.2, 3.5]},
-  corn_rows:    {at: [0, -31], label: 'the corn rows', stand: [0, -29.5]},
-  pole_line:    {at: [18.6, 10.8], label: 'under the power line', stand: [17.6, 10.0]},
-  picnic_table: {at: [3.2, 1.2], label: 'the picnic table', stand: [3.2, 0.4]},
-  bird_feeder:  {at: [-9.5, 6.5], label: 'the bird feeder', stand: [-9.0, 6.0]},
-  the_hole:     {at: [4.9, -15.0], label: 'the hole in the oak roots', stand: [5.4, -14.6]},
-};
+// The places themselves come from the shared map, pond/labcoon/places.json, a synced copy of
+// labmedia-raccoon/brain/lib/places.json (tests/places-sync.cjs keeps them identical).
+export const MAP = await (await fetch(new URL('./labcoon/places.json', import.meta.url))).json();
+export const PLACES = MAP.places;
 
 export function buildPlaces({THREE, ground, encode}) {
   const group = new THREE.Group(), colliders = [];
