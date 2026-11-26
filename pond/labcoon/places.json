@@ -3,7 +3,7 @@
   "pond": {"center": [0, -11.5], "radius": [12, 9], "margin": 1.6},
   "amble_m_per_min": 6,
   "places": {
-    "culvert":      {"name": "the culvert (home, nest and stash)", "label": "the culvert (home)", "at": [8.6, -2.9], "stand": [8.25, -2.25]},
+    "culvert":      {"name": "the culvert (home, nest and stash)", "label": "the culvert (home)", "at": [8.6, -2.9], "stand": [7.15, -1.72]},
     "washing_rock": {"name": "the washing rock at the pond edge", "label": "the washing rock", "at": [12.05, -8.35], "stand": [13.1, -7.8]},
     "cattails":     {"name": "the cattails and shallows", "label": "the cattails", "at": [9.3, -13.9], "stand": [10.5, -14.3]},
     "oak":          {"name": "the big oak", "label": "the big oak", "at": [4.6, -15.5], "stand": [5.4, -14.6]},

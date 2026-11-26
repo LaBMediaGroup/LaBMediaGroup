@@ -9,7 +9,7 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
-import {buildPlaces, PLACES} from './labcoon-places.js?v=2';
+import {buildPlaces, PLACES} from './labcoon-places.js?v=3';
 import {createHud} from './explore-hud.js?v=11';
 import {field as fieldSound} from './explore-audio.js?v=1';
 
@@ -29,7 +29,7 @@ const SOLID = [[-7, -20, .3], [18.6, 10.8, .3]];   // the two poles inside the f
 const EYE = 1.55, WALK = 1.35, RUN = 3.2;
 const me = {pos: new THREE.Vector3(3.2, 0, 3.6), yaw: .55, pitch: -0.08, target: null, mode: 'walk'};
 const keys = new Set();
-let W, ground, depth, places, follow = {yaw: 0, dist: 1.35, h: .45, hold: 0, side: 1, over: 0};
+let W, ground, depth, places, follow = {yaw: 0, dist: 1.35, h: .45, hold: 0, side: 1};
 
 function dry(x, z, margin = .04) {            // ground above the water line, inside the field
   if (Math.abs(x - W.pond.center.x) > W.extent / 2 - 3 || Math.abs(z - W.pond.center.y) > W.extent / 2 - 3) return false;
@@ -211,7 +211,7 @@ const clearLine = (a, b, wet = false) => {
   for (let i = 1; i < n; i++) { const x = a.x + (b.x - a.x) * i / n, z = a.y + (b.y - a.y) * i / n; if (wet ? dry(x, z, .02) : !dry(x, z, .04)) return false; }
   return true;
 };
-function routeTo(target) {
+function shoreRoute(target) {
   const from = new THREE.Vector2(coon.pos.x, coon.pos.z);
   if (clearLine(from, target)) return [target];
   const c = W.pond.center, ang = v => Math.atan2(v.y - c.y, v.x - c.x);
@@ -219,6 +219,49 @@ function routeTo(target) {
   const fwd = (i1 - i0 + 36) % 36, dir = fwd <= 18 ? 1 : -1, steps = dir > 0 ? fwd : 36 - fwd, path = [];
   for (let s = 0; s <= steps; s++) path.push(ring[(i0 + dir * s + 36) % 36].clone());
   path.push(target); return path;
+}
+// Walk round the culvert foundation on the dry bank. This also applies to journeys
+// whose endpoints are somewhere else but whose straight approach cuts through home.
+function routeTo(target) {
+  const route=[], centre=new THREE.Vector2(...PLACES.culvert.at);
+  let prev=new THREE.Vector2(coon.pos.x,coon.pos.z);
+  const clearance=1.57, ringRadius=1.96;
+  const clears=(a,b)=>{
+    const edge=b.clone().sub(a), t=THREE.MathUtils.clamp(centre.clone().sub(a).dot(edge)/(edge.lengthSq()||1),0,1);
+    return a.clone().addScaledVector(edge,t).distanceTo(centre)>=clearance;
+  };
+  for(const end of shoreRoute(target)){
+    if(!clears(prev,end)){
+      const nodes=[prev,end];
+      for(let j=0;j<24;j++){
+        const angle=j*Math.PI/12, point=centre.clone().add(new THREE.Vector2(Math.cos(angle),Math.sin(angle)).multiplyScalar(ringRadius));
+        if(dry(point.x,point.y,.045)) nodes.push(point);
+      }
+      const cost=nodes.map(()=>Infinity), parent=[], visited=new Set();cost[0]=0;
+      for(;;){
+        let k=-1;
+        for(let j=0;j<nodes.length;j++) if(!visited.has(j)&&Number.isFinite(cost[j])&&(k<0||cost[j]<cost[k]))k=j;
+        if(k<0||k===1)break;
+        visited.add(k);
+        for(let j=1;j<nodes.length;j++){
+          const c=cost[k]+nodes[k].distanceTo(nodes[j]);
+          if(c<cost[j]&&clears(nodes[k],nodes[j])&&clearLine(nodes[k],nodes[j])){
+            cost[j]=c;parent[j]=k;
+          }
+        }
+      }
+      if(parent[1]===undefined){
+        // A shoreline waypoint can itself be inside the foundation. Skip it and
+        // solve from our last safe point to the next waypoint.
+        continue;
+      }
+      const detour=[];
+      for(let k=parent[1];k>0;k=parent[k])detour.unshift(nodes[k]);
+      route.push(...detour);
+    }
+    route.push(end);prev=end;
+  }
+  return route;
 }
 function shorePoint(toward) {
   // On land: the last dry spot before the water, heading for `toward`.
@@ -545,6 +588,25 @@ function takeMeTo(k) {
 
 /* ---------------- per frame ---------------- */
 const lastStep = new THREE.Vector3(), camPos = new THREE.Vector3(), look = new THREE.Vector3(), fwd = new THREE.Vector3(), side = new THREE.Vector3();
+// Static prop bounds reject distant meshes before triangle tests. Check both ends
+// of his silhouette so a clear ray to the middle cannot hide his face behind a bank.
+const cameraMeshes=[], sightRay=new THREE.Raycaster(), focusPoint=new THREE.Vector3(), sightDir=new THREE.Vector3();
+function clearShot(lens) {
+  for(const dz of [-.25,.24]){
+    focusPoint.set(coon.pos.x+dz*Math.sin(coon.yaw),coon.pos.y+.17,coon.pos.z+dz*Math.cos(coon.yaw));
+    const length=sightDir.subVectors(focusPoint,lens).length();
+    sightRay.set(lens,sightDir.normalize()); sightRay.far=length;
+    for(const {mesh,bounds} of cameraMeshes){
+      if(bounds.distanceToPoint(lens)>length || !sightRay.ray.intersectsBox(bounds))continue;
+      if(bounds.containsPoint(lens)||sightRay.intersectObject(mesh,false).length)return false;
+    }
+    for(let i=1;i<=5;i++){
+      const t=i/6,x=lens.x+(focusPoint.x-lens.x)*t,z=lens.z+(focusPoint.z-lens.z)*t;
+      if(ground(x,z)+.035>lens.y+(focusPoint.y-lens.y)*t)return false;
+    }
+  }
+  return true;
+}
 let frames = [], first = true;
 function update(dt, camera) {
   const now = performance.now() / 1000;
@@ -582,25 +644,19 @@ function update(dt, camera) {
         follow.yaw += ((want - follow.yaw + Math.PI * 3) % (Math.PI * 2) - Math.PI) * Math.min(1, dt * .9);
       } else { follow.yaw += .18 * dt; follow.side = Math.sin(follow.yaw - coon.yaw) >= 0 ? 1 : -1; }
     }
-    let tx = coon.pos.x + Math.sin(follow.yaw) * follow.dist, tz = coon.pos.z + Math.cos(follow.yaw) * follow.dist;
-    for (const [cx, cz, r] of SOLID) {                                     // never hide behind the berm or the props
-      const dx = tx - cx, dz = tz - cz, d = Math.hypot(dx, dz);
-      if (d < r + .35) { tx = cx + dx / (d || 1) * (r + .35); tz = cz + dz / (d || 1) * (r + .35); }
+    const frameDistance=Math.max(follow.dist,.95/Math.min(1,camera.aspect));
+    const frameHeight=follow.h+.05*Math.sin(now*.4);
+    for(const [angle,rise] of [[0,0],[0,.38],[.52,.22],[-.52,.22],[1.05,.38],[-1.05,.38],[2,.48],[-2,.48],[Math.PI,.6],[0,1.65]]){
+      const x=coon.pos.x+Math.sin(follow.yaw+angle)*frameDistance, z=coon.pos.z+Math.cos(follow.yaw+angle)*frameDistance;
+      camPos.set(x,Math.max(ground(x,z)+.22,coon.pos.y+frameHeight+rise),z);
+      if(clearShot(camPos))break;
     }
-    // anything solid between the lens and him (the berm, a rock, the shed): rise and look over it
-    let over = 0;
-    for (const [cx, cz, r] of SOLID) {
-      const ax = coon.pos.x - tx, az = coon.pos.z - tz, L = Math.hypot(ax, az) || 1;
-      const u = THREE.MathUtils.clamp(((cx - tx) * ax + (cz - tz) * az) / (L * L), 0, 1);
-      if (u > .05 && u < .95 && Math.hypot(tx + ax * u - cx, tz + az * u - cz) < r + .1) over = Math.max(over, .8 + r * .4);
-    }
-    follow.over += (over - follow.over) * Math.min(1, dt * 2.5);
-    const lift = .05 * Math.sin(now * .4);
-    camPos.set(tx, Math.max(ground(tx, tz) + .14, coon.pos.y + follow.h + lift + follow.over), tz);
     look.set(coon.pos.x, coon.pos.y + .17, coon.pos.z);
   }
   if (first || reduce) { camera.position.copy(camPos); first = false; }
   else camera.position.lerp(camPos, 1 - Math.pow(.0005, dt));
+  if(me.mode==='follow'&&!clearShot(camera.position))camera.position.copy(camPos);
+  W.uniforms.uFollowSubject.value.set(coon.pos.x,coon.pos.y,coon.pos.z,me.mode==='follow'?1:0);
   camera.lookAt(look);
   updateLabcoon(dt * LIFE_SPEED, now);   // ?speed=4 runs Labcoon's night faster for review
   marker.material.opacity = Math.max(0, marker.material.opacity - dt * .9);
@@ -639,6 +695,14 @@ ground = W.ground; depth = W.depth;
 W.scene.add(marker);
 places = buildPlaces({THREE, ground, encode: displayEncode});
 W.scene.add(places.group); SOLID.push(...places.colliders);
+const [drainX,drainZ]=PLACES.culvert.at;
+const drainAxis=new THREE.Vector2(W.pond.center.x-drainX,W.pond.center.y-drainZ).normalize();
+W.uniforms.uDrainAxis.value.set(drainX,drainZ,drainAxis.x,drainAxis.y);
+places.group.updateWorldMatrix(true,true);
+places.group.traverse(mesh=>{
+  if(!mesh.isMesh || mesh.geometry.type==='PlaneGeometry' && mesh.geometry.parameters?.height===82)return;
+  cameraMeshes.push({mesh,bounds:new THREE.Box3().setFromObject(mesh)});
+});
 H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onFollow: () => toggleFollow(), onSayHi: sayHi, live: !!LIVE_BASE, api: LIVE_BASE ? api : null,
   onGame: r => { if (liveOn) api('/game', r).catch(() => {}); }});   // results reach his brain; he'll think about them later
 me.pos.y = ground(me.pos.x, me.pos.z);

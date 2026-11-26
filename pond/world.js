@@ -75,6 +75,8 @@ function palette(el) {
   return { day, gold, night, zen, hor, sun };
 }
 const U = {
+  uFollowSubject: {value: new THREE.Vector4()},
+  uDrainAxis: {value: new THREE.Vector4()},
   uT: { value: 0 }, uDay: { value: 1 }, uGold: { value: 0 }, uNight: { value: 0 }, uEl: { value: 0.1 },
   uZen: { value: new THREE.Color() }, uHor: { value: new THREE.Color() }, uSunC: { value: new THREE.Color() },
   uSunDir: { value: new THREE.Vector3(0, 0.1, -1).normalize() },
@@ -406,6 +408,20 @@ function updateWires(t, amp, gustE) {
 }
 
 /* ---------------- stubble and cattails ---------------- */
+// Cut only foreground vegetation covering the followed animal. The vertex stage discards
+// whole blades/clumps together; the little opening has irregular edges as the wind blows.
+const followFoliage = EXPLORE_PAGE ? `uniform vec4 uFollowSubject,uDrainAxis;
+  bool coversLabcoon(vec3 base) {
+    vec2 local=base.xz-uDrainAxis.xy, axis=uDrainAxis.zw;
+    float along=dot(local,axis), across=abs(dot(local,vec2(axis.y,-axis.x)));
+    if(dot(axis,axis)>.5 && along>-.72 && along<1.18 && across<.41+.12*along)return true;
+    vec2 segment=uFollowSubject.xz-cameraPosition.xz;
+    float t=dot(base.xz-cameraPosition.xz,segment)/max(dot(segment,segment),.0001);
+    vec2 offset=base.xz-cameraPosition.xz-clamp(t,0.,1.)*segment;
+    return uFollowSubject.w>.5 && t>-.18 && t<1.20 && length(offset)<mix(.17,.46,clamp(t,0.,1.));
+  }` : '';
+const clearFollowLeaf = EXPLORE_PAGE ? 'if(coversLabcoon(b.xyz)) gl_Position=vec4(2.,2.,2.,1.);' : '';
+
 const bendGLSL = `float bendAmt(float f,vec3 base){return f*f*(uWindAmp*1.5*(.6+.4*sin(uT*2.4+base.x*.7+base.z*.43)+uGustE*.6)+.04);}`;
 {
   const N = EXPLORE_PAGE ? (small ? 6500 : 15000) : small ? 2600 : 6000;
@@ -414,9 +430,9 @@ const bendGLSL = `float bendAmt(float f,vec3 base){return f*f*(uWindAmp*1.5*(.6+
   { const p = blade.attributes.position; for (let v = 0; v < p.count; v++) { const f = p.getY(v) / 0.4; p.setX(v, p.getX(v) * (1 - f * 0.92)); } }
   const grass = new THREE.InstancedMesh(blade, new THREE.ShaderMaterial({
     uniforms: U, side: THREE.DoubleSide,
-    vertexShader: COMMON_U + bendGLSL + `varying float vH;varying vec3 vW;
+    vertexShader: COMMON_U + followFoliage + bendGLSL + `varying float vH;varying vec3 vW;
       void main(){vH=uv.y;vec4 b=instanceMatrix*vec4(0.,0.,0.,1.);float bend=bendAmt(uv.y,b.xyz);
-        vec4 w=modelMatrix*instanceMatrix*vec4(position,1.);w.xyz+=uWindDir*bend;w.y-=bend*.25;vW=w.xyz;gl_Position=projectionMatrix*viewMatrix*w;}`,
+        vec4 w=modelMatrix*instanceMatrix*vec4(position,1.);w.xyz+=uWindDir*bend;w.y-=bend*.25;vW=w.xyz;gl_Position=projectionMatrix*viewMatrix*w;${clearFollowLeaf}}`,
     fragmentShader: COMMON_U + FOG + `varying float vH;varying vec3 vW;
       void main(){vec3 c=mix(vec3(.11,.085,.05),vec3(.36,.29,.18),vH);vec3 a0=c;c*=mix(${NIGHT_FLOOR}*.85,vec3(1.),uDay);c+=a0*${MOON_ADD}*uNight*(.5+.5*vH);c+=${LAMP('a0')};c+=uSunC*vH*uGold*.3;gl_FragColor=vec4(fogged(c,vW,.02),1.);}`
   }), N);
@@ -454,9 +470,9 @@ const bendGLSL = `float bendAmt(float f,vec3 base){return f*f*(uWindAmp*1.5*(.6+
   const N = small ? 260 : 520;
   const reeds = new THREE.InstancedMesh(clump, new THREE.ShaderMaterial({
     uniforms: U, side: THREE.DoubleSide,
-    vertexShader: COMMON_U + bendGLSL + `attribute float part;varying float vH;varying float vP;varying vec3 vW;varying vec3 vN;
+    vertexShader: COMMON_U + followFoliage + bendGLSL + `attribute float part;varying float vH;varying float vP;varying vec3 vW;varying vec3 vN;
       void main(){vH=position.y/1.5;vP=part;vec4 b=instanceMatrix*vec4(0.,0.,0.,1.);float bend=bendAmt(vH,b.xyz)*.9;
-        vec4 w=modelMatrix*instanceMatrix*vec4(position,1.);w.xyz+=uWindDir*bend;w.y-=bend*.2;vW=w.xyz;vN=normalize(mat3(instanceMatrix)*normal);gl_Position=projectionMatrix*viewMatrix*w;}`,
+        vec4 w=modelMatrix*instanceMatrix*vec4(position,1.);w.xyz+=uWindDir*bend;w.y-=bend*.2;vW=w.xyz;vN=normalize(mat3(instanceMatrix)*normal);gl_Position=projectionMatrix*viewMatrix*w;${clearFollowLeaf}}`,
     fragmentShader: COMMON_U + FOG + `varying float vH;varying float vP;varying vec3 vW;varying vec3 vN;
       void main(){vec3 c=vP<.5?mix(vec3(.16,.12,.07),vec3(.45,.37,.22),vH):vP<1.5?vec3(.3,.25,.15):vec3(.17,.09,.045);vec3 a0=c;
         float dif=abs(dot(normalize(vN),normalize(uSunDir)))*smoothstep(-.03,.05,uEl);

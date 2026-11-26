@@ -1,3 +1,4 @@
+import {bankFinish, culvertApron} from './culvert-apron.js';
 import { shedComputer } from './shed-computer.js';
 /* Labcoon's places in the field (Explore prototype, Nov 26 2026).
 
@@ -51,22 +52,25 @@ export function buildPlaces({THREE, ground, encode}) {
     const mouth = at(x, z); mouth.y = Math.max(mouth.y, .05) + R - .03;
     add(pipe, mouth, yaw); pipe.rotation.x = -.06;
     const dark = new THREE.Mesh(new THREE.CircleGeometry(R * .97, 24), std(0x050505, 1));
-    dark.position.set(0, 0, -.25); pipe.add(dark);                                         // the inside goes black
+    dark.position.set(0, 0, -.035); pipe.add(dark);                                         // the inside goes black
     const rust = new THREE.Mesh(new THREE.CylinderGeometry(R * 1.004, R * 1.004, .3, 28, 1, true, Math.PI * .65, Math.PI * .7), std(0x5a3a22, .9, .2, {side: THREE.DoubleSide}));
     rust.rotation.x = Math.PI / 2; rust.position.z = .2; pipe.add(rust);                    // waterline staining on the lower lip
-    for (let i = 0; i < 9; i++) {                                                           // riprap round the mouth
-      const a = i / 9 * Math.PI * 2.1 - .3, d = R + .16 + rnd() * .14;
-      const s = lump(.09 + rnd() * .07, 1.2, .7, 1);
-      const off = new THREE.Vector3(Math.cos(a) * d, 0, .2 + rnd() * .15).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
-      add(s, at(mouth.x + off.x, mouth.z + off.z, .02), rnd() * 6);
-    }
+    group.add(culvertApron(THREE, ground, mouth, yaw, encode));
     // the pipe runs under a low earth berm (field drains come out of the bank, not lie on it)
     const bermG = new THREE.SphereGeometry(1, 28, 12, 0, Math.PI * 2, 0, Math.PI / 2), bp = bermG.attributes.position;
-    for (let i = 0; i < bp.count; i++) bp.setXYZ(i, bp.getX(i) * .95, bp.getY(i) * (R * 2 + .06) * (1 + (rnd() - .5) * .08), bp.getZ(i) * .85);
+    const back = new THREE.Vector3(0, 0, -.80).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
+    const toe = at(mouth.x + back.x, mouth.z + back.z);
+    for (let i=0; i<bp.count; i++) {
+      const x=bp.getX(i), y=bp.getY(i), z=bp.getZ(i);
+      const ripple=.032*Math.sin(x*8+z*3)*Math.cos(z*7);
+      const v=new THREE.Vector3(x*(.95+ripple),0,z*((z>0?.64:.85)+ripple));
+      const world=v.clone().applyAxisAngle(new THREE.Vector3(0,1,0),yaw).add(toe);
+      bp.setXYZ(i,v.x,ground(world.x,world.z)-toe.y-.025+y*(.52+ripple),v.z);
+    }
     bermG.computeVertexNormals();
-    const berm = new THREE.Mesh(bermG, std(0x3a3024, 1));
-    const back = new THREE.Vector3(0, 0, -.62).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
-    add(berm, at(mouth.x + back.x, mouth.z + back.z, -.04), yaw);
+    const berm = new THREE.Mesh(bermG, bankFinish(THREE,0x645340,encode,true));
+    berm.name='Culvert earth bank';
+    add(berm,toe,yaw);
     colliders.push([x, z, .45], [mouth.x + back.x, mouth.z + back.z, .8]);
   }
   /* washing rock */
