@@ -24,7 +24,7 @@ const SOLID = [[-7, -20, .3], [18.6, 10.8, .3]];   // the two poles inside the f
 const EYE = 1.55, WALK = 1.35, RUN = 3.2;
 const me = {pos: new THREE.Vector3(3.2, 0, 3.6), yaw: .55, pitch: -0.08, target: null, mode: 'walk'};
 const keys = new Set();
-let W, ground, depth, places, follow = {yaw: 0, dist: 1.35, h: .55};
+let W, ground, depth, places, follow = {yaw: 0, dist: 1.35, h: .45, hold: 0, side: 1, over: 0};
 
 function dry(x, z, margin = .04) {            // ground above the water line, inside the field
   if (Math.abs(x - W.pond.center.x) > W.extent / 2 - 3 || Math.abs(z - W.pond.center.y) > W.extent / 2 - 3) return false;
@@ -390,10 +390,10 @@ function flashMarker(x, z) { marker.position.set(x, ground(x, z) + .02, z); mark
 function toggleFollow() {
   if (me.mode === 'follow') {
     me.mode = 'walk';
-    const back = new THREE.Vector3(Math.sin(follow.yaw), 0, Math.cos(follow.yaw)).multiplyScalar(-2.2).add(coon.pos);
+    const back = new THREE.Vector3(Math.sin(follow.yaw), 0, Math.cos(follow.yaw)).multiplyScalar(2.2).add(coon.pos);
     if (!blocked(back.x, back.z)) me.pos.set(back.x, 0, back.z);
     me.yaw = Math.atan2(-(coon.pos.x - me.pos.x), -(coon.pos.z - me.pos.z)); me.pitch = -.35;
-  } else if (coon.root) { me.mode = 'follow'; follow.yaw = coon.yaw + Math.PI * .85; }
+  } else if (coon.root) { me.mode = 'follow'; follow.yaw = coon.yaw + .95; follow.hold = 0; }
   H?.following(me.mode === 'follow');
 }
 
@@ -479,9 +479,30 @@ function update(dt, camera) {
     look.set(-Math.sin(me.yaw) * Math.cos(me.pitch), Math.sin(me.pitch), -Math.cos(me.yaw) * Math.cos(me.pitch)).add(camPos);
   } else {
     // third person: stay behind and above Labcoon, ease round when he turns
-    if (!drag) follow.yaw += (((coon.yaw + Math.PI) - follow.yaw + Math.PI * 3) % (Math.PI * 2) - Math.PI) * Math.min(1, dt * .6);
-    const tx = coon.pos.x - Math.sin(follow.yaw + Math.PI) * follow.dist, tz = coon.pos.z - Math.cos(follow.yaw + Math.PI) * follow.dist;
-    camPos.set(tx, Math.max(ground(tx, tz) + .12, coon.pos.y + follow.h), tz);
+    // Show all of him: walking, the camera leads from a front three-quarter (you see his face coming);
+    // stopped, it circles him slowly. A drag takes over for a few seconds.
+    if (drag) follow.hold = now + 4;
+    else if (now > follow.hold) {
+      if (coon.task?.walk) {
+        const want = coon.yaw + follow.side * .95;                        // ahead of him, off to one side
+        follow.yaw += ((want - follow.yaw + Math.PI * 3) % (Math.PI * 2) - Math.PI) * Math.min(1, dt * .9);
+      } else { follow.yaw += .18 * dt; follow.side = Math.sin(follow.yaw - coon.yaw) >= 0 ? 1 : -1; }
+    }
+    let tx = coon.pos.x + Math.sin(follow.yaw) * follow.dist, tz = coon.pos.z + Math.cos(follow.yaw) * follow.dist;
+    for (const [cx, cz, r] of SOLID) {                                     // never hide behind the berm or the props
+      const dx = tx - cx, dz = tz - cz, d = Math.hypot(dx, dz);
+      if (d < r + .35) { tx = cx + dx / (d || 1) * (r + .35); tz = cz + dz / (d || 1) * (r + .35); }
+    }
+    // anything solid between the lens and him (the berm, a rock, the shed): rise and look over it
+    let over = 0;
+    for (const [cx, cz, r] of SOLID) {
+      const ax = coon.pos.x - tx, az = coon.pos.z - tz, L = Math.hypot(ax, az) || 1;
+      const u = THREE.MathUtils.clamp(((cx - tx) * ax + (cz - tz) * az) / (L * L), 0, 1);
+      if (u > .05 && u < .95 && Math.hypot(tx + ax * u - cx, tz + az * u - cz) < r + .1) over = Math.max(over, .8 + r * .4);
+    }
+    follow.over += (over - follow.over) * Math.min(1, dt * 2.5);
+    const lift = .05 * Math.sin(now * .4);
+    camPos.set(tx, Math.max(ground(tx, tz) + .14, coon.pos.y + follow.h + lift + follow.over), tz);
     look.set(coon.pos.x, coon.pos.y + .17, coon.pos.z);
   }
   if (first || reduce) { camera.position.copy(camPos); first = false; }
