@@ -316,7 +316,7 @@ scene.add(station.group);
 const aircraft=fieldDrones(THREE,groundSurface,U,reduce);scene.add(aircraft.object,aircraft.course);
 const instruments=outdoorInstruments(THREE,groundSurface,station,aircraft.course.material,reduce);
 scene.add(instruments.group);
-let activeTool='story',detailOpen=false,detailWeight=0,windSource='Sample wind';
+let activeTool='story',detailOpen=false,detailWeight=0,windSource='Sample wind',exploreDrones=true;   // Explore: Labcoon's brain grounds them in bad weather
 const detailEye=new THREE.Vector3(),detailAim=new THREE.Vector3(),detailQ=new THREE.Quaternion();
 U.uCourseBake.value=new THREE.TextureLoader().load(new URL('./img/course-beams.png',import.meta.url).href);
 U.uCourseBake.value.flipY=false;
@@ -1000,7 +1000,7 @@ function frame(now) {
   // The course and its drones belong to the south field: keep them out of the opening shot.
   aircraft.course.visible=aircraft.object.visible=!!exploreHook||landmarkBlend<1||hubWeight>.05||S.station>.5||S.flight>.01;
   U.uCourseLight.value=aircraft.course.visible?1-ss(-.10,-.035,U.uEl.value):0;
-  aircraft.update(cameraDt,exploreHook ? true : S.station>.85 && S.inside<.22 && escort<.993 && S.under<.05 && S.rise<.05,escort,S.wind>=18);
+  aircraft.update(cameraDt,exploreHook ? exploreDrones : S.station>.85 && S.inside<.22 && escort<.993 && S.under<.05 && S.rise<.05,escort,S.wind>=18);
   instruments.wind(dt,S.wind,U.uWindDir.value,S.wind>=18?'HOLD':'COURSE OPEN',windSource);
   if(exploreHook)exploreHook(cameraDt,camera);else placeCamera();
   if(room && reportFilmApproach && reportedUnder!==S.under){reportedUnder=S.under;reportFilmApproach(S.under);}
@@ -1134,6 +1134,7 @@ window.LabWorld = {
       viewportPoint(surface.localToWorld(new THREE.Vector3(x,y,.0003))));
   },
   setWindSource(value){windSource=value;},
+  setDronesFlying(on){exploreDrones=!!on;},
   setInstrumentDetail(open){detailOpen=open;},
   instrumentPoint(){
     if(detailOpen||detailWeight>.12||S.station<.98||S.inside>.08||escort>.015||S.under>.01)return null;

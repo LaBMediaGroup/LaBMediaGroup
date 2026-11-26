@@ -390,6 +390,7 @@ async function startLive() {
   liveOn = true; liveAsleep = !!s.asleep; liveLast = s.events.at(-1)?.id || 0;
   const hud = s.state?.hud || s.events.at(-1)?.hud;
   if (hud) { coon.hud = {...hud, asleep: s.asleep}; coon.mood = hud.mood; placeAt(hud.place); }
+  LabWorld.setDronesFlying?.(hud?.drones !== false);       // the pilots stay home in bad weather
   H?.set(coon.hud, s.events.at(-1) ? s.events.at(-1).time + ' · ' + s.events.at(-1).text : 'He’s around somewhere.');
   coon.queue = [s.asleep ? {type: 'clip', name: 'sleep', loops: 1, joinSleeping: true} : {type: 'idle', secs: 1}]; taskDone();
   setInterval(pollLive, 3000);
@@ -403,7 +404,7 @@ async function pollLive() {
       const newest = liveQueue.at(-1); liveQueue = [newest];
       if (newest.hud?.place) placeAt(newest.hud.place); coon.queue = []; taskDone();
     }
-    if (r.hud) { coon.hud = {...coon.hud, ...r.hud, asleep: r.asleep}; coon.mood = r.hud.mood; if (!coon.task?.walk) H?.set(coon.hud); }
+    if (r.hud) { LabWorld.setDronesFlying?.(r.hud.drones !== false); coon.hud = {...coon.hud, ...r.hud, asleep: r.asleep}; coon.mood = r.hud.mood; if (!coon.task?.walk) H?.set(coon.hud); }
     if (/^sleep_(curl|sprawl)$/.test(coon.clip) && (!liveAsleep || liveQueue.length)) {
       coon.queue = [];
       if (!liveAsleep && !liveQueue.some(e=>e.animation==='Labcoon_wake')) coon.queue.push({type:'clip',name:'wake'});
