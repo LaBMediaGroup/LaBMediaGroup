@@ -10,7 +10,7 @@ import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=2';
-import {createHud} from './explore-hud.js?v=2';
+import {createHud} from './explore-hud.js?v=3';
 
 const LAT = 42.67, LON = -83.03;
 const q = new URLSearchParams(location.search);
