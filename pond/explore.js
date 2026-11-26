@@ -9,13 +9,15 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=2';
+import {createHud} from './explore-hud.js?v=1';
 
 const LAT = 42.67, LON = -83.03;
 const q = new URLSearchParams(location.search);
 const LIFE_SPEED = Math.min(8, Math.max(.25, +(q.get('speed') || 1)));
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const coarse = matchMedia('(pointer: coarse)').matches;
-const hud = document.getElementById('hud'), act = document.getElementById('labcoonDoing'), perf = document.getElementById('perf');
+const perf = document.getElementById('perf'); if (q.has('debug')) perf.hidden = false;
+let H = null;              // the HUD (explore-hud.js), made at boot
 
 /* ---------------- walker ---------------- */
 const SOLID = [[-7, -20, .3], [18.6, 10.8, .3]];   // the two poles inside the field; places add theirs
@@ -156,7 +158,7 @@ function play(name, {once = false, rate = 1, fade = .28} = {}) {
   if (coon.current && coon.current !== a) a.crossFadeFrom(coon.current, fade, false);
   a.play(); coon.current = a; coon.clip = name; return a;
 }
-const say = text => { if (act) act.textContent = text; };
+const say = text => H?.set(null, text);
 
 /* ---------------- what Labcoon does ----------------
    His night comes from the brain: a replay of a simulated night (pond/labcoon/night.json, made from
@@ -241,7 +243,10 @@ function plan(e) {
 function nextEvent(now) {
   if (!NIGHT.length) { coon.queue.push({type: 'wander'}, {type: 'idle', secs: 2}); return; }
   const e = NIGHT[nightIndex++ % NIGHT.length];
-  coon.queue.push(...plan(e)); say(e.time + ' · ' + e.text);
+  coon.queue.push(...plan(e));
+  coon.hud = e.hud || {mood: 'content', place: e.arg || coon.hud?.place || 'culvert', needs: coon.hud?.needs || {hunger: .4, energy: .7, joy: .55, boredom: .3, curiosity: .6}, plan: [], step: 0};
+  coon.mood = coon.hud.mood;
+  H?.set({...coon.hud, asleep: false}, e.time + ' · ' + e.text);
 }
 function nextTask(now) {
   if (!coon.queue.length) nextEvent(now);
@@ -252,7 +257,9 @@ function startTask(k, now) {
   k.turns = 0;
   if (k.type === 'idle') { k.until = now + k.secs / LIFE_SPEED; play(coon.swimming ? 'swim' : 'idle'); }
   else if (k.type === 'face') { k.target = k.yaw(); }
-  else if (k.type === 'clip') {
+  coon.asleep = k.type === 'clip' && /^(sleep|nap_)/.test(k.name);   // asleep while a sleep clip plays
+  if (coon.hud) H?.set({...coon.hud, asleep: coon.asleep});
+  if (k.type === 'clip') {
     if (coon.swimming) { k.until = now + 2 / LIFE_SPEED; return; }       // nothing but paddling while afloat
     k.clip = play(k.name, {once: !k.loops, fade: k.name === 'set_down' || k.name === 'hold_find' ? .12 : .28});
     if (!k.clip) taskDone();
@@ -346,15 +353,15 @@ canvas.addEventListener('pointerup', e => {
   if (tap) tapAt(e.clientX, e.clientY);
 });
 canvas.addEventListener('wheel', e => { if (me.mode === 'follow') { follow.dist = THREE.MathUtils.clamp(follow.dist * (1 + e.deltaY * .001), .6, 4); e.preventDefault(); } }, {passive: false});
-document.getElementById('followBtn')?.addEventListener('click', () => toggleFollow());
 
 const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
 function tapAt(x, y) {
   ndc.set(x / innerWidth * 2 - 1, -(y / innerHeight) * 2 + 1); ray.setFromCamera(ndc, W.camera);
   if (coon.root) {      // Labcoon is small: forgive the tap by 25 cm
     const c = coon.pos.clone().setY(coon.pos.y + .16);
-    if (ray.ray.distanceToPoint(c) < .25 && me.mode !== 'follow') { toggleFollow(); return; }
+    if (ray.ray.distanceToPoint(c) < .28) { tapLabcoon(); return; }
   }
+  H?.sheet(null);
   if (me.mode === 'follow') return;
   const o = ray.ray.origin, d = ray.ray.direction;           // march to the terrain
   for (let s = .3; s < 70; s *= 1.04) {
@@ -375,8 +382,59 @@ function toggleFollow() {
     if (!blocked(back.x, back.z)) me.pos.set(back.x, 0, back.z);
     me.yaw = Math.atan2(-(coon.pos.x - me.pos.x), -(coon.pos.z - me.pos.z)); me.pitch = -.35;
   } else if (coon.root) { me.mode = 'follow'; follow.yaw = coon.yaw + Math.PI * .85; }
-  hud?.classList.toggle('following', me.mode === 'follow');
-  const b = document.getElementById('followBtn'); if (b) b.textContent = me.mode === 'follow' ? 'Walk' : 'Follow Labcoon';
+  H?.following(me.mode === 'follow');
+}
+
+/* ---------------- talking to Labcoon ----------------
+   Tap him: asleep, three taps wake him the way the brain plans it (an ear flick, a yawn and roll,
+   then up and grumbly). Awake, a small sheet lets you say hi (5 a day). Replies here are an
+   offline preview; live, the Worker passes the line to his brain and filters both ways. */
+let bubbleUntil = 0;
+function tapLabcoon() {
+  if (!coon.root) return;
+  if (coon.asleep) {
+    coon.wakeTaps = (coon.wakeTaps || 0) + 1;
+    const n = coon.wakeTaps;
+    coon.queue = coon.queue.filter(k => !(k.type === 'clip' && k.name === 'wake'));
+    if (n < 3) coon.queue.unshift({type: 'clip', name: n === 1 ? 'nap_ear_twitch' : 'nap_yawn_roll'}, {type: 'clip', name: 'sleep', loops: 2}, {type: 'clip', name: 'wake'});
+    else { coon.queue.unshift({type: 'clip', name: 'wake'}, {type: 'clip', name: 'wake_grumble'}); coon.wakeTaps = 0; coon.mood = 'grumbly (just woken)'; }
+    H.sheet(n < 3 ? (n === 1 ? 'His ear flicks. Still asleep. (1 of 3)' : 'A big yawn, and he rolls over. (2 of 3)') : 'He’s up. Not thrilled about it.', false);
+    if (n >= 3) { H.set({...coon.hud, asleep: false, mood: 'grumbly (just woken)', thought: 'mm. what. who poked me'}); }
+    taskDone();
+    return;
+  }
+  H.sheet(`Labcoon is ${coon.mood || 'content'}. ${me.mode === 'follow' ? '' : 'Follow him from the button up top.'}`, true);
+}
+const REPLIES = {
+  content: ['oh. hi. the water’s flat tonight.', 'hello. i was about to check the rock.', 'hi. you can stay. don’t step on my stuff.'],
+  delighted: ['HI. look at this. no, look.', 'hello hello. good night for finding things.', 'oh you’re here. everything is shiny tonight.'],
+  hungry: ['hi. do you have a crust. no? ok.', 'hello. i’m thinking about the trash can.'],
+  sleepy: ['mm. hi.', 'hello… later. tired.'],
+  bored: ['finally. someone. tell me something.', 'hi. nothing has happened for an hour.'],
+  nosy: ['what’s in your pockets', 'hi. what’s that noise past the corn, do you know'],
+  'grumbly (just woken)': ['…what. hi. what.', 'you woke me. hi. fine.'],
+};
+function sayHi() {
+  const list = REPLIES[coon.mood] || REPLIES.content, now = performance.now() / 1000;
+  H.sheet(null); H.bubble(list[Math.floor(Math.random() * list.length)]); bubbleUntil = now + 5.5;
+  const yaw = faceTo(me.pos.x, me.pos.z);                                   // he looks round at you
+  if (!coon.task?.walk && !coon.asleep) coon.yaw = yaw;
+}
+function takeMeTo(k) {
+  let target, look;
+  if (k === 'labcoon') { target = new THREE.Vector2(coon.pos.x, coon.pos.z); look = target; }
+  else if (k === 'the_shed') { target = new THREE.Vector2(-13.1, -4.4); look = target; }
+  else { const p = PLACES[k]; if (!p) return; target = new THREE.Vector2(...p.at); look = target; }
+  if (me.mode === 'follow') toggleFollow();
+  let best = null;                                   // a dry, open spot 2.6 m away, the side nearest to you
+  for (let a = 0; a < Math.PI * 2; a += Math.PI / 8) {
+    const x = target.x + Math.cos(a) * 2.6, z = target.y + Math.sin(a) * 2.6;
+    if (blocked(x, z) || !dry(x, z, .08)) continue;
+    const d = Math.hypot(x - me.pos.x, z - me.pos.z); if (!best || d < best.d) best = {x, z, d};
+  }
+  if (!best) return;
+  me.pos.set(best.x, 0, best.z); me.target = null;
+  me.yaw = Math.atan2(-(look.x - best.x), -(look.y - best.z)); me.pitch = -.3;
 }
 
 /* ---------------- per frame ---------------- */
@@ -419,6 +477,13 @@ function update(dt, camera) {
   camera.lookAt(look);
   updateLabcoon(dt * LIFE_SPEED, now);   // ?speed=4 runs Labcoon's night faster for review
   marker.material.opacity = Math.max(0, marker.material.opacity - dt * .9);
+  if (H && coon.root) {
+    H.mapDots(me, coon.pos);
+    if (bubbleUntil) {
+      if (now > bubbleUntil) { H.bubble(null); bubbleUntil = 0; }
+      else { const v = coon.pos.clone(); v.y += .42; v.project(camera); H.bubble(undefined, (v.x + 1) / 2 * innerWidth, (1 - v.y) / 2 * innerHeight - 8); }
+    }
+  }
   if (perf && frames.length > 30) {
     const sorted = [...frames].sort((a, b) => a - b), med = sorted[sorted.length >> 1] * 1000;
     perf.textContent = med.toFixed(1) + ' ms · ' + Math.round(1000 / med) + ' fps';
@@ -431,6 +496,7 @@ ground = W.ground; depth = W.depth;
 W.scene.add(marker);
 places = buildPlaces({THREE, ground, encode: displayEncode});
 W.scene.add(places.group); SOLID.push(...places.colliders);
+H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onFollow: () => toggleFollow(), onSayHi: sayHi});
 me.pos.y = ground(me.pos.x, me.pos.z);
 liveSky(); setInterval(liveSky, 60000);
 loadLabcoon().then(() => document.documentElement.classList.add('labcoon-ready'))

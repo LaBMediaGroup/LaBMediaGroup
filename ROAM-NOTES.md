@@ -65,6 +65,29 @@ These numbers come from the Mac's GPU. **Real-phone speed is unmeasured.** It ne
   - Live, the brain service sends the same events.
 - Checks: `tests/night-check.cjs` (a 90 s night at 4×: tasks, clips, never on wet ground except swimming), `tests/places-shots.cjs` (close-ups). Timing with the corn ring is still 60 fps at desktop and phone sizes on the M4.
 
+## Round 3 (Nov 26): game UI
+
+`pond/explore-hud.js`, styled in the LaB look (Bebas Neue, Space Mono, Instrument Serif for his thoughts, the orange):
+- **Labcoon card** (top left):
+  - his mood, where he is and what he's holding
+  - his current thought
+  - his plan as a quest list (done steps ticked, the current one in orange)
+  - five needs bars (hunger, energy, joy, boredom, curiosity)
+  - his project
+  - On phones it folds to a one-line chip; tap to open.
+- **Map** (Map button):
+  - top-down field with the real shoreline (sampled from the terrain), his places, the lane and the shed
+  - you as a live blue arrow, Labcoon as a live orange dot
+  - tap a place, or a "take me to" button (Labcoon, culvert, washing rock, art shed, mailbox, the LaB shed, drone course, the oak), to stand 2.6 m from it, facing it
+- **Tap Labcoon:**
+  - Asleep, three taps wake him the way the brain plans: an ear flick, then a yawn and roll, then `wake` + `wake_grumble`, and he's grumbly.
+  - Awake, a sheet lets you **say hi** (5 a day, counted in the browser). His reply shows in a speech bubble over his head, and he turns to look at you.
+  - Replies are a canned **offline preview** in his voice, picked by mood. Live, the Worker passes the line to his brain with the visitor caps and filters.
+- **Journal line** (bottom): his current event with its time.
+- **Brain side:** `brain/sim.js` now writes a `hud` snapshot with every event (mood, place, asleep, holding, project, needs, thought, plan steps, current step).
+- **Replay:** `tools/make-night.cjs <events.jsonl>` turns a sim night into `pond/labcoon/night.json`. It keeps the HUD state, drops visitors' words and free-text arguments, and drops any thought that looks like money, links or injection.
+- **Checks:** `tests/hud-shots.cjs` (desktop and phone: card, map, take-me-to, tap and say hi). It caught a hidden map overlay that was swallowing every tap on the field.
+
 ## Still open
 
 1. Real-phone speed, especially the corn ring and stubble counts. Needs a Wi-Fi test on Bobby's phone.
