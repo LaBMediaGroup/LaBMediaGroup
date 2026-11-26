@@ -88,6 +88,19 @@ These numbers come from the Mac's GPU. **Real-phone speed is unmeasured.** It ne
 - **Replay:** `tools/make-night.cjs <events.jsonl>` turns a sim night into `pond/labcoon/night.json`. It keeps the HUD state, drops visitors' words and free-text arguments, and drops any thought that looks like money, links or injection.
 - **Checks:** `tests/hud-shots.cjs` (desktop and phone: card, map, take-me-to, tap and say hi). It caught a hidden map overlay that was swallowing every tap on the field.
 
+## Round 4 (Nov 26): live
+
+- **Live mode:** `explore.html?live=<service base>` (local: `http://<mac>:8788/api/labcoon`).
+  - On arrival it reads his state, places him where the brain says he is (afloat if he's in the pond), and shows his last line.
+  - It then pulls new events every 3 s and turns each into the same tasks as the replay. If it falls behind, he jumps ahead to stay true.
+  - Brain events that are just a clip (ear flick, yawn and roll, waking) play that clip.
+- **Visitors in live mode:**
+  - Tapping him while he sleeps sends a real tap to the brain, which flicks an ear, then yawns and rolls, then wakes. In his 10am–noon long sleep he only mumbles.
+  - Say hi goes to his real brain through the service. The bubble shows "…" until his reply arrives (3–5 s in tests).
+- **Fallback:** without `live`, or if the service is unreachable, it replays a brain night as before.
+- **Visitor id:** a random id kept in the browser (`labcoon-vid`). The service adds a daily connection hash.
+- **Check:** `tests/live-check.cjs` (connects, taps or opens say hi, gets his real reply).
+
 ## Still open
 
 1. Real-phone speed, especially the corn ring and stubble counts. Needs a Wi-Fi test on Bobby's phone.

@@ -10,11 +10,14 @@ import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=2';
-import {createHud} from './explore-hud.js?v=1';
+import {createHud} from './explore-hud.js?v=2';
 
 const LAT = 42.67, LON = -83.03;
 const q = new URLSearchParams(location.search);
 const LIFE_SPEED = Math.min(8, Math.max(.25, +(q.get('speed') || 1)));
+// Live: ?live=<service base> (local dev: http://<mac>:8788/api/labcoon). Without it, a replayed brain night.
+const LIVE_BASE = q.get('live') || '';
+const VID = (() => { try { let v = localStorage.getItem('labcoon-vid'); if (!v) { v = crypto.randomUUID().replace(/-/g, '').slice(0, 24); localStorage.setItem('labcoon-vid', v); } return v; } catch { return 'anon' + Math.random().toString(36).slice(2, 14); } })();
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const coarse = matchMedia('(pointer: coarse)').matches;
 const perf = document.getElementById('perf'); if (q.has('debug')) perf.hidden = false;
@@ -170,6 +173,7 @@ async function loadLabcoon() {
   coon.home.set(...PLACES.culvert.stand);
   coon.pos.set(coon.home.x, ground(coon.home.x, coon.home.y), coon.home.y); coon.yaw = -Math.PI * .75;
   try { NIGHT = await (await fetch('/pond/labcoon/night.json')).json(); } catch { NIGHT = []; }
+  if (LIVE_BASE) { try { await startLive(); return; } catch (err) { console.warn('Explore: live service unreachable, replaying a night instead.', err.message); } }
   nightIndex = Math.floor(Math.random() * Math.max(1, NIGHT.length));
   play('idle'); nextTask(performance.now() / 1000);
 }
@@ -235,6 +239,11 @@ function plan(e) {
   const T = [], idle = s => T.push({type: 'idle', secs: s}), clip = (name, extra = {}) => T.push({type: 'clip', name, ...extra});
   const faceWater = () => T.push({type: 'face', yaw: () => faceTo(W.pond.center.x, W.pond.center.y)});
   const faceAt = name => T.push({type: 'face', yaw: () => faceTo(...PLACES[name].at)});
+  if (!e.move && e.animation) {                       // brain events that are just a clip (an ear flick, waking up)
+    clip(e.animation.replace(/^Labcoon_/, ''));
+    for (const n of e.then || []) clip(n.replace(/^Labcoon_/, ''), /sleep/.test(n) ? {loops: 99} : {});
+    return T;
+  }
   switch (e.move) {
     case 'walk_to': {
       const p = placeXZ(e.arg);
@@ -264,13 +273,53 @@ function plan(e) {
   }
   return T;
 }
+let liveQueue = [], liveOn = false, liveLast = 0;
 function nextEvent(now) {
-  if (!NIGHT.length) { coon.queue.push({type: 'wander'}, {type: 'idle', secs: 2}); return; }
-  const e = NIGHT[nightIndex++ % NIGHT.length];
+  let e;
+  if (liveOn) {
+    if (!liveQueue.length) { coon.queue.push(coon.hud?.asleep ? {type: 'clip', name: 'sleep', loops: 2} : {type: 'idle', secs: 1.5}); return; }
+    e = liveQueue.shift();
+  } else {
+    if (!NIGHT.length) { coon.queue.push({type: 'wander'}, {type: 'idle', secs: 2}); return; }
+    e = NIGHT[nightIndex++ % NIGHT.length];
+  }
   coon.queue.push(...plan(e));
   coon.hud = e.hud || {mood: 'content', place: e.arg || coon.hud?.place || 'culvert', needs: coon.hud?.needs || {hunger: .4, energy: .7, joy: .55, boredom: .3, curiosity: .6}, plan: [], step: 0};
   coon.mood = coon.hud.mood;
-  H?.set({...coon.hud, asleep: false}, e.time + ' · ' + e.text);
+  H?.set({...coon.hud, asleep: liveOn ? !!coon.hud.asleep : false}, e.time + ' · ' + e.text);
+}
+/* ---------------- live: everyone sees the same raccoon ----------------
+   Arriving, he's placed where the brain says he is; then new events arrive every 3 s and become the
+   same tasks as the replay. If we fall behind (a backgrounded tab), he jumps ahead to stay true. */
+async function api(path, body) {
+  const r = await fetch(LIVE_BASE + path, body ? {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({vid: VID, ...body})} : {});
+  const j = await r.json().catch(() => ({})); if (!r.ok) throw Object.assign(new Error(j.error || 'Labcoon is out of reach.'), {status: r.status}); return j;
+}
+function placeAt(name) {
+  const p = PLACES[name]; if (!p) return;
+  if (p.water) { coon.pos.set(W.pond.center.x, WATER_Y, W.pond.center.y); coon.swimming = true; return; }   // afloat in the middle
+  if (!p.stand) return; coon.pos.set(p.stand[0], ground(p.stand[0], p.stand[1]), p.stand[1]); coon.swimming = false;
+}
+async function startLive() {
+  const s = await api('/state');
+  liveOn = true; liveLast = s.events.at(-1)?.id || 0;
+  const hud = s.state?.hud || s.events.at(-1)?.hud;
+  if (hud) { coon.hud = {...hud, asleep: s.asleep}; coon.mood = hud.mood; placeAt(hud.place); }
+  H?.set(coon.hud, s.events.at(-1) ? s.events.at(-1).time + ' · ' + s.events.at(-1).text : 'He’s around somewhere.');
+  coon.queue = [s.asleep ? {type: 'clip', name: 'sleep', loops: 99} : {type: 'idle', secs: 1}]; taskDone();
+  setInterval(pollLive, 3000);
+}
+async function pollLive() {
+  try {
+    const r = await api('/events?since=' + liveLast);
+    for (const e of r.events) { liveLast = e.id; liveQueue.push(e); }
+    if (liveQueue.length > 4) {                         // fell behind: jump to the newest state
+      const newest = liveQueue.at(-1); liveQueue = [newest];
+      if (newest.hud?.place) placeAt(newest.hud.place); coon.queue = []; taskDone();
+    }
+    if (r.hud) { coon.hud = {...coon.hud, ...r.hud, asleep: r.asleep}; coon.mood = r.hud.mood; if (!coon.task?.walk) H?.set(coon.hud); }
+    if (r.asleep !== !!coon.asleep && !liveQueue.length && coon.task?.type === 'idle') { coon.queue = []; taskDone(); }
+  } catch {}
 }
 function nextTask(now) {
   if (!coon.queue.length) nextEvent(now);
@@ -416,6 +465,10 @@ function toggleFollow() {
 let bubbleUntil = 0;
 function tapLabcoon() {
   if (!coon.root) return;
+  if (liveOn && (coon.asleep || coon.hud?.asleep)) {
+    api('/tap', {}).then(() => H.sheet('You poke him. Give him a second…', false)).catch(e => H.sheet(e.message, false));
+    return;
+  }
   if (coon.asleep) {
     coon.wakeTaps = (coon.wakeTaps || 0) + 1;
     const n = coon.wakeTaps;
@@ -438,7 +491,20 @@ const REPLIES = {
   nosy: ['what’s in your pockets', 'hi. what’s that noise past the corn, do you know'],
   'grumbly (just woken)': ['…what. hi. what.', 'you woke me. hi. fine.'],
 };
-function sayHi() {
+async function sayHi(text) {
+  if (liveOn) {
+    H.sheet(null); H.bubble('…'); bubbleUntil = performance.now() / 1000 + 25;
+    try {
+      const {id} = await api('/hi', {text});
+      for (let i = 0; i < 24; i++) {
+        await new Promise(r => setTimeout(r, 1000));
+        const r = await api('/hi/' + id);
+        if (r.reply) { H.bubble(r.reply); bubbleUntil = performance.now() / 1000 + Math.max(5, r.reply.length / 12); break; }
+      }
+    } catch (e) { H.bubble(null); bubbleUntil = 0; H.sheet(e.message, false); }
+    if (!coon.task?.walk && !coon.asleep) coon.yaw = faceTo(me.pos.x, me.pos.z);
+    return;
+  }
   const list = REPLIES[coon.mood] || REPLIES.content, now = performance.now() / 1000;
   H.sheet(null); H.bubble(list[Math.floor(Math.random() * list.length)]); bubbleUntil = now + 5.5;
   const yaw = faceTo(me.pos.x, me.pos.z);                                   // he looks round at you
@@ -541,9 +607,9 @@ ground = W.ground; depth = W.depth;
 W.scene.add(marker);
 places = buildPlaces({THREE, ground, encode: displayEncode});
 W.scene.add(places.group); SOLID.push(...places.colliders);
-H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onFollow: () => toggleFollow(), onSayHi: sayHi});
+H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onFollow: () => toggleFollow(), onSayHi: sayHi, live: !!LIVE_BASE});
 me.pos.y = ground(me.pos.x, me.pos.z);
 liveSky(); setInterval(liveSky, 60000);
 loadLabcoon().then(() => document.documentElement.classList.add('labcoon-ready'))
   .catch(err => { console.error(err); say('Labcoon could not load: ' + err.message); });
-window.LabExplore = {me, coon, world: W, follow: toggleFollow, followCam: follow, tapAt, get perf() { return perf?.textContent; }};
+window.LabExplore = {me, coon, world: W, get live() { return liveOn; }, follow: toggleFollow, followCam: follow, tapAt, get perf() { return perf?.textContent; }};

@@ -9,7 +9,7 @@ const MOVE_WORDS = {walk_to: 'go to', swim_to: 'swim to', sit_and_watch: 'watch'
   sniff: 'sniff', write_on_board: 'write on the board', eat: 'eat it', eat_here: 'eat it here', note_for_bobby: 'note for Bobby',
   ask_bobby: 'ask Bobby', wish: 'make a wish', build_sculpture: 'build a sculpture', drop: 'put it down', climb: 'climb'};
 
-export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond}) {
+export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, live = false}) {
   const hud = $('#hud2');
   hud.innerHTML = `
     <section class="lc-card" id="lcCard" aria-live="polite">
@@ -94,7 +94,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond}) {
   const sheet = $('#lcSheet'), hiLeft = $('#hiLeft');
   const dayKey = 'labcoon-hi-' + new Date().toDateString();
   const used = () => { try { return +localStorage.getItem(dayKey) || 0; } catch { return 0; } };
-  const updateLeft = () => { const n = 5 - used(); hiLeft.textContent = n > 0 ? `${n} hellos left today · offline preview, the live Labcoon answers from his brain` : 'That’s your five for today. He’ll be here tomorrow.'; $('#hiInput').disabled = n <= 0; };
+  const updateLeft = () => { const n = 5 - used(); hiLeft.textContent = n > 0 ? `${n} hellos left today${live ? '' : ' · offline preview'}` : 'That’s your five for today. He’ll be here tomorrow.'; $('#hiInput').disabled = n <= 0; };
   $('#hiForm').addEventListener('submit', e => {
     e.preventDefault(); const v = $('#hiInput').value.trim(); if (!v || used() >= 5) return;
     try { localStorage.setItem(dayKey, used() + 1); } catch {}
