@@ -1,5 +1,6 @@
 import {swapTable} from './swap-table.js';
 import {fieldNotebook} from './field-notebook.js?v=4';
+import {openGallery} from './gallery.js?v=1';
 /* Explore HUD v4 (Nov 26 2026): a game UI in LaB × toy-sticker style (see PINO-UI-NOTES.md).
    Needs strip · "right now" card · clock and sound · radar map · status line · two bottom sheets:
    "Leave him something" (Say hi, Note, Doodle, Swap, Yours) and "His things" (Art, Songs, Journal, Map).
@@ -9,7 +10,7 @@ import {openGame} from './games/games-ui.js?v=5';
 import {sound, sfx, playTune, ensure} from './explore-audio.js?v=3';
 export {playTune};
 const $ = s => document.querySelector(s);
-const NEEDS = [['hunger', 'Hunger'], ['energy', 'Energy'], ['joy', 'Joy'], ['boredom', 'Boredom'], ['curiosity', 'Curiosity']];
+const NEEDS = [['hunger', 'Full'], ['energy', 'Energy'], ['joy', 'Joy'], ['boredom', 'Boredom'], ['curiosity', 'Curiosity']];
 const MOVE_WORDS = {walk_to: 'go to', swim_to: 'swim to', sit_and_watch: 'watch', hold_up_to_moon: 'hold it up to the moon', pick_up: 'pick something up',
   take_from_stash: 'dig in the stash', stash: 'stash it', wash: 'wash it', watch_fish: 'watch the fish', swat_at_fish: 'swat at a fish',
   check_mail: 'check the mail', pry_lid: 'pry the lid', dig_in: 'dig in', draw: 'draw', hand_paint: 'paw paint', draw_in_mud: 'draw in the mud',
@@ -120,7 +121,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
     if (tab) selectTab(el, tab);
   }
   function hideSheet(el = openSheet, quick = false) {
-    if (!el) return; el.classList.remove('on'); scrim.classList.remove('on'); if (!quick) blip('close');
+    if (!el) return; el.classList.remove('on', 'tall'); scrim.classList.remove('on'); if (!quick) blip('close');
     const done = () => { el.hidden = true; if (openSheet === el) { scrim.hidden = true; openSheet = null; } };
     quick ? done() : setTimeout(done, 300);
   }
@@ -148,12 +149,14 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
     const end = () => {
       if (y0 == null) return; y0 = null;
       const fast = dy / Math.max(1, performance.now() - t0) > .5;
-      el.style.transition = ''; el.style.transform = ''; scrim.style.opacity = '';
-      if (dy > 110 || (fast && dy > 30)) hideSheet(el); else if (dy > 8) blip('snap');
+      el.style.transition = ''; el.style.transform = ''; el.style.maxHeight = ''; scrim.style.opacity = '';
+      if (dy < -50) { if (!el.classList.contains('tall')) { el.classList.add('tall'); blip('swoop'); } }
+      else if (el.classList.contains('tall') && (dy > 80 || (fast && dy > 30))) { el.classList.remove('tall'); blip('close'); }
+      else if (dy > 110 || (fast && dy > 30)) hideSheet(el); else if (Math.abs(dy) > 8) blip('snap');
     };
     for (const h of [el.querySelector('.grab'), el.querySelector('header')]) {
       h.addEventListener('pointerdown', e => { if (e.target.closest('button')) return; y0 = e.clientY; dy = 0; t0 = performance.now(); h.setPointerCapture(e.pointerId); el.style.transition = 'none'; });
-      h.addEventListener('pointermove', e => { if (y0 == null) return; dy = Math.max(0, e.clientY - y0); el.style.transform = `translate(-50%,${dy}px)`; scrim.style.opacity = String(Math.max(0, 1 - dy / 320)); });
+      h.addEventListener('pointermove', e => { if (y0 == null) return; dy = Math.max(-140, e.clientY - y0); el.style.transform = `translate(-50%,${Math.max(0, dy)}px)`; if (dy < 0) el.style.maxHeight = `calc(min(82dvh,720px) + ${-dy}px)`; scrim.style.opacity = String(Math.max(0, 1 - dy / 320)); });
       h.addEventListener('pointerup', end); h.addEventListener('pointercancel', end);
     }
   }
@@ -246,6 +249,9 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
     if (revision !== artLoad) return;
     grid.innerHTML = items.length ? '' : '<div class="empty">Nothing pinned up yet. He draws when the itch hits.</div>';
     if (!items.length) return;
+    const wallBtn = document.createElement('button'); wallBtn.type = 'button'; wallBtn.className = 'st-pill dark gal-open';
+    wallBtn.innerHTML = `See all ${items.length} big <span aria-hidden="true">⤢</span>`; wallBtn.addEventListener('click', () => openGallery(items, {sound: blip}));
+    grid.appendChild(wallBtn);
     big.innerHTML = `<div class="frame"></div><div class="art-nav">
       <button class="st-round" type="button" aria-label="Previous drawing" data-step="-1">←</button>
       <div aria-live="polite" aria-atomic="true"><b></b><small></small></div>
@@ -274,10 +280,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
     items.forEach((a, index) => {
       const b = document.createElement('button'); b.type = 'button'; b.className = 'art st-card';
       b.innerHTML = `<div class="frame">${a.svg}</div><b>${esc(a.title)}</b><small>${esc(a.medium === 'mud' ? 'stick in mud' : a.medium === 'paw_paint' ? 'paw paint' : 'crayon')}</small>`;
-      b.addEventListener('click', () => {
-        grid.hidden = true; big.hidden = false; display(index);
-        big.querySelector(items.length > 1 ? '[data-step="1"]' : '#artBack').focus();
-      });
+      b.addEventListener('click', () => openGallery(items, {start: index, sound: blip}));
       grid.appendChild(b);
     });
   };
@@ -397,7 +400,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
         li.className = i < h.step ? 'done' : i === h.step ? 'now' : ''; plan.appendChild(li);
       });
       plan.hidden = !plan.children.length; plan.previousElementSibling.hidden = plan.hidden;
-      for (const [k] of NEEDS) { const b = hud.querySelector(`.need[data-k="${k}"] b`); if (b) b.style.width = Math.round((h.needs?.[k] ?? 0) * 100) + '%'; }
+      for (const [k] of NEEDS) { const b = hud.querySelector(`.need[data-k="${k}"] b`); if (b) { const v = h.needs?.[k] ?? 0; b.style.width = Math.round((k === 'hunger' ? 1 - v : v) * 100) + '%'; } }   // the Full bar is a belly: it fills when he eats
       $('#lcProject').textContent = !h.project ? 'Lately: pottering' : /^A project in progress/.test(h.project) ? 'Lately: busy with a project of his own' : 'Lately: ' + h.project;
     },
     mapDots(me, coonPos) {
