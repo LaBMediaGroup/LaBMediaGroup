@@ -53,7 +53,7 @@ function liveSky() {
 
 /* ---------------- Labcoon ---------------- */
 const coon = {root: null, mixer: null, actions: {}, current: null, pos: new THREE.Vector3(), yaw: 0,
-  queue: [], task: null, swimming: false, findHeld: false, bone: null, home: new THREE.Vector2()};
+  queue: [], task: null, swimming: false, irises: [], findHeld: false, bone: null, home: new THREE.Vector2()};
 const WALK_SPEED = .21, CLIP_SPEED = .165;     // clip is authored for 0.165 m/s at rate 1
 const cap = new THREE.Mesh(new THREE.CylinderGeometry(.0105, .0115, .006, 21),
   new THREE.MeshStandardMaterial({color: 0x8c0d0a, metalness: .85, roughness: .32}));
@@ -107,7 +107,18 @@ function lightFromSky() {
   sun.color.copy(U.uSunC.value); sun.intensity = Math.max(0, U.uSunDir.value.y) > 0 ? 1.2 + 1.2 * day : 0;
   hemi.color.copy(U.uZen.value).lerp(new THREE.Color(1, 1, 1), .35); hemi.groundColor.setRGB(.32, .28, .22);
   hemi.intensity = .25 + 1.1 * day + .45 * gold - .1 * night;
+  // at night: a cool moonlit fill and a rim from high behind him, so his outline reads on the field
+  if (night > .05) {
+    hemi.color.lerp(MOON, night * .8); hemi.intensity += .22 * night;
+    if (U.uSunDir.value.y <= 0) { sun.color.copy(MOON); sun.intensity = .95 * night; sun.position.set(coon.pos.x - Math.sin(coon.yaw) * 4, coon.pos.y + 6, coon.pos.z - Math.cos(coon.yaw) * 4); }
+  }
+  // eyeshine: a raccoon's tapetum throws light back green-gold when he faces you in the dark
+  const toCam = TMP2.copy(W.camera.position).sub(coon.pos).setY(0).normalize();
+  const facing = Math.max(0, toCam.x * Math.sin(coon.yaw) + toCam.z * Math.cos(coon.yaw));
+  const glow = night * Math.pow(facing, 3) * (coon.asleep ? 0 : 1);
+  for (const m of coon.irises) m.emissiveIntensity = glow * 2.2;
 }
+const MOON = new THREE.Color(.55, .66, .95), TMP2 = new THREE.Vector3();
 
 async function loadLabcoon() {
   const loader = new GLTFLoader();
@@ -123,6 +134,7 @@ async function loadLabcoon() {
     if (mat?.transparent && /fur|fibres|hair|strand/i.test(mat.name)) {
       mat.alphaTest = .025; mat.opacity = .52; mat.depthWrite = false; mat.color.multiplyScalar(.74);
     }
+    if (mat?.name.startsWith('Iris')) { mat.emissive = new THREE.Color(.62, .78, .32); mat.emissiveIntensity = 0; coon.irises.push(mat); }
     if (mat) displayEncode(mat);
   });
   for (const c of coats) addFur(c);
