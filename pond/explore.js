@@ -10,7 +10,7 @@ import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=2';
-import {createHud} from './explore-hud.js?v=6';
+import {createHud} from './explore-hud.js?v=10';
 
 const LAT = 42.67, LON = -83.03;
 const q = new URLSearchParams(location.search);
@@ -598,6 +598,16 @@ function update(dt, camera) {
   marker.material.opacity = Math.max(0, marker.material.opacity - dt * .9);
   if (H && coon.root) {
     H.mapDots(me, coon.pos);
+    // find Labcoon: when he's off-screen (or behind you), his face waits at the matching screen edge
+    const v = coon.pos.clone(); v.y += .2; v.project(camera);
+    const behind = v.z > 1, onScreen = !behind && Math.abs(v.x) < .92 && Math.abs(v.y) < .86;
+    if (onScreen || me.mode === 'follow') H.finder(null);
+    else {
+      let dx = behind ? -v.x : v.x, dy = behind ? -v.y : v.y; if (Math.abs(dx) < 1e-3 && Math.abs(dy) < 1e-3) dx = 1;
+      const top = 120, bottom = 150, side = 44, cx = innerWidth / 2, cy = innerHeight / 2;
+      const kx = (cx - side) / Math.abs(dx || 1e-6), ky = ((dy > 0 ? cy - top : cy - bottom)) / Math.abs(dy || 1e-6), k = Math.min(kx, ky);
+      H.finder(cx + dx * k, cy - dy * k, Math.atan2(-dy, dx));
+    }
     if (bubbleUntil) {
       if (now > bubbleUntil) { H.bubble(null); bubbleUntil = 0; }
       else { const v = coon.pos.clone(); v.y += .42; v.project(camera); H.bubble(undefined, (v.x + 1) / 2 * innerWidth, (1 - v.y) / 2 * innerHeight - 8); }
@@ -615,7 +625,8 @@ ground = W.ground; depth = W.depth;
 W.scene.add(marker);
 places = buildPlaces({THREE, ground, encode: displayEncode});
 W.scene.add(places.group); SOLID.push(...places.colliders);
-H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onFollow: () => toggleFollow(), onSayHi: sayHi, live: !!LIVE_BASE, api: LIVE_BASE ? api : null});
+H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onFollow: () => toggleFollow(), onSayHi: sayHi, live: !!LIVE_BASE, api: LIVE_BASE ? api : null,
+  onGame: r => { if (liveOn) api('/game', r).catch(() => {}); }});   // results reach his brain; he'll think about them later
 me.pos.y = ground(me.pos.x, me.pos.z);
 liveSky(); setInterval(liveSky, 60000);
 loadLabcoon().then(() => { document.documentElement.classList.add('labcoon-ready'); const l = document.getElementById('loading'); if (l) { document.getElementById('loadCoon').style.left = 'calc(100% - 54px)'; setTimeout(() => l.classList.add('gone'), 450); setTimeout(() => l.remove(), 1100); } })

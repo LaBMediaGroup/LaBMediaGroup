@@ -3,6 +3,7 @@
    "Leave him something" (Say hi, Note, Doodle, Swap, Yours) and "His things" (Art, Songs, Journal, Map).
    explore.js feeds it: set(hud, journalLine), mapDots(me, coonPos), clock(text, night), heard(song), …
    No accounts, no public wall: visitors' notes go only to him; "Yours" lives in this browser. */
+import {openGame} from './games/games-ui.js?v=2';
 const $ = s => document.querySelector(s);
 const NEEDS = [['hunger', 'Hunger'], ['energy', 'Energy'], ['joy', 'Joy'], ['boredom', 'Boredom'], ['curiosity', 'Curiosity']];
 const MOVE_WORDS = {walk_to: 'go to', swim_to: 'swim to', sit_and_watch: 'watch', hold_up_to_moon: 'hold it up to the moon', pick_up: 'pick something up',
@@ -35,7 +36,15 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&
 
 /* ---------------- his instruments: a tiny synth ---------------- */
 const NOTE_HZ = {C5: 523.25, D5: 587.33, E5: 659.25, G5: 783.99, A5: 880, C6: 1046.5, D6: 1174.66};
-let actx = null;
+let actx = null, uiSound = true;
+export function blip(kind = 'tick') {           // soft UI sounds: a tick on buttons, a swoop when a sheet opens
+  if (!uiSound || !actx || actx.state !== 'running') return;
+  const t = actx.currentTime, o = actx.createOscillator(), g = actx.createGain();
+  o.type = 'sine'; const [f0, f1, d] = kind === 'swoop' ? [380, 760, .16] : kind === 'close' ? [620, 340, .12] : [900, 1150, .05];
+  o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + d);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.06, t + .01); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+  o.connect(g).connect(actx.destination); o.start(t); o.stop(t + d + .02);
+}
 function audio() { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch {} return actx; }
 export function playTune(song, volume = .35) {
   const ac = audio(); if (!ac) return 0;
@@ -64,7 +73,7 @@ export function playTune(song, volume = .35) {
   return t - ac.currentTime;
 }
 
-export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, live = false, api = null}) {
+export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, live = false, api = null, onGame = null}) {
   const hud = $('#hud2');
   hud.innerHTML = `
     <div class="needs st-card pe" role="group" aria-label="How Labcoon feels"><span class="who">Labcoon</span>
@@ -86,12 +95,16 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
       <button class="st-round" id="thingsBtn" type="button" aria-label="His things">${I.menu}</button>
     </div>
     <div class="bl"><button class="st-round radar" id="mapBtn" type="button" aria-label="Open the map"><svg viewBox="-29 -36 56 50" id="radarSvg"></svg></button></div>
-    <div class="status st-pill pe" role="status"><span class="face">${I.face}</span><span><b>Labcoon</b> <span id="labcoonDoing">is waking up…</span></span></div>
+    <div class="status st-pill pe" role="status" id="statusPill" title="What he’s up to"><span class="face">${I.face}</span><span><b>Labcoon</b> <span id="labcoonDoing">is waking up…</span></span></div>
     <div class="br">
       <button class="st-round" id="followBtn" type="button" aria-label="Follow Labcoon">${I.eye}</button>
       <button class="st-pill primary" id="leaveBtn" type="button">Leave him something</button>
     </div>
     <div class="bubble" id="lcBubble" hidden></div>
+    <button class="st-round finder" id="finder" type="button" aria-label="Find Labcoon" hidden><span class="face">${I.face}</span><i class="arrow"></i></button>
+    <div class="coach st-card pe" id="coach" hidden><div class="kicker">welcome to the pond</div>
+      <ul><li><b>Drag</b> to look around</li><li><b>Tap the ground</b> to walk there</li><li><b>Tap Labcoon</b> to say hi or play</li><li>The <b>orange button</b> leaves him something; <b>☰</b> has his art, songs and games</li></ul>
+      <button class="st-pill primary" type="button" id="coachOk">Got it</button></div>
     <div class="scrim pe" id="scrim" hidden></div>
     <section class="sheet st-card pe" id="lcSheet" hidden role="dialog" aria-label="Leave Labcoon something">
       <div class="grab"></div>
@@ -99,7 +112,8 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
       <div class="tabs" role="tablist">${[['hi', 'Say hi'], ['note', 'Note'], ['doodle', 'Doodle'], ['swap', 'Swap'], ['yours', 'Yours']].map(([k, l], i) => `<button role="tab" data-tab="${k}" aria-selected="${!i}">${l}</button>`).join('')}</div>
       <div class="pane" data-pane="hi"><p id="sheetText"></p>
         <form id="hiForm" class="row"><input class="field" id="hiInput" maxlength="120" placeholder="Say hi to Labcoon" autocomplete="off"><button class="st-pill primary" type="submit">Say hi</button></form>
-        <div class="note-hint" id="hiLeft"></div></div>
+        <div class="note-hint" id="hiLeft"></div>
+        <div class="row" id="playRow" style="margin-top:12px"><button class="st-pill" type="button" id="playCheckers">Play checkers with him</button></div></div>
       <div class="pane" data-pane="note" hidden><p>Leave a note in his mailbox. He reads his mail when he feels like it and might mention it in his own words. Nobody else sees it.</p>
         <textarea class="field" id="noteText" maxlength="240" rows="3" placeholder="Dear Labcoon…"></textarea>
         <div class="row" style="margin-top:10px;justify-content:space-between"><span class="note-hint" id="noteLeft">One note a day · 240 letters</span><button class="st-pill primary" id="noteSend" type="button">Mail it</button></div></div>
@@ -113,9 +127,10 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
     <section class="sheet st-card pe" id="thingsSheet" hidden role="dialog" aria-label="His things">
       <div class="grab"></div>
       <header><span class="title">His things</span><button class="st-round x" type="button" data-close aria-label="Close">${I.x}</button></header>
-      <div class="tabs" role="tablist">${[['art', 'Art'], ['songs', 'Songs'], ['journal', 'Journal'], ['map', 'Map']].map(([k, l], i) => `<button role="tab" data-tab="${k}" aria-selected="${!i}">${l}</button>`).join('')}</div>
+      <div class="tabs" role="tablist">${[['art', 'Art'], ['songs', 'Songs'], ['games', 'Games'], ['journal', 'Journal'], ['map', 'Map']].map(([k, l], i) => `<button role="tab" data-tab="${k}" aria-selected="${!i}">${l}</button>`).join('')}</div>
       <div class="pane" data-pane="art"><div class="grid" id="artGrid"></div><div class="big" id="artBig" hidden></div></div>
       <div class="pane" data-pane="songs" hidden><div id="songList"></div></div>
+      <div class="pane" data-pane="games" hidden><p>Pull up a stool at the picnic table. He plays for fun, and win or lose, he’ll be thinking about it later.</p><div class="games" id="gameList"></div></div>
       <div class="pane" data-pane="journal" hidden><ul class="journal" id="journalList"></ul></div>
       <div class="pane mapbox" data-pane="map" hidden><svg id="mapSvg" viewBox="-29 -36 56 50" role="img" aria-label="Map of the field"></svg><div class="take" id="mapList"></div></div>
     </section>`;
@@ -125,6 +140,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
   const setOpen = open => { card.hidden = !open; chip.hidden = open; chip.setAttribute('aria-expanded', open); };
   setOpen(!small.matches);
   chip.addEventListener('click', () => setOpen(true));
+  document.getElementById('statusPill')?.addEventListener('click', () => setOpen(true));
   $('#nowClose').addEventListener('click', () => setOpen(false));
 
   /* ---------- sheets ---------- */
@@ -132,12 +148,12 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
   let openSheet = null;
   function show(el, tab) {
     if (openSheet && openSheet !== el) hideSheet(openSheet, true);
-    el.hidden = false; scrim.hidden = false; openSheet = el;
+    el.hidden = false; scrim.hidden = false; openSheet = el; blip('swoop'); $('#coach').hidden = true;
     requestAnimationFrame(() => { el.classList.add('on'); scrim.classList.add('on'); });
     if (tab) selectTab(el, tab);
   }
   function hideSheet(el = openSheet, quick = false) {
-    if (!el) return; el.classList.remove('on'); scrim.classList.remove('on');
+    if (!el) return; el.classList.remove('on'); scrim.classList.remove('on'); if (!quick) blip('close');
     const done = () => { el.hidden = true; if (openSheet === el) { scrim.hidden = true; openSheet = null; } };
     quick ? done() : setTimeout(done, 300);
   }
@@ -151,18 +167,27 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
     for (const b of el.querySelectorAll('[role=tab]')) b.addEventListener('click', () => selectTab(el, b.dataset.tab));
   }
   scrim.addEventListener('click', () => hideSheet());
+  hud.addEventListener('click', e => { if (e.target.closest('.st-pill,.st-round,.tabs button,.gamecard,.art')) blip(); });
   $('#leaveBtn').addEventListener('click', () => show($('#lcSheet'), 'hi'));
+  hud.addEventListener('click', e => { if (e.target.closest('#playCheckers')) startGame('checkers'); });
   $('#thingsBtn').addEventListener('click', () => show($('#thingsSheet'), 'art'));
   $('#mapBtn').addEventListener('click', () => show($('#thingsSheet'), 'map'));
   $('#journalLink').addEventListener('click', () => show($('#thingsSheet'), 'journal'));
   $('#followBtn').addEventListener('click', () => onFollow());
 
+  /* ---------- first visit ---------- */
+  try { if (!localStorage.getItem('labcoon-coached')) $('#coach').hidden = false; } catch { $('#coach').hidden = false; }
+  const coached = () => { $('#coach').hidden = true; try { localStorage.setItem('labcoon-coached', '1'); } catch {} };
+  $('#coachOk').addEventListener('click', coached);
+  document.getElementById('world')?.addEventListener('pointerdown', coached, {once: true});   // any first touch of the field counts
+  $('#finder').addEventListener('click', () => onTakeMe('labcoon'));
+
   /* ---------- sound ---------- */
-  let soundOn = (() => { try { return localStorage.getItem('labcoon-sound') !== 'off'; } catch { return true; } })();
+  let soundOn = (() => { try { return localStorage.getItem('labcoon-sound') !== 'off'; } catch { return true; } })(); uiSound = soundOn;
   const soundBtn = $('#soundBtn');
   const paintSound = () => { soundBtn.innerHTML = soundOn ? I.sound : I.mute; soundBtn.setAttribute('aria-pressed', soundOn); soundBtn.setAttribute('aria-label', soundOn ? 'Sound on' : 'Sound off'); };
   paintSound();
-  soundBtn.addEventListener('click', () => { soundOn = !soundOn; try { localStorage.setItem('labcoon-sound', soundOn ? 'on' : 'off'); } catch {} if (soundOn) audio(); paintSound(); });
+  soundBtn.addEventListener('click', () => { soundOn = !soundOn; uiSound = soundOn; try { localStorage.setItem('labcoon-sound', soundOn ? 'on' : 'off'); } catch {} if (soundOn) audio(); paintSound(); });
   addEventListener('pointerup', () => { if (soundOn) audio(); }, {once: true});   // phones unlock audio on a release, not a press
 
   /* ---------- "Yours": what you sent him and what he said, kept in this browser ---------- */
@@ -171,7 +196,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
   function remember(item) { try { localStorage.setItem(yoursKey, JSON.stringify([{...item, at: Date.now()}, ...yours()].slice(0, 40))); } catch {} }
   onTab.yours = () => {
     const y = yours();
-    $('#yoursList').innerHTML = y.length ? y.map(i => `<li><time>${new Date(i.at).toLocaleTimeString([], {hour: 'numeric', minute: '2-digit'})}</time><span>${i.kind === 'hi' ? `You: “${esc(i.text)}”${i.reply ? `<br><i>Labcoon: ${esc(i.reply)}</i>` : ''}` : i.kind === 'doodle' ? 'You mailed him a doodle.' : `You mailed him: “${esc(i.text)}”`}</span></li>`).join('') : '<li class="empty">Nothing yet. Say hi, or mail him a note.</li>';
+    $('#yoursList').innerHTML = y.length ? y.map(i => `<li><time>${new Date(i.at).toLocaleTimeString([], {hour: 'numeric', minute: '2-digit'})}</time><span>${i.kind === 'hi' ? `You: “${esc(i.text)}”${i.reply ? `<br><i>Labcoon: ${esc(i.reply)}</i>` : ''}` : i.kind === 'doodle' ? 'You mailed him a doodle.' : i.kind === 'game' ? `Picnic table · ${esc(i.text)}` : `You mailed him: “${esc(i.text)}”`}</span></li>`).join('') : '<li class="empty">Nothing yet. Say hi, or mail him a note.</li>';
   };
 
   /* ---------- say hi (5 a day) ---------- */
@@ -236,8 +261,31 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
     for (const s of items) {
       const row = document.createElement('div'); row.className = 'song st-card';
       row.innerHTML = `<button class="st-round" type="button" aria-label="Play ${esc(s.title)}">${I.play}</button><div><b>${esc(s.title)}</b><small>${esc((s.instrument || 'ocarina').replace('_', ' '))} · ${s.notes.length} notes</small></div><div class="notes">${s.notes.slice(0, 18).map(([n, b]) => `<i style="height:${n === 'rest' ? 2 : 6 + 'CDEGA'.indexOf(n[0]) * 3 + (n[1] === '6' ? 8 : 0)}px;opacity:${.3 + Math.min(b, 2) * .3}"></i>`).join('')}</div>`;
-      row.querySelector('button').addEventListener('click', () => playTune(s, .5));
+      row.querySelector('button').addEventListener('click', e => { const btn = e.currentTarget, secs = playTune(s, .5); btn.classList.add('playing'); setTimeout(() => btn.classList.remove('playing'), secs * 1000); });
       list.appendChild(row);
+    }
+  };
+  /* ---------- games at the picnic table ---------- */
+  const recKey = 'labcoon-games';
+  const record = () => { try { return JSON.parse(localStorage.getItem(recKey) || '{}'); } catch { return {}; } };
+  let chessUI = null;
+  import('./games/chess-ui.js?v=1').then(m => { chessUI = m.playChess; }).catch(() => {});
+  function gameResult(r) {
+    try { const rec = record(); const g = rec[r.game] || {w: 0, l: 0, d: 0}; g[r.result[0]]++; rec[r.game] = g; localStorage.setItem(recKey, JSON.stringify(rec)); } catch {}
+    remember({kind: 'game', text: `${r.game}: you ${r.result === 'win' ? 'won' : r.result === 'loss' ? 'lost' : 'drew'}`});
+    onGame?.(r);
+  }
+  function startGame(kind) { hideSheet(openSheet, true); openGame(kind, {onResult: gameResult, chess: chessUI}); }
+  const ICONS = {checkers: '<svg viewBox="0 0 40 40"><circle cx="14" cy="14" r="8" fill="#d23b2e" stroke="#22302f" stroke-width="2.4"/><circle cx="27" cy="27" r="8" fill="#b9793f" stroke="#22302f" stroke-width="2.4"/></svg>',
+    chess: '<svg viewBox="0 0 40 40"><path d="M14 33h14l-2-5h-10zM16 28l1-9h8l1 9M15 19h12M18 19v-5a3 3 0 0 1 6 0v5" fill="#f5ecdc" stroke="#22302f" stroke-width="2.4" stroke-linejoin="round"/></svg>'};
+  onTab.games = () => {
+    const list = $('#gameList'), rec = record(); list.innerHTML = '';
+    for (const [k, name, blurb] of [['checkers', 'Checkers', 'Your acorns against his bottle caps. He can’t resist a jump.'], ['chess', 'Chess', 'He’s learning. Go easy on him… or don’t.']]) {
+      const ready = k === 'checkers' || !!chessUI, r = rec[k];
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'gamecard st-card'; b.disabled = !ready;
+      b.innerHTML = `<span class="ico">${ICONS[k]}</span><span><b>${name}</b><small>${ready ? blurb : 'Setting up the board… soon.'}</small></span><span class="rec">${r ? `you ${r.w} · him ${r.l}${r.d ? ' · draws ' + r.d : ''}` : ready ? 'play' : ''}</span>`;
+      if (ready) b.addEventListener('click', () => startGame(k));
+      list.appendChild(b);
     }
   };
   const journal = [];
@@ -310,13 +358,17 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
     following(on) { const b = $('#followBtn'); b.innerHTML = on ? I.walk : I.eye; b.setAttribute('aria-label', on ? 'Walk' : 'Follow Labcoon'); },
     sheet(text, canTalk) {
       if (text == null) { if (openSheet === $('#lcSheet')) hideSheet(); return; }
-      show($('#lcSheet'), 'hi'); $('#sheetText').textContent = text; $('#hiForm').hidden = !canTalk; $('#hiLeft').hidden = !canTalk; if (canTalk) updateLeft();
+      show($('#lcSheet'), 'hi'); $('#sheetText').textContent = text; $('#hiForm').hidden = !canTalk; $('#hiLeft').hidden = !canTalk; $('#playRow').hidden = !canTalk; if (canTalk) updateLeft();
     },
     bubble(text, x, y) {
       const b = $('#lcBubble');
       if (text === null) { b.hidden = true; return; }
       if (text !== undefined) { b.textContent = text; b.hidden = false; }
       if (x != null) b.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px) translate(-50%, -100%)`;
+    },
+    finder(x, y, angle) {                         // his face at the screen edge, pointing to him when he's off-screen
+      const f = $('#finder'); if (x == null) { f.hidden = true; return; }
+      f.hidden = false; f.style.left = Math.round(x) + 'px'; f.style.top = Math.round(y) + 'px'; f.querySelector('.arrow').style.transform = `rotate(${angle}rad)`;
     },
     heard(song, near) { if (soundOn && near && actx) playTune(song, .28); },
     remember,

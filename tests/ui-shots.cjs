@@ -12,6 +12,7 @@ const out = process.argv[2]; fs.mkdirSync(out, {recursive: true}); const q = pro
     await p.waitForTimeout(1200); await p.screenshot({path: path.join(out, name + '_0_loading.png')});
     await p.waitForFunction(() => document.documentElement.classList.contains('labcoon-ready'), null, {timeout: 60000});
     await p.waitForTimeout(3500); await p.screenshot({path: path.join(out, name + '_1_main.png')});
+    if (await p.isVisible('#coach')) await p.click('#coachOk');
     if (name === 'phone') { await p.click('#lcChip'); await p.waitForTimeout(400); await p.screenshot({path: path.join(out, name + '_1b_now.png')}); await p.click('#nowClose'); }
     await p.click('#leaveBtn'); await p.waitForTimeout(600); await p.screenshot({path: path.join(out, name + '_2_leave.png')});
     await p.click('#lcSheet [data-tab=doodle]'); await p.waitForTimeout(300);
