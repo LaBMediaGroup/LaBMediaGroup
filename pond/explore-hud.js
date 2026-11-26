@@ -1,5 +1,5 @@
 import {swapTable} from './swap-table.js';
-import {fieldNotebook} from './field-notebook.js?v=2';
+import {fieldNotebook} from './field-notebook.js?v=3';
 /* Explore HUD v4 (Nov 26 2026): a game UI in LaB × toy-sticker style (see PINO-UI-NOTES.md).
    Needs strip · "right now" card · clock and sound · radar map · status line · two bottom sheets:
    "Leave him something" (Say hi, Note, Doodle, Swap, Yours) and "His things" (Art, Songs, Journal, Map).
@@ -348,7 +348,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
 
   let state = {};
   if(new URLSearchParams(location.search).get('swap')==='1')show($('#lcSheet'),'swap');
-  if (['1','thoughts','notes','nights'].includes(requestedJournal)) show($('#thingsSheet'), 'journal');
+  if (['1','thoughts','notes','nights','searches'].includes(requestedJournal)) show($('#thingsSheet'), 'journal');
   return {
     set(h, line) {
       if (line) {

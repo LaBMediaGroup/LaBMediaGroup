@@ -5,13 +5,15 @@
    Controls: WASD / arrows to walk (Shift runs), drag to look, click or tap the ground to
    walk there, click or tap Labcoon (or press F) to follow him, F / Esc to walk again. */
 import * as THREE from 'three';
+import {fieldSteps} from './wildlife/wildlife-motion.js?v=2';
+import {fieldWildlife} from './field-wildlife.js?v=3';
 import {precipitation} from './precipitation.js?v=2';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=3';
-import {createHud} from './explore-hud.js?v=17';
+import {createHud} from './explore-hud.js?v=18';
 import {field as fieldSound} from './explore-audio.js?v=2';
 
 const LAT = 42.67, LON = -83.03;
@@ -46,7 +48,7 @@ function blocked(x, z) {
 
 /* ---------------- sun and wind ---------------- */
 const localField = ['127.0.0.1','localhost'].includes(location.hostname) && location.port==='5430';
-let observedWeather=null, updatePrecipitation;
+let observedWeather=null, updatePrecipitation, updateWildlife;
 const windNow=()=>q.has('wind')?Number(q.get('wind')):observedWeather?.wind??6;
 const gustNow=()=>q.has('wind')?windNow()+4:observedWeather?.gust??windNow();
 async function refreshFieldWeather() {
@@ -304,6 +306,15 @@ function plan(e) {
     return T;
   }
   switch (e.move) {
+    case 'approach_wildlife': {
+      const bank=placeXZ(e.hud?.place), offset=fieldSteps[e.arg];
+      if (bank && offset) {
+        T.push({type:'walk',to:bank.clone().add(new THREE.Vector2(...offset))});
+        idle(4.5); T.push({type:'walk',to:bank});
+      }
+      break;
+    }
+    case 'drop': clip('set_down'); break;
     case 'walk_to': {
       const p = placeXZ(e.arg);
       if (!p || PLACES[e.arg]?.water) { idle(2); break; }
@@ -709,6 +720,7 @@ function update(dt, camera) {
   W.uniforms.uFollowSubject.value.set(coon.pos.x,coon.pos.y,coon.pos.z,me.mode==='follow'?1:0);
   camera.lookAt(look);
   updatePrecipitation?.(dt,observedWeather);
+  updateWildlife?.(dt);
   updateLabcoon(dt * LIFE_SPEED, now);   // ?speed=4 runs Labcoon's night faster for review
   marker.material.opacity = Math.max(0, marker.material.opacity - dt * .9);
   // the field's sound: wind, night or day, how near the water and the poles are, and your steps
@@ -743,7 +755,7 @@ function update(dt, camera) {
 /* ---------------- boot ---------------- */
 W = LabWorld.explore(update);
 ground = W.ground; depth = W.depth;
-if(localField) updatePrecipitation=precipitation(W,reduce);
+if(localField){updatePrecipitation=precipitation(W,reduce);updateWildlife=fieldWildlife(W,displayEncode);}
 W.scene.add(marker);
 places = buildPlaces({THREE, ground, encode: displayEncode});
 W.scene.add(places.group); SOLID.push(...places.colliders);

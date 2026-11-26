@@ -250,3 +250,5 @@
 .swap-choices .st-pill:hover:enabled{background:#dcead7}
 .swap-hint{margin:12px 0 4px}
 .swap-receipt:empty{display:none}
+
+.book-words .search-entry{display:block;border:0;background:none;text-align:left;padding:6px 0;color:#294c3b;font:inherit;cursor:pointer;text-decoration:underline}

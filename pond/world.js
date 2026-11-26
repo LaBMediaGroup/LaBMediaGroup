@@ -547,6 +547,8 @@ const corn = (() => {
         const e = Math.hypot(x / 27, (z + 8) / 25);
         if (e < 1 || (e < 1.14 && rnd() > (e - 1) / .14)) continue;
         if (Math.abs(x + 17.4) < 2.3) continue;
+        // An unplanted field margin opens toward the eastern woods between the rows.
+        if(x>20 && Math.abs(z+11.2+.04*(x-20))<5.4+1.1*Math.sin(x*.21))continue;
       } else if (Math.abs(x) > 9 + (-z) * 0.85) continue;           // outside the view: don't plant
       if (pondMetric(x, z) < 1.42 || H(x, z) < 0.12) continue;      // keep back from the bank
       if (segDist(x, z, TREE, SPIT_END) < 4) continue;

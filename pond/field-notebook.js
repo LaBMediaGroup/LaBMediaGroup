@@ -1,8 +1,8 @@
 // The local owner's notebook uses the same pond sheet as the art wall and games.
 export function fieldNotebook(host,places,initialSection) {
-  const labels = {thoughts:'Thoughts',notes:'Field notes',nights:'Nightly entries'};
-  const headings = {thoughts:'On his mind',notes:'From his notebook',nights:'At the end of the day'};
-  const blank = {thoughts:'His next thought will appear here.',notes:'He hasn’t written his first field note yet.',nights:'His first nightly entry will appear after his long sleep.'};
+  const labels = {thoughts:'Thoughts',notes:'Field notes',nights:'Nightly entries',searches:'Searches'};
+  const headings = {thoughts:'On his mind',notes:'From his notebook',nights:'At the end of the day',searches:'At the shed computer'};
+  const blank = {thoughts:'His next thought will appear here.',notes:'He hasn’t written his first field note yet.',nights:'His first nightly entry will appear after his long sleep.',searches:'He hasn’t looked anything up yet.'};
   host.innerHTML = `<div class="book-tabs" role="group" aria-label="Journal sections">
     ${Object.entries(labels).map(([key,name])=>`<button type="button" data-book="${key}">${name}</button>`).join('')}
     </div><div class="field-book"><article class="book-leaf" aria-live="polite" aria-atomic="true">
@@ -11,7 +11,7 @@ export function fieldNotebook(host,places,initialSection) {
       <div class="book-turn"><button type="button" data-turn="-1" aria-label="Older page">← Older</button>
       <button type="button" data-turn="1" aria-label="Newer page">Newer →</button></div></div>`;
   const leaf=host.querySelector('.book-leaf'), words=leaf.querySelector('.book-words');
-  let data={thoughts:[],notes:[],nights:[]}, section=Object.hasOwn(labels,initialSection)?initialSection:'thoughts', index=-1, fetched=0, pending=false, error=false;
+  let data={thoughts:[],notes:[],nights:[],searches:[]}, section=Object.hasOwn(labels,initialSection)?initialSection:'thoughts', index=-1, fetched=0, pending=false, error=false;
   const pg = (tag,text) => { const el=document.createElement(tag); el.textContent=text; words.appendChild(el); return el; };
   function paint(turn=false) {
     const items=data[section], entry=items[index];
@@ -22,10 +22,20 @@ export function fieldNotebook(host,places,initialSection) {
     words.replaceChildren();
     if(entry){
       for(const para of entry.text.split(/\n\s*\n/)) pg('p',para);
+      if(section==='searches'){
+        const states={started:'Lookup started',unavailable:'The encyclopedia was out of reach.',no_finding:'He didn’t save a passage from this search.',read:'He read '+(entry.title||'an article')+'.'};
+        pg('small',states[entry.status]||'');
+      }
       if(entry.query){pg('h4','He looked up');pg('p',entry.query);}
       if(entry.finding){pg('h4','What he found');pg('p',entry.finding);}
       if(Number.isSafeInteger(entry.page)&&entry.page>0){
-        const link=pg('a','Read the article ↗');link.href='https://en.wikipedia.org/?curid='+entry.page;link.target='_blank';link.rel='noopener noreferrer';
+        const link=pg('a',entry.title?'Read '+entry.title+' ↗':'Read the article ↗');link.href='https://en.wikipedia.org/?curid='+entry.page;link.target='_blank';link.rel='noopener noreferrer';
+      }
+      if(section==='searches' && items.length>1){
+        const past=document.createElement('details'),summary=document.createElement('summary');summary.textContent='All searches ('+items.length+')';past.appendChild(summary);
+        items.forEach((item,i)=>{
+          const b=document.createElement('button');b.type='button';b.className='search-entry';b.textContent=item.text+' · '+item.stamp;b.onclick=()=>{index=i;paint(true);};past.appendChild(b);
+        });words.appendChild(past);
       }
     } else {
       pg('p',error?'His notebook is out of reach.':!fetched?'Opening his notebook…':blank[section]);
@@ -56,7 +66,7 @@ export function fieldNotebook(host,places,initialSection) {
       const resp=await fetch('http://127.0.0.1:5437/entries',{cache:'no-store',credentials:'omit'});
       if(!resp.ok)throw Error();
       const next=await resp.json(), prior=data[section][index];
-      data=next;
+      data={...next,searches:next.searches||[]};
       const same=prior?data[section].findIndex(p=>p.stamp===prior.stamp&&p.text===prior.text):-1;
       index=same<0?data[section].length-1:same;
       error=false;
