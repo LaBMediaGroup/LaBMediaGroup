@@ -37,6 +37,10 @@ const htmlFiles = byExtension('.html');
    Detected by the refresh rather than by name, so a future one is caught too. */
 const redirectStubs = htmlFiles.filter((file) => /http-equiv="refresh"/i.test(read(file)));
 const realPages = htmlFiles.filter((file) => !redirectStubs.includes(file));
+/* Full-screen apps reached only by a direct link: noindex, out of the sitemap, and without the
+   page furniture (nav, footer, assistant, checklist) that would sit over the app. The usage
+   dashboard is the original; Explore (the walkable pond with Labcoon) is an unlinked beta. */
+const unlistedApps = ['ai-usage.html', 'explore.html'];
 const jsFiles = byExtension('.js');
 const jsonFiles = byExtension('.json');
 
@@ -78,6 +82,14 @@ test('inline JavaScript parses on every page', async (t) => {
         if (/\bsrc\s*=/i.test(attrs) || /application\/ld\+json/i.test(attrs)) return;
         if (/type=["']importmap["']/i.test(attrs)) {
           assert.doesNotThrow(() => JSON.parse(match[2]), file + ' import map must be valid JSON');
+          return;
+        }
+        // Module scripts may use top-level await, which a classic vm.Script rejects.
+        if (/type=["']module["']/i.test(attrs)) {
+          assert.doesNotThrow(
+            () => execFileSync(process.execPath, ['--input-type=module', '--check', '-'], { input: match[2], stdio: 'pipe' }),
+            `${file} inline module ${index + 1} does not parse`
+          );
           return;
         }
         assert.doesNotThrow(
@@ -202,7 +214,7 @@ test('public totals match their data sources', () => {
 test('the published page count follows the sitemap', () => {
   const sitemapCount = (read('sitemap.xml').match(/<loc>/g) || []).length;
   // Redirects are not pages: they are noindex and absent from the sitemap.
-  const indexablePages = realPages.filter((file) => !['404.html', 'ai-usage.html', 'colophon.html'].includes(file));
+  const indexablePages = realPages.filter((file) => !['404.html', 'colophon.html', ...unlistedApps].includes(file));
   assert.equal(sitemapCount, indexablePages.length);
 
   const colophon = read('colophon.html');
@@ -310,7 +322,7 @@ test('local file references resolve', async (t) => {
 test('floating assistant coverage matches page intent', () => {
   for (const file of realPages) {
     const html = read(file);
-    if (['ai-usage.html', 'index.html', 'portfolio.html', 'events.html'].includes(file)) {
+    if ([...unlistedApps, 'index.html', 'portfolio.html', 'events.html'].includes(file)) {
       assert.doesNotMatch(html, /assistant-widget\.js/);
       continue;
     }
@@ -323,7 +335,7 @@ test('floating assistant coverage matches page intent', () => {
 test('flight checklist follows visitors without exposing the private usage page', () => {
   for (const file of realPages) {
     const html = read(file);
-    if (['ai-usage.html', 'index.html', 'portfolio.html', 'events.html'].includes(file)) assert.doesNotMatch(html, /flight-checklist\.js/);
+    if ([...unlistedApps, 'index.html', 'portfolio.html', 'events.html'].includes(file)) assert.doesNotMatch(html, /flight-checklist\.js/);
     else assert.match(html, /flight-checklist\.js/, `${file} is missing the persistent flight checklist`);
   }
   const checklist = read('flight-checklist.js');
@@ -401,13 +413,24 @@ test('new tool pages have complete social preview metadata', () => {
   }
 });
 
+test('unlisted apps stay unlisted: noindex, out of the sitemap, linked from no page', () => {
+  const sitemap = read('sitemap.xml');
+  for (const app of unlistedApps) {
+    assert.match(read(app), /<meta name="robots" content="noindex/, `${app} must be noindex`);
+    assert.doesNotMatch(sitemap, new RegExp(app.replace('.', '\\.')), `${app} must stay out of the sitemap`);
+  }
+  for (const file of realPages) {
+    assert.doesNotMatch(read(file), /href=["'][^"']*explore\.html/i, `${file} links to the unlinked Explore beta`);
+  }
+});
+
 test('every published page carries the shared nav and footer', () => {
   // What's New shipped with neither, and nothing caught it: the nav lives
   // inline in every file, so a new page starts with no way in or out. The
   // usage dashboard is the deliberate exception, being unlinked by design.
   for (const file of realPages) {
     const html = read(file);
-    if (file === 'ai-usage.html') continue;
+    if (unlistedApps.includes(file)) continue;
     if (file === 'events.html') {
       assert.match(html, /aria-label="The LaB directory"/);
       assert.match(html, /href="\.\.\/events-archive\.html#past-events"/);

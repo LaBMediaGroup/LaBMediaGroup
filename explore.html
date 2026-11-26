@@ -13,6 +13,7 @@
   html,body{margin:0;height:100%;overflow:hidden;background:#12191a;overscroll-behavior:none;touch-action:none}
   #world{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:grab}
   #world:active{cursor:grabbing}
+  .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 </style>
 <script type="importmap">{"imports":{"three":"/pond/vendor/three/three.module.js","three/addons/":"/pond/vendor/three/addons/"}}</script>
 <script defer src="sun-calc.js"></script>
@@ -29,6 +30,7 @@ try {
 </script>
 </head>
 <body>
+<h1 class="sr-only">Explore the LaB pond with Labcoon the raccoon</h1>
 <canvas id="world" aria-label="The LaB field, walkable"></canvas>
 <canvas id="boardPrint" width="800" height="1220" hidden></canvas>
 <div id="hud2"></div>
