@@ -101,6 +101,34 @@ These numbers come from the Mac's GPU. **Real-phone speed is unmeasured.** It ne
 - **Visitor id:** a random id kept in the browser (`labcoon-vid`). The service adds a daily connection hash.
 - **Check:** `tests/live-check.cjs` (connects, taps or opens say hi, gets his real reply).
 
+## Round 5 (Nov 26): game UI, art and music
+
+- **Look:** LaB × toy-sticker (`pond/explore.css`; research in `PINO-UI-NOTES.md`):
+  - cream panels, one deep pond-ink colour, chunky outlines, hard no-blur shadows, pill buttons that press down
+  - Bebas Neue titles and Nunito body
+  - a colour per need
+- **Layout** (`pond/explore-hud.js`):
+  - needs strip with coloured icons
+  - a "right now" card: activity, his thought, plan as a checklist, "lately", "his journal"
+  - clock pill from the real sky (sun or moon) and a sound toggle
+  - round "His things" menu and a radar map
+  - a status pill in his voice turned third person ("dips his paws in pigment")
+  - follow button, and an orange "Leave him something" button
+  - a loading screen with Labcoon trundling along a lane
+- **Leave him something** (sheet):
+  - **Say hi:** 5 a day.
+  - **Note:** 1 a day, mailed to the service.
+  - **Doodle:** a 96×96 pad with six colours, 1 a day.
+  - **Swap:** coming soon.
+  - **Yours:** what you sent and what he said, kept only in your browser.
+- **His things** (sheet):
+  - **Art:** his drawings from the service; a sample wall when he's offline.
+  - **Songs:** his tunes with play buttons; a tiny synth for ocarina, tin whistle, thumb piano, toy xylophone and harmonica.
+  - **Journal:** his recent lines.
+  - **Map:** with take-me-to.
+- **His tunes in the field:** you hear them when you're within 14 m or following him. He sits up to play; mud drawings scratch at the bank.
+- **Checks:** `tests/ui-shots.cjs` (desktop and phone: loading, main, card, both sheets, doodle, art, songs, map). It caught a `.now` class clash.
+
 ## Still open
 
 1. Real-phone speed, especially the corn ring and stubble counts. Needs a Wi-Fi test on Bobby's phone.

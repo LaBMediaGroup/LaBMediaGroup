@@ -10,7 +10,7 @@ import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=2';
-import {createHud} from './explore-hud.js?v=3';
+import {createHud} from './explore-hud.js?v=6';
 
 const LAT = 42.67, LON = -83.03;
 const q = new URLSearchParams(location.search);
@@ -51,6 +51,7 @@ function liveSky() {
     const p = LaBSun.position(t, LAT, LON);
     LabWorld.setSun(p.elevation);
     LabWorld.setWind(+(q.get('wind') || 6), +(q.get('wind') || 6) + 4, 270, p.azimuth);
+    H?.clock(t.toLocaleTimeString([], {hour: 'numeric', minute: '2-digit'}), p.elevation < -2);
   }
   LabWorld.setCloud(.4);
 }
@@ -265,6 +266,9 @@ function plan(e) {
     case 'check_mail': faceAt('mailbox'); clip('beg'); idle(1.5); break;
     case 'pry_lid': case 'dig_in': faceAt('trash_can'); clip('pry'); break;
     case 'draw': case 'hand_paint': faceAt('art_shed'); clip('draw'); break;
+    case 'draw_in_mud': faceWater(); clip('wash'); clip('sniff'); break;                      // scratching at the mud with a stick
+    case 'play_ocarina': case 'play_tin_whistle': case 'play_thumb_piano': case 'play_toy_xylophone': case 'play_harmonica':
+      clip('beg'); idle(3); break;                                                             // sits up and plays
     case 'nap': clip('sleep', {loops: 3}); clip('wake'); break;
     case 'explore': for (let i = 0; i < 2; i++) T.push({type: 'wander'}); clip('sniff'); break;
     case 'sniff': case 'stash': case 'write_on_board': clip('sniff'); idle(1.5); break;
@@ -284,6 +288,7 @@ function nextEvent(now) {
     e = NIGHT[nightIndex++ % NIGHT.length];
   }
   coon.queue.push(...plan(e));
+  if (e.song?.notes) H?.heard(e.song, me.mode === 'follow' || Math.hypot(me.pos.x - coon.pos.x, me.pos.z - coon.pos.z) < 14);
   coon.hud = e.hud || {mood: 'content', place: e.arg || coon.hud?.place || 'culvert', needs: coon.hud?.needs || {hunger: .4, energy: .7, joy: .55, boredom: .3, curiosity: .6}, plan: [], step: 0};
   coon.mood = coon.hud.mood;
   H?.set({...coon.hud, asleep: liveOn ? !!coon.hud.asleep : false}, e.time + ' · ' + e.text);
@@ -492,6 +497,7 @@ const REPLIES = {
   'grumbly (just woken)': ['…what. hi. what.', 'you woke me. hi. fine.'],
 };
 async function sayHi(text) {
+  let reply = null;
   if (liveOn) {
     H.sheet(null); H.bubble('…'); bubbleUntil = performance.now() / 1000 + 25;
     try {
@@ -499,16 +505,18 @@ async function sayHi(text) {
       for (let i = 0; i < 24; i++) {
         await new Promise(r => setTimeout(r, 1000));
         const r = await api('/hi/' + id);
-        if (r.reply) { H.bubble(r.reply); bubbleUntil = performance.now() / 1000 + Math.max(5, r.reply.length / 12); break; }
+        if (r.reply) { H.bubble(r.reply); bubbleUntil = performance.now() / 1000 + Math.max(5, r.reply.length / 12); reply = r.reply; break; }
       }
     } catch (e) { H.bubble(null); bubbleUntil = 0; H.sheet(e.message, false); }
     if (!coon.task?.walk && !coon.asleep) coon.yaw = faceTo(me.pos.x, me.pos.z);
-    return;
+    return reply;
   }
   const list = REPLIES[coon.mood] || REPLIES.content, now = performance.now() / 1000;
-  H.sheet(null); H.bubble(list[Math.floor(Math.random() * list.length)]); bubbleUntil = now + 5.5;
+  reply = list[Math.floor(Math.random() * list.length)];
+  H.sheet(null); H.bubble(reply); bubbleUntil = now + 5.5;
   const yaw = faceTo(me.pos.x, me.pos.z);                                   // he looks round at you
   if (!coon.task?.walk && !coon.asleep) coon.yaw = yaw;
+  return reply;
 }
 function takeMeTo(k) {
   let target, look;
@@ -607,9 +615,9 @@ ground = W.ground; depth = W.depth;
 W.scene.add(marker);
 places = buildPlaces({THREE, ground, encode: displayEncode});
 W.scene.add(places.group); SOLID.push(...places.colliders);
-H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onFollow: () => toggleFollow(), onSayHi: sayHi, live: !!LIVE_BASE});
+H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onFollow: () => toggleFollow(), onSayHi: sayHi, live: !!LIVE_BASE, api: LIVE_BASE ? api : null});
 me.pos.y = ground(me.pos.x, me.pos.z);
 liveSky(); setInterval(liveSky, 60000);
-loadLabcoon().then(() => document.documentElement.classList.add('labcoon-ready'))
+loadLabcoon().then(() => { document.documentElement.classList.add('labcoon-ready'); const l = document.getElementById('loading'); if (l) { document.getElementById('loadCoon').style.left = 'calc(100% - 54px)'; setTimeout(() => l.classList.add('gone'), 450); setTimeout(() => l.remove(), 1100); } })
   .catch(err => { console.error(err); say('Labcoon could not load: ' + err.message); });
 window.LabExplore = {me, coon, world: W, get live() { return liveOn; }, follow: toggleFollow, followCam: follow, tapAt, get perf() { return perf?.textContent; }};
