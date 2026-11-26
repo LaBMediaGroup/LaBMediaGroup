@@ -37,6 +37,9 @@ const canvas = document.getElementById('world');
 const small = Math.min(innerWidth, innerHeight) < 700;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let renderer;
+// Explore (free-roam) hands the lens to a walker instead of the scroll rail. Null on the homepage.
+let exploreHook=null;
+const EXPLORE_PAGE=/\/explore\.html$/.test(location.pathname);   // walkable: fill the field the scroll camera never faced
 try {
   renderer = new THREE.WebGLRenderer({ canvas, antialias: !small, alpha: false, powerPreference: 'high-performance' });
 } catch (e) { document.documentElement.classList.add('no-world'); throw e; }
@@ -399,7 +402,7 @@ function updateWires(t, amp, gustE) {
 /* ---------------- stubble and cattails ---------------- */
 const bendGLSL = `float bendAmt(float f,vec3 base){return f*f*(uWindAmp*1.5*(.6+.4*sin(uT*2.4+base.x*.7+base.z*.43)+uGustE*.6)+.04);}`;
 {
-  const N = small ? 2600 : 6000;
+  const N = EXPLORE_PAGE ? (small ? 6500 : 15000) : small ? 2600 : 6000;
   // corn-stalk stubble and dry foxtail: narrow blades that taper to a point
   const blade = new THREE.PlaneGeometry(0.014, 0.4, 1, 4); blade.translate(0, 0.2, 0);
   { const p = blade.attributes.position; for (let v = 0; v < p.count; v++) { const f = p.getY(v) / 0.4; p.setX(v, p.getX(v) * (1 - f * 0.92)); } }
@@ -414,7 +417,7 @@ const bendGLSL = `float bendAmt(float f,vec3 base){return f*f*(uWindAmp*1.5*(.6+
   const m = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), pos = new THREE.Vector3();
   let placed = 0, guard = 0;
   while (placed < N && guard++ < N * 10) {
-    const r = 1 + Math.pow(rnd(), 1.6) * 26, a = rnd() * Math.PI * 2;
+    const r = 1 + Math.pow(rnd(), EXPLORE_PAGE ? 1.15 : 1.6) * (EXPLORE_PAGE ? 40 : 26), a = rnd() * Math.PI * 2;
     pos.set(Math.sin(a) * r, 0, 2 - Math.cos(a) * r);
     const h = H(pos.x, pos.z); if (h < 0.1 || onStationPad(pos.x,pos.z)) continue;
     pos.y = h - 0.02;
@@ -947,11 +950,11 @@ function frame(now) {
     immersionStroke=THREE.MathUtils.clamp(immersionStroke+(forwardCross?move:-move),0,1);
   }
   // The course and its drones belong to the south field: keep them out of the opening shot.
-  aircraft.course.visible=aircraft.object.visible=landmarkBlend<1||hubWeight>.05||S.station>.5||S.flight>.01;
+  aircraft.course.visible=aircraft.object.visible=!!exploreHook||landmarkBlend<1||hubWeight>.05||S.station>.5||S.flight>.01;
   U.uCourseLight.value=aircraft.course.visible?1-ss(-.10,-.035,U.uEl.value):0;
-  aircraft.update(cameraDt,S.station>.85 && S.inside<.22 && escort<.993 && S.under<.05 && S.rise<.05,escort,S.wind>=18);
+  aircraft.update(cameraDt,exploreHook ? true : S.station>.85 && S.inside<.22 && escort<.993 && S.under<.05 && S.rise<.05,escort,S.wind>=18);
   instruments.wind(dt,S.wind,U.uWindDir.value,S.wind>=18?'HOLD':'COURSE OPEN',windSource);
-  placeCamera();
+  if(exploreHook)exploreHook(cameraDt,camera);else placeCamera();
   if(room && reportFilmApproach && reportedUnder!==S.under){reportedUnder=S.under;reportFilmApproach(S.under);}
   if(renderStationControls)renderStationControls(S.station);
   const submerged = !!room && camera.position.y < 0;
@@ -1050,6 +1053,11 @@ function setSun(elRad,off=.2) {
 setSun(0.06);
 
 window.LabWorld = {
+  // Free-roam: the hook is called every frame with (dt, camera) and owns the camera.
+  explore(hook){
+    exploreHook=hook;S.stationT=S.station=1;S.insideT=S.inside=1;
+    return {THREE,scene,camera,renderer,ground:groundSurface,depth:(x,z)=>-H(x,z),station,pond:{center:C,radius:R},extent:EXT,oak:TREE,uniforms:U,onShed:onStationPad};
+  },
   setSun(elDeg,offsetDeg=11.46) { setSun(elDeg*Math.PI/180,offsetDeg*Math.PI/180); },
   setStation(weight) { if(weight!==S.stationT){S.stationT=weight;setSun(fieldSun,fieldBearing);} },
   setFieldEscort(acquisition,progress){acquireTarget=acquisition;escortTarget=progress;},

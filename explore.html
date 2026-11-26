@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b0d0c">
+<title>Explore — LaB Media (prototype)</title>
+<link rel="icon" href="favicon.ico">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap">
+<style>
+  :root{color-scheme:dark}
+  html,body{margin:0;height:100%;overflow:hidden;background:#0b0d0c;overscroll-behavior:none;touch-action:none}
+  #world{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:grab}
+  #world:active{cursor:grabbing}
+  #hud{position:fixed;left:max(14px,env(safe-area-inset-left));right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));
+    display:flex;gap:10px;align-items:flex-end;justify-content:space-between;pointer-events:none;font:12px/1.35 'Space Mono',ui-monospace,monospace;color:#f4efe6}
+  #hud .card{background:rgba(11,13,12,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:9px 12px;max-width:62vw}
+  #hud b{font:400 19px/1 'Bebas Neue',sans-serif;letter-spacing:.04em;display:block;margin-bottom:3px}
+  #hud button{pointer-events:auto;font:400 17px/1 'Bebas Neue',sans-serif;letter-spacing:.05em;color:#0b0d0c;background:#f2a33a;border:0;border-radius:999px;padding:11px 16px;cursor:pointer}
+  #perf{opacity:.55;font-size:11px;margin-top:4px}
+  .help-touch{display:none}
+  @media (pointer:coarse){.help-keys{display:none}.help-touch{display:inline}}
+  html.no-world #hud .card{max-width:none}
+</style>
+<script type="importmap">{"imports":{"three":"/pond/vendor/three/three.module.js","three/addons/":"/pond/vendor/three/addons/"}}</script>
+<script defer src="sun-calc.js"></script>
+<script type="module">
+try {
+  await import('/pond/world.js?v=25');
+  await import('/pond/explore.js?v=1');
+} catch (e) {
+  console.error(e);
+  document.documentElement.classList.add('no-world');
+  document.getElementById('labcoonDoing').textContent = 'The 3D field could not start on this device.';
+}
+</script>
+</head>
+<body>
+<canvas id="world" aria-label="The LaB field, walkable"></canvas>
+<canvas id="boardPrint" width="800" height="1220" hidden></canvas>
+<div id="hud">
+  <div class="card">
+    <b>Labcoon</b>
+    <span id="labcoonDoing">waking up…</span>
+    <div id="perf"></div>
+    <div><span class="help-keys">WASD walk · Shift run · drag to look · click to go there</span><span class="help-touch">Drag to look · tap the ground to walk</span></div>
+  </div>
+  <button id="followBtn" type="button">Follow Labcoon</button>
+</div>
+</body>
+</html>
