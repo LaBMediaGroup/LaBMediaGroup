@@ -7,14 +7,14 @@
 import * as THREE from 'three';
 import {fieldSteps} from './wildlife/wildlife-motion.js?v=2';
 import {fieldWildlife} from './field-wildlife.js?v=4';
-import {precipitation} from './precipitation.js?v=2';
+import {precipitation} from './precipitation.js?v=3';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=3';
-import {createHud} from './explore-hud.js?v=20';
-import {field as fieldSound} from './explore-audio.js?v=2';
+import {createHud} from './explore-hud.js?v=22';
+import {field as fieldSound} from './explore-audio.js?v=3';
 
 const LAT = 42.67, LON = -83.03;
 const q = new URLSearchParams(location.search);

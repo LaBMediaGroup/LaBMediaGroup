@@ -5,8 +5,8 @@ import {fieldNotebook} from './field-notebook.js?v=4';
    "Leave him something" (Say hi, Note, Doodle, Swap, Yours) and "His things" (Art, Songs, Journal, Map).
    explore.js feeds it: set(hud, journalLine), mapDots(me, coonPos), clock(text, night), heard(song), …
    No accounts, no public wall: visitors' notes go only to him; "Yours" lives in this browser. */
-import {openGame} from './games/games-ui.js?v=4';
-import {sound, sfx, playTune, ensure} from './explore-audio.js?v=2';
+import {openGame} from './games/games-ui.js?v=5';
+import {sound, sfx, playTune, ensure} from './explore-audio.js?v=3';
 export {playTune};
 const $ = s => document.querySelector(s);
 const NEEDS = [['hunger', 'Hunger'], ['energy', 'Energy'], ['joy', 'Joy'], ['boredom', 'Boredom'], ['curiosity', 'Curiosity']];
@@ -134,7 +134,29 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
     for (const b of el.querySelectorAll('[role=tab]')) b.addEventListener('click', () => selectTab(el, b.dataset.tab));
   }
   scrim.addEventListener('click', () => hideSheet());
-  hud.addEventListener('click', e => { if (e.target.closest('.st-pill,.st-round,.tabs button,.gamecard,.art')) blip(); });
+  // Every button of his gets a sound and a little bounce. Sheet openers and closers already swoop; the game board has its own.
+  hud.addEventListener('click', e => {
+    const b = e.target.closest('button,[role=button],summary,.art,.gamecard'); if (!b || b.closest('.game-scrim')) return;
+    b.classList.remove('tapped'); void b.offsetWidth; b.classList.add('tapped');
+    if (b.matches('[data-close],.x,#leaveBtn,#thingsBtn')) return;
+    blip(b.matches('[role=tab],[data-book]') ? 'tab' : b.matches('[data-turn],.art-nav button,summary') ? 'page' : b.matches('.st-pill,.st-round,.gamecard,.art') ? 'tick' : 'tap');
+  });
+  hud.addEventListener('animationend', e => { if (e.animationName === 'tapBounce') e.target.classList.remove('tapped'); });
+  // Drag a sheet down by its grabber or header to put it away; a short drag springs back.
+  for (const el of [$('#lcSheet'), $('#thingsSheet')]) {
+    let y0 = null, dy = 0, t0 = 0;
+    const end = () => {
+      if (y0 == null) return; y0 = null;
+      const fast = dy / Math.max(1, performance.now() - t0) > .5;
+      el.style.transition = ''; el.style.transform = ''; scrim.style.opacity = '';
+      if (dy > 110 || (fast && dy > 30)) hideSheet(el); else if (dy > 8) blip('snap');
+    };
+    for (const h of [el.querySelector('.grab'), el.querySelector('header')]) {
+      h.addEventListener('pointerdown', e => { if (e.target.closest('button')) return; y0 = e.clientY; dy = 0; t0 = performance.now(); h.setPointerCapture(e.pointerId); el.style.transition = 'none'; });
+      h.addEventListener('pointermove', e => { if (y0 == null) return; dy = Math.max(0, e.clientY - y0); el.style.transform = `translate(-50%,${dy}px)`; scrim.style.opacity = String(Math.max(0, 1 - dy / 320)); });
+      h.addEventListener('pointerup', end); h.addEventListener('pointercancel', end);
+    }
+  }
   $('#leaveBtn').addEventListener('click', () => show($('#lcSheet'), 'hi'));
   hud.addEventListener('click', e => { if (e.target.closest('#playCheckers')) startGame('checkers'); });
   $('#thingsBtn').addEventListener('click', () => show($('#thingsSheet'), 'art'));
@@ -274,7 +296,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
   const recKey = 'labcoon-games';
   const record = () => { try { return JSON.parse(localStorage.getItem(recKey) || '{}'); } catch { return {}; } };
   let chessUI = null;
-  import('./games/chess-ui.js?v=3').then(m => { chessUI = m.playChess; }).catch(() => {});
+  import('./games/chess-ui.js?v=4').then(m => { chessUI = m.playChess; }).catch(() => {});
   function gameResult(r) {
     try { const rec = record(); const g = rec[r.game] || {w: 0, l: 0, d: 0}; g[r.result[0]]++; rec[r.game] = g; localStorage.setItem(recKey, JSON.stringify(rec)); } catch {}
     remember({kind: 'game', text: `${r.game}: you ${r.result === 'win' ? 'won' : r.result === 'loss' ? 'lost' : 'drew'}`});

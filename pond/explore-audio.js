@@ -67,6 +67,10 @@ export function sfx(kind) {
   const r = 1 + (Math.random() - .5) * .08;
   switch (kind) {
     case 'tick': tone(980 * r, .05, {gain: .05, to: 1180}); break;
+    case 'tap': tone(660 * r, .07, {gain: .06, to: 880, type: 'triangle'}); burst(.03, 'bandpass', 3200, 2600, .025, 3); break;   // a soft wooden pip
+    case 'tab': tone(740 * r, .06, {gain: .05, type: 'triangle'}); tone(988 * r, .08, {gain: .05, at: .05, type: 'triangle'}); break;
+    case 'page': burst(.16, 'highpass', 2400 * r, 5200, .07, .7); burst(.09, 'bandpass', 1300, 900, .03, 1.2, sfxBus, .05); break;   // paper turning
+    case 'snap': tone(520 * r, .08, {gain: .045, to: 700}); break;
     case 'swoop': tone(380, .16, {gain: .05, to: 760}); burst(.18, 'bandpass', 600, 1800, .02, .8); break;
     case 'close': tone(620, .12, {gain: .045, to: 340}); break;
     case 'pick': tone(700 * r, .06, {gain: .07, to: 900}); burst(.04, 'bandpass', 2600, 2000, .05, 3); break;
