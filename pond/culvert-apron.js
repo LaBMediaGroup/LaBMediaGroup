@@ -35,6 +35,35 @@ export function bankFinish(T, color, encode, soil = false) {
   encode(mat); return mat;
 }
 
+function scanMaps(T,name,period) {
+  const loader=new T.TextureLoader();
+  function load(channel) {
+    const tex=loader.load(new URL('./img/culvert/'+name+'-'+channel+'.webp',import.meta.url).href);
+    tex.wrapS=tex.wrapT=T.RepeatWrapping;tex.repeat.setScalar(1/period);tex.anisotropy=4;
+    return tex;
+  }
+  const map=load('diff');map.colorSpace=T.SRGBColorSpace;
+  return {map,normalMap:load('nor_gl')};
+}
+
+function gravelBed(T,ground,mouth,yaw,encode){
+  const g=new T.PlaneGeometry(1,1,20,28).rotateX(-Math.PI/2);
+  const p=g.attributes.position,uv=g.attributes.uv,rgba=[],v=new T.Vector3(),up=new T.Vector3(0,1,0);
+  for(let i=0;i<p.count;i++){
+    const u=p.getX(i)*2,t=p.getZ(i)+.5;
+    const grit=Math.sin(t*32+u*3)*.019+Math.sin(t*65-u)*.012;
+    v.set(u*(.34+.40*t+grit),0,.20+t*1.13).applyAxisAngle(up,yaw).add(mouth);
+    const edge=Math.min((1-Math.abs(u))/.23,t/.09,(1-t)/.14);
+    p.setXYZ(i,v.x,ground(v.x,v.z)+.004,v.z);uv.setXY(i,v.x,v.z);
+    rgba.push(1,1,1,T.MathUtils.smoothstep(edge,0,1));
+  }
+  g.setAttribute('color',new T.Float32BufferAttribute(rgba,4));g.computeVertexNormals();
+  const mat=new T.MeshStandardMaterial({...scanMaps(T,'bed',1.65),color:0x99968d,roughness:1,
+    transparent:true,depthWrite:false,vertexColors:true,polygonOffset:true,polygonOffsetFactor:-1});
+  mat.name='Damp gravel bedding';encode(mat);
+  const bed=new T.Mesh(g,mat);bed.name='Culvert gravel bedding';return bed;
+}
+
 export function culvertApron(T, ground, mouth, yaw, encode) {
   let seed = 419;
   const random = () => (seed = seed * 16807 % 2147483647) / 2147483647;
@@ -72,7 +101,11 @@ export function culvertApron(T, ground, mouth, yaw, encode) {
       for(const f of [a,b,c])faces[f].push(id);
     }
     const points=[], seams=new Map(), tips=corners.map(()=>[]);
-    const triangle=(a,b,c)=>points.push(...a.toArray(),...b.toArray(),...c.toArray());
+    const emit=(a,b,c)=>points.push(...a.toArray(),...b.toArray(),...c.toArray());
+    function triangle(a,b,c){
+      const ab=a.clone().lerp(b,.5),bc=b.clone().lerp(c,.5),ca=c.clone().lerp(a,.5);
+      emit(a,ab,ca);emit(ab,b,bc);emit(bc,c,ca);emit(ab,bc,ca);
+    }
     for(const [i,face] of faces.entries()){
       if(face.length<3)continue;
       const n=planes[i][0], centre=new T.Vector3();
@@ -97,6 +130,12 @@ export function culvertApron(T, ground, mouth, yaw, encode) {
     const geo=new T.BufferGeometry();
     geo.setAttribute('position',new T.Float32BufferAttribute(points,3));
     const tint=new T.Color(palette[Math.floor(random()*palette.length)]),colors=[];
+    const verts=geo.attributes.position;
+    for(let i=0;i<verts.count;i++){
+      const x=verts.getX(i),y=verts.getY(i),z=verts.getZ(i);
+      const irregular=1+.028*Math.sin(4*x+2*z)*Math.cos(5*y-z)+.016*Math.sin(8*z+x-3*y);
+      verts.setXYZ(i,x*irregular,y*irregular,z*irregular);
+    }
     geo.scale(1,.48+random()*.39,.71+random()*.34);geo.computeBoundingBox();
     const p=geo.attributes.position,low=geo.boundingBox.min.y,height=geo.boundingBox.max.y-low;
     for(let i=0;i<p.count;i++){
@@ -110,10 +149,21 @@ export function culvertApron(T, ground, mouth, yaw, encode) {
     // Seat the underside into the actual terrain triangles.
     geo.translate(pos.x,ground(pos.x,pos.z)-geo.boundingBox.min.y-size*.18,pos.z);
     geo.computeVertexNormals();geo.setAttribute('color',new T.Float32BufferAttribute(colors,3));
-    pieces.push(geo);
+    const uv=[], n=geo.attributes.normal;
+    for(let j=0;j<p.count;j+=3){
+      const ax=Math.abs(n.getX(j)),ay=Math.abs(n.getY(j)),az=Math.abs(n.getZ(j));
+      for(let k=j;k<j+3;k++){
+        if(ay>=ax&&ay>=az)uv.push(p.getX(k),p.getZ(k));
+        else if(ax>=az)uv.push(p.getZ(k),p.getY(k));
+        else uv.push(p.getX(k),p.getY(k));
+      }
+    }
+    geo.setAttribute('uv',new T.Float32BufferAttribute(uv,2));pieces.push(geo);
   }
   const mesh=new T.Mesh(mergeGeometries(pieces),bankFinish(T,0xffffff,encode));
+  Object.assign(mesh.material,scanMaps(T,'stone',.90));
+  mesh.material.normalScale.set(.8,.8);
   mesh.name='Culvert limestone apron';
   for(const g of pieces) g.dispose();
-  return mesh;
+  const group=new T.Group();group.add(mesh,gravelBed(T,ground,mouth,yaw,encode));return group;
 }
