@@ -43,7 +43,9 @@ const EXPLORE_PAGE=/\/explore\.html$/.test(location.pathname);   // walkable: fi
 // Night floor: the homepage stages night as near-black; walking needs to see the ground, so Explore uses a cool moonlit floor.
 const NIGHT_FLOOR=EXPLORE_PAGE?'vec3(.3,.35,.47)':'vec3(.1)';
 // Explore adds moonlight as a cool diffuse term on the ground, stubble, reeds and corn (albedo × moon × night).
-const MOON_ADD=EXPLORE_PAGE?'vec3(.42,.5,.72)':'vec3(0.)';
+const MOON_ADD=EXPLORE_PAGE?'vec3(.68,.8,1.15)':'vec3(0.)';
+// ...and a warm lantern pool round the visitor at night (about 5 m), so the ground at your feet reads.
+const LAMP=a=>EXPLORE_PAGE?`${a}*vec3(1.,.84,.6)*1.5*uNight*exp(-pow(length(vW.xz-cameraPosition.xz)/5.,2.))`:'vec3(0.)';
 try {
   renderer = new THREE.WebGLRenderer({ canvas, antialias: !small, alpha: false, powerPreference: 'high-performance' });
 } catch (e) { document.documentElement.classList.add('no-world'); throw e; }
@@ -160,7 +162,7 @@ const terrain = new THREE.Mesh(terrainGeo, new THREE.ShaderMaterial({
     vec3 lit=c*(amb+uSunC*dif*(.55+.6*uGold));
     float wet=bank*pow(max(dot(reflect(normalize(vW-cameraPosition),n),normalize(uSunDir)),0.),40.)*.6;
     lit+=uSunC*wet*smoothstep(-.03,.04,uEl);
-    lit*=mix(${NIGHT_FLOOR},vec3(1.),uDay);lit+=vec3(.008,.007,.006)*uNight;lit+=c*${MOON_ADD}*uNight*(.55+.45*max(n.y,0.));
+    lit*=mix(${NIGHT_FLOOR},vec3(1.),uDay);lit+=vec3(.008,.007,.006)*uNight;lit+=c*${MOON_ADD}*uNight*(.55+.45*max(n.y,0.));lit+=${LAMP('c')};
     vec2 courseUV=(p-vec2(-9.,0.))/vec2(16.,17.);
     if(uCourseLight>.001 && all(greaterThan(courseUV,vec2(0.))) && all(lessThan(courseUV,vec2(1.)))){
       float beam=texture2D(uCourseBake,courseUV).r;
@@ -416,7 +418,7 @@ const bendGLSL = `float bendAmt(float f,vec3 base){return f*f*(uWindAmp*1.5*(.6+
       void main(){vH=uv.y;vec4 b=instanceMatrix*vec4(0.,0.,0.,1.);float bend=bendAmt(uv.y,b.xyz);
         vec4 w=modelMatrix*instanceMatrix*vec4(position,1.);w.xyz+=uWindDir*bend;w.y-=bend*.25;vW=w.xyz;gl_Position=projectionMatrix*viewMatrix*w;}`,
     fragmentShader: COMMON_U + FOG + `varying float vH;varying vec3 vW;
-      void main(){vec3 c=mix(vec3(.11,.085,.05),vec3(.36,.29,.18),vH);vec3 a0=c;c*=mix(${NIGHT_FLOOR}*.85,vec3(1.),uDay);c+=a0*${MOON_ADD}*uNight*(.5+.5*vH);c+=uSunC*vH*uGold*.3;gl_FragColor=vec4(fogged(c,vW,.02),1.);}`
+      void main(){vec3 c=mix(vec3(.11,.085,.05),vec3(.36,.29,.18),vH);vec3 a0=c;c*=mix(${NIGHT_FLOOR}*.85,vec3(1.),uDay);c+=a0*${MOON_ADD}*uNight*(.5+.5*vH);c+=${LAMP('a0')};c+=uSunC*vH*uGold*.3;gl_FragColor=vec4(fogged(c,vW,.02),1.);}`
   }), N);
   const m = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), pos = new THREE.Vector3();
   let placed = 0, guard = 0;
@@ -458,7 +460,7 @@ const bendGLSL = `float bendAmt(float f,vec3 base){return f*f*(uWindAmp*1.5*(.6+
     fragmentShader: COMMON_U + FOG + `varying float vH;varying float vP;varying vec3 vW;varying vec3 vN;
       void main(){vec3 c=vP<.5?mix(vec3(.16,.12,.07),vec3(.45,.37,.22),vH):vP<1.5?vec3(.3,.25,.15):vec3(.17,.09,.045);vec3 a0=c;
         float dif=abs(dot(normalize(vN),normalize(uSunDir)))*smoothstep(-.03,.05,uEl);
-        c*=(mix(uZen,uHor,.6)*.6+uSunC*dif*.7);c+=uSunC*vH*uGold*.12;c*=mix(${NIGHT_FLOOR},vec3(1.),uDay);c+=a0*${MOON_ADD}*uNight;gl_FragColor=vec4(fogged(c,vW,.012),1.);}`
+        c*=(mix(uZen,uHor,.6)*.6+uSunC*dif*.7);c+=uSunC*vH*uGold*.12;c*=mix(${NIGHT_FLOOR},vec3(1.),uDay);c+=a0*${MOON_ADD}*uNight;c+=${LAMP('a0')};gl_FragColor=vec4(fogged(c,vW,.012),1.);}`
   }), N);
   const m = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), pos = new THREE.Vector3();
   let placed = 0, guard = 0;
@@ -551,7 +553,7 @@ const corn = (() => {
         vec3 a0=c;
         c=c*(mix(uZen,uHor,.6)*.55+uSunC*dif*.6)+c*uSunC*back*(.6+uGold);
         c*=mix(.45,1.,vH);                                   // darker down inside the rows
-        c*=mix(${NIGHT_FLOOR},vec3(1.),uDay);c+=a0*${MOON_ADD}*uNight*mix(.45,1.,vH);
+        c*=mix(${NIGHT_FLOOR},vec3(1.),uDay);c+=a0*${MOON_ADD}*uNight*mix(.45,1.,vH);c+=${LAMP('a0')};
         gl_FragColor=vec4(fogged(c,vW,.012),1.);}`
   }), N);
   const m = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), pos = new THREE.Vector3();
