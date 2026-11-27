@@ -299,3 +299,7 @@
   pointer-events:none;z-index:5;opacity:0;scale:.7;transition:opacity .15s,scale .18s cubic-bezier(.3,1.5,.5,1)}
 .joy.on{opacity:1;scale:1}
 .joy i{position:absolute;left:50%;top:50%;width:50px;height:50px;margin:-25px 0 0 -25px;border-radius:50%;background:var(--paper);border:var(--line);box-shadow:var(--lift)}
+
+/* a tall pane scrolls; the grabber, header and tab row never get squeezed (iPhone, Nov 26) */
+.sheet>.grab,.sheet>header,.sheet>.tabs,.sheet .tabs{flex:none}
+.sheet>.pane,.sheet .pane{flex:1 1 auto;min-height:0}
