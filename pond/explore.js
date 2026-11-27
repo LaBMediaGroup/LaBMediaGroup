@@ -13,7 +13,7 @@ import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=3';
-import {createHud} from './explore-hud.js?v=27';
+import {createHud} from './explore-hud.js?v=30';
 import {makeFind, fieldFinds} from './field-finds.js?v=4';
 import {field as fieldSound, sfx, coon as coonSound} from './explore-audio.js?v=4';
 import {fieldLitter} from './field-litter.js?v=2';

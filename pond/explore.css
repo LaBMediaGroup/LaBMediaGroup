@@ -339,3 +339,20 @@
 
 /* the bot check only shows itself when Cloudflare needs a tap */
 .turnstile-box{position:absolute;left:50%;bottom:150px;transform:translateX(-50%);z-index:40}
+
+/* How he's doing (tap the needs strip) */
+.needs{cursor:pointer}
+.needs-pane{display:grid;gap:12px;padding-bottom:6px}
+.needs-lede{margin:0;font:700 14.5px/1.4 var(--body);color:var(--ink)}
+.need-card{padding:12px 14px;border-radius:18px;box-shadow:var(--lift-s)}
+.need-card header{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 6px}
+.need-card header b{font:400 24px/1 var(--head);letter-spacing:.4px}
+.need-card header span{font:800 15px/1 var(--body)}
+.need-bar{height:14px;border:2.5px solid var(--ink);border-radius:999px;background:#fffaf1;overflow:hidden}
+.need-bar i{display:block;height:100%;background:var(--c);border-right:2.5px solid var(--ink);border-radius:999px}
+.need-say{margin:8px 0 4px;font:700 14px/1.35 var(--body)}
+.need-moves{list-style:none;margin:6px 0;padding:0;display:grid;gap:4px;font:600 13px/1.35 var(--body)}
+.need-moves em{font-style:normal;font-weight:800;display:inline-block;min-width:44px}
+.need-moves em.up{color:#2f7d43}.need-moves em.down{color:#b1452f}
+.need-moves small{color:var(--ink-soft)}
+.need-fix{margin:6px 0 0;font:600 12.5px/1.35 var(--body);color:var(--ink-soft)}

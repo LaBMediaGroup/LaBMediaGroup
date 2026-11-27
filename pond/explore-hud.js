@@ -94,6 +94,11 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, ground
       <div class="pane" data-pane="swap" hidden><p>Leave a find on the picnic table. When he’s awake he’ll turn it over in his paws. If he wants to trade, you get a trinket from his stash.</p><div class="swap-choices" role="group" aria-label="Choose a trinket to offer"></div><p class="swap-receipt" aria-live="polite"></p><div class="note-hint swap-hint" role="status"></div></div>
       <div class="pane" data-pane="yours" hidden><ul class="journal" id="yoursList"></ul></div>
     </section>
+    <section class="sheet st-card pe" id="needsSheet" hidden role="dialog" aria-label="How Labcoon is doing">
+      <div class="grab"></div>
+      <header><span class="title">How he’s doing</span><button class="st-round x" type="button" data-close aria-label="Close">${I.x}</button></header>
+      <div class="pane needs-pane" id="needsPane"></div>
+    </section>
     <section class="sheet st-card pe" id="thingsSheet" hidden role="dialog" aria-label="His things">
       <div class="grab"></div>
       <header><span class="title">His things</span><button class="st-round x" type="button" data-close aria-label="Close">${I.x}</button></header>
@@ -132,7 +137,7 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, ground
     for (const p of el.querySelectorAll('[data-pane]')) p.hidden = p.dataset.pane !== k;
     onTab[k]?.();
   }
-  for (const el of [$('#lcSheet'), $('#thingsSheet')]) {
+  for (const el of [$('#lcSheet'), $('#thingsSheet'), $('#needsSheet')]) {
     el.querySelector('[data-close]').addEventListener('click', () => hideSheet(el));
     for (const b of el.querySelectorAll('[role=tab]')) b.addEventListener('click', () => selectTab(el, b.dataset.tab));
   }
@@ -146,7 +151,7 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, ground
   });
   hud.addEventListener('animationend', e => { if (e.animationName === 'tapBounce') e.target.classList.remove('tapped'); });
   // Drag a sheet down by its grabber or header to put it away; a short drag springs back.
-  for (const el of [$('#lcSheet'), $('#thingsSheet')]) {
+  for (const el of [$('#lcSheet'), $('#thingsSheet'), $('#needsSheet')]) {
     let y0 = null, dy = 0, t0 = 0;
     const end = () => {
       if (y0 == null) return; y0 = null;
@@ -163,6 +168,48 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, ground
     }
   }
   $('#leaveBtn').addEventListener('click', () => show($('#lcSheet'), 'hi'));
+  /* ---------- How he's doing: tap the needs strip ---------- */
+  const NEED_INFO = {
+    hunger: {label: 'Full', fix: 'Eating: finds from the trash, crayfish, frogs, and fish he catches himself.',
+      say: v => v > .75 ? 'His belly is full. Food can wait.' : v > .45 ? 'He could eat.' : v > .2 ? 'Getting hungry. He’ll go foraging soon.' : 'Starving. Food comes first.'},
+    energy: {label: 'Energy', fix: 'Naps in his culvert, and his long sleep in the late morning.',
+      say: v => v > .7 ? 'Bright-eyed and ready for anything.' : v > .4 ? 'Steady.' : v > .2 ? 'Getting sleepy.' : 'Running on fumes. A nap is coming.'},
+    joy: {label: 'Joy', fix: 'Shiny finds, washing them, making art and music, catching fish, games with visitors.',
+      say: v => v > .75 ? 'Delighted with the world.' : v > .45 ? 'Content.' : v > .25 ? 'A bit flat.' : 'Low. He needs a win.'},
+    boredom: {label: 'Boredom', fix: 'Anything new: exploring, a game, a visitor, a project.',
+      say: v => v < .2 ? 'Busy and absorbed.' : v < .5 ? 'Doing fine.' : v < .75 ? 'Getting restless.' : 'Bored stiff. He’ll go looking for trouble.'},
+    curiosity: {label: 'Curiosity', fix: 'Exploring new corners, writing questions in his journal, the shed computer.',
+      say: v => v > .7 ? 'Itching to poke at something new.' : v > .4 ? 'Nosy.' : 'Satisfied for now.'},
+  };
+  const shown = (k, v) => k === 'hunger' ? 1 - v : v;
+  // Bars drift on their own (energy drains, his belly empties, boredom creeps up), so only changes in the direction
+  // his actions push them are credited to what he did; joy goes both ways because things happen to him.
+  const CREDIT = {hunger: 1, energy: 1, joy: 0, boredom: -1, curiosity: -1};
+  const firstLine = s => String(s || '').split(/(?<=[.!?])\s/)[0];
+  async function needsSheet() {
+    const pane = $('#needsPane'), h = state || {}, n = h.needs || {};
+    const head = `<p class="needs-lede">${esc(h.asleep ? 'He’s asleep right now.' : 'Right now he’s ' + (h.mood || 'content') + (h.place ? ' at ' + (places[h.place]?.label || h.place.replace(/_/g, ' ')) : '') + '.')} Here’s what’s behind each bar.</p>`;
+    const card = (k, moves) => { const I2 = NEED_INFO[k], known = Number.isFinite(n[k]), v = known ? Math.round(shown(k, n[k]) * 100) : 0;
+      return `<article class="need-card st-card" style="--c:var(--${k})"><header><b>${I2.label}</b><span>${known ? v + '%' : '—'}</span></header><div class="need-bar"><i style="width:${v}%"></i></div>
+        <p class="need-say">${known ? esc(I2.say(shown(k, n[k]))) : 'Not sure yet.'}</p>${moves.length ? `<ul class="need-moves">${moves.map(m => `<li><em class="${(k === 'boredom' ? m.d < 0 : m.d > 0) ? 'up' : 'down'}">${m.d > 0 ? '+' : '−'}${Math.round(Math.abs(m.d) * 100)}%</em> ${esc(m.text)}${m.time ? ` <small>${esc(m.time)}</small>` : ''}</li>`).join('')}</ul>` : ''}
+        <p class="need-fix"><b>What helps:</b> ${esc(I2.fix)}</p></article>`; };
+    const paint = moves => { pane.innerHTML = head + NEEDS.map(([k]) => card(k, moves[k] || [])).join(''); };
+    paint({});
+    if (!api) return;
+    try {                                                   // what moved each bar: the biggest changes over his last ~40 events
+      const st = await api('/state'), last = st.events?.at(-1)?.id || 0, r = await api('/events?since=' + Math.max(0, last - 40));
+      const ev = (r.events || []).filter(e => e.hud?.needs), moves = {};
+      for (let i = 1; i < ev.length; i++) for (const [k] of NEEDS) {
+        const a = ev[i - 1].hud.needs[k], b = ev[i].hud.needs[k]; if (!Number.isFinite(a) || !Number.isFinite(b)) continue;
+        const d = shown(k, b) - shown(k, a); if (Math.abs(d) < .05 || (CREDIT[k] && Math.sign(d) !== CREDIT[k])) continue;
+        (moves[k] ||= []).push({d, text: 'He ' + third(firstLine(ev[i].text)), time: ev[i].time});
+      }
+      for (const k in moves) moves[k] = moves[k].sort((x, y) => Math.abs(y.d) - Math.abs(x.d)).slice(0, 3);
+      if (!$('#needsSheet').hidden) paint(moves);
+    } catch {}
+  }
+  hud.querySelector('.needs').addEventListener('click', () => { show($('#needsSheet')); needsSheet(); });
+  hud.querySelector('.needs').setAttribute('role', 'button'); hud.querySelector('.needs').tabIndex = 0;
   hud.addEventListener('click', e => { if (e.target.closest('#playCheckers')) startGame('checkers'); });
   $('#thingsBtn').addEventListener('click', () => show($('#thingsSheet'), 'art'));
   $('#mapBtn').addEventListener('click', () => show($('#thingsSheet'), 'map'));
