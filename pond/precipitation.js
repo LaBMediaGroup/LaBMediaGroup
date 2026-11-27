@@ -1,6 +1,6 @@
 // World-space precipitation around the current camera. Terrain and prop depth hide drops behind them.
 import * as THREE from 'three';
-import {distantThunder} from './explore-audio.js?v=3';
+import {distantThunder} from './explore-audio.js?v=4';
 
 function layer(snow,capacity,uniforms) {
   const vertices=snow ? 1 : 2;

@@ -6,8 +6,8 @@ import {openGallery} from './gallery.js?v=1';
    "Leave him something" (Say hi, Note, Doodle, Swap, Yours) and "His things" (Art, Songs, Journal, Map).
    explore.js feeds it: set(hud, journalLine), mapDots(me, coonPos), clock(text, night), heard(song), …
    No accounts, no public wall: visitors' notes go only to him; "Yours" lives in this browser. */
-import {openGame} from './games/games-ui.js?v=5';
-import {sound, sfx, playTune, ensure} from './explore-audio.js?v=3';
+import {openGame} from './games/games-ui.js?v=6';
+import {sound, sfx, playTune, ensure} from './explore-audio.js?v=4';
 export {playTune};
 const $ = s => document.querySelector(s);
 const NEEDS = [['hunger', 'Full'], ['energy', 'Energy'], ['joy', 'Joy'], ['boredom', 'Boredom'], ['curiosity', 'Curiosity']];
@@ -302,7 +302,7 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, ground
   const recKey = 'labcoon-games';
   const record = () => { try { return JSON.parse(localStorage.getItem(recKey) || '{}'); } catch { return {}; } };
   let chessUI = null;
-  import('./games/chess-ui.js?v=4').then(m => { chessUI = m.playChess; }).catch(() => {});
+  import('./games/chess-ui.js?v=5').then(m => { chessUI = m.playChess; }).catch(() => {});
   function gameResult(r) {
     try { const rec = record(); const g = rec[r.game] || {w: 0, l: 0, d: 0}; g[r.result[0]]++; rec[r.game] = g; localStorage.setItem(recKey, JSON.stringify(rec)); } catch {}
     remember({kind: 'game', text: `${r.game}: you ${r.result === 'win' ? 'won' : r.result === 'loss' ? 'lost' : 'drew'}`});
@@ -431,7 +431,7 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, ground
       const f = $('#finder'); if (x == null) { f.hidden = true; return; }
       f.hidden = false; f.style.left = Math.round(x) + 'px'; f.style.top = Math.round(y) + 'px'; f.querySelector('.arrow').style.transform = `rotate(${angle}rad)`;
     },
-    heard(song, near) { if (sound.ready && near) playTune(song, .28); },
+    heard(song, near) { const v = typeof near === 'number' ? near : near ? .28 : 0; if (sound.ready && v > .02) playTune(song, v); },   // louder the closer you are
     remember,
     get state() { return state; },
   };

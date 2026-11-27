@@ -209,8 +209,8 @@ const sky = new THREE.Mesh(new THREE.SphereGeometry(2000, 48, 24), new THREE.Sha
       col+=vec3(st)*uNight*(.5+.5*h1(c+1.))*smoothstep(0.,.2,y)*(.75+.25*sin(uT*1.7+hs*60.));
       col+=nightHorizon(rd);
       col+=vec3(.09,.05,.025)*uNight*exp(-y*9.)*(.6+.4*smoothstep(-.6,.6,rd.x));
-      float t=900./max(y,.02);vec2 cp=(rd.xz*t)*.0011+uWindDir.xz*uT*.0009*(2.+uWind);
-      float cc=fbm(cp);float cov=mix(.7,.36,uCloud);float cm=smoothstep(cov,cov+.22,cc)*smoothstep(0.,.16,y);
+      float t=900./max(y,.02);vec2 cp=(rd.xz*t)*.0011+uWindDir.xz*uT*${EXPLORE_PAGE?'.0027':'.0009'}*(2.+uWind);
+      float cc=${EXPLORE_PAGE?'mix(fbm(cp),fbm(cp*1.17+vec2(uT*.0031,-uT*.0023)),.35)':'fbm(cp)'};float cov=mix(.7,.36,uCloud);float cm=smoothstep(cov,cov+.22,cc)*smoothstep(0.,.16,y);
       vec3 lit=mix(vec3(.05,.06,.09),mix(vec3(.55,.32,.28),vec3(.92,.92,.95),smoothstep(.1,.5,uEl)),uDay)+uSunC*pow(sd,4.)*uGold*1.2;
       col=mix(col,mix(lit*.45,lit,smoothstep(cov,cov+.5,cc)),cm*.9);}
     // One trail passes above the final heading as the night camera settles.

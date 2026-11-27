@@ -7,15 +7,16 @@
 import * as THREE from 'three';
 import {fieldSteps} from './wildlife/wildlife-motion.js?v=2';
 import {fieldWildlife} from './field-wildlife.js?v=5';
-import {precipitation} from './precipitation.js?v=3';
+import {precipitation} from './precipitation.js?v=4';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=3';
-import {createHud} from './explore-hud.js?v=25';
-import {makeFind, fieldFinds} from './field-finds.js?v=1';
-import {field as fieldSound, sfx} from './explore-audio.js?v=3';
+import {createHud} from './explore-hud.js?v=26';
+import {makeFind, fieldFinds} from './field-finds.js?v=2';
+import {field as fieldSound, sfx, coon as coonSound} from './explore-audio.js?v=4';
+import {fieldLitter} from './field-litter.js?v=2';
 
 const LAT = 42.67, LON = -83.03;
 const q = new URLSearchParams(location.search);
@@ -55,7 +56,7 @@ const localField = ['127.0.0.1','localhost'].includes(location.hostname) && loca
 const remoteField = !localField && !!LIVE_BASE;
 let fieldCache = null, fieldAt = 0;                  // one /field read per 30 s, shared by weather, wildlife and finds
 async function getField() { if (!fieldCache || Date.now() - fieldAt > 30000) { fieldAt = Date.now(); fieldCache = await api('/field'); } return fieldCache; }
-let observedWeather=null, updatePrecipitation, updateWildlife, finds=null;
+let observedWeather=null, updatePrecipitation, updateWildlife, finds=null, litter=null;
 const windNow=()=>q.has('wind')?Number(q.get('wind')):observedWeather?.wind??6;
 const gustNow=()=>q.has('wind')?windNow()+4:observedWeather?.gust??windNow();
 async function refreshFieldWeather() {
@@ -379,7 +380,7 @@ function nextEvent(now) {
     e = NIGHT[nightIndex++ % NIGHT.length];
   }
   coon.queue.push(...plan(e));
-  if (e.song?.notes) H?.heard(e.song, me.mode === 'follow' || Math.hypot(me.pos.x - coon.pos.x, me.pos.z - coon.pos.z) < 14);
+  if (e.song?.notes) { const d = me.mode === 'follow' ? 1.5 : Math.hypot(me.pos.x - coon.pos.x, me.pos.z - coon.pos.z); H?.heard(e.song, Math.max(0, .34 * (1.1 - d / 22))); }   // his tunes carry, softer from afar
   coon.hud = e.hud || {mood: 'content', place: e.arg || coon.hud?.place || 'culvert', needs: coon.hud?.needs || {hunger: .4, energy: .7, joy: .55, boredom: .3, curiosity: .6}, plan: [], step: 0};
   coon.mood = coon.hud.mood;
   H?.set({...coon.hud, asleep: liveOn ? !!coon.hud.asleep : false}, e.time + ' · ' + e.text);
@@ -478,7 +479,7 @@ function startTask(k, now) {
   }
   else if (k.type === 'walk') { const to = typeof k.to === 'function' ? k.to() : k.to; k.path = routeTo(to); k.walk = true; }
   else if (k.type === 'swim') {
-    const to = k.to(); k.path = [to]; k.walk = true; coon.swimming = true; play('swim', {fade: .4});   // stays afloat until the bank (out) or the target
+    const to = k.to(); k.path = [to]; k.walk = true; coon.swimming = true; play('swim', {fade: .4}); coonSound('splash', hisDistance());   // stays afloat until the bank (out) or the target
   }
 }
 function findSomething() {
@@ -624,8 +625,10 @@ function toggleFollow() {
    then up and grumbly). Awake, a small sheet lets you say hi (5 a day). Replies here are an
    offline preview; live, the Worker passes the line to his brain and filters both ways. */
 let bubbleUntil = 0;
+function hisDistance() { return me.mode === 'follow' ? 1.5 : Math.hypot(me.pos.x - coon.pos.x, me.pos.z - coon.pos.z); }
 function tapLabcoon() {
   if (!coon.root) return;
+  coonSound(coon.asleep || coon.hud?.asleep ? 'huff' : 'chitter', hisDistance());
   if (liveOn && (coon.asleep || coon.hud?.asleep)) {
     api('/tap', {}).then(() => H.sheet('You poke him. Give him a second…', false)).catch(e => H.sheet(e.message, false));
     return;
@@ -777,9 +780,18 @@ function update(dt, camera) {
   if(me.mode==='follow'&&!clearShot(camera.position))camera.position.copy(camPos);
   W.uniforms.uFollowSubject.value.set(coon.pos.x,coon.pos.y,coon.pos.z,me.mode==='follow'?1:0);
   camera.lookAt(look);
+  if (!reduce) {                                         // the camera breathes a little, like someone standing in a field
+    camera.rotateX(Math.sin(now * .53 + 1) * .0045); camera.rotateZ(Math.sin(now * .31) * .0035);
+    camera.position.y += Math.sin(now * 1.05) * .0012;
+  }
   updatePrecipitation?.(dt,observedWeather);
   updateWildlife?.(dt);
   finds?.tick(dt, W.uniforms.uNight.value);
+  litter?.update(dt, camera);
+  if (coon.task?.walk) {                                  // his paws (or paddling) when he's on the move
+    coon.stepT = (coon.stepT || 0) + dt * (coon.swimming ? 1.6 : 3.2);
+    if (coon.stepT > 1) { coon.stepT = 0; coonSound(coon.swimming ? 'paddle' : 'step', hisDistance()); }
+  }
   if (coon.hud?.holding) setHeld(coon.hud.holding);
   updateLabcoon(dt * LIFE_SPEED, now);   // ?speed=4 runs Labcoon's night faster for review
   marker.material.opacity = Math.max(0, marker.material.opacity - dt * .9);
@@ -827,6 +839,7 @@ places.group.traverse(mesh=>{
   if(!mesh.isMesh || mesh.geometry.type==='PlaneGeometry' && mesh.geometry.parameters?.height===82)return;
   cameraMeshes.push({mesh,bounds:new THREE.Box3().setFromObject(mesh)});
 });
+litter = fieldLitter(THREE, W.scene, {uniforms: W.uniforms, ground, encode: displayEncode, reduced: reduce});
 finds = LIVE_BASE ? fieldFinds(THREE, W.scene, {ground, dry, places: PLACES, encode: displayEncode, reduced: reduce}) : null;
 H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onWalkTo: walkToHim, onFollow: () => toggleFollow(), onSayHi: sayHi, live: !!LIVE_BASE, api: LIVE_BASE ? api : null,
   onGame: r => { if (liveOn) api('/game', r).catch(() => {}); }});   // results reach his brain; he'll think about them later

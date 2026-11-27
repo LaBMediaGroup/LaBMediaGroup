@@ -20,7 +20,8 @@ function shapeOf(kind) {
   if (/seed|kernel|fries|grubs/.test(kind)) return 'bits';
   return 'lump';                                         // apple core, crust, sandwich…
 }
-export function makeFind(T, kind, color, encode = m => m) {
+export function makeFind(T, kind, color, encodeIn) {
+  const encode = m => (encodeIn?.(m), m);                  // the page's encoder edits in place and returns nothing
   const shape = shapeOf(kind), c = COLOR[color] ?? (/key|brass|bell/.test(kind) ? COLOR.brass : /penny/.test(kind) ? COLOR.copper : /dime|spoon|tab|bolt|nail|spike|wire/.test(kind) ? COLOR.silver
     : /feather|blue/.test(kind) ? COLOR.blue : /red/.test(kind) ? COLOR.red : /glass/.test(kind) ? COLOR.green : /acorn|twig|bark|pinecone|cork|twine/.test(kind) ? COLOR.brown : COLOR.tan);
   const metal = METAL.test(kind), glass = GLASS.test(kind);
@@ -46,7 +47,7 @@ export function makeFind(T, kind, color, encode = m => m) {
 }
 
 const hash = s => { let h = 2166136261; for (const ch of s) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return (h >>> 0) / 4294967296; };
-export function fieldFinds(T, scene, {ground, dry, places, encode, reduced = false}) {
+export function fieldFinds(T, scene, {ground, dry, places, encode, reduced = false}) {   // encode edits a material in place
   const group = new T.Group(); group.name = 'Finds in the field'; scene.add(group);
   const glintTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d');
     const r = x.createRadialGradient(32, 32, 0, 32, 32, 32); r.addColorStop(0, 'rgba(255,250,230,1)'); r.addColorStop(.25, 'rgba(255,240,200,.5)'); r.addColorStop(1, 'rgba(255,240,200,0)');

@@ -43,13 +43,16 @@ export const sound = {
   get ready() { return !!ctx && ctx.state === 'running' && on; },
 };
 const live = () => ctx && ctx.state === 'running' && on;
+let mul = 1;                                                    // his sounds fade with distance (coon())
 function burst(dur, type, f0, f1, gain, q = 1, bus = sfxBus, at = 0) {
+  gain *= mul;
   if (!live()) return; const t = ctx.currentTime + at, s = ctx.createBufferSource(); s.buffer = nb; s.loop = true;
   const fl = ctx.createBiquadFilter(); fl.type = type; fl.Q.value = q; fl.frequency.setValueAtTime(f0, t); fl.frequency.exponentialRampToValueAtTime(f1, t + dur);
   const g = ctx.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain, t + Math.min(.008, dur / 4)); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
   s.connect(fl).connect(g).connect(bus); s.start(t, Math.random()); s.stop(t + dur + .05);
 }
 function tone(f, dur, {type = 'sine', gain = .2, at = 0, to = null, bus = sfxBus, attack = .005} = {}) {
+  gain = Math.max(.0002, gain * mul);
   if (!live()) return; const t = ctx.currentTime + at, o = ctx.createOscillator(), g = ctx.createGain();
   o.type = type; o.frequency.setValueAtTime(f, t); if (to) o.frequency.exponentialRampToValueAtTime(to, t + dur);
   g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(gain, t + attack); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
@@ -162,4 +165,18 @@ export function playTune(song, volume = .35) {
     t += d;
   }
   return t - ac.currentTime;
+}
+
+/* Labcoon's own sounds, quieter the further you are (metres): a chitter when you poke him, splashes, paw steps. */
+export function coon(kind, metres = 3) {
+  if (!live()) return;
+  mul = Math.max(0, Math.min(1, 1.15 - metres / 16)); if (mul < .03) { mul = 1; return; }
+  try {
+    const r = 1 + (Math.random() - .5) * .12;
+    if (kind === 'chitter') for (let i = 0; i < 5; i++) tone((2300 + Math.random() * 700) * r, .05, {gain: .05, at: i * .06 + Math.random() * .015, to: 1700 * r, type: 'triangle'});
+    if (kind === 'huff') { burst(.22, 'bandpass', 900 * r, 500, .05, 1.2); tone(320 * r, .18, {gain: .03, to: 240}); }
+    if (kind === 'splash') { burst(.45, 'lowpass', 1800 * r, 300, .12, .7); burst(.25, 'bandpass', 2600, 1200, .05, 1.5, sfxBus, .08); }
+    if (kind === 'paddle') burst(.18, 'lowpass', 900 * r, 350, .04, .9);
+    if (kind === 'step') burst(.06, 'bandpass', 2400 * r, 1500, .025, 1.6);
+  } finally { mul = 1; }
 }

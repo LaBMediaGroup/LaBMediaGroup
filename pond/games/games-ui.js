@@ -3,7 +3,7 @@
    openGame(kind, {onResult}) shows the table; onResult({game, result:'win'|'loss'|'draw', moves}) is
    called once at the end, so the HUD can tell his brain and keep it in "Yours". */
 import * as C from './checkers.js?v=2';
-import {sfx, music} from '../explore-audio.js?v=3';
+import {sfx, music} from '../explore-audio.js?v=4';
 
 const FACE = '<svg viewBox="0 0 40 40"><path d="M9 14 7 5l9 5M31 14l2-9-9 5" fill="#8d8f8c" stroke="#22302f" stroke-width="2" stroke-linejoin="round"/><ellipse cx="20" cy="22" rx="14" ry="12" fill="#b9bbb7" stroke="#22302f" stroke-width="2"/><path d="M7 20c4-3 9-3 13 0 4-3 9-3 13 0-2 5-8 6-13 2-5 4-11 3-13-2z" fill="#22302f"/><circle cx="14" cy="20" r="2.2" fill="#fffaf1"/><circle cx="26" cy="20" r="2.2" fill="#fffaf1"/><ellipse cx="20" cy="28" rx="7" ry="5" fill="#f5ecdc"/><circle cx="20" cy="26.5" r="2" fill="#22302f"/></svg>';
 const ACORN = '<svg viewBox="0 0 40 40"><ellipse cx="20" cy="24" rx="11" ry="12" fill="#b9793f" stroke="#22302f" stroke-width="2.5"/><path d="M8 18c0-6 5-9 12-9s12 3 12 9c-4 2-20 2-24 0z" fill="#6d4a2b" stroke="#22302f" stroke-width="2.5" stroke-linejoin="round"/><path d="M20 9V5" stroke="#22302f" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="16" cy="25" rx="2.5" ry="4" fill="#fff" opacity=".25"/></svg>';
