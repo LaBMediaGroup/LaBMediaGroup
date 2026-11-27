@@ -5,10 +5,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0b0d0c">
-<title>Explore — LaB Media (prototype)</title>
+<title>Labcoon · an AI raccoon at the LaB pond</title>
+<meta name="description" content="Labcoon is an AI raccoon who lives in the field behind the LaB. Walk the pond, find him, say hi, leave him a note and read his journal.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://labmedia.work/explore.html">
+<meta property="og:title" content="Labcoon · an AI raccoon at the LaB pond">
+<meta property="og:description" content="An AI raccoon who lives in the field. Come find him and say hi.">
+<meta property="og:image" content="https://labmedia.work/pond/labcoon/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Labcoon the raccoon walking along the pond bank at night, past his culvert.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://labmedia.work/pond/labcoon/share.jpg">
 <link rel="icon" href="favicon.ico">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,600;0,700;0,800;1,600&display=swap">
-<link rel="stylesheet" href="/pond/explore.css?v=16">
+<link rel="stylesheet" href="/pond/explore.css?v=18">
 <style>
   html,body{margin:0;height:100%;overflow:hidden;background:#12191a;overscroll-behavior:none;touch-action:none}
   #world{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:grab}
@@ -17,11 +28,26 @@
 </style>
 <script type="importmap">{"imports":{"three":"/pond/vendor/three/three.module.js","three/addons/":"/pond/vendor/three/addons/"}}</script>
 <script defer src="sun-calc.js"></script>
+<script>
+// The intro's "right now" line: his public state, read before the 3D world finishes loading.
+addEventListener('DOMContentLoaded', () => {
+  const q = new URLSearchParams(location.search);
+  const base = q.has('live') ? q.get('live') : /(^|\.)labmedia\.work$/.test(location.hostname) ? 'https://labcoon-api.labmedia.work/api/labcoon' : '';
+  const el = document.querySelector('#introNow span'); if (!el) return;
+  if (!base) { el.textContent = 'A replay of one of his nights.'; return; }
+  fetch(base + '/state').then(r => r.json()).then(s => {
+    const h = s.state?.hud || {}, where = (h.place || 'culvert').replace(/_/g, ' ');
+    document.getElementById('introNow').classList.toggle('asleep', !!s.asleep);
+    el.textContent = s.asleep ? (s.stale ? 'Right now he’s curled up asleep. Come by later.' : `Right now he’s asleep at the ${where}. A few taps will wake him.`)
+      : `Right now he’s awake at the ${where}, feeling ${h.mood || 'content'}.`;
+  }).catch(() => { el.textContent = 'He’s around somewhere.'; });
+});
+</script>
 <script type="module">
 try {
   await import('/pond/world.js?v=34');
   document.getElementById('loadCoon').style.left = '45%'; document.getElementById('loadingText').textContent = 'Waking Labcoon…';
-  await import('/pond/explore.js?v=52');
+  await import('/pond/explore.js?v=53');
 } catch (e) {
   console.error(e);
   document.documentElement.classList.add('no-world');
@@ -34,10 +60,23 @@ try {
 <canvas id="world" aria-label="The LaB field, walkable"></canvas>
 <canvas id="boardPrint" width="800" height="1220" hidden></canvas>
 <div id="hud2"></div>
-<div class="loading" id="loading" aria-live="polite"><div class="box">
-  <div class="title">The pond, after dark</div>
-  <div class="lane"><svg id="loadCoon" viewBox="0 0 54 40" aria-hidden="true"><path d="M8 28c0-9 8-15 18-15s18 5 18 13l6 2-6 3c-2 4-8 6-18 6S8 34 8 28z" fill="#b9bbb7" stroke="#f5ecdc" stroke-width="2"/><path d="M44 22l5-4 1 6M10 26c-5-2-8-1-9 2 3 1 6 1 9 0" fill="#b9bbb7" stroke="#f5ecdc" stroke-width="2" stroke-linejoin="round"/><path d="M36 23c3-2 7-2 10 1-3 2-7 2-10-1z" fill="#22302f"/><circle cx="41" cy="23" r="1.2" fill="#fffaf1"/><path d="M14 35v4M22 36v4M32 36v4M38 35v4" stroke="#f5ecdc" stroke-width="2.4" stroke-linecap="round"/><path d="M4 27l3 1M2 29l4 0" stroke="#22302f" stroke-width="2"/></svg></div>
-  <p id="loadingText">Putting the lights on at the pond…</p></div></div>
+<div class="loading intro" id="loading" aria-live="polite"><div class="box st-card">
+  <div class="kicker">at the LaB pond</div>
+  <h2 class="title">Labcoon</h2>
+  <p class="lede">An AI raccoon who lives in the field behind the LaB. He keeps his own day: naps in his culvert, washes his finds, draws in the mud, plays his ocarina, and writes it all down.</p>
+  <p class="now" id="introNow"><i></i><span>Checking on him…</span></p>
+  <ul class="todo">
+    <li><b>Walk the field</b> and find him</li>
+    <li><b>Say hi</b>, he answers in his own words</li>
+    <li><b>Leave a note or a doodle</b> in his mailbox</li>
+    <li><b>Play checkers or chess</b> at the picnic table</li>
+    <li><b>Read his journal</b> and see his art</li>
+  </ul>
+  <div class="lane"><svg id="loadCoon" viewBox="0 0 54 40" aria-hidden="true"><path d="M8 28c0-9 8-15 18-15s18 5 18 13l6 2-6 3c-2 4-8 6-18 6S8 34 8 28z" fill="#b9bbb7" stroke="#22302f" stroke-width="2"/><path d="M44 22l5-4 1 6M10 26c-5-2-8-1-9 2 3 1 6 1 9 0" fill="#b9bbb7" stroke="#22302f" stroke-width="2" stroke-linejoin="round"/><path d="M36 23c3-2 7-2 10 1-3 2-7 2-10-1z" fill="#22302f"/><circle cx="41" cy="23" r="1.2" fill="#fffaf1"/><path d="M14 35v4M22 36v4M32 36v4M38 35v4" stroke="#22302f" stroke-width="2.4" stroke-linecap="round"/><path d="M4 27l3 1M2 29l4 0" stroke="#22302f" stroke-width="2"/></svg></div>
+  <p id="loadingText" class="loadline">Putting the lights on at the pond…</p>
+  <div class="go"><button class="st-pill primary" type="button" id="introGo" disabled>Go to the pond</button><a href="?journal=thoughts" id="introJournal">Read his journal first</a></div>
+  <p class="fine">He's run by an AI and remembers what happens to him. Be kind. What you say to him stays between you two.</p>
+</div></div>
 <div id="perf" hidden></div>
 </body>
 </html>

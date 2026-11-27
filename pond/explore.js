@@ -850,6 +850,19 @@ if(localField||remoteField){
   setInterval(refreshFieldWeather,60000);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshFieldWeather();});
 }
-loadLabcoon().then(() => { document.documentElement.classList.add('labcoon-ready'); const l = document.getElementById('loading'); if (l) { document.getElementById('loadCoon').style.left = 'calc(100% - 54px)'; setTimeout(() => l.classList.add('gone'), 450); setTimeout(() => l.remove(), 1100); } })
+loadLabcoon().then(() => {
+  document.documentElement.classList.add('labcoon-ready');
+  const l = document.getElementById('loading'); if (!l) return;
+  document.getElementById('loadCoon').style.left = 'calc(100% - 54px)';
+  const enter = () => { try { localStorage.setItem('labcoon-intro-seen', '1'); } catch {} l.classList.add('gone'); setTimeout(() => l.remove(), 700); };
+  // The intro waits for a first visitor's tap (which also wakes the sound); returning visitors walk straight in.
+  let seen = false; try { seen = !!localStorage.getItem('labcoon-intro-seen'); } catch {}
+  const force = q.get('intro') === '1', skip = q.has('journal') || q.get('intro') === '0' || (navigator.webdriver && !force);
+  if ((seen || skip) && !force) { setTimeout(enter, 450); return; }
+  const go = document.getElementById('introGo'), line = document.getElementById('loadingText');
+  if (line) line.textContent = 'He’s ready when you are.';
+  if (go) { go.disabled = false; go.focus(); go.addEventListener('click', enter, {once: true}); }
+  document.getElementById('introJournal')?.addEventListener('click', () => { try { localStorage.setItem('labcoon-intro-seen', '1'); } catch {} });
+})
   .catch(err => { console.error(err); say('Labcoon could not load: ' + err.message); });
 window.LabExplore = {me, coon, world: W, get live() { return liveOn; }, follow: toggleFollow, followCam: follow, tapAt, get perf() { return perf?.textContent; }};
