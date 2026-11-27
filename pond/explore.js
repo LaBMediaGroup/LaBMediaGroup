@@ -413,7 +413,7 @@ function nextEvent(now) {
 /* The bot check (Cloudflare Turnstile, invisible): off until Bobby makes a widget for labmedia.work and pastes its
    public site key here; the Worker's TURNSTILE_SECRET switches the check on at the other end. Visitors only see a
    challenge if Cloudflare isn't sure they're a person. Tokens are single use, so each send gets a fresh one. */
-const TURNSTILE_SITEKEY = '';
+const TURNSTILE_SITEKEY = '0x4AAAAAAGWGg1en-4WrNhCx';
 let turnstileReady = null, turnstileId = null;
 function humanToken() {
   if (!TURNSTILE_SITEKEY || !/(^|\.)labmedia\.work$/.test(location.hostname)) return Promise.resolve(undefined);
@@ -451,6 +451,7 @@ async function startLive() {
   setInterval(pollLive, 3000);
 }
 async function pollLive() {
+  if (document.hidden) return;                            // a background tab doesn't need his news every 3 s
   try {
     const r = await api('/events?since=' + liveLast);
     liveAsleep = !!r.asleep;
