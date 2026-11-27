@@ -6,14 +6,14 @@
    walk there, click or tap Labcoon (or press F) to follow him, F / Esc to walk again. */
 import * as THREE from 'three';
 import {fieldSteps} from './wildlife/wildlife-motion.js?v=2';
-import {fieldWildlife} from './field-wildlife.js?v=4';
+import {fieldWildlife} from './field-wildlife.js?v=5';
 import {precipitation} from './precipitation.js?v=3';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=3';
-import {createHud} from './explore-hud.js?v=23';
+import {createHud} from './explore-hud.js?v=24';
 import {field as fieldSound} from './explore-audio.js?v=3';
 
 const LAT = 42.67, LON = -83.03;
@@ -50,13 +50,17 @@ function blocked(x, z) {
 
 /* ---------------- sun and wind ---------------- */
 const localField = ['127.0.0.1','localhost'].includes(location.hostname) && location.port==='5430';
+// Visitors get the same observed weather and wildlife paths through the live service (numbers only).
+const remoteField = !localField && !!LIVE_BASE;
 let observedWeather=null, updatePrecipitation, updateWildlife;
 const windNow=()=>q.has('wind')?Number(q.get('wind')):observedWeather?.wind??6;
 const gustNow=()=>q.has('wind')?windNow()+4:observedWeather?.gust??windNow();
 async function refreshFieldWeather() {
   try {
-    const r=await fetch('http://127.0.0.1:5437/weather',{cache:'no-store',signal:AbortSignal.timeout(8500)});
-    if(r.ok) observedWeather=await r.json();
+    if(localField){
+      const r=await fetch('http://127.0.0.1:5437/weather',{cache:'no-store',signal:AbortSignal.timeout(8500)});
+      if(r.ok) observedWeather=await r.json();
+    } else { const f=await api('/field'); if(f.weather) observedWeather=f.weather; }
   } catch { /* Allow a local reader restart without blinking the weather off. */ }
   if(!(observedWeather?.observedAt>=Date.now()-7200000)) observedWeather=null;
   liveSky();
@@ -758,7 +762,7 @@ function update(dt, camera) {
 /* ---------------- boot ---------------- */
 W = LabWorld.explore(update);
 ground = W.ground; depth = W.depth;
-if(localField){updatePrecipitation=precipitation(W,reduce);updateWildlife=fieldWildlife(W,displayEncode,reduce);}
+if(localField||remoteField){updatePrecipitation=precipitation(W,reduce);updateWildlife=fieldWildlife(W,displayEncode,reduce,localField?undefined:async()=>(await api('/field')).wildlife);}
 W.scene.add(marker);
 places = buildPlaces({THREE, ground, encode: displayEncode});
 W.scene.add(places.group); SOLID.push(...places.colliders);
@@ -774,7 +778,7 @@ H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onFollo
   onGame: r => { if (liveOn) api('/game', r).catch(() => {}); }});   // results reach his brain; he'll think about them later
 me.pos.y = ground(me.pos.x, me.pos.z);
 liveSky(); setInterval(liveSky, 60000);
-if(localField){
+if(localField||remoteField){
   refreshFieldWeather();
   setInterval(refreshFieldWeather,60000);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshFieldWeather();});

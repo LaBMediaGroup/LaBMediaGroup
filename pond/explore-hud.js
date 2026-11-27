@@ -378,7 +378,10 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
     set(h, line) {
       if (line) {
         const [time, ...rest] = line.split(' · '), text = rest.join(' · ') || line;
-        $('#labcoonDoing').textContent = third(text);
+        // Lines about him read "Labcoon dips his paws…"; field lines ("The drone pilots pack up…") stand on their own.
+        const aboutHim = /^You\b/.test(text);
+        $('#statusPill b').hidden = !aboutHim;
+        $('#labcoonDoing').textContent = aboutHim ? third(text) : text.replace(/\.$/, '');
         $('#lcTitle').textContent = text;
         if (!journal.length || journal[0].text !== text) { journal.unshift({time: rest.length ? time : '', text}); journal.length = Math.min(journal.length, 50); }
         if (!document.querySelector('#thingsSheet [data-pane=journal]').hidden) onTab.journal();

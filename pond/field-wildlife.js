@@ -79,7 +79,9 @@ function darner(encode,reduced){
   return {bug,flutter};
 }
 
-export function fieldWildlife(world,encode,reduced=false){
+const ownerWildlife=async()=>{const r=await fetch('http://127.0.0.1:5437/wildlife',{cache:'no-store',signal:AbortSignal.timeout(9000)});if(!r.ok)throw Error();return r.json();};
+// load(): the owner's Mac reads its private reader; visitors read the live service's /field.
+export function fieldWildlife(world,encode,reduced=false,load=ownerWildlife){
   const group=new THREE.Group();group.name='Field wildlife';world.scene.add(group);
   const insect=darner(encode,reduced);group.add(insect.bug);
   const deer=[];let visit=null,loading=false,template=null,lastRefresh=0,contactAt=0;
@@ -87,8 +89,8 @@ export function fieldWildlife(world,encode,reduced=false){
   async function refresh(){
     if(loading)return;loading=true;lastRefresh=Date.now();
     try{
-      const reply=await fetch('http://127.0.0.1:5437/wildlife',{cache:'no-store',signal:AbortSignal.timeout(9000)});
-      if(reply.ok)visit=await reply.json();
+      const next=await load();
+      if(next)visit=next;
       if(visit?.herd.length && !template){
         template=await new GLTFLoader().loadAsync('/pond/wildlife/deer.glb?v=2');
         template.scene.traverse(o=>{
