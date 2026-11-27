@@ -20,6 +20,7 @@ const MOVE_WORDS = {walk_to: 'go to', swim_to: 'swim to', sit_and_watch: 'watch'
 const I = {
   x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M5 7h14M5 12h14M5 17h14"/></svg>',
+  paw: '<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="15.5" rx="5" ry="4.2"/><circle cx="6" cy="10" r="2.1"/><circle cx="9.6" cy="6.6" r="2.1"/><circle cx="14.4" cy="6.6" r="2.1"/><circle cx="18" cy="10" r="2.1"/></svg>',
   eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>',
   walk: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="13" cy="4.5" r="2"/><path d="M11 21l2-6 3 3v3M13 15l-1-6-3 3H6M12 9l4 2 2-1"/></svg>',
   sound: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>',
@@ -41,7 +42,7 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&
 
 /* sound lives in explore-audio.js (one engine for the field, the HUD, his tunes and the games) */
 const blip = k => sfx(k);
-export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, live = false, api = null, onGame = null}) {
+export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, ground, pond, live = false, api = null, onGame = null}) {
   const hud = $('#hud2');
   hud.innerHTML = `
     <div class="needs st-card pe" role="group" aria-label="How Labcoon feels"><span class="who">Labcoon</span>
@@ -65,13 +66,14 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
     <div class="bl"><button class="st-round radar" id="mapBtn" type="button" aria-label="Open the map"><svg viewBox="-29 -36 56 50" id="radarSvg"></svg></button></div>
     <div class="status st-pill pe" role="status" id="statusPill" title="What he’s up to"><span class="face">${I.face}</span><span><b>Labcoon</b> <span id="labcoonDoing">is waking up…</span></span></div>
     <div class="br">
+      <button class="st-round" id="walkToBtn" type="button" aria-label="Walk over to Labcoon">${I.paw}</button>
       <button class="st-round" id="followBtn" type="button" aria-label="Follow Labcoon">${I.eye}</button>
       <button class="st-pill primary" id="leaveBtn" type="button">Leave him something</button>
     </div>
     <div class="bubble" id="lcBubble" hidden></div>
     <button class="st-round finder" id="finder" type="button" aria-label="Find Labcoon" hidden><span class="face">${I.face}</span><i class="arrow"></i></button>
     <div class="coach st-card pe" id="coach" hidden><div class="kicker">welcome to the pond</div>
-      <ul><li><b>Drag</b> to look around</li><li><b>Tap the ground</b> to walk there</li><li><b>Tap Labcoon</b> to say hi or play</li><li>The <b>orange button</b> leaves him something; <b>☰</b> has his art, songs and games</li></ul>
+      <ul>${matchMedia('(pointer: coarse)').matches ? '<li><b>Thumb on the lower left</b> to walk, push further to run</li><li><b>Drag</b> anywhere else to look</li>' : '<li><b>WASD</b> or <b>tap the ground</b> to walk, <b>drag</b> to look</li>'}<li><b>Tap the ground</b> to walk there, the <b>paw</b> walks you to him</li><li><b>Tap Labcoon</b> to say hi or play</li><li>The <b>orange button</b> leaves him something; <b>☰</b> has his art, songs and games</li></ul>
       <button class="st-pill primary" type="button" id="coachOk">Got it</button></div>
     <div class="scrim pe" id="scrim" hidden></div>
     <section class="sheet st-card pe" id="lcSheet" hidden role="dialog" aria-label="Leave Labcoon something">
@@ -173,6 +175,7 @@ export function createHud({places, onTakeMe, onFollow, onSayHi, ground, pond, li
   $('#coachOk').addEventListener('click', coached);
   document.getElementById('world')?.addEventListener('pointerdown', coached, {once: true});   // any first touch of the field counts
   $('#finder').addEventListener('click', () => onTakeMe('labcoon'));
+  $('#walkToBtn').addEventListener('click', () => onWalkTo?.());
 
   /* ---------- sound ---------- */
   const soundBtn = $('#soundBtn');

@@ -13,8 +13,9 @@ import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=3';
-import {createHud} from './explore-hud.js?v=24';
-import {field as fieldSound} from './explore-audio.js?v=3';
+import {createHud} from './explore-hud.js?v=25';
+import {makeFind, fieldFinds} from './field-finds.js?v=1';
+import {field as fieldSound, sfx} from './explore-audio.js?v=3';
 
 const LAT = 42.67, LON = -83.03;
 const q = new URLSearchParams(location.search);
@@ -52,7 +53,7 @@ function blocked(x, z) {
 const localField = ['127.0.0.1','localhost'].includes(location.hostname) && location.port==='5430';
 // Visitors get the same observed weather and wildlife paths through the live service (numbers only).
 const remoteField = !localField && !!LIVE_BASE;
-let observedWeather=null, updatePrecipitation, updateWildlife;
+let observedWeather=null, updatePrecipitation, updateWildlife, finds=null;
 const windNow=()=>q.has('wind')?Number(q.get('wind')):observedWeather?.wind??6;
 const gustNow=()=>q.has('wind')?windNow()+4:observedWeather?.gust??windNow();
 async function refreshFieldWeather() {
@@ -60,7 +61,8 @@ async function refreshFieldWeather() {
     if(localField){
       const r=await fetch('http://127.0.0.1:5437/weather',{cache:'no-store',signal:AbortSignal.timeout(8500)});
       if(r.ok) observedWeather=await r.json();
-    } else { const f=await api('/field'); if(f.weather) observedWeather=f.weather; }
+    } else { const f=await api('/field'); if(f.weather) observedWeather=f.weather; finds?.set(f.finds); }
+    if(localField && LIVE_BASE) api('/field').then(f=>finds?.set(f.finds)).catch(()=>{});
   } catch { /* Allow a local reader restart without blinking the weather off. */ }
   if(!(observedWeather?.observedAt>=Date.now()-7200000)) observedWeather=null;
   liveSky();
@@ -82,8 +84,11 @@ function liveSky() {
 const coon = {root: null, mixer: null, actions: {}, current: null, pos: new THREE.Vector3(), yaw: 0,
   queue: [], task: null, swimming: false, irises: [], envMats: [], teeth: [], findHeld: false, bone: null, home: new THREE.Vector2()};
 const WALK_SPEED = .21, CLIP_SPEED = .165;     // clip is authored for 0.165 m/s at rate 1
-const cap = new THREE.Mesh(new THREE.CylinderGeometry(.0105, .0115, .006, 21),
-  new THREE.MeshStandardMaterial({color: 0x8c0d0a, metalness: .85, roughness: .32}));
+const cap = new THREE.Group(); let capKind = '';                // what he's holding, modelled by kind (a red cap until we know)
+function setHeld(kind) {
+  kind = kind || 'red bottle cap'; if (kind === capKind) return; capKind = kind;
+  cap.clear(); cap.add(makeFind(THREE, kind, null, displayEncode));
+}
 const findSpot = new THREE.Vector3();
 
 // The world's shaders write display values straight to a linear target; give the
@@ -478,7 +483,7 @@ function findSomething() {
   coon.findHeld = false;
   const f = new THREE.Vector3(Math.sin(coon.yaw), 0, Math.cos(coon.yaw));
   findSpot.copy(coon.pos).addScaledVector(f, .210); findSpot.y = ground(findSpot.x, findSpot.z) + .003;
-  cap.position.copy(findSpot); cap.rotation.set(0, coon.yaw, 0); cap.visible = true;
+  setHeld(coon.hud?.holding); cap.position.copy(findSpot); cap.rotation.set(0, coon.yaw, 0); cap.visible = true;
   play('pick_up', {once: true, fade: .35});
 }
 const TMP = new THREE.Vector3();
@@ -536,15 +541,40 @@ addEventListener('keyup', e => keys.delete(e.key.toLowerCase()));
 addEventListener('blur', () => keys.clear());
 const canvas = document.getElementById('world');
 let drag = null;
-canvas.addEventListener('pointerdown', e => { drag = {x: e.clientX, y: e.clientY, moved: 0, id: e.pointerId}; canvas.setPointerCapture(e.pointerId); });
+/* A floating thumb stick: a touch that starts in the lower-left of the screen walks (push further to run);
+   anywhere else still drags to look, and a quick tap still walks you to that spot. */
+const joy = {id: null, x0: 0, y0: 0, f: 0, s: 0, el: null};
+function joyZone(x, y) { return coarse && x < innerWidth * .5 && y > innerHeight * .42; }
+function joyShow(x, y, dx = 0, dy = 0) {
+  if (!joy.el) { joy.el = document.createElement('div'); joy.el.className = 'joy'; joy.el.innerHTML = '<i></i>'; document.body.appendChild(joy.el); }
+  joy.el.style.left = x + 'px'; joy.el.style.top = y + 'px'; joy.el.firstChild.style.transform = `translate(${dx}px,${dy}px)`; joy.el.classList.add('on');
+}
+canvas.addEventListener('pointerdown', e => {
+  canvas.setPointerCapture(e.pointerId);
+  if (joy.id == null && me.mode === 'walk' && joyZone(e.clientX, e.clientY)) { joy.id = e.pointerId; joy.x0 = e.clientX; joy.y0 = e.clientY; joy.moved = 0; me.target = null; joyShow(joy.x0, joy.y0); return; }
+  drag = {x: e.clientX, y: e.clientY, moved: 0, id: e.pointerId};
+});
 canvas.addEventListener('pointermove', e => {
+  if (e.pointerId === joy.id) {
+    let dx = e.clientX - joy.x0, dy = e.clientY - joy.y0; const R = 52, d = Math.hypot(dx, dy); joy.moved = Math.max(joy.moved, d);
+    if (d > R) { dx *= R / d; dy *= R / d; }
+    joy.s = dx / R; joy.f = -dy / R; joyShow(joy.x0, joy.y0, dx, dy); return;
+  }
   if (!drag || drag.id !== e.pointerId) return;
   const dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.x = e.clientX; drag.y = e.clientY; drag.moved += Math.abs(dx) + Math.abs(dy);
   const s = coarse ? .006 : .0042;
   if (me.mode === 'follow') { follow.yaw -= dx * s; follow.h = THREE.MathUtils.clamp(follow.h + dy * .002, .15, 1.3); }
   else { me.yaw -= dx * s; me.pitch = THREE.MathUtils.clamp(me.pitch - dy * s, -1.1, .9); }
 });
+const joyEnd = e => {
+  if (e.pointerId !== joy.id) return false;
+  const tap = joy.moved < 8; joy.id = null; joy.f = joy.s = 0; joy.el?.classList.remove('on');
+  if (tap && e.type === 'pointerup') tapAt(e.clientX, e.clientY);
+  return true;
+};
+canvas.addEventListener('pointercancel', joyEnd);
 canvas.addEventListener('pointerup', e => {
+  if (joyEnd(e)) return;
   if (!drag || drag.id !== e.pointerId) return;
   const tap = drag.moved < 8; drag = null;
   if (tap) tapAt(e.clientX, e.clientY);
@@ -557,6 +587,11 @@ function tapAt(x, y) {
   if (coon.root) {      // Labcoon is small: forgive the tap by 25 cm
     const c = coon.pos.clone().setY(coon.pos.y + .16);
     if (ray.ray.distanceToPoint(c) < .28) { tapLabcoon(); return; }
+  }
+  const found = finds?.pick(ray);
+  if (found) {                                              // tap a find: say what it is
+    const what = (/s$/.test(found) && !/glass|bolt|cross/.test(found) ? 'Some ' : /^[aeiou]/.test(found) ? 'An ' : 'A ') + found;
+    H?.bubble(what + '. He hasn’t found it yet.', x, y); sfx('pick'); clearTimeout(tapAt.t); tapAt.t = setTimeout(() => H?.bubble(null), 2600); return;
   }
   H?.sheet(null);
   if (me.mode === 'follow') return;
@@ -637,6 +672,18 @@ async function sayHi(text) {
   if (!coon.task?.walk && !coon.asleep) coon.yaw = yaw;
   return reply;
 }
+function walkToHim() {                               // walk over, stopping a couple of metres off, facing him; far away, hop there
+  if (!coon.root) return;
+  if (me.mode === 'follow') toggleFollow();
+  const dx = coon.pos.x - me.pos.x, dz = coon.pos.z - me.pos.z, d = Math.hypot(dx, dz);
+  if (d > 30) return takeMeTo('labcoon');
+  if (d < 2.4) { me.yaw = Math.atan2(-dx, -dz); return; }
+  const x = coon.pos.x - dx / d * 2, z = coon.pos.z - dz / d * 2;
+  for (let i = 1; i <= 24; i++) {                    // water or a solid in the way: hop there instead of stalling at the bank
+    const k = i / 24; if (blocked(me.pos.x + (x - me.pos.x) * k, me.pos.z + (z - me.pos.z) * k)) return takeMeTo('labcoon');
+  }
+  me.target = new THREE.Vector2(x, z); me.hurry = d > 8; flashMarker(x, z);   // trot when he's a way off
+}
 function takeMeTo(k) {
   let target, look;
   if (k === 'labcoon') { target = new THREE.Vector2(coon.pos.x, coon.pos.z); look = target; }
@@ -685,15 +732,17 @@ function update(dt, camera) {
     if (keys.has('s') || keys.has('arrowdown')) f -= 1;
     if (keys.has('a')) s -= 1; if (keys.has('d')) s += 1;
     if (keys.has('arrowleft')) me.yaw += 1.8 * dt; if (keys.has('arrowright')) me.yaw -= 1.8 * dt;
+    const stick = Math.hypot(joy.f, joy.s); if (stick > .12) { f += joy.f; s += joy.s; }
     fwd.set(-Math.sin(me.yaw), 0, -Math.cos(me.yaw)); side.set(-fwd.z, 0, fwd.x);
     let move = new THREE.Vector3().addScaledVector(fwd, f).addScaledVector(side, s);
     if (me.target && !f && !s) {
       const dx = me.target.x - me.pos.x, dz = me.target.y - me.pos.z, d = Math.hypot(dx, dz);
-      if (d < .15) me.target = null;
+      if (d < .15) { me.target = null; me.hurry = false; }
       else { move.set(dx / d, 0, dz / d); const want = Math.atan2(-dx, -dz); me.yaw += ((want - me.yaw + Math.PI * 3) % (Math.PI * 2) - Math.PI) * Math.min(1, dt * 3); }
     }
     if (move.lengthSq() > 0) {
-      move.normalize().multiplyScalar((keys.has('shift') ? RUN : WALK) * dt);
+      const pace = keys.has('shift') || stick > .92 || (me.hurry && me.target && !f && !s) ? RUN : stick > .12 ? WALK * Math.min(1, .45 + stick) : WALK;
+      move.normalize().multiplyScalar(pace * dt);
       if (!blocked(me.pos.x + move.x, me.pos.z + move.z)) me.pos.add(move);
       else if (!blocked(me.pos.x + move.x, me.pos.z)) me.pos.x += move.x;       // slide along the shore
       else if (!blocked(me.pos.x, me.pos.z + move.z)) me.pos.z += move.z;
@@ -728,6 +777,8 @@ function update(dt, camera) {
   camera.lookAt(look);
   updatePrecipitation?.(dt,observedWeather);
   updateWildlife?.(dt);
+  finds?.tick(dt, W.uniforms.uNight.value);
+  if (coon.hud?.holding) setHeld(coon.hud.holding);
   updateLabcoon(dt * LIFE_SPEED, now);   // ?speed=4 runs Labcoon's night faster for review
   marker.material.opacity = Math.max(0, marker.material.opacity - dt * .9);
   // the field's sound: wind, night or day, how near the water and the poles are, and your steps
@@ -774,7 +825,8 @@ places.group.traverse(mesh=>{
   if(!mesh.isMesh || mesh.geometry.type==='PlaneGeometry' && mesh.geometry.parameters?.height===82)return;
   cameraMeshes.push({mesh,bounds:new THREE.Box3().setFromObject(mesh)});
 });
-H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onFollow: () => toggleFollow(), onSayHi: sayHi, live: !!LIVE_BASE, api: LIVE_BASE ? api : null,
+finds = LIVE_BASE ? fieldFinds(THREE, W.scene, {ground, dry, places: PLACES, encode: displayEncode, reduced: reduce}) : null;
+H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onWalkTo: walkToHim, onFollow: () => toggleFollow(), onSayHi: sayHi, live: !!LIVE_BASE, api: LIVE_BASE ? api : null,
   onGame: r => { if (liveOn) api('/game', r).catch(() => {}); }});   // results reach his brain; he'll think about them later
 me.pos.y = ground(me.pos.x, me.pos.z);
 liveSky(); setInterval(liveSky, 60000);
