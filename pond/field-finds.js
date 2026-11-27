@@ -7,6 +7,7 @@ const COLOR = {copper: 0xb5652b, brown: 0x6b4a2e, purple: 0x6b3fa0, silver: 0xc9
 const METAL = /cap|key|penny|dime|spoon|bolt|bell|hoop|watch|tab|spike|nail|wire|lure|pick/;
 const GLASS = /glass|marble|bead|reflector|ornament|bottle neck/;
 function shapeOf(kind) {
+  if (/fishing pole/.test(kind)) return 'pole';
   if (/bottle cap/.test(kind)) return 'cap';
   if (/penny|dime/.test(kind)) return 'coin';
   if (/key/.test(kind)) return 'key';
@@ -29,6 +30,12 @@ export function makeFind(T, kind, color, encodeIn) {
     transparent: glass, opacity: glass ? .78 : 1, emissive: glass ? c : 0x000000, emissiveIntensity: glass ? .12 : 0}));
   const g = new T.Group(), add = (geo, x = 0, y = 0, z = 0, rx = 0, rz = 0) => { const m = new T.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.set(rx, 0, rz); g.add(m); return m; };
   switch (shape) {
+    case 'pole': {                                         // an old cane pole: tapering rod along +x, red and white bobber at the tip
+      const rod = add(new T.CylinderGeometry(.0035, .0065, .85, 8), .425, .006, 0, 0, Math.PI / 2);
+      const red = encode(new T.MeshStandardMaterial({color: 0xc8322a, roughness: .5})), white = encode(new T.MeshStandardMaterial({color: 0xf3efe6, roughness: .5}));
+      const top = new T.Mesh(new T.SphereGeometry(.011, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2), red), bot = new T.Mesh(new T.SphereGeometry(.011, 10, 6, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), white);
+      top.position.set(.86, .012, 0); bot.position.copy(top.position); g.add(top, bot); g.userData.bobber = [top, bot]; break;
+    }
     case 'cap': add(new T.CylinderGeometry(.0105, .0115, .006, 21), 0, .003); break;
     case 'coin': add(new T.CylinderGeometry(.0095, .0095, .0016, 20), 0, .0008); break;
     case 'key': add(new T.TorusGeometry(.009, .003, 6, 16), -.014, .003, 0, Math.PI / 2); add(new T.BoxGeometry(.03, .003, .005), .008, .0015); add(new T.BoxGeometry(.006, .003, .007), .02, .0015, .004); break;
@@ -42,7 +49,7 @@ export function makeFind(T, kind, color, encodeIn) {
     case 'bits': for (let i = 0; i < 5; i++) add(new T.SphereGeometry(.004, 6, 5), Math.cos(i * 2.4) * .01, .003, Math.sin(i * 2.4) * .01).scale.set(1.5, .7, 1); break;
     default: add(new T.SphereGeometry(.022, 10, 8), 0, .012).scale.set(1.2, .7, 1);
   }
-  g.userData = {kind, shiny: metal || glass};
+  Object.assign(g.userData, {kind, shiny: metal || glass});
   return g;
 }
 

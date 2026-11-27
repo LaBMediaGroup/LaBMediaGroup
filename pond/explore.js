@@ -14,7 +14,7 @@ import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=3';
 import {createHud} from './explore-hud.js?v=27';
-import {makeFind, fieldFinds} from './field-finds.js?v=2';
+import {makeFind, fieldFinds} from './field-finds.js?v=4';
 import {field as fieldSound, sfx, coon as coonSound} from './explore-audio.js?v=4';
 import {fieldLitter} from './field-litter.js?v=2';
 
@@ -93,6 +93,27 @@ function setHeld(kind) {
   cap.clear(); cap.add(makeFind(THREE, kind, null, displayEncode));
 }
 const findSpot = new THREE.Vector3();
+/* His old cane pole while he fishes: held out over the water from beside him, a line down to a bobber that rides the ripples. */
+const fishing = {on: false, pole: null, line: null, bob: null};
+function setFishing(on) {
+  if (on && !fishing.pole) {
+    fishing.pole = new THREE.Group(); const m = makeFind(THREE, 'old cane fishing pole', 'tan', displayEncode); m.rotation.y = -Math.PI / 2; m.scale.setScalar(1.3); fishing.pole.add(m);
+    fishing.line = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]), new THREE.LineBasicMaterial({color: 0xe8e2d0, transparent: true, opacity: .7}));
+    fishing.bob = makeFind(THREE, 'old cane fishing pole', 'tan', displayEncode).userData.bobber.map(b => b.clone()); const g = new THREE.Group(); g.add(...fishing.bob); fishing.bob = g;
+    W.scene.add(fishing.pole, fishing.line, fishing.bob);
+  }
+  fishing.on = on; if (fishing.pole) fishing.pole.visible = fishing.line.visible = fishing.bob.visible = on;
+}
+function updateFishing(now) {
+  if (!fishing.on) return;
+  const f = new THREE.Vector3(Math.sin(coon.yaw), 0, Math.cos(coon.yaw)), side = new THREE.Vector3(f.z, 0, -f.x);
+  const base = coon.pos.clone().addScaledVector(f, .06).addScaledVector(side, .14); base.y = ground(base.x, base.z) + .03;   // butt of the pole on the ground by his front paw
+  const tip = base.clone().addScaledVector(f, .95); tip.y += .55;
+  fishing.pole.position.copy(base); fishing.pole.lookAt(tip);
+  const bob = coon.pos.clone().addScaledVector(f, 2.1); bob.y = Math.max(WATER_Y, ground(bob.x, bob.z)) + .006 + Math.sin(now * 2.3) * .006 + Math.max(0, Math.sin(now * .7)) ** 12 * -.02;
+  fishing.bob.position.copy(bob);
+  const pos = fishing.line.geometry.attributes.position; pos.setXYZ(0, tip.x, tip.y, tip.z); pos.setXYZ(1, bob.x, bob.y + .01, bob.z); pos.needsUpdate = true;
+}
 
 // The world's shaders write display values straight to a linear target; give the
 // standard materials the same display transform so Labcoon sits in the same light.
@@ -342,10 +363,11 @@ function plan(e) {
     case 'sit_and_watch': faceWater(); if (/moon|star/.test(e.arg)) clip('moon'); idle(6); break;
     case 'hold_up_to_moon': T.push({type: 'find'}); clip('moon'); clip('set_down'); break;
     case 'pick_up': case 'take_from_stash': case 'build_sculpture':
-      T.push({type: 'find'}); clip('hold_find', {loops: 1}); clip('set_down'); break;
+      T.push({type: 'find', kind: e.find}); clip('hold_find', {loops: 1}); clip('set_down'); break;
     case 'wash': faceWater(); clip('wash'); break;
     case 'watch_fish': faceWater(); clip('look_back'); idle(4); break;
     case 'swat_at_fish': faceWater(); clip('fish'); break;
+    case 'fish_with_pole': faceWater(); T.push({type: 'pole', on: true}); clip('look_back'); idle(6); clip('look_back'); idle(5); T.push({type: 'pole', on: false}); break;
     case 'journal_question': clip('draw'); idle(2); break;
     case 'inspect_computer': case 'look_up_question': {
       const [x,z]=PLACES.art_shed.at, desk=new THREE.Vector2(x-.20,z+.12);
@@ -478,6 +500,7 @@ function nextTask(now) {
 function taskDone() { const now = performance.now() / 1000; coon.task = null; nextTask(now); }
 function startTask(k, now) {
   k.turns = 0;
+  if (k.type === 'pole') { setFishing(k.on); taskDone(); return; }
   if (k.type === 'idle') { k.until = now + k.secs / LIFE_SPEED; play(coon.swimming ? 'swim' : 'idle'); }
   else if (k.type === 'face') { k.target = k.yaw(); }
   coon.asleep = k.type === 'clip' && /^(sleep|nap_|settle_)/.test(k.name);   // asleep while a sleep clip plays
@@ -487,7 +510,7 @@ function startTask(k, now) {
     k.clip = play(k.name, {once: !k.loops, reverse: !!k.reverse, fade: k.name === 'set_down' || k.name === 'hold_find' ? .12 : .28});
     if (!k.clip) taskDone();
   }
-  else if (k.type === 'find') { findSomething(); k.clip = coon.current; }
+  else if (k.type === 'find') { findSomething(k.kind); k.clip = coon.current; }
   else if (k.type === 'wander') {
     for (let i = 0; i < 30; i++) {
       const a = Math.random() * Math.PI * 2, d = .8 + Math.random() * 2.2, p = new THREE.Vector2(coon.pos.x + Math.cos(a) * d, coon.pos.z + Math.sin(a) * d);
@@ -503,11 +526,11 @@ function startTask(k, now) {
     const to = k.to(); k.path = [to]; k.walk = true; coon.swimming = true; play('swim', {fade: .4}); coonSound('splash', hisDistance());   // stays afloat until the bank (out) or the target
   }
 }
-function findSomething() {
-  coon.findHeld = false;
+function findSomething(kind) {
+  coon.findHeld = false; if (kind) { setHeld(kind); }
   const f = new THREE.Vector3(Math.sin(coon.yaw), 0, Math.cos(coon.yaw));
   findSpot.copy(coon.pos).addScaledVector(f, .210); findSpot.y = ground(findSpot.x, findSpot.z) + .003;
-  setHeld(coon.hud?.holding); cap.position.copy(findSpot); cap.rotation.set(0, coon.yaw, 0); cap.visible = true;
+  if (!kind) setHeld(coon.hud?.holding); cap.position.copy(findSpot); cap.rotation.set(0, coon.yaw, 0); cap.visible = true;
   play('pick_up', {once: true, fade: .35});
 }
 const TMP = new THREE.Vector3();
@@ -808,6 +831,7 @@ function update(dt, camera) {
   updatePrecipitation?.(dt,observedWeather);
   updateWildlife?.(dt);
   finds?.tick(dt, W.uniforms.uNight.value);
+  updateFishing(now);
   litter?.update(dt, camera);
   if (coon.task?.walk) {                                  // his paws (or paddling) when he's on the move
     coon.stepT = (coon.stepT || 0) + dt * (coon.swimming ? 1.6 : 3.2);
