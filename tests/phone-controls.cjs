@@ -8,12 +8,13 @@ const base = process.argv[3] || 'http://192.168.1.38:5431', query = process.argv
   const b = await chromium.launch({executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true, args: ['--use-angle=metal', '--enable-gpu']});
   const ctx = await b.newContext({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, deviceScaleFactor: 2});
   await ctx.addInitScript(() => { try { localStorage.setItem('labcoon-coached', '1'); } catch {} });
-  const p = await ctx.newPage(); const errors = []; p.on('pageerror', e => errors.push(e.message));
+  const p = await ctx.newPage(); const errors = []; p.on('pageerror', e => errors.push(e.message)); let fieldReads = 0; p.on('request', q => { if (q.url().includes('/field')) fieldReads++; });
   await p.goto(base + '/explore.html' + query, {waitUntil: 'domcontentloaded'});
   await p.waitForFunction(() => document.documentElement.classList.contains('labcoon-ready'), null, {timeout: 60000});
-  await p.waitForTimeout(4000);
+  await p.waitForFunction(() => (window.LabExplore.world.scene.getObjectByName('Finds in the field')?.children.length || 0) > 0, null, {timeout: 20000}).catch(() => {});
+  const fieldReads0 = fieldReads; await p.waitForTimeout(10000); const fieldReadsIn10s = fieldReads - fieldReads0;
   const pos = () => p.evaluate(() => { const m = window.LabExplore.me.pos; return [m.x, m.z]; });
-  const r = {finds: await p.evaluate(() => window.LabExplore.world.scene.getObjectByName('Finds in the field')?.children.filter(o => o.type === 'Group').length ?? 0)};
+  const r = {fieldReadsIn10s, finds: await p.evaluate(() => window.LabExplore.world.scene.getObjectByName('Finds in the field')?.children.filter(o => o.type === 'Group').length ?? 0)};
   // thumb stick: touch lower-left, push up gently (walk) for 1.5 s, then hard (run) for 1.5 s
   const cdp = await ctx.newCDPSession(p);
   const touch = (type, x, y) => cdp.send('Input.dispatchTouchEvent', {type, touchPoints: type === 'touchEnd' ? [] : [{x, y, id: 1}]});

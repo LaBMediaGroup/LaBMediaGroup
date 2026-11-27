@@ -53,6 +53,8 @@ function blocked(x, z) {
 const localField = ['127.0.0.1','localhost'].includes(location.hostname) && location.port==='5430';
 // Visitors get the same observed weather and wildlife paths through the live service (numbers only).
 const remoteField = !localField && !!LIVE_BASE;
+let fieldCache = null, fieldAt = 0;                  // one /field read per 30 s, shared by weather, wildlife and finds
+async function getField() { if (!fieldCache || Date.now() - fieldAt > 30000) { fieldAt = Date.now(); fieldCache = await api('/field'); } return fieldCache; }
 let observedWeather=null, updatePrecipitation, updateWildlife, finds=null;
 const windNow=()=>q.has('wind')?Number(q.get('wind')):observedWeather?.wind??6;
 const gustNow=()=>q.has('wind')?windNow()+4:observedWeather?.gust??windNow();
@@ -61,8 +63,8 @@ async function refreshFieldWeather() {
     if(localField){
       const r=await fetch('http://127.0.0.1:5437/weather',{cache:'no-store',signal:AbortSignal.timeout(8500)});
       if(r.ok) observedWeather=await r.json();
-    } else { const f=await api('/field'); if(f.weather) observedWeather=f.weather; finds?.set(f.finds); }
-    if(localField && LIVE_BASE) api('/field').then(f=>finds?.set(f.finds)).catch(()=>{});
+    } else { const f=await getField(); if(f.weather) observedWeather=f.weather; finds?.set(f.finds); }
+    if(localField && LIVE_BASE) getField().then(f=>finds?.set(f.finds)).catch(()=>{});
   } catch { /* Allow a local reader restart without blinking the weather off. */ }
   if(!(observedWeather?.observedAt>=Date.now()-7200000)) observedWeather=null;
   liveSky();
@@ -813,7 +815,7 @@ function update(dt, camera) {
 /* ---------------- boot ---------------- */
 W = LabWorld.explore(update);
 ground = W.ground; depth = W.depth;
-if(localField||remoteField){updatePrecipitation=precipitation(W,reduce);updateWildlife=fieldWildlife(W,displayEncode,reduce,localField?undefined:async()=>(await api('/field')).wildlife);}
+if(localField||remoteField){updatePrecipitation=precipitation(W,reduce);updateWildlife=fieldWildlife(W,displayEncode,reduce,localField?undefined:async()=>(await getField()).wildlife);}
 W.scene.add(marker);
 places = buildPlaces({THREE, ground, encode: displayEncode});
 W.scene.add(places.group); SOLID.push(...places.colliders);
