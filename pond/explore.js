@@ -13,7 +13,7 @@ import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=3';
-import {createHud} from './explore-hud.js?v=26';
+import {createHud} from './explore-hud.js?v=27';
 import {makeFind, fieldFinds} from './field-finds.js?v=2';
 import {field as fieldSound, sfx, coon as coonSound} from './explore-audio.js?v=4';
 import {fieldLitter} from './field-litter.js?v=2';
@@ -388,7 +388,28 @@ function nextEvent(now) {
 /* ---------------- live: everyone sees the same raccoon ----------------
    Arriving, he's placed where the brain says he is; then new events arrive every 3 s and become the
    same tasks as the replay. If we fall behind (a backgrounded tab), he jumps ahead to stay true. */
+/* The bot check (Cloudflare Turnstile, invisible): off until Bobby makes a widget for labmedia.work and pastes its
+   public site key here; the Worker's TURNSTILE_SECRET switches the check on at the other end. Visitors only see a
+   challenge if Cloudflare isn't sure they're a person. Tokens are single use, so each send gets a fresh one. */
+const TURNSTILE_SITEKEY = '';
+let turnstileReady = null, turnstileId = null;
+function humanToken() {
+  if (!TURNSTILE_SITEKEY || !/(^|\.)labmedia\.work$/.test(location.hostname)) return Promise.resolve(undefined);
+  turnstileReady ||= new Promise((ok, no) => {
+    const s = document.createElement('script'); s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; s.async = true;
+    s.onload = () => ok(); s.onerror = no; document.head.appendChild(s);
+  });
+  return turnstileReady.then(() => new Promise(resolve => {
+    const box = document.getElementById('turnstileBox') || Object.assign(document.createElement('div'), {id: 'turnstileBox', className: 'turnstile-box pe'});
+    if (!box.isConnected) document.getElementById('hud2').appendChild(box);
+    const done = token => resolve(token);
+    if (turnstileId == null) turnstileId = turnstile.render(box, {sitekey: TURNSTILE_SITEKEY, appearance: 'interaction-only', execution: 'execute', callback: done, 'error-callback': () => resolve(undefined)});
+    else { turnstile.reset(turnstileId); }
+    turnstile.execute(turnstileId, {callback: done});
+  })).catch(() => undefined);
+}
 async function api(path, body) {
+  if (body && (path === '/hi' || path === '/mail')) body = {...body, token: await humanToken()};
   const r = await fetch(LIVE_BASE + path, body ? {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({vid: VID, ...body})} : {});
   const j = await r.json().catch(() => ({})); if (!r.ok) throw Object.assign(new Error(j.error || 'Labcoon is out of reach.'), {status: r.status}); return j;
 }

@@ -1,5 +1,5 @@
 import {swapTable} from './swap-table.js';
-import {fieldNotebook} from './field-notebook.js?v=4';
+import {fieldNotebook} from './field-notebook.js?v=5';
 import {openGallery} from './gallery.js?v=1';
 /* Explore HUD v4 (Nov 26 2026): a game UI in LaB × toy-sticker style (see PINO-UI-NOTES.md).
    Needs strip · "right now" card · clock and sound · radar map · status line · two bottom sheets:

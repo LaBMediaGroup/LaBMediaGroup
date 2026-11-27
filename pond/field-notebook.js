@@ -11,7 +11,8 @@ export function fieldNotebook(host,places,initialSection,load=ownerLoad) {
       <header><h3></h3><span class="page-num"></span></header><small></small>
       <div class="book-words"></div></article>
       <div class="book-turn"><button type="button" data-turn="-1" aria-label="Older page">← Older</button>
-      <button type="button" data-turn="1" aria-label="Newer page">Newer →</button></div></div>`;
+      <button type="button" data-turn="1" aria-label="Newer page">Newer →</button></div>
+      <div class="book-jump"><button type="button" data-jump="first">⇤ From day one</button><button type="button" data-jump="last">Latest ⇥</button></div></div>`;
   const leaf=host.querySelector('.book-leaf'), words=leaf.querySelector('.book-words');
   let data={thoughts:[],notes:[],nights:[],searches:[]}, section=Object.hasOwn(labels,initialSection)?initialSection:'thoughts', index=-1, fetched=0, pending=false, error=false;
   const pg = (tag,text) => { const el=document.createElement(tag); el.textContent=text; words.appendChild(el); return el; };
@@ -45,6 +46,8 @@ export function fieldNotebook(host,places,initialSection,load=ownerLoad) {
     }
     host.querySelector('[data-turn="-1"]').disabled=index<=0;
     host.querySelector('[data-turn="1"]').disabled=index<0||index>=items.length-1;
+    host.querySelector('[data-jump="first"]').disabled=index<=0;
+    host.querySelector('[data-jump="last"]').disabled=index<0||index>=items.length-1;
     if(turn&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
       leaf.animate([{opacity:.65,transform:'translateX(3px)'},{opacity:1,transform:'none'}],{duration:155,easing:'ease-out'});
     }
@@ -57,6 +60,8 @@ export function fieldNotebook(host,places,initialSection,load=ownerLoad) {
     const tab=e.target.closest('[data-book]'),page=e.target.closest('[data-turn]');
     if(tab){section=tab.dataset.book;index=data[section].length-1;paint(true);}
     if(page)changePage(Number(page.dataset.turn));
+    const jump=e.target.closest('[data-jump]');                 // read his life in order from the first page, or jump back to now
+    if(jump&&data[section].length){index=jump.dataset.jump==='first'?0:data[section].length-1;paint(true);}
   });
   host.addEventListener('keydown',e=>{
     if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();e.stopPropagation();changePage(e.key==='ArrowLeft'?-1:1);}
