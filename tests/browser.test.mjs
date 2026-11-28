@@ -559,9 +559,9 @@ test('a hashless reload opens on the field and a Films bookmark still lands at t
   const page = await browser.newPage({viewport:{width:390,height:844}, reducedMotion:'reduce'});
   try {
     await page.route('**/*', route => route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
-    await page.goto(baseURL+'/#films');
+    await page.goto(baseURL+'/field.html#films');
     await page.waitForFunction(() => Math.abs(document.querySelector('#films').getBoundingClientRect().top)<2);
-    await page.evaluate(() => history.replaceState(null, '', '/'));
+    await page.evaluate(() => history.replaceState(null, '', '/field.html'));
     await page.reload();
     await page.waitForFunction(() => scrollY===0 && document.querySelector('#loader').classList.contains('done'));
     assert.equal(await page.locator('.hero-in').evaluate(el=>getComputedStyle(el).opacity), '0');
@@ -586,7 +586,7 @@ test('the phone fridge and onward route work when the 3D renderer is unavailable
     await page.route('**/*', route => route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
     await page.route('**/spotlight-data.js',route=>route.fulfill({contentType:'text/javascript',body:
       'window.SPOTLIGHT=[{id:"test-screening",date:"2026-08-30",until:"2026-09-02",title:"Weekend screening",venue:"Theater"}];'}));
-    await page.goto(baseURL+'/#tools');
+    await page.goto(baseURL+'/field.html#tools');
     await page.waitForSelector('html.no-world');
     const still=await page.locator('.station-frame').evaluate(frame=>getComputedStyle(frame,'::before').backgroundImage);
     assert.match(still,/story-fridge\.webp/);
@@ -622,7 +622,7 @@ test('closing a film returns to its TV after scrolling away from a bookmarked to
   const page=await browser.newPage({viewport:{width:1280,height:800},reducedMotion:'reduce'});
   try {
     await page.route('**/*', route => route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
-    await page.goto(baseURL+'/#tools');
+    await page.goto(baseURL+'/field.html#tools');
     await page.evaluate(()=>document.querySelector('#films').scrollIntoView());
     await page.waitForFunction(()=>!document.querySelector('.film-frame').inert);
     const galleryY=await page.evaluate(()=>scrollY);
@@ -642,7 +642,7 @@ test('scroll visits the shed tools in both directions and resumes after a shortc
   const page=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});
   try {
     await page.route('**/*', route => route.request().url().startsWith(baseURL) ? route.continue() : route.abort());
-    await page.goto(baseURL+'/#tools');
+    await page.goto(baseURL+'/field.html#tools');
     const station=page.locator('#tools');
     for(const expected of ['story','events','book','sun','flight','sun','book','events','story']){
       await station.locator('[data-stop="'+expected+'"]').evaluate(mark=>mark.scrollIntoView({behavior:'instant'}));
@@ -664,7 +664,7 @@ test('one wheel burst stops at the next tool and a short scroll can leave it', a
   try {
     await page.route('**/*',route=>route.request().url().startsWith(baseURL)?route.continue():route.abort());
     await page.route('**/world.js*',route=>route.abort());
-    await page.goto(baseURL+'/#tools');
+    await page.goto(baseURL+'/field.html#tools');
     await page.waitForFunction(()=>document.querySelector('#loader').classList.contains('done') &&
       Math.abs(document.querySelector('#tools').getBoundingClientRect().top)<2);
     const story=page.locator('[data-stop="story"]');
@@ -690,7 +690,7 @@ test('vertical travel and website shortcuts use the same four stops before the p
   try {
     await page.route('**/*',route=>route.request().url().startsWith(baseURL)?route.continue():route.abort());
     await page.route('**/world.js*',route=>route.abort());
-    await page.goto(baseURL+'/#work');
+    await page.goto(baseURL+'/field.html#work');
     await page.waitForSelector('#loader.done',{state:'attached'});
     const cards=['Ballcap Productions','Splitbone','Sweet Babe','Sideways'];
     const positions=await page.locator('#work,.site-stop,#films').evaluateAll(els=>els.map(el=>el.getBoundingClientRect().top+scrollY));
@@ -719,7 +719,7 @@ test('a phone drag can rest between previews and a fast flick settles at one sit
   try {
     await page.route('**/*',route=>route.request().url().startsWith(baseURL)?route.continue():route.abort());
     await page.route('**/world.js*',route=>route.abort());
-    await page.goto(baseURL+'/#work');
+    await page.goto(baseURL+'/field.html#work');
     await page.waitForSelector('#loader.done',{state:'attached'});
     const touch=await page.context().newCDPSession(page);
     async function swipe(direction,fast){
@@ -752,7 +752,7 @@ test('each film has a vertical stop and playback returns to it after rotation', 
   try {
     await page.route('**/*',route=>route.request().url().startsWith(baseURL)?route.continue():route.abort());
     await page.route('**/world.js*',route=>route.abort());
-    await page.goto(baseURL+'/#films');
+    await page.goto(baseURL+'/field.html#films');
     await page.waitForSelector('#loader.done',{state:'attached'});
     const titles=['Gone','Scattered','Trail Dead','Lookout','It’s a Boy','MOZ Interiors','Anthony Brass'];
     const marks=page.locator('#films,.film-stop');
@@ -784,7 +784,7 @@ test('the gallery camera faces every glass and retraces a paused swim',async()=>
   try{
     await page.route('**/*',route=>route.request().url().startsWith(baseURL)?route.continue():route.abort());
     await page.route('**/world.js*',route=>route.abort());
-    await page.goto(baseURL+'/');
+    await page.goto(baseURL+'/field.html');
     const result=await page.evaluate(async()=>{
       const T=await import('three');
       const {createFilmStations}=await import('/pond/film-stations.js');
@@ -810,7 +810,7 @@ test('the contact heading clears the fixed header at the bottom of a short phone
   try{
     await page.route('**/*',route=>route.request().url().startsWith(baseURL)?route.continue():route.abort());
     await page.route('**/world.js*',route=>route.abort());
-    await page.goto(baseURL+'/#make');
+    await page.goto(baseURL+'/field.html#make');
     await page.waitForFunction(()=>document.querySelector('#loader').classList.contains('done'));
     await page.evaluate(()=>scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'}));
     await page.waitForFunction(()=>document.querySelector('#chapterName').textContent==='Contact');
@@ -829,7 +829,7 @@ test('portrait field hub supports keyboard travel and a working pilot guide with
   const page = await browser.newPage({ viewport: { width: 320, height: 568 }, reducedMotion: 'reduce' });
   try {
     await page.route('**/world.js*', route => route.abort());
-    await page.goto(baseURL);
+    await page.goto(baseURL+'/field.html');
     await page.locator('html.no-world #fieldHub.mapped').waitFor();
     await page.locator('#loader.done').waitFor({ state: 'attached' });
     const links = page.locator('#fieldHub a');
@@ -857,7 +857,7 @@ test('portrait field hub supports keyboard travel and a working pilot guide with
 test('a mobile shed arrival gives the fridge a usable scroll hold', async t => {
   const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
   try{
-    await page.goto(baseURL);
+    await page.goto(baseURL+'/field.html');
     await page.waitForFunction(()=>window.LabWorld || document.documentElement.classList.contains('no-world'));
     if(!await page.evaluate(()=>Boolean(window.LabWorld))){t.skip('Requires a WebGL camera');return;}
     await page.locator('#fieldHub a[href="#tools"]').tap();

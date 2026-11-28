@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Peek into the field</title>
+<!-- A live window into the LaB field for the homepage mockups, made to sit in an <iframe>.
+     It's named explore.html on purpose: world.js turns on its walkable-field look (moonlit night floor,
+     filled far field, corn ring) for any page whose path ends in /explore.html.
+     ?shot=wide|bank|culvert|water|top|oak|coon   camera mark (default wide)
+     ?drift=0                                    hold still (default: a slow camera drift)
+     ?coon=0                                     leave Labcoon out (default: he's there, at his live place)
+     ?coon=asleep|awake                          preview his state
+     ?place=washing_rock                         preview another place
+     ?scroll=1                                   the parent page drives the camera: postMessage({peek:'t', t:0..1})
+     ?at=21:30                                   preview another time of day -->
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#0d1312}
+  #world{position:fixed;inset:0;width:100%;height:100%;display:block}
+  .veil{position:fixed;inset:0;background:#0d1312;transition:opacity 1.2s ease;pointer-events:none}
+  .ready .veil{opacity:0}
+</style>
+<script type="importmap">{"imports":{"three":"/pond/vendor/three/three.module.js","three/addons/":"/pond/vendor/three/addons/"}}</script>
+<script src="/sun-calc.js"></script>
+<script src="../shared/live.js"></script>
+<script type="module">
+try { await import('/pond/world.js?v=34'); await import('./peek.js'); }
+catch (e) { console.error(e); parent.postMessage({peek: 'failed'}, '*'); }
+</script>
+</head>
+<body>
+<canvas id="world" aria-hidden="true"></canvas>
+<canvas id="boardPrint" width="800" height="1220" hidden></canvas><!-- the shed's event wall draws into this -->
+<div class="veil"></div>
+</body>
+</html>

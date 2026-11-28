@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d0c">
+<meta name="robots" content="noindex, follow">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://labmedia.work/">
+<meta property="og:title" content="LaB Media — Bobby Baldwin">
+<meta property="og:description" content="Short films, free filmmaking tools, and websites built to order. Shelby Township, Michigan.">
+<meta property="og:image" content="https://labmedia.work/images/TheLaB-mark.png">
+<meta name="twitter:card" content="summary">
+<script>
+if(location.hash==='#directory')location.replace('/directory/index.html'+location.search+location.hash);
+const entry=performance.getEntriesByType('navigation')[0];
+if(!location.hash && entry?.type!=='back_forward' && 'scrollRestoration' in history){
+  history.scrollRestoration='manual';
+  let interacted=false;
+  const touched=()=>{interacted=true;};
+  for(const event of ['wheel','touchstart','keydown','pointerdown'])addEventListener(event,touched,{once:true,passive:true});
+  addEventListener('pageshow',()=>requestAnimationFrame(()=>{
+    if(!interacted && !location.hash)scrollTo(0,0);
+    history.scrollRestoration='auto';
+    for(const event of ['wheel','touchstart','keydown','pointerdown'])removeEventListener(event,touched);
+  }),{once:true});
+}
+</script>
+<title>LaB Media — Bobby Baldwin</title>
+<meta name="description" content="Short films, free filmmaking tools, and websites built to order. Shelby Township, Michigan.">
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Space+Mono&display=swap">
+<link rel="preload" as="image" href="images/TheLaB-mark.png">
+<link rel="stylesheet" href="/pond/next.css?v=25">
+<script type="importmap">{"imports":{"three":"/pond/vendor/three/three.module.js","three/addons/":"/pond/vendor/three/addons/"}}</script>
+<script defer src="sun-calc.js"></script>
+<script defer src="ideas-data.js?v=magnet-1"></script>
+<script type="module">
+import('/pond/world.js?v=25').catch(()=>{
+  document.documentElement.classList.add('no-world');
+  dispatchEvent(new Event('labworld:unavailable'));
+});
+</script>
+<script defer src="/pond/film-viewer.js?v=20"></script>
+<script defer src="/pond/film-player.js?v=20"></script>
+<script defer src="/pond/station-story.js?v=11"></script>
+<script defer src="/pond/surface-controls.js?v=24"></script>
+<script defer src="/pond/event-board.js?v=17"></script>
+<script defer src="/pond/field-tools.js?v=25"></script>
+<script defer src="/pond/field-hub.js?v=25"></script>
+<script defer src="/pond/next.js?v=25"></script>
+</head>
+<body>
+<canvas id="world" aria-hidden="true"></canvas>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader-mark">
+    <img src="images/TheLaB-mark.png" width="1165" height="498" alt="" fetchpriority="high">
+    <span class="loader-exposure"></span>
+  </div>
+</div>
+
+<header class="hud">
+  <a class="mark" href="#top" aria-label="Return to the field hub"><img src="images/TheLaB-mark.png" alt="The LaB" width="1165" height="498"></a>
+  <nav aria-label="Main"><button type="button" class="snd" id="snd" aria-pressed="false" aria-label="Pond ambience" title="Pond ambience"><i></i><i></i><i></i><i></i></button><div class="chapter-nav"><button type="button" id="browseChapters" aria-expanded="false" aria-controls="chapters" aria-label="Browse chapters, Field"><b id="chapterName">Field</b> <span aria-hidden="true">⌄</span></button><div id="chapters"><a href="#top">Field</a><a href="#tools">Tools</a><a href="#drone-school">Drone school</a><a href="#work">Websites</a><a href="#films">Films</a><a class="contact-stop" href="#make">Contact</a></div></div><a class="cta" href="#make">Build yours</a></nav>
+</header>
+
+<main id="top">
+  <noscript><style>body{overflow:auto;background:#101613;color:#f4f2e9}body>*,#top>*{display:none!important}body>#top{display:block!important}#top>noscript{display:block!important}#plainDirectory{display:grid;gap:1rem;max-width:36rem;margin:auto;padding:10vh 6vw}#plainDirectory a{display:block;padding:.45rem 0;text-decoration:underline}</style>
+<nav id="plainDirectory" aria-label="Directory"><strong>The LaB</strong><a href="sun.html">Golden hour planner</a><a href="ideas.html">Story generator</a><a href="droneweather.html">Drone weather</a><a href="skybound.html">Drone guide</a><a href="assistant.html">LaB Assistant</a><a href="portfolio.html">Films</a><a href="contact.html">Contact Bobby</a></nav></noscript>
+  <section class="opening" aria-labelledby="h1">
+    <span class="wind-stop" id="wind" aria-hidden="true"></span>
+    <div class="hero">
+    <nav id="fieldHub" aria-label="Places in the field">
+      <a href="#tools" data-side="left" data-lift="-42"><i aria-hidden="true"></i>Tool shed</a>
+      <a href="#work" data-side="left" data-lift="34"><i aria-hidden="true"></i>Websites</a>
+      <a href="#films" data-side="right" data-lift="-37"><i aria-hidden="true"></i>Film pond</a>
+      <a href="#drone-school" data-side="right" data-lift="32"><i aria-hidden="true"></i>Drone school</a>
+    </nav>
+    <a href="#wind" class="enter-field">Explore the field <span aria-hidden="true">↓</span></a>
+    <div class="hero-in">
+      <p class="micro" id="where">Bobby Baldwin · Shelby Twp, Michigan<span id="fieldLight"></span></p>
+      <h1 id="h1" class="split">Tools, films &amp; websites</h1>
+    </div>
+    <div class="wind-instrument">
+      <div class="wind-reading">
+        <a class="wind-link" href="droneweather.html">SkyBound Wind <span aria-hidden="true">↗</span></a>
+        <div class="wind-values"><strong id="tWind">—</strong><span>mph</span><b id="windBearing"></b></div>
+      </div>
+      <div class="wind-controls">
+        <span class="micro" id="windStatus" role="status">Getting local wind…</span>
+        <label class="wind-dial">Preview wind <input id="windRange" type="range" min="0" max="30" value="6" aria-label="Preview field wind in miles per hour"></label><button type="button" id="windDemo" hidden>Return to weather</button>
+      </div>
+    </div>
+    <a href="#tools" class="cue micro">Enter the shed <span aria-hidden="true">↓</span></a>
+    </div>
+  </section>
+  <div class="shed-approach" aria-hidden="true"><span class="chapter-stop"></span></div>
+  <section class="tools" id="tools" aria-label="Field station" data-place="shed" data-instrument="story">
+    <span class="scroll-stop" id="drone-school" data-stop="flight" aria-hidden="true"></span>
+    <div class="station-frame">
+    <button class="scene-locator" id="inspectInstrument" type="button" hidden></button>
+    <div class="tool-picker">
+      <button type="button" id="chooseTool" aria-expanded="false" aria-controls="stationIndex"><span id="choicePlace">Inside the shed</span><strong id="choiceName">Story fridge</strong><span aria-hidden="true">⌄</span></button>
+      <div id="stationIndex" class="tool-tabs" role="tablist" aria-label="Field station tools"><div class="tool-group" role="presentation"><span aria-hidden="true">Inside the shed</span><div role="presentation"><button type="button" role="tab" id="tab-story" aria-controls="panel-story" aria-selected="true" tabindex="0" data-tool="story">Story fridge</button><button type="button" role="tab" id="tab-events" aria-controls="panel-events" aria-selected="false" tabindex="-1" data-tool="events">Events</button><button type="button" role="tab" id="tab-book" aria-controls="panel-book" aria-selected="false" tabindex="-1" data-tool="book">Notebook</button><button type="button" role="tab" id="tab-ask" aria-controls="panel-ask" aria-selected="false" tabindex="-1" data-tool="ask">Ask the LaB</button></div></div><div class="tool-group" role="presentation"><span aria-hidden="true">Over the pond</span><div role="presentation"><button type="button" role="tab" id="tab-sun" aria-controls="panel-sun" aria-selected="false" tabindex="-1" data-tool="sun">Golden hour</button><button type="button" role="tab" id="tab-flight" aria-controls="panel-flight" aria-selected="false" tabindex="-1" data-tool="flight">Drone school</button></div></div></div>
+      <button type="button" id="stationNext" aria-label="Continue to Events"><span>Events</span> <i aria-hidden="true">→</i></button>
+    </div>
+    <div class="instruments">
+      <div class="instrument" role="tabpanel" id="panel-story" aria-labelledby="tab-story">
+        <div class="instrument-head"><label for="storyField">Magnetic story brief</label><select id="storyField"></select></div>
+        <h2 class="result-text" id="premise" aria-live="polite"></h2>
+        <div class="word-strip" id="wordButtons" role="group" aria-label="Word magnets. Use the arrow keys to choose a word and Enter to pin it."></div><span id="wordHint">Tap a word to pin it</span>
+        <div class="tool-line"><label for="storyTone">Tone</label><select id="storyTone"><option value="">Mixed</option><option value="comedy">Comedy</option><option value="horror">Horror</option><option value="mystery">Mystery</option><option value="romance">Romance</option><option value="experimental">Experimental</option></select><button class="line-roll" id="shuffleLine" type="button">Reroll line</button><button class="pin" id="pinLine" type="button" aria-pressed="false">Pin this line</button></div>
+        <div class="instrument-actions"><button class="action" id="roll" type="button">Shuffle magnets</button><button type="button" id="readBrief">Read brief</button></div>
+      </div>
+      <div class="instrument" role="tabpanel" id="panel-book" aria-labelledby="tab-book" hidden>
+        <div class="instrument-head"><label for="bookTopic">Resource notebook</label><select id="bookTopic"><option value="music">Music</option><option value="soundfx">Sound effects</option><option value="stock">Stock footage</option><option value="software">Software</option></select></div>
+        <h2 class="result-text"><a id="bookName"></a></h2><p id="bookDesc" class="tool-copy"></p>
+        <div class="instrument-actions"><button id="bookPrev" type="button" aria-label="Previous notebook page">← Back</button><button class="action" id="bookNext" type="button" aria-label="Next notebook page">Next →</button><button id="bookSave" type="button" aria-pressed="false">Save to my kit</button></div>
+        <button id="bookAsk" class="paper-tab" type="button">Ask the LaB</button><div class="tool-links"><a href="mykit.html">My kit ↗</a><a href="resources.html">Full notebook ↗</a></div>
+      </div>
+      <div class="instrument" role="tabpanel" id="panel-sun" aria-labelledby="tab-sun" hidden>
+        <div class="instrument-head"><span>Golden hour</span><span id="sunPhase">Shelby Township</span></div><h2 id="sunTime">Golden hour</h2>
+        <p class="tool-copy" id="sunWindow"></p>
+        <div class="solar-track"><input type="range" id="sunClock" min="0" max="1000" step="1" value="0" aria-label="Preview time in Shelby Township"><div class="range-labels"><span id="sunEarly">Afternoon</span><span id="sunBearing"></span><span id="sunLate">Dusk</span></div></div>
+        <div class="instrument-actions"><button type="button" class="instrument-view" id="monitorView" aria-pressed="false">Viewfinder</button><button class="action" id="sunPlay" type="button">Play sunset</button><button id="sunReset" type="button" hidden>Return to now</button><a class="full-tool" href="sun.html">Sun planner ↗</a></div>
+      </div>
+      <div class="instrument" role="tabpanel" id="panel-flight" aria-labelledby="tab-flight" hidden>
+        <div class="flight-heading"><h2>Drone school</h2><output id="flightReadout" for="flightHeight">6.4 m</output></div>
+        <p class="flight-models">Avata 2 on the course · Mini 4 Pro overhead</p>
+        <div class="course-meter">
+          <button type="button" class="instrument-view" id="meterView" aria-pressed="false">Wind station</button>
+          <button type="button" id="guideView" aria-pressed="false">Pilot guide</button>
+          <div id="windKeys"><label>Wind <input id="courseWind" type="range" min="0" max="30" value="6" aria-label="Preview course wind in miles per hour"></label>
+          <output for="courseWind" id="courseWindValue">—</output><button id="courseWeather" type="button" hidden>Restore</button></div>
+        </div>
+        <div id="guideKeys" hidden>
+          <span id="guideTitle" aria-live="polite"></span>
+          <div><button id="guidePrev" type="button" aria-label="Previous lesson">←</button><a id="guideLink" href="skybound.html#simulators">Open lesson ↗</a><button id="guideNext" type="button" aria-label="Next lesson">→</button></div>
+        </div>
+        <div class="flight-camera"><button type="button" class="action" id="flyShot">Fly the reveal</button><input type="range" id="flightHeight" min="0" max="16" step=".1" value="0" aria-label="Course camera altitude" aria-describedby="flightNote"><span id="flightNote" class="sr"></span></div>
+        <nav class="flight-links" aria-label="Drone school resources">
+          <div><span>Practice</span><a href="https://store.steampowered.com/app/410340/Liftoff_FPV_Drone_Racing/" target="_blank" rel="noopener">Liftoff ↗</a><a href="https://www.velocidrone.com/" target="_blank" rel="noopener">VelociDrone ↗</a></div>
+          <div><span>Learn</span><a href="skybound.html#simulators">SkyBound guide ↗</a><a href="https://www.youtube.com/@MrMigsClassroom" target="_blank" rel="noopener">Mr. Migs ↗</a></div>
+        </nav>
+      </div>
+<div class="instrument" role="tabpanel" id="panel-events" aria-labelledby="tab-events" hidden>
+<canvas id="boardPrint" width="800" height="1220" aria-hidden="true"></canvas>
+<div class="board-hitbox">
+  <h2 id="boardMonth" class="sr" aria-live="polite"></h2><button id="boardEarlier" type="button" aria-label="Previous month">Previous month</button><button id="boardLater" type="button" aria-label="Next month">Next month</button>
+  <div id="boardDays" role="group" aria-labelledby="boardMonth"></div>
+  <span class="sr" id="eventDate"></span><a id="eventName"></a><span class="sr" id="eventWhere"></span>
+  <button id="eventNext" type="button">Next listing</button><a id="boardAll" href="events.html">All Michigan events</a>
+</div>
+</div>
+<div class="instrument" role="tabpanel" id="panel-ask" aria-labelledby="tab-ask" hidden>
+<label for="fieldQuery" class="instrument-meta">Ask the LaB</label><form id="fieldAsk" action="assistant.html"><input id="fieldQuery" name="q" placeholder="Where can I find sound effects?" required maxlength="300"><button type="submit">Ask ↗</button></form><div class="tool-answer" id="fieldAnswer" role="status" tabindex="0" hidden></div>
+<div class="ask-foot"><button id="askBook" type="button">← Notebook</button><a class="full-tool" href="assistant.html">Full index ↗</a></div>
+</div></div>
+    </div>
+  </section>
+  <dialog id="briefSheet" aria-labelledby="briefTitle"><div class="brief-top"><p class="micro">From the story fridge</p><button id="briefClose" type="button" aria-label="Close brief">×</button></div><h2 id="briefTitle">Shooting brief</h2><dl id="briefLines"></dl><div class="brief-foot"><button id="copyBrief" type="button">Copy brief</button><a id="developBrief" href="ideas.html">Develop this brief ↗</a></div></dialog>
+  <div class="dive" aria-hidden="true"></div>
+
+  <section class="work" id="work" aria-label="Websites">
+    <div class="work-frame">
+    <div class="deck-bar"><p class="micro"><span>Websites</span> <b id="deckNow" aria-live="polite">01</b>/<span id="deckAll">04</span></p>
+      <div class="arrows"><a class="dive-link" href="#films">Dive to films <span aria-hidden="true">↓</span></a><button type="button" class="round" id="prev" aria-label="Previous">←</button><button type="button" class="round" id="next" aria-label="Next">→</button></div></div>
+    <div class="stage" id="stage"></div>
+    </div>
+  </section>
+
+  <section class="films" id="films" aria-labelledby="filmHeading">
+    <div class="film-frame">
+    <h2 class="sr" id="filmHeading">Films</h2>
+    <button class="film-fallback" id="filmFallback" type="button" aria-haspopup="dialog" aria-label="Watch full film">
+      <canvas id="filmPicture" width="640" height="480" aria-hidden="true"></canvas>
+    </button>
+    <div class="film-bar">
+      <a id="filmSurface" href="#make" hidden>Surface to Contact <span aria-hidden="true">↑</span></a>
+      <button type="button" class="film-details" id="filmDetails" aria-haspopup="dialog">
+        <span class="micro">Films</span><span class="film-title"><strong id="filmTitle">Gone</strong> <span aria-hidden="true">↗</span></span>
+      </button>
+      <span class="sr" id="filmStatus" role="status" aria-live="polite"></span>
+      <div class="film-controls">
+        <div class="film-volume-panel" id="filmVolumePanel" hidden>
+          <label for="filmVolume">Volume</label>
+          <input type="range" id="filmVolume" min="0" max="100" step="5" value="65">
+          <output for="filmVolume" id="filmLevel">65%</output>
+        </div>
+        <button type="button" class="round film-sound" id="filmSound" aria-label="TV sound" aria-pressed="false" title="Turn TV sound on"><span class="speaker" aria-hidden="true"></span><span class="sound-word">Sound</span></button>
+        <button type="button" class="round" id="filmPreview" aria-label="Pause gallery preview" title="Pause gallery preview">Ⅱ</button>
+        <button type="button" class="film-play" id="filmPlay" aria-haspopup="dialog" aria-label="Watch full film"><span aria-hidden="true"></span><b>Watch</b></button>
+        <button type="button" class="round" id="filmPrev" aria-label="Previous television">←</button>
+        <button type="button" class="round" id="filmNext" aria-label="Next television">→</button>
+      </div>
+    </div>
+    </div>
+  </section>
+  <dialog id="filmViewer" aria-labelledby="featureTitle">
+    <div id="featureStage">
+      <video id="featureFilm" playsinline preload="none"></video>
+      <div class="feature-head"><button id="filmBack" type="button">← Back to TVs</button><h2 id="featureTitle"></h2></div>
+      <p id="featureNotice" role="status"></p>
+      <div id="featureProblem" role="status" hidden><p>The film couldn’t load.</p><button id="featureRetry" type="button">Try again</button><a id="featureExternal" target="_blank" rel="noopener" hidden>Watch on YouTube ↗</a></div>
+      <div class="feature-bar">
+        <label class="sr" for="featureSeek">Film position</label><input id="featureSeek" type="range" min="0" max="1" step="1" value="0" disabled>
+        <div class="feature-actions"><button id="featurePlay" type="button">Play</button><output id="featureClock" for="featureSeek" aria-live="off">0:00 / –:––</output>
+        <div class="feature-audio"><button id="featureSound" type="button">Mute</button><label for="featureGain" class="sr">Film volume</label><input type="range" min="0" max="100" step="1" value="65" id="featureGain" aria-label="Film volume"></div>
+        <button type="button" id="featureFullscreen">Fullscreen</button></div>
+      </div>
+    </div>
+  </dialog>
+
+
+  <div class="pond-ascent" aria-hidden="true"></div>
+  <section class="make" id="make" aria-labelledby="mk">
+    <div class="contact-intro">
+      <h2 id="mk" class="split" tabindex="-1">Let’s build yours</h2>
+      <a href="contact.html" class="me-in"><img src="assets/bobby.webp" alt="Bobby Baldwin on set" width="1600" height="1094" loading="lazy"><span><b>Bobby Baldwin</b><small>One camera. Weekends. Shelby Twp.</small></span></a>
+    </div>
+    <form class="slate" id="slate" method="post" data-endpoint="https://sideways.labmedia.work/api/lab-contact">
+      <div class="kinds" role="radiogroup" aria-label="Kind of site">
+        <label><input type="radio" name="kind" value="studio" checked><span>Studio</span></label>
+        <label><input type="radio" name="kind" value="music"><span>Band</span></label>
+        <label><input type="radio" name="kind" value="shop"><span>Shop</span></label>
+        <label><input type="radio" name="kind" value="food"><span>Food</span></label>
+        <label><input type="radio" name="kind" value="other"><span>Other</span></label>
+      </div>
+      <label class="sr" for="visitorName">Your name</label>
+      <input id="visitorName" name="name" placeholder="Your name" autocomplete="name" maxlength="120" required>
+      <label class="sr" aria-hidden="true">Company<input tabindex="-1" name="company" autocomplete="off"></label>
+      <label class="sr" for="idea">What should it feel like?</label>
+      <textarea id="idea" name="idea" rows="2" maxlength="4800" required placeholder="What should it feel like?"></textarea>
+      <div class="row"><label class="sr" for="email">Email</label><input id="email" name="email" type="email" required maxlength="200" placeholder="Email" autocomplete="email"><button type="submit">Send</button></div>
+      <p class="msg" id="msg" role="status"></p>
+      <a id="contactFallback" href="contact.html" hidden>Contact Bobby directly ↗</a>
+    </form>
+  </section>
+</main>
+
+<footer class="foot">
+  <nav aria-label="Elsewhere"><a href="tools.html">All tools</a><a href="directory/index.html">Directory</a><a href="https://www.youtube.com/@ThisIsLabMedia">YouTube</a><a href="https://instagram.com/thisislabmedia">Instagram</a><a href="https://www.linkedin.com/in/baldwinrobert">LinkedIn</a><a href="https://bcp.labmedia.work">Ballcap ↗</a><a class="crew-mark" href="https://crew.labmedia.work" aria-label="Crew access"><img src="assets/crew-mark.png" alt="" width="30" height="13"></a></nav>
+  <p class="micro">Made in Shelby Twp, MI · © 2026 LaB Media</p>
+</footer>
+
+<dialog class="sheet" id="sheet" aria-labelledby="sTitle">
+  <div class="s-media" id="sMedia"></div>
+  <div class="s-body">
+    <p class="micro" id="sKick"></p>
+    <h2 id="sTitle"></h2>
+    <p id="sLine"></p>
+    <dl id="sCred"></dl>
+    <div class="s-act" id="sAct"></div>
+  </div>
+  <button class="round s-x" type="button" id="sX" aria-label="Close">×</button>
+</dialog>
+
+</body>
+</html>

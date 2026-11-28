@@ -40,7 +40,7 @@ const realPages = htmlFiles.filter((file) => !redirectStubs.includes(file));
 /* Full-screen apps reached only by a direct link: noindex, out of the sitemap, and without the
    page furniture (nav, footer, assistant, checklist) that would sit over the app. The usage
    dashboard is the original; Explore (the walkable pond with Labcoon) is an unlinked beta. */
-const unlistedApps = ['ai-usage.html', 'explore.html'];
+const unlistedApps = ['ai-usage.html', 'explore.html', 'field.html'];
 const jsFiles = byExtension('.js');
 const jsonFiles = byExtension('.json');
 
@@ -420,6 +420,7 @@ test('unlisted apps stay unlisted: noindex, out of the sitemap, linked from no p
     assert.doesNotMatch(sitemap, new RegExp(app.replace('.', '\\.')), `${app} must stay out of the sitemap`);
   }
   for (const file of realPages) {
+    if (file === 'index.html') { assert.match(read(file), /id="pondWord" href="\/explore\.html"/); continue; }
     assert.doesNotMatch(read(file), /href=["'][^"']*explore\.html/i, `${file} links to the unlinked Explore beta`);
   }
 });

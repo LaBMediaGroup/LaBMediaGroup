@@ -1,0 +1,113 @@
+{
+ "note": "Sample of GET https://labcoon-api.labmedia.work/api/labcoon/state, saved Nov 27 2026 for local mockups (CORS only allows labmedia.work). fieldNotes trimmed.",
+ "awake": {
+  "ok": true,
+  "asleep": false,
+  "stale": false,
+  "updated": 1795829585664,
+  "state": {
+   "hud": {
+    "drones": false,
+    "mood": "proud",
+    "place": "cattails",
+    "asleep": false,
+    "holding": null,
+    "needs": {
+     "energy": 0.59,
+     "boredom": 0.01,
+     "joy": 1,
+     "hunger": 0.02,
+     "curiosity": 0.23
+    },
+    "step": 1,
+    "plan": [
+     "eat",
+     "explore"
+    ],
+    "project": "A project in progress.",
+    "thought": "You explore the field."
+   }
+  },
+  "events": [
+   {
+    "id": 368,
+    "time": "8:19pm",
+    "move": "walk_to",
+    "text": "You amble to the cattails.",
+    "place": "cattails"
+   },
+   {
+    "id": 369,
+    "time": "8:20pm",
+    "move": "drop",
+    "text": "You set your find down.",
+    "place": "cattails"
+   },
+   {
+    "id": 370,
+    "time": "8:21pm",
+    "move": "swat_at_fish",
+    "text": "You take a swipe at a fish.",
+    "place": "cattails"
+   },
+   {
+    "id": 371,
+    "time": "8:25pm",
+    "move": "sit_and_watch",
+    "text": "You watch the water.",
+    "place": "cattails"
+   },
+   {
+    "id": 372,
+    "time": "8:31pm",
+    "move": null,
+    "text": "You stretch. Where were you? Ah, right.",
+    "place": "cattails"
+   },
+   {
+    "id": 373,
+    "time": "8:31pm",
+    "move": "eat",
+    "text": "You eat your find.",
+    "place": "cattails"
+   }
+  ]
+ },
+ "asleep": {
+  "ok": true,
+  "asleep": true,
+  "stale": false,
+  "updated": 1795829585664,
+  "state": {
+   "hud": {
+    "drones": false,
+    "mood": "sleepy",
+    "place": "culvert",
+    "asleep": true,
+    "holding": null,
+    "needs": {
+     "energy": 0.59,
+     "boredom": 0.01,
+     "joy": 1,
+     "hunger": 0.02,
+     "curiosity": 0.23
+    },
+    "step": 0,
+    "plan": [
+     "sleep"
+    ],
+    "project": "A project in progress.",
+    "thought": "You explore the field."
+   }
+  },
+  "events": [
+   {
+    "id": 1,
+    "time": "5:58am",
+    "move": "sleep",
+    "text": "You curl up in the culvert with your tail over your nose.",
+    "place": "culvert"
+   }
+  ]
+ }
+}
