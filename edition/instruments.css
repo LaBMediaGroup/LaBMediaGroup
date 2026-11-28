@@ -1,0 +1,147 @@
+@font-face {
+  font-family: LaBSerif;
+  src: url(/assets/regular.ttf);
+}
+@font-face {
+  font-family: LaBSerif;
+  src: url(/assets/italic.ttf);
+  font-style: italic;
+}
+body[data-instrument] main {
+  --f-display: LaBSerif, Georgia, serif;
+}
+body[data-instrument] main :is(.pg-hero h1, .as-hero h1, .hero h1) {
+  font-family: LaBSerif, Georgia, serif;
+  letter-spacing: -0.045em;
+}
+[data-instrument="droneweather"] main > .pg-hero {
+  max-width: none;
+  width: 100%;
+  padding: 0;
+}
+[data-instrument="droneweather"] .pg-hero-grid {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 60svh;
+  isolation: isolate;
+  padding: clamp(24px, 5vw, 90px);
+  background: #222b24;
+  margin: 0;
+  overflow: hidden;
+}
+[data-instrument="droneweather"] #wxSceneStage {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  max-height: none;
+  width: 100%;
+  z-index: -2;
+  border: 0;
+  border-radius: 0;
+}
+[data-instrument="droneweather"] #wxCanvas {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  display: block;
+}
+[data-instrument="droneweather"] .pg-hero-grid:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, #121b16e8, transparent 80%);
+  z-index: -1;
+  pointer-events: none;
+}
+[data-instrument="droneweather"] .pg-hero-grid h1,
+[data-instrument="droneweather"] .pg-hero-grid .lede {
+  color: #f6efdf;
+}
+[data-instrument="droneweather"] .pg-hero-grid > div:first-child {
+  pointer-events: none;
+}
+[data-instrument="droneweather"] .wx-card {
+  border-radius: 0;
+  box-shadow: none;
+}
+[data-instrument="droneweather"] #wxWind {
+  font:
+    clamp(50px, 7vw, 106px)/0.95 LaBSerif,
+    serif;
+}
+[data-instrument="droneweather"] #fieldObservation {
+  font-size: clamp(14px, 1.5vw, 22px);
+  line-height: 1.25;
+}
+[data-instrument="sun"] main > .pg-hero {
+  position: relative;
+  background:
+    linear-gradient(90deg, #1f261cdb, #29281165),
+    url(/pond/img/field-still.webp) center 49% / cover;
+  padding: clamp(32px, 6vw, 100px);
+  width: 100%;
+  max-width: none;
+  color: #fff4d7;
+  --ink: #fff4d7;
+  --dim: #edead5;
+  --faint: #dddac3;
+  --accent: #ffd39b;
+}
+[data-instrument="sun"] .planner-shell {
+  padding-top: 28px;
+}
+[data-instrument="ideas"] .brief {
+  background: #c6c2a7 url(/pond/img/story-fridge.webp) center/cover;
+  background-blend-mode: soft-light;
+  border: 8px solid #bdbdae;
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 3px #4c514c;
+  padding: clamp(16px, 4vw, 65px);
+  color: #222921;
+}
+[data-instrument="ideas"] #grid > * {
+  background: #efe9d8;
+  color: #21251e;
+  border-radius: 2px;
+  border: 0;
+  box-shadow: 2px 5px 0 #666a5a66;
+  --ink: #21251e;
+  --faint: #4d5147;
+  --dim: #474c40;
+  --paper-2: #efe9d8;
+  --accent: #86452f;
+}
+[data-instrument="ideas"] #grid > *:nth-child(3n + 1) {
+  transform: rotate(-0.75deg);
+}
+[data-instrument="ideas"] #grid > *:nth-child(3n + 2) {
+  transform: rotate(0.65deg);
+}
+[data-instrument="skybound"] .hero {
+  background:
+    linear-gradient(90deg, #142016e8, #1017105c),
+    url(/pond/img/course-overview.webp) center/cover;
+  text-align: left;
+  color: #f1f1db;
+  padding: clamp(40px, 8vw, 105px);
+  --ink: #f2f2dd;
+  --dim: #dddfcf;
+  --muted: #dddfcf;
+  --sky: #d2e4ac;
+}
+[data-instrument="skybound"] .hero p {
+  margin-inline: 0;
+  color: #e6ebd6;
+}
+[data-instrument="assistant"] :is(.as-hero, .as-shell) {
+  max-width: 920px;
+}
+[data-instrument="assistant"] .assistant-panel {
+  border-radius: 0;
+  box-shadow: none;
+  border-top: 3px solid var(--accent);
+}
+[data-instrument="assistant"] .assistant-panel article {
+  padding-block: clamp(14px, 3vh, 32px);
+}

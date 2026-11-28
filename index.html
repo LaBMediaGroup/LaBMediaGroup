@@ -1,241 +1,43 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="canonical" href="https://labmedia.work/">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://labmedia.work/">
-<meta property="og:title" content="LaB Media — Bobby Baldwin">
-<meta property="og:description" content="Short films, free filmmaking tools, and websites built to order. Shelby Township, Michigan.">
-<meta property="og:image" content="https://labmedia.work/images/TheLaB-mark.png">
-<meta name="twitter:card" content="summary">
-<title>LaB Media · Short films and websites, Shelby Township</title>
-<meta name="description" content="Short films, free filmmaking tools, and websites built to order. Shelby Township, Michigan.">
-<meta name="theme-color" content="#0b0a09">
-<link rel="icon" href="/images/WhiteBeakerLogo.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Nunito:wght@800;900&family=Space+Mono:wght@400;700&display=swap">
-<link rel="stylesheet" href="/title-sequence/d.css">
-<script>
-  if (location.hash === '#directory') location.replace('/directory/index.html' + location.search + location.hash);
-  if (['#wind','#tools','#drone-school','#work','#make','#golden-hour'].includes(location.hash))
-    location.replace('/field.html' + location.search + location.hash);
-
-  /* the loader runs once per visit; ?intro=1 forces it, ?intro=0 skips it */
-  (() => { let seen = false; const q = new URLSearchParams(location.search).get('intro');
-    try { seen = sessionStorage.getItem('labD-intro') === '1'; } catch {}
-    if (q === '0' || (seen && q !== '1')) document.documentElement.classList.add('no-intro'); })();
-</script>
-<script type="importmap">{"imports":{"three":"/pond/vendor/three/three.module.js","three/addons/":"/pond/vendor/three/addons/"}}</script>
-<script src="/title-sequence/shared/live.js"></script>
-<script src="/title-sequence/shared/work.js"></script>
-</head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LaB Media · Custom websites and films by Bobby Baldwin</title>
+<meta name="description" content="I’m Bobby. I build custom websites and make films in Shelby Township, Michigan. Try the sites, watch a short, or start a project with me.">
+<meta name="theme-color" content="#151610"><link rel="canonical" href="https://labmedia.work/">
+<meta property="og:title" content="LaB Media · Bobby Baldwin"><meta property="og:description" content="Custom websites and independent films from Shelby Township, Michigan."><meta property="og:image" content="https://labmedia.work/assets/bobby.webp"><meta property="og:url" content="https://labmedia.work/"><meta property="og:type" content="website">
+<link rel="icon" href="/images/WhiteBeakerLogo.png"><link rel="preload" href="/assets/regular.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="/edition/home.css">
+<script>if(location.hash==='#directory')location.replace('/directory/index.html'+location.search+location.hash);if(['#work','#make','#golden-hour','#wind','#drone-school'].includes(location.hash))location.replace('/field.html'+location.search+location.hash);</script>
+<script defer src="/edition/vendor/gsap.min.js"></script><script defer src="/edition/vendor/ScrollTrigger.min.js"></script>
+<script defer src="/title-sequence/shared/work.js"></script><script defer src="/edition/forecast.js"></script><script defer src="/edition/home.js"></script>
+<script defer src="/edition/field.js"></script><script defer src="/edition/dot.js"></script></head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-
-<!-- LOADER: rolling digits 000 → 100, then the LaB mark, then the letterbox opens -->
-<div id="intro" aria-hidden="true">
-  <div class="intro-count"><span class="col" data-col="0"></span><span class="col" data-col="1"></span><span class="col" data-col="2"></span></div>
-  <img class="intro-mark" src="/images/TheLaB-mark.png" alt="" width="1165" height="498">
-  <p class="intro-foot mono"><span>A LaB Media production</span><span>Reel 01</span></p>
-  <i class="intro-bar top"></i><i class="intro-bar bot"></i>
-</div>
-
-<header class="slate">
-  <a class="slate-mark" href="#main" aria-label="LaB Media, back to the top"><img src="/images/TheLaB-mark.png" alt="" width="1165" height="498"></a>
-  <p class="slate-tc mono" aria-hidden="true"><span class="rec"></span>Reel 01 <b id="tc">00:00:00:00</b></p>
-  <nav class="slate-nav mono" aria-label="Sections"><a href="#films">Films</a><a href="#sites">Sites</a><a href="#credits">Tools</a></nav>
-  <a class="slate-cta" href="#contact">Start a project</a>
-</header>
-
+<header class="mast"><a class="brand" href="#main" aria-label="LaB Media home"><img src="/assets/LaBMedia-mark.png" alt="LaB Media" width="1200" height="230"></a><nav aria-label="Sections"><a href="#sites">Websites</a><a href="#films">Films</a><a href="#tools">Tools</a></nav><button id="sound" aria-pressed="false" aria-label="Enable sound" title="Sound"><span aria-hidden="true">◖))</span><small>Off</small></button><a class="reach" href="/contact.html">Contact Bobby <span>↗</span></a></header>
 <main id="main">
-  <noscript><style>body{overflow:auto;background:#101613;color:#f4f2e9}body>*,#main>*{display:none!important}body>#main{display:block!important}#main>noscript{display:block!important}#plainDirectory{display:grid;gap:1rem;max-width:36rem;margin:auto;padding:10vh 6vw}#plainDirectory a{display:block;padding:.45rem 0;text-decoration:underline}</style>
+<section class="welcome" aria-labelledby="hello"><div class="portrait" role="img" aria-label="Bobby on set under the lights"></div>
+<div class="intro"><p class="byline">Bobby Baldwin <i></i> Shelby Township, MI</p><h1 id="hello">Hey, I’m<br><em>Bobby.</em></h1>
+<p class="sentence">I build custom sites<br>and <span class="last-words">make films</span><span id="period">.</span></p></div>
+<div class="intro-bottom"><a href="#sites">See the work <span>↓</span></a><span>LaB Media / Michigan</span></div></section>
+<div id="spindle" aria-hidden="true"></div>
+<section id="sites" class="ribbon-section" aria-labelledby="sites-heading"><div class="ribbon-pin">
+<div class="sites-header"><h2 id="sites-heading">The websites<span>.</span></h2><button class="motion-toggle" id="motion" aria-pressed="false">Pause motion</button></div>
+<div class="ribbon-layout"><div class="ribbon-window"><div id="cards"></div></div>
+<div class="site-index"><nav aria-label="Open a website" id="site-names"></nav>
+<p id="site-copy"></p><button class="open-site" id="visit">Open Sweet Babe <span>↗</span></button></div></div>
+</div></section>
+<section id="films" class="gone" aria-labelledby="gone-title"><div class="gone-pin"><div class="room"><video id="newscast" preload="none" muted playsinline loop poster="/edition/broadcast.webp" data-src="/edition/broadcast.mp4"></video></div><div class="gone-info"><p class="byline">Latest film <i></i> Horror Film Roulette XIII</p><h2 id="gone-title">Gone<span>.</span></h2><p>One building. No way out.</p><button data-film="gone" class="light-action">Watch Gone <span>▶</span></button></div></div></section>
+<section class="catalog" aria-labelledby="catalog-title"><div class="catalog-head"><h2 id="catalog-title">The films<span>.</span></h2><p>Seven films by LaB Media</p></div><div id="film-list"></div></section>
+<section id="scattered" class="dot-section" aria-label="Scattered poster and teaser"><div class="dot-pin"><canvas id="dot-stage" aria-hidden="true"></canvas><div class="dot-caption"><span>Detroit 48 Hour Film Project</span><button data-film="scattered">Watch Scattered <b>▶</b></button></div></div></section>
+<section id="fly" class="field" aria-labelledby="field-title"><div class="field-pin"><canvas id="field-plate" aria-hidden="true"></canvas><div class="field-mask" aria-hidden="true">FLY</div><div class="field-info"><p class="byline">Shelby Township <i></i> Field station</p><h2 id="field-title">Drone school<span>.</span></h2><div class="weather"><div><span>Wind</span><strong id="speed">—</strong><small>mph</small></div><div><span>Gust</span><b id="gust">—</b></div><div><span>Direction</span><b id="bearing">—</b></div></div><p id="wx-time">Checking field conditions…</p><div class="field-actions"><a href="/skybound.html">Flight guide ↗</a><a href="/droneweather.html">Full forecast ↗</a></div></div></div></section>
+<section id="tools" class="tool-section"><div><p class="byline">From my kit</p><h2>Working<br><em>tools.</em></h2></div><div class="tool-index">
+<a href="/sun.html"><span>Golden hour</span><small>Plan the light</small><b>↗</b></a><a href="/ideas.html"><span>Story generator</span><small>Build a brief</small><b>↗</b></a><a href="/droneweather.html"><span>Drone weather</span><small>Read the field</small><b>↗</b></a><a href="/skybound.html"><span>Drone guide</span><small>Learn to fly</small><b>↗</b></a><a href="/assistant.html"><span>LaB Assistant</span><small>Find a resource</small><b>↗</b></a></div></section>
+<section id="pond" class="pond"><a id="pondWord" href="/explore.html" aria-label="Explore the pond with Labcoon"><span class="pond-aperture" aria-hidden="true"></span><span>Explore with Labcoon ↗</span></a></section>
+<section id="contact" class="contact"><p class="byline">Get in touch</p><h2>What are you<br><em>making?</em></h2><a href="/contact.html">Tell me about it <span>↗</span></a></section>
+<noscript><style>body{overflow:auto;background:#101613;color:#f4f2e9}body>*,#main>*{display:none!important}body>#main{display:block!important}#main>noscript{display:block!important}#plainDirectory{display:grid;gap:1rem;max-width:36rem;margin:auto;padding:10vh 6vw}#plainDirectory a{display:block;padding:.45rem 0;text-decoration:underline}</style>
 <nav id="plainDirectory" aria-label="Directory"><strong>The LaB</strong><a href="sun.html">Golden hour planner</a><a href="ideas.html">Story generator</a><a href="droneweather.html">Drone weather</a><a href="skybound.html">Drone guide</a><a href="assistant.html">LaB Assistant</a><a href="portfolio.html">Films</a><a href="contact.html">Contact Bobby</a></nav></noscript>
-
-<!-- 01 · OPENING TITLES: the films play inside the letters; scroll drops the letters out of the word -->
-<section id="open" class="card" aria-labelledby="open-h">
-  <div class="pin">
-    <canvas id="openGL" aria-hidden="true"></canvas>
-    <div class="open-letterbox" aria-hidden="true"><i></i><i></i></div>
-    <p class="slug mono open-slug">01 · Ext. Shelby Township · Night</p>
-    <h1 id="open-h" class="open-h1"><span class="vh">LaB Media: </span><em>Short films and websites,</em> <em>made in Shelby Township.</em></h1>
-    <p class="open-now mono" aria-live="off"><span class="dot"></span>Now showing <b id="nowTitle">Gone</b> <span id="nowMeta">2026 · Sci-fi</span></p>
-    <p class="open-cue mono" aria-hidden="true">Scroll to roll</p>
-    <div class="open-end" aria-hidden="true">
-      <p class="open-end-t" id="endTitle">Gone</p>
-      <p class="open-end-m mono" id="endMeta">Horror Film Roulette XIII · Senate Theater, Detroit</p>
-    </div>
-  </div>
-</section>
-
-<!-- 02 · DIRECTED BY: editorial reveals, the signature, the portrait wipe, the drifting collage -->
-<section id="studio" class="card" aria-labelledby="studio-h">
-  <div class="wrap">
-    <p class="slug mono">02 · Int. The LaB · Continuous</p>
-    <h2 id="studio-h" class="statement" data-ink>
-      I’m Bobby. I make <mark class="hl" data-ink-color="#0b0a09">short films</mark> in Shelby Township, mostly on weekends.
-      In between, I build <mark class="hl" data-ink-color="#0b0a09">websites to order.</mark>
-    </h2>
-  </div>
-  <div class="studio-pair">
-    <div class="byline wrap">
-      <div class="sig" id="sigBobby" aria-hidden="true"><svg viewBox="0 0 600 130"></svg></div>
-      <p class="sig-cap mono">Written, shot and cut by Bobby Baldwin</p>
-    </div>
-
-    <figure class="portrait" id="portrait">
-      <img src="/assets/bobby.webp" alt="Bobby on set, checking a camera rig under a ring of vanity bulbs" width="1600" height="1094" loading="lazy">
-      <div class="portrait-film" aria-hidden="true"><video muted playsinline loop preload="none" poster="/assets/scattered-still.webp" data-src="/pond/film-clips/scattered.mp4"></video></div>
-      <i class="portrait-strip" aria-hidden="true"></i>
-      <button class="portrait-lock" type="button" aria-pressed="false"><span class="on-touch">Tap to lock</span><span class="on-mouse">Click to lock</span></button>
-      <figcaption class="vh">Bobby Baldwin. A frame from Scattered rolls across the portrait.</figcaption>
-    </figure>
-  </div>
-
-  <div class="collage" aria-label="Stills from the films and the websites">
-    <figure data-speed=".22" class="c1"><img src="/assets/scattered-still.webp" alt="Still from Scattered" loading="lazy"><figcaption class="mono">Scattered, 2026</figcaption></figure>
-    <figure data-speed="-.12" class="c2"><img src="/pond/img/ballcap.jpg" alt="Ballcap Productions website" loading="lazy"><figcaption class="mono">ballcap, site</figcaption></figure>
-    <figure data-speed=".38" class="c3"><img src="/assets/trail.webp" alt="Still from Trail Dead" loading="lazy"><figcaption class="mono">Trail Dead, 2025</figcaption></figure>
-    <figure data-speed="-.2" class="c4"><img src="/pond/img/sweetbabe.jpg" alt="Sweet Babe website" loading="lazy"><figcaption class="mono">sweet babe, site</figcaption></figure>
-    <figure data-speed=".1" class="c5"><img src="/assets/lookout.webp" alt="Still from Lookout" loading="lazy"><figcaption class="mono">Lookout, 2025</figcaption></figure>
-    <figure data-speed="-.3" class="c6"><img src="/pond/img/splitbone-home.jpg" alt="Splitbone website" loading="lazy"><figcaption class="mono">splitbone, site</figcaption></figure>
-    <p class="collage-line"><em>Most weekends</em> look like this.</p>
-  </div>
-</section>
-
-<!-- 03 · THE FILMS: a kinetic list. Desktop: the clip follows the pointer. Phone: the centre row plays inline. -->
-<section id="films" class="card" aria-labelledby="films-h">
-  <div class="wrap">
-    <p class="slug mono">03 · Feature presentation</p>
-    <h2 id="films-h" class="title-card"><span class="cascade">The films</span> <em>Seven shorts. Mostly weekends.</em></h2>
-  </div>
-  <ol class="reel" id="reel"></ol>
-  <div class="follow" id="follow" aria-hidden="true"><video muted playsinline loop preload="none"></video><span class="mono">Play</span></div>
-</section>
-
-<!-- 04 · WEBSITES: recorded phone visits and a live desktop stage -->
-<section id="sites" class="card" aria-labelledby="sites-h">
-  <div class="pin">
-    <div class="sites-head wrap">
-      <p class="slug mono">04 · Int. Browser · Day</p>
-      <h2 id="sites-h" class="sites-title"><em>Websites,</em> built to order.</h2>
-    </div>
-    <div class="sites-stage">
-      <div class="sites-cards" id="siteCards" aria-hidden="true"></div>
-      <ol class="sites-names" id="siteNames"></ol>
-    </div>
-    <div class="sites-foot wrap">
-      <p class="sites-line" id="siteLine"></p>
-      <p class="sites-row"><a class="link" id="siteVisit" href="#">Visit the site ↗</a><button id="previewToggle" class="mono" type="button" hidden>Play preview</button><span class="mono" id="siteCount">01 / 04</span></p>
-    </div>
-  </div>
-</section>
-<div class="sites-after wrap"><p>Every site here started as a conversation. <a class="link" href="#contact">Start a site</a></p></div>
-
-<!-- 05 · THE POND: the live world inside the letters. ENTRANCE 1: tap the word and fall in. -->
-<section id="pond" class="card" aria-labelledby="pond-h">
-  <div class="wrap">
-    <p class="slug mono">05 · Ext. The pond · <span data-live="clock">Night</span> · Live</p>
-    <h2 id="pond-h" class="pond-h"><em>Meanwhile,</em> at the pond.</h2>
-  </div>
-  <a class="pond-word" id="pondWord" href="/explore.html" aria-describedby="pondStatus">
-    <span class="vh">Pond: a live view of Labcoon’s field. Go in.</span>
-    <span class="pond-mask" id="pondMask"><img class="pond-still" src="/title-sequence/shared/stills/water-night.webp" alt="" loading="lazy"></span>
-  </a>
-  <div class="wrap pond-foot">
-    <p class="pond-status" id="pondStatus"><span class="live-dot"></span><span data-live="line">Labcoon is out in the field.</span></p>
-    <a class="door" href="/explore.html" data-door="pond"><span data-live="pondCta">Step into the pond</span><i>↗</i></a>
-  </div>
-</section>
-
-<!-- 06 · DRONE SCHOOL: the field from above, inside the letters -->
-<section id="fly" class="card" aria-labelledby="fly-h">
-  <div class="wrap">
-    <p class="slug mono">06 · Ext. The field · Golden hour</p>
-    <h2 id="fly-h" class="fly-word" aria-label="Fly: drone school">Fly</h2>
-    <div class="fly-body">
-      <p class="fly-t"><em>Drone school.</em></p>
-      <p class="fly-line" id="flyLine"></p>
-      <ul class="fly-links mono" id="flyLinks"></ul>
-    </div>
-  </div>
-</section>
-
-<!-- 07 · END CREDITS: the tools roll like credits. ENTRANCES 2 (his credit) and 3 (his signature). -->
-<section id="credits" class="card" aria-labelledby="credits-h">
-  <div class="pin">
-    <div class="roll" id="roll">
-      <p class="slug mono">07 · End credits</p>
-      <h2 id="credits-h" class="roll-h">Free tools <em>for filmmakers</em></h2>
-      <ul class="credits" id="toolCredits"></ul>
-      <h3 class="roll-sub mono">The LaB</h3>
-      <ul class="credits small">
-        <li><span>Written, shot and cut by</span><i></i><span>Bobby Baldwin</span></li>
-        <li><span>Websites</span><i></i><span>built to order</span></li>
-        <li><span>Crew</span><i></i><span>whoever said yes</span></li>
-        <li><span>Coffee</span><i></i><span>plenty</span></li>
-      </ul>
-      <h3 class="roll-sub mono">Featuring</h3>
-      <a class="credit-coon" id="creditCoon" href="/explore.html" data-door="credits">
-        <span class="cc-line"><span class="cc-name">Labcoon</span><i></i><span class="cc-as"><em>as himself</em></span></span>
-        <span class="cc-status mono"><span class="live-dot"></span><span data-live="credit">out in the field</span></span>
-        <canvas class="cc-coon" id="ccCoon" width="200" height="150" aria-hidden="true"></canvas>
-        <span class="cc-z mono" aria-hidden="true">z<b>z</b><b>z</b></span>
-        <span class="cc-go mono">Go in ↗</span>
-      </a>
-      <a class="autograph" id="autograph" href="/explore.html" data-door="signature">
-        <span class="vh">Labcoon’s signature. Go in to his field.</span>
-        <svg class="paw-sig" viewBox="-20 0 360 150" aria-hidden="true"></svg>
-        <span class="autograph-cap mono" data-live="signed">signed in the field</span>
-        <span class="autograph-go">Go in ↗</span>
-      </a>
-      <p class="roll-note"><em>No raccoons were harmed in the making of this website.</em></p>
-    </div>
-  </div>
-</section>
-
-<!-- 08 · CONTACT: the last title card -->
-<section id="contact" class="card" aria-labelledby="contact-h">
-  <div class="wrap">
-    <p class="slug mono">08 · Your project</p>
-    <h2 id="contact-h" class="contact-h" data-ink><span class="b">Let’s make</span> <em>yours.</em></h2>
-    <p class="contact-lede">A short film, a website, or both. Tell me what you’re making and I’ll write back.</p>
-    <a class="send" href="/contact.html">Start a project <i>→</i></a>
-  </div>
-</section>
-
 </main>
+<footer><img src="/assets/LaBMedia-mark.png" alt="LaB Media" width="1200" height="230" loading="lazy"><nav aria-label="Directory"><a href="resources.html">Resources</a><a href="tools.html">All tools</a><a href="directory/index.html">Directory</a><a class="crew-mark" href="https://crew.labmedia.work" aria-label="Crew access">Crew</a></nav></footer>
+<dialog id="viewer" aria-labelledby="viewer-title"><div class="viewer-top"><h2 id="viewer-title"></h2><button id="close-viewer">Close <span>×</span></button></div><div id="viewer-body"></div></dialog>
 
-<footer class="fin">
-  <p class="fin-word" aria-hidden="true">Fin</p>
-  <div class="wrap fin-row">
-    <img src="/images/TheLaB-mark.png" alt="LaB Media" width="1165" height="498" loading="lazy">
-    <nav class="mono" aria-label="Elsewhere">
-      <a href="https://www.youtube.com/@ThisIsLabMedia">YouTube</a>
-      <a href="https://www.instagram.com/thisislabmedia/">Instagram</a>
-      <a href="tools.html">All tools</a>
-      <a href="resources.html">Resources</a>
-      <a href="directory/index.html">Directory</a>
-      <a class="crew-mark" href="https://crew.labmedia.work" aria-label="Crew access"><img src="assets/crew-mark.png" alt="" width="30" height="13"></a>
-    </nav>
-    <p class="mono">© 2026 LaB Media · Shelby Township, MI</p>
-  </div>
-</footer>
-
-<dialog class="screening" id="screening" aria-labelledby="scrTitle">
-  <div class="scr-in">
-    <video controls playsinline preload="none"></video>
-    <div class="scr-meta"><h3 id="scrTitle"></h3><p class="scr-line"></p><dl class="mono scr-cred"></dl><p class="scr-links"></p></div>
-    <button class="scr-x mono" type="button" aria-label="Close the film">Close</button>
-  </div>
-</dialog>
-
-<div class="through" id="through" aria-hidden="true"><p class="mono"></p></div>
-<div class="grain" aria-hidden="true"></div>
-
-<script src="/title-sequence/ink.js"></script>
-<script type="module" src="/title-sequence/d.js"></script>
-</body>
-</html>
+</body></html>

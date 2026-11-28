@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script src="/edition/forecast.js"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SkyBound : Weather &amp; Drone Flight Safety | LaB Media</title>
@@ -270,7 +270,7 @@
 #wxSceneStage{scroll-margin-top:80px}
 #forecastWind{position:absolute;top:33%;left:40%;pointer-events:none;color:#c4eaf2;filter:drop-shadow(0 1px 3px #213742);z-index:1;overflow:visible}
 #forecastWind[hidden]{display:none}
-</style><link rel="stylesheet" href="tool-surface.css"><script defer src="tool-surface.js"></script></head>
+</style><link rel="stylesheet" href="tool-surface.css"><script defer src="tool-surface.js"></script><link rel="stylesheet" href="/edition/instruments.css"></head>
 <body data-instrument="droneweather">
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -375,6 +375,8 @@
       <div class="wx-metric">
         <div class="k">Wind Gusts</div>
         <div class="v" id="wxGust">--<small> mph</small></div>
+      </div><div class="wx-metric"><div class="k">Wind direction</div><div class="v" id="fieldBearing">—</div>
+      </div><div class="wx-metric"><div class="k">Model time</div><div class="v" id="fieldObservation">—</div>
       </div>
       <div class="wx-metric">
         <div class="k">Temperature</div>
@@ -603,11 +605,15 @@
 (function(){
   /* Live Weather Fetch */
   try{var cloudPreview=new URL(location.href).searchParams.get('cloud');if(cloudPreview!==null&&Number.isFinite(Number(cloudPreview)))window.wxCloudOverride=Math.max(0,Math.min(100,Number(cloudPreview)))}catch(e){}
-  fetch('https://api.open-meteo.com/v1/forecast?latitude=42.67&longitude=-83.03&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,visibility,precipitation,cloud_cover&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto')
-    .then(function(res){ return res.json(); })
+  LaBFieldForecast.load()
     .then(function(data){
       if(!data || !data.current) throw new Error('Current conditions unavailable');
       var w = data.current;
+      var staleField=data.stale;
+      var direction=document.getElementById('fieldBearing');
+      if(direction)direction.textContent=Math.round(w.wind_direction_10m)+'°';
+      var clock=document.getElementById('fieldObservation');
+      if(clock)clock.textContent=w.time.replace('T',' ')+' Michigan time';
       window.dispatchEvent(new CustomEvent('lab:forecast-wind', { detail:w }));
       var windMph = Math.round(w.wind_speed_10m);
       var gustMph = Math.round(w.wind_gusts_10m);
@@ -646,6 +652,11 @@
       }
       var shownCloud=Number.isFinite(window.wxCloudOverride)?window.wxCloudOverride:window.wxCloudCover;
       if(advisoryLine)advisoryLine.textContent+=' · '+Math.round(shownCloud)+'% CLOUD';
+      if(staleField){
+        if(stateText)stateText.textContent='Last available reading';
+        if(advisoryLine)advisoryLine.textContent='STALE MODEL DATA · VERIFY CURRENT CONDITIONS BEFORE FLIGHT';
+        if(dot)dot.className='status-dot yellow';
+      }
       if(sourceLine) sourceLine.textContent = 'Open-Meteo forecast model · updated ' + new Date(w.time).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}) + ' · cloud cover shapes the scene, not the safety verdict · verify conditions and airspace on site.';
 
       /* WMO codes split into two intensities rather than one boolean. The

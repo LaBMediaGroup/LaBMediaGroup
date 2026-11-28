@@ -378,7 +378,9 @@ test('weather and Golden Hour scenes keep separate solar-aware compositions', ()
 test('live cloud cover shapes both light scenes without changing safety thresholds', () => {
   const weather = read('droneweather.html');
   const golden = read('sun.js');
-  assert.match(weather, /current=[^'"\s]*cloud_cover/);
+  assert.match(weather, /src="\/edition\/forecast\.js"/);
+  assert.match(weather, /LaBFieldForecast\.load\(/);
+  assert.match(read('edition/forecast.js'), /current=[^'"\s]*cloud_cover/);
   assert.match(golden, /current=[^'"\s]*cloud_cover/);
   assert.match(weather, /cloud cover shapes the scene, not the safety verdict/i);
   assert.match(weather, /labSceneSetCloud/);
