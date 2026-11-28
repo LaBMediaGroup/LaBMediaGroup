@@ -13,8 +13,8 @@ import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=3';
-import {createHud} from './explore-hud.js?v=30';
-import {makeFind, fieldFinds} from './field-finds.js?v=4';
+import {createHud} from './explore-hud.js?v=31';
+import {makeFind, fieldFinds} from './field-finds.js?v=5';
 import {field as fieldSound, sfx, coon as coonSound} from './explore-audio.js?v=4';
 import {fieldLitter} from './field-litter.js?v=2';
 
@@ -670,6 +670,28 @@ function toggleFollow() {
    then up and grumbly). Awake, a small sheet lets you say hi (5 a day). Replies here are an
    offline preview; live, the Worker passes the line to his brain and filters both ways. */
 let bubbleUntil = 0;
+/* Pet him: a scratch behind the ears. He sits up and chitters, hearts float off him, and (live) his brain hears about it. */
+let petBusy = 0;
+function petHim() {
+  if (!coon.root || coon.asleep || coon.hud?.asleep) { H?.sheet('He’s asleep. Let him be.', false); return; }
+  const now = performance.now();
+  if (now - petBusy < 2500) return; petBusy = now;
+  H?.sheet(null);
+  coonSound('chitter', 1.2); setTimeout(() => coonSound('chitter', 1.2), 380);
+  if (!coon.task?.walk) { coon.queue.unshift({type: 'clip', name: 'beg'}); taskDone(); }
+  hearts();
+  if (liveOn) api('/pet', {}).catch(e => H?.sheet(e.message, false));
+}
+function hearts() {
+  const v = coon.pos.clone(); v.y += .35; v.project(W.camera);
+  const x = (v.x + 1) / 2 * innerWidth, y = (1 - v.y) / 2 * innerHeight;
+  for (let i = 0; i < 7; i++) {
+    const h = document.createElement('i'); h.className = 'pet-heart'; h.textContent = '♥';
+    h.style.left = x + (Math.random() - .5) * 50 + 'px'; h.style.top = y + 'px';
+    h.style.setProperty('--dx', (Math.random() - .5) * 80 + 'px'); h.style.animationDelay = i * .09 + 's'; h.style.fontSize = 16 + Math.random() * 12 + 'px';
+    document.body.appendChild(h); setTimeout(() => h.remove(), 1900);
+  }
+}
 function hisDistance() { return me.mode === 'follow' ? 1.5 : Math.hypot(me.pos.x - coon.pos.x, me.pos.z - coon.pos.z); }
 function tapLabcoon() {
   if (!coon.root) return;
@@ -887,7 +909,7 @@ places.group.traverse(mesh=>{
 });
 litter = fieldLitter(THREE, W.scene, {uniforms: W.uniforms, ground, encode: displayEncode, reduced: reduce});
 finds = LIVE_BASE ? fieldFinds(THREE, W.scene, {ground, dry, places: PLACES, encode: displayEncode, reduced: reduce}) : null;
-H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onWalkTo: walkToHim, onFollow: () => toggleFollow(), onSayHi: sayHi, live: !!LIVE_BASE, api: LIVE_BASE ? api : null,
+H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onWalkTo: walkToHim, onPet: petHim, brainWorld: () => ({weather: observedWeather, nearby: finds?.near(coon.pos) || []}), onFollow: () => toggleFollow(), onSayHi: sayHi, live: !!LIVE_BASE, api: LIVE_BASE ? api : null,
   onGame: r => { if (liveOn) api('/game', r).catch(() => {}); }});   // results reach his brain; he'll think about them later
 me.pos.y = ground(me.pos.x, me.pos.z);
 liveSky(); setInterval(liveSky, 60000);

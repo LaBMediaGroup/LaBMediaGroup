@@ -356,3 +356,31 @@
 .need-moves em.up{color:#2f7d43}.need-moves em.down{color:#b1452f}
 .need-moves small{color:var(--ink-soft)}
 .need-fix{margin:6px 0 0;font:600 12.5px/1.35 var(--body);color:var(--ink-soft)}
+
+/* Pet him: hearts float up off him */
+.pet-heart{position:fixed;z-index:6;pointer-events:none;color:#ef7fa8;text-shadow:0 2px 0 rgba(34,48,47,.45);font-style:normal;animation:petHeart 1.6s cubic-bezier(.2,.7,.3,1) both}
+@keyframes petHeart{0%{opacity:0;transform:translate(-50%,0) scale(.4)}15%{opacity:1;transform:translate(-50%,-14px) scale(1.1)}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),-120px) scale(.9)}}
+
+/* His brain: the live loop */
+.brain-lede{margin:0 0 10px;font:700 14.5px/1.4 var(--body)}
+.brain-loop{position:relative;display:grid;gap:10px;padding-left:22px}
+.brain-loop::before{content:'';position:absolute;left:8px;top:14px;bottom:40px;border-left:3px dashed var(--rule)}
+.brain-stage{position:relative;padding:11px 13px 10px;border-radius:16px;background:#fffaf1;border:2.5px solid var(--ink);box-shadow:var(--lift-s);transition:background .35s,transform .35s}
+.brain-stage .num{position:absolute;left:-26px;top:10px;width:22px;height:22px;border-radius:50%;background:var(--paper);border:2.5px solid var(--ink);display:grid;place-items:center;font:800 12px/1 var(--body);transition:background .3s,transform .3s}
+.brain-stage.pulse .num{background:var(--orange);transform:scale(1.18)}
+.brain-stage.glow{background:#fff1d6;transform:translateX(3px)}
+.brain-stage h4{margin:0 0 4px;font:400 21px/1 var(--head);letter-spacing:.4px}
+.brain-stage .live p,.brain-stage .live blockquote{margin:3px 0;font:600 13.5px/1.4 var(--body)}
+.brain-stage .live blockquote{font-style:italic}
+.brain-stage .live small{color:var(--ink-soft);font-size:11.5px}
+.brain-stage .live ol{margin:2px 0;padding-left:20px;font:600 13.5px/1.45 var(--body)}
+.brain-stage .live li.done{text-decoration:line-through;color:var(--ink-soft)}
+.brain-stage .live li.now{font-weight:800}
+.brain-stage .how{margin:6px 0 0;font:600 12px/1.4 var(--body);color:var(--ink-soft)}
+.mini-needs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:4px 0}
+.mini-needs span{display:grid;gap:3px;font:700 10.5px/1 var(--body)}
+.mini-needs em{font-style:normal;color:var(--ink-soft)}
+.mini-needs i{display:block;height:8px;border:2px solid var(--ink);border-radius:9px;overflow:hidden;background:#fff}
+.mini-needs b{display:block;height:100%;background:var(--c)}
+.brain-back{font:800 12.5px/1 var(--body);color:var(--ink-soft);padding:2px 0 6px}
+.nowcard .foot button+button{margin-left:12px}

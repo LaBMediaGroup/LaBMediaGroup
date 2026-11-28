@@ -1,5 +1,6 @@
 import {swapTable} from './swap-table.js';
 import {fieldNotebook} from './field-notebook.js?v=5';
+import {brainView} from './brain-view.js?v=1';
 import {openGallery} from './gallery.js?v=1';
 /* Explore HUD v4 (Nov 26 2026): a game UI in LaB × toy-sticker style (see PINO-UI-NOTES.md).
    Needs strip · "right now" card · clock and sound · radar map · status line · two bottom sheets:
@@ -42,7 +43,7 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&
 
 /* sound lives in explore-audio.js (one engine for the field, the HUD, his tunes and the games) */
 const blip = k => sfx(k);
-export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, ground, pond, live = false, api = null, onGame = null}) {
+export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, onPet, brainWorld = () => ({}), ground, pond, live = false, api = null, onGame = null}) {
   const hud = $('#hud2');
   hud.innerHTML = `
     <div class="needs st-card pe" role="group" aria-label="How Labcoon feels"><span class="who">Labcoon</span>
@@ -55,7 +56,7 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, ground
       <p class="where" id="lcPlace"></p>
       <p class="thought" id="lcThought"></p>
       <hr class="dash"><ol class="plan" id="lcPlan"></ol>
-      <hr class="dash"><div class="foot"><span id="lcProject"></span><button type="button" id="journalLink">his journal</button></div>
+      <hr class="dash"><div class="foot"><span id="lcProject"></span><button type="button" id="brainLink">his brain</button><button type="button" id="journalLink">his journal</button></div>
     </section>
     <button class="st-pill now-chip" id="lcChip" type="button" aria-expanded="false" hidden>Right now · <span id="lcChipMood">…</span></button>
     <div class="tr">
@@ -83,7 +84,7 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, ground
       <div class="pane" data-pane="hi"><p id="sheetText"></p>
         <form id="hiForm" class="row"><input class="field" id="hiInput" maxlength="120" placeholder="Say hi to Labcoon" autocomplete="off"><button class="st-pill primary" type="submit">Say hi</button></form>
         <div class="note-hint" id="hiLeft"></div>
-        <div class="row" id="playRow" style="margin-top:12px"><button class="st-pill" type="button" id="playCheckers">Play checkers with him</button></div></div>
+        <div class="row" id="playRow" style="margin-top:12px;flex-wrap:wrap"><button class="st-pill primary" type="button" id="petHim">Pet him</button><button class="st-pill" type="button" id="playCheckers">Play checkers with him</button></div></div>
       <div class="pane" data-pane="note" hidden><p>Leave a note in his mailbox. He reads his mail when he feels like it and might mention it in his own words. Nobody else sees it.</p>
         <textarea class="field" id="noteText" maxlength="240" rows="3" placeholder="Dear Labcoon…"></textarea>
         <div class="row" style="margin-top:10px;justify-content:space-between"><span class="note-hint" id="noteLeft">One note a day · 240 letters</span><button class="st-pill primary" id="noteSend" type="button">Mail it</button></div></div>
@@ -93,6 +94,11 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, ground
         <div class="note-hint" id="doodleHint">One doodle a day. Draw, don't write: he can't read.</div></div></div></div>
       <div class="pane" data-pane="swap" hidden><p>Leave a find on the picnic table. When he’s awake he’ll turn it over in his paws. If he wants to trade, you get a trinket from his stash.</p><div class="swap-choices" role="group" aria-label="Choose a trinket to offer"></div><p class="swap-receipt" aria-live="polite"></p><div class="note-hint swap-hint" role="status"></div></div>
       <div class="pane" data-pane="yours" hidden><ul class="journal" id="yoursList"></ul></div>
+    </section>
+    <section class="sheet st-card pe" id="brainSheet" hidden role="dialog" aria-label="Labcoon's brain">
+      <div class="grab"></div>
+      <header><span class="title">His brain</span><button class="st-round x" type="button" data-close aria-label="Close">${I.x}</button></header>
+      <div class="pane" id="brainPane"></div>
     </section>
     <section class="sheet st-card pe" id="needsSheet" hidden role="dialog" aria-label="How Labcoon is doing">
       <div class="grab"></div>
@@ -137,7 +143,7 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, ground
     for (const p of el.querySelectorAll('[data-pane]')) p.hidden = p.dataset.pane !== k;
     onTab[k]?.();
   }
-  for (const el of [$('#lcSheet'), $('#thingsSheet'), $('#needsSheet')]) {
+  for (const el of [$('#lcSheet'), $('#thingsSheet'), $('#needsSheet'), $('#brainSheet')]) {
     el.querySelector('[data-close]').addEventListener('click', () => hideSheet(el));
     for (const b of el.querySelectorAll('[role=tab]')) b.addEventListener('click', () => selectTab(el, b.dataset.tab));
   }
@@ -151,7 +157,7 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, ground
   });
   hud.addEventListener('animationend', e => { if (e.animationName === 'tapBounce') e.target.classList.remove('tapped'); });
   // Drag a sheet down by its grabber or header to put it away; a short drag springs back.
-  for (const el of [$('#lcSheet'), $('#thingsSheet'), $('#needsSheet')]) {
+  for (const el of [$('#lcSheet'), $('#thingsSheet'), $('#needsSheet'), $('#brainSheet')]) {
     let y0 = null, dy = 0, t0 = 0;
     const end = () => {
       if (y0 == null) return; y0 = null;
@@ -209,8 +215,16 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, ground
     } catch {}
   }
   hud.querySelector('.needs').addEventListener('click', () => { show($('#needsSheet')); needsSheet(); });
+  /* ---------- His brain: the live loop ---------- */
+  let brain = null;
+  $('#brainLink').addEventListener('click', () => {
+    show($('#brainSheet'));
+    if (!brain) brain = brainView($('#brainPane'), {api, places, get: () => { const w = brainWorld();
+      return {hud: state || {}, weather: w.weather, nearby: w.nearby || [], clock: $('#clock span')?.textContent || '', lastEvent: journal[0] ? 'He ' + third(journal[0].text) : ''}; }});
+    else brain.refresh();
+  });
   hud.querySelector('.needs').setAttribute('role', 'button'); hud.querySelector('.needs').tabIndex = 0;
-  hud.addEventListener('click', e => { if (e.target.closest('#playCheckers')) startGame('checkers'); });
+  hud.addEventListener('click', e => { if (e.target.closest('#playCheckers')) startGame('checkers'); if (e.target.closest('#petHim')) onPet?.(); });
   $('#thingsBtn').addEventListener('click', () => show($('#thingsSheet'), 'art'));
   $('#mapBtn').addEventListener('click', () => show($('#thingsSheet'), 'map'));
   $('#journalLink').addEventListener('click', () => show($('#thingsSheet'), 'journal'));

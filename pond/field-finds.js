@@ -97,5 +97,6 @@ export function fieldFinds(T, scene, {ground, dry, places, encode, reduced = fal
     for (const m of items) { const d = ray.ray.distanceToPoint(m.position); if (d < .16 && (!best || d < best.d)) best = {d, m}; }
     return best ? best.m.userData.label : null;
   }
-  return {set, tick, pick, count: () => items.length};
+  const near = (pos, r = 3) => items.filter(m => Math.hypot(m.position.x - pos.x, m.position.z - pos.z) < r).map(m => m.userData.label);
+  return {set, tick, pick, near, count: () => items.length};
 }
