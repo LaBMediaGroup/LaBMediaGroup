@@ -466,24 +466,62 @@
     project.classList.add("previewing");
     projectVideo.play().catch(() => {});
   }
-  function moveTip() {
-    const w = follower.offsetWidth,
-      h = follower.offsetHeight;
-    const left = x + w + 18 < innerWidth ? x + 17 : x - w - 15;
-    follower.style.transform =
-      "translate3d(" +
-      clamp(left, 8, innerWidth - w - 8) +
-      "px," +
-      clamp(y - h * 0.65, 8, innerHeight - h - 8) +
-      "px,0)";
+  // Let the film frame trail the hand. Its lag supplies the bank and pitch,
+  // so a slow browse barely tips it and a reversal throws its weight across.
+  let tipX, tipY, bank = 0, pitch = 0, bankSpeed = 0;
+  let tipWidth = 0, tipHeight = 0, tipFrame = 0, lastTick = 0;
+
+  function tickTip(now) {
+    tipFrame = 0;
+    const dt = Math.min((now - lastTick) / 1000, 1 / 30);
+    lastTick = now;
+    const margin = 12;
+    const side = smooth(0.25, 0.92, x / innerWidth);
+    const targetX = clamp(x + 19 - side * (tipWidth + 38), margin, innerWidth - tipWidth - margin);
+    const targetY = clamp(y - tipHeight * 0.65, margin, innerHeight - tipHeight - margin);
+    tipX ??= targetX;
+    tipY ??= targetY;
+    const dx = targetX - tipX, dy = targetY - tipY;
+    const follow = 1 - Math.exp(-22 * dt);
+    tipX += dx * follow;
+    tipY += dy * follow;
+    const desiredBank = clamp(dx * 0.19, -13, 13);
+    bankSpeed += ((desiredBank - bank) * 360 - bankSpeed * 24) * dt;
+    bank += bankSpeed * dt;
+    pitch += (clamp(-dy * 0.25, -11, 11) - pitch) * follow;
+    const moving = Math.abs(dx) + Math.abs(dy) + Math.abs(bank) + Math.abs(pitch) + Math.abs(bankSpeed) > 0.09;
+    if (!moving) {
+      tipX = targetX;
+      tipY = targetY;
+      bank = pitch = bankSpeed = 0;
+    }
+    follower.style.transform = `translate3d(${tipX}px,${tipY}px,0) perspective(720px) rotateZ(${bank}deg) rotateX(${pitch}deg)`;
+    if (moving) tipFrame = requestAnimationFrame(tickTip);
   }
+  function moveTip() {
+    if (tipFrame || follower.hidden) return;
+    lastTick = performance.now() - 1000 / 60;
+    tipFrame = requestAnimationFrame(tickTip);
+  }
+  function measureTip() {
+    if (follower.hidden) return;
+    tipWidth = follower.offsetWidth;
+    tipHeight = follower.offsetHeight;
+    moveTip();
+  }
+  addEventListener("resize", measureTip);
   function changeRow(row) {
     if (activeRow === row && activeMode === pointer.matches) return;
     activeRow?.classList.remove("previewing");
     if (activeRow) stopVideo(filmVideo);
     activeRow = row;
     activeMode = pointer.matches;
-    follower.hidden = true;
+    if (!row || !pointer.matches) {
+      follower.hidden = true;
+      cancelAnimationFrame(tipFrame);
+      tipFrame = bank = pitch = bankSpeed = 0;
+      tipX = tipY = undefined;
+    }
     if (!row) return;
     const film = W.films.find((f) => f.id === row.dataset.film);
     filmVideo.poster = film.img;
@@ -491,7 +529,7 @@
     if (pointer.matches) {
       follower.append(filmVideo);
       follower.hidden = false;
-      moveTip();
+      measureTip();
     } else row.prepend(filmVideo);
     row.classList.add("previewing");
     filmVideo.play().catch(() => {});
