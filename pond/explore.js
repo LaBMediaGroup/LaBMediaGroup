@@ -7,16 +7,17 @@
 import * as THREE from 'three';
 import {fieldSteps} from './wildlife/wildlife-motion.js?v=2';
 import {fieldWildlife} from './field-wildlife.js?v=5';
-import {precipitation} from './precipitation.js?v=4';
+import {precipitation} from './precipitation.js?v=5';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {buildPlaces, PLACES} from './labcoon-places.js?v=3';
-import {createHud} from './explore-hud.js?v=31';
+import {createHud} from './explore-hud.js?v=32';
 import {makeFind, fieldFinds} from './field-finds.js?v=5';
-import {field as fieldSound, sfx, coon as coonSound} from './explore-audio.js?v=4';
+import {field as fieldSound, sfx, coon as coonSound} from './explore-audio.js?v=5';
 import {fieldLitter} from './field-litter.js?v=2';
+import {takePhoto} from './photo-mode.js?v=1';
 
 const LAT = 42.67, LON = -83.03;
 const q = new URLSearchParams(location.search);
@@ -909,7 +910,7 @@ places.group.traverse(mesh=>{
 });
 litter = fieldLitter(THREE, W.scene, {uniforms: W.uniforms, ground, encode: displayEncode, reduced: reduce});
 finds = LIVE_BASE ? fieldFinds(THREE, W.scene, {ground, dry, places: PLACES, encode: displayEncode, reduced: reduce}) : null;
-H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onWalkTo: walkToHim, onPet: petHim, brainWorld: () => ({weather: observedWeather, nearby: finds?.near(coon.pos) || []}), onFollow: () => toggleFollow(), onSayHi: sayHi, live: !!LIVE_BASE, api: LIVE_BASE ? api : null,
+H = createHud({places: PLACES, ground, pond: W.pond, onTakeMe: takeMeTo, onWalkTo: walkToHim, onPet: petHim, onPhoto: caption => takePhoto({renderer: W.renderer, scene: W.scene, camera: W.camera, caption, sound: sfx}), brainWorld: () => ({weather: observedWeather, nearby: finds?.near(coon.pos) || []}), onFollow: () => toggleFollow(), onSayHi: sayHi, live: !!LIVE_BASE, api: LIVE_BASE ? api : null,
   onGame: r => { if (liveOn) api('/game', r).catch(() => {}); }});   // results reach his brain; he'll think about them later
 me.pos.y = ground(me.pos.x, me.pos.z);
 liveSky(); setInterval(liveSky, 60000);

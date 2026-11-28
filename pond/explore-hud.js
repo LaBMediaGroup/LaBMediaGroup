@@ -7,8 +7,8 @@ import {openGallery} from './gallery.js?v=1';
    "Leave him something" (Say hi, Note, Doodle, Swap, Yours) and "His things" (Art, Songs, Journal, Map).
    explore.js feeds it: set(hud, journalLine), mapDots(me, coonPos), clock(text, night), heard(song), …
    No accounts, no public wall: visitors' notes go only to him; "Yours" lives in this browser. */
-import {openGame} from './games/games-ui.js?v=6';
-import {sound, sfx, playTune, ensure} from './explore-audio.js?v=4';
+import {openGame} from './games/games-ui.js?v=7';
+import {sound, sfx, playTune, ensure} from './explore-audio.js?v=5';
 export {playTune};
 const $ = s => document.querySelector(s);
 const NEEDS = [['hunger', 'Full'], ['energy', 'Energy'], ['joy', 'Joy'], ['boredom', 'Boredom'], ['curiosity', 'Curiosity']];
@@ -22,6 +22,7 @@ const I = {
   x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M5 7h14M5 12h14M5 17h14"/></svg>',
   paw: '<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="15.5" rx="5" ry="4.2"/><circle cx="6" cy="10" r="2.1"/><circle cx="9.6" cy="6.6" r="2.1"/><circle cx="14.4" cy="6.6" r="2.1"/><circle cx="18" cy="10" r="2.1"/></svg>',
+  camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg>',
   eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>',
   walk: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="13" cy="4.5" r="2"/><path d="M11 21l2-6 3 3v3M13 15l-1-6-3 3H6M12 9l4 2 2-1"/></svg>',
   sound: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>',
@@ -43,7 +44,7 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&
 
 /* sound lives in explore-audio.js (one engine for the field, the HUD, his tunes and the games) */
 const blip = k => sfx(k);
-export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, onPet, brainWorld = () => ({}), ground, pond, live = false, api = null, onGame = null}) {
+export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, onPet, onPhoto, brainWorld = () => ({}), ground, pond, live = false, api = null, onGame = null}) {
   const hud = $('#hud2');
   hud.innerHTML = `
     <div class="needs st-card pe" role="group" aria-label="How Labcoon feels"><span class="who">Labcoon</span>
@@ -61,6 +62,7 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, onPet,
     <button class="st-pill now-chip" id="lcChip" type="button" aria-expanded="false" hidden>Right now · <span id="lcChipMood">…</span></button>
     <div class="tr">
       <span class="st-pill clock pe" id="clock">${I.sun}<span>—</span></span>
+      <button class="st-round" id="photoBtn" type="button" aria-label="Take a photo">${I.camera}</button>
       <button class="st-round" id="soundBtn" type="button" aria-label="Sound on" aria-pressed="true">${I.sound}</button>
       <button class="st-round" id="thingsBtn" type="button" aria-label="His things">${I.menu}</button>
     </div>
@@ -152,7 +154,7 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, onPet,
   hud.addEventListener('click', e => {
     const b = e.target.closest('button,[role=button],summary,.art,.gamecard'); if (!b || b.closest('.game-scrim')) return;
     b.classList.remove('tapped'); void b.offsetWidth; b.classList.add('tapped');
-    if (b.matches('[data-close],.x,#leaveBtn,#thingsBtn')) return;
+    if (b.matches('[data-close],.x,#leaveBtn,#thingsBtn,#photoBtn')) return;
     blip(b.matches('[role=tab],[data-book]') ? 'tab' : b.matches('[data-turn],.art-nav button,summary') ? 'page' : b.matches('.st-pill,.st-round,.gamecard,.art') ? 'tick' : 'tap');
   });
   hud.addEventListener('animationend', e => { if (e.animationName === 'tapBounce') e.target.classList.remove('tapped'); });
@@ -237,6 +239,7 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, onPet,
   document.getElementById('world')?.addEventListener('pointerdown', coached, {once: true});   // any first touch of the field counts
   $('#finder').addEventListener('click', () => onTakeMe('labcoon'));
   $('#walkToBtn').addEventListener('click', () => onWalkTo?.());
+  $('#photoBtn').addEventListener('click', () => onPhoto?.('Labcoon ' + ($('#labcoonDoing').textContent || 'at the pond')));
 
   /* ---------- sound ---------- */
   const soundBtn = $('#soundBtn');
@@ -363,7 +366,7 @@ export function createHud({places, onTakeMe, onWalkTo, onFollow, onSayHi, onPet,
   const recKey = 'labcoon-games';
   const record = () => { try { return JSON.parse(localStorage.getItem(recKey) || '{}'); } catch { return {}; } };
   let chessUI = null;
-  import('./games/chess-ui.js?v=5').then(m => { chessUI = m.playChess; }).catch(() => {});
+  import('./games/chess-ui.js?v=6').then(m => { chessUI = m.playChess; }).catch(() => {});
   function gameResult(r) {
     try { const rec = record(); const g = rec[r.game] || {w: 0, l: 0, d: 0}; g[r.result[0]]++; rec[r.game] = g; localStorage.setItem(recKey, JSON.stringify(rec)); } catch {}
     remember({kind: 'game', text: `${r.game}: you ${r.result === 'win' ? 'won' : r.result === 'loss' ? 'lost' : 'drew'}`});
