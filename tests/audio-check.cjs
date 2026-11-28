@@ -28,7 +28,7 @@ const {chromium} = require('/Volumes/LaB Media/GitHub/labmedia-raccoon/web-revie
   await p.waitForFunction(() => document.documentElement.classList.contains('labcoon-ready'), null, {timeout: 60000});
   await p.mouse.click(195, 600); await p.waitForTimeout(2500);
   const out = await p.evaluate(async () => {
-    const A = await import('/pond/explore-audio.js?v=1'), r = {ready: A.sound.ready};
+    const A = await import('/pond/explore-audio.js?v=5'), r = {ready: A.sound.ready};
     r.field = await window.__rms(1500);
     for (const k of ['tick', 'swoop', 'close', 'pick', 'place', 'his', 'capture', 'lost', 'crown', 'check', 'win', 'lose', 'nope']) {
       const before = await window.__rms(150); A.sfx(k); const s = await window.__rms(500); r[k] = {...s, over: +(s.peak - before.peak).toFixed(3)};

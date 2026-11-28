@@ -10,7 +10,7 @@ const base = process.argv[2] || 'http://127.0.0.1:5430';
   await p.waitForFunction(() => document.documentElement.classList.contains('labcoon-ready'), null, {timeout: 60000});
   await p.mouse.click(195, 700); await p.waitForTimeout(800);
   await p.evaluate(async () => {                 // count sounds by kind
-    const A = await import('/pond/explore-audio.js?v=3'); window.__s = []; const o = A.sfx;
+    const A = await import('/pond/explore-audio.js?v=5'); window.__s = []; const o = A.sfx;
     window.__ready = A.sound.ready;
   });
   // the HUD's blip calls the module's sfx; watch it through the AudioContext's oscillator starts instead
