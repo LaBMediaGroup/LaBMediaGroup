@@ -301,16 +301,17 @@
     update();
   });
   ScrollTrigger.create({
-    trigger: "#scattered",
+    trigger: ".dot-section",
     start: () => "top top+=" + headerHeight(),
     end: () =>
       "+=" +
       Math.max(
         1,
-        document.querySelector("#scattered").offsetHeight - film.clientHeight,
+        document.querySelector(".dot-section").offsetHeight - film.clientHeight,
       ),
     onUpdate: (t) => {
       travel = t.progress;
+      film.parentElement.style.setProperty("--title-visibility", 1 - smooth(clamp(travel / 0.21)));
       update();
     },
   });

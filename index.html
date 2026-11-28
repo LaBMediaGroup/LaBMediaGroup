@@ -19,21 +19,40 @@
 <div class="intro"><p class="byline">Bobby Baldwin <i></i> Shelby Township, MI</p><h1 id="hello">Hey, I’m<br><em>Bobby.</em></h1>
 <p class="sentence">I build custom sites<br>and <span class="last-words">make films</span><span id="period">.</span></p></div>
 <div class="intro-bottom"><a href="#sites">See the work <span>↓</span></a><span>LaB Media / Michigan</span></div></section>
-<div id="spindle" aria-hidden="true"></div>
-<section id="sites" class="ribbon-section" aria-labelledby="sites-heading"><div class="ribbon-pin">
-<div class="sites-header"><h2 id="sites-heading">The websites<span>.</span></h2><button class="motion-toggle" id="motion" aria-pressed="false">Pause motion</button></div>
-<div class="ribbon-layout"><div class="ribbon-window"><div id="cards"></div></div>
-<div class="site-index"><nav aria-label="Open a website" id="site-names"></nav>
-<p id="site-copy"></p><button class="open-site" id="visit">Open Sweet Babe <span>↗</span></button></div></div>
-</div></section>
-<section id="films" class="gone" aria-labelledby="gone-title"><div class="gone-pin"><div class="room"><video id="newscast" preload="none" muted playsinline loop poster="/edition/broadcast.webp" data-src="/edition/broadcast.mp4"></video></div><div class="gone-info"><p class="byline">Latest film <i></i> Horror Film Roulette XIII</p><h2 id="gone-title">Gone<span>.</span></h2><p>One building. No way out.</p><button data-film="gone" class="light-action">Watch Gone <span>▶</span></button></div></div></section>
-<section class="catalog" aria-labelledby="catalog-title"><div class="catalog-head"><h2 id="catalog-title">The films<span>.</span></h2><p>Seven films by LaB Media</p></div><div id="film-list"></div></section>
-<section id="scattered" class="dot-section" aria-label="Scattered poster and teaser"><div class="dot-pin"><canvas id="dot-stage" aria-hidden="true"></canvas><div class="dot-caption"><span>Detroit 48 Hour Film Project</span><button data-film="scattered">Watch Scattered <b>▶</b></button></div></div></section>
-<section id="fly" class="field" aria-labelledby="field-title"><div class="field-pin"><canvas id="field-plate" aria-hidden="true"></canvas><div class="field-mask" aria-hidden="true">FLY</div><div class="field-info"><p class="byline">Shelby Township <i></i> Field station</p><h2 id="field-title">Drone school<span>.</span></h2><div class="weather"><div><span>Wind</span><strong id="speed">—</strong><small>mph</small></div><div><span>Gust</span><b id="gust">—</b></div><div><span>Direction</span><b id="bearing">—</b></div></div><p id="wx-time">Checking field conditions…</p><div class="field-actions"><a href="/skybound.html">Flight guide ↗</a><a href="/droneweather.html">Full forecast ↗</a></div></div></div></section>
+<section id="sites" class="projects" aria-labelledby="sites-heading">
+  <header class="projects-head"><h2 id="sites-heading">The websites<span>.</span></h2><button class="motion-toggle" id="motion" aria-pressed="false">Pause motion</button></header>
+  <div class="project-wall">
+    <button type="button" class="project sweetbabe" data-site="sweetbabe">
+      <img src="/edition/projects/kyle.webp" alt="" loading="lazy">
+      <span class="project-credit">Kyle Keaser / Live music</span>
+      <strong>Sweet<br><em>Babe</em></strong>
+      <span class="project-link">Open site <span aria-hidden="true">↗</span></span>
+    </button>
+    <button type="button" class="project ballcap" data-site="ballcap">
+      <img src="/edition/projects/cap.svg" alt="" loading="lazy">
+      <strong>Ballcap</strong><span class="project-credit">Film production</span>
+      <span class="project-link" aria-label="Open site">↗</span>
+    </button>
+    <button type="button" class="project sideways" data-site="sideways">
+      <img src="/edition/projects/pencil.webp" alt="" loading="lazy">
+      <strong>Sideways<br><em>Studios</em></strong><span class="project-credit">Animation</span>
+      <span class="project-link" aria-label="Open site">↗</span>
+    </button>
+    <button type="button" class="project splitbone" data-site="splitbone">
+      <img src="/edition/projects/room.webp" alt="" loading="lazy">
+      <span class="project-credit">Recording studio concept</span><strong>Splitbone</strong>
+      <span class="project-link" aria-label="Open site">↗</span>
+    </button>
+  </div>
+</section>
+<section id="films" class="dot-section" aria-labelledby="films-title"><span id="scattered" aria-hidden="true"></span><div class="dot-pin"><h2 id="films-title">Films<span>.</span></h2><canvas id="dot-stage" aria-hidden="true"></canvas><div class="dot-caption"><span>Detroit 48 Hour Film Project</span><button data-film="scattered">Watch Scattered <b>▶</b></button></div></div></section>
+<section id="gone" class="gone" aria-labelledby="gone-title"><div class="gone-pin"><div class="room"><video id="newscast" preload="none" muted playsinline loop poster="/edition/broadcast.webp" data-src="/edition/broadcast.mp4"></video></div><div class="gone-info"><p class="byline">Latest film <i></i> Horror Film Roulette XIII</p><h2 id="gone-title">Gone<span>.</span></h2><p>One building. No way out.</p><button data-film="gone" class="light-action">Watch Gone <span>▶</span></button></div></div></section>
+<section class="catalog" aria-labelledby="catalog-title"><div class="catalog-head"><h2 id="catalog-title">Film index<span>.</span></h2><p>Seven films by LaB Media</p></div><div id="film-list"></div></section>
 <section id="tools" class="tool-section"><div><p class="byline">From my kit</p><h2>Working<br><em>tools.</em></h2></div><div class="tool-index">
 <a href="/sun.html"><span>Golden hour</span><small>Plan the light</small><b>↗</b></a><a href="/ideas.html"><span>Story generator</span><small>Build a brief</small><b>↗</b></a><a href="/droneweather.html"><span>Drone weather</span><small>Read the field</small><b>↗</b></a><a href="/skybound.html"><span>Drone guide</span><small>Learn to fly</small><b>↗</b></a><a href="/assistant.html"><span>LaB Assistant</span><small>Find a resource</small><b>↗</b></a></div></section>
-<section id="pond" class="pond"><a id="pondWord" href="/explore.html" aria-label="Explore the pond with Labcoon"><span class="pond-aperture" aria-hidden="true"></span><span>Explore with Labcoon ↗</span></a></section>
 <section id="contact" class="contact"><p class="byline">Get in touch</p><h2>What are you<br><em>making?</em></h2><a href="/contact.html">Tell me about it <span>↗</span></a></section>
+<section id="fly" class="field" aria-labelledby="field-title"><div class="field-pin"><canvas id="field-plate" aria-hidden="true"></canvas><div class="field-mask" aria-hidden="true">FLY</div><div class="field-info"><p class="byline">Shelby Township <i></i> Field station</p><h2 id="field-title">Drone school<span>.</span></h2><div class="weather"><div><span>Wind</span><strong id="speed">—</strong><small>mph</small></div><div><span>Gust</span><b id="gust">—</b></div><div><span>Direction</span><b id="bearing">—</b></div></div><p id="wx-time">Checking field conditions…</p><div class="field-actions"><a href="/skybound.html">Flight guide ↗</a><a href="/droneweather.html">Full forecast ↗</a></div></div></div></section>
+<section id="pond" class="pond"><a id="pondWord" href="/explore.html" aria-label="Explore the pond with Labcoon"><span class="pond-aperture" aria-hidden="true"></span><span>Explore with Labcoon ↗</span></a></section>
 <noscript><style>body{overflow:auto;background:#101613;color:#f4f2e9}body>*,#main>*{display:none!important}body>#main{display:block!important}#main>noscript{display:block!important}#plainDirectory{display:grid;gap:1rem;max-width:36rem;margin:auto;padding:10vh 6vw}#plainDirectory a{display:block;padding:.45rem 0;text-decoration:underline}</style>
 <nav id="plainDirectory" aria-label="Directory"><strong>The LaB</strong><a href="sun.html">Golden hour planner</a><a href="ideas.html">Story generator</a><a href="droneweather.html">Drone weather</a><a href="skybound.html">Drone guide</a><a href="assistant.html">LaB Assistant</a><a href="portfolio.html">Films</a><a href="contact.html">Contact Bobby</a></nav></noscript>
 </main>

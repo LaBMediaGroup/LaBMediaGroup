@@ -22,16 +22,7 @@ const siteNames = [
   "Sideways Studios",
   "Splitbone",
 ];
-const descriptions = [
-  "Kyle’s live acoustic site. Spin a record, find a show, book a date.",
-  "A tunnel into the films and the crew that made them.",
-  "A hand-drawn animation studio, in motion.",
-  "A studio concept. Walk the room, check the rates, find a session.",
-];
-let selected = 0,
-  ribbonProgress = 0,
-  sitesVisible = false,
-  newsVisible = false;
+let newsVisible = false;
 let paused = false,
   soundOn = false,
   audioContext,
@@ -58,7 +49,7 @@ function still(src, alt = "") {
 function cue(kind) {
   if (!soundOn || !audioContext || viewer.open || document.hidden) return;
   const ctx = audioContext,
-    length = kind === "field" ? 1.55 : kind === "record" ? 0.38 : 0.045;
+    length = kind === "field" ? 1.55 : 0.045;
   const data = ctx.createBuffer(
     1,
     Math.ceil(ctx.sampleRate * length),
@@ -70,8 +61,7 @@ function cue(kind) {
     filter = ctx.createBiquadFilter(),
     gain = ctx.createGain();
   filter.type = "lowpass";
-  filter.frequency.value =
-    kind === "type" ? 2700 : kind === "record" ? 900 : 460;
+  filter.frequency.value = kind === "type" ? 2700 : 460;
   source.buffer = data;
   source.connect(filter).connect(gain).connect(ctx.destination);
   const now = ctx.currentTime;
@@ -123,142 +113,33 @@ function setVideo(video, src, active) {
   if (!video.getAttribute("src")) video.src = src;
   if (video.paused) video.play().catch(() => {});
 }
-const cards = [],
-  names = [];
-sites.forEach((site, i) => {
-  const card = button("", "site-card");
-  card.setAttribute("aria-label", "Open " + siteNames[i]);
-  const video = document.createElement("video");
-  video.muted = true;
-  video.loop = true;
-  video.playsInline = true;
-  video.preload = "none";
-  card.append(still(site.img), video);
-  $("#cards").append(card);
-  card.onclick = () => {
-    chooseSite(i);
-    openSite(i);
-  };
-  cards.push(card);
-  const name = button(siteNames[i]);
-  name.onclick = () => {
-    chooseSite(i);
-    openSite(i);
-  };
-  $("#site-names").append(name);
-  names.push(name);
-});
 function media() {
-  const permitted = !stopMotion() && !viewer.open && !document.hidden;
-  cards.forEach((card, i) => {
-    const src = phone.matches
-      ? "/title-sequence/previews/" + sites[i].id + ".mp4"
-      : sites[i].vid;
-    setVideo(card.lastChild, src, permitted && sitesVisible && selected === i);
-  });
   const news = $("#newscast");
-  setVideo(news, news.dataset.src, permitted && newsVisible);
+  setVideo(
+    news,
+    news.dataset.src,
+    newsVisible && !stopMotion() && !viewer.open && !document.hidden,
+  );
   window.dispatchEvent(new Event("edition:media"));
 }
-function drawRibbon(value, exit = 0) {
-  const pos = Math.max(0, Math.min(3, value)),
-    active = Math.round(pos);
-  cards.forEach((card, i) => {
-    const d = i - pos,
-      side = phone.matches;
-    gsap.set(card, {
-      xPercent: (side ? -50 : 0) + d * (side ? 106 : 101),
-      yPercent: -50 + Math.abs(d) * 9,
-      rotationY: stopMotion() ? 0 : -d * 29 - exit * 77,
-      rotationZ: stopMotion() ? 0 : d * 2.1,
-      scale: 1 - Math.min(2, Math.abs(d)) * 0.07,
-      opacity: Math.abs(d) > 1.75 ? 0 : 1,
-      zIndex: 5 - Math.round(Math.abs(d) * 2),
-    });
-    card.tabIndex = i === active ? 0 : -1;
-    card.setAttribute("aria-hidden", String(i !== active));
-  });
-  if (active !== selected || !$("#site-copy").textContent) {
-    selected = active;
-    $("#site-copy").textContent = descriptions[active];
-    $("#visit").textContent = "Open " + siteNames[active] + " ↗";
-    names.forEach((name, i) =>
-      name.setAttribute("aria-current", String(i === active)),
-    );
-    media();
-  }
-}
-const track = $("#sites");
-function chooseSite(i) {
-  if (stopMotion()) {
-    drawRibbon(i);
-    return;
-  }
-  const top = track.getBoundingClientRect().top + scrollY - headerHeight();
-  window.scrollTo(
-    0,
-    Math.max(
-      0,
-      top +
-        (track.offsetHeight - $(".ribbon-pin").offsetHeight) *
-          ((i / 3) * 0.86 + 0.035),
-    ),
-  );
-  drawRibbon(i);
-}
-const syncRibbon = () => {
-  if (!stopMotion())
-    drawRibbon(
-      ((ribbonProgress - 0.035) / 0.86) * 3,
-      smooth((ribbonProgress - 0.93) / 0.07),
-    );
-};
-ScrollTrigger.create({
-  trigger: track,
-  start: () => "top top+=" + headerHeight(),
-  end: () => "+=" + (track.offsetHeight - $(".ribbon-pin").offsetHeight || 1),
-  onUpdate: (t) => {
-    ribbonProgress = t.progress;
-    syncRibbon();
-  },
-});
-watchVisibility($(".ribbon-pin"), (on) => {
-  sitesVisible = on;
-  media();
-});
 watchVisibility($(".gone-pin"), (on) => {
   newsVisible = on;
   media();
 });
-function syncSources() {
-  cards.forEach((card, i) => {
-    card.firstChild.src = phone.matches
-      ? "/title-sequence/previews/" + sites[i].id + ".webp"
-      : sites[i].img;
-    const video = card.lastChild;
-    video.pause();
-    video.removeAttribute("src");
-    video.load();
-  });
-  drawRibbon(selected);
-  media();
-}
-phone.addEventListener("change", syncSources);
 $("#motion").onclick = () => {
   paused = !paused;
   $("#motion").setAttribute("aria-pressed", String(paused));
   $("#motion").textContent = paused ? "Resume motion" : "Pause motion";
   document.documentElement.classList.toggle("motion-paused", paused);
-  syncRibbon();
   media();
   ScrollTrigger.refresh();
 };
 reduced.addEventListener("change", () => {
-  syncRibbon();
   media();
   ScrollTrigger.refresh();
 });
 function openViewer(title) {
+  clearTimeout(viewerTimer);
   lastTrigger = document.activeElement;
   $("#viewer-title").textContent = title;
   viewerBody.replaceChildren();
@@ -288,6 +169,7 @@ viewer.addEventListener("click", (e) => {
   }
 });
 viewer.addEventListener("close", () => {
+  if (viewer.open) return;
   clearTimeout(viewerTimer);
   viewerBody.querySelectorAll("video").forEach((v) => {
     v.pause();
@@ -298,9 +180,10 @@ viewer.addEventListener("close", () => {
   lastTrigger?.focus({ preventScroll: true });
   media();
 });
-function openSite(i) {
+function openSite(i, trigger) {
   const site = sites[i];
   openViewer(siteNames[i]);
+  lastTrigger = trigger;
   const foot = document.createElement("div");
   foot.className = "view-foot";
   const status = document.createElement("span");
@@ -346,8 +229,32 @@ function openSite(i) {
     mode.onclick = () => show(!recorded);
   }
   show(false);
+  if (!stopMotion()) {
+    const from = trigger.getBoundingClientRect();
+    const to = viewer.getBoundingClientRect();
+    const x = Math.max(
+      0,
+      Math.min(to.width, from.left + from.width / 2 - to.left),
+    );
+    const y = Math.max(
+      0,
+      Math.min(to.height, from.top + from.height / 2 - to.top),
+    );
+    viewer.animate(
+      [
+        {
+          clipPath: `inset(${y * 0.8}px ${(to.width - x) * 0.8}px ${(to.height - y) * 0.8}px ${x * 0.8}px)`,
+        },
+        { clipPath: "inset(0px 0px 0px 0px)" },
+      ],
+      { duration: 280, easing: "cubic-bezier(.2,.8,.2,1)" },
+    );
+  }
 }
-$("#visit").onclick = () => openSite(selected);
+for (const project of all("[data-site]")) {
+  const i = sites.findIndex((site) => site.id === project.dataset.site);
+  project.onclick = () => openSite(i, project);
+}
 const extras = {
   scattered: "/assets/scattered-poster.webp",
   brass: "/assets/hero-v4/AnthonyBrass-Paintingclip.jpg",
@@ -432,59 +339,6 @@ films.forEach((f) => {
 all("[data-film]").forEach(
   (el) => (el.onclick = () => openFilm(el.dataset.film)),
 );
-const period = $("#period"),
-  spindle = $("#spindle");
-function spinTransition(p) {
-  if (stopMotion() || p < 0.006 || p > 0.995) {
-    spindle.style.display = "none";
-    return;
-  }
-  const a = period.getBoundingClientRect(),
-    b = cards[0].getBoundingClientRect(),
-    t = smooth(p);
-  const startY = a.bottom + scrollY - a.height * 0.13;
-  const endX = b.left + b.width * 0.5,
-    endY = b.top + b.height * (phone.matches ? 0.36 : 0.33);
-  const centerY =
-    mix(startY, Math.min(innerHeight * 0.57, endY), smooth(p / 0.58)) +
-    Math.max(0, endY - innerHeight * 0.57) * smooth((p - 0.83) / 0.17);
-  const diameter = mix(5, Math.min(b.width * 0.43, 145), smooth(p / 0.76));
-  gsap.set(spindle, {
-    display: "block",
-    width: diameter,
-    height: diameter,
-    x: mix(a.left + 2, endX, t) - diameter / 2,
-    y: centerY - diameter / 2,
-    rotation: p * 92,
-    opacity: 1 - smooth((p - 0.85) / 0.15),
-  });
-}
-ScrollTrigger.create({
-  trigger: ".welcome",
-  start: "top top",
-  endTrigger: "#sites",
-  end: () => "top top+=" + headerHeight(),
-  onUpdate: (t) => spinTransition(t.progress),
-  onLeave: () => (spindle.style.display = "none"),
-  onLeaveBack: () => (spindle.style.display = "none"),
-});
-ScrollTrigger.create({
-  trigger: "#sites",
-  start: "top 65%",
-  onEnter: () => cue("record"),
-});
-ScrollTrigger.create({
-  trigger: "#films",
-  start: "top 96%",
-  end: "top 3%",
-  onUpdate: (t) => {
-    const p = smooth(t.progress);
-    gsap.set(".room", {
-      scale: stopMotion() ? 1 : mix(1.65, 1, p),
-      rotationY: stopMotion() ? 0 : mix(-14, 0, p),
-    });
-  },
-});
 const field = $("#fly");
 function fieldProgress(p) {
   const t = stopMotion() ? 1 : smooth((p - 0.08) / 0.7);
@@ -565,6 +419,6 @@ watchVisibility(
 );
 window.editionMotionOff = stopMotion;
 document.addEventListener("visibilitychange", media);
-syncSources();
+media();
 fieldProgress(0);
 window.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
