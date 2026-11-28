@@ -1217,3 +1217,7 @@ video.site-frame {
   .mast .brand img { width: 62px; }
   .mast .reach { padding-inline: 6px; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  #beaker-motion { display: none; }
+}
