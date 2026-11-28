@@ -552,7 +552,7 @@
   }
   function syncPreviews() {
     scrollFrame = 0;
-    updateBlinds();
+    syncDoor();
     const play = !document.hidden && !viewerOpen() && !motionOff();
     changeProject(
       play ? (pointer.matches ? hoverProject : touchProject()) : null,
@@ -596,69 +596,49 @@
     hoverRow = null;
     requestSync();
   });
-  // The poster and trailer share a frame. Each strip samples the original image
-  // at the photographed blind edges, including the uneven spacing near the door.
-  const blinds = $(".gone-blinds"),
-    gone = $("#gone");
-  const edges = [
-    0, 19, 85, 132, 174, 230, 268, 304, 345, 399, 439, 493, 544, 601, 650, 684,
-    731, 778, 800,
-  ];
-  const slats = edges
-    .slice(0, -1)
-    .map(() => blinds.appendChild(document.createElement("i")));
-  let blindSizes = [],
-    lastProgress = -1,
-    blindsVisible = false;
-  function sizeBlinds() {
-    const w = blinds.clientWidth,
-      h = blinds.clientHeight;
-    if (!w || !h) return;
-    const scale = Math.max(w / 800, h / 450);
-    const offset = (w - 800 * scale) / 2,
-      top = (h - 450 * scale) / 2;
-    blindSizes = slats.map((slat, i) => {
-      const left = edges[i] * scale + offset,
-        span = (edges[i + 1] - edges[i]) * scale;
-      Object.assign(slat.style, {
-        left: left + "px",
-        width: span + 0.5 + "px",
-        backgroundSize: 800 * scale + "px " + 450 * scale + "px",
-        backgroundPosition: offset - left + "px " + top + "px",
-      });
-      return edges[i] / 800;
-    });
-    lastProgress = -1;
-    updateBlinds();
+  // This silent edit is photographed at 24 fps. Seek only after the decoder
+  // finishes its last request, always using the latest scroll position.
+  const gone = $("#gone"), gonePin = $(".gone-pin"), door = $("#door-shot");
+  let doorNearby = false, doorRequested = false;
+
+  async function loadDoor() {
+    doorRequested = true;
+    door.preload = "auto";
+    try {
+      // This small local clip must seek in both directions, including on
+      // preview servers that do not implement HTTP byte ranges.
+      const response = await fetch(door.dataset.src);
+      if (!response.ok) throw new Error("Doorway clip unavailable");
+      door.src = URL.createObjectURL(await response.blob());
+    } catch {
+      door.src = door.dataset.src;
+    }
   }
-  function updateBlinds() {
-    if (!blindsVisible || !blindSizes.length) return;
-    const pin = $(".gone-pin"),
-      r = gone.getBoundingClientRect();
-    const p = motionOff()
-      ? 0
-      : clamp(
-          (headerHeight() - r.top) / Math.max(1, r.height - pin.offsetHeight),
-        );
-    if (p === lastProgress) return;
-    lastProgress = p;
-    blinds.classList.toggle("turning", p > 0.07);
-    blindSizes.forEach((position, i) => {
-      const start = 0.07 + (1 - position) * 0.23,
-        turn = smooth(start, start + 0.48, p);
-      slats[i].style.transform = "rotateY(" + -90 * turn + "deg)";
-      slats[i].style.opacity = turn >= 0.999 ? "0" : "1";
-    });
+
+  function syncDoor() {
+    if (!doorNearby || motionOff() || document.hidden || viewerOpen()) return;
+    if (!doorRequested) {
+      loadDoor();
+      return;
+    }
+    if (!Number.isFinite(door.duration) || door.readyState < 1 || door.seeking) return;
+    const bounds = gone.getBoundingClientRect();
+    const travel = Math.max(1, bounds.height - gonePin.offsetHeight);
+    const progress = clamp((headerHeight() - bounds.top) / travel);
+    const lastFrame = Math.max(0, Math.round(door.duration * 24) - 1);
+    const time = Math.round(progress * lastFrame) / 24;
+    if (Math.abs(door.currentTime - time) > 1 / 48) door.currentTime = time;
   }
-  const gonePin = $(".gone-pin");
+  door.addEventListener("loadeddata", syncDoor);
+  door.addEventListener("seeked", syncDoor);
   new ResizeObserver(() => {
     gone.style.setProperty("--gone-panel-height", gonePin.offsetHeight + "px");
+    requestSync();
   }).observe(gonePin);
-  new ResizeObserver(sizeBlinds).observe(blinds);
   new IntersectionObserver(([entry]) => {
-    blindsVisible = entry.isIntersecting;
-    updateBlinds();
-  }).observe(gone);
+    doorNearby = entry.isIntersecting;
+    syncDoor();
+  }, { rootMargin: "65% 0px" }).observe(gone);
   function syncAll() {
     syncHero();
     syncPortrait();

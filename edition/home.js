@@ -22,7 +22,6 @@ const siteNames = [
   "Sideways Studios",
   "Splitbone",
 ];
-let newsVisible = false;
 let paused = false,
   soundOn = false,
   audioContext,
@@ -114,18 +113,8 @@ function setVideo(video, src, active) {
   if (video.paused) video.play().catch(() => {});
 }
 function media() {
-  const news = $("#newscast");
-  setVideo(
-    news,
-    news.dataset.src,
-    newsVisible && !stopMotion() && !viewer.open && !document.hidden,
-  );
   window.dispatchEvent(new Event("edition:media"));
 }
-watchVisibility($(".gone-pin"), (on) => {
-  newsVisible = on;
-  media();
-});
 $("#motion").onclick = () => {
   paused = !paused;
   $("#motion").setAttribute("aria-pressed", String(paused));
@@ -260,10 +249,11 @@ const extras = {
   brass: "/assets/hero-v4/AnthonyBrass-Paintingclip.jpg",
   trail: "/assets/trail-on-set.webp",
 };
-function openFilm(id) {
+function openFilm(id, trigger) {
   const f = films.find((f) => f.id === id);
   if (!f) return;
   openViewer(f.title);
+  lastTrigger = trigger;
   const section = document.createElement("div");
   section.className = "screening " + id + "-film";
   const player = document.createElement("video");
@@ -337,7 +327,7 @@ films.forEach((f) => {
   $("#film-list").append(row);
 });
 all("[data-film]").forEach(
-  (el) => (el.onclick = () => openFilm(el.dataset.film)),
+  (el) => (el.onclick = () => openFilm(el.dataset.film, el)),
 );
 const field = $("#fly");
 function fieldProgress(p) {

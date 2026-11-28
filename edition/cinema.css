@@ -510,29 +510,17 @@
 }
 
 .gone {
-  height: 160svh;
+  height: 205svh;
 }
-.gone-blinds {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  background: #111 url(/images/gone/gone-poster.jpg) center/cover no-repeat;
+.gone .room {
+  background: #191916 url(/edition/gone-door.webp) center / cover;
 }
-.gone-blinds.turning {
-  background: transparent;
-}
-.gone-blinds i {
-  position: absolute;
-  top: 0;
-  height: 100%;
-  background-image: url(/images/gone/gone-poster.jpg);
-  background-repeat: no-repeat;
-  transform-origin: center;
-  backface-visibility: hidden;
+.gone .room video {
+  object-position: 60% center;
 }
 @media (max-width: 720px) {
   .gone {
-    height: calc(var(--gone-panel-height, 460px) + 62svh);
+    height: calc(var(--gone-panel-height, 560px) + 104svh);
     background: #10110e;
   }
   .gone-pin {
@@ -543,13 +531,13 @@
   .gone .room {
     position: relative;
     width: 100%;
-    aspect-ratio: 16/10;
+    height: clamp(220px, 52svh, 560px);
     z-index: 0;
   }
   .gone .room video {
     position: absolute;
     inset: 0;
-    object-position: center;
+    object-position: 60% center;
   }
   .gone-pin::after {
     display: none;
@@ -571,3 +559,10 @@
   height: auto;
   padding-bottom: 0;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  #door-shot { visibility: hidden; }
+  .gone .room { background-image: url(/images/gone/gone-door-11.jpg); background-position: center 44%; }
+}
+.motion-paused #door-shot { visibility: hidden; }
+.motion-paused .gone .room { background-image: url(/images/gone/gone-door-11.jpg); background-position: center 44%; }
